@@ -3,3 +3,5 @@ debian
 *~
 *.kdev4
 .pc
+CMakeLists.txt.user
+*.pyc

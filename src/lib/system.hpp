@@ -25,7 +25,6 @@
 #include <QObject>
 
 namespace SpeechControl {
-    class System;
 
     class System : public QObject {
       Q_OBJECT

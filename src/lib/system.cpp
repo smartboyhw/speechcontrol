@@ -26,16 +26,16 @@
 #include <QGst/Init>
 #include <QApplication>
 
-using SpeechControl::System;
-using SpeechControl::Microphone;
+using namespace SpeechControl;
 
-System* SpeechControl::System::s_inst = 0;
+System* System::system = 0;
 
-System::System(int* argc, char** argv[]) :
-        QObject(QApplication::instance())
+System::System(int argc, char** argv)
+    : QObject(QApplication::instance())
 {
     if (argc && argv)
-        QGst::init(argc,argv);
+        //QGst::init(argc, argv);
+        QGst::init();
     else
         QGst::init();
 
@@ -46,16 +46,16 @@ System::System(int* argc, char** argv[]) :
 }
 
 void System::start() {
-    if (!s_inst)
-        s_inst = new System(0,0);
+    if (!system)
+        system = new System(0, 0);
 }
 
-void System::start(int* argc, char** argv[])
+void System::start(int argc, char **argv)
 {
-    if (!s_inst)
-        s_inst = new System(argc,argv);
+    if (!system)
+        system = new System(argc, argv);
 }
 
 void System::stop() {
-    s_inst->deleteLater();
+    system->deleteLater();
 }

@@ -42,11 +42,12 @@
 
 namespace SpeechControl {
     class Microphone;
-
+    
     /**
      * @brief Represents a shorthand for denoating a list of @see Microphone.
      **/
     typedef QList<Microphone*> MicrophoneList;
+    
     /**
      * @brief Represents a named mapping of Microphones.
      **/
@@ -64,44 +65,57 @@ namespace SpeechControl {
         Q_PROPERTY(const double Volume READ volume WRITE setVolume)
         Q_PROPERTY(const bool Muted READ isMuted WRITE mute)
 
-    signals:
-        void listening();
-        void stoppedListening();
-
     public:
         Q_DISABLE_COPY(Microphone)
         explicit Microphone(QGlib::Value = 0);
         virtual ~Microphone();
+
+        /**
+         * @brief Get microphone by UUID
+         * @param micUuid UUID of the wanted microphone.
+         * @returns Pointer to the microphone.
+         */
         static Microphone* getMicrophone(const QUuid& );
+
+        /**
+         * @brief Get default microphone
+         * @returns Pointer to the default microphone.
+         */
         static Microphone* defaultMicrophone();
+
         static MicrophoneList allMicrophones();
+
         static void init();
 
-        const bool active() const;
+        bool active() const;
         const QByteArray* data() const;
-        const QUuid uuid() const;
-        const QString friendlyName() const;
-        const double volume() const;
-        const bool isMuted() const;
-        const bool isValid() const;
+        QUuid uuid() const;
+        QString friendlyName() const;
+        double volume() const;
+        bool isMuted() const;
+        bool isValid() const;
         QDataStream* stream() const;
 
         void setVolume(const double& );
         void mute(const bool& );
 
+    signals:
+        void startedListening();
+        void stoppedListening();
+        
     public slots:
         void startRecording();
         void stopRecording();
 
     private slots:
       void release();
-      void onPipelineBusmessage(const QGst::MessagePtr &);
-      void onSinkAudioEos(const QGlib::Value& );
-      void onSinkAudioNewbuffer(const QGlib::Value& );
+      void onPipelineBusmessage(const QGst::MessagePtr&);
+      void onSinkAudioEos(const QGlib::Value&);
+      void onSinkAudioNewbuffer(const QGlib::Value&);
 
     private:
         static void findMicrophones();
-        static MicrophoneMap s_lst;
+        static MicrophoneMap micMap;
         static QGst::ElementPtr s_src;
         static QGst::PropertyProbePtr s_propProbe;
         static QGst::ChildProxyPtr s_chldPrxy;

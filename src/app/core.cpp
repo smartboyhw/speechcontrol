@@ -55,7 +55,7 @@ Core::Core(int argc,char** argv) : QObject(new QApplication(argc,argv)){
     l_app->setOrganizationName("Synthetic Intellect Institute");
     l_app->setApplicationVersion("0.0b");
 
-    System::start(&argc,&argv);
+    System::start(argc, argv);
     Session::init();
 
     QDir l_dir;

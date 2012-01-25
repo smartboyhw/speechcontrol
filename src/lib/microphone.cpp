@@ -30,7 +30,7 @@
 using namespace SpeechControl;
 using SpeechControl::Microphone;
 
-MicrophoneMap Microphone::s_lst;
+MicrophoneMap Microphone::micMap;
 QGst::ElementPtr Microphone::s_src;
 QGst::PropertyProbePtr Microphone::s_propProbe;
 QGst::ChildProxyPtr Microphone::s_chldPrxy;
@@ -85,43 +85,39 @@ void Microphone::findMicrophones() {
     }
 }
 
-Microphone * Microphone::getMicrophone(const QUuid &l_uuid)
+Microphone* Microphone::getMicrophone(const QUuid &micUuid)
 {
-    if (s_lst.contains(l_uuid))
-        return s_lst.value(l_uuid);
-
-    return 0;
+    return micMap.value(micUuid, 0);
 }
 
 /// @todo How do you determine which microphone is the default one?
 Microphone* Microphone::defaultMicrophone()
 {
-    if (!s_lst.empty())
-        return s_lst.values().first();
+    if (!micMap.empty())
+        return micMap.values().first();
 
     return 0;
 }
 
-const bool Microphone::active() const
+bool Microphone::active() const
 {
     return !(!this->m_pipeline);
 }
 
 /// @todo This does NOT return a friendly name. Find it, seize it and return it.
-const QString Microphone::friendlyName() const
+QString Microphone::friendlyName() const
 {
     return m_device.toString();
 }
 
-
-const QUuid Microphone::uuid() const
+QUuid Microphone::uuid() const
 {
     return m_uuid;
 }
 
 MicrophoneList Microphone::allMicrophones()
 {
-    return s_lst.values();
+    return micMap.values();
 }
 
 /// @todo In addition, you will NEED TO MAKE SURE THAT YOU RECORD AT A SAMPLING RATE OF 16 KHZ (or 8 kHz if you adapt a telephone model) IN MONO WITH SINGLE CHANNEL.
@@ -156,7 +152,7 @@ void SpeechControl::Microphone::startRecording()
     m_srcAudio->setState(QGst::StatePlaying);
     m_pipeline->setState(QGst::StatePlaying);
 
-    emit listening();
+    emit startedListening();
 }
 
 void SpeechControl::Microphone::stopRecording()
@@ -164,28 +160,34 @@ void SpeechControl::Microphone::stopRecording()
     m_sinkAudio->setState(QGst::StateNull);
     m_srcAudio->setState(QGst::StateNull);
     m_pipeline->setState(QGst::StateNull);
+
+    emit stoppedListening();
 }
 
-const QByteArray* Microphone::data() const {
+const QByteArray* Microphone::data() const
+{
     if (m_data.size() == 0)
         return 0;
     else
         return &m_data;
 }
 
-const double SpeechControl::Microphone::volume() const
+double SpeechControl::Microphone::volume() const
 {
-    return 0.0;
+    return m_srcVolume->property("volume").toInt();
 }
 
-const bool SpeechControl::Microphone::isMuted() const
+bool SpeechControl::Microphone::isMuted() const
 {
-    return false;
+    return m_srcVolume->property("mute");
 }
 
 void SpeechControl::Microphone::setVolume(const double &p_volume)
 {
-    if (p_volume < 0.0 || p_volume > 10.0) return;
+    if (p_volume < 0.0 || p_volume > 10.0) {
+       qDebug() << tr("[Microphone] Got invalid volume:") << p_volume;
+        return;
+    }
 
     m_srcVolume->setProperty("volume", p_volume);
 }
@@ -207,7 +209,7 @@ void SpeechControl::Microphone::obtain()
         return;
     }
 
-    s_lst.insert(m_uuid,const_cast<Microphone*>(this));
+    micMap.insert(m_uuid,const_cast<Microphone*>(this));
 
     // Obtain tools for recording like the encoder and the source.
     m_sinkAudio = m_binAudio->getElementByName("filesink");
@@ -242,7 +244,8 @@ void SpeechControl::Microphone::release()
     m_pipeline.clear();
 }
 
-const bool Microphone::isValid() const {
+bool Microphone::isValid() const
+{
     return !m_binAudio.isNull();
 }
 

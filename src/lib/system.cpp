@@ -28,7 +28,7 @@
 
 using namespace SpeechControl;
 
-System* System::system = 0;
+System* System::s_inst = 0;
 
 System::System(int *argc, char** argv[])
     : QObject(QApplication::instance())
@@ -46,16 +46,16 @@ System::System(int *argc, char** argv[])
 }
 
 void System::start() {
-    if (!system)
-        system = new System(0, 0);
+    if (!s_inst)
+        s_inst = new System(0, 0);
 }
 
 void System::start(int *argc, char **argv[])
 {
-    if (!system)
-        system = new System(argc, argv);
+    if (!s_inst)
+        s_inst = new System(argc, argv);
 }
 
 void System::stop() {
-    system->deleteLater();
+    s_inst->deleteLater();
 }

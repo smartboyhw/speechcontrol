@@ -28,17 +28,16 @@
 #include <QGlib/Connect>
 
 using namespace SpeechControl;
-using SpeechControl::Microphone;
 
 MicrophoneMap Microphone::micMap;
 QGst::ElementPtr Microphone::s_src;
 QGst::PropertyProbePtr Microphone::s_propProbe;
 QGst::ChildProxyPtr Microphone::s_chldPrxy;
 
-Microphone::Microphone(QGlib::Value device ) :
-        m_device(device), m_uuid(QUuid::createUuid())
+Microphone::Microphone(QGlib::Value device)
+        : m_device(device), m_uuid(QUuid::createUuid())
 {
-    connect(this,SIGNAL(destroyed()),this,SLOT(release()));
+    connect(this, SIGNAL(destroyed()), this, SLOT(release()));
 
     // Get the microphone.
     obtain();
@@ -202,7 +201,9 @@ void SpeechControl::Microphone::obtain()
     try {
         m_binAudio = QGst::Bin::fromDescription("autoaudiosrc name=\"audiosrc\" ! audioconvert ! "
                                                 "audioresample ! audiorate ! volume name=\"volume\" ! "
-                                                "wavenc name=\"wavenc\" ! filesink name=\"filesink\"");
+                                                "vader name=vad auto_threshold=true ! "
+                                                "pocketsphinx name=asr ! "
+                                                "filesink name=\"filesink\"");
     } catch (const QGlib::Error & error) {
         qCritical() << "Failed to create audio source bin:" << error;
         m_binAudio.clear();

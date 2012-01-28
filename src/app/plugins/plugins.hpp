@@ -48,7 +48,7 @@ namespace SpeechControl {
 
     private:
       QPluginLoader* m_loader;
-      QSettings* m_cfg;
+      QSettings* m_config;
       QSettings* m_sttgs;
     };
 

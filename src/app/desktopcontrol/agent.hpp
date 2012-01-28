@@ -31,15 +31,16 @@ namespace SpeechControl {
     class Agent : public QObject
     {
       Q_OBJECT
-      Q_DISABLE_COPY(Agent)
+        Q_DISABLE_COPY(Agent)
 
     signals:
       void started();
       void stopped();
 
     public:
-      explicit Agent(QObject* = 0);
-      virtual ~Agent();
+        Agent();
+        explicit Agent(QObject* = 0);
+        virtual ~Agent();
 
       static Agent* instance();
       static void start();

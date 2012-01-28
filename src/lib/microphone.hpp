@@ -114,7 +114,11 @@ namespace SpeechControl {
       void onSinkAudioNewbuffer(const QGlib::Value&);
 
     private:
+        /**
+         * @brief Find all microphones attached to the machine
+         */
         static void findMicrophones();
+
         static MicrophoneMap micMap;
         static QGst::ElementPtr s_src;
         static QGst::PropertyProbePtr s_propProbe;

@@ -41,9 +41,9 @@ BOOST_PYTHON_MODULE(spchcntrl)
     using SpeechControl::Microphone;
     using SpeechControl::AcousticModel;
 
-    class_<System>("System", boost::noncopyable)
-      .def("stop" , &System::stop)
-    ;
+//     class_<System>("System", boost::noncopyable)
+//       .def("stop" , &System::stop)
+//     ;
 
     class_<AcousticModel>("AcousticModel", no_init)
       .add_property("samplerate"   , &AcousticModel::sampleRate, &AcousticModel::setSampleRate)

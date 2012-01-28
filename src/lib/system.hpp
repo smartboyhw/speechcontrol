@@ -28,6 +28,7 @@ namespace SpeechControl {
 
     class System : public QObject {
       Q_OBJECT
+      Q_DISABLE_COPY(System)
 
     public:
       explicit System(int* argc, char**[]);

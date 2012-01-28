@@ -30,7 +30,7 @@ using namespace SpeechControl;
 
 System* System::system = 0;
 
-System::System(int argc, char** argv)
+System::System(int *argc, char** argv[])
     : QObject(QApplication::instance())
 {
     if (argc && argv)
@@ -50,7 +50,7 @@ void System::start() {
         system = new System(0, 0);
 }
 
-void System::start(int argc, char **argv)
+void System::start(int *argc, char **argv[])
 {
     if (!system)
         system = new System(argc, argv);

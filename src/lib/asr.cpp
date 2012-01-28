@@ -18,41 +18,112 @@
 
 
 #include "asr.hpp"
+
+#include <QGlib/Connect>
+
+#include <QGst/enums.h>
+
 using namespace SpeechControl;
 
-ASR::ASR ( QObject* parent ) : QObject ( parent )
+ASR::ASR (QObject* parent) : QObject (parent), _pipeline (NULL), _psphinx (NULL), _bus (NULL)
 {
 
 }
 
-ASR::ASR ( QGst::BinPtr bin, QObject* parent ) : _bin ( bin ), QObject ( parent )
+ASR::ASR (QGst::PipelinePtr pipeline, QObject* parent) : QObject (parent), _pipeline (pipeline), _psphinx (NULL), _bus (NULL)
 {
+
 }
 
-ASR::ASR ( const char* description, QObject* parent ) : QObject ( parent )
+/// @todo Automatically extract 'pocketsphinx' element name from description.
+ASR::ASR (const char* description, QObject* parent) : QObject (parent)
 {
-    _bin = QGst::Bin::fromDescription ( description );
+    _pipeline = QGst::Pipeline::create();
+    QGst::BinPtr bin = QGst::Bin::fromDescription (description);
+    _pipeline->add (bin);
+    _psphinx = _pipeline->getElementByName ("asr");
+
+    QGlib::connect (_psphinx, "partial_result", this, &ASR::asrPartialResult);
+    QGlib::connect (_psphinx, "result", this, &ASR::asrResult);
+    _psphinx->setProperty ("configured", true);
+
+    _bus = _pipeline->bus();
+    _bus->addSignalWatch();
+    QGlib::connect (_bus, "message::application", this, &ASR::applicationMessage);
+
+    _pipeline->setState (QGst::StatePaused);
 }
 
-ASR::ASR ( const QString& description, QObject* parent ) : QObject ( parent )
+/// @todo Automatically extract 'pocketsphinx' element name from description.
+ASR::ASR (const QString& description, QObject* parent) : QObject (parent)
 {
-    _bin = QGst::Bin::fromDescription ( description.toStdString().c_str() );
-}
+    _pipeline = QGst::Pipeline::create();
+    QGst::BinPtr bin = QGst::Bin::fromDescription (description.toStdString().c_str());
+    _pipeline->add (bin);
+    _psphinx = _pipeline->getElementByName ("asr");
 
-const QGst::BinPtr ASR::getBin()
-{
-    return _bin;
+    QGlib::connect (_psphinx, "partial_result", this, &ASR::asrPartialResult);
+    QGlib::connect (_psphinx, "result", this, &ASR::asrResult);
+    _psphinx->setProperty ("configured", true);
+
+    _bus = _pipeline->bus();
+    _bus->addSignalWatch();
+    QGlib::connect (_bus, "message::application", this, &ASR::applicationMessage);
+
+    _pipeline->setState (QGst::StatePaused);
 }
 
 QString ASR::getStandardDescription()
 {
-    QString desc ( "autoaudiosrc name=audiosrc ! audioconvert" );
-    desc.append ( " ! audioresample ! audiorate ! volume name=volume" );
-    desc.append ( " ! vader name=vad auto_threshold=true" );
-    desc.append ( " ! pocketsphinx name=asr" );
-    desc.append ( " ! fakesink" );
+    QString desc ("autoaudiosrc name=audiosrc ! audioconvert");
+    desc.append (" ! audioresample ! audiorate ! volume name=volume");
+    desc.append (" ! vader name=vad auto_threshold=true");
+    desc.append (" ! pocketsphinx name=asr");
+    desc.append (" ! fakesink");
     return desc;
 }
 
+const QGst::PipelinePtr ASR::getPipeline()
+{
+    return _pipeline;
+}
 
-// kate: indent-mode cstyle; space-indent on; indent-width 4; 
+const QGst::ElementPtr ASR::getPocketSphinx()
+{
+    return _psphinx;
+}
+
+const QGst::BusPtr ASR::getBus()
+{
+    return _bus;
+}
+
+void ASR::run()
+{
+    _pipeline->setState(QGst::StatePlaying);
+}
+
+void ASR::pause()
+{
+    _pipeline->setState(QGst::StatePaused);
+}
+
+void ASR::asrPartialResult (const QGlib::Value& text, const QGlib::Value& uttid)
+{
+    QGst::Structure ps_structure("partial_result");
+    ps_structure.setValue("hyp", text.toString());
+    ps_structure.setValue("uttid", uttid.toString());
+    QGst::MessagePtr message = QGst::ApplicationMessage::create(_psphinx, ps_structure);
+    _bus->post(message);
+}
+
+void ASR::asrResult (const QGlib::Value& text, const QGlib::Value& uttid)
+{
+    QGst::Structure ps_structure("result");
+    ps_structure.setValue("hyp", text.toString());
+    ps_structure.setValue("uttid", uttid.toString());
+    QGst::MessagePtr message = QGst::ApplicationMessage::create(_psphinx, ps_structure);
+    _bus->post(message);
+}
+
+// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on;  replace-tabs on;  replace-tabs on;

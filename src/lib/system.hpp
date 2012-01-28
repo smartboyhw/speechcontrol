@@ -24,30 +24,33 @@
 
 #include <QObject>
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 
-    class System : public QObject {
-      Q_OBJECT
-      Q_DISABLE_COPY(System)
+class System : public QObject
+{
+    Q_OBJECT
+    Q_DISABLE_COPY (System)
 
-    public:
-      explicit System(int* argc, char**[]);
-      static System* instance();
+public:
+    explicit System (int* argc, char**[]);
+    static System* instance();
 
-    signals:
-      void started();
-      void stopped();
+signals:
+    void started();
+    void stopped();
 
-    public slots:
-      static void start(int*,char**[]);
-      static void start();
-      static void stop();
+public slots:
+    static void start (int*, char**[]);
+    static void start();
+    static void stop();
 
-    private:
-      static System* s_inst;
+private:
+    static System* s_inst;
 
-    };
+};
 
 }
 
 #endif // SYSTEM_HPP
+// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on; 

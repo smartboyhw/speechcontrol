@@ -30,32 +30,37 @@ using namespace SpeechControl;
 
 System* System::s_inst = 0;
 
-System::System(int *argc, char** argv[])
-    : QObject(QApplication::instance())
+System::System (int *argc, char** argv[])
+        : QObject (QApplication::instance())
 {
     if (argc && argv)
-        //QGst::init(argc, argv);
-        QGst::init();
+        QGst::init (argc, argv);
     else
         QGst::init();
 
     Microphone::init();
+
     QDir l_dir;
-    l_dir.mkpath(QDir::homePath() + "/.speechcontrol/corpus");
-    l_dir.mkpath(QDir::homePath() + "/.speechcontrol/dictionaries");
+
+    l_dir.mkpath (QDir::homePath() + "/.speechcontrol/corpus");
+
+    l_dir.mkpath (QDir::homePath() + "/.speechcontrol/dictionaries");
 }
 
-void System::start() {
-    if (!s_inst)
-        s_inst = new System(0, 0);
-}
-
-void System::start(int *argc, char **argv[])
+void System::start()
 {
     if (!s_inst)
-        s_inst = new System(argc, argv);
+        s_inst = new System (0, 0);
 }
 
-void System::stop() {
+void System::start (int *argc, char **argv[])
+{
+    if (!s_inst)
+        s_inst = new System (argc, argv);
+}
+
+void System::stop()
+{
     s_inst->deleteLater();
 }
+// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on; 

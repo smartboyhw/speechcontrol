@@ -22,7 +22,11 @@
 
 #include <QtCore/QObject>
 
+#include <QGlib/Value>
+
 #include <QGst/Pipeline>
+#include <QGst/Bus>
+#include <QGst/Message>
 
 namespace SpeechControl
 {
@@ -33,34 +37,67 @@ namespace SpeechControl
  * recognition. Their role is to provide an easy way to connect proper signals, access and
  * set desired configuration options and run, passing ready data to the main application.
  */
+
 class ASR : public QObject
 {
 
     Q_OBJECT
-    QGst::BinPtr _bin;
+
+protected:
+    QGst::PipelinePtr _pipeline;
+    QGst::ElementPtr _psphinx;
+    QGst::BusPtr _bus;
 
 public:
-    explicit ASR ( QObject* parent = 0 );
+    explicit ASR (QObject* parent = 0);
 
-    ASR ( QGst::BinPtr bin, QObject* parent = 0 );
+    ASR (QGst::PipelinePtr pipeline, QObject* parent = 0);
 
-    ASR ( const char* description, QObject* parent = 0 );
+    ASR (const char* description, QObject* parent = 0);
 
-    ASR ( const QString& description, QObject* parent = 0 );
-
-    /**
-     * @brief Get the pointer to the internal Bin
-     * @returns Pointer to the internal Bin.
-     */
-    const QGst::BinPtr getBin();
+    ASR (const QString& description, QObject* parent = 0);
 
     /**
      * @brief Get description of the standard Bin
      * @returns String with standard description.
      */
     static QString getStandardDescription();
+
+    /**
+     * @brief Get the pointer to the internal Pipeline
+     * @returns Pointer to the internal Pipeline.
+     */
+    const QGst::PipelinePtr getPipeline();
+
+    /**
+     * @brief Get 'pocketsphinx' element
+     * @returns Pointer to the 'pocketsphinx' element.
+     */
+    const QGst::ElementPtr getPocketSphinx();
+
+    /**
+     * @brief Get ASR message bus
+     * @returns Pointer to the ASR bus.
+     */
+    const QGst::BusPtr getBus();
+
+    /**
+     * @brief Run the pipeline
+     */
+    void run();
+
+    /**
+     * @brief Pause the pipeline
+     */
+    void pause();
+
+public slots:
+    void asrPartialResult (const QGlib::Value& text, const QGlib::Value& uttid);
+    void asrResult (const QGlib::Value& text, const QGlib::Value& uttid);
+    virtual void applicationMessage (const QGst::MessagePtr& message) = 0;
 };
 
 }
+
 #endif // ASR_HPP
-// kate: indent-mode cstyle; space-indent on; indent-width 4; 
+// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on;

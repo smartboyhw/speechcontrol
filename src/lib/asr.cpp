@@ -41,7 +41,9 @@ ASR::ASR (const char* description, QObject* parent) : QObject (parent)
     _pipeline = QGst::Pipeline::create();
     QGst::BinPtr bin = QGst::Bin::fromDescription (description);
     _pipeline->add (bin);
+    
     _psphinx = _pipeline->getElementByName ("asr");
+    _vader   = _pipeline->getElementByName("vad");
 
     QGlib::connect (_psphinx, "partial_result", this, &ASR::asrPartialResult);
     QGlib::connect (_psphinx, "result", this, &ASR::asrResult);
@@ -60,7 +62,9 @@ ASR::ASR (const QString& description, QObject* parent) : QObject (parent)
     _pipeline = QGst::Pipeline::create();
     QGst::BinPtr bin = QGst::Bin::fromDescription (description.toStdString().c_str());
     _pipeline->add (bin);
+    
     _psphinx = _pipeline->getElementByName ("asr");
+    _vader   = _pipeline->getElementByName("vad");
 
     QGlib::connect (_psphinx, "partial_result", this, &ASR::asrPartialResult);
     QGlib::connect (_psphinx, "result", this, &ASR::asrResult);
@@ -71,6 +75,11 @@ ASR::ASR (const QString& description, QObject* parent) : QObject (parent)
     QGlib::connect (_bus, "message::application", this, &ASR::applicationMessage);
 
     _pipeline->setState (QGst::StatePaused);
+}
+
+ASR::~ASR()
+{
+    _pipeline->setState(QGst::StateNull);
 }
 
 QString ASR::getStandardDescription()
@@ -93,6 +102,11 @@ const QGst::ElementPtr ASR::getPocketSphinx()
     return _psphinx;
 }
 
+const QGst::ElementPtr ASR::getVader()
+{
+    return _vader;
+}
+
 const QGst::BusPtr ASR::getBus()
 {
     return _bus;
@@ -105,23 +119,28 @@ void ASR::run()
 
 void ASR::pause()
 {
+    _vader->setProperty("silent", true);
+}
+
+void ASR::stop()
+{
     _pipeline->setState(QGst::StatePaused);
 }
 
-void ASR::asrPartialResult (const QGlib::Value& text, const QGlib::Value& uttid)
+void ASR::asrPartialResult (const QString& text, const QString& uttid)
 {
     QGst::Structure ps_structure("partial_result");
-    ps_structure.setValue("hyp", text.toString());
-    ps_structure.setValue("uttid", uttid.toString());
+    ps_structure.setValue("hyp", text);
+    ps_structure.setValue("uttid", uttid);
     QGst::MessagePtr message = QGst::ApplicationMessage::create(_psphinx, ps_structure);
     _bus->post(message);
 }
 
-void ASR::asrResult (const QGlib::Value& text, const QGlib::Value& uttid)
+void ASR::asrResult (const QString& text, const QString& uttid)
 {
     QGst::Structure ps_structure("result");
-    ps_structure.setValue("hyp", text.toString());
-    ps_structure.setValue("uttid", uttid.toString());
+    ps_structure.setValue("hyp", text);
+    ps_structure.setValue("uttid", uttid);
     QGst::MessagePtr message = QGst::ApplicationMessage::create(_psphinx, ps_structure);
     _bus->post(message);
 }

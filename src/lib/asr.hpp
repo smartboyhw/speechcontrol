@@ -46,6 +46,7 @@ class ASR : public QObject
 protected:
     QGst::PipelinePtr _pipeline;
     QGst::ElementPtr _psphinx;
+    QGst::ElementPtr _vader;
     QGst::BusPtr _bus;
 
 public:
@@ -56,6 +57,8 @@ public:
     ASR (const char* description, QObject* parent = 0);
 
     ASR (const QString& description, QObject* parent = 0);
+
+    virtual ~ASR();
 
     /**
      * @brief Get description of the standard Bin
@@ -76,6 +79,12 @@ public:
     const QGst::ElementPtr getPocketSphinx();
 
     /**
+     * @brief Get 'vader' element
+     * @returns Pointer to the 'vader' element.
+     */
+    const QGst::ElementPtr getVader();
+
+    /**
      * @brief Get ASR message bus
      * @returns Pointer to the ASR bus.
      */
@@ -88,12 +97,23 @@ public:
 
     /**
      * @brief Pause the pipeline
+     * This method simply forces VADER to be in the silent region.
      */
     void pause();
 
+    /**
+     * @brief Stop the pipeline
+     * This method puts the whole pipline in the StatePaused state.
+     */
+    void stop();
+
+signals:
+    /// @todo Useful or not?
+    void finished(QString result);
+        
 public slots:
-    void asrPartialResult (const QGlib::Value& text, const QGlib::Value& uttid);
-    void asrResult (const QGlib::Value& text, const QGlib::Value& uttid);
+    void asrPartialResult (const QString& text, const QString& uttid);
+    void asrResult (const QString& text, const QString& uttid);
     virtual void applicationMessage (const QGst::MessagePtr& message) = 0;
 };
 

@@ -20,6 +20,7 @@
  */
 
 #include "system.hpp"
+#include "dummysc.hpp"
 #include "microphone.hpp"
 
 #include <QDir>

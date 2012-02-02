@@ -52,7 +52,7 @@ void DummySC::applicationMessage (const QGst::MessagePtr& message)
                  << "\nUtterance ID:" << message->internalStructure()->value("uttid").toString();
     else if (msgType == "result") {
         qDebug() << "ASR result:";
-        //_pipeline->setState(QGst::StatePaused);
+        stop();
         emit finished(message->internalStructure()->value("hyp").toString());
     }
 }

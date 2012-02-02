@@ -113,7 +113,7 @@ void Core::asrFinished(QString text)
 {
     qDebug() << "ASR finished with the result:" << text
              << "Rerunning...";
-    //dummyASR->run();
+    dummyASR->run();
 }
 
 QVariant Core::getConfig (const QString &p_pth, QVariant p_vrt) const

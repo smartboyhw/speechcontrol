@@ -25,12 +25,12 @@
 
 using namespace SpeechControl;
 
-ASR::ASR (QObject* parent) : QObject (parent), _pipeline (NULL), _psphinx (NULL), _bus (NULL)
+ASR::ASR (QObject* parent) : QObject (parent)
 {
 
 }
 
-ASR::ASR (QGst::PipelinePtr pipeline, QObject* parent) : QObject (parent), _pipeline (pipeline), _psphinx (NULL), _bus (NULL)
+ASR::ASR (QGst::PipelinePtr pipeline, QObject* parent) : QObject (parent)
 {
 
 }

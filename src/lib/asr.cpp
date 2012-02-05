@@ -45,12 +45,12 @@ void ASR::_prepare()
 
 ASR::ASR (QObject* parent) : QObject (parent)
 {
-
+    _state = NotReady;
 }
 
 ASR::ASR (QGst::PipelinePtr pipeline, QObject* parent) : QObject (parent), _pipeline(pipeline)
 {
-
+    _state = NotReady;
 }
 
 /// @todo Automatically extract 'pocketsphinx' element name from description.
@@ -96,8 +96,10 @@ ASR::ASR (const QMap< QString, QString >& elementMap, QObject* parent) : QObject
             qWarning() << "[ASR] Unrecognized element passed; ignoring.";
         }
     }
-
-    _prepare();
+    if (_psphinx && _vader)
+        _prepare();
+    else
+        _state = NotReady;
 }
 
 ASR::~ASR()

@@ -9,8 +9,8 @@ find_package(Boost 1.4.6 COMPONENTS
 find_package(PythonLibs 2.7 REQUIRED)
 find_package(Qt4 4.7.4 COMPONENTS
   QtCore
-  QtXml
   QtGui
+  QtXml
   REQUIRED)
 find_package(QtGStreamer REQUIRED)
 pkg_search_module(POCKETSPHINX REQUIRED pocketsphinx sphinxbase)
@@ -26,7 +26,6 @@ set(SPCHCNTRL_INCLUDE_DIRS "${QT_INCLUDE_DIR}"
 set(SPCHCNTRL_LIBRARIES "${QT_LIBRARIES}"
     ${Boost_LIBRARIES}
     ${PYTHON_LIBRARIES}
-    ${PHONON_LIBRARIES}
     ${QTGLIB_LIBRARIES}
     ${QTGSTREAMER_LIBRARIES}
     ${QTGSTREAMER_UI_LIBRARIES}
@@ -44,7 +43,7 @@ if(CMAKE_BUILD_TYPE EQUAL "Debug")
 endif()
 
 ## includes
-include_directories(${SPCHCNTRL_INCLUDE_DIRS})
+include_directories(${SPCHCNTRL_INCLUDE_DIRS}
+  "${PROJECT_SOURCE_DIR}/src")
 
-## sub-projects
 add_subdirectory(src)

@@ -117,44 +117,28 @@ QString ASR::getStandardDescription()
     return desc;
 }
 
-const QGst::PipelinePtr ASR::getPipeline(
-)const
+const QGst::PipelinePtr ASR::getPipeline() const
 
 {
     return _pipeline;
 }
 
-const QGst::ElementPtr ASR::getPocketSphinx(
-)const
+const QGst::ElementPtr ASR::getPocketSphinx() const
 
 {
     return _psphinx;
 }
 
-const QGst::ElementPtr ASR::getVader(
-)const
+const QGst::ElementPtr ASR::getVader() const
 
 {
     return _vader;
 }
 
-const QGst::BusPtr ASR::getBus(
-)const
+const QGst::BusPtr ASR::getBus() const
 
 {
     return _bus;
-}
-
-template<typename T>
-void ASR::setPsProperty (const QString& property, const T& value)
-{
-    _psphinx->setProperty(property.toStdString().c_str(), value);
-}
-
-template<typename T>
-void ASR::setVaderProperty (const QString& property, const T& value)
-{
-    _vader->setProperty(property.toStdString().c_str(), value);
 }
 
 bool ASR::ready() const
@@ -198,4 +182,4 @@ void ASR::asrResult (const QString& text, const QString& uttid)
     _bus->post(message);
 }
 
-// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on;  replace-tabs on;  replace-tabs on;
+// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on;

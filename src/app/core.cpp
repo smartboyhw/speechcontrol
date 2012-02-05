@@ -101,6 +101,8 @@ void Core::start()
     l_mw->show();
 
     /// Experimental
+    dummyASR->setPsProperty("hmm", MODELDIR "hmm/en_US/hub4wsj_sc_8k");
+    
     connect(dummyASR, SIGNAL(finished(QString&)), this, SLOT(asrFinished(QString&)));
     qDebug() << "[ASR start]";
     dummyASR->run();

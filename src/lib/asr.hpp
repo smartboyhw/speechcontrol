@@ -20,6 +20,8 @@
 #ifndef ASR_HPP
 #define ASR_HPP
 
+#define MODELDIR "/usr/share/pocketsphinx/model"
+
 #include <QtCore/QObject>
 #include <QtCore/QMap>
 
@@ -121,7 +123,10 @@ public:
      * @param value Value for the property.
      */
     template<typename T>
-    void setPsProperty(const QString& property, const T& value);
+    void setPsProperty(const QString& property, const T& value)
+    {
+        _psphinx->setProperty(property.toStdString().c_str(), value);
+    }
 
     /**
      * @brief Set VADER element property
@@ -129,7 +134,10 @@ public:
      * @param value Value for the propery.
      */
     template<typename T>
-    void setVaderProperty(const QString& property, const T& value);
+    void setVaderProperty(const QString& property, const T& value)
+    {
+        _vader->setProperty(property.toStdString().c_str(), value);
+    }
 
     /**
      * @brief Check whether ASR is ready to use

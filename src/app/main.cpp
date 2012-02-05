@@ -19,8 +19,11 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "core.hpp"
+// Qt includes
 #include <QApplication>
+
+// local includes
+#include "core.hpp"
 
 // pretty simple, huh?
 int main( int argc, char** argv ) {

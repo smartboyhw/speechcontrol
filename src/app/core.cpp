@@ -19,6 +19,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+// Qt includes
 #include <QDir>
 #include <QFile>
 #include <QDebug>
@@ -27,9 +28,11 @@
 #include <QErrorMessage>
 #include <QMessageBox>
 
+// libspchcntrl includes
 #include "lib/system.hpp"
 #include "lib/microphone.hpp"
 
+// local includes
 #include "core.hpp"
 #include "sessions/session.hpp"
 #include "windows/main.hpp"
@@ -69,8 +72,8 @@ Core::Core(int argc,char** argv) : QObject(new QApplication(argc,argv)){
         QErrorMessage* l_msg = new QErrorMessage;
         l_msg->setWindowTitle("No Microphones Found");
         l_msg->showMessage(tr("No microphones were found on your system. Please ensure that you have one installed and detectable by ") +
-                                 tr("the audio system and make sure that <b>gstreamer-plugins-good</b> is installed on your system."),
-                                   "NoMicrophonesFoundOnStart");
+                           tr("the audio system and make sure that <b>gstreamer-plugins-good</b> is installed on your system."),
+                        "NoMicrophonesFoundOnStart");
     }
 }
 

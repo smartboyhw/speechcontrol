@@ -25,6 +25,8 @@
 
 using namespace SpeechControl::Plugins;
 
+Factory* Factory::s_inst = 0;
+
 Factory::Factory() : QObject(QApplication::instance())
 {
     s_inst = this;

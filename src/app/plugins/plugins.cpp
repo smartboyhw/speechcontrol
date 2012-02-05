@@ -23,6 +23,8 @@
 
 using namespace SpeechControl;
 
+using SpeechControl::Plugins::AbstractPlugin;
+
 /**
  * @note issue #0000034
  */

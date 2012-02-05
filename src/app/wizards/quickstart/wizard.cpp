@@ -40,16 +40,15 @@ QuickStart::QuickStart(QWidget *parent) :
     setWindowTitle(tr("Quick Start - SpeechControl"));
     setPixmap(QWizard::LogoPixmap,l_icon.pixmap(32,32,QIcon::Active,QIcon::On));
     setPage(QuickStart::IntroductionPage,
-            new Pages::IntroductionPage(tr("This wizard is designed to ease the process of configuring SpeechControl.")));
+        NULL);
     setPage(QuickStart::UserCreationPage,
-            new Pages::UserInitialization);
+        NULL);
     setPage(QuickStart::MicrophoneCreationPage,
-            new Pages::MicrophoneSelection);
+        NULL);
     //setPage(QuickStart::BookAdditionPage,
     //        new Pages::BookAdditionPage);
     setPage(QuickStart::ConclusionPage,
-            new Pages::Conclusion(tr("You've successfully configured SpeechControl to your liking. "
-                                     "If you need to re-configure SpeechControl, feel free to run this wizard again.")));
+        NULL);
 }
 
 /// @todo The user's country could be automatically detected by QLocale.

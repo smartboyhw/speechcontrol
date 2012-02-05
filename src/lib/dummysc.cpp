@@ -45,15 +45,17 @@ DummySC::DummySC (const QString& description, QObject* parent) : ASR (descriptio
 
 void DummySC::applicationMessage (const QGst::MessagePtr& message)
 {
-    QString msgType = message->internalStructure()->name();
+    QString msgType    = message->internalStructure()->name();
+    QString hypothesis = message->internalStructure()->value("hyp").toString();
+    QString uttid      = message->internalStructure()->value("uttid").toString();
     if (msgType == "partial_result")
         qDebug() << "Partial ASR result:\n"
-                 << "Hypothesis:" << message->internalStructure()->value("hyp").toString()
-                 << "\nUtterance ID:" << message->internalStructure()->value("uttid").toString();
+                 << "Hypothesis:" << hypothesis
+                 << "\nUtterance ID:" << uttid;
     else if (msgType == "result") {
-        qDebug() << "ASR result:";
+        qDebug() << "ASR result:" << hypothesis;
         stop();
-        emit finished(message->internalStructure()->value("hyp").toString());
+        emit finished(hypothesis);
     }
 }
 

@@ -28,8 +28,7 @@ Backup::Backup(QWidget *parent) :
     WizardBase(parent)
 {
     setPage(Backup::IntroductionPage,
-            new Pages::IntroductionPage(tr("This wizard allows you to restore or back-up your session "
-                                       "information with ease.")));
+            NULL);
 }
 
 Backup::~Backup()

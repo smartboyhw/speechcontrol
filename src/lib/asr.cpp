@@ -22,15 +22,33 @@
 #include <QGlib/Connect>
 
 #include <QGst/enums.h>
+#include <QGst/ElementFactory>
 
 using namespace SpeechControl;
+
+void ASR::_prepare()
+{
+    _psphinx = _pipeline->getElementByName (_gstElements.value("pocketsphinx").toStdString().c_str());
+    _vader   = _pipeline->getElementByName (_gstElements.value("vader").toStdString().c_str());
+    
+    QGlib::connect (_psphinx, "partial_result", this, &ASR::asrPartialResult);
+    QGlib::connect (_psphinx, "result", this, &ASR::asrResult);
+    _psphinx->setProperty ("configured", true);
+    
+    _bus = _pipeline->bus();
+    _bus->addSignalWatch();
+    QGlib::connect (_bus, "message::application", this, &ASR::applicationMessage);
+    
+    _pipeline->setState (QGst::StateReady);
+    _state = Ready;
+}
 
 ASR::ASR (QObject* parent) : QObject (parent)
 {
 
 }
 
-ASR::ASR (QGst::PipelinePtr pipeline, QObject* parent) : QObject (parent)
+ASR::ASR (QGst::PipelinePtr pipeline, QObject* parent) : QObject (parent), _pipeline(pipeline)
 {
 
 }
@@ -41,19 +59,11 @@ ASR::ASR (const char* description, QObject* parent) : QObject (parent)
     _pipeline = QGst::Pipeline::create();
     QGst::BinPtr bin = QGst::Bin::fromDescription (description);
     _pipeline->add (bin);
+
+    _gstElements.insert("pocketsphinx", "asr");
+    _gstElements.insert("vader", "vad");
     
-    _psphinx = _pipeline->getElementByName ("asr");
-    _vader   = _pipeline->getElementByName("vad");
-
-    QGlib::connect (_psphinx, "partial_result", this, &ASR::asrPartialResult);
-    QGlib::connect (_psphinx, "result", this, &ASR::asrResult);
-    _psphinx->setProperty ("configured", true);
-
-    _bus = _pipeline->bus();
-    _bus->addSignalWatch();
-    QGlib::connect (_bus, "message::application", this, &ASR::applicationMessage);
-
-    _pipeline->setState (QGst::StatePaused);
+    _prepare();
 }
 
 /// @todo Automatically extract 'pocketsphinx' element name from description.
@@ -62,19 +72,32 @@ ASR::ASR (const QString& description, QObject* parent) : QObject (parent)
     _pipeline = QGst::Pipeline::create();
     QGst::BinPtr bin = QGst::Bin::fromDescription (description.toStdString().c_str());
     _pipeline->add (bin);
+
+    _gstElements.insert("pocketsphinx", "asr");
+    _gstElements.insert("vader", "vad");
     
-    _psphinx = _pipeline->getElementByName ("asr");
-    _vader   = _pipeline->getElementByName("vad");
+    _prepare();
+}
 
-    QGlib::connect (_psphinx, "partial_result", this, &ASR::asrPartialResult);
-    QGlib::connect (_psphinx, "result", this, &ASR::asrResult);
-    _psphinx->setProperty ("configured", true);
+ASR::ASR (const QMap< QString, QString >& elementMap, QObject* parent) : QObject (parent)
+{
+    _gstElements = elementMap;
+    _pipeline = QGst::Pipeline::create();
+    for (auto item = elementMap.constBegin(); item != elementMap.constEnd(); ++item) {
+        if (item.key() == "pocketsphinx") {
+                _psphinx = QGst::ElementFactory::make("pocketsphinx", item.value().toStdString().c_str());
+                _pipeline->add(_psphinx);
+        }
+        else if (item.key() == "vader") {
+                _vader = QGst::ElementFactory::make("vader", item.value().toStdString().c_str());
+                _pipeline->add(_vader);
+        }
+        else {
+            qWarning() << "[ASR] Unrecognized element passed; ignoring.";
+        }
+    }
 
-    _bus = _pipeline->bus();
-    _bus->addSignalWatch();
-    QGlib::connect (_bus, "message::application", this, &ASR::applicationMessage);
-
-    _pipeline->setState (QGst::StatePaused);
+    _prepare();
 }
 
 ASR::~ASR()
@@ -92,29 +115,57 @@ QString ASR::getStandardDescription()
     return desc;
 }
 
-const QGst::PipelinePtr ASR::getPipeline()
+const QGst::PipelinePtr ASR::getPipeline(
+)const
+
 {
     return _pipeline;
 }
 
-const QGst::ElementPtr ASR::getPocketSphinx()
+const QGst::ElementPtr ASR::getPocketSphinx(
+)const
+
 {
     return _psphinx;
 }
 
-const QGst::ElementPtr ASR::getVader()
+const QGst::ElementPtr ASR::getVader(
+)const
+
 {
     return _vader;
 }
 
-const QGst::BusPtr ASR::getBus()
+const QGst::BusPtr ASR::getBus(
+)const
+
 {
     return _bus;
 }
 
+template<typename T>
+void ASR::setPsProperty (const QString& property, const T& value)
+{
+    _psphinx->setProperty(property.toStdString().c_str(), value);
+}
+
+template<typename T>
+void ASR::setVaderProperty (const QString& property, const T& value)
+{
+    _vader->setProperty(property.toStdString().c_str(), value);
+}
+
+bool ASR::ready() const
+{
+    return _state == Ready;
+}
+
 void ASR::run()
 {
-    _pipeline->setState(QGst::StatePlaying);
+    if (ready())
+        _pipeline->setState(QGst::StatePlaying);
+    else
+        qWarning() << "[ASR] Object is not ready to run.";
 }
 
 void ASR::pause()

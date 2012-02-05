@@ -41,16 +41,15 @@ ContentWizard::ContentWizard(QWidget *parent) :
     setPixmap(QWizard::LogoPixmap,l_icon.pixmap(32,32,QIcon::Active,QIcon::On));
     setWindowTitle(tr("Book Addition Wizard - SpeechControl"));
     setPage(ContentWizard::IntroductionPage,
-            new Pages::IntroductionPage(tr("This wizard allows you to add more reading sources for transcription "
-                                       "for SpeechControl.")));
+            NULL);
     setPage(ContentWizard::AdditionSelectionPage,
-            new Pages::AdditionSelectionPage);
+            NULL);
     setPage(ContentWizard::FileSelectionPage,
-            new Pages::FileSelectionPage);
+            NULL);
     setPage(ContentWizard::WikiSourcePage,
-            new Pages::WikiSourcePage);
+            NULL);
     setPage(ContentWizard::ConclusionPage,
-            new Pages::Conclusion(tr("You've successfully added a book to your local transcription library.")));
+            NULL);
 }
 
 int ContentWizard::nextId() const {

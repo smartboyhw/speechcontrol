@@ -101,7 +101,7 @@ void Core::start()
     l_mw->show();
 
     /// Experimental
-    connect(dummyASR, SIGNAL(finished(QString)), this, SLOT(asrFinished(QString)));
+    connect(dummyASR, SIGNAL(finished(QString&)), this, SLOT(asrFinished(QString&)));
     qDebug() << "[ASR start]";
     dummyASR->run();
 }
@@ -109,7 +109,7 @@ void Core::start()
 void Core::stop() { }
 
 /// Experimental
-void Core::asrFinished(QString text)
+void Core::asrFinished(QString& text)
 {
     qDebug() << "ASR finished with the result:" << text
              << "Rerunning...";

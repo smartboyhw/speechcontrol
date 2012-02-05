@@ -63,7 +63,7 @@ public slots:
     void stop();
 
     /// Experimental
-    void asrFinished(QString text);
+    void asrFinished(QString& text);
 
 private:
     QSettings* m_settings;

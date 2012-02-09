@@ -11,7 +11,7 @@
     <x>0</x>
     <y>0</y>
     <width>396</width>
-    <height>265</height>
+    <height>182</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -40,7 +40,7 @@
       <x>8</x>
       <y>8</y>
       <width>381</width>
-      <height>205</height>
+      <height>125</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -93,7 +93,6 @@
          </item>
         </layout>
        </widget>
-       <zorder>formLayoutWidget</zorder>
       </widget>
      </item>
      <item row="0" column="1" rowspan="2">
@@ -125,26 +124,6 @@
        </widget>
       </widget>
      </item>
-     <item row="2" column="0" colspan="2">
-      <widget class="QGroupBox" name="groupBoxUtilities">
-       <property name="title">
-        <string>Utilities</string>
-       </property>
-       <widget class="QPushButton" name="btnDesktopControl_2">
-        <property name="geometry">
-         <rect>
-          <x>204</x>
-          <y>32</y>
-          <width>165</width>
-          <height>24</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string>Start Desktop Control</string>
-        </property>
-       </widget>
-      </widget>
-     </item>
     </layout>
    </widget>
   </widget>
@@ -171,14 +150,14 @@
      <x>0</x>
      <y>0</y>
      <width>396</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="actionStart_Training"/>
+    <addaction name="actionStartTraining"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -187,7 +166,7 @@
      <string>&amp;Help</string>
     </property>
     <addaction name="actionAboutQt"/>
-    <addaction name="actionAbout_SpeechControl"/>
+    <addaction name="actionAboutSpeechControl"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -199,9 +178,9 @@
     <property name="title">
      <string>Desktop Control</string>
     </property>
-    <addaction name="action_Start"/>
+    <addaction name="actionStart"/>
     <addaction name="separator"/>
-    <addaction name="actionOptions_2"/>
+    <addaction name="actionOptions_DesktopControl"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuDesktop_Control"/>
@@ -216,7 +195,7 @@
     <string>Displays information about Qt.</string>
    </property>
   </action>
-  <action name="actionAbout_SpeechControl">
+  <action name="actionAboutSpeechControl">
    <property name="text">
     <string>About &amp;SpeechControl..</string>
    </property>
@@ -249,22 +228,17 @@
     <string>Ctrl+Q</string>
    </property>
   </action>
-  <action name="actionStart_Training">
+  <action name="actionStartTraining">
    <property name="text">
     <string>Start Training..</string>
    </property>
   </action>
-  <action name="actionDesk">
-   <property name="text">
-    <string>Desk</string>
-   </property>
-  </action>
-  <action name="action_Start">
+  <action name="actionStart">
    <property name="text">
     <string>&amp;Start...</string>
    </property>
   </action>
-  <action name="actionOptions_2">
+  <action name="actionOptions_DesktopControl">
    <property name="text">
     <string>Options</string>
    </property>

@@ -19,41 +19,40 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef SETTINGS_DIALOG_HPP
-#define SETTINGS_DIALOG_HPP
+#ifndef GENERAL_SETTINGS_HPP
+#define GENERAL_SETTINGS_HPP
 
-#include <QMap>
-#include <QDialog>
+#include <QFrame>
 
 namespace Ui {
-    class SettingsDialog;
+    class GeneralSettingsPane;
 }
 
 namespace SpeechControl {
 namespace Windows {
 
-class Settings : public QDialog
+class GeneralSettingsPane : public QFrame
 {
     Q_OBJECT
+    Q_PROPERTY(const QString Title READ title)
+    Q_PROPERTY(const QString ID READ id)
 
 public:
-    explicit Settings(QWidget *m_prnt = 0);
-    static void addPanel(QWidget* );
-    static void removePanel(const QString&);
-    static Settings* instance();
-    ~Settings();
+    explicit GeneralSettingsPane(QWidget *parent = 0);
+    ~GeneralSettingsPane();
+    const QString title() const;
+    const QString id() const;
+
+protected:
+    void changeEvent(QEvent *e);
 
 private slots:
-    void on_lstNavigation_itemSelectionChanged();
-    void on_buttonBox_rejected();
-    void on_buttonBox_accepted();
+    void on_checkBoxEnableDictation_toggled(bool checked);
 
 private:
-    static Settings* s_inst;
-    Ui::SettingsDialog *m_ui;
-    QMap<QString, QWidget*> m_panes;
+    Ui::GeneralSettingsPane *ui;
 };
 
 }}
 
-#endif // SETTINGS_HPP
+#endif // GENERAL_HPP

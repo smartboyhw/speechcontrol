@@ -20,142 +20,86 @@
  */
 
 #include <QMessageBox>
+#include <QListWidgetItem>
 
-#include "core.hpp"
 #include "settings.hpp"
-#include "training.hpp"
-#include "sessions/session.hpp"
-#include "wizards/quickstart/wizard.hpp"
-#include "wizards/micsetup/wizard.hpp"
-#include "wizards/contents/wizard.hpp"
-#include "wizards/session-create/wizard.hpp"
-#include "ui_settings.h"
+#include "settings/general.hpp"
+#include "ui_settingsDialog.h"
 
 using namespace SpeechControl;
-using namespace SpeechControl::Wizards;
 using namespace SpeechControl::Windows;
 
-Settings::Settings(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::Settings)
-{
-    ui->setupUi(this);
+Settings* Settings::s_inst = 0;
 
-    for (int i = 0; i < ui->tabWidgetWizards->count(); ++i)
-        on_tabWidgetWizards_currentChanged(i);
+Settings::Settings(QWidget *m_prnt) :
+    QDialog(m_prnt),
+    m_ui(new Ui::SettingsDialog)
+{
+    s_inst = this;
+    m_ui->setupUi(this);
+}
+
+/// @todo Add it to the list of options.
+void Settings::addPanel(QWidget* p_pane)
+{
+    const QString l_paneTitle = p_pane->property("Title").toString();
+    const QString l_paneID = p_pane->property("ID").toString();
+    QListWidgetItem* l_itm = new QListWidgetItem(l_paneTitle,instance()->m_ui->lstNavigation);
+
+    instance()->m_panes.insert(l_paneID,p_pane);
+    l_itm->setData(Qt::UserRole,l_paneID);
+    p_pane->setParent(instance()->m_ui->frmPageContainer);
+    p_pane->hide();
+}
+
+/// @todo Add the initial panes here.
+Settings* Settings::instance()
+{
+    if (s_inst == 0){
+        s_inst = new Settings;
+        GeneralSettingsPane* l_generalPane = new GeneralSettingsPane;
+        addPanel(l_generalPane);
+    }
+
+    return s_inst;
+}
+
+/// @todo Remove this from the list of options.
+void Settings::removePanel(const QString& p_paneID)
+{
+    instance()->m_panes.remove(p_paneID);
+}
+
+void Settings::on_lstNavigation_itemSelectionChanged()
+{
+    QWidget* l_container = instance()->m_ui->frmPageContainer;
+    QListWidget* l_lstNavi = instance()->m_ui->lstNavigation;
+
+    if (!l_lstNavi->selectedItems().empty()){
+        QListWidgetItem* l_itm = l_lstNavi->selectedItems().first();
+        const QString l_id = l_itm->data(Qt::UserRole).toString();
+
+        QWidget* l_pane = m_panes[l_id];
+        Q_FOREACH(QObject* l_subPane, l_container->children()){
+            ((QWidget*) l_subPane)->hide();
+        }
+
+        l_pane->setParent(l_container);
+        l_pane->show();
+    }
 }
 
 Settings::~Settings()
 {
-    delete ui;
+    delete m_ui;
 }
 
-void Settings::on_tabWidgetWizards_currentChanged(int p_index)
+void SpeechControl::Windows::Settings::on_buttonBox_rejected()
 {
-    switch (p_index){
-    case 0: // configuration
-    {
-        ui->checkBoxSysStart->setChecked(Core::instance()->getConfig("Options/AutoStart",QVariant(false)).toBool());
-        ui->checkBoxDictate->setChecked(Core::instance()->getConfig("Options/Dictation",QVariant(false)).toBool());
-        ui->checkBoxDesktopControl->setChecked(Core::instance()->getConfig("Options/Control",QVariant(false)).toBool());
-        ui->checkBoxVoxForge->setChecked(Core::instance()->getConfig("VoxForge/EnableUploading",QVariant(false)).toBool());
-    }
-        break;
-    case 1: // plug-ins
-    {
-    }
-        break;
-    case 2: // books
-    {
-        ContentList l_books = Content::allContents();
-        ui->textEditPreview->setEnabled(false);
-        ui->listWidgetBooks->clear();
-        Q_FOREACH(const Content* l_cnt, l_books){
-            QListWidgetItem* l_item = new QListWidgetItem;
-            l_item->setText(l_cnt->title());
-            l_item->setData(Qt::UserRole,l_cnt->uuid().toString());
-            ui->listWidgetBooks->addItem(l_item);
-        }
-
-        if (!l_books.empty())
-            ui->listWidgetBooks->setCurrentRow(0);
-    }
-        break;
-    case 3: // wizards
-    {
-    }
-        break;
-    }
-
+    this->close();
 }
 
-void Settings::on_buttonBox_accepted()
+void SpeechControl::Windows::Settings::on_buttonBox_accepted()
 {
-    Core::instance()->setConfig("Options/AutoStart",ui->checkBoxSysStart->checkState());
-    Core::instance()->setConfig("Options/Dictation",ui->checkBoxDictate->checkState());
-    Core::instance()->setConfig("Options/Control",ui->checkBoxDesktopControl->checkState());
-    Core::instance()->setConfig("VoxForge/EnableUploading",ui->checkBoxVoxForge->checkState());
-}
-
-void Settings::on_pushButtonWizardConfig_clicked()
-{
-    QuickStart* l_wiz = new QuickStart(this);
-    l_wiz->open();
-}
-
-void Settings::on_pushButtonWizardSessions_clicked()
-{
-    SessionCreate* l_wiz = new SessionCreate(this);
-    l_wiz->open();
-}
-
-void Settings::on_pushButtonWizardVoxforge_clicked()
-{
-    QMessageBox::information(this,tr("Not Yet Implemented"),tr("This functionality doesn't yet exist."));
-}
-
-void Settings::on_pushButtonWizardMic_clicked()
-{
-    MicrophoneSetup* l_wiz = new MicrophoneSetup(this);
-    l_wiz->open();
-}
-
-void Settings::on_pushButtonAdd_clicked()
-{
-    ContentWizard* l_wiz = new ContentWizard;
-    l_wiz->open();
-
-    if (l_wiz->result() == QDialog::Accepted)
-        on_tabWidgetWizards_currentChanged(2);
-}
-
-void Settings::on_pushButtonTrain_clicked()
-{
-    QListWidgetItem* l_item = ui->listWidgetBooks->currentItem();
-    Content* l_cnt = Content::obtain(l_item->data(Qt::UserRole).toString());
-    Session* l_sess = Session::create(l_cnt);
-    Training::startTraining(l_sess);
-}
-
-/// @todo Delete the selected book.
-void Settings::on_pushButtonDelete_clicked()
-{
-    QListWidgetItem* l_item = ui->listWidgetBooks->currentItem();
-    Content* l_cnt = Content::obtain(l_item->data(Qt::UserRole).toString());
-    l_cnt->deleteLater();
-}
-
-void Settings::on_listWidgetBooks_itemSelectionChanged()
-{
-    QListWidgetItem* l_item = ui->listWidgetBooks->currentItem();
-    if (l_item){
-        Content* l_cnt = Content::obtain(l_item->data(Qt::UserRole).toString());
-        ui->pushButtonTrain->setEnabled(true);
-        ui->pushButtonDelete->setEnabled(true);
-        ui->textEditPreview->setEnabled(true);
-        ui->textEditPreview->setPlainText(l_cnt->pageAt(0));
-    } else {
-        ui->textEditPreview->clear();
-        ui->textEditPreview->setEnabled(false);
-    }
+    this->close();
 }

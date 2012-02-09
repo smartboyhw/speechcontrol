@@ -60,31 +60,13 @@ Main::~Main() {
     delete m_ui;
 }
 
-void SpeechControl::Windows::Main::showOptions()
-{
-    Settings* l_settings = new Settings(this);
-    l_settings->exec();
-}
-
-void SpeechControl::Windows::Main::aboutQt()
-{
-    QApplication::aboutQt();
-}
-
-/// @todo Implement About dialog using QMessageBox.
-void SpeechControl::Windows::Main::aboutSpeechControl()
-{
-}
-
-void SpeechControl::Windows::Main::startTraining()
-{
-    Session* l_session = SessionManager::doSelectSession();
-    if (l_session)
-        Training::startTraining(l_session);
-}
-
 void SpeechControl::Windows::Main::on_btnDesktopControl_clicked()
 {
     statusBar()->showMessage("Starting desktop control...");
     DesktopControl::Agent::start();
+}
+
+void SpeechControl::Windows::Main::on_actionOptions_triggered()
+{
+    Settings::instance()->exec();
 }

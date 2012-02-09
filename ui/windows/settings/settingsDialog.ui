@@ -56,7 +56,7 @@
      </widget>
     </item>
     <item row="0" column="0">
-     <widget class="QListWidget" name="lstOptions">
+     <widget class="QListWidget" name="lstNavigation">
       <property name="maximumSize">
        <size>
         <width>150</width>

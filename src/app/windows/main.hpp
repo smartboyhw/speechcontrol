@@ -39,11 +39,8 @@ namespace SpeechControl {
             ~Main();
 
         private slots:
-            void showOptions();
-            void aboutQt();
-            void aboutSpeechControl();
-            void startTraining();
             void on_btnDesktopControl_clicked();
+            void on_actionOptions_triggered();
 
         private:
             Ui::MainWindow* m_ui;

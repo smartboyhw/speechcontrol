@@ -30,6 +30,11 @@ namespace SpeechControl {
 
     typedef QList<AcousticModel*> AcousticModelList;
 
+    /**
+     * @brief Represents an acoustic model for Sphinx.
+     *
+     * Acoustic models are
+     */
     class AcousticModel : public QObject {
         Q_OBJECT
         Q_PROPERTY(const QVariantMap Parameters READ parameters WRITE setParameters)

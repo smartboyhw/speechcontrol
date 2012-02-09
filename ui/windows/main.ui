@@ -157,8 +157,6 @@
     <property name="title">
      <string>&amp;File</string>
     </property>
-    <addaction name="actionStartTraining"/>
-    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
@@ -172,6 +170,15 @@
     <property name="title">
      <string>&amp;Tools</string>
     </property>
+    <widget class="QMenu" name="menuTraining">
+     <property name="title">
+      <string>Training..</string>
+     </property>
+     <addaction name="actionStartTraining"/>
+     <addaction name="actionAdaptModels"/>
+    </widget>
+    <addaction name="menuTraining"/>
+    <addaction name="separator"/>
     <addaction name="actionOptions"/>
    </widget>
    <widget class="QMenu" name="menuDesktop_Control">
@@ -230,17 +237,28 @@
   </action>
   <action name="actionStartTraining">
    <property name="text">
-    <string>Start Training..</string>
+    <string>Start</string>
+   </property>
+   <property name="statusTip">
+    <string>Begin the training process from where you left off.</string>
    </property>
   </action>
   <action name="actionStart">
    <property name="text">
     <string>&amp;Start...</string>
    </property>
+   <property name="statusTip">
+    <string>Starts the Desktop Control feature of SpeechControl.</string>
+   </property>
   </action>
   <action name="actionOptions_DesktopControl">
    <property name="text">
     <string>Options</string>
+   </property>
+  </action>
+  <action name="actionAdaptModels">
+   <property name="text">
+    <string>Adapt</string>
    </property>
   </action>
  </widget>

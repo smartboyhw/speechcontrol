@@ -43,7 +43,7 @@ class SessionManager : public QDialog
 public:
     explicit SessionManager(QWidget *parent = 0);
     ~SessionManager();
-    static Session* doSelectSession();
+    static Session* pickSession();
     Session* session() const;
 
 private slots:
@@ -51,7 +51,6 @@ private slots:
     void on_btnOk_clicked();
     void on_btnCreate_clicked();
     void updateList();
-
     void on_listSession_itemSelectionChanged();
 
 private:

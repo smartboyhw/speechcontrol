@@ -21,6 +21,7 @@
 
 #include <QDebug>
 #include <QDateTime>
+#include <QErrorMessage>
 #include <QMessageBox>
 
 #include "ui_training.h"
@@ -80,7 +81,7 @@ void Training::startCollecting()
     m_ui->labelText->setText(tr("<i>Rendering...</i>"));
 
     // Determine the last saved sentence in the session.
-    m_initSntct= m_curSntct = m_session->firstIncompleteSentence();
+    m_initSntct = m_curSntct = m_session->firstIncompleteSentence();
 
     // Begin an iteration of reading sentences until interrupted or completed.
     if (m_curSntct){
@@ -96,8 +97,11 @@ void Training::startCollecting()
 
         navigateToPart(l_start);
     }
-    else
-        m_ui->labelText->setText(tr("<i>No text is available for this session</i>."));
+    else {
+        QErrorMessage l_msg(this);
+        l_msg.showMessage(tr("<i>No text is available for this session</i>."),"NoTextLeftInSession");
+        close();
+    }
 }
 
 void Training::stopCollecting()

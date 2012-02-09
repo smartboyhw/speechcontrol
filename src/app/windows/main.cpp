@@ -60,13 +60,20 @@ Main::~Main() {
     delete m_ui;
 }
 
-void SpeechControl::Windows::Main::on_btnDesktopControl_clicked()
-{
-    statusBar()->showMessage("Starting desktop control...");
-    DesktopControl::Agent::start();
-}
-
-void SpeechControl::Windows::Main::on_actionOptions_triggered()
+void Main::on_actionOptions_triggered()
 {
     Settings::instance()->exec();
 }
+
+void Main::on_actionAdaptModels_triggered()
+{
+
+}
+
+void Main::on_actionStartTraining_triggered()
+{
+    Session* l_session = SessionManager::pickSession();
+    if (l_session)
+        Training::startTraining(l_session);
+}
+

@@ -68,7 +68,7 @@ Session* SessionManager::session() const {
 }
 
 /// @todo Implement a means of selecting @see Session objects from the manager.
-Session* SessionManager::doSelectSession()
+Session* SessionManager::pickSession()
 {
     SessionManager* l_win = new SessionManager;
 

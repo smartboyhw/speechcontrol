@@ -39,8 +39,9 @@ namespace SpeechControl {
             ~Main();
 
         private slots:
-            void on_btnDesktopControl_clicked();
             void on_actionOptions_triggered();
+            void on_actionStartTraining_triggered();
+            void on_actionAdaptModels_triggered();
 
         private:
             Ui::MainWindow* m_ui;

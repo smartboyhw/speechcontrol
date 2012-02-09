@@ -40,12 +40,12 @@ public:
     explicit Settings(QWidget *m_prnt = 0);
     static void addPanel(QWidget* );
     static void removePanel(const QString&);
+    static void switchToPanel(const QString&);
     static Settings* instance();
     ~Settings();
 
 private slots:
     void on_lstNavigation_itemSelectionChanged();
-    void on_buttonBox_rejected();
     void on_buttonBox_accepted();
 
 private:

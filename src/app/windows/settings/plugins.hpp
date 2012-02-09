@@ -19,27 +19,27 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef GENERAL_SETTINGS_HPP
-#define GENERAL_SETTINGS_HPP
+#ifndef PLUGINS_SETTINGS_HPP
+#define PLUGINS_SETTINGS_HPP
 
 #include <QFrame>
 
 namespace Ui {
-    class GeneralSettingsPane;
+    class PluginsSettingsPane;
 }
 
 namespace SpeechControl {
 namespace Windows {
 
-class GeneralSettingsPane : public QFrame
+class PluginsSettingsPane : public QFrame
 {
     Q_OBJECT
     Q_PROPERTY(const QString Title READ title)
     Q_PROPERTY(const QString ID READ id)
 
 public:
-    explicit GeneralSettingsPane(QWidget *parent = 0);
-    ~GeneralSettingsPane();
+    explicit PluginsSettingsPane(QWidget *parent = 0);
+    ~PluginsSettingsPane();
     const QString title() const;
     const QString id() const;
 
@@ -47,13 +47,12 @@ protected:
     void changeEvent(QEvent *e);
 
 private slots:
-    void on_checkBoxEnableDictation_toggled(bool checked);
-    void on_checkBoxEnableDesktopControl_toggled(bool checked);
+    void on_btnInfo_clicked();
 
 private:
-    Ui::GeneralSettingsPane *ui;
+    Ui::PluginsSettingsPane *ui;
 };
 
 }}
 
-#endif // GENERAL_HPP
+#endif // PLUGINS_HPP

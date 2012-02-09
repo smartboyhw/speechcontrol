@@ -55,16 +55,22 @@ void GeneralSettingsPane::changeEvent(QEvent *e)
 
 const QString GeneralSettingsPane::title() const
 {
-    return "General!";
+    return "General";
 }
 
 const QString GeneralSettingsPane::id() const
 {
-    return "General";
+    return "gnrl";
 }
 
 /// @todo Toggle the status of dictation.
 void GeneralSettingsPane::on_checkBoxEnableDictation_toggled(bool checked)
+{
+
+}
+
+/// @todo Toggle the status of desktop control.
+void GeneralSettingsPane::on_checkBoxEnableDesktopControl_toggled(bool checked)
 {
 
 }

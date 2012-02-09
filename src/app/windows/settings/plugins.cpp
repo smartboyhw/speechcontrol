@@ -19,41 +19,47 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef GENERAL_SETTINGS_HPP
-#define GENERAL_SETTINGS_HPP
+#include "plugins.hpp"
+#include "ui_pluginssettingspane.h"
 
-#include <QFrame>
+using namespace SpeechControl;
+using namespace SpeechControl::Windows;
 
-namespace Ui {
-    class GeneralSettingsPane;
+PluginsSettingsPane::PluginsSettingsPane(QWidget *parent) :
+    QFrame(parent),
+    ui(new Ui::PluginsSettingsPane)
+{
+    ui->setupUi(this);
 }
 
-namespace SpeechControl {
-namespace Windows {
-
-class GeneralSettingsPane : public QFrame
+PluginsSettingsPane::~PluginsSettingsPane()
 {
-    Q_OBJECT
-    Q_PROPERTY(const QString Title READ title)
-    Q_PROPERTY(const QString ID READ id)
+    delete ui;
+}
 
-public:
-    explicit GeneralSettingsPane(QWidget *parent = 0);
-    ~GeneralSettingsPane();
-    const QString title() const;
-    const QString id() const;
+void PluginsSettingsPane::changeEvent(QEvent *e)
+{
+    QFrame::changeEvent(e);
+    switch (e->type()) {
+    case QEvent::LanguageChange:
+        ui->retranslateUi(this);
+        break;
+    default:
+        break;
+    }
+}
 
-protected:
-    void changeEvent(QEvent *e);
+const QString PluginsSettingsPane::title() const
+{
+    return "Plugins";
+}
 
-private slots:
-    void on_checkBoxEnableDictation_toggled(bool checked);
-    void on_checkBoxEnableDesktopControl_toggled(bool checked);
+const QString PluginsSettingsPane::id() const
+{
+    return "plgn";
+}
 
-private:
-    Ui::GeneralSettingsPane *ui;
-};
+void PluginsSettingsPane::on_btnInfo_clicked()
+{
 
-}}
-
-#endif // GENERAL_HPP
+}

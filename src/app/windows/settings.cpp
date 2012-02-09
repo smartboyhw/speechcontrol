@@ -24,6 +24,7 @@
 
 #include "settings.hpp"
 #include "settings/general.hpp"
+#include "settings/plugins.hpp"
 #include "ui_settingsDialog.h"
 
 using namespace SpeechControl;
@@ -52,13 +53,20 @@ void Settings::addPanel(QWidget* p_pane)
     p_pane->hide();
 }
 
+void Settings::switchToPanel(const QString &l_paneID)
+{
+    QListWidget* l_lstNavi = instance()->m_ui->lstNavigation;
+}
+
 /// @todo Add the initial panes here.
 Settings* Settings::instance()
 {
     if (s_inst == 0){
         s_inst = new Settings;
         GeneralSettingsPane* l_generalPane = new GeneralSettingsPane;
+        PluginsSettingsPane* l_pluginsPane = new PluginsSettingsPane;
         addPanel(l_generalPane);
+        addPanel(l_pluginsPane);
     }
 
     return s_inst;
@@ -92,11 +100,6 @@ void Settings::on_lstNavigation_itemSelectionChanged()
 Settings::~Settings()
 {
     delete m_ui;
-}
-
-void SpeechControl::Windows::Settings::on_buttonBox_rejected()
-{
-    this->close();
 }
 
 void SpeechControl::Windows::Settings::on_buttonBox_accepted()

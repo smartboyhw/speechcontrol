@@ -53,6 +53,7 @@ void Settings::addPanel(QWidget* p_pane)
     p_pane->hide();
 }
 
+/// @todo Implement a means of switcing the currently selected panel to the one desired.
 void Settings::switchToPanel(const QString &l_paneID)
 {
     QListWidget* l_lstNavi = instance()->m_ui->lstNavigation;

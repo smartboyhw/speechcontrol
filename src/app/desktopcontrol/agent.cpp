@@ -40,6 +40,12 @@ Agent::Agent(const Agent& p_other) : QObject(p_other.parent()),
 
 }
 
+/// @todo Properly designate a means of determing if this agent is active.
+const bool Agent::isActive()
+{
+    return instance()->m_sphnx->isListening();
+}
+
 Agent* Agent::instance()
 {
   if (!s_inst)
@@ -57,6 +63,11 @@ void Agent::start()
 void Agent::stop()
 {
   emit s_inst->stopped();
+}
+
+void Agent::invokeCommand ( const QString& p_command )
+{
+
 }
 
 Agent::~Agent()

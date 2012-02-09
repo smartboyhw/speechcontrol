@@ -39,6 +39,16 @@ Agent* Agent::instance(){
     return s_inst;
 }
 
+void Agent::start()
+{
+
+}
+
+void Agent::stop()
+{
+
+}
+
 Agent::~Agent()
 {
 

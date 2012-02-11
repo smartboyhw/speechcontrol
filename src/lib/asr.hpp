@@ -94,6 +94,12 @@ public:
     static QString getStandardDescription();
 
     /**
+     * @brief Get underlying decoder
+     * @returns Pointer to the decoder.
+     */
+    QGlib::Value getPsDecoder() const;
+
+    /**
      * @brief Get the pointer to the internal Pipeline
      * @returns Pointer to the internal Pipeline.
      */

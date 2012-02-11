@@ -102,7 +102,12 @@ void Core::start()
 
     /// Experimental
     dummyASR->setPsProperty("hmm", MODELDIR "hmm/en_US/hub4wsj_sc_8k");
-    
+
+    if (dummyASR->getPsDecoder().isValid())
+        qDebug() << "Decoder is valid.";
+    else
+        qDebug() << "Decoder is invalid.";
+        
     connect(dummyASR, SIGNAL(finished(QString&)), this, SLOT(asrFinished(QString&)));
     qDebug() << "[ASR start]";
     dummyASR->run();

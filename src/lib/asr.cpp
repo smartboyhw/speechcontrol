@@ -117,6 +117,12 @@ QString ASR::getStandardDescription()
     return desc;
 }
 
+/// @todo How to deal with this decoder in GValue?
+QGlib::Value ASR::getPsDecoder() const
+{
+    return _psphinx->property("decoder");
+}
+
 const QGst::PipelinePtr ASR::getPipeline() const
 
 {

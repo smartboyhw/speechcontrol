@@ -56,13 +56,14 @@ Agent* Agent::instance()
 
 void Agent::start()
 {
-    connect(s_inst , SIGNAL(started()) , s_inst->m_sphnx,SLOT(startRecognizing()));
-    emit s_inst->started();
+    connect(instance(), SIGNAL(started()), instance()->m_sphnx, SLOT(startRecognizing()));
+    connect(instance(), SIGNAL(stopped()), instance()->m_sphnx, SLOT(stopRecognizing()));
+    emit instance()->started();
 }
 
 void Agent::stop()
 {
-  emit s_inst->stopped();
+  emit instance()->stopped();
 }
 
 void Agent::invokeCommand ( const QString& p_command )

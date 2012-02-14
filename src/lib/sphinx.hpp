@@ -27,20 +27,23 @@
 #include <QVariant>
 #include <QVariantMap>
 
-// PocketSphinx includes
-#include <pocketsphinx.h>
-
 // local includes
 #include "microphone.hpp"
+
+// Sphinx includes
+#include <pocketsphinx.h>
 
 class QFile;
 
 namespace SpeechControl {
     class Sphinx;
     class Trainer;
-    class Microphone;
     class AcousticModel;
+    class SphinxResult;
 
+    /**
+      * @brief A wrapping utility class for the PocketSphinx utility.
+      */
     class Sphinx : public QObject {
         Q_OBJECT
 
@@ -48,19 +51,20 @@ namespace SpeechControl {
         void textRecognized(const QString&);
 
     public:
+
         Q_DISABLE_COPY(Sphinx)
         explicit Sphinx(const AcousticModel* = 0);
         virtual ~Sphinx();
         void setAcousticModel(const AcousticModel* );
         AcousticModel* acousticModel() const;
-        static void startRecognizing(Microphone* = Microphone::defaultMicrophone());
-        static void stopRecognizing(Microphone* = Microphone::defaultMicrophone());
         const bool isListening() const;
         const QString text() const;
 
     public slots:
         void recognizeFromFile(const QFile* );
         void recognizeFromMicrophone(const Microphone* = Microphone::defaultMicrophone());
+        void startRecognizing(Microphone* = Microphone::defaultMicrophone());
+        void stopRecognizing(Microphone* = Microphone::defaultMicrophone());
 
     private:
         void initialize();
@@ -69,6 +73,23 @@ namespace SpeechControl {
         AcousticModel* m_mdl;
         ps_decoder_t *m_decoder;
         cmd_ln_t *m_config;
+    };
+
+    class SphinxResult : public QObject {
+        Q_OBJECT
+        Q_PROPERTY(const double Confidence READ confidence)
+        Q_PROPERTY(const QString Text READ text)
+
+    public:
+        SphinxResult(Sphinx* );
+        virtual ~SphinxResult();
+        const QString text() const;
+        const double confidence() const;
+
+    private:
+        double m_cnfdnc;
+        QString m_txt;
+        Sphinx* m_sphnx;
     };
 }
 

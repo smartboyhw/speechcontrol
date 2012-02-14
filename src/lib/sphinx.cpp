@@ -19,11 +19,20 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+// stdc++ includes
+#include <cstdio>
+
+// Sphinx includes
+#include <pocketsphinx.h>
+
+// Qt includes
+#include <QFile>
+
+// local includes
 #include "sphinx.hpp"
 #include "microphone.hpp"
 #include "acousticmodel.hpp"
-#include <QFile>
-#include <cstdio>
+
 #define MODELDIR "/usr/share/pocketsphinx/model"
 
 using namespace SpeechControl;
@@ -58,7 +67,6 @@ void Sphinx::recognizeFromMicrophone(const Microphone *p_mic)
    emit textRecognized(m_hypothesis);
 }
 
-/// @todo Should this return the Sphinx object for recognition?
 void Sphinx::startRecognizing(Microphone *p_mic)
 {
     p_mic->startRecording();
@@ -87,4 +95,23 @@ const QString Sphinx::text() const
 }
 
 Sphinx::~Sphinx() {
+}
+
+SphinxResult::SphinxResult(Sphinx *p_sphnx) : QObject(p_sphnx),
+    m_sphnx(p_sphnx) {
+
+}
+
+const QString SphinxResult::text() const
+{
+    return m_txt;
+}
+
+const double SphinxResult::confidence() const
+{
+    return m_cnfdnc;
+}
+
+SphinxResult::~SphinxResult() {
+
 }

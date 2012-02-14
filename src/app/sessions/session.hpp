@@ -50,6 +50,7 @@ namespace SpeechControl {
         explicit Content(const QUuid&);
         virtual ~Content();
         void load(const QUuid&);
+        void erase();
         const uint pageCount() const;
         const uint words() const;
         const uint length() const;
@@ -83,6 +84,7 @@ namespace SpeechControl {
         virtual ~Session();
         const QUuid uuid() const;
         const bool isCompleted() const;
+        void erase() const;
         Corpus* corpus() const;
         Content* content() const;
         Sentence* firstIncompleteSentence() const;

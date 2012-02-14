@@ -152,6 +152,7 @@ void Corpus::load(const QUuid &p_uuid)
             qDebug() << "Loaded sentence:" << l_sntc->text();
             addSentence(l_sntc);
         }
+        m_uuid = p_uuid;
     } else
         qDebug() << "Failed to open corpus XML file.";
 }
@@ -178,6 +179,13 @@ CorpusList Corpus::allCorpuses()
     }
 
     return l_lst;
+}
+
+void Corpus::erase() const
+{
+    const QUrl l_path = getPath(m_uuid);
+    QDir* l_dir = new QDir(l_path.toLocalFile());
+    l_dir->rmdir(l_dir->absolutePath());
 }
 
 /// @todo What to clean-up?

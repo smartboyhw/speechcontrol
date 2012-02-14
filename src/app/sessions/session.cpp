@@ -188,6 +188,13 @@ Content* Content::obtain(const QUuid &p_uuid)
     return s_lst.value(p_uuid);
 }
 
+void Content::erase()
+{
+    QFile* l_file = new QFile(getPath(m_uuid));
+    if (l_file->remove())
+        this->deleteLater();
+}
+
 void Content::load(const QUuid &p_uuid)
 {
     QFile* l_file = new QFile(getPath(p_uuid));
@@ -366,4 +373,10 @@ SentenceList Session::incompletedSentences() const
 const bool Session::isCompleted() const
 {
     return firstIncompleteSentence() == 0 && lastIncompleteSentence() == 0;
+}
+
+/// @todo Remove session from listing in sessions.xml
+void Session::erase() const
+{
+    m_corpus->erase();
 }

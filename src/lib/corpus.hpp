@@ -105,6 +105,7 @@ namespace SpeechControl {
         SentenceList sentences() const;
         Sentence* sentenceAt(const int&) const;
         const QUuid uuid() const;
+        void erase() const;
 
     public slots:
         void load(const QUuid&);
@@ -114,6 +115,7 @@ namespace SpeechControl {
         static QUrl getPath(const QUuid&);
         static CorpusMap s_lst;
 
+        QUuid m_uuid;
         QUrl audioPath() const;
         QDomDocument* m_dom;
         SentenceList m_sntncLst;

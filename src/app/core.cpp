@@ -34,6 +34,7 @@
 
 // local includes
 #include "core.hpp"
+#include "panelicon.hpp"
 #include "sessions/session.hpp"
 #include "windows/main.hpp"
 #include "wizards/quickstart/wizard.hpp"
@@ -60,6 +61,7 @@ Core::Core(int argc,char** argv) : QObject(new QApplication(argc,argv)){
 
     System::start(&argc,&argv);
     Session::init();
+    PanelIcon::instance()->setVisible(true);
 
     QDir l_dir;
     l_dir.mkdir(QDir::homePath() + "/.speechcontrol/contents");

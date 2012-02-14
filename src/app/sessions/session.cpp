@@ -365,5 +365,5 @@ SentenceList Session::incompletedSentences() const
 
 const bool Session::isCompleted() const
 {
-    return !(incompletedSentences().empty());
+    return firstIncompleteSentence() == 0 && lastIncompleteSentence() == 0;
 }

@@ -44,11 +44,8 @@ public:
 
 private slots:
     void on_btnSelect_clicked();
-
     void on_btnAdd_clicked();
-
     void on_btnCancel_clicked();
-
     void on_lstBooks_itemSelectionChanged();
 
 private:

@@ -27,12 +27,14 @@
 #include <QMessageBox>
 
 #include <sphinx.hpp>
+#include <corpus.hpp>
 
 #include "ui_main.h"
 #include "core.hpp"
 #include "main.hpp"
 #include "training.hpp"
 #include "settings.hpp"
+#include "panelicon.hpp"
 #include "desktopcontrol/agent.hpp"
 #include "managers/books.hpp"
 #include "managers/session.hpp"
@@ -47,6 +49,7 @@ using namespace SpeechControl::Windows::Managers;
 Main::Main() : m_ui(new Ui::MainWindow) {
    m_ui->setupUi(this);
    m_ui->retranslateUi(this);
+   PanelIcon::instance()->setIcon(this->windowIcon());
 
    this->restoreGeometry(Core::instance()->getConfig("MainWindow/Geometry").toByteArray());
    this->restoreState(Core::instance()->getConfig("MainWindow/State").toByteArray());
@@ -60,20 +63,35 @@ Main::~Main() {
     delete m_ui;
 }
 
-void Main::on_actionOptions_triggered()
+void Main::on_actionOptionsDesktopControl_triggered()
 {
-    Settings::instance()->exec();
+    Settings::switchToPanel("dsktp-cntrl");
 }
 
+
+void Main::on_actionOptions_triggered()
+{
+    Settings::switchToPanel("gnrl");
+}
+
+/// @todo Invoke the process of adapting a model. If anything, have a special window for such a process.
 void Main::on_actionAdaptModels_triggered()
 {
-
+    m_ui->statusBar->showMessage("This feature hasn't been implemented yet.");
 }
 
 void Main::on_actionStartTraining_triggered()
 {
     Session* l_session = SessionManager::pickSession();
-    if (l_session)
+    if (l_session){
         Training::startTraining(l_session);
+        m_ui->statusBar->showMessage("Training session \"" + l_session->content()->title() + "\"...");
+    }
 }
 
+/// @todo Invoke the process of starting up desktop control.
+void SpeechControl::Windows::Main::on_actionStartDesktopControl_triggered()
+{
+    m_ui->statusBar->showMessage("This feature hasn't been implemented yet.");
+    DesktopControl::Agent::start();
+}

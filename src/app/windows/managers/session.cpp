@@ -25,6 +25,7 @@
 #include "ui_session.h"
 
 #include <sentence.hpp>
+#include <qmessagebox.h>
 
 using namespace SpeechControl;
 using SpeechControl::Windows::Managers::SessionManager;
@@ -90,7 +91,12 @@ void SessionManager::on_btnCancel_clicked()
 
 void SessionManager::on_btnOk_clicked()
 {
-    this->accept();
+    if (m_session->isCompleted()){
+        if (QMessageBox::Yes == QMessageBox::question(this,"Continue Training?","This session has already been completed, do you want to create a new session based on this session?",QMessageBox::Yes,QMessageBox::No)){
+            m_session = Session::create(m_session->content());
+            this->accept();
+        }
+    } else this->accept();
 }
 
 void SessionManager::on_btnCreate_clicked()

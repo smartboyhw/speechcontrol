@@ -68,33 +68,42 @@ const QString SpeechControl::Windows::BookSettingsPane::title() const
 
 const QString SpeechControl::Windows::BookSettingsPane::id() const
 {
-    return "books";
+    return "bks";
 }
 
 void SpeechControl::Windows::BookSettingsPane::updateList()
 {
+    QListWidget* l_widget = ui->lstBooks;
     ContentList l_lst = Content::allContents();
+
+    l_widget->clear();
 
     if (!l_lst.empty()){
         Q_FOREACH(const Content* l_cnt, l_lst){
-            QListWidgetItem* l_item = new QListWidgetItem(l_cnt->title(),ui->lstBooks);
+            const QString l_lbl = l_cnt->title();
+            QListWidgetItem* l_item = new QListWidgetItem(l_widget);
             l_item->setData(Qt::UserRole,l_cnt->uuid().toString());
-            ui->lstBooks->addItem(l_item);
+            l_widget->addItem(l_item);
+
+            if (l_lbl.isEmpty())
+                l_item->setText("Unnamed");
+            else
+                l_item->setText(l_lbl);
         }
     }
 }
 
-/// @todo Add functionality to delete content data.
 void SpeechControl::Windows::BookSettingsPane::on_btnDelete_clicked()
 {
     QListWidget* l_widg = ui->lstBooks;
     QListWidgetItem* l_itm = l_widg->selectedItems().first();
     Content* l_cntn = Content::obtain(l_itm->data(Qt::UserRole).toString());
 
-    if (QMessageBox::Yes == QMessageBox::question(this,"Confirm Book Delete", "Are you sure you want to delete this book?",
+    if (QMessageBox::Yes == QMessageBox::question(this,"Confirm Book Delete", "Are you sure you want to delete this book?\nAny session connected to the book will become invalid and untrainable.",
                                                   QMessageBox::Yes | QMessageBox::No,
                                                   QMessageBox::No)){
-
+        l_cntn->erase();
+        updateList();
     }
 }
 

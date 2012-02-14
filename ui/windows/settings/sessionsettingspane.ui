@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>307</width>
-    <height>244</height>
+    <width>303</width>
+    <height>240</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -28,10 +28,10 @@
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>4</x>
-     <y>3</y>
-     <width>300</width>
-     <height>237</height>
+     <x>3</x>
+     <y>2</y>
+     <width>296</width>
+     <height>235</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -78,6 +78,38 @@
     </item>
    </layout>
   </widget>
+  <action name="actionDelete">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+  </action>
+  <action name="actionCopy">
+   <property name="text">
+    <string>Copy</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+C</string>
+   </property>
+  </action>
+  <action name="actionBackup">
+   <property name="text">
+    <string>Backup</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
+  </action>
+  <action name="actionRestoreBackup">
+   <property name="text">
+    <string>Restore Backup</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+B</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

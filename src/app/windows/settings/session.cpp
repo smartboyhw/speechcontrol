@@ -23,7 +23,9 @@
 #include "session.hpp"
 #include "ui_sessionsettingspane.h"
 
+#include <QMenu>
 #include <QListWidget>
+#include <QMessageBox>
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
@@ -34,6 +36,23 @@ SessionSettingsPane::SessionSettingsPane(QWidget *parent) :
 {
     m_ui->setupUi(this);
     updateList();
+
+    QList<QAction*> l_modifyActions;
+    QList<QAction*> l_archiveActions;
+    QMenu* l_modifyMenu = new QMenu(m_ui->btnModify);
+    QMenu* l_archiveMenu = new QMenu(m_ui->btnArchive);
+
+    l_modifyActions << m_ui->actionDelete
+                    << m_ui->actionCopy;
+
+    l_archiveActions << m_ui->actionBackup
+                     << m_ui->actionRestoreBackup;
+
+    l_modifyMenu->addActions(l_modifyActions);
+    l_archiveMenu->addActions(l_archiveActions);
+
+    m_ui->btnModify->setMenu(l_modifyMenu);
+    m_ui->btnArchive->setMenu(l_archiveMenu);
 }
 
 void SessionSettingsPane::show(){
@@ -84,7 +103,6 @@ void SessionSettingsPane::updateList()
             l_item->setText("Unnamed");
         else
             l_item->setText(l_lbl);
-
     }
 }
 
@@ -92,4 +110,43 @@ void SessionSettingsPane::updateList()
 void SpeechControl::Windows::SessionSettingsPane::on_btnInfo_clicked()
 {
 
+}
+
+void SpeechControl::Windows::SessionSettingsPane::on_actionDelete_triggered()
+{
+    QListWidget* l_widget = m_ui->listWidgetSession;
+    QListWidgetItem* l_itm = l_widget->selectedItems().first();
+    Session* l_ss = Session::obtain(l_itm->data(Qt::UserRole).toString());
+
+    if (QMessageBox::Yes == QMessageBox::question(this,"Confirm Session Deletion",
+                                                  "Are you sure you want to <b>wipe all</b> of this session's data?",
+                                                  QMessageBox::Yes | QMessageBox::No,
+                                                  QMessageBox::No)){
+        l_ss->erase();
+        updateList();
+    }
+}
+
+/// @todo Implement a means of copying the session.
+void SpeechControl::Windows::SessionSettingsPane::on_actionCopy_triggered()
+{
+    QListWidget* l_widget = m_ui->listWidgetSession;
+    QListWidgetItem* l_itm = l_widget->selectedItems().first();
+    Session* l_ss = Session::obtain(l_itm->data(Qt::UserRole).toString());
+}
+
+/// @todo Implement a means of creating backups.
+void SpeechControl::Windows::SessionSettingsPane::on_actionBackup_triggered()
+{
+    QListWidget* l_widget = m_ui->listWidgetSession;
+    QListWidgetItem* l_itm = l_widget->selectedItems().first();
+    Session* l_ss = Session::obtain(l_itm->data(Qt::UserRole).toString());
+}
+
+/// @todo Implement a means of restoring backups.
+void SpeechControl::Windows::SessionSettingsPane::on_actionRestoreBackup_triggered()
+{
+    QListWidget* l_widget = m_ui->listWidgetSession;
+    QListWidgetItem* l_itm = l_widget->selectedItems().first();
+    Session* l_ss = Session::obtain(l_itm->data(Qt::UserRole).toString());
 }

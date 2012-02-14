@@ -19,29 +19,24 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "sessions/session.hpp"
-#include "general.hpp"
-#include "panelicon.hpp"
-#include "ui_generalsettingspane.h"
+#include "voxforge.hpp"
+#include "ui_voxforgesettingspane.h"
 
-using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 
-GeneralSettingsPane::GeneralSettingsPane(QWidget *parent) :
+VoxforgeSettingsPane::VoxforgeSettingsPane(QWidget *parent) :
     QFrame(parent),
-    ui(new Ui::GeneralSettingsPane)
+    ui(new Ui::VoxforgeSettingsPane)
 {
     ui->setupUi(this);
-    ui->lblSessionCount->setText(QString::number(Session::allSessions().count()));
-    ui->lblAccuracyRating->setText("<i>n/a</i>");
 }
 
-GeneralSettingsPane::~GeneralSettingsPane()
+VoxforgeSettingsPane::~VoxforgeSettingsPane()
 {
     delete ui;
 }
 
-void GeneralSettingsPane::changeEvent(QEvent *e)
+void VoxforgeSettingsPane::changeEvent(QEvent *e)
 {
     QFrame::changeEvent(e);
     switch (e->type()) {
@@ -53,30 +48,18 @@ void GeneralSettingsPane::changeEvent(QEvent *e)
     }
 }
 
-const QString GeneralSettingsPane::title() const
+const QString SpeechControl::Windows::VoxforgeSettingsPane::title() const
 {
-    return "General";
+    return "VoxForge";
 }
 
-const QString GeneralSettingsPane::id() const
+const QString SpeechControl::Windows::VoxforgeSettingsPane::id() const
 {
-    return "gnrl";
+    return "vxfrg";
 }
 
-/// @todo Toggle the status of dictation.
-void GeneralSettingsPane::on_checkBoxEnableDictation_toggled(bool checked)
+/// @todo Toggle the ability to upload content up to VoxForge.
+void SpeechControl::Windows::VoxforgeSettingsPane::on_checkBox_clicked()
 {
-
-}
-
-/// @todo Toggle the status of desktop control.
-void GeneralSettingsPane::on_checkBoxEnableDesktopControl_toggled(bool checked)
-{
-
-}
-
-/// @todo Toggle the panel icon.
-void SpeechControl::Windows::GeneralSettingsPane::on_checkBoxPanel_clicked()
-{
-    PanelIcon::instance()->setVisible(ui->checkBoxPanel->isChecked());
+    ui->tabWidget->setEnabled(ui->checkBox->isChecked());
 }

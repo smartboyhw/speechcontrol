@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>311</width>
+    <width>309</width>
     <height>246</height>
    </rect>
   </property>
@@ -22,10 +22,10 @@
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>6</x>
-     <y>7</y>
-     <width>296</width>
-     <height>233</height>
+     <x>3</x>
+     <y>3</y>
+     <width>299</width>
+     <height>237</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -199,6 +199,30 @@
        </size>
       </property>
      </spacer>
+    </item>
+    <item row="3" column="1">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QCheckBox" name="checkBoxPanel">
+        <property name="text">
+         <string>Show icon in panel</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <spacer name="verticalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>

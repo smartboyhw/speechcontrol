@@ -19,27 +19,27 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef GENERAL_SETTINGS_HPP
-#define GENERAL_SETTINGS_HPP
+#ifndef VOXFORGESETTINGSPANE_HPP
+#define VOXFORGESETTINGSPANE_HPP
 
 #include <QFrame>
 
 namespace Ui {
-    class GeneralSettingsPane;
+    class VoxforgeSettingsPane;
 }
 
 namespace SpeechControl {
 namespace Windows {
 
-class GeneralSettingsPane : public QFrame
+class VoxforgeSettingsPane : public QFrame
 {
     Q_OBJECT
     Q_PROPERTY(const QString Title READ title)
     Q_PROPERTY(const QString ID READ id)
 
 public:
-    explicit GeneralSettingsPane(QWidget *parent = 0);
-    ~GeneralSettingsPane();
+    explicit VoxforgeSettingsPane(QWidget *parent = 0);
+    ~VoxforgeSettingsPane();
     const QString title() const;
     const QString id() const;
 
@@ -47,15 +47,12 @@ protected:
     void changeEvent(QEvent *e);
 
 private slots:
-    void on_checkBoxEnableDictation_toggled(bool checked);
-    void on_checkBoxEnableDesktopControl_toggled(bool checked);
-
-    void on_checkBoxPanel_clicked();
+    void on_checkBox_clicked();
 
 private:
-    Ui::GeneralSettingsPane *ui;
+    Ui::VoxforgeSettingsPane *ui;
 };
 
 }}
 
-#endif // GENERAL_HPP
+#endif // VOXFORGESETTINGSPANE_HPP

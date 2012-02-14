@@ -25,6 +25,9 @@
 #include "settings.hpp"
 #include "settings/general.hpp"
 #include "settings/plugins.hpp"
+#include "settings/books.hpp"
+#include "settings/session.hpp"
+#include "settings/voxforge.hpp"
 #include "ui_settingsDialog.h"
 
 using namespace SpeechControl;
@@ -50,13 +53,19 @@ void Settings::addPanel(QWidget* p_pane)
     instance()->m_panes.insert(l_paneID,p_pane);
     l_itm->setData(Qt::UserRole,l_paneID);
     p_pane->setParent(instance()->m_ui->frmPageContainer);
+    p_pane->setGeometry(QRect(0,0,310,246));
     p_pane->hide();
 }
 
-/// @todo Implement a means of switcing the currently selected panel to the one desired.
 void Settings::switchToPanel(const QString &l_paneID)
 {
-    QListWidget* l_lstNavi = instance()->m_ui->lstNavigation;
+    QWidget* l_currentPane = instance()->m_panes.value(l_paneID);
+
+    if (l_currentPane != 0)
+        l_currentPane->show();
+
+    if (!instance()->isVisible())
+        instance()->exec();
 }
 
 /// @todo Add the initial panes here.
@@ -66,8 +75,17 @@ Settings* Settings::instance()
         s_inst = new Settings;
         GeneralSettingsPane* l_generalPane = new GeneralSettingsPane;
         PluginsSettingsPane* l_pluginsPane = new PluginsSettingsPane;
+        BookSettingsPane* l_booksPane = new BookSettingsPane;
+        VoxforgeSettingsPane* l_voxforgePane = new VoxforgeSettingsPane;
+        SessionSettingsPane* l_sessionPane = new SessionSettingsPane;
+
         addPanel(l_generalPane);
         addPanel(l_pluginsPane);
+        addPanel(l_booksPane);
+        addPanel(l_sessionPane);
+        addPanel(l_voxforgePane);
+
+        l_generalPane->show();
     }
 
     return s_inst;

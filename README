@@ -1,8 +1,7 @@
 SpeechControl
 ======================= 
-Website: http://www.thesii.org/wiki/SpeechControl
+Website: http://wiki.thesii.org/SpeechControl
 GitHub: https://github.com/spchcntrl/speechcontrol
-Launchpad: https://launchpad.net/speechcontrol
 
 1. Introduction
 
@@ -12,22 +11,25 @@ Linux desktop. SpeechControl is a speech recognition toolkit, allowing
 you to:
 
   * train multiple acoustic models
-  * manipulate and redistribute sessions made with SC
+  * manipulate and redistribute sessions made with SpeechControl.
   * upload session information to VoxForge
   * dictate text
   * control your desktop using commands
 
 2. Bug Reporting
-Any and all bugs should be reported to https://bugs.launchpad.net/speechcontrol
+Any and all bugs should be reported to http://tasks.thesii.org/projects/spchcntrl-app.
+That link points to the issue tracking system used to maintain any and all activities
+pertaining to SpeechControl.
 
 3. Contact
 You can reach the development team behind SpeechControl at their
-mailing list <speechcontrol-devel@lists.launchpad.net>. The people
-who helped produce the software has a mailing list at <speechcontrolteam@lists.launchpad.net>
+mailing list <spchcntrl-devel@thesii.org>. The people who helped produce
+the software have a mailing list at <spchcntrl-users@thesii.org>. You
+can openly subscribe and add content to both of these mailing lists.
 Thank you for using our software.
 
 
 -------------------------
 One Vision. One Purpose
 The Synthetic Intellect Institute :: F/OSS AI
-http://www.thesii.org :: contact@thesii.org :: #sii on irc.freenode.net
+http://www.thesii.org :: spchcntrl-users@thesii.org :: #sii-speechcontrol on irc.freenode.net

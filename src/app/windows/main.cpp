@@ -46,6 +46,7 @@ using namespace SpeechControl::Windows;
 using namespace SpeechControl::Wizards;
 using namespace SpeechControl::Windows::Managers;
 
+/// @todo Add icons to the QActions.
 Main::Main() : m_ui(new Ui::MainWindow) {
    m_ui->setupUi(this);
    m_ui->retranslateUi(this);

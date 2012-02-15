@@ -101,7 +101,10 @@ void Core::start()
     l_mw->show();
 
     /// Experimental
-    dummyASR->setPsProperty("hmm", MODELDIR "hmm/en_US/hub4wsj_sc_8k");
+//     QDir path("/usr/share/pocketsphinx/model/hmm/en_US/hub4wsj_sc_8k");
+    QString path("/home/veles/Documents/voxforge-en-0.4/model_parameters/voxforge_en_sphinx.cd_cont_5000");
+    dummyASR->setAcousticModel(path);
+//     dummyASR->setPsProperty("hmm", "/usr/share/pocketsphinx/model/hmm/en_US/hub4wsj_sc_8k");
 
     if (dummyASR->getPsDecoder().isValid())
         qDebug() << "Decoder is valid.";

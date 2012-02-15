@@ -24,11 +24,7 @@
 using namespace SpeechControl;
 
 using SpeechControl::Plugins::AbstractPlugin;
-
-/**
- * @note issue #0000034
- */
-
+/// @note issue #0000034
 AbstractPlugin::AbstractPlugin(QObject* p_prnt) :
     QObject(p_prnt), m_ldr(0), m_cfg(0), m_sttgs(0)
 {

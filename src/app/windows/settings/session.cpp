@@ -133,6 +133,8 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionCopy_triggered()
     QListWidget* l_widget = m_ui->listWidgetSession;
     QListWidgetItem* l_itm = l_widget->selectedItems().first();
     Session* l_ss = Session::obtain(l_itm->data(Qt::UserRole).toString());
+    //l_ss->copy();
+    updateList();
 }
 
 /// @todo Implement a means of creating backups.
@@ -141,6 +143,8 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionBackup_triggered()
     QListWidget* l_widget = m_ui->listWidgetSession;
     QListWidgetItem* l_itm = l_widget->selectedItems().first();
     Session* l_ss = Session::obtain(l_itm->data(Qt::UserRole).toString());
+    //Backup* l_bckpSs = l_ss->createBackup();
+    updateList();
 }
 
 /// @todo Implement a means of restoring backups.
@@ -149,4 +153,6 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionRestoreBackup_trigger
     QListWidget* l_widget = m_ui->listWidgetSession;
     QListWidgetItem* l_itm = l_widget->selectedItems().first();
     Session* l_ss = Session::obtain(l_itm->data(Qt::UserRole).toString());
+    //BackupList l_bckpLst = l_ss->backups();
+    updateList();
 }

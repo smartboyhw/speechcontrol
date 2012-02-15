@@ -31,6 +31,7 @@
 // libspchcntrl includes
 #include "lib/system.hpp"
 #include "lib/microphone.hpp"
+#include "dummysc.hpp"
 
 // local includes
 #include "core.hpp"
@@ -40,6 +41,7 @@
 #include "wizards/quickstart/wizard.hpp"
 
 using namespace SpeechControl;
+
 using namespace SpeechControl::Wizards;
 
 using SpeechControl::Core;
@@ -49,65 +51,88 @@ Core* Core::s_inst = 0;
 /// @todo Generate default settings.
 /// @todo Invoke first-run wizard.
 /// @todo Pass command-line arguments to QGst *after* QApplication gets them.
-Core::Core(int argc,char** argv) : QObject(new QApplication(argc,argv)){
+Core::Core (int argc, char** argv) : QObject (new QApplication (argc, argv))
+{
     s_inst = this;
 
     // start application.
-    QApplication* l_app = qobject_cast<QApplication*>(QApplication::instance());
-    l_app->setApplicationName("SpeechControl");
-    l_app->setOrganizationDomain("thesii.org");
-    l_app->setOrganizationName("Synthetic Intellect Institute");
-    l_app->setApplicationVersion("0.0b");
+    QApplication* l_app = qobject_cast<QApplication*> (QApplication::instance());
+    l_app->setApplicationName ("SpeechControl");
+    l_app->setOrganizationDomain ("thesii.org");
+    l_app->setOrganizationName ("Synthetic Intellect Institute");
+    l_app->setApplicationVersion ("0.0b");
 
-    System::start(&argc,&argv);
+    System::start (&argc, &argv);
     Session::init();
     PanelIcon::instance()->setVisible(true);
 
     QDir l_dir;
-    l_dir.mkdir(QDir::homePath() + "/.speechcontrol/contents");
+    l_dir.mkdir (QDir::homePath() + "/.speechcontrol/contents");
 
     // build settings
-    m_settings = new QSettings(QSettings::UserScope,"Synthetic Intellect Institute","SpeechControl",this);
+    m_settings = new QSettings (QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", this);
 
     // check for microphones
-    if (Microphone::allMicrophones().empty()){
+
+    if (Microphone::allMicrophones().empty()) {
         QErrorMessage* l_msg = new QErrorMessage;
-        l_msg->setWindowTitle("No Microphones Found");
-        l_msg->showMessage(tr("No microphones were found on your system. Please ensure that you have one installed and detectable by ") +
-                           tr("the audio system and make sure that <b>gstreamer-plugins-good</b> is installed on your system."),
-                        "NoMicrophonesFoundOnStart");
+        l_msg->setWindowTitle ("No Microphones Found");
+        l_msg->showMessage (tr ("No microphones were found on your system. Please ensure that you have one installed and detectable by ") +
+                            tr ("the audio system and make sure that <b>gstreamer-plugins-good</b> is installed on your system."),
+                            "NoMicrophonesFoundOnStart");
     }
+
+    dummyASR = new DummySC(DummySC::getStandardDescription());
 }
 
-Core::~Core () {
+Core::~Core ()
+{
     m_settings->sync();
 }
 
-void Core::start() {
+void Core::start()
+{
     Windows::Main* l_mw = new Windows::Main;
 
-    if (!s_inst->m_settings->contains("User/Name")){
-        if (QMessageBox::question(l_mw,tr("First Run"),
-                                 tr("This seems to be the first time you've run SpeechControl on this system. "
-                                    "A wizard allowing you to start SpeechControl will appear."),QMessageBox::Yes,QMessageBox::No) == QMessageBox::Yes){
-            QuickStart* l_win = new QuickStart(l_mw);
+    if (!s_inst->m_settings->contains ("User/Name")) {
+        if (QMessageBox::question (l_mw, tr ("First Run"),
+                                   tr ("This seems to be the first time you've run SpeechControl on this system. "
+                                       "A wizard allowing you to start SpeechControl will appear."), QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+            QuickStart* l_win = new QuickStart (l_mw);
             l_win->exec();
         }
     }
 
     l_mw->show();
+
+    /// Experimental
+    connect(dummyASR, SIGNAL(finished(QString&)), this, SLOT(asrFinished(QString&)));
+    qDebug() << "[ASR start]";
+    dummyASR->run();
 }
 
 void Core::stop() { }
 
-QVariant Core::getConfig(const QString &p_pth, QVariant p_vrt) const {
-    return m_settings->value(p_pth,p_vrt);
+/// Experimental
+void Core::asrFinished(QString& text)
+{
+    qDebug() << "ASR finished with the result:" << text
+             << "Rerunning...";
+    dummyASR->run();
 }
 
-void Core::setConfig(const QString &p_pth, const QVariant &p_vrt) {
-    m_settings->setValue(p_pth,p_vrt);
+QVariant Core::getConfig (const QString &p_pth, QVariant p_vrt) const
+{
+    return m_settings->value (p_pth, p_vrt);
 }
 
-Core * SpeechControl::Core::instance(){
+void Core::setConfig (const QString &p_pth, const QVariant &p_vrt)
+{
+    m_settings->setValue (p_pth, p_vrt);
+}
+
+Core * SpeechControl::Core::instance()
+{
     return s_inst;
 }
+// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on; 

@@ -22,45 +22,58 @@
 #ifndef CORE_HPP
 #define CORE_HPP
 
+#include <dummysc.hpp>
+
 #include <QObject>
 #include <QVariant>
 
 class QSettings;
 
-namespace SpeechControl {
-    namespace Windows {
-        struct Main;
-    }
+namespace SpeechControl
+{
 
-    struct Core;
+namespace Windows {
 
-    /// @todo Allow versioning of the configuration.
-    /// @todo Remove reference to Windows::Main.
-    class Core : public QObject {
-        Q_OBJECT
-        Q_DISABLE_COPY(Core)
-        friend class Windows::Main;
+struct Main;
+}
 
-    signals:
-        void started();
-        void stopped();
+/// @todo Allow versioning of the configuration.
+/// @todo Remove reference to Windows::Main.
 
-    public:
-        Core(int,char**);
-        virtual ~Core();
-        QVariant getConfig(const QString&, QVariant = QVariant()) const;
-        void setConfig(const QString&, const QVariant&);
-        static Core* instance();
+class Core : public QObject
+{
+    Q_OBJECT
+    Q_DISABLE_COPY (Core)
 
-    public slots:
-        void start();
-        void stop();
+    friend class Windows::Main;
 
-    private:
-        QSettings* m_settings;
-        static Core* s_inst;
+signals:
+    void started();
+    void stopped();
 
-    };
+public:
+    Core (int, char**);
+    virtual ~Core();
+    QVariant getConfig (const QString&, QVariant = QVariant()) const;
+    void setConfig (const QString&, const QVariant&);
+    static Core* instance();
+
+public slots:
+    void start();
+    void stop();
+
+    /// Experimental
+    void asrFinished(QString& text);
+
+private:
+    QSettings* m_settings;
+    static Core* s_inst;
+
+    /// Experimental
+    DummySC* dummyASR;
+
+};
 }
 
 #endif // CORE_HPP
+// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on; 

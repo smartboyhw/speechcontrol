@@ -1,7 +1,11 @@
 /**
  * This file is part of SpeechControl
  *
+<<<<<<< HEAD
  * Copyright 2011 SpeechControl Developers <spchcntrl-devel@thesii.org>
+=======
+ * Copyright 2011 Jacky Alcine <jacky.alcine@thesii.org>
+>>>>>>> FETCH_HEAD
  *
  * SpeechControl is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License as
@@ -67,6 +71,7 @@ void Agent::stop()
 }
 
 void Agent::invokeCommand ( const QString& p_command )
+
 {
 
 }

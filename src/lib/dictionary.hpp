@@ -100,7 +100,7 @@ public:
     void addEntry (DictionaryEntry*);
     DictionaryEntry* removeEntry (const QString&);
     Dictionary& operator<< (DictionaryEntry*);
-    Dictionary& operator<< (DictionaryEntryList&);
+    Dictionary& operator<< (DictionaryEntryList& entries);
 
 public slots:
     void load (const QUuid&);

@@ -65,6 +65,9 @@ public:
 
     quint16 sampleRate() const;
     void setSampleRate (const quint16 rate);
+
+    QString getPath() const;
+    bool isValid() const;
 };
 
 typedef QList<AcousticModel*> AcousticModelList;

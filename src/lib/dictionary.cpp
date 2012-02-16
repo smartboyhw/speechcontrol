@@ -43,7 +43,7 @@ void Dictionary::load (const QUuid &l_uuid)
     }
 }
 
-const QString Dictionary::getPath (const QUuid &l_uuid)
+QString Dictionary::getPath (const QUuid &l_uuid)
 {
     return QDir::homePath() + "/.speechcontrol/dictionaries/" + l_uuid.toString() + ".dic";
 }

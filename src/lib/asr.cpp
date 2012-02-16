@@ -30,15 +30,15 @@ void ASR::_prepare()
 {
     _psphinx = _pipeline->getElementByName ("asr");
     _vader   = _pipeline->getElementByName ("vad");
-    
+
     QGlib::connect (_psphinx, "partial_result", this, &ASR::asrPartialResult);
     QGlib::connect (_psphinx, "result", this, &ASR::asrResult);
 //     _psphinx->setProperty ("configured", true);
-    
+
     _bus = _pipeline->bus();
     _bus->addSignalWatch();
     QGlib::connect (_bus, "message::application", this, &ASR::applicationMessage);
-    
+
     _pipeline->setState (QGst::StateReady);
     _state = Ready;
 }
@@ -59,7 +59,7 @@ ASR::ASR (const char* description, QObject* parent) : QObject (parent)
     _pipeline = QGst::Pipeline::create();
     QGst::BinPtr bin = QGst::Bin::fromDescription (description);
     _pipeline->add (bin);
-    
+
     _prepare();
 }
 
@@ -69,7 +69,7 @@ ASR::ASR (const QString& description, QObject* parent) : QObject (parent)
     _pipeline = QGst::Pipeline::create();
     QGst::BinPtr bin = QGst::Bin::fromDescription (description.toStdString().c_str());
     _pipeline->add (bin);
-    
+
     _prepare();
 }
 
@@ -141,7 +141,7 @@ const QGst::BusPtr ASR::getBus() const
 // {
 //     _psphinx->setProperty(property.toStdString().c_str(), value.toStdString().c_str());
 // }
-// 
+//
 // template<>
 // void ASR::setVaderProperty<QString>(const QString& property, const QString& value)
 // {
@@ -166,7 +166,7 @@ void ASR::setDictionary (const QString& path)
 
 void ASR::setAcousticModel (const QString& path)
 {
-    
+
     if (QDir(path).exists())
         setPsProperty("hmm", path);
     else
@@ -183,7 +183,6 @@ void ASR::run()
     qDebug() << "[ASR start]";
     if (ready())
         _pipeline->setState(QGst::StatePlaying);
-    }
     else
         qWarning() << "[ASR] Object is not ready to run.";
 }

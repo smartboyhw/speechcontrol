@@ -29,6 +29,7 @@
 
 
 #include <QIcon>
+#include <QDebug>
 #include <QVariant>
 
 using namespace SpeechControl;
@@ -41,15 +42,15 @@ ContentWizard::ContentWizard(QWidget *parent) :
     setPixmap(QWizard::LogoPixmap,l_icon.pixmap(32,32,QIcon::Active,QIcon::On));
     setWindowTitle(tr("Book Addition Wizard - SpeechControl"));
     setPage(ContentWizard::IntroductionPage,
-            NULL);
+            (new Wizards::Pages::IntroductionPage("This wizard allows you to add a new book into SpeechControl's collection.")));
     setPage(ContentWizard::AdditionSelectionPage,
-            NULL);
+            (new Wizards::Pages::AdditionSelectionPage(this)));
     setPage(ContentWizard::FileSelectionPage,
-            NULL);
+            (new Wizards::Pages::FileSelectionPage(this)));
     setPage(ContentWizard::WikiSourcePage,
-            NULL);
+            (new Wizards::Pages::WikiSourcePage(this)));
     setPage(ContentWizard::ConclusionPage,
-            NULL);
+            (new Wizards::Pages::ConclusionPage("You've successfully added a book into SpeechControl.")));
 }
 
 int ContentWizard::nextId() const {
@@ -82,6 +83,30 @@ int ContentWizard::nextId() const {
     }
 
     return QWizard::nextId();
+}
+
+void ContentWizard::accept() {
+    qDebug() << currentId() << nextId();
+
+    if (currentId() == -1 || currentId() == ConclusionPage){
+        Content* l_cntn = 0;
+        if (field("selection.wiki").toBool()){
+
+        } else {
+            l_cntn = Content::create(field("file.author").toString(),
+                            field("file.title").toString(),
+                            field("file.content").toString());
+        }
+
+        if (l_cntn){
+            qDebug() << l_cntn->title() << "created." << l_cntn->words() << "words found.";
+            WizardBase::accept();
+        }
+        else {
+            qDebug() << "Content not created.";
+            WizardBase::reject();
+        }
+    }
 }
 
 ContentWizard::~ContentWizard()

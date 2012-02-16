@@ -54,6 +54,7 @@ public:
 
 public slots:
     virtual int nextId() const;
+    virtual void accept();
 
 };
 

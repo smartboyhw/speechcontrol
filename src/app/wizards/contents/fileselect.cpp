@@ -22,9 +22,10 @@
 #include "fileselect.hpp"
 #include "ui_cw_fileselectionpage.h"
 
-#include <QFileDialog>
+#include <QDebug>
 #include <QTextStream>
 #include <QDomDocument>
+#include <QFileDialog>
 #include <QMessageBox>
 
 using SpeechControl::Wizards::Pages::FileSelectionPage;
@@ -52,8 +53,11 @@ void SpeechControl::Wizards::Pages::FileSelectionPage::on_toolButton_clicked()
         QFile* l_file = new QFile(l_filePath);
         l_file->open(QIODevice::ReadOnly);
         QDomDocument l_dom("Book");
-        if (l_dom.setContent(l_file) && l_dom.documentElement().nodeName() == "Content"){
-            const QDomElement l_book = l_dom.documentElement().namedItem("Author").toElement();
+        QString l_errMsg;
+        int l_errLn, l_errCol;
+        if (l_dom.setContent(l_file,&l_errMsg,&l_errLn,&l_errCol)){
+            qDebug() << l_dom.documentElement().nodeName();
+            const QDomElement l_book = l_dom.documentElement().namedItem("Book").toElement();
             const QString l_author = l_book.attribute("Author");
             const QString l_title = l_book.attribute("Title");
             const QString l_text = l_dom.documentElement().namedItem("Text").toElement().text();
@@ -62,9 +66,8 @@ void SpeechControl::Wizards::Pages::FileSelectionPage::on_toolButton_clicked()
             m_ui->plainTextEdit->setPlainText(l_text);
             m_ui->lineEdit->setText(l_filePath);
         } else {
-            if (QMessageBox::Accepted == QMessageBox::warning(this,"Invalid File Format","The file you've chosen is either in the wrong format or isn't valid.\nPlease try another file.",QMessageBox::Ok,QMessageBox::Cancel)){
+            if (QMessageBox::Ok == QMessageBox::warning(this,"Unable to Load Content","The file you've chosen is either in the wrong format or isn't valid.\nPlease try another file.\n\nMessage: " + l_errMsg + " on line " + QString::number(l_errLn) + ", col " + QString::number(l_errCol) ,QMessageBox::Ok,QMessageBox::Cancel))
                 on_toolButton_clicked();
-            }
         }
     }
 }

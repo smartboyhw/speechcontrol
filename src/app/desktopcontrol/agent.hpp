@@ -41,6 +41,7 @@ namespace SpeechControl {
         signals:
             void started();
             void stopped();
+            void stateChanged(const bool);
 
         public:
             explicit Agent(QObject* = 0);

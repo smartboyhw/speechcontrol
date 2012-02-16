@@ -36,6 +36,8 @@ Agent::Agent(QObject* p_prnt) : QObject(p_prnt)
 {
   s_inst = this;
   m_sphnx = new Sphinx;
+  connect(this, SIGNAL(started()), m_sphnx, SLOT(startRecognizing()));
+  connect(this, SIGNAL(stopped()), m_sphnx, SLOT(stopRecognizing()));
 }
 
 Agent::Agent(const Agent& p_other) : QObject(p_other.parent()),
@@ -58,15 +60,16 @@ Agent* Agent::instance()
   return s_inst;
 }
 
+/// @todo Instead of using Sphinx directly, use the ASR function.
 void Agent::start()
 {
-    connect(instance(), SIGNAL(started()), instance()->m_sphnx, SLOT(startRecognizing()));
-    connect(instance(), SIGNAL(stopped()), instance()->m_sphnx, SLOT(stopRecognizing()));
+    emit instance()->stateChanged(true);
     emit instance()->started();
 }
 
 void Agent::stop()
 {
+  emit instance()->stateChanged(false);
   emit instance()->stopped();
 }
 

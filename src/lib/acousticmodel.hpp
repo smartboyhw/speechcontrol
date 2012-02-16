@@ -27,11 +27,6 @@
 
 namespace SpeechControl
 {
-
-class AcousticModel;
-
-typedef QList<AcousticModel*> AcousticModelList;
-
 /**
  * @brief Represents an acoustic model for Sphinx.
  *
@@ -49,10 +44,10 @@ typedef QList<AcousticModel*> AcousticModelList;
 class AcousticModel : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY (const QVariantMap Parameters READ parameters WRITE setParameters)
-    Q_PROPERTY (const quint16 SampleRate READ sampleRate WRITE setSampleRate)
-
+    
     QVariantMap _parameters;
+    quint16 _sampRate;
+    
 public:
     Q_DISABLE_COPY (AcousticModel)
 
@@ -71,8 +66,10 @@ public:
     quint16 sampleRate() const;
     void setSampleRate (const quint16 rate);
 };
-}
 
+typedef QList<AcousticModel*> AcousticModelList;
+
+}
 
 #endif // ACOUSTICMODEL_HPP
 // kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on; 

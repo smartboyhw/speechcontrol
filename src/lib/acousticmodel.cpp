@@ -23,6 +23,7 @@
 #include <QStringList>
 
 #include "acousticmodel.hpp"
+#include <QDir>
 
 using SpeechControl::AcousticModel;
 
@@ -81,4 +82,16 @@ quint16 AcousticModel::sampleRate() const
 void AcousticModel::setSampleRate (const quint16 rate)
 {
 }
+
+QString AcousticModel::getPath() const
+{
+    return _parameters.value("path").toString();
+}
+
+bool AcousticModel::isValid() const
+{
+    QDir path(_parameters.value("path").toString());
+    return path.exists();
+}
+
 // kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on; 

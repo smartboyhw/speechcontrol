@@ -24,7 +24,7 @@
 
 using namespace SpeechControl::Wizards::Pages;
 
-Conclusion::Conclusion(const QString& summary) :
+ConclusionPage::ConclusionPage(const QString& summary) :
     QWizardPage(),
     ui(new Ui::Conclusion)
 {
@@ -32,7 +32,7 @@ Conclusion::Conclusion(const QString& summary) :
     ui->labelSummary->setText(summary);
 }
 
-Conclusion::~Conclusion()
+ConclusionPage::~ConclusionPage()
 {
     delete ui;
 }

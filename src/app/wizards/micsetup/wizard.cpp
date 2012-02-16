@@ -41,7 +41,7 @@ MicrophoneSetup::MicrophoneSetup(QWidget *parent) :
                                      tr("for optimal performance in SpeechControl.")));
     setPage(MicrophoneSetup::SelectionPage, new Pages::MicrophoneSelection);
     setPage(MicrophoneSetup::ConclusionPage,
-            new Pages::Conclusion(tr("You've configured your microphone to work optimally with SpeechControl. "
+            new Pages::ConclusionPage(tr("You've configured your microphone to work optimally with SpeechControl. "
                                      "Click <b>Finish</b> to finialize your results and commit them to SpeechControl.")));
 }
 

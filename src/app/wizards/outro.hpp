@@ -32,13 +32,13 @@ namespace SpeechControl {
 namespace Wizards {
 namespace Pages {
 
-class Conclusion : public QWizardPage
+class ConclusionPage : public QWizardPage
 {
     Q_OBJECT
 
 public:
-    explicit Conclusion(const QString&);
-    ~Conclusion();
+    explicit ConclusionPage(const QString&);
+    ~ConclusionPage();
 
 private:
     Ui::Conclusion *ui;

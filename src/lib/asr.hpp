@@ -20,8 +20,11 @@
 #ifndef ASR_HPP
 #define ASR_HPP
 
+#define MODELDIR "/usr/share/pocketsphinx/model"
+
 #include <QtCore/QObject>
 #include <QtCore/QMap>
+#include <QDir>
 
 #include <QGlib/Value>
 
@@ -34,9 +37,10 @@ namespace SpeechControl
 
 /**
  * @brief Automatic Speech Recognition class
- * ASR objects hold configured GStreamer pipelines using PocketSphinx to perform speech
- * recognition. Their role is to provide an easy way to connect proper signals, access and
- * set desired configuration options and run, passing ready data to the main application.
+ * ASR is an abstract class responsible for handling GStreamer
+ * audio and PocketSphinx plugins and management of dictionaries,
+ * language and acoustic models. It also performs acoustic training and
+ * adjusts models to its needs.
  */
 
 class ASR : public QObject
@@ -49,13 +53,12 @@ protected:
         NotReady = 0,
         Ready
     } _state;
-    
+
+    // Gstreamer objects
     QGst::PipelinePtr   _pipeline;
     QGst::ElementPtr    _psphinx;
     QGst::ElementPtr    _vader;
     QGst::BusPtr        _bus;
-
-    QMap<QString, QString> _gstElements;
 
     /**
      * @brief Do all needed preparation steps
@@ -67,21 +70,15 @@ public:
 
     ASR (QGst::PipelinePtr pipeline, QObject* parent = 0);
 
+    /**
+     * This constructor creates GStreamer elements from description.
+     */
     ASR (const char* description, QObject* parent = 0);
 
-    ASR (const QString& description, QObject* parent = 0);
-
     /**
-     * @brief Construct an ASR object using element->name map
-     * This constructor takes a QMap containing element names as keys and
-     * their respective names as values to initialize important GStreamer
-     * objects by ElementFactory::make() function.
-     *
-     * Currently supported elements are:
-     * @li 'pocketsphinx' - PocketSphinx element used to conduct Automatic Speech Recognition.
-     * @li 'vader' - VADER element used to detect beginnings and ends of utterances.
+     * This constructor creates GStreamer elements from description.
      */
-    ASR (const QMap<QString, QString>& elementMap, QObject* parent = 0);
+    ASR (const QString& description, QObject* parent = 0);
 
     virtual ~ASR();
 
@@ -90,6 +87,18 @@ public:
      * @returns String with standard description.
      */
     static QString getStandardDescription();
+
+    /**
+     * @brief Get underlying decoder
+     * @returns Pointer to the decoder.
+     */
+    QGlib::Value getPsDecoder() const;
+
+    QDir getLanguageModel() const;
+
+    QDir getDictionary() const;
+
+    QDir getAcousticsModel() const;
 
     /**
      * @brief Get the pointer to the internal Pipeline
@@ -121,7 +130,10 @@ public:
      * @param value Value for the property.
      */
     template<typename T>
-    void setPsProperty(const QString& property, const T& value);
+    void setPsProperty(const QString& property, T value)
+    {
+        _psphinx->setProperty(property.toStdString().c_str(), value);
+    }
 
     /**
      * @brief Set VADER element property
@@ -129,13 +141,22 @@ public:
      * @param value Value for the propery.
      */
     template<typename T>
-    void setVaderProperty(const QString& property, const T& value);
+    void setVaderProperty(const QString& property, T value)
+    {
+        _vader->setProperty(property.toStdString().c_str(), value);
+    }
+
+    void setLanguageModel(const QString& path);
+
+    void setDictionary(const QString& path);
+
+    void setAcousticModel(const QString& path);
 
     /**
      * @brief Check whether ASR is ready to use
      */
     bool ready() const;
-    
+
     /**
      * @brief Pause the pipeline
      * This method simply forces VADER to be in the silent region.
@@ -157,6 +178,7 @@ public slots:
      * @brief Run the pipeline
      */
     void run();
+
     void asrPartialResult (const QString& text, const QString& uttid);
     void asrResult (const QString& text, const QString& uttid);
     virtual void applicationMessage (const QGst::MessagePtr& message) = 0;

@@ -137,11 +137,6 @@ public:
     bool ready() const;
     
     /**
-     * @brief Run the pipeline
-     */
-    void run();
-
-    /**
      * @brief Pause the pipeline
      * This method simply forces VADER to be in the silent region.
      */
@@ -158,6 +153,10 @@ signals:
     void finished(QString& result);
         
 public slots:
+    /**
+     * @brief Run the pipeline
+     */
+    void run();
     void asrPartialResult (const QString& text, const QString& uttid);
     void asrResult (const QString& text, const QString& uttid);
     virtual void applicationMessage (const QGst::MessagePtr& message) = 0;

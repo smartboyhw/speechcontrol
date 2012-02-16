@@ -89,6 +89,7 @@ Corpus * Corpus::create(const QStringList& p_text)
     Q_FOREACH(const QString& l_str, p_text) {
         Sentence* l_sent = l_corpus->addSentence(l_str.simplified().trimmed(),0);
         l_corpus->m_dom->documentElement().namedItem("Sentences").appendChild(*l_sent->m_elem);
+        qDebug() << "Added sentence" << l_corpus->sentences().count();
     }
 
     l_corpus->save();

@@ -28,8 +28,8 @@ using namespace SpeechControl;
 
 void ASR::_prepare()
 {
-    _psphinx = _pipeline->getElementByName (_gstElements.value("pocketsphinx").toStdString().c_str());
-    _vader   = _pipeline->getElementByName (_gstElements.value("vader").toStdString().c_str());
+    _psphinx = _pipeline->getElementByName ("asr");
+    _vader   = _pipeline->getElementByName ("vad");
     
     QGlib::connect (_psphinx, "partial_result", this, &ASR::asrPartialResult);
     QGlib::connect (_psphinx, "result", this, &ASR::asrResult);
@@ -59,9 +59,6 @@ ASR::ASR (const char* description, QObject* parent) : QObject (parent)
     _pipeline = QGst::Pipeline::create();
     QGst::BinPtr bin = QGst::Bin::fromDescription (description);
     _pipeline->add (bin);
-
-    _gstElements.insert("pocketsphinx", "asr");
-    _gstElements.insert("vader", "vad");
     
     _prepare();
 }
@@ -72,9 +69,6 @@ ASR::ASR (const QString& description, QObject* parent) : QObject (parent)
     _pipeline = QGst::Pipeline::create();
     QGst::BinPtr bin = QGst::Bin::fromDescription (description.toStdString().c_str());
     _pipeline->add (bin);
-
-    _gstElements.insert("pocketsphinx", "asr");
-    _gstElements.insert("vader", "vad");
     
     _prepare();
 }

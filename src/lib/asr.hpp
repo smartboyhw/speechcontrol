@@ -60,9 +60,6 @@ protected:
     QGst::ElementPtr    _vader;
     QGst::BusPtr        _bus;
 
-    // Map from gstreamer elements to their names
-    QMap<QString, QString> _gstElements;
-
     /**
      * @brief Do all needed preparation steps
      */
@@ -159,11 +156,6 @@ public:
      * @brief Check whether ASR is ready to use
      */
     bool ready() const;
-    
-    /**
-     * @brief Run the pipeline
-     */
-    void run();
 
     /**
      * @brief Pause the pipeline
@@ -182,6 +174,11 @@ signals:
     void finished(QString& result);
         
 public slots:
+    /**
+     * @brief Run the pipeline
+     */
+    void run();
+    
     void asrPartialResult (const QString& text, const QString& uttid);
     void asrResult (const QString& text, const QString& uttid);
     virtual void applicationMessage (const QGst::MessagePtr& message) = 0;

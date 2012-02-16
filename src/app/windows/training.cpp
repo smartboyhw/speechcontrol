@@ -101,6 +101,11 @@ void Training::startCollecting()
         QErrorMessage l_msg(this);
         l_msg.showMessage(tr("<i>No text is available for this session</i>."),"NoTextLeftInSession");
         m_ui->labelText->setText(tr("<strong><span color='#f00'>Invalid session.</span></strong>"));
+        m_ui->pushButtonNext->setEnabled(false);
+        m_ui->pushButtonUndo->setEnabled(false);
+        m_ui->pushButtonReset->setEnabled(false);
+        m_ui->pushButtonSave->setEnabled(false);
+        m_ui->pushButtonProgress->setEnabled(false);
         QDialog::reject();
     }
 }

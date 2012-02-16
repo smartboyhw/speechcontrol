@@ -93,16 +93,22 @@ void SessionSettingsPane::updateList()
     l_widget->clear();
 
     SessionList l_lst = Session::allSessions();
-    Q_FOREACH(const Session* l_sessionItr, l_lst){
+    Q_FOREACH(const Session* l_sssn, l_lst){
         QListWidgetItem* l_item = new QListWidgetItem(l_widget);
-        l_item->setData(Qt::UserRole,l_sessionItr->uuid().toString());
+        l_item->setData(Qt::UserRole,l_sssn->uuid().toString());
         l_widget->addItem(l_item);
-        const QString l_lbl = l_sessionItr->content()->title();
 
-        if (l_lbl.isEmpty())
-            l_item->setText("Unnamed");
-        else
-            l_item->setText(l_lbl);
+        if (l_sssn->content()){
+            const QString l_lbl = l_sssn->content()->title();
+
+            if (l_lbl.isEmpty())
+                l_item->setText("Unnamed");
+            else
+                l_item->setText(l_lbl);
+        } else
+            l_item->setText("* missing book data *");
+
+
     }
 }
 
@@ -112,22 +118,25 @@ void SpeechControl::Windows::SessionSettingsPane::on_btnInfo_clicked()
 
 }
 
+/// @todo Implement a means of just clicking once for all to be affected by this action.
 void SpeechControl::Windows::SessionSettingsPane::on_actionDelete_triggered()
 {
     QListWidget* l_widget = m_ui->listWidgetSession;
-    QListWidgetItem* l_itm = l_widget->selectedItems().first();
-    Session* l_ss = Session::obtain(l_itm->data(Qt::UserRole).toString());
-
-    if (QMessageBox::Yes == QMessageBox::question(this,"Confirm Session Deletion",
-                                                  "Are you sure you want to <b>wipe all</b> of this session's data?",
-                                                  QMessageBox::Yes | QMessageBox::No,
-                                                  QMessageBox::No)){
-        l_ss->erase();
-        updateList();
+    Q_FOREACH(QListWidgetItem* l_itm, l_widget->selectedItems()){
+        Session* l_ss = Session::obtain(l_itm->data(Qt::UserRole).toString());
+        if (QMessageBox::Yes == QMessageBox::question(this,"Confirm Session Deletion",
+                                                      "Are you sure you want to <b>wipe all</b> of this session's data?",
+                                                      QMessageBox::Yes | QMessageBox::No,
+                                                      QMessageBox::No)){
+            l_ss->erase();
+            updateList();
+        }
     }
 }
 
 /// @todo Implement a means of copying the session.
+/// @todo Add support for multiple session selection.
+/// @todo Implement a means of just clicking once for all to be affected by this action.
 void SpeechControl::Windows::SessionSettingsPane::on_actionCopy_triggered()
 {
     QListWidget* l_widget = m_ui->listWidgetSession;
@@ -138,6 +147,8 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionCopy_triggered()
 }
 
 /// @todo Implement a means of creating backups.
+/// @todo Add support for multiple session selection.
+/// @todo Implement a means of just clicking once for all to be affected by this action.
 void SpeechControl::Windows::SessionSettingsPane::on_actionBackup_triggered()
 {
     QListWidget* l_widget = m_ui->listWidgetSession;
@@ -148,6 +159,8 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionBackup_triggered()
 }
 
 /// @todo Implement a means of restoring backups.
+/// @todo Add support for multiple session selection.
+/// @todo Implement a means of just clicking once for all to be affected by this action.
 void SpeechControl::Windows::SessionSettingsPane::on_actionRestoreBackup_triggered()
 {
     QListWidget* l_widget = m_ui->listWidgetSession;

@@ -7,7 +7,7 @@ find_package(Boost 1.4.6 COMPONENTS
   python
   REQUIRED)
 find_package(PythonLibs 2.7 REQUIRED)
-find_package(Qt4 4.7.4 COMPONENTS
+find_package(Qt4 4.7 COMPONENTS
   QtCore
   QtGui
   QtXml

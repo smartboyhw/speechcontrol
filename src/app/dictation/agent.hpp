@@ -37,6 +37,7 @@ namespace SpeechControl {
         signals:
             void started();
             void stopped();
+            void stateChanged(const bool);
             void textRecieved(const QString&);
 
         public:

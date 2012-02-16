@@ -10,8 +10,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>394</width>
-    <height>188</height>
+    <width>397</width>
+    <height>186</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -44,6 +44,66 @@
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="1" rowspan="2">
+      <widget class="QGroupBox" name="groupBox">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>75</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Status</string>
+       </property>
+       <widget class="QWidget" name="verticalLayoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>5</x>
+          <y>20</y>
+          <width>177</width>
+          <height>105</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QPushButton" name="btnDsktpCntrl">
+           <property name="text">
+            <string>Desktop Control</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnDctn">
+           <property name="text">
+            <string>Dictation</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <zorder>groupBoxTraining</zorder>
+       <zorder>groupBoxTraining</zorder>
+       <zorder>verticalLayoutWidget</zorder>
+      </widget>
+     </item>
      <item row="0" column="0" rowspan="2">
       <widget class="QGroupBox" name="groupBoxTraining">
        <property name="sizePolicy">
@@ -64,9 +124,9 @@
        <widget class="QWidget" name="formLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>28</x>
-          <y>40</y>
-          <width>133</width>
+          <x>16</x>
+          <y>20</y>
+          <width>157</width>
           <height>57</height>
          </rect>
         </property>
@@ -86,53 +146,52 @@
           </widget>
          </item>
          <item row="0" column="1">
-          <widget class="QLCDNumber" name="lcdSession"/>
+          <widget class="QLCDNumber" name="lcdSession">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgba(255, 255, 255, 170);
+color: rgb(0, 0, 0);</string>
+           </property>
+           <property name="segmentStyle">
+            <enum>QLCDNumber::Flat</enum>
+           </property>
+          </widget>
          </item>
          <item row="1" column="1">
-          <widget class="QLCDNumber" name="lcdBooks"/>
+          <widget class="QLCDNumber" name="lcdBooks">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgba(255, 255, 255, 170);
+color: rgb(0, 0, 0);</string>
+           </property>
+           <property name="segmentStyle">
+            <enum>QLCDNumber::Flat</enum>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
        <widget class="QPushButton" name="btnTrain">
         <property name="geometry">
          <rect>
-          <x>123</x>
-          <y>104</y>
+          <x>8</x>
+          <y>92</y>
           <width>61</width>
           <height>23</height>
          </rect>
         </property>
         <property name="text">
          <string>Train...</string>
-        </property>
-       </widget>
-      </widget>
-     </item>
-     <item row="0" column="1" rowspan="2">
-      <widget class="QGroupBox" name="groupBox">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>75</height>
-        </size>
-       </property>
-       <property name="title">
-        <string>Status</string>
-       </property>
-       <widget class="QLabel" name="lblStatusText">
-        <property name="geometry">
-         <rect>
-          <x>4</x>
-          <y>20</y>
-          <width>173</width>
-          <height>105</height>
-         </rect>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </widget>
@@ -162,7 +221,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>394</width>
+     <width>397</width>
      <height>22</height>
     </rect>
    </property>

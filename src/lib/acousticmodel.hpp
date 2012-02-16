@@ -25,33 +25,54 @@
 #include <QObject>
 #include <QVariant>
 
-namespace SpeechControl {
-    class AcousticModel;
+namespace SpeechControl
+{
 
-    typedef QList<AcousticModel*> AcousticModelList;
+class AcousticModel;
 
-    /**
-     * @brief Represents an acoustic model for Sphinx.
-     *
-     * Acoustic models are
-     */
-    class AcousticModel : public QObject {
-        Q_OBJECT
-        Q_PROPERTY(const QVariantMap Parameters READ parameters WRITE setParameters)
-        Q_PROPERTY(const quint16 SampleRate READ sampleRate WRITE setSampleRate)
+typedef QList<AcousticModel*> AcousticModelList;
 
-    public:
-        Q_DISABLE_COPY(AcousticModel)
-        virtual ~AcousticModel();
-        void setParameter(const QString&, const QVariant& );
-        void setParameters(const QVariantMap&);
-        void mergeParameters(const QVariantMap&);
-        QVariant parameter(const QString&) const;
-        const QVariantMap parameters() const;
-        const quint16 sampleRate() const;
-        void setSampleRate(const quint16&);
-    };
+/**
+ * @brief Represents an acoustic model for Sphinx.
+ *
+ * This class provides API for setting and getting meta-data of
+ * acoustic models. The main property is a path where the model is stored.
+ * This and all other properties are contained in the QVariantMap, inside the object.
+ *
+ * Currently supported parameters are:
+ * @li path - Path where the model is stored.
+ *
+ * @note Should we use enum rather than QString for keys?
+ * @todo Add more properties to use.
+ */
+
+class AcousticModel : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY (const QVariantMap Parameters READ parameters WRITE setParameters)
+    Q_PROPERTY (const quint16 SampleRate READ sampleRate WRITE setSampleRate)
+
+    QVariantMap _parameters;
+public:
+    Q_DISABLE_COPY (AcousticModel)
+
+    explicit AcousticModel(QObject* parent = 0);
+    AcousticModel (QString const& path, QObject* parent = 0);
+    virtual ~AcousticModel();
+
+    void setParameter (const QString& key, const QVariant& value);
+    void setParameters (const QVariantMap& parameters);
+
+    void mergeParameters (const QVariantMap& parameters);
+
+    QVariant parameter (const QString& key) const;
+    QVariantMap parameters() const;
+
+    quint16 sampleRate() const;
+    void setSampleRate (const quint16 rate);
+};
 }
 
 
 #endif // ACOUSTICMODEL_HPP
+// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on; 

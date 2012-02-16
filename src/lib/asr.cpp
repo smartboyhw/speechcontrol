@@ -183,7 +183,6 @@ void ASR::run()
     qDebug() << "[ASR start]";
     if (ready())
         _pipeline->setState(QGst::StatePlaying);
-    }
     else
         qWarning() << "[ASR] Object is not ready to run.";
 }

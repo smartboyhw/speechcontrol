@@ -28,91 +28,100 @@
 #include <QStringList>
 #include <QtXml/QDomDocument>
 
-namespace SpeechControl {
-    class Corpus;
-    class Content;
-    class Sentence;
-    class Session;
+namespace SpeechControl
+{
 
-    typedef QList<Session*> SessionList;
-    typedef QList<Content*> ContentList;
-    typedef QList<Sentence*> SentenceList;
+class Corpus;
 
-    typedef QMap<QUuid, Content*> ContentMap;
-    typedef QMap<QUuid, Session*> SessionMap;
+class Content;
 
-    /// @todo Find a proper means of attribution.
-    class Content : public QObject {
-        Q_OBJECT
-        Q_DISABLE_COPY(Content)
+class Sentence;
 
-    public:
-        explicit Content(const QUuid&);
-        virtual ~Content();
-        void load(const QUuid&);
-        void erase();
-        const uint pageCount() const;
-        const uint words() const;
-        const uint length() const;
-        const uint characters() const;
-        const QUuid uuid() const;
-        const QString title() const;
-        const QString author() const;
-        const QStringList pages() const;
-        const QString pageAt(const int&) const;
-        static Content* create(const QString&, const QString&, const QString& );
-        static Content* obtain(const QUuid&);
-        static ContentList allContents();
+class Session;
 
-    private:
-        static QString getPath(const QUuid&);
-        static ContentMap s_lst;
-        QStringList m_pages;
-        QDomDocument* m_dom;
-        QUuid m_uuid;
-    };
+typedef QList<Session*> SessionList;
+typedef QList<Content*> ContentList;
+typedef QList<Sentence*> SentenceList;
 
-    class Session : public QObject {
-        Q_OBJECT
-        Q_DISABLE_COPY(Session)
-        Q_PROPERTY(Corpus* Corpus READ corpus WRITE setCorpus)
-        Q_PROPERTY(QUuid Uuid READ uuid)
-        Q_PROPERTY(Content* Content READ content WRITE setContent)
+typedef QMap<QUuid, Content*> ContentMap;
+typedef QMap<QUuid, Session*> SessionMap;
 
-    public:
-        explicit Session(const QUuid&);
-        virtual ~Session();
-        const QUuid uuid() const;
-        const bool isCompleted() const;
-        void erase() const;
-        Corpus* corpus() const;
-        Content* content() const;
-        Sentence* firstIncompleteSentence() const;
-        Sentence* lastIncompleteSentence() const;
-        SentenceList incompletedSentences() const;
+/// @todo Find a proper means of attribution.
 
-        static void init();
-        static Session* obtain(const QUuid&);
-        static Session* create(const Content*);
-        static SessionList allSessions();
+class Content : public QObject
+{
+    Q_OBJECT
+    Q_DISABLE_COPY (Content)
 
-    signals:
-        void progressChanged(const double& );
+public:
+    explicit Content (const QUuid&);
+    virtual ~Content();
+    void load (const QUuid&);
+    void erase();
+    const uint pageCount() const;
+    const uint words() const;
+    const uint length() const;
+    const uint characters() const;
+    const QUuid uuid() const;
+    const QString title() const;
+    const QString author() const;
+    const QStringList pages() const;
+    const QString pageAt (const int&) const;
+    static Content* create (const QString&, const QString&, const QString&);
+    static Content* obtain (const QUuid&);
+    static ContentList allContents();
 
-    public slots:
-        void setCorpus(Corpus* );
-        void setContent(Content* );
-        void load(const QUuid&);
-        void assessProgress();
+private:
+    static QString getPath (const QUuid&);
+    static ContentMap s_lst;
+    QStringList m_pages;
+    QDomDocument* m_dom;
+    QUuid m_uuid;
+};
 
-    private:
-        static const QString getPath(const QUuid&);
-        static QDomDocument* s_dom;
-        static QMap<QUuid, QDomElement*> s_elems;
-        Corpus* m_corpus;
-        Content* m_content;
-        QDomElement* m_elem;
-    };
+class Session : public QObject
+{
+    Q_OBJECT
+    Q_DISABLE_COPY (Session)
+    Q_PROPERTY (Corpus* Corpus READ corpus WRITE setCorpus)
+    Q_PROPERTY (QUuid Uuid READ uuid)
+    Q_PROPERTY (Content* Content READ content WRITE setContent)
+
+public:
+    explicit Session (const QUuid&);
+    virtual ~Session();
+    const QUuid uuid() const;
+    const bool isCompleted() const;
+    void erase() const;
+    Corpus* corpus() const;
+    Content* content() const;
+    Sentence* firstIncompleteSentence() const;
+    Sentence* lastIncompleteSentence() const;
+    SentenceList incompletedSentences() const;
+
+    static void init();
+    static Session* obtain (const QUuid&);
+    static Session* create (const Content*);
+    static SessionList allSessions();
+
+signals:
+    void progressChanged (const double&);
+
+public slots:
+    void setCorpus (Corpus*);
+    void setContent (Content*);
+    void load (const QUuid&);
+    void assessProgress();
+
+private:
+    static const QString getPath (const QUuid&);
+    static QDomDocument* s_dom;
+    static QMap<QUuid, QDomElement*> s_elems;
+    Corpus* m_corpus;
+    Content* m_content;
+    QDomElement* m_elem;
+};
 }
 
 #endif // SESSION_HPP
+// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on; 

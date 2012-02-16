@@ -20,46 +20,65 @@
  */
 
 #include <QString>
+#include <QStringList>
+
 #include "acousticmodel.hpp"
 
 using SpeechControl::AcousticModel;
 
-AcousticModel::AcousticModel(const AcousticModel &p_mdl) :
-    QObject(p_mdl.parent()) {
+AcousticModel::AcousticModel (const AcousticModel &p_mdl) :
+        QObject (p_mdl.parent())
+{
 
+}
+
+AcousticModel::AcousticModel (QObject* parent) : QObject (parent)
+{
+
+}
+
+AcousticModel::AcousticModel (const QString& path, QObject* parent) : QObject (parent)
+{
+    _parameters.insert("path", path);
 }
 
 AcousticModel::~AcousticModel()
 {
 }
 
-void AcousticModel::setParameter(const QString &p_str, const QVariant &p_val)
+void AcousticModel::setParameter (const QString &key, const QVariant &value)
 {
+    _parameters.insert(key, value);
 }
 
-void AcousticModel::setParameters(const QVariantMap &p_vals)
+void AcousticModel::setParameters (QVariantMap const& parameters)
 {
+    _parameters = parameters;
 }
 
-void AcousticModel::mergeParameters(const QVariantMap &p_vals)
+void AcousticModel::mergeParameters (QVariantMap const& parameters)
 {
+    for (auto it = parameters.constBegin(); it != parameters.constEnd(); ++it) {
+        _parameters.insert(it.key(), it.value());
+    }
 }
 
-QVariant AcousticModel::parameter(const QString &p_str) const
+QVariant AcousticModel::parameter (const QString &key) const
 {
-    return QVariant();
+    return _parameters.value(key);
 }
 
-const QVariantMap AcousticModel::parameters() const
+QVariantMap AcousticModel::parameters() const
 {
-    return QVariantMap();
+    return _parameters;
 }
 
-const quint16 AcousticModel::sampleRate() const
+quint16 AcousticModel::sampleRate() const
 {
-    return 0;
+    return 16000;
 }
 
-void AcousticModel::setSampleRate(const quint16 &p_rate)
+void AcousticModel::setSampleRate (const quint16 rate)
 {
 }
+// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on; 

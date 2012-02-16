@@ -162,7 +162,7 @@ Session* Session::obtain (const QUuid &p_uuid)
 Session* Session::create (const Content* p_content)
 {
     const QStringList l_lst = p_content->pages().join ("\n").simplified().trimmed().replace (".", ".\n").split ("\n", QString::SkipEmptyParts);
-    qDebug () << "Session text:" << l_lst;
+    qDebug () << "Session has " << l_lst.length() << "potential sentences.";
     const QUuid l_uuid = QUuid::createUuid();
     QDomElement l_sessElem = s_dom->createElement ("Session");
     s_dom->documentElement().appendChild (l_sessElem);
@@ -301,12 +301,12 @@ ContentList Content::allContents()
     return l_lst;
 }
 
-const QStringList SpeechControl::Content::pages() const
+const QStringList Content::pages() const
 {
     return m_pages;
 }
 
-const QString SpeechControl::Content::pageAt (const int &l_index) const
+const QString Content::pageAt (const int &l_index) const
 {
     if (l_index < m_pages.count())
         return m_pages.at (l_index);
@@ -338,6 +338,7 @@ Content * Content::create (const QString &p_author, const QString &p_title, cons
     QTextStream l_strm (l_file);
     l_dom->save (l_strm, 4);
 
+    qDebug() << l_file->readAll();
     return Content::obtain (l_uuid);
 }
 
@@ -384,9 +385,23 @@ const bool Session::isCompleted() const
     return ! (incompletedSentences().empty());
 }
 
-/// @todo Remove session from listing in sessions.xml
 void Session::erase() const
 {
+    QUuid l_uuid(m_elem->attribute("uuid"));
+    QDomNodeList l_lst = s_dom->elementsByTagName("Session");
+    QFile* l_file = new QFile (QDir::homePath() + "/.speechcontrol/sessions.xml");
+    l_file->open(QIODevice::WriteOnly | QIODevice::Truncate);
+    QTextStream l_strm(l_file);
+
+    for (uint i = 0; i < l_lst.length(); i++){
+        QDomElement l_elem = l_lst.at(i).toElement();
+
+        if (l_elem.attribute("uuid") == l_uuid)
+            s_dom->removeChild(l_elem);
+    }
+
+    s_elems.remove(l_uuid);
+    s_dom->save(l_strm,4);
     m_corpus->erase();
 }
 // kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on; 

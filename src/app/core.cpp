@@ -83,6 +83,8 @@ Core::Core (int argc, char** argv) : QObject (new QApplication (argc, argv))
     }
 
     dummyASR = new DummySC(DummySC::getStandardDescription());
+    connect(dummyASR, SIGNAL(finished(QString&)), this, SLOT(asrFinished(QString&)));
+    connect(this,SIGNAL(started()),dummyASR,SLOT(run()));
 }
 
 Core::~Core ()
@@ -104,11 +106,6 @@ void Core::start()
     }
 
     l_mw->show();
-
-    /// Experimental
-    connect(dummyASR, SIGNAL(finished(QString&)), this, SLOT(asrFinished(QString&)));
-    qDebug() << "[ASR start]";
-    dummyASR->run();
 }
 
 void Core::stop() { }

@@ -96,13 +96,16 @@ void SpeechControl::Windows::BookSettingsPane::updateList()
 void SpeechControl::Windows::BookSettingsPane::on_btnDelete_clicked()
 {
     QListWidget* l_widg = ui->lstBooks;
-    QListWidgetItem* l_itm = l_widg->selectedItems().first();
-    Content* l_cntn = Content::obtain(l_itm->data(Qt::UserRole).toString());
+    if (!l_widg->selectedItems().empty()){
+        Q_FOREACH(QListWidgetItem* l_itm, l_widg->selectedItems()){
+            Content* l_cntn = Content::obtain(l_itm->data(Qt::UserRole).toString());
+            if (QMessageBox::Yes == QMessageBox::question(this,"Confirm Book Delete", "Are you sure you want to delete this book?\nAny session connected to the book will become invalid and untrainable.",
+                                                          QMessageBox::Yes | QMessageBox::No,
+                                                          QMessageBox::No)){
+                l_cntn->erase();
+            }
+        }
 
-    if (QMessageBox::Yes == QMessageBox::question(this,"Confirm Book Delete", "Are you sure you want to delete this book?\nAny session connected to the book will become invalid and untrainable.",
-                                                  QMessageBox::Yes | QMessageBox::No,
-                                                  QMessageBox::No)){
-        l_cntn->erase();
         updateList();
     }
 }
@@ -110,8 +113,8 @@ void SpeechControl::Windows::BookSettingsPane::on_btnDelete_clicked()
 /// @todo Add the functionality to add a book.
 void SpeechControl::Windows::BookSettingsPane::on_btnAdd_clicked()
 {
-    Wizards::ContentWizard l_wiz(this);
-    if (l_wiz.exec() == QDialog::Accepted)
+    Wizards::ContentWizard* l_wiz = new Wizards::ContentWizard(this);
+    if (l_wiz->exec() == QDialog::Accepted)
         updateList();
 }
 

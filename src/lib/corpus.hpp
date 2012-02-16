@@ -1,6 +1,7 @@
 #ifndef CORPUS_HPP
 #define CORPUS_HPP
 
+#include <QMap>
 #include <QUrl>
 #include <QUuid>
 #include <QObject>
@@ -27,9 +28,9 @@ typedef QMap<QUuid, Corpus*> CorpusMap;
  *
  * Corpuses are used throughtout SpeechControl to encapsulate the text and audioPath
  * to be recorded for transcription. Here, the term "transcription" largely means the
- * act of recording text and linking it to its recorded audio to ensure that upon
+ * act of fetching text and linking it to its recorded audio to ensure that upon
  * the act of compiling a model, whether or not one is adapting or building, that
- * the approriate text is linked up with its approriate audio segment.
+ * the appropriate text is linked up with its appropriate audio segment.
  *
  * This class allows developers to learn more, however, about not only what's been
  * recorded but also when did training begin, how much time has been poured into the

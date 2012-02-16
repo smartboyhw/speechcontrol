@@ -48,13 +48,8 @@ class Sentence;
 
 class Dictionary;
 
-class DictionaryEntry;
-
 typedef QList<Dictionary*> DictionaryList;
-typedef QList<DictionaryEntry*> DictionaryEntryList;
-
 typedef QMap<QUuid, Dictionary*> DictionaryMap;
-typedef QMap<QString, DictionaryEntry*> DictionaryEntryMap;
 
 /**
  * @brief Single entry in a dictionary.
@@ -78,6 +73,9 @@ private:
     QString m_word;
     QString m_phnm;
 };
+
+typedef QList<DictionaryEntry*> DictionaryEntryList;
+typedef QMap<QString, DictionaryEntry*> DictionaryEntryMap;
 
 /**
  * @brief Phonetic dictionary.

@@ -113,8 +113,7 @@ void Core::stop() { }
 /// Experimental
 void Core::asrFinished(QString& text)
 {
-    qDebug() << "ASR finished with the result:" << text
-             << "Rerunning...";
+    qDebug() << "[ASR] Completed with " << text;
     dummyASR->run();
 }
 

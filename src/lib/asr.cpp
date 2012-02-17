@@ -89,23 +89,26 @@ QString ASR::getStandardDescription()
 }
 
 /// @todo How to deal with this decoder in GValue?
-QGlib::Value ASR::getPsDecoder() const
+QGlib::Value ASR::getDecoder() const
 {
     return _psphinx->property("decoder");
 }
 
+/// @todo Should we implement a class/struct to wrap these values more programatically?
 QDir ASR::getLanguageModel() const
 {
     QGlib::Value lm = _psphinx->property("lm");
     return QDir(lm.get<QString>());
 }
 
+/// @todo Rewrite the @c Dictionary class to be used here.
 QDir ASR::getDictionary() const
 {
     QGlib::Value dict = _psphinx->property("dict");
     return QDir(dict.get<QString>());
 }
 
+/// @todo Rewrite the @c AcousticModel class to be used here.
 QDir ASR::getAcousticsModel() const
 {
     QGlib::Value hmm = _psphinx->property("hmm");
@@ -113,7 +116,6 @@ QDir ASR::getAcousticsModel() const
 }
 
 const QGst::PipelinePtr ASR::getPipeline() const
-
 {
     return _pipeline;
 }
@@ -173,7 +175,7 @@ void ASR::setAcousticModel (const QString& path)
         qWarning() << "[ASR] Given acoustic model path" << path << "does not exist.";
 }
 
-bool ASR::ready() const
+bool ASR::isReady() const
 {
     return _state == Ready;
 }
@@ -181,7 +183,7 @@ bool ASR::ready() const
 void ASR::run()
 {
     qDebug() << "[ASR start]";
-    if (ready())
+    if ( isReady())
         _pipeline->setState(QGst::StatePlaying);
     else
         qWarning() << "[ASR] Object is not ready to run.";

@@ -189,6 +189,12 @@ void Corpus::erase() const
     l_dir->rmdir(l_dir->absolutePath());
 }
 
+/// @todo Perfect the process of cloning corpuses.
+Corpus* Corpus::clone() const
+{
+    return const_cast<Corpus*>(this);
+}
+
 /// @todo What to clean-up?
 Corpus::~Corpus()
 {

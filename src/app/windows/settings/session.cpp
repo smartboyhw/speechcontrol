@@ -101,8 +101,11 @@ void SessionSettingsPane::updateList()
         if (l_sssn->content()){
             const QString l_lbl = l_sssn->content()->title();
 
-            if (l_lbl.isEmpty())
-                l_item->setText("Unnamed");
+            if (l_lbl.isEmpty()){
+                QString l_sssnUuid = l_sssn->uuid().toString();
+                l_sssnUuid.chop(l_sssnUuid.lastIndexOf("-"));
+                l_item->setText(l_sssnUuid);
+            }
             else
                 l_item->setText(l_lbl);
         } else
@@ -134,7 +137,6 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionDelete_triggered()
     }
 }
 
-/// @todo Implement a means of copying the session.
 /// @todo Add support for multiple session selection.
 /// @todo Implement a means of just clicking once for all to be affected by this action.
 void SpeechControl::Windows::SessionSettingsPane::on_actionCopy_triggered()
@@ -142,11 +144,11 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionCopy_triggered()
     QListWidget* l_widget = m_ui->listWidgetSession;
     QListWidgetItem* l_itm = l_widget->selectedItems().first();
     Session* l_ss = Session::obtain(l_itm->data(Qt::UserRole).toString());
-    //l_ss->copy();
-    updateList();
+    Session* l_newSs = l_ss->clone();
+    if (l_newSs)
+        updateList();
 }
 
-/// @todo Implement a means of creating backups.
 /// @todo Add support for multiple session selection.
 /// @todo Implement a means of just clicking once for all to be affected by this action.
 void SpeechControl::Windows::SessionSettingsPane::on_actionBackup_triggered()
@@ -154,11 +156,11 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionBackup_triggered()
     QListWidget* l_widget = m_ui->listWidgetSession;
     QListWidgetItem* l_itm = l_widget->selectedItems().first();
     Session* l_ss = Session::obtain(l_itm->data(Qt::UserRole).toString());
-    //Backup* l_bckpSs = l_ss->createBackup();
-    updateList();
+    Session::Backup* l_bckpSs = l_ss->createBackup();
+    if (l_bckpSs)
+        updateList();
 }
 
-/// @todo Implement a means of restoring backups.
 /// @todo Add support for multiple session selection.
 /// @todo Implement a means of just clicking once for all to be affected by this action.
 void SpeechControl::Windows::SessionSettingsPane::on_actionRestoreBackup_triggered()
@@ -166,6 +168,11 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionRestoreBackup_trigger
     QListWidget* l_widget = m_ui->listWidgetSession;
     QListWidgetItem* l_itm = l_widget->selectedItems().first();
     Session* l_ss = Session::obtain(l_itm->data(Qt::UserRole).toString());
-    //BackupList l_bckpLst = l_ss->backups();
-    updateList();
+
+    #ifdef RESTORESESSIONWIZARD_HPP
+    Wizards::RestoreSessionWizard* l_wiz = new Wizards::RestoreSessionWizard(this,l_ss);
+
+    if (l_wiz->exec() == QWizard::Accepted)
+        updateList();
+    #endif //RESTORESESSIONWIZARD_HPP
 }

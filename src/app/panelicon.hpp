@@ -23,6 +23,7 @@
 #ifndef PANELICON_HPP
 #define PANELICON_HPP
 
+// Qt includes
 #include <QSystemTrayIcon>
 
 namespace SpeechControl {
@@ -39,6 +40,7 @@ public:
 
 private:
     static PanelIcon* s_inst;
+    //AppIndicator* m_indicator;
 };
 
 }

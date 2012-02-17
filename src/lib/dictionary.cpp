@@ -51,6 +51,13 @@ const QString Dictionary::getPath(const QUuid &l_uuid)
 DictionaryEntry::DictionaryEntry(Dictionary *p_dict, const QString &p_word, const QString &p_phoneme) :
         QObject(p_dict), m_dict(p_dict), m_word(p_word), m_phnm(p_phoneme)
 {
+
+}
+
+DictionaryEntry::DictionaryEntry ( const DictionaryEntry& p_other ) : QObject(),
+    m_dict(p_other.m_dict), m_word(p_other.m_word), m_phnm(p_other.m_phnm)
+{
+
 }
 
 DictionaryEntry::~DictionaryEntry() {
@@ -100,6 +107,18 @@ Dictionary& Dictionary::operator <<(DictionaryEntryList& p_lst)
 /// @todo Implement the saving ability.
 void Dictionary::save()
 {
+
+}
+
+Dictionary* Dictionary::fromDirectory ( const QDir& )
+{
+    return 0;
+}
+
+Dictionary::Dictionary ( const Dictionary& p_other) : QObject(),
+    m_words(p_other.m_words)
+{
+
 }
 
 Dictionary::Dictionary(const QUuid &p_uuid)

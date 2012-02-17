@@ -25,6 +25,7 @@
 #include <QMap>
 #include <QUuid>
 #include <QObject>
+#include <QDateTime>
 #include <QStringList>
 #include <QtXml/QDomDocument>
 
@@ -80,11 +81,28 @@ namespace SpeechControl {
         Q_PROPERTY(Content* Content READ content WRITE setContent)
 
     public:
+        class Backup {
+            friend class Session;
+        public:
+            virtual ~Backup();
+            Session* session();
+            QDateTime created();
+
+        private:
+            static Backup* generate(const Session&);
+            explicit Backup();
+        };
+
+        typedef QList<Backup*> BackupList;
+
         explicit Session(const QUuid&);
         virtual ~Session();
         const QUuid uuid() const;
         const bool isCompleted() const;
         void erase() const;
+        Session* clone() const;
+        Backup* createBackup() const;
+        BackupList* backups() const;
         Corpus* corpus() const;
         Content* content() const;
         Sentence* firstIncompleteSentence() const;
@@ -106,7 +124,7 @@ namespace SpeechControl {
         void assessProgress();
 
     private:
-        static const QString getPath(const QUuid&);
+        //static const QString getPath(const QUuid&);
         static QDomDocument* s_dom;
         static QMap<QUuid, QDomElement*> s_elems;
         Corpus* m_corpus;

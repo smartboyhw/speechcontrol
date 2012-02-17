@@ -106,6 +106,7 @@ namespace SpeechControl {
         Sentence* sentenceAt(const int&) const;
         const QUuid uuid() const;
         void erase() const;
+        Corpus* clone() const;
 
     public slots:
         void load(const QUuid&);

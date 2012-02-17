@@ -63,14 +63,16 @@ Agent* Agent::instance()
 /// @todo Instead of using Sphinx directly, use the ASR function.
 void Agent::start()
 {
+    instance()->m_sphnx->startRecognizing();
     emit instance()->stateChanged(true);
     emit instance()->started();
 }
 
 void Agent::stop()
 {
-  emit instance()->stateChanged(false);
-  emit instance()->stopped();
+    instance()->m_sphnx->stopRecognizing();
+    emit instance()->stateChanged(false);
+    emit instance()->stopped();
 }
 
 void Agent::invokeCommand ( const QString& p_command )

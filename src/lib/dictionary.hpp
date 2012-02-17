@@ -78,6 +78,7 @@ namespace SpeechControl {
       DictionaryEntry* removeEntry(const QString&);
       Dictionary& operator<<(DictionaryEntry*);
       Dictionary& operator<<(DictionaryEntryList&);
+      static Dictionary* fromDirectory(const QDir& );
 
   public slots:
       void load(const QUuid&);

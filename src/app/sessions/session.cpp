@@ -158,17 +158,25 @@ Session* Session::obtain (const QUuid &p_uuid)
     return new Session (p_uuid);
 }
 
-/// @todo Create a new @see Corpus with this @see Session.
+/// @todo Create a new Corpus with this Session.
 Session* Session::create (const Content* p_content)
 {
-    const QStringList l_lst = p_content->pages().join ("\n").simplified().trimmed().replace (".", ".\n").split ("\n", QString::SkipEmptyParts);
+    const QStringList l_lst = p_content->pages().join("\n").simplified().trimmed().replace(".", ".\n").split ("\n", QString::SkipEmptyParts);
     qDebug () << "Session has " << l_lst.length() << "potential sentences.";
     const QUuid l_uuid = QUuid::createUuid();
-    QDomElement l_sessElem = s_dom->createElement ("Session");
+
+    // create element data
+    QDomElement l_sessElem = s_dom->createElement("Session");
+    QDomElement l_dateElem = s_dom->createElement("Date");
+
+    l_dateElem.setAttribute("created",QDateTime::currentDateTimeUtc().toString(Qt::SystemLocaleDate));
+    l_dateElem.setAttribute("completed","-1");
+    l_sessElem.setAttribute("uuid", l_uuid.toString());
+    l_sessElem.setAttribute("content", p_content->uuid().toString());
+    l_sessElem.setAttribute("corpus", Corpus::create (l_lst)->uuid());
+
     s_dom->documentElement().appendChild (l_sessElem);
-    l_sessElem.setAttribute ("uuid", l_uuid.toString());
-    l_sessElem.setAttribute ("content", p_content->uuid().toString());
-    l_sessElem.setAttribute ("corpus", Corpus::create (l_lst)->uuid());
+    s_dom->documentElement().appendChild (l_dateElem);
 
     QFile* l_file = new QFile (QDir::homePath() + "/.speechcontrol/sessions.xml");
     l_file->open (QIODevice::WriteOnly | QIODevice::Truncate);
@@ -181,9 +189,128 @@ Session* Session::create (const Content* p_content)
     return Session::obtain (l_uuid);
 }
 
+Session::Session ( const Session& ) : QObject()
+{
+
+}
+
+Sentence* Session::firstIncompleteSentence() const
+{
+    const SentenceList l_lst = m_corpus->sentences();
+
+    for (int i = 0; i < l_lst.count(); i++) {
+        Sentence* l_sent = l_lst.at (i);
+
+        if (!l_sent->allPhrasesCompleted())
+            return l_sent;
+        else
+            continue;
+    }
+
+    return 0;
+}
+
+Sentence* Session::lastIncompleteSentence() const
+{
+    const SentenceList l_lst = m_corpus->sentences();
+    SentenceList::ConstIterator l_endItr = l_lst.begin();
+
+    for (SentenceList::ConstIterator l_itr = l_lst.end(); l_itr != l_endItr; l_itr--) {
+        const Sentence* l_sent = (*l_itr);
+
+        if (!l_sent->allPhrasesCompleted())
+            return *l_itr;
+        else
+            continue;
+    }
+
+    return 0;
+}
+
+SentenceList Session::incompletedSentences() const
+{
+    return SentenceList();
+}
+
+const bool Session::isCompleted() const
+{
+    return ! (incompletedSentences().empty());
+}
+
+Session::BackupList* Session::backups() const
+{
+    return 0;
+}
+
+void Session::erase() const
+{
+    QUuid l_uuid(m_elem->attribute("uuid"));
+    QDomNodeList l_lst = s_dom->documentElement().elementsByTagName("Session");
+    QFile* l_file = new QFile (QDir::homePath() + "/.speechcontrol/sessions.xml");
+    l_file->open(QIODevice::WriteOnly | QIODevice::Truncate);
+    QTextStream l_strm(l_file);
+
+    for (uint i = 0; i < l_lst.length(); i++){
+        QDomElement l_elem = l_lst.at(i).toElement();
+
+        if (l_elem.attribute("uuid") == l_uuid)
+            s_dom->documentElement().removeChild(l_elem);
+    }
+
+    s_elems.remove(l_uuid);
+    s_dom->save(l_strm,4);
+    m_corpus->erase();
+}
+
+Session::Backup* Session::createBackup() const
+{
+    return 0;
+}
+
+Session* Session::clone() const {
+    QUuid l_uuid = QUuid::createUuid();
+    Corpus* l_corpus = m_corpus->clone();
+    QDomElement l_elem = m_elem->cloneNode(true).toElement();
+    l_elem.attribute("uuid",l_uuid.toString());
+    l_elem.attribute("corpus",l_corpus->uuid());
+    l_elem.namedItem("Date").toElement().setAttribute("created",QDateTime::currentDateTimeUtc().toString(Qt::SystemLocaleDate));
+    s_dom->documentElement().appendChild(l_elem);
+    return Session::obtain(l_uuid);
+}
+
+Session::Backup::Backup()
+{
+}
+
+Session::Backup::~Backup()
+{
+
+}
+
+QDateTime Session::Backup::created()
+{
+    return QDateTime::currentDateTime();
+}
+
+
+Session::Backup* Session::Backup::generate ( const Session& )
+{
+    return 0;
+}
+
+Session* Session::Backup::session()
+{
+    return 0;
+}
+
 Content::Content (const QUuid& p_uuid)
 {
     load (p_uuid);
+}
+
+Content::Content ( const Content& p_other) : QObject(),
+    m_pages(p_other.m_pages), m_dom(p_other.m_dom), m_uuid(p_other.m_uuid)
+{
 }
 
 Content* Content::obtain (const QUuid &p_uuid)
@@ -342,66 +469,4 @@ Content * Content::create (const QString &p_author, const QString &p_title, cons
     return Content::obtain (l_uuid);
 }
 
-Sentence* Session::firstIncompleteSentence() const
-{
-    const SentenceList l_lst = m_corpus->sentences();
-
-    for (int i = 0; i < l_lst.count(); i++) {
-        Sentence* l_sent = l_lst.at (i);
-
-        if (!l_sent->allPhrasesCompleted())
-            return l_sent;
-        else
-            continue;
-    }
-
-    return 0;
-}
-
-Sentence* Session::lastIncompleteSentence() const
-{
-    const SentenceList l_lst = m_corpus->sentences();
-    SentenceList::ConstIterator l_endItr = l_lst.begin();
-
-    for (SentenceList::ConstIterator l_itr = l_lst.end(); l_itr != l_endItr; l_itr--) {
-        const Sentence* l_sent = (*l_itr);
-
-        if (!l_sent->allPhrasesCompleted())
-            return *l_itr;
-        else
-            continue;
-    }
-
-    return 0;
-}
-
-SentenceList Session::incompletedSentences() const
-{
-    return SentenceList();
-}
-
-const bool Session::isCompleted() const
-{
-    return ! (incompletedSentences().empty());
-}
-
-void Session::erase() const
-{
-    QUuid l_uuid(m_elem->attribute("uuid"));
-    QDomNodeList l_lst = s_dom->elementsByTagName("Session");
-    QFile* l_file = new QFile (QDir::homePath() + "/.speechcontrol/sessions.xml");
-    l_file->open(QIODevice::WriteOnly | QIODevice::Truncate);
-    QTextStream l_strm(l_file);
-
-    for (uint i = 0; i < l_lst.length(); i++){
-        QDomElement l_elem = l_lst.at(i).toElement();
-
-        if (l_elem.attribute("uuid") == l_uuid)
-            s_dom->removeChild(l_elem);
-    }
-
-    s_elems.remove(l_uuid);
-    s_dom->save(l_strm,4);
-    m_corpus->erase();
-}
-// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on;

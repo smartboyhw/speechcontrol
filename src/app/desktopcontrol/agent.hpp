@@ -1,11 +1,7 @@
 /**
  * This file is part of SpeechControl
  *
-<<<<<<< HEAD
  * Copyright 2011 SpeechControl Developers <spchcntrl-devel@thesii.org>
-=======
- * Copyright 2011 Jacky Alcine <jacky.alcine@thesii.org>
->>>>>>> FETCH_HEAD
  *
  * SpeechControl is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License as
@@ -29,7 +25,13 @@
 #include <QObject>
 #include <sphinx.hpp>
 
+/**
+ * @brief Namespace containing all of SpeechControl's definitions.
+ **/
 namespace SpeechControl {
+    /**
+     * @brief Namespace containing the Desktop Control utilities.
+     **/
     namespace DesktopControl {
         class Agent;
 

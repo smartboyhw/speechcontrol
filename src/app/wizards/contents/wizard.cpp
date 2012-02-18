@@ -71,9 +71,6 @@ int ContentWizard::nextId() const {
         break;
 
         case FileSelectionPage:
-            Content::create(field("file.author").toString(),
-                            field("file.title").toString(),
-                            field("file.content").toString());
             return ConclusionPage;
         break;
 
@@ -94,8 +91,8 @@ void ContentWizard::accept() {
 
         } else {
             l_cntn = Content::create(field("file.author").toString(),
-                            field("file.title").toString(),
-                            field("file.content").toString());
+                                     field("file.title").toString(),
+                                     field("file.content").toString());
         }
 
         if (l_cntn){

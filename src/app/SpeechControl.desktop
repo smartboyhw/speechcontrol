@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=SpeechControl
+Exec=speechcontrol %i -caption "%c"
+Icon=/usr/share/icons/speechcontrol.png
+Type=Application
+GenericName=Speech Recognition
+Comment=A Speech recognition utility for Linux
+StartupNotify=true
+Terminal=false
+X-AppInstall-Package=speechcontrol
+Categories=Accessibility;Utilities;

@@ -44,7 +44,7 @@ using namespace SpeechControl;
 
 using namespace SpeechControl::Wizards;
 
-using SpeechControl::Core;
+using SpeechControl::Application::Core;
 
 Core* Core::s_inst = 0;
 

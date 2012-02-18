@@ -68,18 +68,12 @@ void Training::startTraining(Session* p_session)
         l_dialog->setSession(p_session);
         l_dialog->open();
     } else
-        QMessageBox::information(0,tr("Session Completed"), tr("Your session is completed."));
+        QMessageBox::information(0,tr("Session Completed"), tr("The session %s has been completed already.").arg(p_session->content()->title()));
 }
 
 /// @todo Start training the session.
 void Training::startCollecting()
 {
-    // Configure the button.
-    m_ui->pushButtonNext->setEnabled(true);
-    m_ui->pushButtonProgress->setIcon(QIcon::fromTheme(ICON_PAUSE));
-    m_ui->pushButtonProgress->setText(tr("Pause"));
-    m_ui->labelText->setText(tr("<i>Rendering...</i>"));
-
     // Determine the last saved sentence in the session.
     m_initSntct = m_curSntct = m_session->firstIncompleteSentence();
 
@@ -96,17 +90,24 @@ void Training::startCollecting()
         }
 
         navigateToPart(l_start);
+
+        // Configure the button.
+        m_ui->pushButtonNext->setEnabled(true);
+        m_ui->pushButtonProgress->setIcon(QIcon::fromTheme(ICON_PAUSE));
+        m_ui->pushButtonProgress->setText(tr("Pause"));
+        m_ui->labelText->setText(tr("<i>Rendering...</i>"));
     }
     else {
         QErrorMessage l_msg(this);
         l_msg.showMessage(tr("<i>No text is available for this session</i>."),"NoTextLeftInSession");
-        m_ui->labelText->setText(tr("<strong><span color='#f00'>Invalid session.</span></strong>"));
+        l_msg.exec();
+        m_ui->labelText->setText(tr("<strong><span style='color: #f00;'>Invalid session.</span></strong>"));
         m_ui->pushButtonNext->setEnabled(false);
         m_ui->pushButtonUndo->setEnabled(false);
         m_ui->pushButtonReset->setEnabled(false);
         m_ui->pushButtonSave->setEnabled(false);
         m_ui->pushButtonProgress->setEnabled(false);
-        QDialog::reject();
+        reject();
     }
 }
 
@@ -121,6 +122,7 @@ void Training::setSession(Session *p_session)
 {
     m_session = p_session;
     this->setWindowTitle(tr("Training (%1) - SpeechControl").arg(m_session->content()->title()));
+    updateProgress(0.0);
     connect(m_session,SIGNAL(progressChanged(double)),this,SLOT(updateProgress(double)));
 }
 
@@ -145,6 +147,7 @@ void Training::on_pushButtonProgress_toggled(const bool& checked)
 
 void Training::updateProgress(const double &p_progress)
 {
+    m_ui->groupBoxTitle->setTitle(QString("%1 - %2 %").arg(m_session->content()->title(),QString::number((int) p_progress * 100)));
     m_ui->progressBar->setValue((int)(p_progress * 100));
 }
 
@@ -205,16 +208,19 @@ void Training::stopNavigating()
 }
 
 /// @todo This should clear all of the progress made since the start of training WHEN this dialog opened.
+/// @todo Implement a means of tracking history.
 void SpeechControl::Windows::Training::on_pushButtonReset_clicked()
 {
     // Undo the work up to the initial point.
 
-    // Now, revert and jump to the beginning.
+
+    // Now, revert and jump to the place that training when this dialog opened began at.
     m_curSntct = m_initSntct;
     m_curPos = m_initPos;
 }
 
 /// @todo This should undo progress at a decrementing interval until it hits the point of where the dialog opened.
+/// @todo Prevent going back further than what the history index recommends.
 void SpeechControl::Windows::Training::on_pushButtonUndo_clicked()
 {
     // Wipe out the previous part (and this part).

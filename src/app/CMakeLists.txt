@@ -60,3 +60,6 @@ install(FILES "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlApplicationConfig
     "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlApplicationConfigVersion.cmake"
     DESTINATION "${SPCHCNTRL_CMAKE_DIR}"
     COMPONENT "dev")
+
+install(FILES "${PROJECT_SOURCE_DIR}/SpeechControl.desktop"
+    DESTINATION "${CMAKE_INSTALL_PREFIX}/share/applications")

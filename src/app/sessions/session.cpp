@@ -140,6 +140,8 @@ void Session::load (const QUuid &p_uuid)
         m_corpus = 0;
         m_elem = 0;
     }
+
+    qDebug() << "is valid?" << isValid();
 }
 
 const bool Session::isValid() const
@@ -215,8 +217,10 @@ Sentence* Session::firstIncompleteSentence() const
 
         if (!l_sent->allPhrasesCompleted())
             return l_sent;
-        else
+        else {
+            qDebug() << l_sent->text() << "already completed @" << l_sent->audioPath().absolutePath();
             continue;
+        }
     }
 
     return 0;

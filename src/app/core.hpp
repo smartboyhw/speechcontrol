@@ -37,6 +37,7 @@ namespace Windows {
 struct Main;
 }
 
+namespace Application {
 /// @todo Allow versioning of the configuration.
 /// @todo Remove reference to Windows::Main.
 
@@ -75,5 +76,8 @@ private:
 };
 }
 
+typedef Application::Core Core;
+}
+
 #endif // CORE_HPP
-// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on;

@@ -1,6 +1,8 @@
 #include "corpus.hpp"
 #include "sentence.hpp"
 
+#include <QDir>
+#include <QFileInfo>
 #include <QDebug>
 #include <QDateTime>
 #include <QDomDocument>
@@ -166,7 +168,7 @@ void Corpus::save()
         QTextStream l_strm(l_file);
         m_dom->save(l_strm,4);
     } else
-        qDebug() << "Can't open:" << l_file->errorString();
+        qWarning() << "Can't write to" << l_file->fileName() << ":" << l_file->errorString();
 }
 
 CorpusList Corpus::allCorpuses()
@@ -182,17 +184,29 @@ CorpusList Corpus::allCorpuses()
     return l_lst;
 }
 
-void Corpus::erase() const
+void Corpus::erase()
 {
     const QUrl l_path = getPath(m_uuid);
     QDir* l_dir = new QDir(l_path.toLocalFile());
     l_dir->rmdir(l_dir->absolutePath());
 }
 
-/// @todo Perfect the process of cloning corpuses.
 Corpus* Corpus::clone() const
 {
-    return const_cast<Corpus*>(this);
+    QUuid l_uuid = QUuid::createUuid();
+    QDir l_thisDir(QDir::homePath() + "./speechcontrol/corpus/" + m_uuid.toString());
+    QDir l_newDir(QDir::homePath() + "./speechcontrol/corpus/" + l_uuid.toString());
+    l_newDir.mkpath(l_newDir.absolutePath());
+    QStringList l_lst = l_newDir.entryList((QStringList() << "*"),QDir::NoDotAndDotDot | QDir::Files,QDir::NoSort);
+
+    Q_FOREACH(const QString& l_pth, l_lst)
+    {
+        QFile* l_file = new QFile(l_pth);
+        const QString l_newPth = l_pth.replace(m_uuid.toString(),l_uuid.toString());
+        l_file->copy(l_newPth);
+    }
+
+    return Corpus::obtain(l_uuid);
 }
 
 /// @todo What to clean-up?

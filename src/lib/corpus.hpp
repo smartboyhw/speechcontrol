@@ -21,19 +21,17 @@ namespace SpeechControl {
     /**
      * @brief Represents a corpus of text to be used for training acoustic models.
      *
-     * Corpuses are used throughtout SpeechControl to encapsulate the text and audioPath
+     * Corpuses are used throughout SpeechControl to encapsulate the text and audio-path
      * to be recorded for transcription. Here, the term "transcription" largely means the
      * act of recording text and linking it to its recorded audio to ensure that upon
      * the act of compiling a model, whether or not one is adapting or building, that
-     * the approriate text is linked up with its approriate audio segment.
+     * the appropriate text is linked up with its appropriate audio segment.
      *
      * This class allows developers to learn more, however, about not only what's been
      * recorded but also when did training begin, how much time has been poured into the
      * training process and when did it end. Since all of the information is stored to XML,
      * the amount of information that can be stored into the corpuses are only limited by
      * the capacity of XML.
-     *
-     * @todo Consider allowing more meta-data to be added to corpuses in the future.
      *
      * @see AcousticModel
      * @see Sentence
@@ -76,7 +74,7 @@ namespace SpeechControl {
          * @brief Determines the existence of a specified corpus.
          * @param p_uuid The UUID of a @c Corpus to be found.
          * @return True, if the @c Corpus exists; otherwise, returns false.
-         * @note This method does a bit of nitty gritty searching, just checks for a folder.
+         * @note This method does a bit of nitty-gritty searching, just checks for a folder.
          */
         static const bool exists(const QUuid&);
 
@@ -95,26 +93,78 @@ namespace SpeechControl {
          */
         Sentence* addSentence(const QString&, const QFile*);
 
+        /**
+         * @brief Determines the time when training of this @c Corpus began.
+         * @return A @c QDateTime symbolizing the time when training began.
+         */
+        const QDateTime timeStarted() const;
+
+        /**
+         * @brief Determines the time when training of this @c Corpus was last done.
+         * @return A @c QDateTime symbolizing the time when training last occurred.
+         */
+        const QDateTime timeLastModified() const;
+
+        /**
+         * @brief Determines the time when training of this @c Corpus was completed.
+         * @return A @c QDateTime symbolizing the time when training ended.
+         */
+        const QDateTime timeCompleted() const;
+
+        /**
+         * @brief Obtains the dictionary used in reference to this @c Corpus.
+         * @return A pointer to a @c Dictionary object to refer to this @c Corpus.
+         */
+        Dictionary* dictionary() const;
+
+        /**
+         * @brief Obtains a list of @c Sentence objects that are held by this corpus.
+         * @return A @c SentenceList holding all of the @c Sentence objects represented within this @c Corpus .
+         */
+        SentenceList sentences() const;
+
+        /**
+         * @brief Obtains a specific @c Sentence object at a specified index.
+         * @return A pointer to the @c Sentence object at that index, or NULL.
+         */
+        Sentence* sentenceAt(const int&) const;
+
+        /**
+         * @brief Obtains the @c QUuid identifying this @c Corpus
+         * @return A @c QUuid
+         */
+        const QUuid uuid() const;
+
+        /**
+         * @brief Erases the data of this @c Corpus.
+         * @note This nullifies the corpus and makes it invalid.
+         */
+        void erase();
+
+        /**
+         * @brief Generates a copy of this @c Corpus.
+         * @return A pointer to a copy of this @c Corpus, or NULL if the copy operation failed.
+         */
+        Corpus* clone() const;
+        static QUrl getPath(const QUuid&);
+
         Corpus& operator<<(Sentence*);
         Corpus& operator<<(SentenceList&);
 
-        const QDateTime timeStarted() const;
-        const QDateTime timeLastModified() const;
-        const QDateTime timeCompleted() const;
-        Dictionary* dictionary() const;
-        SentenceList sentences() const;
-        Sentence* sentenceAt(const int&) const;
-        const QUuid uuid() const;
-        void erase() const;
-        Corpus* clone() const;
-
     public slots:
+        /**
+         * @brief Loads the @c Corpus data using its identifying @c QUuid.
+         * @param p_uuid The @c QUuid identifying this @c Corpus.
+         */
         void load(const QUuid&);
+
+        /**
+         * @brief Saves this @c Corpus's information.
+         */
         void save();
 
     private:
-        static QUrl getPath(const QUuid&);
-        static CorpusMap s_lst;
+        static CorpusMap s_lst; /** < Used to centralize the obtaining of @c Corpus objects. */
 
         QUuid m_uuid;
         QUrl audioPath() const;

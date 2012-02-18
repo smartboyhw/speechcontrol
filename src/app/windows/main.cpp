@@ -49,13 +49,10 @@ using namespace SpeechControl::Wizards;
 using namespace SpeechControl::Windows::Managers;
 
 /// @todo Add icons to the QActions.
-Main::Main() : m_ui(new Ui::MainWindow), m_prgTraining(0), m_tckr(0){
+Main::Main() : m_ui(new Ui::MainWindow), m_prgTraining(0) {
    m_ui->setupUi(this);
    m_ui->retranslateUi(this);
    m_prgTraining = new QProgressBar(this);
-   m_tckr = new QTimer(this);
-   m_tckr->setInterval(500);
-   connect(m_tckr,SIGNAL(timeout()),this,SIGNAL(updateContent));
    PanelIcon::instance()->setIcon(this->windowIcon());
 
    this->restoreGeometry(Core::instance()->getConfig("MainWindow/Geometry").toByteArray());
@@ -73,6 +70,7 @@ Main::Main() : m_ui(new Ui::MainWindow), m_prgTraining(0), m_tckr(0){
    on_btnDctn_toggled(DesktopControl::Agent::isActive());
    m_prgTraining->setValue(3);
    m_prgTraining->setMaximum(10);
+   updateContent();
 }
 
 Main::~Main() {

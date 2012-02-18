@@ -10,6 +10,16 @@ cmake_minimum_required(VERSION 2.8)
 set(SPCHCNTRL_LIB_INCLUDE_DIR "${SPCHCNTRL_INCLUDE_DIR}/lib")
 set(SPCHCNTRL_LIB_INCLUDE_DIRS "${SPCHNCTRL_INCLUDE_DIRS}")
 set(SPCHCNTRL_LIB_LIBRARIES "${SPCHCNTRL_LIBRARIES}")
+set(SPCHCNTRL_LIB_MAJOR_VERSION 0)
+set(SPCHCNTRL_LIB_MINOR_VERSION 1)
+set(SPCHCNTRL_LIB_VERSION "${SPCHCNTRL_LIB_MAJOR_VERSION}.${SPCHCNTRL_LIB_MINOR_VERSION}")
+
+## configures
+configure_file("${SPCHCNTRL_CMAKE_SDIR}/SpeechControlLibraryConfig.cmake.in"
+    "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlLibraryConfig.cmake" @ONLY)
+
+configure_file("${SPCHCNTRL_CMAKE_SDIR}/SpeechControlLibraryConfigVersion.cmake.in"
+    "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlLibraryConfigVersion.cmake" @ONLY)
 
 ## setting up sources
 file(GLOB SPCHCNTRL_LIB_SOURCES "*.cpp")
@@ -17,14 +27,12 @@ file(GLOB SPCHCNTRL_LIB_HEADERS "*.hpp")
 QT4_WRAP_CPP(SPCHCNTRL_LIB_SOURCES ${SPCHCNTRL_LIB_HEADERS} OPTIONS
     -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
 
-## configures
-configure_file("${SPCHCNTRL_CMAKE_SDIR}/SpeechControlConfig.cmake.in"
-    "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlConfig.cmake" @ONLY)
-
-configure_file("${SPCHCNTRL_CMAKE_SDIR}/SpeechControlConfigVersion.cmake.in"
-    "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlConfigVersion.cmake" @ONLY)
-
 add_library(spchcntrl SHARED ${SPCHCNTRL_LIB_SOURCES})
+
+set_target_properties(spchcntrl PROPERTIES
+    PROJECT_LABEL "libspchcntrl"
+    VERSION ${SPCHCNTRL_LIB_VERSION}
+    SOVERSION ${SPCHCNTRL_LIB_VERSION})
 
 target_link_libraries(spchcntrl ${SPCHCNTRL_LIB_LIBRARIES})
 
@@ -36,11 +44,11 @@ install(EXPORT SpeechControlLibraryDepends
     DESTINATION "${SPCHCNTRL_CMAKE_DIR}"
     COMPONENT "dev")
 
-install(FILES ${SPCHCNTRL_LIB_HPP}
+install(FILES ${SPCHCNTRL_LIB_HEADERS}
     DESTINATION "${SPCHCNTRL_LIB_INCLUDE_DIR}"
     COMPONENT "dev")
 
-install(FILES "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlConfig.cmake"
-    "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlConfigVersion.cmake"
+install(FILES "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlLibraryConfig.cmake"
+    "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlLibraryConfigVersion.cmake"
     DESTINATION "${SPCHCNTRL_CMAKE_DIR}"
     COMPONENT "dev")

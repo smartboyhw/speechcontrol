@@ -18,6 +18,9 @@ set(SPCHCNTRL_LIB_VERSION "${SPCHCNTRL_LIB_MAJOR_VERSION}.${SPCHCNTRL_LIB_MINOR_
 configure_file("${SPCHCNTRL_CMAKE_SDIR}/SpeechControlLibraryConfig.cmake.in"
     "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlLibraryConfig.cmake" @ONLY)
 
+configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
+    "${PROJECT_SOURCE_DIR}/config.hpp" @ONLY)
+
 configure_file("${SPCHCNTRL_CMAKE_SDIR}/SpeechControlLibraryConfigVersion.cmake.in"
     "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlLibraryConfigVersion.cmake" @ONLY)
 

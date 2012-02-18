@@ -187,25 +187,7 @@ const PhraseList Sentence::phrases() const
 Phrase::Phrase(const Sentence *p_sntnct, const int &p_index) :
     m_sntnc(p_sntnct), m_indx(p_index)
 {
-}
-
-Phrase::~Phrase() {
-
-}
-
-const bool Sentence::allPhrasesCompleted() const
-{
-    Q_FOREACH(const Phrase* l_phrs, m_phrsLst){
-        if (!l_phrs->isCompleted())
-            return false;
-    }
-
-    return true;
-}
-
-const bool Sentence::isPhraseCompleted(const int &p_indx) const
-{
-    return m_phrsLst.at(p_indx)->isCompleted();
+    qDebug() << "Phrase" << this->text() << "rendered.";
 }
 
 const bool Phrase::isCompleted() const
@@ -213,12 +195,6 @@ const bool Phrase::isCompleted() const
     return audio()->exists();
 }
 
-const int Sentence::index() const
-{
-    return m_elem->attribute("index").toInt();
-}
+Phrase::~Phrase() {
 
-SpeechControl::Sentence* SpeechControl::Corpus::sentenceAt(const int &p_indx) const
-{
-    return m_sntncLst.at(p_indx);
 }

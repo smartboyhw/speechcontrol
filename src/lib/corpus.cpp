@@ -126,7 +126,11 @@ Corpus* Corpus::obtain(const QUuid &l_uuid)
         return 0;
     }
 
-    return new Corpus(l_uuid);
+    Corpus* l_crps = new Corpus(l_uuid);
+    if (!l_crps->isValid())
+        return 0;
+
+    return l_crps;
 }
 
 void Corpus::load(const QUuid &p_uuid)
@@ -156,8 +160,17 @@ void Corpus::load(const QUuid &p_uuid)
             addSentence(l_sntc);
         }
         m_uuid = p_uuid;
-    } else
+    } else {
+        m_dom = 0;
+        m_dict = 0;
+        m_sntncLst = SentenceList();
+        m_uuid = QUuid(QString::null);
         qDebug() << "Failed to open corpus XML file.";
+    }
+}
+
+const bool Corpus::isValid() const {
+    return m_dom && m_dict && m_sntncLst.length() != 0 && !m_uuid.isNull();
 }
 
 void Corpus::save()

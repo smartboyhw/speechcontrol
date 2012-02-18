@@ -20,17 +20,21 @@
 #ifndef ASR_HPP
 #define ASR_HPP
 
-#define MODELDIR "/usr/share/pocketsphinx/model"
-
-#include <QtCore/QObject>
-#include <QtCore/QMap>
+// Qt includes
+#include <QMap>
 #include <QDir>
+#include <QObject>
 
+// QGlib includes
 #include <QGlib/Value>
 
+// QGst includes
 #include <QGst/Pipeline>
 #include <QGst/Bus>
 #include <QGst/Message>
+
+// local includes
+#include <config.hpp>
 
 namespace SpeechControl
 {

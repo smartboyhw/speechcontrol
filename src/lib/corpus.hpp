@@ -146,6 +146,13 @@ namespace SpeechControl {
          * @return A pointer to a copy of this @c Corpus, or NULL if the copy operation failed.
          */
         Corpus* clone() const;
+
+        /**
+         * @brief Determines if this Corpus is valid.
+         * @return True if the Corpus is valid, false if not.
+         */
+        const bool isValid() const;
+
         static QUrl getPath(const QUuid&);
 
         Corpus& operator<<(Sentence*);

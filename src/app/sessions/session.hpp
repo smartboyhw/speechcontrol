@@ -89,8 +89,10 @@ namespace SpeechControl {
             QDateTime created();
 
         private:
+            static const QString getPath(const QString&);
             static Backup* generate(const Session&);
             explicit Backup();
+            QDomDocument* m_dom;
         };
 
         typedef QList<Backup*> BackupList;
@@ -99,6 +101,7 @@ namespace SpeechControl {
         virtual ~Session();
         const QUuid uuid() const;
         const bool isCompleted() const;
+        const bool isValid() const;
         void erase() const;
         Session* clone() const;
         Backup* createBackup() const;

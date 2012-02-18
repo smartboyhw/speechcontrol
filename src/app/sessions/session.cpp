@@ -131,17 +131,29 @@ void Session::init()
 void Session::load (const QUuid &p_uuid)
 {
     m_elem = s_elems.value (p_uuid);
-    setCorpus (Corpus::obtain (m_elem->attribute ("corpus")));
-    setContent (Content::obtain (m_elem->attribute ("content")));
+    if (m_elem && !m_elem->isNull()){
+        setCorpus (Corpus::obtain (m_elem->attribute ("corpus")));
+        setContent (Content::obtain (m_elem->attribute ("content")));
+    } else {
+        s_elems.remove(p_uuid);
+        m_content = 0;
+        m_corpus = 0;
+        m_elem = 0;
+    }
 }
 
+const bool Session::isValid() const
+{
+    return (m_elem && m_corpus && m_content);
+}
 
 SessionList Session::allSessions()
 {
     SessionList l_lst;
     Q_FOREACH (const QUuid l_uuid, s_elems.keys()) {
         Session* l_session = Session::obtain (l_uuid);
-        l_lst << l_session;
+        if (l_session && l_session->isValid())
+            l_lst << l_session;
     }
 
     return l_lst;
@@ -244,27 +256,22 @@ Session::BackupList* Session::backups() const
 
 void Session::erase() const
 {
+    m_corpus->erase();
+
     QUuid l_uuid(m_elem->attribute("uuid"));
     QDomNodeList l_lst = s_dom->documentElement().elementsByTagName("Session");
     QFile* l_file = new QFile (QDir::homePath() + "/.speechcontrol/sessions.xml");
     l_file->open(QIODevice::WriteOnly | QIODevice::Truncate);
     QTextStream l_strm(l_file);
 
-    for (uint i = 0; i < l_lst.length(); i++){
-        QDomElement l_elem = l_lst.at(i).toElement();
-
-        if (l_elem.attribute("uuid") == l_uuid)
-            s_dom->documentElement().removeChild(l_elem);
-    }
-
+    m_elem->clear();
     s_elems.remove(l_uuid);
     s_dom->save(l_strm,4);
-    m_corpus->erase();
 }
 
 Session::Backup* Session::createBackup() const
 {
-    return 0;
+    return Backup::generate(*this);
 }
 
 Session* Session::clone() const {
@@ -275,10 +282,11 @@ Session* Session::clone() const {
     l_elem.attribute("corpus",l_corpus->uuid());
     l_elem.namedItem("Date").toElement().setAttribute("created",QDateTime::currentDateTimeUtc().toString(Qt::SystemLocaleDate));
     s_dom->documentElement().appendChild(l_elem);
+    s_elems.insert(l_uuid,&l_elem);
     return Session::obtain(l_uuid);
 }
 
-Session::Backup::Backup()
+Session::Backup::Backup() : m_dom(0)
 {
 }
 
@@ -289,12 +297,44 @@ Session::Backup::~Backup()
 
 QDateTime Session::Backup::created()
 {
-    return QDateTime::currentDateTime();
+    QString l_time = m_dom->documentElement().attribute("DateCreated");
+    return QDateTime::fromString(l_time);
 }
 
-
-Session::Backup* Session::Backup::generate ( const Session& )
+const QString Session::Backup::getPath(const QString& p_id )
 {
+    return QDir::homePath() + "/.speechcontrol/backups/" + p_id + ".bckp";
+}
+
+/// @todo Implement a means of backing up a session's data to a compressed document.
+Session::Backup* Session::Backup::generate ( const Session& p_sssn )
+{
+    QDomDocument l_dom("Backup");
+    QDateTime l_tm = QDateTime::currentDateTimeUtc();
+    QString l_id = p_sssn.uuid().toString() + "_" + QString::number(l_tm.toMSecsSinceEpoch());
+    QDomElement l_domElem = l_dom.appendChild(l_dom.createElement("Backup")).toElement();
+    QFile* l_file = new QFile(getPath(l_id));
+    l_file->open(QIODevice::WriteOnly | QIODevice::Truncate);
+
+    // Obtain session data.
+    const QString l_sssnStr = p_sssn.m_elem->text();
+    const QByteArray l_sssnData = qCompress(l_sssnStr.toUtf8());
+
+    // Compress corpus data.
+    const Corpus* l_corpus = p_sssn.corpus();
+    QFile* l_corpusFile = new QFile(Corpus::getPath(l_corpus->uuid()).toLocalFile());
+    QByteArray l_corpusData;
+    l_corpusData = qCompress(l_corpusFile->readAll());
+
+    QDomElement l_sssnElem = l_dom.createElement("Session");
+    l_domElem.appendChild(l_sssnElem);
+    l_sssnElem.appendChild(l_dom.createTextNode(l_sssnData.toBase64()));
+
+    QDomElement l_crpsElem = l_dom.createElement("Corpus");
+    l_domElem.appendChild(l_crpsElem);
+    l_crpsElem.appendChild(l_dom.createTextNode(l_corpusData.toBase64()));
+
+    qDebug() << l_domElem.text();
     return 0;
 }
 

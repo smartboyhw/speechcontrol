@@ -37,9 +37,7 @@ PanelIcon* PanelIcon::s_inst = 0;
 PanelIcon::PanelIcon() :
     QSystemTrayIcon(Core::instance())
 {
-    QIcon icon;
-    icon.addFile(QString::fromUtf8(":/logo/sc"), QSize(), QIcon::Normal, QIcon::Off);
-    setIcon(icon);
+    setIcon(QIcon("qrc:///logo/sc"));
     setToolTip("SpeechControl");
     //AppIndicator* m_indicator = app_indicator_new("spchcntrl","accessibilty",APP_INDICATOR_CATEGORY_SYSTEM_SERVICES);
 }

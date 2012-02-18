@@ -199,7 +199,7 @@ Corpus* Corpus::clone() const
     l_newDir.mkpath(l_newDir.absolutePath());
     QStringList l_lst = l_newDir.entryList((QStringList() << "*"),QDir::NoDotAndDotDot | QDir::Files,QDir::NoSort);
 
-    Q_FOREACH(const QString& l_pth, l_lst)
+    Q_FOREACH(QString l_pth, l_lst)
     {
         QFile* l_file = new QFile(l_pth);
         const QString l_newPth = l_pth.replace(m_uuid.toString(),l_uuid.toString());

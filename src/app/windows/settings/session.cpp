@@ -111,8 +111,11 @@ void SessionSettingsPane::updateList()
         } else
             l_item->setText("* missing book data *");
 
-
+        l_widget->clearSelection();
+        l_widget->setCurrentItem(l_item);
     }
+
+
 }
 
 /// @todo Present a dialog showing information about the session.

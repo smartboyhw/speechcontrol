@@ -42,8 +42,6 @@ namespace SpeechControl {
             void pluginUnloaded(const QString& );
 
         public:
-            explicit Factory(QObject* parent = 0);
-            Factory();
             virtual ~Factory();
 
             static const bool loadPlugin(const QUuid& );
@@ -52,6 +50,7 @@ namespace SpeechControl {
             static PluginList availablePlugins();
 
         private:
+            explicit Factory();
             static Factory* s_inst;
         };
     }

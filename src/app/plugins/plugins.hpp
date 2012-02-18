@@ -26,6 +26,7 @@
 #include <QUuid>
 #include <QList>
 #include <QObject>
+#include <QStringList>
 
 class QPluginLoader;
 class QSettings;
@@ -47,19 +48,45 @@ namespace SpeechControl {
 
         public:
             explicit AbstractPlugin(QObject* = 0);
+            virtual ~AbstractPlugin();
+            const bool hasLoaded() const;
             const double version() const;
             const QString name() const;
+            const QString description() const;
+            const QUrl url() const;
             const QUuid uuid() const;
+            const PluginList plugins() const;
+            const QStringList packages() const;
 
         protected:
             virtual void initialize() = 0;
             virtual void deinitialize() = 0;
+            void loadComponents();
+
+        private slots:
+            void start();
+            void stop();
 
         private:
+            void loadLibrary();
+            void loadPlugins();
+            void loadPackages();
             const bool isSupported() const;
             QPluginLoader* m_ldr;
             QSettings* m_cfg;
             QSettings* m_sttgs;
+        };
+
+        class GenericPlugin : public AbstractPlugin {
+            Q_OBJECT
+            Q_DISABLE_COPY(GenericPlugin)
+
+        public:
+            GenericPlugin ( const QUuid& );
+
+        protected:
+            virtual void initialize();
+            virtual void deinitialize();
         };
     }
 }

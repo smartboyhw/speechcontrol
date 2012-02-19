@@ -15,7 +15,6 @@ find_package(Qt4 4.7 COMPONENTS
   REQUIRED)
 find_package(QtGStreamer REQUIRED)
 pkg_search_module(POCKETSPHINX REQUIRED pocketsphinx sphinxbase)
-pkg_search_module(APPINDICATOR REQUIRED appindicator-0.1)
 
 EXEC_PROGRAM(${PKGCONFIG_EXECUTABLE} ARGS ${_package} --variable=modeldir
         OUTPUT_VARIABLE POCKETSPHINX_MODELDIR)
@@ -27,7 +26,6 @@ set(SPCHCNTRL_INCLUDE_DIRS "${QT_INCLUDE_DIR}"
     ${POCKETSPHINX_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
-    ${APPINDICATOR_INCLUDE_DIRS}
     ${QTGSTREAMER_INCLUDES})
 set(SPCHCNTRL_LIBRARIES "${QT_LIBRARIES}"
     ${Boost_LIBRARIES}
@@ -37,7 +35,6 @@ set(SPCHCNTRL_LIBRARIES "${QT_LIBRARIES}"
     ${QTGSTREAMER_LIBRARIES}
     ${QTGSTREAMER_UI_LIBRARIES}
     ${QTGSTREAMER_UTILS_LIBRARIES}
-    ${APPINDICATOR_LIBRARIES}
     ${POCKETSPHINX_LIBRARIES})
 set(SPCHCNTRL_CMAKE_SDIR "${PROJECT_SOURCE_DIR}/cmake")
 set(SPCHCNTRL_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/share/cmake/SpeechControl")
@@ -72,7 +69,7 @@ if(DOXYGEN_FOUND)
         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}"
         COMMENT "Generating API documentation with Doxygen...")
 
-    install(DIRECTORY doc/
+    install(DIRECTORY "${PROJECT_SOURCE_DIR}/doc/"
             DESTINATION "${CMAKE_INSTALL_PREFIX}/share/doc/libspeechcontrol"
             COMPONENT "doc")
 endif()

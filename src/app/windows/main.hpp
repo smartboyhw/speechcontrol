@@ -33,7 +33,13 @@ namespace Ui {
 
 namespace SpeechControl {
     class User;
+    /**
+     * @brief ...
+     **/
     namespace Windows {
+        /**
+         * @brief ...
+         **/
         class Main : public QMainWindow {
             Q_OBJECT
         public:

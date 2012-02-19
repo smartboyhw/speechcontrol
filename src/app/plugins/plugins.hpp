@@ -36,56 +36,184 @@ namespace SpeechControl {
         class Factory;
         class AbstractPlugin;
 
+        /**
+         * @brief ...
+         **/
         typedef QList<AbstractPlugin*> PluginList;
 
+        /**
+         * @brief ...
+         **/
         class AbstractPlugin : public QObject {
             Q_OBJECT
             Q_DISABLE_COPY(AbstractPlugin)
 
         signals:
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             void started();
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             void stopped();
 
         public:
+            /**
+             * @brief ...
+             *
+             * @param  ... Defaults to 0.
+             **/
             explicit AbstractPlugin(QObject* = 0);
+            /**
+             * @brief ...
+             *
+             **/
             virtual ~AbstractPlugin();
+            /**
+             * @brief ...
+             *
+             * @return const bool
+             **/
             const bool hasLoaded() const;
+            /**
+             * @brief ...
+             *
+             * @return const double
+             **/
             const double version() const;
+            /**
+             * @brief ...
+             *
+             * @return const QString
+             **/
             const QString name() const;
+            /**
+             * @brief ...
+             *
+             * @return const QString
+             **/
             const QString description() const;
+            /**
+             * @brief ...
+             *
+             * @return const QUrl
+             **/
             const QUrl url() const;
+            /**
+             * @brief ...
+             *
+             * @return const QUuid
+             **/
             const QUuid uuid() const;
+            /**
+             * @brief ...
+             *
+             * @return :Plugins::PluginList
+             **/
             const PluginList plugins() const;
+            /**
+             * @brief ...
+             *
+             * @return const QStringList
+             **/
             const QStringList packages() const;
 
         protected:
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             virtual void initialize() = 0;
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             virtual void deinitialize() = 0;
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             void loadComponents();
 
         private slots:
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             void start();
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             void stop();
 
         private:
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             void loadLibrary();
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             void loadPlugins();
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             void loadPackages();
+            /**
+             * @brief ...
+             *
+             * @return const bool
+             **/
             const bool isSupported() const;
             QPluginLoader* m_ldr;
             QSettings* m_cfg;
             QSettings* m_sttgs;
         };
 
+        /**
+         * @brief ...
+         **/
         class GenericPlugin : public AbstractPlugin {
             Q_OBJECT
             Q_DISABLE_COPY(GenericPlugin)
 
         public:
+            /**
+             * @brief ...
+             *
+             * @param  ...
+             **/
             GenericPlugin ( const QUuid& );
 
         protected:
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             virtual void initialize();
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             virtual void deinitialize();
         };
     }

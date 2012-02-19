@@ -28,6 +28,9 @@
 
 namespace SpeechControl {
 
+/**
+ * @brief ...
+ **/
 class PanelIcon : public QSystemTrayIcon
 {
     Q_OBJECT

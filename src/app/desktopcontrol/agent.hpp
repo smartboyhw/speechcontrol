@@ -35,25 +35,78 @@ namespace SpeechControl {
     namespace DesktopControl {
         class Agent;
 
+        /**
+         * @brief ...
+         **/
         class Agent : public QObject
         {
             Q_OBJECT
             Q_DISABLE_COPY(Agent)
 
         signals:
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             void started();
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             void stopped();
+            /**
+             * @brief ...
+             *
+             * @param  ...
+             * @return void
+             **/
             void stateChanged(const bool);
 
         public:
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             explicit Agent(QObject* = 0);
+            /**
+             * @brief ...
+             *
+             **/
             virtual ~Agent();
 
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             static void start();
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             static void stop();
+            /**
+             * @brief ...
+             *
+             * @param  ...
+             * @return void
+             **/
             static void invokeCommand(const QString&);
-
+            /**
+             * @brief ...
+             *
+             * @return :DesktopControl::Agent*
+             **/
             static Agent* instance();
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             static const bool isActive();
 
         private:

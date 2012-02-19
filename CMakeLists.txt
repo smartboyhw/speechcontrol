@@ -17,7 +17,7 @@ find_package(QtGStreamer REQUIRED)
 pkg_search_module(POCKETSPHINX REQUIRED pocketsphinx sphinxbase)
 
 EXEC_PROGRAM(${PKGCONFIG_EXECUTABLE} ARGS ${_package} --variable=modeldir
-        OUTPUT_VARIABLE POCKETSPHINX_MODELDIR)
+    OUTPUT_VARIABLE POCKETSPHINX_MODELDIR)
 
 include("${QT_USE_FILE}")
 

@@ -64,7 +64,7 @@ if(DOXYGEN_FOUND)
         set(HAVE_DOT NO)
     endif(HAVE_DOT)
     configure_file("${PROJECT_SOURCE_DIR}/Doxyfile.in" "${PROJECT_BINARY_DIR}/Doxyfile")
-    add_custom_target(doc
+    add_custom_target(doc ALL
         ${DOXYGEN_EXECUTABLE} Doxyfile
         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}"
         COMMENT "Generating API documentation with Doxygen...")

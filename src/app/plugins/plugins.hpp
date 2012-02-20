@@ -22,6 +22,9 @@
 #ifndef PLUGINS_HPP
 #define PLUGINS_HPP
 
+#define SPCHCNTRL_PLUGINS_DIR "@SPCHCNTRL_PLUGINS_DIR@"
+#define SPCHCNTRL_PLUGINS_CONFIG_DIR "@SPCHCNTRL_PLUGINS_CONFIG_DIR@"
+
 #include <QUrl>
 #include <QUuid>
 #include <QList>

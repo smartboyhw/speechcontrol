@@ -20,7 +20,7 @@ set(TEST_LIBRARIES ${SPCHCNTRL_LIBRARIES} ${CPPTEST_LIBRARIES} spchcntrl)
 ## Add support for backtraces
 find_package(ExecInfo)
 if(EXECINFO_FOUND)
-    list(APPEND TEST_COMPILE_DEFINITIONS HAVE_EXECINFO)
+    list(APPEND TEST_COMPILE_DEFINITIONS "HAVE_EXECINFO")
     if (EXECINFO_LIBRARIES)
         list(APPEND TEST_LIBRARIES ${EXECINFO_LIBRARIES})
     endif(EXECINFO_LIBRARIES)
@@ -28,14 +28,14 @@ if(EXECINFO_FOUND)
     list(APPEND TEST_INCLUDE_DIRS ${EXECINFO_INCLUDES})
 endif(EXECINFO_FOUND)
 
-add_executable(test-@TEST_ID@ ${TEST_BASE_SRCS} @TEST_SRC@)
+add_executable(test@TEST_ID@ ${TEST_BASE_SRCS} @TEST_SRC@)
 
 include_directories("${TEST_INCLUDE_DIRS}")
 
-set_target_properties(test-@TEST_ID@ PROPERTIES
+set_target_properties(test@TEST_ID@ PROPERTIES
     COMPILE_DEFINITIONS ${TEST_COMPILE_DEFINITIONS}
     COMPILE_FLAGS ${TEST_COMPILE_FLAGS})
 
-target_link_libraries(test-@TEST_ID@ ${TEST_LIBRARIES})
+target_link_libraries(test@TEST_ID@ ${TEST_LIBRARIES})
 
-add_test(NAME test-@TEST_ID@ COMMAND $<TARGET_FILE:test-@TEST_ID@>)
+add_test(NAME test@TEST_ID@ COMMAND $<TARGET_FILE:test@TEST_ID@>)

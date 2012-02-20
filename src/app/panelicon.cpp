@@ -23,8 +23,6 @@
 #include <QApplication>
 
 // libappindicator includes
-/// @todo Fix the conflicting issues here. MOC keeps picking up code in GTK and messing things up.
-//#include <libappindicator/app-indicator.h>
 
 #include "core.hpp"
 #include "panelicon.hpp"
@@ -35,11 +33,14 @@ PanelIcon* PanelIcon::s_inst = 0;
 
 /// @bug The icon isn't showing. I cheated by having the Main window add its icon when created.
 PanelIcon::PanelIcon() :
-    QSystemTrayIcon(Core::instance())
+    QSystemTrayIcon(Core::instance()), m_menu(0)
 {
+    m_menu = new QMenu("SpeechControl",QApplication::activeWindow());
+    QAction* l_actionClose = m_menu->addAction("Close");
+    connect(l_actionClose,SIGNAL(triggered()),QApplication::activeWindow(),SLOT(hide()));
     setIcon(QIcon("qrc:///logo/sc"));
     setToolTip("SpeechControl");
-    //AppIndicator* m_indicator = app_indicator_new("spchcntrl","accessibilty",APP_INDICATOR_CATEGORY_SYSTEM_SERVICES);
+    setContextMenu(m_menu);
 }
 
 PanelIcon::~PanelIcon() {

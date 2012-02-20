@@ -26,6 +26,7 @@
 #include <QSettings>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QApplication>
 
 #include <sphinx.hpp>
 #include <corpus.hpp>
@@ -33,6 +34,7 @@
 #include "ui_main.h"
 #include "core.hpp"
 #include "main.hpp"
+#include "aboutdlg.hpp"
 #include "training.hpp"
 #include "settings.hpp"
 #include "panelicon.hpp"
@@ -73,10 +75,6 @@ Main::Main() : m_ui(new Ui::MainWindow), m_prgTraining(0) {
    updateContent();
 }
 
-Main::~Main() {
-    delete m_ui;
-}
-
 /// @todo Instead of this constant ticking, use signals to update this code.
 void Main::updateContent() {
     m_ui->lcdSession->display(Session::allSessions().count());
@@ -110,13 +108,13 @@ void Main::on_actionStartTraining_triggered()
 }
 
 /// @todo Invoke the process of starting up desktop control.
-void SpeechControl::Windows::Main::on_actionStartDesktopControl_triggered()
+void Main::on_actionStartDesktopControl_triggered()
 {
     m_ui->statusBar->showMessage("This feature hasn't been implemented yet.");
     DesktopControl::Agent::start();
 }
 
-void SpeechControl::Windows::Main::on_btnDsktpCntrl_toggled(bool checked)
+void Main::on_btnDsktpCntrl_toggled(bool checked)
 {
     QPushButton* l_btn = m_ui->btnDsktpCntrl;
     if (checked)
@@ -125,7 +123,7 @@ void SpeechControl::Windows::Main::on_btnDsktpCntrl_toggled(bool checked)
         l_btn->setStyleSheet(QString::null);
 }
 
-void SpeechControl::Windows::Main::on_btnDctn_toggled(bool checked)
+void Main::on_btnDctn_toggled(bool checked)
 {
     QPushButton* l_btn = m_ui->btnDctn;
     if (checked)
@@ -135,7 +133,7 @@ void SpeechControl::Windows::Main::on_btnDctn_toggled(bool checked)
 }
 
 /// @todo Allow configuration option to show specific notifcations to prevent noise.
-void SpeechControl::Windows::Main::desktopControlToggled(const bool p_val)
+void Main::desktopControlToggled(const bool p_val)
 {
     QPushButton* l_btn = m_ui->btnDsktpCntrl;
     l_btn->setChecked(p_val);
@@ -145,7 +143,7 @@ void SpeechControl::Windows::Main::desktopControlToggled(const bool p_val)
 }
 
 /// @todo Allow configuration option to show specific notifcations to prevent noise.
-void SpeechControl::Windows::Main::dictationToggled(const bool p_val)
+void Main::dictationToggled(const bool p_val)
 {
     QPushButton* l_btn = m_ui->btnDctn;
     l_btn->setChecked(p_val);
@@ -154,7 +152,7 @@ void SpeechControl::Windows::Main::dictationToggled(const bool p_val)
     //PanelIcon::instance()->showMessage("Dictation State Changed",m_ui->statusBar->currentMessage());
 }
 
-void SpeechControl::Windows::Main::on_btnDsktpCntrl_clicked()
+void Main::on_btnDsktpCntrl_clicked()
 {
     if (DesktopControl::Agent::isActive())
         DesktopControl::Agent::stop();
@@ -162,10 +160,25 @@ void SpeechControl::Windows::Main::on_btnDsktpCntrl_clicked()
         DesktopControl::Agent::start();
 }
 
-void SpeechControl::Windows::Main::on_btnDctn_clicked()
+void Main::on_btnDctn_clicked()
 {
     if (Dictation::Agent::isActive())
         Dictation::Agent::stop();
     else
         Dictation::Agent::start();
+}
+
+void Main::on_actionAboutQt_triggered()
+{
+    QApplication::aboutQt();
+}
+
+void Main::on_actionAboutSpeechControl_triggered()
+{
+    AboutDlg l_dlg(this);
+    l_dlg.exec();
+}
+
+Main::~Main() {
+    delete m_ui;
 }

@@ -54,10 +54,12 @@ namespace SpeechControl {
             void on_actionStartDesktopControl_triggered();
             void on_btnDsktpCntrl_toggled(bool checked);
             void on_btnDctn_toggled(bool checked);
-            void desktopControlToggled(const bool);
-            void dictationToggled(const bool);
             void on_btnDsktpCntrl_clicked();
             void on_btnDctn_clicked();
+            void on_actionAboutQt_triggered();
+            void on_actionAboutSpeechControl_triggered();
+            void desktopControlToggled(const bool);
+            void dictationToggled(const bool);
             void updateContent();
 
         private:

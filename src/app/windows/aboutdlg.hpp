@@ -1,3 +1,5 @@
+
+
  /**
   * This file is part of SpeechControl
   *
@@ -26,20 +28,24 @@
 
 #include "ui_aboutdlg.h"
 
-class AboutDlg : public QDialog {
-  Q_OBJECT
+namespace SpeechControl {
+    namespace Windows {
+        class AboutDlg : public QDialog {
+        Q_OBJECT
 
-  public:
-    AboutDlg(QWidget *parent = 0);
+        public:
+            AboutDlg(QWidget *parent = 0);
 
-  private:
-    Ui::AboutDlg ui;
+        private:
+            Ui::AboutDlg ui;
 
-    QString about() const;
-    QString authors() const;
-    QString contributors() const;
-    QString thanksTo() const;
+            QString about() const;
+            QString authors() const;
+            QString contributors() const;
+            QString thanksTo() const;
 
-};
+        };
+    }
+}
 
 #endif

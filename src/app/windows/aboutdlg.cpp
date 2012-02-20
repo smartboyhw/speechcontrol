@@ -26,6 +26,8 @@
 #include "config.hpp"
 #include "aboutdlg.hpp"
 
+using namespace SpeechControl::Windows;
+
 AboutDlg::AboutDlg(QWidget *parent) : QDialog(parent) {
   ui.setupUi(this);
   ui.quasselLogo->setPixmap(QPixmap(":/logo/sc"));

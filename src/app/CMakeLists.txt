@@ -29,13 +29,7 @@ QT4_ADD_RESOURCES(SPCHCNTRL_APP_SCPP ${SPCHCNTRL_QRESC})
 configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
     "${PROJECT_SOURCE_DIR}/config.hpp" @ONLY)
 
-configure_file("${SPCHCNTRL_CMAKE_SDIR}/SpeechControlApplicationConfig.cmake.in"
-    "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlApplicationConfig.cmake" @ONLY)
-
-configure_file("${SPCHCNTRL_CMAKE_SDIR}/SpeechControlApplicationConfigVersion.cmake.in"
-    "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlApplicationConfigVersion.cmake" @ONLY)
-
-#message("${SPCHCNTRL_APP_SCPP}")
+    #message("${SPCHCNTRL_APP_SCPP}")
 
 add_executable(speechcontrol ${SPCHCNTRL_APP_SCPP})
 
@@ -54,11 +48,6 @@ install(FILES ${SPCHCNTRL_APP_SHPP}
 
 install(FILES ${SPCHCNTRL_UI} ${SPCHCNTRL_QRESC}
     DESTINATION "${SPCHCNTRL_APP_DATA}"
-    COMPONENT "dev")
-
-install(FILES "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlApplicationConfig.cmake"
-    "${PROJECT_BINARY_DIR}/InstallFiles/SpeechControlApplicationConfigVersion.cmake"
-    DESTINATION "${SPCHCNTRL_CMAKE_DIR}"
     COMPONENT "dev")
 
 install(FILES "${PROJECT_SOURCE_DIR}/SpeechControl.desktop"

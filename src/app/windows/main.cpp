@@ -26,6 +26,7 @@
 #include <QSettings>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QApplication>
 
 #include <sphinx.hpp>
 #include <corpus.hpp>
@@ -33,11 +34,12 @@
 #include "ui_main.h"
 #include "core.hpp"
 #include "main.hpp"
+#include "aboutdlg.hpp"
 #include "training.hpp"
 #include "settings.hpp"
 #include "panelicon.hpp"
-#include "desktopcontrol/agent.hpp"
-#include "dictation/agent.hpp"
+//#include "desktopcontrol/agent.hpp"
+//#include "dictation/agent.hpp"
 #include "managers/books.hpp"
 #include "managers/session.hpp"
 #include "sessions/session.hpp"
@@ -49,32 +51,28 @@ using namespace SpeechControl::Wizards;
 using namespace SpeechControl::Windows::Managers;
 
 /// @todo Add icons to the QActions.
-Main::Main() : m_ui(new Ui::MainWindow), m_prgTraining(0) {
+Main::Main() : m_ui(new Ui::MainWindow), m_prgStatusbar (0) {
    m_ui->setupUi(this);
    m_ui->retranslateUi(this);
-   m_prgTraining = new QProgressBar(this);
+    m_prgStatusbar = new QProgressBar(this);
    PanelIcon::instance()->setIcon(this->windowIcon());
 
    this->restoreGeometry(Core::instance()->getConfig("MainWindow/Geometry").toByteArray());
    this->restoreState(Core::instance()->getConfig("MainWindow/State").toByteArray());
 
    m_ui->statusBar->showMessage("Ready.");
-   m_ui->statusBar->addPermanentWidget(m_prgTraining);
+   m_ui->statusBar->addPermanentWidget(m_prgStatusbar);
 
-   connect(DesktopControl::Agent::instance(),SIGNAL(stateChanged(bool)),this,SLOT(desktopControlToggled(bool)));
-   connect(Dictation::Agent::instance(),SIGNAL(stateChanged(bool)),this,SLOT(dictationToggled(bool)));
+   //connect(DesktopControl::Agent::instance(),SIGNAL(stateChanged(bool)),this,SLOT(desktopControlToggled(bool)));
+   //connect(Dictation::Agent::instance(),SIGNAL(stateChanged(bool)),this,SLOT(dictationToggled(bool)));
 
-   m_ui->btnDsktpCntrl->setChecked(DesktopControl::Agent::isActive());
-   m_ui->btnDctn->setChecked(Dictation::Agent::isActive());
-   on_btnDsktpCntrl_toggled(DesktopControl::Agent::isActive());
-   on_btnDctn_toggled(DesktopControl::Agent::isActive());
-   m_prgTraining->setValue(3);
-   m_prgTraining->setMaximum(10);
-   updateContent();
-}
-
-Main::~Main() {
-    delete m_ui;
+   //m_ui->btnDsktpCntrl->setChecked(DesktopControl::Agent::isActive());
+   //m_ui->btnDctn->setChecked(Dictation::Agent::isActive());
+   //on_btnDsktpCntrl_toggled(DesktopControl::Agent::isActive());
+   //on_btnDctn_toggled(DesktopControl::Agent::isActive());
+    m_prgStatusbar->setValue(3);
+    m_prgStatusbar->setMaximum(10);
+    updateContent();
 }
 
 /// @todo Instead of this constant ticking, use signals to update this code.
@@ -109,14 +107,8 @@ void Main::on_actionStartTraining_triggered()
     }
 }
 
-/// @todo Invoke the process of starting up desktop control.
-void SpeechControl::Windows::Main::on_actionStartDesktopControl_triggered()
-{
-    m_ui->statusBar->showMessage("This feature hasn't been implemented yet.");
-    DesktopControl::Agent::start();
-}
 
-void SpeechControl::Windows::Main::on_btnDsktpCntrl_toggled(bool checked)
+void Main::on_btnDsktpCntrl_toggled(bool checked)
 {
     QPushButton* l_btn = m_ui->btnDsktpCntrl;
     if (checked)
@@ -125,7 +117,7 @@ void SpeechControl::Windows::Main::on_btnDsktpCntrl_toggled(bool checked)
         l_btn->setStyleSheet(QString::null);
 }
 
-void SpeechControl::Windows::Main::on_btnDctn_toggled(bool checked)
+void Main::on_btnDctn_toggled(bool checked)
 {
     QPushButton* l_btn = m_ui->btnDctn;
     if (checked)
@@ -135,7 +127,7 @@ void SpeechControl::Windows::Main::on_btnDctn_toggled(bool checked)
 }
 
 /// @todo Allow configuration option to show specific notifcations to prevent noise.
-void SpeechControl::Windows::Main::desktopControlToggled(const bool p_val)
+void Main::desktopControlToggled(const bool p_val)
 {
     QPushButton* l_btn = m_ui->btnDsktpCntrl;
     l_btn->setChecked(p_val);
@@ -145,7 +137,7 @@ void SpeechControl::Windows::Main::desktopControlToggled(const bool p_val)
 }
 
 /// @todo Allow configuration option to show specific notifcations to prevent noise.
-void SpeechControl::Windows::Main::dictationToggled(const bool p_val)
+void Main::dictationToggled(const bool p_val)
 {
     QPushButton* l_btn = m_ui->btnDctn;
     l_btn->setChecked(p_val);
@@ -154,18 +146,40 @@ void SpeechControl::Windows::Main::dictationToggled(const bool p_val)
     //PanelIcon::instance()->showMessage("Dictation State Changed",m_ui->statusBar->currentMessage());
 }
 
-void SpeechControl::Windows::Main::on_btnDsktpCntrl_clicked()
+void Main::on_actionStartDesktopControl_triggered()
 {
-    if (DesktopControl::Agent::isActive())
+    /*if (DesktopControl::Agent::isActive())
         DesktopControl::Agent::stop();
     else
         DesktopControl::Agent::start();
+    */
 }
 
-void SpeechControl::Windows::Main::on_btnDctn_clicked()
+void Main::on_actionStartDictation_triggered()
 {
-    if (Dictation::Agent::isActive())
+    /*if (Dictation::Agent::isActive())
         Dictation::Agent::stop();
     else
-        Dictation::Agent::start();
+        Dictation::Agent::start();*/
+}
+
+void Main::on_actionAboutQt_triggered()
+{
+    QApplication::aboutQt();
+}
+
+void Main::on_actionAboutSpeechControl_triggered()
+{
+    AboutDlg l_dlg(this);
+    l_dlg.exec();
+}
+
+void Main::setProgress ( const double p_prgs )
+{
+    const int l_val = (int) (p_prgs * 100);
+    m_prgStatusbar->setValue(l_val);
+}
+
+Main::~Main() {
+    delete m_ui;
 }

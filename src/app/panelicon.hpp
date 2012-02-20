@@ -25,6 +25,7 @@
 
 // Qt includes
 #include <QSystemTrayIcon>
+#include <QMenu>
 
 namespace SpeechControl {
 
@@ -43,7 +44,7 @@ public:
 
 private:
     static PanelIcon* s_inst;
-    //AppIndicator* m_indicator;
+    QMenu* m_menu;
 };
 
 }

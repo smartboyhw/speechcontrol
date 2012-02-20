@@ -7,11 +7,11 @@ set(PROJECT_VERSION "0.1")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
 ## Options to toggle components of SpeechControl.
+option(WITH_TESTS              "Generate the test build system?"            ON)
 option(WITH_PYTHON_BINDINGS    "Generate Python support for SpeechControl?" ON)
 option(WITH_DBUS               "Add D-Bus support to SpeechControl?"        ON)
 option(WITH_API_DOCS           "Generate Doxygen-made API documentation?"   ON)
 option(WITH_KDE                "Build this application for KDE?"            OFF)
-option(WITH_TESTS              "Generate the test build system?"            OFF)
 
 ## required packages
 find_package(PkgConfig REQUIRED)
@@ -21,17 +21,16 @@ find_package(Qt4 4.7 COMPONENTS
   QtXml
   REQUIRED)
 find_package(QtGStreamer REQUIRED)
-pkg_search_module(POCKETSPHINX REQUIRED pocketsphinx sphinxbase)
+pkg_check_modules(POCKETSPHINX REQUIRED pocketsphinx sphinxbase)
 
 execute_process(COMMAND ${PKGCONFIG_EXECUTABLE} pocketsphinx --variable=modeldir RESULT_VARIABLE POCKETSPHINX_MODELDIR)
-
-include("${QT_USE_FILE}")
 
 ## variables
 set(SPCHCNTRL_INCLUDE_DIRS ${QT_INCLUDE_DIR}
     ${POCKETSPHINX_INCLUDE_DIRS}
     ${QTGSTREAMER_INCLUDE_DIR})
-set(SPCHCNTRL_LIBRARIES ${QT_LIBRARIES}
+set(SPCHCNTRL_LIBRARIES ${QT_QTCORE_LIBRARY}
+    ${QT_QTXML_LIBRARY}
     ${QTGLIB_LIBRARIES}
     ${QTGSTREAMER_LIBRARIES}
     ${QTGSTREAMER_UI_LIBRARIES}
@@ -42,10 +41,11 @@ set(SPCHCNTRL_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/share/cmake/SpeechControl")
 set(SPCHCNTRL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 set(SPCHCNTRL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
 set(SPCHCNTRL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include/speechcontrol")
-set(SPCHCNTRL_COMPILE_FLAGS "-Wall"
-    "-std=c++0x"
-    ${QTGSTREAMER_FLAGS})
+set(SPCHCNTRL_COMPILE_FLAGS "-Wall -std=c++0x ${QTGSTREAMER_FLAGS}")
 set(SPCHCNTRL_COMPILE_DEFINITIONS )
+
+## Now we'll add in the Qt stuff
+include("${QT_USE_FILE}")
 
 ## The subdirectories :)
 add_subdirectory(interfaces)
@@ -53,6 +53,9 @@ add_subdirectory(cmake)
 add_subdirectory(ui)
 add_subdirectory(src)
 add_subdirectory(tests)
+
+## Set up some dependencies.
+add_dependencies(speechcontrol spchcntrl)
 
 ## Got docs? :D
 if (WITH_API_DOCS)

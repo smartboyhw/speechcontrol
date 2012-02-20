@@ -8,15 +8,16 @@ file(GLOB_RECURSE SPCHCNTRL_UI "../../ui/*.ui")
 file(GLOB SPCHCNTRL_QRESC "../../ui/*.qrc")
 
 ## Needed variables
-set(SPCHCNTRL_APP_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS})
 set(SPCHCNTRL_APP_COMPILE_FLAGS ${SPCHCNTRL_COMPILE_FLAGS})
+set(SPCHCNTRL_APP_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS})
 set(SPCHCNTRL_APP_INCLUDE_DIR "${SPCHCNTRL_INCLUDE_DIR}/app")
 set(SPCHCNTRL_APP_INCLUDE_DIRS ${SPCHCNTRL_LIB_INCLUDE_DIR}
     ${SPCHCNTRL_INCLUDE_DIRS})
-set(SPCHCNTRL_APP_LIBRARIES ${SPCHCNTRL_LIBRARIES} spchcntrl)
+set(SPCHCNTRL_APP_LIBRARIES ${SPCHCNTRL_LIBRARIES}
+    ${QT_QTGUI_LIBRARY}
+    spchcntrl)
 set(SPCHCNTRL_APP_DATA "${CMAKE_INSTALL_PREFIX}/share/speechcontrol")
-set(SPCHCNTRL_APP_SOURCE_DIRECTORIES "desktopcontrol"
-    "dictation" "plugins" "sessions" "windows" "wizards")
+set(SPCHCNTRL_APP_SOURCE_DIRECTORIES "plugins" "sessions" "windows" "wizards")
 
 ## Setting up KDE integration
 if(WITH_KDE)
@@ -39,33 +40,36 @@ endif(WITH_KDE)
 ## Setting up D-Bus support.
 if(WITH_DBUS)
     if(QT_QTDBUS_FOUND)
-        message(STATUS "Support for D-Bus enabled; Qt-DBus found.")
+        message(STATUS "Support for D-Bus enabled; QtDBus found.")
         list(APPEND SPCHCNTRL_APP_COMPILE_DEFINITIONS HAVE_DBUS)
     else(QT_QTDBUS_FOUND)
-        message(STATUS "Support for D-Bus disabled since Qt-DBus couldn't be not found.")
+        message(STATUS "Support for D-Bus disabled since QtDBus couldn't be not found.")
+        set(WITH_DBUS OFF)
     endif(QT_QTDBUS_FOUND)
 else(WITH_DBUS)
     message(STATUS "Support for D-Bus disabled.")
 endif(WITH_DBUS)
 
-include_directories("${SPCHCNTRL_APP_INCLUDE_DIRS}"
-    "${PROJECT_SOURCE_DIR}/../lib")
-
-foreach(SPCHCNTRL_APP_SOURCE_DIRECTORY ${SPCHCNTRL_APP_SOURCE_DIRECTORIES})
-    add_subdirectory("${SPCHCNTRL_APP_SOURCE_DIRECTORY}")
-endforeach(SPCHCNTRL_APP_SOURCE_DIRECTORY)
-
+## Do some Qt-specific stuff (and check if we're playing with KDE).
 if (KDE4_FOUND)
     kde4_add_ui_files(SPCHCNTRL_APP_SCPP ${SPCHCNTRL_UI})
 else (KDE4_FOUND)
     QT4_WRAP_UI(SPCHCNTRL_APP_SHPP ${SPCHCNTRL_UI})
-    QT4_WRAP_CPP(SPCHCNTRL_APP_SCPP ${SPCHCNTRL_APP_SHPP})
+    QT4_WRAP_CPP(SPCHCNTRL_APP_SCPP ${SPCHCNTRL_APP_SHPP} OPTIONS -nw)
 endif (KDE4_FOUND)
 
 QT4_ADD_RESOURCES(SPCHCNTRL_APP_SCPP ${SPCHCNTRL_QRESC})
 
-include_directories(${SPCHCNTRL_APP_INCLUDE_DIRS})
+## Add sub-directories.
+foreach(SPCHCNTRL_APP_SOURCE_DIRECTORY ${SPCHCNTRL_APP_SOURCE_DIRECTORIES})
+    add_subdirectory("${SPCHCNTRL_APP_SOURCE_DIRECTORY}")
+endforeach(SPCHCNTRL_APP_SOURCE_DIRECTORY)
 
+if(WITH_DBUS)
+    add_subdirectory(dbus)
+endif(WITH_DBUS)
+
+## Define the exectuable target (check for KDE again!)
 if(KDE4_FOUND)
     kde4_add_executable(speechcontrol ${SPCHCNTRL_APP_SCPP})
 else(KDE4_FOUND)
@@ -73,8 +77,9 @@ else(KDE4_FOUND)
 endif(KDE4_FOUND)
 
 set_target_properties(spchcntrl PROPERTIES
-    COMPILE_FLAGS ${SPCHCNTRL_APP_COMPILE_FLAGS}
-    #COMPILE_DEFINITIONS ${SPCHCNTRL_APP_COMPILE_DEFINITIONS}
+    DEFINE_SYMBOL "SPCHCNTRL_APP"
+    COMPILE_FLAGS "${SPCHCNTRL_APP_COMPILE_FLAGS}"
+    COMPILE_DEFINITIONS "${SPCHCNTRL_APP_COMPILE_DEFINITIONS}"
     PROJECT_LABEL "SpeechControl")
 
 target_link_libraries(speechcontrol ${SPCHCNTRL_APP_LIBRARIES})
@@ -95,3 +100,7 @@ install(FILES ${SPCHCNTRL_APP_SHPP}
 install(FILES ${SPCHCNTRL_UI} ${SPCHCNTRL_QRESC}
     DESTINATION "${SPCHCNTRL_APP_DATA}"
     COMPONENT "dev")
+
+## Finally include directories.
+include_directories(${SPCHCNTRL_APP_INCLUDE_DIRS}
+    "${PROJECT_SOURCE_DIR}/../lib")

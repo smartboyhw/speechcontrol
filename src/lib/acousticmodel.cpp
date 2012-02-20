@@ -63,3 +63,21 @@ const quint16 AcousticModel::sampleRate() const
 void AcousticModel::setSampleRate(const quint16 &p_rate)
 {
 }
+
+#ifdef WITH_PYTHON_BINDINGS
+
+#include <boost/python.hpp>
+#include <boost/noncopyable.hpp>
+
+BOOST_PYTHON_MODULE(spchcntrl)
+{
+    using namespace boost::python;
+
+    class_<AcousticModel>("AcousticModel", no_init)
+    .add_property("samplerate"   , &AcousticModel::sampleRate, &AcousticModel::setSampleRate)
+    .add_property("parameters"   , &AcousticModel::parameters, &AcousticModel::setParameters)
+    ;
+
+}
+
+#endif

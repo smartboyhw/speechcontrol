@@ -300,4 +300,24 @@ Microphone::~Microphone()
     release();
 }
 
+#ifdef WITH_PYTHON_BINDINGS
+
+#include <boost/python.hpp>
+#include <boost/noncopyable.hpp>
+
+BOOST_PYTHON_MODULE(spchcntrl)
+{
+    using namespace boost::python;
+
+    class_<Microphone>("Microphone", no_init)
+    .add_property("uuid"     , &Microphone::uuid)
+    .add_property("active"       , &Microphone::active)
+    .add_property("friendlyName" , &Microphone::friendlyName)
+    //.def("defaultMicrophone", &Microphone::defaultMicrophone)
+    ;
+
+}
+
+#endif
+
 // kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on;  replace-tabs on;

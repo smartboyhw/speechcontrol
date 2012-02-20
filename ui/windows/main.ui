@@ -246,7 +246,7 @@ color: rgb(0, 0, 0);</string>
      <x>0</x>
      <y>0</y>
      <width>397</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -273,20 +273,40 @@ color: rgb(0, 0, 0);</string>
      <addaction name="actionStartTraining"/>
      <addaction name="actionAdaptModels"/>
     </widget>
+    <widget class="QMenu" name="menuDesktopControl">
+     <property name="title">
+      <string>Desktop Control..</string>
+     </property>
+     <addaction name="actionStartDesktopControl"/>
+     <addaction name="separator"/>
+     <addaction name="actionOptionsDesktopControl"/>
+    </widget>
+    <widget class="QMenu" name="menuDictation">
+     <property name="title">
+      <string>Dictation..</string>
+     </property>
+     <addaction name="actionStartDictation"/>
+     <addaction name="separator"/>
+     <addaction name="actionDictationOptions_2"/>
+    </widget>
+    <widget class="QMenu" name="menuWizards">
+     <property name="title">
+      <string>Wizards..</string>
+     </property>
+     <addaction name="actionWizardAddBook"/>
+     <addaction name="actionWizardCreateSession"/>
+     <addaction name="actionWizardMicrophoneSetup"/>
+     <addaction name="actionWizardQuickStart"/>
+     <addaction name="actionVoxForge"/>
+    </widget>
     <addaction name="menuTraining"/>
+    <addaction name="menuDesktopControl"/>
+    <addaction name="menuDictation"/>
     <addaction name="separator"/>
-    <addaction name="actionOptions"/>
-   </widget>
-   <widget class="QMenu" name="menuDesktop_Control">
-    <property name="title">
-     <string>Desktop Control</string>
-    </property>
-    <addaction name="actionStartDesktopControl"/>
-    <addaction name="separator"/>
-    <addaction name="actionOptionsDesktopControl"/>
+    <addaction name="menuWizards"/>
+    <addaction name="actionGeneralOptions"/>
    </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuDesktop_Control"/>
    <addaction name="menuTools"/>
    <addaction name="menuHelp"/>
   </widget>
@@ -309,7 +329,7 @@ color: rgb(0, 0, 0);</string>
     <string>F1</string>
    </property>
   </action>
-  <action name="actionOptions">
+  <action name="actionGeneralOptions">
    <property name="text">
     <string>&amp;Options..</string>
    </property>
@@ -360,6 +380,41 @@ color: rgb(0, 0, 0);</string>
     <string>Adapt</string>
    </property>
   </action>
+  <action name="actionStartDictation">
+   <property name="text">
+    <string>Start..</string>
+   </property>
+  </action>
+  <action name="actionDictationOptions_2">
+   <property name="text">
+    <string>Options..</string>
+   </property>
+  </action>
+  <action name="actionWizardAddBook">
+   <property name="text">
+    <string>Add Book..</string>
+   </property>
+  </action>
+  <action name="actionWizardCreateSession">
+   <property name="text">
+    <string>Create Session..</string>
+   </property>
+  </action>
+  <action name="actionWizardMicrophoneSetup">
+   <property name="text">
+    <string>Microphone Setup</string>
+   </property>
+  </action>
+  <action name="actionWizardQuickStart">
+   <property name="text">
+    <string>Quick Start</string>
+   </property>
+  </action>
+  <action name="actionVoxForge">
+   <property name="text">
+    <string>VoxForge</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="2" margin="2"/>
  <resources>
@@ -395,6 +450,54 @@ color: rgb(0, 0, 0);</string>
     <hint type="destinationlabel">
      <x>-1</x>
      <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnDctn</sender>
+   <signal>clicked()</signal>
+   <receiver>actionStartDictation</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>294</x>
+     <y>124</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionStartDictation</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>btnDctn</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>294</x>
+     <y>124</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>294</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionStartDesktopControl</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>btnDsktpCntrl</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>294</x>
+     <y>79</y>
     </hint>
    </hints>
   </connection>

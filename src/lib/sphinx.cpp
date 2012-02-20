@@ -115,3 +115,19 @@ const double SphinxResult::confidence() const
 SphinxResult::~SphinxResult() {
 
 }
+
+#ifdef WITH_PYTHON_BINDINGS
+
+#include <boost/python.hpp>
+#include <boost/noncopyable.hpp>
+
+BOOST_PYTHON_MODULE(spchcntrl)
+{
+    using namespace boost::python;
+
+    class_<Sphinx>("Sphinx", init<const AcousticModel*>("AcousticModel"))
+    .add_property("text", &Sphinx::text)
+    ;
+}
+
+#endif

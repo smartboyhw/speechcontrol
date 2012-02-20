@@ -33,9 +33,11 @@ add_executable(test@TEST_ID@ ${TEST_BASE_SRCS} @TEST_SRC@)
 include_directories("${TEST_INCLUDE_DIRS}")
 
 set_target_properties(test@TEST_ID@ PROPERTIES
-    COMPILE_DEFINITIONS ${TEST_COMPILE_DEFINITIONS}
-    COMPILE_FLAGS ${TEST_COMPILE_FLAGS})
+    COMPILE_DEFINITIONS "${TEST_COMPILE_DEFINITIONS}"
+    COMPILE_FLAGS "${TEST_COMPILE_FLAGS}")
 
 target_link_libraries(test@TEST_ID@ ${TEST_LIBRARIES})
+
+add_dependencies(test@TEST_ID@ spchcntrl)
 
 add_test(NAME test@TEST_ID@ COMMAND $<TARGET_FILE:test@TEST_ID@>)

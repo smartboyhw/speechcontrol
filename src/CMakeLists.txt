@@ -5,4 +5,3 @@ include_directories("${PROJECT_SOURCE_DIR}/src")
 
 add_subdirectory(lib)
 add_subdirectory(app)
-add_subdirectory(python)

@@ -64,4 +64,33 @@ void System::stop()
 {
     s_inst->deleteLater();
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on; 
+
+#ifdef WITH_PYTHON_BINDINGS
+// Boost includes
+#include <boost/python.hpp>
+#include <boost/noncopyable.hpp>
+
+struct SystemStruct {
+public:
+    static void start() {
+        SpeechControl::System::start();
+    }
+
+    static void stop() {
+        SpeechControl::System::stop();
+    }
+};
+
+BOOST_PYTHON_MODULE(spchcntrl)
+{
+    using namespace boost::python;
+
+    class_<SystemStruct>("System", no_init)
+    .def("stop" , &SystemStruct::stop)
+    .def("start", &SystemStruct::start)
+    ;
+}
+
+#endif
+
+// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on;

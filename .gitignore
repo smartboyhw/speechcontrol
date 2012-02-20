@@ -8,4 +8,4 @@ CMakeLists.txt.user
 *.pyc
 debian
 config.hpp
-tests/builds/*
+tests/cmake/*

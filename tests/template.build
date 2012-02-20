@@ -1,0 +1,11 @@
+###############################
+##
+## Build file for @TEST_ID@ ##
+##
+###############################
+
+add_executable(test-@TEST_ID@ @TEST_SRC@)
+
+target_link_libraries(test-@TEST_ID@ ${SPCHCNTRL_TEST_LIBRARIES})
+
+add_test(NAME test-@TEST_ID@ COMMAND $<TARGET_FILE:test-@TEST_ID@>)

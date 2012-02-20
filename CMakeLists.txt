@@ -52,17 +52,20 @@ endif()
 include_directories(${SPCHCNTRL_INCLUDE_DIRS}
   "${PROJECT_SOURCE_DIR}/src")
 
+add_subdirectory(cmake)
 add_subdirectory(src)
 add_subdirectory(ui)
+add_subdirectory(tests)
 
 if(DOXYGEN_FOUND)
     find_program(HAVE_DOT dot)
     if(HAVE_DOT)
-        message("Found 'dot' program, Doxygen will use it to generate graphs for documentation.")
+        message(STATUS "Found 'dot' program, Doxygen will use it to generate graphs for documentation.")
         set(HAVE_DOT YES)
     else(HAVE_DOT)
         set(HAVE_DOT NO)
     endif(HAVE_DOT)
+
     configure_file("${PROJECT_SOURCE_DIR}/Doxyfile.in" "${PROJECT_BINARY_DIR}/Doxyfile")
     add_custom_target(doc ALL
         ${DOXYGEN_EXECUTABLE} Doxyfile

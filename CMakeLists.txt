@@ -70,7 +70,7 @@ if(DOXYGEN_FOUND)
     add_custom_target(doc ALL
         ${DOXYGEN_EXECUTABLE} Doxyfile
         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}"
-        COMMENT "Generating API documentation with Doxygen...")
+        COMMENT "Generating API documentation with Doxygen (output at ${PROJECT_BINARY_DIR}/Doxygen.output)...")
 
     install(DIRECTORY "${PROJECT_SOURCE_DIR}/doc/"
             DESTINATION "${CMAKE_INSTALL_PREFIX}/share/doc/libspeechcontrol"

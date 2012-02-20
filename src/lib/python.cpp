@@ -19,6 +19,8 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#ifdef PYTHON_BINDINGS
+
 // Boost includes
 #include <boost/python.hpp>
 #include <boost/noncopyable.hpp>
@@ -72,3 +74,7 @@ BOOST_PYTHON_MODULE(spchcntrl)
       .add_property("text", &Sphinx::text)
     ;
 }
+
+#else
+#warning "Python bindings for libspeechcontrol have been disabled. Ensure that your build system has found the required libraries and development files to re-enable binding support."
+#endif /** PYTHON_BINDINGS */

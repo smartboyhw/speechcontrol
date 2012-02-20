@@ -107,7 +107,6 @@ void Main::on_actionStartTraining_triggered()
     }
 }
 
-
 void Main::on_btnDsktpCntrl_toggled(bool checked)
 {
     QPushButton* l_btn = m_ui->btnDsktpCntrl;

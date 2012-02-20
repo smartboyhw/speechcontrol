@@ -48,7 +48,7 @@ QString AboutDlg::about() const {
            "&copy;2010 - 2012 by the Synthetic Intellect Institute<br>"
            "<a href=\"http://wiki.thesii.org/SpeechControl\">http://wiki.thesii.org/SpeechControl</a><br>"
            "<a href=\"irc://irc.freenode.net/sii-speechcontrol\">#sii-speechcontrol</a> on <a href=\"http://www.freenode.net\">Freenode</a><br><br>"
-           "Quassel IRC is licensed under <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>"
+           "SpeechControl is licensed under <a href=\"http://www.gnu.org/licenses/gpl-3.0.txt\">GPLv3</a>.<br>"
            "Please use <a href=\"http://tasks.thesii.org\">http://tasks.thesii.org</a> to report bugs."
           );
 

@@ -10,11 +10,13 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 pkg_search_module(CPPTEST libcpptest)
 
 file(GLOB TEST_BASE_SRCS "*.cpp")
+file(GLOB TEST_BASE_HDRS "*.hpp")
 
 ## Variables
-set(TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS})
+set(TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS}
+                             MODULE=@TEST_ID@Suite)
 set(TEST_COMPILE_FLAGS ${SPCHCNTRL_COMPILE_FLAGS})
-set(TEST_INCLUDE_DIRS ${SPCHCNTRL_INCLUDE_DIRS})
+set(TEST_INCLUDE_DIRS ${SPCHCNTRL_INCLUDE_DIRS} "include")
 set(TEST_LIBRARIES ${SPCHCNTRL_LIBRARIES} ${CPPTEST_LIBRARIES} spchcntrl)
 
 ## Add support for backtraces
@@ -28,16 +30,21 @@ if(EXECINFO_FOUND)
     list(APPEND TEST_INCLUDE_DIRS ${EXECINFO_INCLUDES})
 endif(EXECINFO_FOUND)
 
+QT4_WRAP_CPP(TEST_BASE_SRCS ${TEST_BASE_HDRS})
+
 add_executable(test@TEST_ID@ ${TEST_BASE_SRCS} @TEST_SRC@)
 
 include_directories("${TEST_INCLUDE_DIRS}")
 
 set_target_properties(test@TEST_ID@ PROPERTIES
     COMPILE_DEFINITIONS "${TEST_COMPILE_DEFINITIONS}"
-    COMPILE_FLAGS "${TEST_COMPILE_FLAGS}")
+    COMPILE_FLAGS "${TEST_COMPILE_FLAGS}"
+    EchoString "Built test @TEST_ID@"
+    EXCLUDE_FROM_ALL ON)
 
 target_link_libraries(test@TEST_ID@ ${TEST_LIBRARIES})
 
 add_dependencies(test@TEST_ID@ spchcntrl)
+add_dependencies(tests test@TEST_ID@)
 
 add_test(NAME test@TEST_ID@ COMMAND $<TARGET_FILE:test@TEST_ID@>)

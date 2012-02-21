@@ -32,6 +32,5 @@ using namespace SpeechControl;
 
 int main(int argc, char** argv){
     Test::TextOutput l_output(Test::TextOutput::Verbose);
-    TestModule l_suite;
-    return l_suite.run(l_output) ? EXIT_SUCCESS : EXIT_FAILURE;
+    return TestModule::instance()->run(l_output) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

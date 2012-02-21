@@ -18,25 +18,14 @@
  *  Boston, MA 02110-1301, USA.
  */
 
-#include <cpptest-assert.h>
+#include <cpptest-suite.h>
 
-// local includes
-#include "include/asr.hpp"
-#include "base.hpp"
+class MODULE : public Test::Suite {
+public:
+    MODULE();
 
-using namespace SpeechControl;
-
-MODULE::MODULE() {
-    TEST_ADD( MODULE::testInitialize )
-    TEST_ADD( MODULE::testInvoke )
-
-    TestModule::instance()->add(std::auto_ptr<Test::Suite>(this));
-}
-
-void MODULE::testInitialize() {
-    TEST_THROWS_NOTHING_MSG( 0 , "Example system." )
-}
-
-void MODULE::testInvoke() {
-    TEST_FAIL( "Testing failures." )
-}
+private:
+    static MODULE* s_inst;
+    void testInitialize();
+    void testInvoke();
+};

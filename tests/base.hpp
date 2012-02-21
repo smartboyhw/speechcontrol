@@ -21,16 +21,27 @@
 #ifndef TEST_BASE_HPP
 #define TEST_BASE_HPP
 
+#include <QObject>
 #include <cpptest-suite.h>
 
+class MODULE;
+
 namespace SpeechControl {
-    class TestModule : public Test::Suite {
+    class TestModule : public QObject, public Test::Suite {
+        Q_OBJECT
+
+    signals:
+        void testInvoked();
+
     private:
         void handleTest();
+        static TestModule* s_inst;
 
     public:
         TestModule();
+        virtual ~TestModule();
         void dumpBacktrace();
+        static TestModule* instance();
     };
 }
 #endif

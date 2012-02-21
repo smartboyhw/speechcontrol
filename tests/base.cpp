@@ -19,28 +19,44 @@
  */
 
 #ifdef HAVE_EXECINFO
-#include <execinfo.h>
+    #include <execinfo.h>
 #endif
 
 #include <cpptest-assert.h>
-
 #include "base.hpp"
 
-SpeechControl::TestModule::TestModule()
+using SpeechControl::TestModule;
+
+TestModule* TestModule::s_inst = 0;
+
+TestModule::TestModule()
 {
-    TEST_ADD( TestModule::handleTest)
+    TEST_ADD( TestModule::handleTest )
 }
 
-void SpeechControl::TestModule::handleTest()
+TestModule* TestModule::instance()
 {
-    dumpBacktrace();
+    if (s_inst == 0)
+        s_inst = new TestModule;
+
+    return s_inst;
 }
 
-void SpeechControl::TestModule::dumpBacktrace()
+void TestModule::handleTest()
+{
+    emit testInvoked();
+}
+
+void TestModule::dumpBacktrace()
 {
 #ifdef HAVE_EXECINFO
     TEST_THROWS_NOTHING_MSG(1,"Backtrace dumping support not implemented.")
 #else
     TEST_THROWS_NOTHING_MSG(1,"Support for backtraces weren't enabled.")
 #endif
+}
+
+TestModule::~TestModule()
+{
+
 }

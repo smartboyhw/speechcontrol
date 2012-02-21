@@ -20,7 +20,7 @@ set(SPCHCNTRL_APP_DATA "${CMAKE_INSTALL_PREFIX}/share/speechcontrol")
 set(SPCHCNTRL_APP_SOURCE_DIRECTORIES "plugins" "sessions" "windows" "wizards")
 
 ## Setting up KDE integration
-if(WITH_KDE)
+if(WITH_KDE_SUPPORT)
     find_package(KDE4)
     if (KDE4_FOUND)
         include (KDE4Defaults)
@@ -33,9 +33,9 @@ if(WITH_KDE)
     else(KDE4_FOUND)
         message(STATUS "KDE integration disabled; required development files not found.")
     endif(KDE4_FOUND)
-else(WITH_KDE)
+else(WITH_KDE_SUPPORT)
     message(STATUS "KDE integration disabled.")
-endif(WITH_KDE)
+endif(WITH_KDE_SUPPORT)
 
 ## Setting up D-Bus support.
 if(WITH_DBUS)

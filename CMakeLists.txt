@@ -11,7 +11,7 @@ option(WITH_TESTS              "Generate the test build system?"            ON)
 option(WITH_PYTHON_BINDINGS    "Generate Python support for SpeechControl?" ON)
 option(WITH_DBUS               "Add D-Bus support to SpeechControl?"        ON)
 option(WITH_API_DOCS           "Generate Doxygen-made API documentation?"   ON)
-option(WITH_KDE                "Build this application for KDE?"            OFF)
+option(WITH_KDE_SUPPORT        "Build another application for KDE?"         OFF)
 
 ## required packages
 find_package(PkgConfig REQUIRED)
@@ -72,7 +72,7 @@ if (WITH_API_DOCS)
         endif(HAVE_DOT)
 
         configure_file("${PROJECT_SOURCE_DIR}/Doxyfile.in" "${PROJECT_BINARY_DIR}/Doxyfile")
-        add_custom_target(doc-api ALL
+        add_custom_target(docs
             ${DOXYGEN_EXECUTABLE} Doxyfile
             WORKING_DIRECTORY "${PROJECT_BINARY_DIR}"
             COMMENT "Generating API documentation with Doxygen (output at ${PROJECT_BINARY_DIR}/Doxygen.output)...")

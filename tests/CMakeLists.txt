@@ -1,11 +1,11 @@
 project(SpeechControlTests)
+
 if(WITH_TESTS)
     message(STATUS "Building tests enabled.")
 
     ## required packages
     list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
     include(CTest)
-    include(CTestConfig.cmake)
     enable_testing()
 
     # Execinfo is needed for generating backtraces

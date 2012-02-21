@@ -35,22 +35,22 @@ Factory::Factory( ) : QObject(QApplication::instance())
 
 PluginList Factory::availablePlugins()
 {
-
+    return PluginList();
 }
 
 PluginList Factory::loadedPlugins()
 {
-
+    return PluginList();
 }
 
-const bool Factory::loadPlugin ( const QUuid& )
+const bool Factory::loadPlugin ( const QUuid& p_uuid )
 {
-
+    return false;
 }
 
-const bool Factory::unloadPlugin ( const QUuid& )
+const bool Factory::unloadPlugin ( const QUuid& p_uuid )
 {
-
+    return false;
 }
 
 Factory::~Factory()

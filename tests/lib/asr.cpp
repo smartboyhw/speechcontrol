@@ -20,6 +20,8 @@
 
 #include <cpptest-assert.h>
 
+#include <lib/dummysc.hpp>
+
 // local includes
 #include "include/asr.hpp"
 #include "base.hpp"
@@ -34,7 +36,8 @@ MODULE::MODULE() {
 }
 
 void MODULE::testInitialize() {
-    TEST_THROWS_NOTHING_MSG( 0 , "Example system." )
+    SpeechControl::DummySC* l_asr;
+    TEST_ASSERT_MSG(l_asr == new SpeechControl::DummySC, "Failed to initialize variable.")
 }
 
 void MODULE::testInvoke() {

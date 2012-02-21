@@ -20,6 +20,8 @@
 #ifndef DUMMYSC_HPP
 #define DUMMYSC_HPP
 
+#include <QObject>
+#include <QGst/Pipeline>
 #include <asr.hpp>
 
 namespace SpeechControl {
@@ -30,13 +32,13 @@ class DummySC : public ASR
 
 public:
     explicit DummySC (QObject* parent = 0);
-    
+
     DummySC (QGst::PipelinePtr pipeline, QObject* parent = 0);
-    
+
     DummySC (const char* description, QObject* parent = 0);
-    
+
     DummySC (const QString& description, QObject* parent = 0);
-    
+
 public slots:
     void applicationMessage(const QGst::MessagePtr& message);
 };

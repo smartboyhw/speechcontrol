@@ -17,9 +17,16 @@ you to:
   * control your desktop using commands
 
 2. Bug Reporting
-Any and all bugs should be reported to http://tasks.thesii.org/projects/spchcntrl-app.
-That link points to the issue tracking system used to maintain any and all activities
-pertaining to SpeechControl.
+
+Any and all bugs should be reported to http://tasks.thesii.org/.
+That link points to the issue tracking system used to maintain any and all
+activities pertaining to SpeechControl.
+
+It's recommended that you first test if SpeechControl works on your system
+and then try debugging SpeechControl. To produce meaningful information
+for SpeechControl bug reporting, try building SpeechControl with
+CMAKE_BUILD_TYPE set to 'RelWithDebInfo' or 'Debugfull'.
+
 
 3. Contact
 You can reach the development team behind SpeechControl at their

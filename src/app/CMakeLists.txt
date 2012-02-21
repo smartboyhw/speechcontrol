@@ -76,13 +76,19 @@ else(KDE4_FOUND)
     add_executable(speechcontrol ${SPCHCNTRL_APP_SCPP})
 endif(KDE4_FOUND)
 
-set_target_properties(spchcntrl PROPERTIES
+set_target_properties(speechcontrol PROPERTIES
     DEFINE_SYMBOL "SPCHCNTRL_APP"
     COMPILE_FLAGS "${SPCHCNTRL_APP_COMPILE_FLAGS}"
     COMPILE_DEFINITIONS "${SPCHCNTRL_APP_COMPILE_DEFINITIONS}"
     PROJECT_LABEL "SpeechControl")
-
+add_dependencies(speechcontrol spchcntrl)
 target_link_libraries(speechcontrol ${SPCHCNTRL_APP_LIBRARIES})
+
+## Add a 'run' target for convenience.
+add_custom_target(run
+    $<TARGET_FILE:speechcontrol>
+    DEPENDS speechcontrol)
+add_dependencies(run speechcontrol)
 
 ## Installs
 if (KDE4_FOUND)

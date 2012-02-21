@@ -1,22 +1,115 @@
-Installing
+Installing SpeechControl
 =================
 
-1. Building
-Commands for building SpeechControl are boilerplate-like.
+1. Required Packages
 
-$ mkdir build
-$ cd build
-$ cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug
-$ make
-# make install
+SpeechControl's core requires that you have the following packages installed:
 
-After that, you can invoke 'speechcontrol' from the command line.
+    * CMake 2.8
+      # apt-get install cmake
 
-2. Needed Libraries
+    * Qt 4.7.2 (or higher) and its development files
+      # apt-get install libqt4-dev
 
-SpeechControl needs Qt and PocketSphinx's development files to build.
-We also provide Python bindings by using Boost's python module.
+    * Qt bindings to GStreamer (0.10) and its development files
+      # apt-get install libqtgstreamer-dev
 
-$ apt-get install cmake libqt4-dev libpocketsphinx-dev libsphinxbase-dev libboost-python-dev libboost-dev python-dev
+    * CMUSphinx's PocketSphinx speech recognition library and its development
+      files
+      # apt-get install libpocketsphinx-dev libsphinxbase-dev
 
-That'll fix any dependencies.
+    * [Optional] Development files for Python 2.7 (or higher)
+      # apt-get install python-dev
+
+    * [Optional] Boost's Python module 1.46
+      # apt-get install libboost-python-dev
+
+    * [Optional] Development files for kdelibs (4.7.2 or higher)
+      # apt-get install kdelibs5-dev
+
+2. Configuration
+
+In order to maintain cleanliness of the source code directory, we typically
+manage all of CMake's routine work (as well as Make's) in a sub-directory.
+For convenience's sake, we'll call it 'build'. So from the source code
+directory; we make a new directory and go into it.
+
+    $ mkdir build && cd build
+
+By default, SpeechControl builds with the following configuration values:
+
+    Configuration Value     :   Value
+    ---------------------------------------------------------------------------
+    WITH_PYTHON_BINDINGS        ON  (bindings for libspeechcontrol)
+    WITH_TESTS                  ON  (initializes the test build system)
+    WITH_API_DOCS               ON  (generates documentation about API)
+    WITH_DBUS_SUPPORT           ON  (adds D-Bus support)
+    WITH_KDE_SUPPORT            OFF (builds another KApplication-based binary)
+
+These values only recognize the values 'ON' and 'OFF'. You can change these
+values by doing the following:
+
+    $ cmake -DWITH_TESTS=OFF        # disable tests
+    $ cmake -DWITH_KDE_SUPPORT=ON   # enable KDE support and generates another
+                                    # target
+
+3. Building
+
+To build SpeechControl, invoke the 'make' command from your specified
+build directory.
+
+    $ make
+
+    $ make docs                     # Generates API documentation (if
+                                    # WITH_API_DOCS = ON)
+
+    $ make tests                    # Builds the tests (but doesn't execute
+                                    # them, see 4. Testing)
+
+4. Testing
+
+You can test parts of SpeechControl and submit loads of information for
+developers, packagers and future testers to determine what and where needs
+to be tweaked so that SpeechControl can be properly built across multiple
+systems. Part of the information sent back to the Synthetic Intellect Institute
+development's CDash system looks like this (taken from JackyAlcine's system):
+
+<Site BuildName="Linux-c++"
+    BuildStamp="20120220-2311-Continuous"
+    Name="tafc-desktop"
+    Generator="ctest-2.8.5"
+    CompilerName="/usr/bin/c++"
+    OSName="Linux"
+    Hostname="tafc-desktop"
+    OSRelease="3.0.0-16-generic"
+    OSVersion="#29-Ubuntu SMP Tue Feb 14 12:49:42 UTC 2012"
+    OSPlatform="i686"
+    Is64Bits="0"
+    VendorString="GenuineIntel"
+    VendorID="Intel Corporation"
+    FamilyID="6"
+    ModelID="15"
+    ProcessorCacheSize="1024"
+    NumberOfLogicalCPU="2"
+    NumberOfPhysicalCPU="2"
+    TotalVirtualMemory="3906"
+    TotalPhysicalMemory="3016"
+    LogicalProcessorsPerPhysical="1"
+    ProcessorClockFrequency="2200"
+>
+...
+</Site>
+
+Operating system information as well a bit of information about your
+hardware are all collected with a log of the test suite output. Such
+information is required in the nature of testing and CDash.
+
+5. Running
+
+From the build directory, you can invoke SpeechControl by:
+
+    * invoking the 'run' target of the build system
+        $ make run
+                        - or -
+    * directly running the application.
+        $ src/app/speechcontrol

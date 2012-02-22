@@ -1,11 +1,7 @@
 /**
  * This file is part of SpeechControl
  *
-<<<<<<< HEAD
  * Copyright 2011 SpeechControl Developers <spchcntrl-devel@thesii.org>
-=======
- * Copyright 2011 Jacky Alcine <jacky.alcine@thesii.org>
->>>>>>> FETCH_HEAD
  *
  * SpeechControl is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License as
@@ -29,28 +25,88 @@
 #include <QObject>
 #include <sphinx.hpp>
 
+/**
+ * @brief Namespace containing all of SpeechControl's definitions.
+ **/
 namespace SpeechControl {
+    /**
+     * @brief Namespace containing the Desktop Control utilities.
+     **/
     namespace DesktopControl {
         class Agent;
 
+        /**
+         * @brief ...
+         **/
         class Agent : public QObject
         {
             Q_OBJECT
             Q_DISABLE_COPY(Agent)
 
         signals:
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             void started();
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             void stopped();
+            /**
+             * @brief ...
+             *
+             * @param  ...
+             * @return void
+             **/
+            void stateChanged(const bool);
 
         public:
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             explicit Agent(QObject* = 0);
+            /**
+             * @brief ...
+             *
+             **/
             virtual ~Agent();
 
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             static void start();
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             static void stop();
+            /**
+             * @brief ...
+             *
+             * @param  ...
+             * @return void
+             **/
             static void invokeCommand(const QString&);
-
+            /**
+             * @brief ...
+             *
+             * @return :DesktopControl::Agent*
+             **/
             static Agent* instance();
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             static const bool isActive();
 
         private:

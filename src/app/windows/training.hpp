@@ -22,19 +22,27 @@
 #ifndef TRAINING_WINDOW_HPP
 #define TRAINING_WINDOW_HPP
 
+// Qt includes
 #include <QDialog>
+
+// libspchcntrl includes
+#include <sentence.hpp>
+
+// local includes
+#include <sessions/session.hpp>
 
 namespace Ui {
     class Training;
 }
 
 namespace SpeechControl {
-    class Session;
-    class Sentence;
 
 namespace Windows {
 
-class Training : public QDialog
+    /**
+     * @brief ...
+     **/
+    class Training : public QDialog
 {
     Q_OBJECT
     Q_PROPERTY(Session* Session READ session WRITE setSession)

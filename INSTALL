@@ -13,8 +13,10 @@ $ make
 After that, you can invoke 'speechcontrol' from the command line.
 
 2. Needed Libraries
-SpeechControl needs Qt and PocketSphinx's development files to build.
 
-$ apt-get install cmake libqt4-dev libpocketsphinx-dev libsphinxbase-dev
+SpeechControl needs Qt and PocketSphinx's development files to build.
+We also provide Python bindings by using Boost's python module.
+
+$ apt-get install cmake libqt4-dev libpocketsphinx-dev libsphinxbase-dev libboost-python-dev libboost-dev python-dev
 
 That'll fix any dependencies.

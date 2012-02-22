@@ -30,23 +30,78 @@ namespace SpeechControl {
     namespace Dictation {
         class Agent;
 
+        /**
+         * @brief ...
+         **/
         class Agent : public QObject
         {
             Q_OBJECT
 
         signals:
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             void started();
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             void stopped();
+            /**
+             * @brief ...
+             *
+             * @param  ...
+             * @return void
+             **/
+            void stateChanged(const bool);
+            /**
+             * @brief ...
+             *
+             * @param  ...
+             * @return void
+             **/
             void textRecieved(const QString&);
 
         public:
+            /**
+             * @brief ...
+             *
+             * @param parent ... Defaults to 0.
+             **/
             explicit Agent(QObject* parent = 0);
+            /**
+             * @brief ...
+             *
+             **/
             virtual ~Agent();
 
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             static void start();
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             static void stop();
 
+            /**
+             * @brief ...
+             *
+             * @return :Dictation::Agent*
+             **/
             static Agent* instance();
+            /**
+             * @brief ...
+             *
+             * @return const bool
+             **/
             static const bool isActive();
 
         private:

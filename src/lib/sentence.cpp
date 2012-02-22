@@ -74,6 +74,31 @@ Sentence* Sentence::create(Corpus *l_sess, const QString& l_txt)
     return l_sess->addSentence(new Sentence(l_sess,l_elem));
 }
 
+const bool Sentence::allPhrasesCompleted() const
+{
+    Q_FOREACH(const Phrase* l_phrs, m_phrsLst){
+        if (!l_phrs->isCompleted())
+            return false;
+    }
+
+    return true;
+}
+
+const bool Sentence::isPhraseCompleted(const int &p_indx) const
+{
+    return m_phrsLst.at(p_indx)->isCompleted();
+}
+
+const int Sentence::index() const
+{
+    return m_elem->attribute("index").toInt();
+}
+
+SpeechControl::Sentence* SpeechControl::Corpus::sentenceAt(const int &p_indx) const
+{
+    return m_sntncLst.at(p_indx);
+}
+
 Sentence::~Sentence()
 {
     // What to clean up? :P

@@ -29,29 +29,91 @@ namespace SpeechControl {
     namespace Plugins {
         class Factory;
 
+        /**
+         * @brief ...
+         **/
         class Factory : public QObject
         {
             Q_OBJECT
 
         signals:
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             void started();
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             void stopped();
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             void pluginLoaded();
+            /**
+             * @brief ...
+             *
+             * @param  ...
+             * @return void
+             **/
             void pluginLoaded(const QString& );
+            /**
+             * @brief ...
+             *
+             * @return void
+             **/
             void pluginUnloaded();
+            /**
+             * @brief ...
+             *
+             * @param  ...
+             * @return void
+             **/
             void pluginUnloaded(const QString& );
 
         public:
-            explicit Factory(QObject* parent = 0);
-            Factory();
             virtual ~Factory();
 
+            /**
+             * @brief ...
+             *
+             * @param  ...
+             * @return const bool
+             **/
             static const bool loadPlugin(const QUuid& );
+            /**
+             * @brief ...
+             *
+             * @param  ...
+             * @return const bool
+             **/
             static const bool unloadPlugin(const QUuid& );
+            /**
+             * @brief ...
+             *
+             * @return :Plugins::PluginList
+             **/
             static PluginList loadedPlugins();
+            /**
+             * @brief ...
+             *
+             * @return :Plugins::PluginList
+             **/
             static PluginList availablePlugins();
+            /**
+             * @brief ...
+             *
+             * @return :Plugins::Factory*
+             **/
+            static Factory* instance();
 
         private:
+            explicit Factory();
             static Factory* s_inst;
         };
     }

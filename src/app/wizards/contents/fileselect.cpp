@@ -58,8 +58,8 @@ void SpeechControl::Wizards::Pages::FileSelectionPage::on_toolButton_clicked()
         if (l_dom.setContent(l_file,&l_errMsg,&l_errLn,&l_errCol)){
             qDebug() << l_dom.documentElement().nodeName();
             const QDomElement l_book = l_dom.documentElement().namedItem("Book").toElement();
-            const QString l_author = l_book.attribute("Author");
-            const QString l_title = l_book.attribute("Title");
+            const QString l_author = l_book.attribute("author");
+            const QString l_title = l_book.attribute("title");
             const QString l_text = l_dom.documentElement().namedItem("Text").toElement().text();
             m_ui->lineEditAuthor->setText(l_author);
             m_ui->lineEditTitle->setText(l_title);

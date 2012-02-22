@@ -12,4 +12,4 @@ set(SPCHCNTRL_LIBRARY_DIRS "@SPCHCNTRL_LIB_DIR@")
 include("@SPCHCNTRL_CMAKE_DIR@/SpeechCntrlLibraryDepends.cmake" OPTIONAL)
 
 # These are IMPORTED targets created by SpeechControlLibraryDepends.cmake
-set(SPCHCNTRL_LIBRARIES spchcntrl)
+set(SPCHCNTRL_LIBRARIES "@SPCHCNTRL_LIBRARIES@")

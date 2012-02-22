@@ -27,14 +27,33 @@ using namespace SpeechControl::Plugins;
 
 Factory* Factory::s_inst = 0;
 
-Factory::Factory() : QObject(QApplication::instance())
+Factory::Factory( ) : QObject(QApplication::instance())
 {
     s_inst = this;
     connect(QApplication::instance(),SIGNAL(aboutToQuit()),this,SLOT(stop()));
+}
+
+PluginList Factory::availablePlugins()
+{
+
+}
+
+PluginList Factory::loadedPlugins()
+{
+
+}
+
+const bool Factory::loadPlugin ( const QUuid& )
+{
+
+}
+
+const bool Factory::unloadPlugin ( const QUuid& )
+{
+
 }
 
 Factory::~Factory()
 {
 
 }
-

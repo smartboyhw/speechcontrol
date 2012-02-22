@@ -44,7 +44,7 @@ using namespace SpeechControl;
 
 using namespace SpeechControl::Wizards;
 
-using SpeechControl::Core;
+using SpeechControl::Application::Core;
 
 Core* Core::s_inst = 0;
 
@@ -96,7 +96,7 @@ void Core::start()
 {
     Windows::Main* l_mw = new Windows::Main;
 
-    if (!s_inst->m_settings->contains ("User/Name")) {
+    if (!QFile::exists(s_inst->m_settings->fileName())) {
         if (QMessageBox::question (l_mw, tr ("First Run"),
                                    tr ("This seems to be the first time you've run SpeechControl on this system. "
                                        "A wizard allowing you to start SpeechControl will appear."), QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
@@ -131,4 +131,4 @@ Core * SpeechControl::Core::instance()
 {
     return s_inst;
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on;

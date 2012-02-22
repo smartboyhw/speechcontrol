@@ -41,12 +41,16 @@ Agent* Agent::instance(){
 
 void Agent::start()
 {
-
+    emit instance()->stateChanged(true);
 }
 
 void Agent::stop()
 {
+    emit instance()->stateChanged(false);
+}
 
+const bool Agent::isActive() {
+    return false;
 }
 
 Agent::~Agent()

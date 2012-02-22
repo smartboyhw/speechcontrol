@@ -20,29 +20,32 @@
 #ifndef ASR_HPP
 #define ASR_HPP
 
-#define MODELDIR "/usr/share/pocketsphinx/model"
-
-#include <QtCore/QObject>
-#include <QtCore/QMap>
+// Qt includes
+#include <QMap>
 #include <QDir>
+#include <QObject>
 
+// QGlib includes
 #include <QGlib/Value>
 
+// QGst includes
 #include <QGst/Pipeline>
 #include <QGst/Bus>
 #include <QGst/Message>
+
+// local includes
+#include <config.hpp>
 
 namespace SpeechControl
 {
 
 /**
  * @brief Automatic Speech Recognition class
- * ASR is an abstract class responsible for handling GStreamer
- * audio and PocketSphinx plugins and management of dictionaries,
- * language and acoustic models. It also performs acoustic training and
- * adjusts models to its needs.
+ * ASR (or automatic speech recognition) is an abstract class responsible
+ * for handling GStreamer audio and PocketSphinx plugins and management
+ * of dictionaries, language and acoustic models. It also performs
+ * acoustic training and adjusts models to its needs.
  */
-
 class ASR : public QObject
 {
 
@@ -92,12 +95,24 @@ public:
      * @brief Get underlying decoder
      * @returns Pointer to the decoder.
      */
-    QGlib::Value getPsDecoder() const;
+    QGlib::Value getDecoder() const;
 
+    /**
+     * @brief Obtains the language model used by Sphinx.
+     * @returns A @c QDir to the langauge model in use.
+     */
     QDir getLanguageModel() const;
 
+    /**
+     * @brief Obtains the dictionary used.
+     * @returns A @c QDir pointing to the directory.
+     */
     QDir getDictionary() const;
 
+    /**
+     * @brief Obtains the acoustic model in use.
+     * @returns The acoustic model used by this.
+     */
     QDir getAcousticsModel() const;
 
     /**
@@ -146,16 +161,28 @@ public:
         _vader->setProperty(property.toStdString().c_str(), value);
     }
 
+    /**
+     * @brief Sets the language model to use.
+     * @param path The path to the language to be used.
+     */
     void setLanguageModel(const QString& path);
 
+    /**
+     * @brief Sets the dictionary to be used.
+     * @param path The path to the dictionary.
+     */
     void setDictionary(const QString& path);
 
+    /**
+     * @brief Sets the acoustic model to be used.
+     * @param path The path to the acoustic model.
+     */
     void setAcousticModel(const QString& path);
 
     /**
      * @brief Check whether ASR is ready to use
      */
-    bool ready() const;
+    bool isReady() const;
 
     /**
      * @brief Pause the pipeline
@@ -172,7 +199,7 @@ public:
 signals:
     /// @todo Useful or not?
     void finished(QString& result);
-        
+
 public slots:
     /**
      * @brief Run the pipeline

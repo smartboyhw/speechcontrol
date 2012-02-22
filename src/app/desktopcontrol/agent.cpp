@@ -1,11 +1,7 @@
 /**
  * This file is part of SpeechControl
  *
-<<<<<<< HEAD
  * Copyright 2011 SpeechControl Developers <spchcntrl-devel@thesii.org>
-=======
- * Copyright 2011 Jacky Alcine <jacky.alcine@thesii.org>
->>>>>>> FETCH_HEAD
  *
  * SpeechControl is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License as
@@ -36,6 +32,8 @@ Agent::Agent(QObject* p_prnt) : QObject(p_prnt)
 {
   s_inst = this;
   m_sphnx = new Sphinx;
+  connect(this, SIGNAL(started()), m_sphnx, SLOT(startRecognizing()));
+  connect(this, SIGNAL(stopped()), m_sphnx, SLOT(stopRecognizing()));
 }
 
 Agent::Agent(const Agent& p_other) : QObject(p_other.parent()),
@@ -58,16 +56,19 @@ Agent* Agent::instance()
   return s_inst;
 }
 
+/// @todo Instead of using Sphinx directly, use the ASR function.
 void Agent::start()
 {
-    connect(instance(), SIGNAL(started()), instance()->m_sphnx, SLOT(startRecognizing()));
-    connect(instance(), SIGNAL(stopped()), instance()->m_sphnx, SLOT(stopRecognizing()));
+    instance()->m_sphnx->startRecognizing();
+    emit instance()->stateChanged(true);
     emit instance()->started();
 }
 
 void Agent::stop()
 {
-  emit instance()->stopped();
+    instance()->m_sphnx->stopRecognizing();
+    emit instance()->stateChanged(false);
+    emit instance()->stopped();
 }
 
 void Agent::invokeCommand ( const QString& p_command )

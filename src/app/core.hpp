@@ -27,19 +27,18 @@
 #include <QObject>
 #include <QVariant>
 
+#include <windows/main.hpp>
+
 class QSettings;
 
 namespace SpeechControl
 {
 
-namespace Windows {
+namespace Application {
 
-struct Main;
-}
-
-/// @todo Allow versioning of the configuration.
-/// @todo Remove reference to Windows::Main.
-
+/**
+ * @brief ...
+ **/
 class Core : public QObject
 {
     Q_OBJECT
@@ -48,14 +47,49 @@ class Core : public QObject
     friend class Windows::Main;
 
 signals:
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
     void started();
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
     void stopped();
 
 public:
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @param  ...
+     **/
     Core (int, char**);
     virtual ~Core();
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @param  ... Defaults to QVariant().
+     * @return QVariant
+     **/
     QVariant getConfig (const QString&, QVariant = QVariant()) const;
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @param  ...
+     * @return void
+     **/
     void setConfig (const QString&, const QVariant&);
+    /**
+     * @brief ...
+     *
+     * @return :Application::Core*
+     **/
     static Core* instance();
 
 public slots:
@@ -75,5 +109,8 @@ private:
 };
 }
 
+typedef Application::Core Core;
+}
+
 #endif // CORE_HPP
-// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on;

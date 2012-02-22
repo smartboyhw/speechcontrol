@@ -19,8 +19,11 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef SPCHCNTRL_CONFIG_HPP
-#define SPCHCNTRL_CONFIG_HPP
+#ifndef SPCHCNTRL_APP_CONFIG_HPP
+#define SPCHCNTRL_APP_CONFIG_HPP
+
+// libspchcntrl includes
+#include <config.hpp>
 
 #define SPCHCNTRL_PLUGINS_DIR "@SPCHCNTRL_PLUGINS_DIR@"
 #define SPCHCNTRL_PLUGINS_CONFIG_DIR "@SPCHCNTRL_PLUGINS_CONFIG_DIR@"

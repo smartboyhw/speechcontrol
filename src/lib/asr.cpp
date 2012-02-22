@@ -30,15 +30,15 @@ void ASR::_prepare()
 {
     _psphinx = _pipeline->getElementByName ("asr");
     _vader   = _pipeline->getElementByName ("vad");
-    
+
     QGlib::connect (_psphinx, "partial_result", this, &ASR::asrPartialResult);
     QGlib::connect (_psphinx, "result", this, &ASR::asrResult);
 //     _psphinx->setProperty ("configured", true);
-    
+
     _bus = _pipeline->bus();
     _bus->addSignalWatch();
     QGlib::connect (_bus, "message::application", this, &ASR::applicationMessage);
-    
+
     _pipeline->setState (QGst::StateReady);
     _state = Ready;
 }
@@ -59,7 +59,7 @@ ASR::ASR (const char* description, QObject* parent) : QObject (parent)
     _pipeline = QGst::Pipeline::create();
     QGst::BinPtr bin = QGst::Bin::fromDescription (description);
     _pipeline->add (bin);
-    
+
     _prepare();
 }
 
@@ -69,7 +69,7 @@ ASR::ASR (const QString& description, QObject* parent) : QObject (parent)
     _pipeline = QGst::Pipeline::create();
     QGst::BinPtr bin = QGst::Bin::fromDescription (description.toStdString().c_str());
     _pipeline->add (bin);
-    
+
     _prepare();
 }
 
@@ -89,23 +89,26 @@ QString ASR::getStandardDescription()
 }
 
 /// @todo How to deal with this decoder in GValue?
-QGlib::Value ASR::getPsDecoder() const
+QGlib::Value ASR::getDecoder() const
 {
     return _psphinx->property("decoder");
 }
 
+/// @todo Should we implement a class/struct to wrap these values more programatically?
 QDir ASR::getLanguageModel() const
 {
     QGlib::Value lm = _psphinx->property("lm");
     return QDir(lm.get<QString>());
 }
 
+/// @todo Rewrite the @c Dictionary class to be used here.
 QDir ASR::getDictionary() const
 {
     QGlib::Value dict = _psphinx->property("dict");
     return QDir(dict.get<QString>());
 }
 
+/// @todo Rewrite the @c AcousticModel class to be used here.
 QDir ASR::getAcousticsModel() const
 {
     QGlib::Value hmm = _psphinx->property("hmm");
@@ -113,7 +116,6 @@ QDir ASR::getAcousticsModel() const
 }
 
 const QGst::PipelinePtr ASR::getPipeline() const
-
 {
     return _pipeline;
 }
@@ -141,7 +143,7 @@ const QGst::BusPtr ASR::getBus() const
 // {
 //     _psphinx->setProperty(property.toStdString().c_str(), value.toStdString().c_str());
 // }
-// 
+//
 // template<>
 // void ASR::setVaderProperty<QString>(const QString& property, const QString& value)
 // {
@@ -166,14 +168,14 @@ void ASR::setDictionary (const QString& path)
 
 void ASR::setAcousticModel (const QString& path)
 {
-    
+
     if (QDir(path).exists())
         setPsProperty("hmm", path);
     else
         qWarning() << "[ASR] Given acoustic model path" << path << "does not exist.";
 }
 
-bool ASR::ready() const
+bool ASR::isReady() const
 {
     return _state == Ready;
 }
@@ -181,7 +183,7 @@ bool ASR::ready() const
 void ASR::run()
 {
     qDebug() << "[ASR start]";
-    if (ready())
+    if ( isReady())
         _pipeline->setState(QGst::StatePlaying);
     else
         qWarning() << "[ASR] Object is not ready to run.";

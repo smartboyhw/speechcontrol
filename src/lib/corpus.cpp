@@ -1,6 +1,8 @@
 #include "corpus.hpp"
 #include "sentence.hpp"
 
+#include <QDir>
+#include <QFileInfo>
 #include <QDebug>
 #include <QDateTime>
 #include <QDomDocument>
@@ -124,7 +126,11 @@ Corpus* Corpus::obtain(const QUuid &l_uuid)
         return 0;
     }
 
-    return new Corpus(l_uuid);
+    Corpus* l_crps = new Corpus(l_uuid);
+    if (!l_crps->isValid())
+        return 0;
+
+    return l_crps;
 }
 
 void Corpus::load(const QUuid &p_uuid)
@@ -154,8 +160,17 @@ void Corpus::load(const QUuid &p_uuid)
             addSentence(l_sntc);
         }
         m_uuid = p_uuid;
-    } else
+    } else {
+        m_dom = 0;
+        m_dict = 0;
+        m_sntncLst = SentenceList();
+        m_uuid = QUuid(QString::null);
         qDebug() << "Failed to open corpus XML file.";
+    }
+}
+
+const bool Corpus::isValid() const {
+    return m_dom && m_dict && m_sntncLst.length() != 0 && !m_uuid.isNull();
 }
 
 void Corpus::save()
@@ -166,7 +181,7 @@ void Corpus::save()
         QTextStream l_strm(l_file);
         m_dom->save(l_strm,4);
     } else
-        qDebug() << "Can't open:" << l_file->errorString();
+        qWarning() << "Can't write to" << l_file->fileName() << ":" << l_file->errorString();
 }
 
 CorpusList Corpus::allCorpuses()
@@ -182,11 +197,29 @@ CorpusList Corpus::allCorpuses()
     return l_lst;
 }
 
-void Corpus::erase() const
+void Corpus::erase()
 {
     const QUrl l_path = getPath(m_uuid);
     QDir* l_dir = new QDir(l_path.toLocalFile());
     l_dir->rmdir(l_dir->absolutePath());
+}
+
+Corpus* Corpus::clone() const
+{
+    QUuid l_uuid = QUuid::createUuid();
+    QDir l_thisDir(QDir::homePath() + "./speechcontrol/corpus/" + m_uuid.toString());
+    QDir l_newDir(QDir::homePath() + "./speechcontrol/corpus/" + l_uuid.toString());
+    l_newDir.mkpath(l_newDir.absolutePath());
+    QStringList l_lst = l_newDir.entryList((QStringList() << "*"),QDir::NoDotAndDotDot | QDir::Files,QDir::NoSort);
+
+    Q_FOREACH(QString l_pth, l_lst)
+    {
+        QFile* l_file = new QFile(l_pth);
+        const QString l_newPth = l_pth.replace(m_uuid.toString(),l_uuid.toString());
+        l_file->copy(l_newPth);
+    }
+
+    return Corpus::obtain(l_uuid);
 }
 
 /// @todo What to clean-up?

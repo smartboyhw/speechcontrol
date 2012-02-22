@@ -19,11 +19,15 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <QIcon>
+#include <QApplication>
+
+// libappindicator includes
+/// @todo Fix the conflicting issues here. MOC keeps picking up code in GTK and messing things up.
+//#include <libappindicator/app-indicator.h>
+
 #include "core.hpp"
 #include "panelicon.hpp"
-
-#include <QApplication>
-#include <QIcon>
 
 using namespace SpeechControl;
 
@@ -33,10 +37,9 @@ PanelIcon* PanelIcon::s_inst = 0;
 PanelIcon::PanelIcon() :
     QSystemTrayIcon(Core::instance())
 {
-    QIcon icon;
-    icon.addFile(QString::fromUtf8(":/logo/sc"), QSize(), QIcon::Normal, QIcon::Off);
-    setIcon(icon);
+    setIcon(QIcon("qrc:///logo/sc"));
     setToolTip("SpeechControl");
+    //AppIndicator* m_indicator = app_indicator_new("spchcntrl","accessibilty",APP_INDICATOR_CATEGORY_SYSTEM_SERVICES);
 }
 
 PanelIcon::~PanelIcon() {

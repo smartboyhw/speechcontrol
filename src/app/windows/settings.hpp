@@ -32,7 +32,10 @@ namespace Ui {
 namespace SpeechControl {
 namespace Windows {
 
-class Settings : public QDialog
+    /**
+     * @brief ...
+     **/
+    class Settings : public QDialog
 {
     Q_OBJECT
 

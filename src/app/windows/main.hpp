@@ -22,7 +22,9 @@
 #ifndef MAIN_HPP
 #define MAIN_HPP
 
+#include <QTimer>
 #include <QObject>
+#include <QProgressBar>
 #include <QMainWindow>
 
 namespace Ui {
@@ -31,7 +33,13 @@ namespace Ui {
 
 namespace SpeechControl {
     class User;
+    /**
+     * @brief ...
+     **/
     namespace Windows {
+        /**
+         * @brief ...
+         **/
         class Main : public QMainWindow {
             Q_OBJECT
         public:
@@ -43,11 +51,19 @@ namespace SpeechControl {
             void on_actionOptions_triggered();
             void on_actionStartTraining_triggered();
             void on_actionAdaptModels_triggered();
-
             void on_actionStartDesktopControl_triggered();
+            void on_btnDsktpCntrl_toggled(bool checked);
+            void on_btnDctn_toggled(bool checked);
+            void desktopControlToggled(const bool);
+            void dictationToggled(const bool);
+            void on_btnDsktpCntrl_clicked();
+            void on_btnDctn_clicked();
+            void updateContent();
 
         private:
             Ui::MainWindow* m_ui;
+            QProgressBar* m_prgTraining;
+            QTimer* m_tckr;
         };
     }
 }

@@ -115,31 +115,35 @@ public:
      * @see Sentence
      * @see Dictionary
      */
-    class Corpus : public QObject {
+
+    class Corpus : public QObject
+    {
         Q_OBJECT
-        Q_DISABLE_COPY(Corpus)
-        Q_PROPERTY(SentenceList Sentences READ sentences)
-        Q_PROPERTY(Dictionary* Dictionary READ dictionary)
-        Q_PROPERTY(const QUuid Uuid READ uuid)
+        Q_DISABLE_COPY (Corpus)
+        Q_PROPERTY (SentenceList Sentences READ sentences)
+        Q_PROPERTY (Dictionary* Dictionary READ dictionary)
+        Q_PROPERTY (const QUuid Uuid READ uuid)
+
         friend class Sentence;
+
         friend class Dictionary;
 
     public:
-        Corpus(const QUuid& );
+        Corpus (const QUuid&);
         virtual ~Corpus();
         /**
          * @brief Obtains an existing Corpus from its specified UUID.
          * @param p_uuid The UUID of the corpus to be found.
          * @return A pointer to a @c Corpus object if found, else NULL.
          */
-        static Corpus* obtain(const QUuid&);
+        static Corpus* obtain (const QUuid&);
 
         /**
          * @brief Generates a new, generic corpus from a list of strings.
          * @param p_lst The list of strings ( as a @c QStringList ) to be used.
          * @return A pointer to the generated @c Corpus .
          */
-        static Corpus* create(const QStringList&);
+        static Corpus* create (const QStringList&);
 
         /**
          * @brief Obtains a listing of all of the corpuses.
@@ -154,14 +158,14 @@ public:
          * @return True, if the @c Corpus exists; otherwise, returns false.
          * @note This method does a bit of nitty-gritty searching, just checks for a folder.
          */
-        static const bool exists(const QUuid&);
+        static const bool exists (const QUuid&);
 
         /**
          * @brief Adds a sentence to this @c Corpus .
          * @param p_sntct The @c Sentence to be added.
          * @return The @c Sentence that was added.
          */
-        Sentence* addSentence(Sentence*);
+        Sentence* addSentence (Sentence*);
 
         /**
          * @brief Adds a sentence to this @c Corpus , in its more raw format.
@@ -169,7 +173,7 @@ public:
          * @param p_audio The @c QFile that represents the transcribed audio of the @c Sentence.
          * @return The @c Sentence that was formed and then added.
          */
-        Sentence* addSentence(const QString&, const QFile*);
+        Sentence* addSentence (const QString&, const QFile*);
 
         /**
          * @brief Determines the time when training of this @c Corpus began.
@@ -205,7 +209,7 @@ public:
          * @brief Obtains a specific @c Sentence object at a specified index.
          * @return A pointer to the @c Sentence object at that index, or NULL.
          */
-        Sentence* sentenceAt(const int&) const;
+        Sentence* sentenceAt (const int&) const;
 
         /**
          * @brief Obtains the @c QUuid identifying this @c Corpus
@@ -231,17 +235,17 @@ public:
          */
         const bool isValid() const;
 
-        static QUrl getPath(const QUuid&);
+        static QUrl getPath (const QUuid&);
 
-        Corpus& operator<<(Sentence*);
-        Corpus& operator<<(SentenceList&);
+        Corpus& operator<< (Sentence*);
+        Corpus& operator<< (SentenceList&);
 
     public slots:
         /**
          * @brief Loads the @c Corpus data using its identifying @c QUuid.
          * @param p_uuid The @c QUuid identifying this @c Corpus.
          */
-        void load(const QUuid&);
+        void load (const QUuid&);
 
         /**
          * @brief Saves this @c Corpus's information.
@@ -258,5 +262,6 @@ public:
         Dictionary* m_dict;
     };
 }
+
 #endif // CORPUS_HPP
-// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on;

@@ -7,58 +7,67 @@
 
 class QDomElement;
 
-namespace SpeechControl {
-    class Corpus;
-    class Phrase;
-    class Sentence;
+namespace SpeechControl
+{
 
-    typedef QList<Sentence*> SentenceList;
-    typedef QList<Phrase*> PhraseList;
+class Corpus;
 
-    class Phrase : public QObject {
-        Q_OBJECT
-        Q_DISABLE_COPY(Phrase)
-        friend class Sentence;
+class Phrase;
 
-    public:
-        virtual ~Phrase();
-        QFile* audio() const;
-        const QString text() const;
-        const int index() const;
-        const bool isCompleted() const;
+class Sentence;
 
-    private:
-        explicit Phrase(const Sentence*, const int& );
-        const Sentence* m_sntnc;
-        const int m_indx;
-    };
+typedef QList<Sentence*> SentenceList;
+typedef QList<Phrase*> PhraseList;
 
-    class Sentence : public QObject {
-        Q_OBJECT
-        Q_DISABLE_COPY(Sentence)
-        friend class Corpus;
-        friend class Phrase;
+class Phrase : public QObject
+{
+    Q_OBJECT
+    Q_DISABLE_COPY (Phrase)
 
-    public:
-        virtual ~Sentence();
-        static Sentence* create(Corpus* , const QString& );
-        Corpus* parentSession() const;
-        const QUuid uuid() const;
-        const QString text() const;
-        const QDir audioPath() const;
-        const PhraseList phrases() const;
-        const bool allPhrasesCompleted() const;
-        const bool isPhraseCompleted(const int& ) const;
-        const int index() const;
-        Phrase* phrase(const int& ) const;
+    friend class Sentence;
 
-    private:
-        explicit Sentence(Corpus*, QDomElement* );
-        QDomElement* getPhraseElement(const int& ) const;
-        QDomElement* m_elem;
-        Corpus* m_corpus;
-        PhraseList m_phrsLst;
-    };
+public:
+    virtual ~Phrase();
+    QFile* audio() const;
+    const QString text() const;
+    const int index() const;
+    const bool isCompleted() const;
+
+private:
+    explicit Phrase (const Sentence*, const int&);
+    const Sentence* m_sntnc;
+    const int m_indx;
+};
+
+class Sentence : public QObject
+{
+    Q_OBJECT
+    Q_DISABLE_COPY (Sentence)
+
+    friend class Corpus;
+
+    friend class Phrase;
+
+public:
+    virtual ~Sentence();
+    static Sentence* create (Corpus* , const QString&);
+    Corpus* parentSession() const;
+    const QUuid uuid() const;
+    const QString text() const;
+    const QDir audioPath() const;
+    const PhraseList phrases() const;
+    const bool allPhrasesCompleted() const;
+    const bool isPhraseCompleted (const int&) const;
+    const int index() const;
+    Phrase* phrase (const int&) const;
+
+private:
+    explicit Sentence (Corpus*, QDomElement*);
+    QDomElement* getPhraseElement (const int&) const;
+    QDomElement* m_elem;
+    Corpus* m_corpus;
+    PhraseList m_phrsLst;
+};
 
 }
 

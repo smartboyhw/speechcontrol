@@ -1,3 +1,23 @@
+/***
+ *  This file is part of SpeechControl.
+ *
+ *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *
+ *  SpeechControl is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Library General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  SpeechControl is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Library General Public License
+ *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
 #include "sentence.hpp"
 #include "corpus.hpp"
 #include <QDomNodeList>
@@ -48,6 +68,7 @@ Sentence* Sentence::create(Corpus *l_sess, const QString& l_txt)
     QDomElement* l_elem = new QDomElement(l_sess->m_dom->createElement("Sentence"));
     l_elem->setAttribute("file",QUuid::createUuid());
     l_elem->setAttribute("index",l_sess->sentences().count());
+    l_sess->m_dom->documentElement().namedItem("Sentences").appendChild(*l_elem);
 
     // form phrases
     QStringList l_words = l_txt.split(" ",QString::SkipEmptyParts);
@@ -74,7 +95,7 @@ Sentence* Sentence::create(Corpus *l_sess, const QString& l_txt)
     return l_sess->addSentence(new Sentence(l_sess,l_elem));
 }
 
-const bool Sentence::allPhrasesCompleted() const
+bool Sentence::allPhrasesCompleted() const
 {
     Q_FOREACH(const Phrase* l_phrs, m_phrsLst){
         if (!l_phrs->isCompleted())
@@ -84,12 +105,12 @@ const bool Sentence::allPhrasesCompleted() const
     return true;
 }
 
-const bool Sentence::isPhraseCompleted(const int &p_indx) const
+bool Sentence::isPhraseCompleted(const int &p_indx) const
 {
     return m_phrsLst.at(p_indx)->isCompleted();
 }
 
-const int Sentence::index() const
+int Sentence::index() const
 {
     return m_elem->attribute("index").toInt();
 }

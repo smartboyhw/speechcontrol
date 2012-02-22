@@ -7,6 +7,7 @@ SpeechControl's core requires that you have the following packages installed:
 
     * CMake 2.8
       # apt-get install cmake
+      # apt-get install cmake-qt-gui        # Install for a graphical interfaces
 
     * Qt 4.7.2 (or higher) and its development files
       # apt-get install libqt4-dev
@@ -53,6 +54,10 @@ values by doing the following:
     $ cmake -DWITH_KDE_SUPPORT=ON   # enable KDE support and generates another
                                     # target
 
+It's possible to produce more specific information about your configuration
+process and provide more direct information for troubleshooting. See the
+"Testing" section for more information.
+
 3. Building
 
 To build SpeechControl, invoke the 'make' command from your specified
@@ -66,7 +71,23 @@ build directory.
     $ make tests                    # Builds the tests (but doesn't execute
                                     # them, see 4. Testing)
 
-4. Testing
+It's possible to produce more concise dumps of information regarding your
+build experience. See the "Testing" section for more information.
+
+4. Running
+
+From the build directory, you can invoke SpeechControl by:
+
+    * invoking the 'run' target of the build system or,
+        $ make run
+
+    * directly running the application or,
+        $ src/app/speechcontrol
+
+It's possible to produce more verbose information during execution.
+See the "Testing" section for more information.
+
+5. Testing
 
 You can test parts of SpeechControl and submit loads of information for
 developers, packagers and future testers to determine what and where needs
@@ -104,12 +125,14 @@ Operating system information as well a bit of information about your
 hardware are all collected with a log of the test suite output. Such
 information is required in the nature of testing and CDash.
 
-5. Running
+To provide us with even more useful information regarding your building
+and testing experience (and it's recommended to do this if you build from
+source), invoke the entire configuring, build, execution and test system.
+Such information provides developers with valuable information. There's three
+tags used for such purposes, but the other two ('Continuous' and 'Nightly')
+are reserved for automated builds. Invoke the following:
 
-From the build directory, you can invoke SpeechControl by:
+    $ make Experimental
+    $ make Experimental                     # invokes all of the Experimental commands.
 
-    * invoking the 'run' target of the build system
-        $ make run
-                        - or -
-    * directly running the application.
-        $ src/app/speechcontrol
+CMake will then switch

@@ -1,0 +1,18 @@
+## @todo Finish working on this file, need more information on this procedure.
+[Desktop Entry]
+Type=Service
+Name=SpeechControl
+Icon=speechcontrol
+Categories=Qt;KDE;X-KDE-settings-accessibility
+Exec=kmcshell kcm_speechcontrol
+Comment=Configuration of SpeechControl.
+
+#X-DocPath=kcontrol/attica/index.html
+X-KDE-ModuleType=Library
+X-KDE-Library=kcm_speechcontrol
+X-KDE-Init-Symbol=speechcontrol
+X-KDE-ParentApp=kcontrol
+X-KDE-System-Settings-Category=accessibility
+X-KDE-System-Settings-Parent-Category=accessibility
+X-KDE-ServiceTypes=KCModule,KCModuleInit,SystemSettingsCategory
+X-KDE-Keywords=speech-recognition,blind,sii,synthetic-intellect-institute

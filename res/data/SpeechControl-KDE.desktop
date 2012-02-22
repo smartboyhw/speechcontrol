@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=SpeechControl
+Exec=speechcontrol-kde %i -caption "%c"
+Icon=/usr/share/icons/speechcontrol.png
+Type=Application
+GenericName=Speech Recognition for Linux
+Comment=A Speech recognition utility for Linux (tweaked for KDE)
+Categories=Utility;Accessibility;System;Qt;KDE;
+StartupNotify=true
+Terminal=false
+X-AppInstall-Package=speechcontrol-kde

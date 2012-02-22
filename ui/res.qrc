@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/logo">
-        <file alias="sii">img/sii.png</file>
-        <file alias="sc">img/sc.png</file>
-    </qresource>
-</RCC>

@@ -5,4 +5,11 @@
 * Construct individual segmentation audio recording; the recording of audio files to chunks, permitting undo and marginal training support.
 * Permit serialization to tarballs of segmented audio recording.
 * Correct the CMake build system to use sub-directories for each layer of code and UI.
-*
+* Should we use KDialogs or just stick to QDialogs?
+* Implement D-Bus integration of application.
+* Implement an abstract means of displaying notifications (includes QSystemTrayIcon, indicators, etc).
+* Build functionality for Ayanta notifications.
+* Build functionality for KDE notifications.
+* Build plasmoids (KDE-only) for desktop control, dictation and voice input.
+* Add support for KDE's System Settings panel to tweak SpeechControl (kcm-module).
+* Re-work SpeechControl to have a daemon run in the background that handles all of the speech recognition requests (speechcontrold).

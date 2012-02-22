@@ -15,7 +15,7 @@ if(WITH_TESTS)
     set(TEST_CMAKE_DIR "cmake")
 
     ## Add the meta-target to build all tests.
-    add_custom_target(tests)
+    add_custom_target(tests ALL)
     set_target_properties(tests PROPERTIES
         EchoString "Building tests...")
 
@@ -35,6 +35,7 @@ if(WITH_TESTS)
 
         file(WRITE ${TEST_BUILDFILE} ${TEST_DATA})
         include("${TEST_BUILDFILE}")
+        message(STATUS "Test ${TEST_ID} configured; awaiting build (i.e.: 'make ${TEST_ID}')")
     endforeach()
 else(WITH_TESTS)
     message(STATUS "Not generating tests.")

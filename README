@@ -25,14 +25,15 @@ activities pertaining to SpeechControl.
 It's recommended that you first test if SpeechControl works on your system
 and then try debugging SpeechControl. To produce meaningful information
 for SpeechControl bug reporting, try building SpeechControl with
-CMAKE_BUILD_TYPE set to 'RelWithDebInfo' or 'Debugfull'.
+CMAKE_BUILD_TYPE set to 'RelWithDebInfo' or 'Debugfull'. Check the INSTALL
+file for more information about the build and execution cycle of SpeechControl.
 
 
 3. Contact
 You can reach the development team behind SpeechControl at their
 mailing list <spchcntrl-devel@thesii.org>. The people who helped produce
-the software have a mailing list at <spchcntrl-users@thesii.org>. You
-can openly subscribe and add content to both of these mailing lists.
+and also use SpeechControl have a mailing list at <spchcntrl-users@thesii.org>.
+You can openly subscribe and add content to both of these mailing lists.
 Thank you for using our software.
 
 

@@ -1,5 +1,6 @@
 project(SpeechControlLibrary)
 cmake_minimum_required(VERSION 2.8)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 ## setting up sources
 file(GLOB SPCHCNTRL_LIB_SOURCES "*.cpp")

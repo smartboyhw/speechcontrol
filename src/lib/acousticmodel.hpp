@@ -25,32 +25,33 @@
 #include <QVariant>
 
 namespace SpeechControl {
-    class AcousticModel;
+class AcousticModel;
 
-    typedef QList<AcousticModel*> AcousticModelList;
+typedef QList<AcousticModel*> AcousticModelList;
 
-    /**
-     * @brief Represents an acoustic model for Sphinx.
-     *
-     * Acoustic models are
-     */
-    class AcousticModel : public QObject {
-        Q_OBJECT
-        Q_PROPERTY(const QVariantMap Parameters READ parameters WRITE setParameters)
-        Q_PROPERTY(const quint16 SampleRate READ sampleRate WRITE setSampleRate)
+/**
+ * @brief Represents an acoustic model for Sphinx.
+ *
+ * Acoustic models are
+ */
+class AcousticModel : public QObject {
+    Q_OBJECT
+    Q_PROPERTY ( const QVariantMap Parameters READ parameters WRITE setParameters )
+    Q_PROPERTY ( const quint16 SampleRate READ sampleRate WRITE setSampleRate )
 
-    public:
-        Q_DISABLE_COPY(AcousticModel)
-        virtual ~AcousticModel();
-        void setParameter(const QString&, const QVariant& );
-        void setParameters(const QVariantMap&);
-        void mergeParameters(const QVariantMap&);
-        QVariant parameter(const QString&) const;
-        const QVariantMap parameters() const;
-        const quint16 sampleRate() const;
-        void setSampleRate(const quint16&);
-    };
+public:
+    Q_DISABLE_COPY ( AcousticModel )
+    virtual ~AcousticModel();
+    void setParameter ( const QString&, const QVariant& );
+    void setParameters ( const QVariantMap& );
+    void mergeParameters ( const QVariantMap& );
+    QVariant parameter ( const QString& ) const;
+    const QVariantMap parameters() const;
+    const quint16 sampleRate() const;
+    void setSampleRate ( const quint16& );
+};
 }
 
 
 #endif // ACOUSTICMODEL_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

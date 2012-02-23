@@ -32,23 +32,22 @@
 using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
 
-QuickStart::QuickStart(QWidget *parent) :
-    WizardBase(parent)
-{
-    this->setWindowTitle(tr("Quick Start :: SpeechControl"));
-    QIcon l_icon = QIcon::fromTheme("preferences-desktop-personal");
-    setWindowTitle(tr("Quick Start - SpeechControl"));
-    setPixmap(QWizard::LogoPixmap,l_icon.pixmap(32,32,QIcon::Active,QIcon::On));
-    setPage(QuickStart::IntroductionPage,
-        NULL);
-    setPage(QuickStart::UserCreationPage,
-        NULL);
-    setPage(QuickStart::MicrophoneCreationPage,
-        NULL);
+QuickStart::QuickStart ( QWidget *parent ) :
+    WizardBase ( parent ) {
+    this->setWindowTitle ( tr ( "Quick Start :: SpeechControl" ) );
+    QIcon l_icon = QIcon::fromTheme ( "preferences-desktop-personal" );
+    setWindowTitle ( tr ( "Quick Start - SpeechControl" ) );
+    setPixmap ( QWizard::LogoPixmap,l_icon.pixmap ( 32,32,QIcon::Active,QIcon::On ) );
+    setPage ( QuickStart::IntroductionPage,
+              NULL );
+    setPage ( QuickStart::UserCreationPage,
+              NULL );
+    setPage ( QuickStart::MicrophoneCreationPage,
+              NULL );
     //setPage(QuickStart::BookAdditionPage,
     //        new Pages::BookAdditionPage);
-    setPage(QuickStart::ConclusionPage,
-        NULL);
+    setPage ( QuickStart::ConclusionPage,
+              NULL );
 }
 
 /// @todo The user's country could be automatically detected by QLocale.
@@ -58,33 +57,31 @@ void QuickStart::accept() {
     QVariantMap l_language;
     QString l_gender;
 
-    l_name["First"] = field("name-first");
-    l_name["Middle"] = field("name-middle");
-    l_name["Last"] = field("name-last");
+    l_name["First"] = field ( "name-first" );
+    l_name["Middle"] = field ( "name-middle" );
+    l_name["Last"] = field ( "name-last" );
 
-    l_language["Spoken"] = field("language-spoken");
-    l_language["Native"] = field("language-native");
+    l_language["Spoken"] = field ( "language-spoken" );
+    l_language["Native"] = field ( "language-native" );
 
-    if (field("is-gender-male").toBool())
+    if ( field ( "is-gender-male" ).toBool() )
         l_gender = "Male";
     else
         l_gender = "Female";
 
-    l_core->setConfiguration ("User/Name",l_name);
-    l_core->setConfiguration ("User/Gender",l_gender);
-    l_core->setConfiguration ("User/Language",l_language);
+    l_core->setConfiguration ( "User/Name",l_name );
+    l_core->setConfiguration ( "User/Gender",l_gender );
+    l_core->setConfiguration ( "User/Language",l_language );
 
-    l_core->setConfiguration ("User/Age",property("age"));
-    l_core->setConfiguration ("User/Country",property("country"));
-    l_core->setConfiguration ("Microphone/Default",property("mic-uuid"));
+    l_core->setConfiguration ( "User/Age",property ( "age" ) );
+    l_core->setConfiguration ( "User/Country",property ( "country" ) );
+    l_core->setConfiguration ( "Microphone/Default",property ( "mic-uuid" ) );
 
     this->QDialog::accept();
 }
 
-QuickStart::~QuickStart()
-{
+QuickStart::~QuickStart() {
 }
 
-#ifdef HAVE_KDE
 #include "quickstart-wizard.moc"
-#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

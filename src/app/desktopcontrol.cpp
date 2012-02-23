@@ -29,16 +29,16 @@ DesktopControlAgent::DesktopControlAgent() : AbstractAgent ( Core::instance() ) 
 }
 
 const AbstractAgent::OperationState DesktopControlAgent::onStateChanged ( const AbstractAgent::OperationState p_stt ) {
-    switch (p_stt){
-        case Enabled:
-            break;
+    switch ( p_stt ) {
+    case Enabled:
+        break;
 
-        case Disabled:
-            break;
+    case Disabled:
+        break;
 
-        case Undefined:
-        default:
-            break;
+    case Undefined:
+    default:
+        break;
     }
 
     return Undefined;
@@ -52,7 +52,5 @@ DesktopControlAgent::~DesktopControlAgent() {
 
 }
 
-#ifdef HAVE_KDE
 #include "desktopcontrol.moc"
-#endif
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

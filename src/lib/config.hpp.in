@@ -26,3 +26,4 @@
 #define SPCHCNTRL_BUILD_DATE __TIMESTAMP__
 
 #endif /* SPCHCNTRL_LIB_CONFIG_HPP */
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

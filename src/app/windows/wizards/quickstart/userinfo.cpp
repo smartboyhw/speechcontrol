@@ -27,73 +27,66 @@
 
 using SpeechControl::Wizards::Pages::UserInitialization;
 
-UserInitialization::UserInitialization(QWidget *parent) :
-    QWizardPage(parent),
-    ui(new Ui::UserInitialization)
-{
-    ui->setupUi(this);
-    registerField("name-first",ui->lineEditNameFirst);
-    registerField("name-last",ui->lineEditNameLast);
-    registerField("name-middle",ui->lineEditNameFirst);
-    registerField("age",ui->comboBoxAge);
-    registerField("country",ui->comboBoxCountry);
-    registerField("language-spoken",ui->comboBoxLanguageSpoken);
-    registerField("language-native",ui->comboBoxLanguageNative);
-    registerField("is-gender-male",ui->radioButtonMale);
-    registerField("is-gender-female",ui->radioButtonFemale);
+UserInitialization::UserInitialization ( QWidget *parent ) :
+    QWizardPage ( parent ),
+    ui ( new Ui::UserInitialization ) {
+    ui->setupUi ( this );
+    registerField ( "name-first",ui->lineEditNameFirst );
+    registerField ( "name-last",ui->lineEditNameLast );
+    registerField ( "name-middle",ui->lineEditNameFirst );
+    registerField ( "age",ui->comboBoxAge );
+    registerField ( "country",ui->comboBoxCountry );
+    registerField ( "language-spoken",ui->comboBoxLanguageSpoken );
+    registerField ( "language-native",ui->comboBoxLanguageNative );
+    registerField ( "is-gender-male",ui->radioButtonMale );
+    registerField ( "is-gender-female",ui->radioButtonFemale );
 }
 
-UserInitialization::~UserInitialization()
-{
+UserInitialization::~UserInitialization() {
     delete ui;
 }
 
-bool SpeechControl::Wizards::Pages::UserInitialization::validatePage()
-{
-    if (ui->lineEditNameFirst->text().isEmpty()){
-        this->setSubTitle("<b><font color='red'>Please enter your first name.</font></b>");
+bool SpeechControl::Wizards::Pages::UserInitialization::validatePage() {
+    if ( ui->lineEditNameFirst->text().isEmpty() ) {
+        this->setSubTitle ( "<b><font color='red'>Please enter your first name.</font></b>" );
         return false;
     }
 
-    if (ui->lineEditNameLast->text().isEmpty()){
-        this->setSubTitle("<b><font color='red'>Please enter at least the first letter of your last name.</font></b>");
+    if ( ui->lineEditNameLast->text().isEmpty() ) {
+        this->setSubTitle ( "<b><font color='red'>Please enter at least the first letter of your last name.</font></b>" );
         return false;
     }
 
-    if (!ui->radioButtonFemale->isChecked() && !ui->radioButtonMale->isChecked()){
-        this->setSubTitle("<b><font color='red'>Please select your gender.</font></b>");
+    if ( !ui->radioButtonFemale->isChecked() && !ui->radioButtonMale->isChecked() ) {
+        this->setSubTitle ( "<b><font color='red'>Please select your gender.</font></b>" );
         return false;
     }
 
-    wizard()->setProperty("age",ui->comboBoxAge->currentText());
-    wizard()->setProperty("country",ui->comboBoxCountry->currentText());
+    wizard()->setProperty ( "age",ui->comboBoxAge->currentText() );
+    wizard()->setProperty ( "country",ui->comboBoxCountry->currentText() );
 
     return true;
 }
 
 /// @todo Load all of the countries.
-void SpeechControl::Wizards::Pages::UserInitialization::initializePage()
-{
+void SpeechControl::Wizards::Pages::UserInitialization::initializePage() {
     ui->comboBoxCountry->clear();
     QLocale l_sys = QLocale::system();
-    QList<QLocale::Country> l_countries = QLocale::countriesForLanguage(l_sys.language());
-    Q_FOREACH(const QLocale::Country& l_country, l_countries){
-        ui->comboBoxCountry->addItem(QLocale::countryToString(l_country));
+    QList<QLocale::Country> l_countries = QLocale::countriesForLanguage ( l_sys.language() );
+    Q_FOREACH ( const QLocale::Country& l_country, l_countries ) {
+        ui->comboBoxCountry->addItem ( QLocale::countryToString ( l_country ) );
     }
 
     updateLanguages();
 }
 
 /// @todo Find a way to obtain languages from the system.
-void SpeechControl::Wizards::Pages::UserInitialization::updateLanguages()
-{
+void SpeechControl::Wizards::Pages::UserInitialization::updateLanguages() {
     QLocale l_locale;
 }
 
-void SpeechControl::Wizards::Pages::UserInitialization::clearPage()
-{
+void SpeechControl::Wizards::Pages::UserInitialization::clearPage() {
 }
 
-#ifdef HAVE_KDE
 #include "userinfo.moc"
-#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

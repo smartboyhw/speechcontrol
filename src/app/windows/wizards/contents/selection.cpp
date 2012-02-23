@@ -25,20 +25,33 @@
 
 using SpeechControl::Wizards::Pages::AdditionSelectionPage;
 
-AdditionSelectionPage::AdditionSelectionPage(QWidget *parent) :
-    QWizardPage(parent),
-    m_ui(new Ui::AdditionSelectionPage)
-{
-    m_ui->setupUi(this);
-    registerField("selection.wiki",m_ui->radioButtonWiki);
-    registerField("selection.file",m_ui->radioButtonFile);
+AdditionSelectionPage::AdditionSelectionPage ( QWidget *parent ) :
+    QWizardPage ( parent ),
+    m_ui ( new Ui::AdditionSelectionPage ) {
+    m_ui->setupUi ( this );
+    registerField ( "selection.wiki",m_ui->radioButtonWiki );
+    registerField ( "selection.file",m_ui->radioButtonFile );
+    registerField ( "selection.custom",m_ui->radioButtonCustom );
+
+    connect ( m_ui->radioButtonWiki,SIGNAL ( clicked ( bool ) ),this,SLOT ( updateDescription() ) );
+    connect ( m_ui->radioButtonFile,SIGNAL ( clicked ( bool ) ),this,SLOT ( updateDescription() ) );
+    connect ( m_ui->radioButtonCustom,SIGNAL ( clicked ( bool ) ),this,SLOT ( updateDescription() ) );
+
+    updateDescription();
 }
 
-AdditionSelectionPage::~AdditionSelectionPage()
-{
+void AdditionSelectionPage::updateDescription() {
+    if ( m_ui->radioButtonFile->isChecked() )
+        m_ui->lblDescription->setText ( m_ui->radioButtonFile->whatsThis() );
+    else if ( m_ui->radioButtonWiki->isChecked() )
+        m_ui->lblDescription->setText ( m_ui->radioButtonWiki->whatsThis() );
+    else if ( m_ui->radioButtonCustom->isChecked() )
+        m_ui->lblDescription->setText ( m_ui->radioButtonCustom->whatsThis() );
+}
+
+AdditionSelectionPage::~AdditionSelectionPage() {
     delete m_ui;
 }
 
-#ifdef HAVE_KDE
 #include "selection.moc"
-#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

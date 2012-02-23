@@ -39,11 +39,9 @@
 
 class QSettings;
 
-namespace SpeechControl
-{
+namespace SpeechControl {
 
-namespace Application
-{
+namespace Application {
 
 /**
  * @brief Represents the entire heart of SpeechControl.
@@ -52,8 +50,7 @@ namespace Application
  * lock into. It holds the @c Factory and all of the derived forms of @c AbstractPlugin
  * objects.
  **/
-class Core : public QObject
-{
+class Core : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY ( Core )
 
@@ -112,7 +109,7 @@ public:
      * @brief Provides a pointer to the Main Window instance.
      * @return KMainWindow*
      **/
-    static SC_MW* mainWindow();
+    static Windows::Main* mainWindow();
 
     /**
      * @brief Invoke the application's main execution loop.
@@ -143,7 +140,7 @@ public slots:
 
 private:
     SC_APP* m_app;
-    SC_MW* s_mw;
+    Windows::Main* s_mw;
     QSettings* m_settings;
     static Core* s_inst;
 
@@ -157,4 +154,4 @@ typedef Application::Core Core;
 }
 
 #endif // CORE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

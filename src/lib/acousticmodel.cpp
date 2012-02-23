@@ -23,42 +23,37 @@
 
 using SpeechControl::AcousticModel;
 
-AcousticModel::AcousticModel(const AcousticModel &p_mdl) :
-    QObject(p_mdl.parent()) {
+AcousticModel::AcousticModel ( const AcousticModel &p_mdl ) :
+    QObject ( p_mdl.parent() ) {
 
 }
 
-AcousticModel::~AcousticModel()
-{
+AcousticModel::~AcousticModel() {
 }
 
-void AcousticModel::setParameter(const QString &p_str, const QVariant &p_val)
-{
+void AcousticModel::setParameter ( const QString &p_str, const QVariant &p_val ) {
 }
 
-void AcousticModel::setParameters(const QVariantMap &p_vals)
-{
+void AcousticModel::setParameters ( const QVariantMap &p_vals ) {
 }
 
-void AcousticModel::mergeParameters(const QVariantMap &p_vals)
-{
+void AcousticModel::mergeParameters ( const QVariantMap &p_vals ) {
 }
 
-QVariant AcousticModel::parameter(const QString &p_str) const
-{
+QVariant AcousticModel::parameter ( const QString &p_str ) const {
     return QVariant();
 }
 
-const QVariantMap AcousticModel::parameters() const
-{
+const QVariantMap AcousticModel::parameters() const {
     return QVariantMap();
 }
 
-const quint16 AcousticModel::sampleRate() const
-{
+const quint16 AcousticModel::sampleRate() const {
     return 0;
 }
 
-void AcousticModel::setSampleRate(const quint16 &p_rate)
-{
+void AcousticModel::setSampleRate ( const quint16 &p_rate ) {
 }
+
+#include "acousticmodel.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

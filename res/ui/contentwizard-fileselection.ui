@@ -11,15 +11,21 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>WizardPage</string>
+   <string>Import Transcription File</string>
+  </property>
+  <property name="title">
+   <string>File Import</string>
+  </property>
+  <property name="subTitle">
+   <string>Import a file that represents a transcription file to be used with SpeechControl.</string>
   </property>
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>6</x>
-     <y>5</y>
-     <width>397</width>
-     <height>237</height>
+     <x>2</x>
+     <y>1</y>
+     <width>405</width>
+     <height>241</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">

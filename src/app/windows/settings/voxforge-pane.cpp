@@ -23,46 +23,39 @@
 
 using namespace SpeechControl::Windows;
 
-VoxforgeSettingsPane::VoxforgeSettingsPane(QWidget *parent) :
-    QFrame(parent),
-    ui(new Ui::VoxforgeSettingsPane)
-{
-    ui->setupUi(this);
+VoxforgeSettingsPane::VoxforgeSettingsPane ( QWidget *parent ) :
+    QFrame ( parent ),
+    ui ( new Ui::VoxforgeSettingsPane ) {
+    ui->setupUi ( this );
 }
 
-VoxforgeSettingsPane::~VoxforgeSettingsPane()
-{
+VoxforgeSettingsPane::~VoxforgeSettingsPane() {
     delete ui;
 }
 
-void VoxforgeSettingsPane::changeEvent(QEvent *e)
-{
-    QFrame::changeEvent(e);
-    switch (e->type()) {
+void VoxforgeSettingsPane::changeEvent ( QEvent *e ) {
+    QFrame::changeEvent ( e );
+    switch ( e->type() ) {
     case QEvent::LanguageChange:
-        ui->retranslateUi(this);
+        ui->retranslateUi ( this );
         break;
     default:
         break;
     }
 }
 
-const QString SpeechControl::Windows::VoxforgeSettingsPane::title() const
-{
+const QString SpeechControl::Windows::VoxforgeSettingsPane::title() const {
     return "VoxForge";
 }
 
-const QString SpeechControl::Windows::VoxforgeSettingsPane::id() const
-{
+const QString SpeechControl::Windows::VoxforgeSettingsPane::id() const {
     return "vxfrg";
 }
 
 /// @todo Toggle the ability to upload content up to VoxForge.
-void SpeechControl::Windows::VoxforgeSettingsPane::on_checkBox_clicked()
-{
-    ui->tabWidget->setEnabled(ui->checkBox->isChecked());
+void SpeechControl::Windows::VoxforgeSettingsPane::on_checkBox_clicked() {
+    ui->tabWidget->setEnabled ( ui->checkBox->isChecked() );
 }
 
-#ifdef HAVE_KDE
 #include "voxforge-pane.moc"
-#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

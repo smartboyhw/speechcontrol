@@ -22,19 +22,17 @@
 
 using SpeechControl::AbstractAgent;
 
-AbstractAgent::AbstractAgent ( QObject* p_prnt ) : QObject ( p_prnt )
-{
+AbstractAgent::AbstractAgent ( QObject* p_prnt ) : QObject ( p_prnt ) {
 
 }
 
-AbstractAgent::AbstractAgent ( const AbstractAgent&  p_agnt ) : QObject( p_agnt.parent() )
-{
+AbstractAgent::AbstractAgent ( const AbstractAgent&  p_agnt ) : QObject ( p_agnt.parent() ) {
 
 }
 
 void AbstractAgent::setState ( const AbstractAgent::OperationState p_stt ) {
-    m_stt = onStateChanged(p_stt);
-    emit stateChanged(m_stt);
+    m_stt = onStateChanged ( p_stt );
+    emit stateChanged ( m_stt );
 }
 
 AbstractAgent::OperationState AbstractAgent::state() const {
@@ -45,6 +43,5 @@ AbstractAgent::~AbstractAgent() {
 
 }
 
-#ifdef HAVE_KDE
 #include "agent.moc"
-#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

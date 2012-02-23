@@ -23,19 +23,16 @@
 
 using namespace SpeechControl::Wizards::Pages;
 
-IntroductionPage::IntroductionPage(const QString& summary) :
-                           QWizardPage(),
-    ui(new Ui::Introduction)
-{
-    ui->setupUi(this);
-    ui->labelSummary->setText(summary);
+IntroductionPage::IntroductionPage ( const QString& summary ) :
+    QWizardPage(),
+    ui ( new Ui::Introduction ) {
+    ui->setupUi ( this );
+    ui->labelSummary->setText ( summary );
 }
 
-IntroductionPage::~IntroductionPage()
-{
+IntroductionPage::~IntroductionPage() {
     delete ui;
 }
 
-#ifdef HAVE_KDE
 #include "intro.moc"
-#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

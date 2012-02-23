@@ -25,39 +25,36 @@
 
 using namespace SpeechControl;
 
-DummySC::DummySC (QObject* parent) : ASR (parent)
-{
+DummySC::DummySC ( QObject* parent ) : ASR ( parent ) {
 
 }
 
-DummySC::DummySC (QGst::PipelinePtr pipeline, QObject* parent) : ASR (pipeline, parent)
-{
+DummySC::DummySC ( QGst::PipelinePtr pipeline, QObject* parent ) : ASR ( pipeline, parent ) {
 
 }
 
-DummySC::DummySC (const char* description, QObject* parent) : ASR (description, parent)
-{
+DummySC::DummySC ( const char* description, QObject* parent ) : ASR ( description, parent ) {
 
 }
 
-DummySC::DummySC (const QString& description, QObject* parent) : ASR (description, parent)
-{
+DummySC::DummySC ( const QString& description, QObject* parent ) : ASR ( description, parent ) {
 
 }
 
-void DummySC::applicationMessage (const QGst::MessagePtr& message)
-{
+void DummySC::applicationMessage ( const QGst::MessagePtr& message ) {
     QString msgType    = message->internalStructure()->name();
-    QString hypothesis = message->internalStructure()->value("hyp").toString();
-    QString uttid      = message->internalStructure()->value("uttid").toString();
-    if (msgType == "partial_result")
+    QString hypothesis = message->internalStructure()->value ( "hyp" ).toString();
+    QString uttid      = message->internalStructure()->value ( "uttid" ).toString();
+    if ( msgType == "partial_result" )
         qDebug() << "Partial ASR result:\n"
                  << "Hypothesis:" << hypothesis
                  << "\nUtterance ID:" << uttid;
-    else if (msgType == "result") {
+    else if ( msgType == "result" ) {
         qDebug() << "ASR result:" << hypothesis;
         stop();
-        emit finished(hypothesis);
+        emit finished ( hypothesis );
     }
 }
 
+#include "dummysc.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

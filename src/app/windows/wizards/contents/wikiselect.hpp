@@ -24,25 +24,27 @@
 #include <QWizardPage>
 
 namespace Ui {
-    class WikiSourcePage;
+class WikiSourcePage;
 }
 
 namespace SpeechControl {
 namespace Wizards {
 namespace Pages {
 
-class WikiSourcePage : public QWizardPage
-{
+class WikiSourcePage : public QWizardPage {
     Q_OBJECT
 
 public:
-    explicit WikiSourcePage(QWidget *parent = 0);
+    explicit WikiSourcePage ( QWidget *parent = 0 );
     ~WikiSourcePage();
 
 private:
     Ui::WikiSourcePage *ui;
 };
 
-}}}
+}
+}
+}
 
 #endif // WIKIPAGE_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -25,23 +25,22 @@
 #include <QDialog>
 
 namespace Ui {
-    class SessionManager;
+class SessionManager;
 }
 
 namespace SpeechControl {
-    class Session;
-    namespace Widgets {
-        class SessionWidget;
-    }
+class Session;
+namespace Widgets {
+class SessionWidget;
+}
 namespace Windows {
 namespace Managers {
 
-class SessionManager : public QDialog
-{
+class SessionManager : public QDialog {
     Q_OBJECT
 
 public:
-    explicit SessionManager(QWidget *parent = 0);
+    explicit SessionManager ( QWidget *parent = 0 );
     ~SessionManager();
     static Session* pickSession();
     Session* session() const;
@@ -58,6 +57,9 @@ private:
     Session* m_session;
 };
 
-}}}
+}
+}
+}
 
 #endif // SESSIONMANAGER_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

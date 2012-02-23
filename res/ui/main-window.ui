@@ -59,7 +59,7 @@
     <property name="geometry">
      <rect>
       <x>4</x>
-      <y>4</y>
+      <y>0</y>
       <width>425</width>
       <height>217</height>
      </rect>
@@ -129,12 +129,25 @@
           <property name="geometry">
            <rect>
             <x>8</x>
-            <y>88</y>
+            <y>24</y>
             <width>189</width>
-            <height>85</height>
+            <height>149</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
            <item>
             <widget class="QPushButton" name="btnDsktpCntrl">
              <property name="text">
@@ -198,9 +211,9 @@
           <property name="geometry">
            <rect>
             <x>8</x>
-            <y>56</y>
+            <y>40</y>
             <width>197</width>
-            <height>117</height>
+            <height>129</height>
            </rect>
           </property>
           <layout class="QFormLayout" name="formLayout">
@@ -395,8 +408,8 @@ padding-right: 4px;</string>
          <widget class="QPushButton" name="btnTrain">
           <property name="geometry">
            <rect>
-            <x>144</x>
-            <y>28</y>
+            <x>140</x>
+            <y>16</y>
             <width>61</width>
             <height>25</height>
            </rect>
@@ -447,6 +460,18 @@ padding-right: 4px;</string>
        <property name="sortingEnabled">
         <bool>true</bool>
        </property>
+       <property name="columnCount">
+        <number>2</number>
+       </property>
+       <attribute name="horizontalHeaderDefaultSectionSize">
+        <number>150</number>
+       </attribute>
+       <attribute name="horizontalHeaderMinimumSectionSize">
+        <number>150</number>
+       </attribute>
+       <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
        <column>
         <property name="text">
          <string>Spoken Text</string>
@@ -463,13 +488,7 @@ padding-right: 4px;</string>
        </column>
        <column>
         <property name="text">
-         <string>Action</string>
-        </property>
-        <property name="toolTip">
-         <string/>
-        </property>
-        <property name="whatsThis">
-         <string>This column contains values of the actions taken by SpeechControl when a specific command has been detected.</string>
+         <string>Command</string>
         </property>
        </column>
       </widget>
@@ -585,6 +604,15 @@ padding-right: 4px;</string>
     <property name="title">
      <string>Tools</string>
     </property>
+    <widget class="QMenu" name="menuDesktopControl">
+     <property name="title">
+      <string>Desktop Control</string>
+     </property>
+     <addaction name="actionDesktopControlActive"/>
+     <addaction name="actionDesktopControlCommands"/>
+     <addaction name="separator"/>
+     <addaction name="actionDesktopControlOptions"/>
+    </widget>
     <widget class="QMenu" name="menuWizards">
      <property name="title">
       <string>Wizards</string>
@@ -594,15 +622,26 @@ padding-right: 4px;</string>
      <addaction name="actionWizardSessions"/>
      <addaction name="actionWizardVoxForge"/>
     </widget>
-    <widget class="QMenu" name="menuDesktop_Control">
+    <widget class="QMenu" name="menuTraining">
      <property name="title">
-      <string>Desktop Control</string>
+      <string>Training</string>
      </property>
-     <addaction name="actionDesktopControlActive"/>
-     <addaction name="actionDesktopControlCommands"/>
+     <addaction name="actionStartTraining"/>
+     <addaction name="actionAdaptModels"/>
+     <addaction name="separator"/>
+     <addaction name="actionOptions_2"/>
     </widget>
-    <addaction name="menuDesktop_Control"/>
-    <addaction name="actionDictation"/>
+    <widget class="QMenu" name="menuDictation">
+     <property name="title">
+      <string>Dictation</string>
+     </property>
+     <addaction name="actionDictationActive"/>
+     <addaction name="separator"/>
+     <addaction name="actionDicatationOptions"/>
+    </widget>
+    <addaction name="menuDesktopControl"/>
+    <addaction name="menuDictation"/>
+    <addaction name="menuTraining"/>
     <addaction name="separator"/>
     <addaction name="menuWizards"/>
     <addaction name="actionOptions"/>
@@ -699,12 +738,40 @@ padding-right: 4px;</string>
     <string>Show all of the commands recognized by the deskop control feature.</string>
    </property>
   </action>
-  <action name="actionDictation">
+  <action name="actionDictationActive">
    <property name="checkable">
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Dictation</string>
+    <string>Enabled</string>
+   </property>
+  </action>
+  <action name="actionDesktopControlOptions">
+   <property name="text">
+    <string>Options</string>
+   </property>
+  </action>
+  <action name="actionStartTraining">
+   <property name="text">
+    <string>Start Training...</string>
+   </property>
+   <property name="toolTip">
+    <string>Start</string>
+   </property>
+  </action>
+  <action name="actionAdaptModels">
+   <property name="text">
+    <string>Adapt Models</string>
+   </property>
+  </action>
+  <action name="actionDicatationOptions">
+   <property name="text">
+    <string>Options</string>
+   </property>
+  </action>
+  <action name="actionOptions_2">
+   <property name="text">
+    <string>Options</string>
    </property>
   </action>
  </widget>
@@ -717,7 +784,7 @@ padding-right: 4px;</string>
    <sender>actionQuit</sender>
    <signal>activated()</signal>
    <receiver>MainWindow</receiver>
-   <slot>close()</slot>
+   <slot>hide()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -762,7 +829,7 @@ padding-right: 4px;</string>
    </hints>
   </connection>
   <connection>
-   <sender>actionDictation</sender>
+   <sender>actionDictationActive</sender>
    <signal>toggled(bool)</signal>
    <receiver>btnDctn</receiver>
    <slot>setChecked(bool)</slot>
@@ -790,6 +857,38 @@ padding-right: 4px;</string>
     <hint type="destinationlabel">
      <x>220</x>
      <y>144</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnTrain</sender>
+   <signal>clicked()</signal>
+   <receiver>actionStartTraining</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>183</x>
+     <y>91</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnDsktpCntrl</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>actionDesktopControlActive</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>321</x>
+     <y>182</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
     </hint>
    </hints>
   </connection>

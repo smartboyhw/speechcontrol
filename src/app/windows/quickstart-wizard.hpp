@@ -27,8 +27,7 @@
 namespace SpeechControl {
 namespace Wizards {
 
-class QuickStart : public WizardBase
-{
+class QuickStart : public WizardBase {
     Q_OBJECT
 
     enum Pages {
@@ -40,13 +39,15 @@ class QuickStart : public WizardBase
     };
 
 public:
-    explicit QuickStart(QWidget *parent = 0);
+    explicit QuickStart ( QWidget *parent = 0 );
     ~QuickStart();
 
 public slots:
     virtual void accept();
 };
 
-}}
+}
+}
 
 #endif // WIZARD_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -24,27 +24,26 @@
 #include <QFrame>
 
 namespace Ui {
-    class BookSettingsPane;
+class BookSettingsPane;
 }
 
 namespace SpeechControl {
 namespace Windows {
 
-class BookSettingsPane : public QFrame
-{
+class BookSettingsPane : public QFrame {
     Q_OBJECT
-    Q_PROPERTY(const QString Title READ title)
-    Q_PROPERTY(const QString ID READ id)
+    Q_PROPERTY ( const QString Title READ title )
+    Q_PROPERTY ( const QString ID READ id )
 
 public:
-    explicit BookSettingsPane(QWidget *parent = 0);
+    explicit BookSettingsPane ( QWidget *parent = 0 );
     ~BookSettingsPane();
     const QString title() const;
     const QString id() const;
     virtual void show();
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent ( QEvent *e );
     void updateList();
 
 private slots:
@@ -58,6 +57,8 @@ private:
     Ui::BookSettingsPane *ui;
 };
 
-}}
+}
+}
 
 #endif // BOOKSETTINGSPANE_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

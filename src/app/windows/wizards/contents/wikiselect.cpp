@@ -23,18 +23,15 @@
 
 using SpeechControl::Wizards::Pages::WikiSourcePage;
 
-WikiSourcePage::WikiSourcePage(QWidget *parent) :
-    QWizardPage(parent),
-    ui(new Ui::WikiSourcePage)
-{
-    ui->setupUi(this);
+WikiSourcePage::WikiSourcePage ( QWidget *parent ) :
+    QWizardPage ( parent ),
+    ui ( new Ui::WikiSourcePage ) {
+    ui->setupUi ( this );
 }
 
-WikiSourcePage::~WikiSourcePage()
-{
+WikiSourcePage::~WikiSourcePage() {
     delete ui;
 }
 
-#ifdef HAVE_KDE
 #include "wikiselect.moc"
-#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

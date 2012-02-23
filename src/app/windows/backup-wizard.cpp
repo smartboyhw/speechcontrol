@@ -24,17 +24,14 @@
 
 using namespace SpeechControl::Wizards;
 
-Backup::Backup(QWidget *parent) :
-    WizardBase(parent)
-{
-    setPage(Backup::IntroductionPage,
-            NULL);
+Backup::Backup ( QWidget *parent ) :
+    WizardBase ( parent ) {
+    setPage ( Backup::IntroductionPage,
+              NULL );
 }
 
-Backup::~Backup()
-{
+Backup::~Backup() {
 }
 
-#ifdef HAVE_KDE
 #include "backup-wizard.moc"
-#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

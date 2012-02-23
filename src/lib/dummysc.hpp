@@ -30,22 +30,22 @@
 
 namespace SpeechControl {
 
-class DummySC : public ASR
-{
+class DummySC : public ASR {
     Q_OBJECT
 
 public:
-    explicit DummySC (QObject* parent = 0);
+    explicit DummySC ( QObject* parent = 0 );
 
-    DummySC (QGst::PipelinePtr pipeline, QObject* parent = 0);
+    DummySC ( QGst::PipelinePtr pipeline, QObject* parent = 0 );
 
-    DummySC (const char* description, QObject* parent = 0);
+    DummySC ( const char* description, QObject* parent = 0 );
 
-    DummySC (const QString& description, QObject* parent = 0);
+    DummySC ( const QString& description, QObject* parent = 0 );
 
 public slots:
-    void applicationMessage(const QGst::MessagePtr& message);
+    void applicationMessage ( const QGst::MessagePtr& message );
 };
 
 }
 #endif // DUMMYSC_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

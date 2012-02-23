@@ -24,25 +24,26 @@
 #include <QWizard>
 
 namespace Ui {
-    class WizardBase;
+class WizardBase;
 }
 
 namespace SpeechControl {
 namespace Wizards {
 
 /// @todo Allow automatic insertion of introduction page.
-class WizardBase : public QWizard
-{
+class WizardBase : public QWizard {
     Q_OBJECT
 
 public:
-    explicit WizardBase(QWidget *parent = 0);
+    explicit WizardBase ( QWidget *parent = 0 );
     virtual ~WizardBase();
 
 private:
     Ui::WizardBase *ui;
 };
 
-}}
+}
+}
 
 #endif // BASE_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -34,210 +34,211 @@ class QPluginLoader;
 class QSettings;
 
 namespace SpeechControl {
-    namespace Plugins {
-        class Factory;
-        class AbstractPlugin;
+namespace Plugins {
+class Factory;
+class AbstractPlugin;
 
-        /**
-         * @brief ...
-         **/
-        typedef QList<AbstractPlugin*> PluginList;
+/**
+ * @brief ...
+ **/
+typedef QList<AbstractPlugin*> PluginList;
 
-        /**
-         * @brief ...
-         **/
-        typedef QMap<QUuid, AbstractPlugin*> PluginMap;
+/**
+ * @brief ...
+ **/
+typedef QMap<QUuid, AbstractPlugin*> PluginMap;
 
-        /**
-         * @brief ...
-         **/
-        class AbstractPlugin : public QObject {
-            Q_OBJECT
-            Q_DISABLE_COPY(AbstractPlugin)
-            friend class Factory;
+/**
+ * @brief ...
+ **/
+class AbstractPlugin : public QObject {
+    Q_OBJECT
+    Q_DISABLE_COPY ( AbstractPlugin )
+    friend class Factory;
 
-        signals:
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            void started();
+signals:
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    void started();
 
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            void stopped();
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    void stopped();
 
-        public:
-            /**
-             * @brief ...
-             *
-             * @param  ... Defaults to 0.
-             **/
-            explicit AbstractPlugin(QObject* = 0);
+public:
+    /**
+     * @brief ...
+     *
+     * @param  ... Defaults to 0.
+     **/
+    explicit AbstractPlugin ( QObject* = 0 );
 
-            /**
-             * @brief ...
-             *
-             **/
-            virtual ~AbstractPlugin();
+    /**
+     * @brief ...
+     *
+     **/
+    virtual ~AbstractPlugin();
 
-            /**
-             * @brief ...
-             *
-             * @return const bool
-             **/
-            bool hasLoaded() const;
+    /**
+     * @brief ...
+     *
+     * @return const bool
+     **/
+    bool hasLoaded() const;
 
-            /**
-             * @brief ...
-             *
-             * @return const double
-             **/
-            double version() const;
+    /**
+     * @brief ...
+     *
+     * @return const double
+     **/
+    double version() const;
 
-            /**
-             * @brief ...
-             *
-             * @return const QString
-             **/
-            const QString name() const;
+    /**
+     * @brief ...
+     *
+     * @return const QString
+     **/
+    const QString name() const;
 
-            /**
-             * @brief ...
-             *
-             * @return const QString
-             **/
-            const QString description() const;
+    /**
+     * @brief ...
+     *
+     * @return const QString
+     **/
+    const QString description() const;
 
-            /**
-             * @brief ...
-             *
-             * @return const QUrl
-             **/
-            const QUrl url() const;
+    /**
+     * @brief ...
+     *
+     * @return const QUrl
+     **/
+    const QUrl url() const;
 
-            /**
-             * @brief ...
-             *
-             * @return const QUuid
-             **/
-            const QUuid uuid() const;
+    /**
+     * @brief ...
+     *
+     * @return const QUuid
+     **/
+    const QUuid uuid() const;
 
-            /**
-             * @brief ...
-             *
-             * @return :Plugins::PluginList
-             **/
-            const PluginList plugins() const;
+    /**
+     * @brief ...
+     *
+     * @return :Plugins::PluginList
+     **/
+    const PluginList plugins() const;
 
-            /**
-             * @brief ...
-             *
-             * @return const bool
-             **/
-            bool isSupported() const;
+    /**
+     * @brief ...
+     *
+     * @return const bool
+     **/
+    bool isSupported() const;
 
-        public slots:
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            void unload();
+public slots:
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    void unload();
 
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            void load();
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    void load();
 
-        protected:
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            virtual void initialize() = 0;
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            virtual void deinitialize() = 0;
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            bool loadComponents();
-            QSettings* m_cfg;
-            QSettings* m_sttgs;
+protected:
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    virtual void initialize() = 0;
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    virtual void deinitialize() = 0;
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    bool loadComponents();
+    QSettings* m_cfg;
+    QSettings* m_sttgs;
 
-        private slots:
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            void start();
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            void stop();
+private slots:
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    void start();
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    void stop();
 
-        private:
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            bool loadLibrary();
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            bool loadPlugins();
-            QPluginLoader* m_ldr;
-        };
+private:
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    bool loadLibrary();
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    bool loadPlugins();
+    QPluginLoader* m_ldr;
+};
 
-        /**
-         * @brief ...
-         **/
-        class GenericPlugin : public AbstractPlugin {
-            Q_OBJECT
-            Q_DISABLE_COPY( GenericPlugin )
+/**
+ * @brief ...
+ **/
+class GenericPlugin : public AbstractPlugin {
+    Q_OBJECT
+    Q_DISABLE_COPY ( GenericPlugin )
 
-        public:
-            /**
-             * @brief ...
-             *
-             * @param  ...
-             **/
-            GenericPlugin ( const QUuid& );
+public:
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     **/
+    GenericPlugin ( const QUuid& );
 
-        protected:
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            virtual void initialize() { };
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            virtual void deinitialize() { };
-        };
-    }
+protected:
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    virtual void initialize() { };
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    virtual void deinitialize() { };
+};
+}
 }
 
 #endif // PLUGINS_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

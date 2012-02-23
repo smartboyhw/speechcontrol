@@ -26,24 +26,23 @@
 #include <QDialog>
 
 namespace Ui {
-    class SettingsDialog;
+class SettingsDialog;
 }
 
 namespace SpeechControl {
 namespace Windows {
 
-    /**
-     * @brief ...
-     **/
-    class Settings : public QDialog
-{
+/**
+ * @brief ...
+ **/
+class Settings : public QDialog {
     Q_OBJECT
 
 public:
-    explicit Settings(QWidget *m_prnt = 0);
-    static void addPanel(QWidget* );
-    static void removePanel(const QString&);
-    static void switchToPanel(const QString&);
+    explicit Settings ( QWidget *m_prnt = 0 );
+    static void addPanel ( QWidget* );
+    static void removePanel ( const QString& );
+    static void switchToPanel ( const QString& );
     static Settings* instance();
     ~Settings();
 
@@ -57,6 +56,8 @@ private:
     QMap<QString, QWidget*> m_panes;
 };
 
-}}
+}
+}
 
 #endif // SETTINGS_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

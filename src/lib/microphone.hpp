@@ -39,8 +39,7 @@
 #include <QGst/StreamVolume>
 
 
-namespace SpeechControl
-{
+namespace SpeechControl {
 
 class Microphone;
 
@@ -58,19 +57,18 @@ typedef QMap<QUuid, Microphone*> MicrophoneMap;
  * @brief Represents a handle of an audio input device on this computer.
  **/
 
-class Microphone : public QObject
-{
+class Microphone : public QObject {
     Q_OBJECT
-    Q_PROPERTY (const bool Active READ active)
-    Q_PROPERTY (const QString Name READ friendlyName)
-    Q_PROPERTY (const QUuid Uuid READ uuid)
-    Q_PROPERTY (const QByteArray* Data READ data)
-    Q_PROPERTY (const double Volume READ volume WRITE setVolume)
-    Q_PROPERTY (const bool Muted READ isMuted WRITE mute)
+    Q_PROPERTY ( const bool Active READ active )
+    Q_PROPERTY ( const QString Name READ friendlyName )
+    Q_PROPERTY ( const QUuid Uuid READ uuid )
+    Q_PROPERTY ( const QByteArray* Data READ data )
+    Q_PROPERTY ( const double Volume READ volume WRITE setVolume )
+    Q_PROPERTY ( const bool Muted READ isMuted WRITE mute )
 
 public:
-    Q_DISABLE_COPY (Microphone)
-    explicit Microphone (QGlib::Value = 0);
+    Q_DISABLE_COPY ( Microphone )
+    explicit Microphone ( QGlib::Value = 0 );
     virtual ~Microphone();
 
     /**
@@ -78,7 +76,7 @@ public:
      * @param micUuid UUID of the wanted microphone.
      * @returns Pointer to the microphone.
      */
-    static Microphone* getMicrophone (const QUuid&);
+    static Microphone* getMicrophone ( const QUuid& );
 
     /**
      * @brief Get default microphone
@@ -99,8 +97,8 @@ public:
     bool isValid() const;
     QDataStream* stream() const;
 
-    void setVolume (const double&);
-    void mute (const bool&);
+    void setVolume ( const double& );
+    void mute ( const bool& );
 
 signals:
     void startedListening();
@@ -112,9 +110,9 @@ public slots:
 
 private slots:
     void release();
-    void onPipelineBusmessage (const QGst::MessagePtr&);
-    void onSinkAudioEos (const QGlib::Value&);
-    void onSinkAudioNewbuffer (const QGlib::Value&);
+    void onPipelineBusmessage ( const QGst::MessagePtr& );
+    void onSinkAudioEos ( const QGlib::Value& );
+    void onSinkAudioNewbuffer ( const QGlib::Value& );
 
 private:
     /**
@@ -144,4 +142,4 @@ private:
 #endif // MICROPHONE_HPP
 
 
-// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

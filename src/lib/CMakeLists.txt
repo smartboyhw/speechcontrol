@@ -36,7 +36,7 @@ configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
     "${PROJECT_SOURCE_DIR}/config.hpp" @ONLY)
 
 ## Some Qt-specific stuff.
-QT4_WRAP_CPP(SPCHCNTRL_LIB_SOURCES ${SPCHCNTRL_LIB_HEADERS} OPTIONS -nw)
+QT4_AUTOMOC(${SPCHCNTRL_LIB_SOURCES})
 
 ## Define the target
 add_library(spchcntrl SHARED ${SPCHCNTRL_LIB_SOURCES})

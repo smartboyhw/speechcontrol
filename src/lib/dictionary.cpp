@@ -29,33 +29,29 @@
 using namespace SpeechControl;
 
 
-void Dictionary::load(const QUuid &l_uuid)
-{
-    QFile* l_file = new QFile(getPath(l_uuid));
-    l_file->open(QIODevice::ReadOnly);
-    QTextStream l_strm(l_file);
+void Dictionary::load ( const QUuid &l_uuid ) {
+    QFile* l_file = new QFile ( getPath ( l_uuid ) );
+    l_file->open ( QIODevice::ReadOnly );
+    QTextStream l_strm ( l_file );
 
-    while (!l_strm.atEnd()) {
+    while ( !l_strm.atEnd() ) {
         const QString l_line = l_strm.readLine();
-        const QStringList l_tokens = l_line.split("\t",QString::SkipEmptyParts);
-        m_words.insert(l_tokens[0],new DictionaryEntry(this,l_tokens[0],l_tokens[1]));
+        const QStringList l_tokens = l_line.split ( "\t",QString::SkipEmptyParts );
+        m_words.insert ( l_tokens[0],new DictionaryEntry ( this,l_tokens[0],l_tokens[1] ) );
     }
 }
 
-const QString Dictionary::getPath(const QUuid &l_uuid)
-{
+const QString Dictionary::getPath ( const QUuid &l_uuid ) {
     return QDir::homePath() + "/.speechcontrol/dictionaries/" + l_uuid.toString() + ".dic";
 }
 
-DictionaryEntry::DictionaryEntry(Dictionary *p_dict, const QString &p_word, const QString &p_phoneme) :
-        QObject(p_dict), m_dict(p_dict), m_word(p_word), m_phnm(p_phoneme)
-{
+DictionaryEntry::DictionaryEntry ( Dictionary *p_dict, const QString &p_word, const QString &p_phoneme ) :
+    QObject ( p_dict ), m_dict ( p_dict ), m_word ( p_word ), m_phnm ( p_phoneme ) {
 
 }
 
 DictionaryEntry::DictionaryEntry ( const DictionaryEntry& p_other ) : QObject(),
-    m_dict(p_other.m_dict), m_word(p_other.m_word), m_phnm(p_other.m_phnm)
-{
+    m_dict ( p_other.m_dict ), m_word ( p_other.m_word ), m_phnm ( p_other.m_phnm ) {
 
 }
 
@@ -63,137 +59,116 @@ DictionaryEntry::~DictionaryEntry() {
 
 }
 
-QString DictionaryEntry::word() const
-{
+QString DictionaryEntry::word() const {
     return m_word;
 }
 
-QString DictionaryEntry::phoneme() const
-{
+QString DictionaryEntry::phoneme() const {
     return m_phnm;
 }
 
-Dictionary* Dictionary::obtain(const QUuid &l_uuid)
-{
+Dictionary* Dictionary::obtain ( const QUuid &l_uuid ) {
     return 0;
 }
 
-DictionaryEntryList * Dictionary::entries() const
-{
+DictionaryEntryList * Dictionary::entries() const {
     return 0;
 }
 
-void Dictionary::addEntry(DictionaryEntry *l_entry)
-{
+void Dictionary::addEntry ( DictionaryEntry *l_entry ) {
 }
 
-DictionaryEntry * Dictionary::removeEntry(const QString& p_word)
-{
-    return m_words.take(p_word);
+DictionaryEntry * Dictionary::removeEntry ( const QString& p_word ) {
+    return m_words.take ( p_word );
 }
 
-Dictionary& Dictionary::operator <<(DictionaryEntry *p_entry)
-{
-    m_words.insert(p_entry->word(),p_entry);
+Dictionary& Dictionary::operator << ( DictionaryEntry *p_entry ) {
+    m_words.insert ( p_entry->word(),p_entry );
     return *this;
 }
 
-Dictionary& Dictionary::operator <<(DictionaryEntryList& p_lst)
-{
+Dictionary& Dictionary::operator << ( DictionaryEntryList& p_lst ) {
     return *this;
 }
 
 /// @todo Implement the saving ability.
-void Dictionary::save()
-{
+void Dictionary::save() {
 
 }
 
-Dictionary* Dictionary::fromDirectory ( const QDir& )
-{
+Dictionary* Dictionary::fromDirectory ( const QDir& ) {
     return 0;
 }
 
-Dictionary::Dictionary ( const Dictionary& p_other) : QObject(),
-    m_words(p_other.m_words)
-{
+Dictionary::Dictionary ( const Dictionary& p_other ) : QObject(),
+    m_words ( p_other.m_words ) {
 
 }
 
-Dictionary::Dictionary(const QUuid &p_uuid)
-{
-    load(p_uuid);
+Dictionary::Dictionary ( const QUuid &p_uuid ) {
+    load ( p_uuid );
 }
 
 Dictionary::~Dictionary() {
 }
 
-Dictionary * Corpus::dictionary() const
-{
+Dictionary * Corpus::dictionary() const {
     return m_dict;
 }
 
-const QDateTime Corpus::timeStarted() const
-{
-    return QDateTime::fromString(m_dom->elementsByTagName("Date").at(0).toElement().attribute("Started"));
+const QDateTime Corpus::timeStarted() const {
+    return QDateTime::fromString ( m_dom->elementsByTagName ( "Date" ).at ( 0 ).toElement().attribute ( "Started" ) );
 }
 
-const QDateTime Corpus::timeLastModified() const
-{
-    return QDateTime::fromString(m_dom->elementsByTagName("Date").at(0).toElement().attribute("LastModified"));
+const QDateTime Corpus::timeLastModified() const {
+    return QDateTime::fromString ( m_dom->elementsByTagName ( "Date" ).at ( 0 ).toElement().attribute ( "LastModified" ) );
 }
 
-const QDateTime Corpus::timeCompleted() const
-{
-    return QDateTime::fromString(m_dom->elementsByTagName("Date").at(0).toElement().attribute("Completed"));
+const QDateTime Corpus::timeCompleted() const {
+    return QDateTime::fromString ( m_dom->elementsByTagName ( "Date" ).at ( 0 ).toElement().attribute ( "Completed" ) );
 }
 
-const QString Phrase::text() const
-{
-    QDomElement* l_elem = m_sntnc->getPhraseElement(m_indx);
+const QString Phrase::text() const {
+    QDomElement* l_elem = m_sntnc->getPhraseElement ( m_indx );
     const QString l_base64Data = l_elem->text();
-    qDebug() << l_base64Data << QByteArray::fromBase64(l_base64Data.toLocal8Bit());
-    return QByteArray::fromBase64(l_base64Data.toLocal8Bit());
+    qDebug() << l_base64Data << QByteArray::fromBase64 ( l_base64Data.toLocal8Bit() );
+    return QByteArray::fromBase64 ( l_base64Data.toLocal8Bit() );
 }
 
-QFile* Phrase::audio() const
-{
-    const QString l_fileName = m_sntnc->getPhraseElement(m_indx)->attribute("uuid") + ".wav";
+QFile* Phrase::audio() const {
+    const QString l_fileName = m_sntnc->getPhraseElement ( m_indx )->attribute ( "uuid" ) + ".wav";
     const QString l_pth = m_sntnc->audioPath().path();
-    return new QFile(l_pth + "/" + l_fileName);
+    return new QFile ( l_pth + "/" + l_fileName );
 }
 
-int Phrase::index() const
-{
+int Phrase::index() const {
     return m_indx;
 }
 
-QDomElement* Sentence::getPhraseElement(const int &p_indx) const
-{
-    return new QDomElement(m_elem->elementsByTagName("Phrase").at(p_indx).toElement());
+QDomElement* Sentence::getPhraseElement ( const int &p_indx ) const {
+    return new QDomElement ( m_elem->elementsByTagName ( "Phrase" ).at ( p_indx ).toElement() );
 }
 
-Phrase * Sentence::phrase(const int &p_indx) const
-{
-    return m_phrsLst.at(p_indx);
+Phrase * Sentence::phrase ( const int &p_indx ) const {
+    return m_phrsLst.at ( p_indx );
 }
 
-const PhraseList Sentence::phrases() const
-{
+const PhraseList Sentence::phrases() const {
     return m_phrsLst;
 }
 
-Phrase::Phrase(const Sentence *p_sntnct, const int &p_index) :
-    m_sntnc(p_sntnct), m_indx(p_index)
-{
+Phrase::Phrase ( const Sentence *p_sntnct, const int &p_index ) :
+    m_sntnc ( p_sntnct ), m_indx ( p_index ) {
     qDebug() << "Phrase" << this->text() << "rendered.";
 }
 
-bool Phrase::isCompleted() const
-{
+bool Phrase::isCompleted() const {
     return audio()->exists();
 }
 
 Phrase::~Phrase() {
 
 }
+
+#include "dictionary.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

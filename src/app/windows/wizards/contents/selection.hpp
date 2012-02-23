@@ -23,25 +23,30 @@
 #include <QWizardPage>
 
 namespace Ui {
-    class AdditionSelectionPage;
+class AdditionSelectionPage;
 }
 
 namespace SpeechControl {
 namespace Wizards {
 namespace Pages {
 
-class AdditionSelectionPage : public QWizardPage
-{
+class AdditionSelectionPage : public QWizardPage {
     Q_OBJECT
 
 public:
-    explicit AdditionSelectionPage(QWidget *parent = 0);
+    explicit AdditionSelectionPage ( QWidget *parent = 0 );
     ~AdditionSelectionPage();
+
+private slots:
+    void updateDescription();
 
 private:
     Ui::AdditionSelectionPage *m_ui;
 };
 
-}}}
+}
+}
+}
 
 #endif // ADDSELECT_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

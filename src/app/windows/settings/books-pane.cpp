@@ -20,6 +20,7 @@
 
 #include "books-pane.hpp"
 #include "session.hpp"
+#include "windows/content-information-dialog.hpp"
 #include "windows/contents-wizard.hpp"
 #include "ui_settingspane-books.h"
 
@@ -30,77 +31,70 @@
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 
-BookSettingsPane::BookSettingsPane(QWidget *parent) :
-    QFrame(parent),
-    ui(new Ui::BookSettingsPane)
-{
-    ui->setupUi(this);
+BookSettingsPane::BookSettingsPane ( QWidget *parent ) :
+    QFrame ( parent ),
+    ui ( new Ui::BookSettingsPane ) {
+    ui->setupUi ( this );
     updateList();
 }
 
-BookSettingsPane::~BookSettingsPane()
-{
+BookSettingsPane::~BookSettingsPane() {
     delete ui;
 }
 
-void BookSettingsPane::show(){
+void BookSettingsPane::show() {
     updateList();
     QFrame::show();
 }
 
-void BookSettingsPane::changeEvent(QEvent *e)
-{
-    QFrame::changeEvent(e);
-    switch (e->type()) {
+void BookSettingsPane::changeEvent ( QEvent *e ) {
+    QFrame::changeEvent ( e );
+    switch ( e->type() ) {
     case QEvent::LanguageChange:
-        ui->retranslateUi(this);
+        ui->retranslateUi ( this );
         break;
     default:
         break;
     }
 }
 
-const QString SpeechControl::Windows::BookSettingsPane::title() const
-{
+const QString SpeechControl::Windows::BookSettingsPane::title() const {
     return "Books";
 }
 
-const QString SpeechControl::Windows::BookSettingsPane::id() const
-{
+const QString SpeechControl::Windows::BookSettingsPane::id() const {
     return "bks";
 }
 
-void SpeechControl::Windows::BookSettingsPane::updateList()
-{
+void SpeechControl::Windows::BookSettingsPane::updateList() {
     QListWidget* l_widget = ui->lstBooks;
     ContentList l_lst = Content::allContents();
 
     l_widget->clear();
 
-    if (!l_lst.empty()){
-        Q_FOREACH(const Content* l_cnt, l_lst){
+    if ( !l_lst.empty() ) {
+        Q_FOREACH ( const Content* l_cnt, l_lst ) {
             const QString l_lbl = l_cnt->title();
-            QListWidgetItem* l_item = new QListWidgetItem(l_widget);
-            l_item->setData(Qt::UserRole,l_cnt->uuid().toString());
-            l_widget->addItem(l_item);
+            QListWidgetItem* l_item = new QListWidgetItem ( l_widget );
+            l_item->setData ( Qt::UserRole,l_cnt->uuid().toString() );
+            l_widget->addItem ( l_item );
 
-            if (l_lbl.isEmpty())
-                l_item->setText("Unnamed");
+            if ( l_lbl.isEmpty() )
+                l_item->setText ( "Unnamed" );
             else
-                l_item->setText(l_lbl);
+                l_item->setText ( l_lbl );
         }
     }
 }
 
-void SpeechControl::Windows::BookSettingsPane::on_btnDelete_clicked()
-{
+void SpeechControl::Windows::BookSettingsPane::on_btnDelete_clicked() {
     QListWidget* l_widg = ui->lstBooks;
-    if (!l_widg->selectedItems().empty()){
-        Q_FOREACH(QListWidgetItem* l_itm, l_widg->selectedItems()){
-            Content* l_cntn = Content::obtain(l_itm->data(Qt::UserRole).toString());
-            if (QMessageBox::Yes == QMessageBox::question(this,"Confirm Book Delete", "Are you sure you want to delete this book?\nAny session connected to the book will become invalid and untrainable.",
-                                                          QMessageBox::Yes | QMessageBox::No,
-                                                          QMessageBox::No)){
+    if ( !l_widg->selectedItems().empty() ) {
+        Q_FOREACH ( QListWidgetItem* l_itm, l_widg->selectedItems() ) {
+            Content* l_cntn = Content::obtain ( l_itm->data ( Qt::UserRole ).toString() );
+            if ( QMessageBox::Yes == QMessageBox::question ( this,"Confirm Book Delete", "Are you sure you want to delete this book?\nAny session connected to the book will become invalid and untrainable.",
+                    QMessageBox::Yes | QMessageBox::No,
+                    QMessageBox::No ) ) {
                 l_cntn->erase();
             }
         }
@@ -109,20 +103,22 @@ void SpeechControl::Windows::BookSettingsPane::on_btnDelete_clicked()
     }
 }
 
-/// @todo Add the functionality to add a book.
-void SpeechControl::Windows::BookSettingsPane::on_btnAdd_clicked()
-{
-    Wizards::ContentWizard* l_wiz = new Wizards::ContentWizard(this);
-    if (l_wiz->exec() == QDialog::Accepted)
+void SpeechControl::Windows::BookSettingsPane::on_btnAdd_clicked() {
+    Wizards::ContentWizard* l_wiz = new Wizards::ContentWizard ( this );
+    if ( l_wiz->exec() == QDialog::Accepted )
         updateList();
 }
 
-/// @todo Present a dialog showing information about the content/book.
-void SpeechControl::Windows::BookSettingsPane::on_btnInfo_clicked()
-{
-
+void SpeechControl::Windows::BookSettingsPane::on_btnInfo_clicked() {
+    QListWidget* l_widg = ui->lstBooks;
+    if ( !l_widg->selectedItems().empty() ) {
+        Q_FOREACH ( QListWidgetItem* l_itm, l_widg->selectedItems() ) {
+            Content* l_cntn = Content::obtain ( l_itm->data ( Qt::UserRole ).toString() );
+            ContentInformationDialog l_dialog(l_cntn);
+            l_dialog.show();
+        }
+    }
 }
 
-#ifdef HAVE_KDE
 #include "books-pane.moc"
-#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -23,18 +23,15 @@
 
 using SpeechControl::Wizards::Pages::BackupSelection;
 
-BackupSelection::BackupSelection(QWidget *parent) :
-    QWizardPage(parent),
-    ui(new Ui::BackupSelection)
-{
-    ui->setupUi(this);
+BackupSelection::BackupSelection ( QWidget *parent ) :
+    QWizardPage ( parent ),
+    ui ( new Ui::BackupSelection ) {
+    ui->setupUi ( this );
 }
 
-BackupSelection::~BackupSelection()
-{
+BackupSelection::~BackupSelection() {
     delete ui;
 }
 
-#ifdef HAVE_KDE
 #include "select-mode.moc"
-#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

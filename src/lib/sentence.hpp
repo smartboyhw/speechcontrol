@@ -28,58 +28,59 @@
 class QDomElement;
 
 namespace SpeechControl {
-    class Corpus;
-    class Phrase;
-    class Sentence;
+class Corpus;
+class Phrase;
+class Sentence;
 
-    typedef QList<Sentence*> SentenceList;
-    typedef QList<Phrase*> PhraseList;
+typedef QList<Sentence*> SentenceList;
+typedef QList<Phrase*> PhraseList;
 
-    class Phrase : public QObject {
-        Q_OBJECT
-        Q_DISABLE_COPY(Phrase)
-        friend class Sentence;
+class Phrase : public QObject {
+    Q_OBJECT
+    Q_DISABLE_COPY ( Phrase )
+    friend class Sentence;
 
-    public:
-        virtual ~Phrase();
-        QFile* audio() const;
-        const QString text() const;
-        int index() const;
-        bool isCompleted() const;
+public:
+    virtual ~Phrase();
+    QFile* audio() const;
+    const QString text() const;
+    int index() const;
+    bool isCompleted() const;
 
-    private:
-        explicit Phrase(const Sentence*, const int& );
-        const Sentence* m_sntnc;
-        const int m_indx;
-    };
+private:
+    explicit Phrase ( const Sentence*, const int& );
+    const Sentence* m_sntnc;
+    const int m_indx;
+};
 
-    class Sentence : public QObject {
-        Q_OBJECT
-        Q_DISABLE_COPY(Sentence)
-        friend class Corpus;
-        friend class Phrase;
+class Sentence : public QObject {
+    Q_OBJECT
+    Q_DISABLE_COPY ( Sentence )
+    friend class Corpus;
+    friend class Phrase;
 
-    public:
-        virtual ~Sentence();
-        static Sentence* create(Corpus* , const QString& );
-        Corpus* parentSession() const;
-        const QUuid uuid() const;
-        const QString text() const;
-        const QDir audioPath() const;
-        const PhraseList phrases() const;
-        bool allPhrasesCompleted() const;
-        bool isPhraseCompleted(const int& ) const;
-        int index() const;
-        Phrase* phrase(const int& ) const;
+public:
+    virtual ~Sentence();
+    static Sentence* create ( SpeechControl::Corpus* p_corpus, const QString& p_text );
+    Corpus* parentSession() const;
+    const QUuid uuid() const;
+    const QString text() const;
+    const QDir audioPath() const;
+    const PhraseList phrases() const;
+    bool allPhrasesCompleted() const;
+    bool isPhraseCompleted ( const int& ) const;
+    int index() const;
+    Phrase* phrase ( const int& ) const;
 
-    private:
-        explicit Sentence(Corpus*, QDomElement* );
-        QDomElement* getPhraseElement(const int& ) const;
-        QDomElement* m_elem;
-        Corpus* m_corpus;
-        PhraseList m_phrsLst;
-    };
+private:
+    explicit Sentence ( Corpus*, QDomElement* );
+    QDomElement* getPhraseElement ( const int& ) const;
+    QDomElement* m_elem;
+    Corpus* m_corpus;
+    PhraseList m_phrsLst;
+};
 
 }
 
 #endif // SENTENCE_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

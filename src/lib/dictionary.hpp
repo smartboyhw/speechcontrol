@@ -34,59 +34,60 @@ class QDomDocument;
 class QDomElement;
 
 namespace SpeechControl {
-  class Corpus;
-  class Phrase;
-  class Sentence;
-  class Dictionary;
-  class DictionaryEntry;
+class Corpus;
+class Phrase;
+class Sentence;
+class Dictionary;
+class DictionaryEntry;
 
-  typedef QList<Dictionary*> DictionaryList;
-  typedef QList<DictionaryEntry*> DictionaryEntryList;
+typedef QList<Dictionary*> DictionaryList;
+typedef QList<DictionaryEntry*> DictionaryEntryList;
 
-  typedef QMap<QUuid, Dictionary*> DictionaryMap;
-  typedef QMap<QString, DictionaryEntry*> DictionaryEntryMap;
+typedef QMap<QUuid, Dictionary*> DictionaryMap;
+typedef QMap<QString, DictionaryEntry*> DictionaryEntryMap;
 
-  class DictionaryEntry : public QObject {
-      Q_OBJECT
-      Q_DISABLE_COPY(DictionaryEntry)
-      friend class Dictionary;
+class DictionaryEntry : public QObject {
+    Q_OBJECT
+    Q_DISABLE_COPY ( DictionaryEntry )
+    friend class Dictionary;
 
-  public:
-      DictionaryEntry(Dictionary*, const QString&, const QString&);
-      virtual ~DictionaryEntry();
-      QString word() const;
-      QString phoneme() const;
+public:
+    DictionaryEntry ( Dictionary*, const QString&, const QString& );
+    virtual ~DictionaryEntry();
+    QString word() const;
+    QString phoneme() const;
 
-  private:
-      Dictionary* m_dict;
-      QString m_word;
-      QString m_phnm;
-  };
+private:
+    Dictionary* m_dict;
+    QString m_word;
+    QString m_phnm;
+};
 
-  class Dictionary : public QObject {
-      Q_OBJECT
-      Q_DISABLE_COPY(Dictionary)
-      friend class Corpus;
+class Dictionary : public QObject {
+    Q_OBJECT
+    Q_DISABLE_COPY ( Dictionary )
+    friend class Corpus;
 
-  public:
-      Dictionary(const QUuid&);
-      virtual ~Dictionary();
-      static Dictionary* obtain(const QUuid&);
-      DictionaryEntryList* entries() const;
-      void addEntry(DictionaryEntry*);
-      DictionaryEntry* removeEntry(const QString&);
-      Dictionary& operator<<(DictionaryEntry*);
-      Dictionary& operator<<(DictionaryEntryList&);
-      static Dictionary* fromDirectory(const QDir& );
+public:
+    Dictionary ( const QUuid& );
+    virtual ~Dictionary();
+    static Dictionary* obtain ( const QUuid& );
+    DictionaryEntryList* entries() const;
+    void addEntry ( DictionaryEntry* );
+    DictionaryEntry* removeEntry ( const QString& );
+    Dictionary& operator<< ( DictionaryEntry* );
+    Dictionary& operator<< ( DictionaryEntryList& );
+    static Dictionary* fromDirectory ( const QDir& );
 
-  public slots:
-      void load(const QUuid&);
-      void save();
+public slots:
+    void load ( const QUuid& );
+    void save();
 
-  private:
-      static const QString getPath(const QUuid&);
-      static DictionaryMap s_lst;
-      DictionaryEntryMap m_words;
-  };
+private:
+    static const QString getPath ( const QUuid& );
+    static DictionaryMap s_lst;
+    DictionaryEntryMap m_words;
+};
 }
 #endif // DICTIONARY_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

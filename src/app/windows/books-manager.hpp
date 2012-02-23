@@ -25,20 +25,19 @@
 #include <QDialog>
 
 namespace Ui {
-    class BookManager;
+class BookManager;
 }
 
 namespace SpeechControl {
-    class Content;
+class Content;
 namespace Windows {
 namespace Managers {
 
-class BooksManager : public QDialog
-{
+class BooksManager : public QDialog {
     Q_OBJECT
 
 public:
-    explicit BooksManager(QWidget *parent = 0);
+    explicit BooksManager ( QWidget *parent = 0 );
     ~BooksManager();
     static Content* doSelectContent();
 
@@ -54,6 +53,9 @@ private:
     void updateList();
 };
 
-}}}
+}
+}
+}
 
 #endif // BOOKMANAGER_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

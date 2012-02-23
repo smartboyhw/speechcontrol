@@ -25,114 +25,114 @@
 #include "plugins.hpp"
 
 namespace SpeechControl {
-    namespace Plugins {
-        class Factory;
+namespace Plugins {
+class Factory;
 
-        /**
-         * @brief ...
-         **/
-        class Factory : public QObject
-        {
-            Q_OBJECT
+/**
+ * @brief ...
+ **/
+class Factory : public QObject {
+    Q_OBJECT
 
-        signals:
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            void started();
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            void stopped();
-            /**
-             * @brief ...
-             *
-             * @param  ...
-             * @return void
-             **/
-            void pluginLoaded(const QUuid& );
-            /**
-             * @brief ...
-             *
-             * @param  ...
-             * @return void
-             **/
-            void pluginUnloaded(const QUuid& );
+signals:
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    void started();
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    void stopped();
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @return void
+     **/
+    void pluginLoaded ( const QUuid& );
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @return void
+     **/
+    void pluginUnloaded ( const QUuid& );
 
-        public:
-            virtual ~Factory();
+public:
+    virtual ~Factory();
 
-            /**
-             * @brief ...
-             *
-             * @param  ...
-             * @return const bool
-             **/
-            static bool loadPlugin(const QUuid& );
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @return const bool
+     **/
+    static bool loadPlugin ( const QUuid& );
 
-            /**
-             * @brief ...
-             *
-             * @param  ...
-             * @return const bool
-             **/
-            static bool unloadPlugin(const QUuid& );
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @return const bool
+     **/
+    static bool unloadPlugin ( const QUuid& );
 
-            /**
-             * @brief ...
-             *
-             * @param  ...
-             * @return bool
-             **/
-            static bool isPluginLoaded(const QUuid& );
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @return bool
+     **/
+    static bool isPluginLoaded ( const QUuid& );
 
-            /**
-             * @brief ...
-             *
-             * @return :Plugins::PluginList
-             **/
-            static PluginList loadedPlugins();
-            /**
-             * @brief ...
-             *
-             * @return :Plugins::PluginList
-             **/
-            static PluginMap availablePlugins();
-            /**
-             * @brief ...
-             *
-             * @return :Plugins::Factory*
-             **/
-            static Factory* instance();
+    /**
+     * @brief ...
+     *
+     * @return :Plugins::PluginList
+     **/
+    static PluginList loadedPlugins();
+    /**
+     * @brief ...
+     *
+     * @return :Plugins::PluginList
+     **/
+    static PluginMap availablePlugins();
+    /**
+     * @brief ...
+     *
+     * @return :Plugins::Factory*
+     **/
+    static Factory* instance();
 
-            /**
-             *
-             *
-             * @brief ...
-             *
-             * @param p_uuid ...
-             * @return QSettings*
-             **/
-            static QSettings* pluginConfiguration ( QUuid p_uuid );
+    /**
+     *
+     *
+     * @brief ...
+     *
+     * @param p_uuid ...
+     * @return QSettings*
+     **/
+    static QSettings* pluginConfiguration ( QUuid p_uuid );
 
-            /**
-             * @brief ...
-             *
-             * @param p_uuid ...
-             * @return QSettings*
-             **/
-            static QSettings* pluginSettings ( QUuid p_uuid );
+    /**
+     * @brief ...
+     *
+     * @param p_uuid ...
+     * @return QSettings*
+     **/
+    static QSettings* pluginSettings ( QUuid p_uuid );
 
-        private:
-            explicit Factory();
-            static Factory* s_inst;
-            static PluginMap s_ldPlgns;
-        };
-    }
+private:
+    explicit Factory();
+    static Factory* s_inst;
+    static PluginMap s_ldPlgns;
+};
+}
 }
 
 #endif // FACTORY_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

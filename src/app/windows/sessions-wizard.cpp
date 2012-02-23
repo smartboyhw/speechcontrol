@@ -23,15 +23,12 @@
 
 using namespace SpeechControl::Wizards;
 
-SessionWizard::SessionWizard (QWidget *parent) :
-    WizardBase(parent)
-{
+SessionWizard::SessionWizard ( QWidget *parent ) :
+    WizardBase ( parent ) {
 }
 
-SessionWizard::~SessionWizard()
-{
+SessionWizard::~SessionWizard() {
 }
 
-#ifdef HAVE_KDE
 #include "sessions-wizard.moc"
-#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

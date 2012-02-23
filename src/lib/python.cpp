@@ -42,31 +42,31 @@ public:
     }
 };
 
-BOOST_PYTHON_MODULE(spchcntrl)
-{
+BOOST_PYTHON_MODULE ( spchcntrl ) {
     using namespace boost::python;
     using namespace SpeechControl;
 
-    class_<AcousticModel>("AcousticModel", no_init)
-    .add_property("samplerate"   , &AcousticModel::sampleRate, &AcousticModel::setSampleRate)
-    .add_property("parameters"   , &AcousticModel::parameters, &AcousticModel::setParameters)
+    class_<AcousticModel> ( "AcousticModel", no_init )
+    .add_property ( "samplerate"   , &AcousticModel::sampleRate, &AcousticModel::setSampleRate )
+    .add_property ( "parameters"   , &AcousticModel::parameters, &AcousticModel::setParameters )
     ;
 
-    class_<Microphone>("Microphone", no_init)
-    .add_property("uuid"     , &Microphone::uuid)
-    .add_property("active"       , &Microphone::active)
-    .add_property("friendlyName" , &Microphone::friendlyName)
+    class_<Microphone> ( "Microphone", no_init )
+    .add_property ( "uuid"     , &Microphone::uuid )
+    .add_property ( "active"       , &Microphone::active )
+    .add_property ( "friendlyName" , &Microphone::friendlyName )
     //.def("defaultMicrophone", &Microphone::defaultMicrophone)
     ;
 
-    class_<Sphinx>("Sphinx", init<const AcousticModel*>("AcousticModel"))
-    .add_property("text", &Sphinx::text)
+    class_<Sphinx> ( "Sphinx", init<const AcousticModel*> ( "AcousticModel" ) )
+    .add_property ( "text", &Sphinx::text )
     ;
 
-    class_<SystemStruct>("System", no_init)
-    .def("stop" , &SystemStruct::stop)
-    .def("start", &SystemStruct::start)
+    class_<SystemStruct> ( "System", no_init )
+    .def ( "stop" , &SystemStruct::stop )
+    .def ( "start", &SystemStruct::start )
     ;
 }
 
 #endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

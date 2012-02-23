@@ -76,7 +76,7 @@ Core::Core ( int argc, char** argv ) :
                        ki18n ( "Copyright (c) 2010 - 2012 Synthetic Intellect Institute" ),
                        KLocalizedString(),
                        "http://www.thesii.org",
-                       "tasks.thesii.org"
+                       "http://tasks.thesii.org/buglist.cgi?query=product:spchcntrl"
                      );
 
     l_abt.addAuthor ( ki18n ( "Jacky Alcine" ) , ki18n ( "" ), "jacky.alcine@thesii.org" );
@@ -129,6 +129,7 @@ Core::~Core () {
 void Core::start() {
     instance()->s_mw = new Windows::Main;
 
+    // Detect if a first-run wizard should be run.
     if ( !QFile::exists ( s_inst->m_settings->fileName() ) ) {
         if ( QMessageBox::question ( instance()->s_mw, tr ( "First Run" ),
                                      tr ( "This seems to be the first time you've run SpeechControl on this system. "
@@ -138,10 +139,16 @@ void Core::start() {
         }
     }
 
+    // Load enabled plug-ins.
+    const QStringList l_plgnLst = s_inst->m_settings->value ( "Plugins/AutoStart" ).toStringList();
+    Q_FOREACH ( const QString l_plgn, l_plgnLst ) {
+        Plugins::Factory::loadPlugin ( QUuid ( l_plgn ) );
+    }
+
     instance()->s_mw->show();
 }
 
-SC_MW* Core::mainWindow() {
+Windows::Main* Core::mainWindow() {
     return instance()->s_mw;
 }
 
@@ -169,7 +176,5 @@ int Core::exec() {
     return m_app->exec();
 }
 
-#ifdef HAVE_KDE
 #include "core.moc"
-#endif
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

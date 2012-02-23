@@ -27,8 +27,7 @@
 namespace SpeechControl {
 namespace Wizards {
 
-class ContentWizard : public WizardBase
-{
+class ContentWizard : public WizardBase {
     Q_OBJECT
 public:
     enum Pages {
@@ -46,10 +45,13 @@ public:
         /// @todo Provide support for ePub.
         FileSelectionPage,
 
+        // from a custom source defined by a plug-in.
+        CustomSelecionPage,
+
         ConclusionPage
     };
 
-    explicit ContentWizard(QWidget *parent = 0);
+    explicit ContentWizard ( QWidget *parent = 0 );
     virtual ~ContentWizard();
 
 public slots:
@@ -58,5 +60,7 @@ public slots:
 
 };
 
-}}
+}
+}
 #endif // WIZARD_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

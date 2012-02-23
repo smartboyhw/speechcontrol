@@ -24,25 +24,27 @@
 #include <QWizardPage>
 
 namespace Ui {
-    class Introduction;
+class Introduction;
 }
 
 namespace SpeechControl {
 namespace Wizards {
 namespace Pages {
 
-class IntroductionPage : public QWizardPage
-{
+class IntroductionPage : public QWizardPage {
     Q_OBJECT
 
 public:
-    explicit IntroductionPage(const QString&);
+    explicit IntroductionPage ( const QString& );
     ~IntroductionPage();
 
 private:
     Ui::Introduction *ui;
 };
 
-}}}
+}
+}
+}
 
 #endif // INTRO_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

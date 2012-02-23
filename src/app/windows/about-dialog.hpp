@@ -22,33 +22,34 @@
 #define ABOUTDIALOG_HPP
 
 #ifndef HAVE_KDE
-    #include <QDialog>
-    #define SC_DIALOG QDialog
+#include <QDialog>
+#define SC_DIALOG QDialog
 #else
-    #include <KDialog>
-    #define SC_DIALOG KDialog
+#include <KDialog>
+#define SC_DIALOG KDialog
 #endif
 
 #include "ui_about-dialog.h"
 
 namespace SpeechControl {
-    namespace Windows {
-        class AboutDialog : public SC_DIALOG {
-        Q_OBJECT
+namespace Windows {
+class AboutDialog : public SC_DIALOG {
+    Q_OBJECT
 
-        public:
-            AboutDialog (QWidget *parent = 0);
+public:
+    AboutDialog ( QWidget *parent = 0 );
 
-        private:
-            Ui::AboutDialog ui;
+private:
+    Ui::AboutDialog ui;
 
-            QString about() const;
-            QString authors() const;
-            QString contributors() const;
-            QString thanksTo() const;
+    QString about() const;
+    QString authors() const;
+    QString contributors() const;
+    QString thanksTo() const;
 
-        };
-    }
+};
+}
 }
 
 #endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

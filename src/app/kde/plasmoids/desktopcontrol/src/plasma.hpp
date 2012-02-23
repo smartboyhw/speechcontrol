@@ -29,18 +29,17 @@
 class QSizeF;
 
 // Define our plasma Applet
-class DesktopControlPlasmoid : public Plasma::Applet
-{
+class DesktopControlPlasmoid : public Plasma::Applet {
     Q_OBJECT
 public:
     // Basic Create/Destroy
-    DesktopControlPlasmoid(QObject *parent, const QVariantList &args);
+    DesktopControlPlasmoid ( QObject *parent, const QVariantList &args );
     ~DesktopControlPlasmoid();
 
     // The paintInterface procedure paints the applet to the desktop
-    void paintInterface(QPainter *painter,
-                        const QStyleOptionGraphicsItem *option,
-                        const QRect& contentsRect);
+    void paintInterface ( QPainter *painter,
+                          const QStyleOptionGraphicsItem *option,
+                          const QRect& contentsRect );
     void init();
 
 private:
@@ -49,5 +48,6 @@ private:
 };
 
 // This is the command that links your applet to the .desktop file
-K_EXPORT_PLASMA_APPLET(desktopcontrolplasmoid, DesktopControlPlasmoid)
+K_EXPORT_PLASMA_APPLET ( desktopcontrolplasmoid, DesktopControlPlasmoid )
 #endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

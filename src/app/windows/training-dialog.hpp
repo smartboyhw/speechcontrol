@@ -32,26 +32,24 @@
 #include "session.hpp"
 
 namespace Ui {
-    class Training;
+class Training;
 }
 
 namespace SpeechControl {
 
 namespace Windows {
 
-    /**
-     * @brief ...
-     **/
-    class Training : public QDialog
-{
+/**
+ * @brief ...
+ **/
+class Training : public QDialog {
     Q_OBJECT
-    Q_PROPERTY(Session* Session READ session WRITE setSession)
 
 public:
-    explicit Training(QWidget *parent = 0);
+    explicit Training ( QWidget *parent = 0 );
     virtual ~Training();
-    static void startTraining(Session* );
-    void setSession(Session* );
+    static void startTraining ( Session* );
+    void setSession ( Session* );
     Session* session() const;
 
 public slots:
@@ -60,9 +58,9 @@ public slots:
     virtual void open();
 
 private slots:
-    void updateProgress(const double& );
+    void updateProgress ( const double p_progress );
     void on_pushButtonClose_clicked();
-    void on_pushButtonProgress_toggled(const bool& );
+    void on_pushButtonProgress_toggled ( const bool& );
     void on_pushButtonReset_clicked();
     void on_pushButtonUndo_clicked();
     void on_pushButtonNext_clicked();
@@ -72,7 +70,7 @@ private:
     /// @todo In order for this to work properly, we'd need to detect empty pauses in the user's speech. We'd might have to record a 'garbage' model of empty noises
     ///       and detect when empty noises are made and then advance.
     /// @todo We also have to return this information to the root sentence, how do we combine these phrases to the originating sentence?
-    void navigateToPart(const int& );
+    void navigateToPart ( const int& );
     void navigateNextPart();
     void navigatePreviousPart();
     void startNavigating();
@@ -88,6 +86,8 @@ private:
     Sentence* m_initSntct;
 };
 
-}}
+}
+}
 
 #endif // TRAINING_WINDOW_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

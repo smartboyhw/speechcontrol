@@ -24,7 +24,7 @@
 #include <QWizardPage>
 
 namespace Ui {
-    class MicrophoneSelection;
+class MicrophoneSelection;
 }
 
 namespace SpeechControl {
@@ -33,12 +33,11 @@ class Microphone;
 namespace Wizards {
 namespace Pages {
 
-class MicrophoneSelection : public QWizardPage
-{
+class MicrophoneSelection : public QWizardPage {
     Q_OBJECT
 
 public:
-    explicit MicrophoneSelection(QWidget *parent = 0);
+    explicit MicrophoneSelection ( QWidget *parent = 0 );
     ~MicrophoneSelection();
     virtual void initializePage();
     virtual void cleanupPage();
@@ -46,7 +45,7 @@ public:
     virtual bool isComplete();
 
 private slots:
-    void on_comboBoxMicrophones_activated(int index);
+    void on_comboBoxMicrophones_activated ( int index );
 
 private:
     Ui::MicrophoneSelection *ui;
@@ -54,5 +53,8 @@ private:
     Microphone* m_mic;
 };
 
-}}}
+}
+}
+}
 #endif // MICSELECT_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

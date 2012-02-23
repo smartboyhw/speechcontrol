@@ -24,9 +24,11 @@
 #include <QDebug>
 #include <QTextStream>
 
-#include "session.hpp"
 #include <corpus.hpp>
 #include <sentence.hpp>
+#include "session.hpp"
+
+#define CHUNK_SIZE 250
 
 using namespace SpeechControl;
 
@@ -34,101 +36,81 @@ QMap<QUuid, QDomElement*> Session::s_elems;
 QDomDocument* Session::s_dom = 0;
 ContentMap Content::s_lst;
 
-Session::Session ( const QUuid& p_uuid ) : m_corpus ( 0 ), m_content ( 0 ), m_elem ( 0 )
-{
+Session::Session ( const QUuid& p_uuid ) : m_corpus ( 0 ), m_content ( 0 ), m_elem ( 0 ) {
     load ( p_uuid );
 }
 
-Session::~Session()
-{
+Session::~Session() {
 }
 
-Corpus * Session::corpus() const
-{
+Corpus * Session::corpus() const {
     return m_corpus;
 }
 
 /// @todo Invoke the progress of this session when loaded.
-void Session::setCorpus ( Corpus* l_corpus )
-{
-    if ( l_corpus )
-    {
+void Session::setCorpus ( Corpus* l_corpus ) {
+    if ( l_corpus ) {
         m_corpus = l_corpus;
         assessProgress();
-    }
-    else
-    {
+    } else {
         qDebug() << "Null corpus not added.";
     }
 }
 
-Content* Session::content() const
-{
+Content* Session::content() const {
     return m_content;
 }
 
-void Session::setContent ( Content* l_content )
-{
-    m_content = l_content;
+void Session::setContent ( Content* p_content ) {
+    m_content = p_content;
     assessProgress();
 }
 
-void Session::assessProgress()
-{
+void Session::assessProgress() {
     double l_progress;
 
-    if ( m_corpus )
-    {
+    if ( m_corpus ) {
         Sentence* l_snt = this->firstIncompleteSentence();
 
-        if ( l_snt )
-        {
+        if ( l_snt ) {
             const int l_index = m_corpus->sentences().indexOf ( l_snt );
             l_progress = ( double ) l_index / ( double ) m_corpus->sentences().count();
 
-        }
-        else
+        } else
             l_progress = 1.0;
-    }
-    else
+    } else
         l_progress = 0.0;
 
     emit progressChanged ( l_progress );
 }
 
-void Session::init()
-{
+void Session::init() {
     qDebug() << "Loading sessions...";
     QFile* l_file = new QFile ( QDir::homePath() + "/.speechcontrol/sessions.xml" );
     s_elems.clear();
 
-    if ( s_dom )
-    {
+    if ( s_dom ) {
         s_dom->clear();
         delete s_dom;
     }
 
     s_dom = new QDomDocument ( "Sessions" );
 
-    if ( l_file->exists() )
-    {
+    if ( l_file->exists() ) {
         l_file->open ( QIODevice::ReadOnly );
         s_dom->setContent ( l_file );
 
         const QDomElement l_domElem = s_dom->documentElement();
         const QDomNodeList l_domList = l_domElem.elementsByTagName ( "Session" );
 
-        for ( int i = 0; i < l_domList.count(); i++ )
-        {
+        for ( int i = 0; i < l_domList.count(); i++ ) {
             QDomElement l_node = l_domList.at ( i ).toElement();
             const QUuid l_uuid ( l_node.attribute ( "uuid" ) );
             s_elems.insert ( l_uuid, new QDomElement ( l_domList.at ( i ).toElement() ) );
         }
 
         qDebug() << l_domList.count() << "sessions loaded.";
-    }
-    else
-    {
+    } else {
         l_file->open ( QIODevice::WriteOnly | QIODevice::Truncate );
         QDomElement l_elem = s_dom->createElement ( "Sessions" );
         s_dom->appendChild ( l_elem );
@@ -139,16 +121,12 @@ void Session::init()
     l_file->close();
 }
 
-void Session::load ( const QUuid &p_uuid )
-{
+void Session::load ( const QUuid &p_uuid ) {
     m_elem = s_elems.value ( p_uuid );
-    if ( m_elem && !m_elem->isNull() )
-    {
+    if ( m_elem && !m_elem->isNull() ) {
         setCorpus ( Corpus::obtain ( m_elem->attribute ( "corpus" ) ) );
         setContent ( Content::obtain ( m_elem->attribute ( "content" ) ) );
-    }
-    else
-    {
+    } else {
         s_elems.remove ( p_uuid );
         m_content = 0;
         m_corpus = 0;
@@ -158,16 +136,13 @@ void Session::load ( const QUuid &p_uuid )
     qDebug() << "is valid?" << isValid();
 }
 
-bool Session::isValid() const
-{
+bool Session::isValid() const {
     return ( m_elem && m_corpus && m_content );
 }
 
-SessionList Session::allSessions()
-{
+SessionList Session::allSessions() {
     SessionList l_lst;
-    Q_FOREACH ( const QUuid l_uuid, s_elems.keys() )
-    {
+    Q_FOREACH ( const QUuid l_uuid, s_elems.keys() ) {
         Session* l_session = Session::obtain ( l_uuid );
         if ( l_session && l_session->isValid() )
             l_lst << l_session;
@@ -176,23 +151,26 @@ SessionList Session::allSessions()
     return l_lst;
 }
 
-const QUuid Session::uuid() const
-{
+const QUuid Session::uuid() const {
     return m_elem->attribute ( "uuid" );
 }
 
-Session* Session::obtain ( const QUuid &p_uuid )
-{
+Session* Session::obtain ( const QUuid &p_uuid ) {
     qDebug() << "Obtaining session" << p_uuid;
     return new Session ( p_uuid );
 }
 
 /// @todo Create a new Corpus with this Session.
-Session* Session::create ( const Content* p_content )
-{
+Session* Session::create ( const Content* p_content ) {
     const QStringList l_lst = p_content->pages().join ( "\n" ).simplified().trimmed().replace ( ".", ".\n" ).split ( "\n", QString::SkipEmptyParts );
     qDebug () << "Session has " << l_lst.length() << "potential sentences.";
     const QUuid l_uuid = QUuid::createUuid();
+    Corpus* l_corpus = Corpus::create ( l_lst );
+
+    if ( !l_corpus ) {
+        qDebug() << "Failed to create corpus for session.";
+        return 0;
+    }
 
     // create element data
     QDomElement l_sessElem = s_dom->createElement ( "Session" );
@@ -202,7 +180,7 @@ Session* Session::create ( const Content* p_content )
     l_dateElem.setAttribute ( "completed","-1" );
     l_sessElem.setAttribute ( "uuid", l_uuid.toString() );
     l_sessElem.setAttribute ( "content", p_content->uuid().toString() );
-    l_sessElem.setAttribute ( "corpus", Corpus::create ( l_lst )->uuid() );
+    l_sessElem.setAttribute ( "corpus", l_corpus->uuid() );
 
     s_dom->documentElement().appendChild ( l_sessElem );
     s_dom->documentElement().appendChild ( l_dateElem );
@@ -218,23 +196,19 @@ Session* Session::create ( const Content* p_content )
     return Session::obtain ( l_uuid );
 }
 
-Session::Session ( const Session& ) : QObject()
-{
-
+Session* Session::Backup::session() {
+    return 0;
 }
 
-Sentence* Session::firstIncompleteSentence() const
-{
+Sentence* Session::firstIncompleteSentence() const {
     const SentenceList l_lst = m_corpus->sentences();
 
-    for ( int i = 0; i < l_lst.count(); i++ )
-    {
+    for ( int i = 0; i < l_lst.count(); i++ ) {
         Sentence* l_sent = l_lst.at ( i );
 
         if ( !l_sent->allPhrasesCompleted() )
             return l_sent;
-        else
-        {
+        else {
             qDebug() << l_sent->text() << "already completed @" << l_sent->audioPath().absolutePath();
             continue;
         }
@@ -243,13 +217,11 @@ Sentence* Session::firstIncompleteSentence() const
     return 0;
 }
 
-Sentence* Session::lastIncompleteSentence() const
-{
+Sentence* Session::lastIncompleteSentence() const {
     const SentenceList l_lst = m_corpus->sentences();
     SentenceList::ConstIterator l_endItr = l_lst.begin();
 
-    for ( SentenceList::ConstIterator l_itr = l_lst.end(); l_itr != l_endItr; l_itr-- )
-    {
+    for ( SentenceList::ConstIterator l_itr = l_lst.end(); l_itr != l_endItr; l_itr-- ) {
         const Sentence* l_sent = ( *l_itr );
 
         if ( !l_sent->allPhrasesCompleted() )
@@ -261,23 +233,19 @@ Sentence* Session::lastIncompleteSentence() const
     return 0;
 }
 
-SentenceList Session::incompletedSentences() const
-{
+SentenceList Session::incompletedSentences() const {
     return SentenceList();
 }
 
-bool Session::isCompleted() const
-{
-    return ! ( incompletedSentences().empty() );
+bool Session::isCompleted() const {
+    return ( incompletedSentences().empty() );
 }
 
-Session::BackupList* Session::backups() const
-{
+Session::BackupList* Session::backups() const {
     return 0;
 }
 
-void Session::erase() const
-{
+void Session::erase() const {
     m_corpus->erase();
 
     QUuid l_uuid ( m_elem->attribute ( "uuid" ) );
@@ -291,13 +259,11 @@ void Session::erase() const
     s_dom->save ( l_strm,4 );
 }
 
-Session::Backup* Session::createBackup() const
-{
+Session::Backup* Session::createBackup() const {
     return Backup::generate ( *this );
 }
 
-Session* Session::clone() const
-{
+Session* Session::clone() const {
     QUuid l_uuid = QUuid::createUuid();
     Corpus* l_corpus = m_corpus->clone();
     QDomElement l_elem = m_elem->cloneNode ( true ).toElement();
@@ -309,29 +275,24 @@ Session* Session::clone() const
     return Session::obtain ( l_uuid );
 }
 
-Session::Backup::Backup() : m_dom ( 0 )
-{
+Session::Backup::Backup() : m_dom ( 0 ) {
 }
 
-Session::Backup::~Backup()
-{
+Session::Backup::~Backup() {
 
 }
 
-QDateTime Session::Backup::created()
-{
+QDateTime Session::Backup::created() {
     QString l_time = m_dom->documentElement().attribute ( "DateCreated" );
     return QDateTime::fromString ( l_time );
 }
 
-const QString Session::Backup::getPath ( const QString& p_id )
-{
+const QString Session::Backup::getPath ( const QString& p_id ) {
     return QDir::homePath() + "/.speechcontrol/backups/" + p_id + ".bckp";
 }
 
 /// @todo Implement a means of backing up a session's data to a compressed document.
-Session::Backup* Session::Backup::generate ( const Session& p_sssn )
-{
+Session::Backup* Session::Backup::generate ( const Session& p_sssn ) {
     QDomDocument l_dom ( "Backup" );
     QDateTime l_tm = QDateTime::currentDateTimeUtc();
     QString l_id = p_sssn.uuid().toString() + "_" + QString::number ( l_tm.toMSecsSinceEpoch() );
@@ -361,157 +322,199 @@ Session::Backup* Session::Backup::generate ( const Session& p_sssn )
     return 0;
 }
 
-Session* Session::Backup::session()
-{
-    return 0;
-}
-
-Content::Content ( const QUuid& p_uuid )
-{
+Content::Content ( const QUuid& p_uuid ) {
     load ( p_uuid );
 }
 
 Content::Content ( const Content& p_other ) : QObject(),
-    m_pages ( p_other.m_pages ), m_dom ( p_other.m_dom ), m_uuid ( p_other.m_uuid )
-{
+    m_pages ( p_other.m_pages ), m_dom ( p_other.m_dom ), m_uuid ( p_other.m_uuid ) {
 }
 
-Content* Content::obtain ( const QUuid &p_uuid )
-{
-    if ( !s_lst.contains ( p_uuid ) )
-        s_lst.insert ( p_uuid, ( new Content ( p_uuid ) ) );
+Content* Content::obtain ( const QUuid &p_uuid ) {
+    qDebug() << p_uuid;
+    Q_ASSERT ( !p_uuid.isNull() );
+    if ( p_uuid.isNull() ) {
+        qDebug() << "Null UUID passed.";
+        return 0;
+    }
+
+    if ( !s_lst.contains ( p_uuid ) ) {
+        Content* l_content = new Content ( p_uuid );
+        qDebug() << "Is content valid? " << l_content->isValid();
+        if ( !l_content->isValid() )
+            return 0;
+
+        s_lst.insert ( p_uuid, ( l_content ) );
+    }
 
     return s_lst.value ( p_uuid );
 }
 
-void Content::erase()
-{
+void Content::erase() {
     QFile* l_file = new QFile ( getPath ( m_uuid ) );
     if ( l_file->remove() )
         this->deleteLater();
 }
 
-void Content::load ( const QUuid &p_uuid )
-{
-    QFile* l_file = new QFile ( getPath ( p_uuid ) );
-    QByteArray l_data;
+void Content::load ( const QUuid &p_uuid ) {
+    m_uuid = p_uuid;
+    QFile* l_file = new QFile ( getPath ( m_uuid ) );
+    QDomDocument* l_dom = new QDomDocument ( "Content" );
 
-    if ( l_file->open ( QIODevice::ReadOnly ) )
+    if ( !l_file->exists() ) {
+        qDebug() << "Content" << m_uuid << "doesn't exist.";
+        m_uuid = QUuid();
+        return;
+    }
+
+    if ( !l_file->open ( QIODevice::ReadOnly | QIODevice::Text ) ) {
+        qDebug() << "Couldn't open Content" << m_uuid << ";" << l_file->errorString();
+        m_uuid = QUuid();
+        return;
+    }
+
     {
-        m_dom = new QDomDocument ( "Content" );
-        m_dom->setContent ( l_file );
+        QString l_errorMsg;
+        int l_errorLine, l_errorColumn;
+        if ( !l_dom->setContent ( l_file, &l_errorMsg ,&l_errorLine ,&l_errorColumn ) ) {
+            qDebug() << "Couldn't parse Content;" << l_errorMsg << "on l." << l_errorLine << "; col." << l_errorColumn;
+            m_uuid = QUuid();
+            return;
+        }
+    }
 
-        // Chunk up the text every 200 characters.
-        QString l_text;
-        QString l_textBase = m_dom->documentElement().elementsByTagName ( "Content" ).at ( 0 ).toElement().text();
-        uint l_count = 0;
+    qDebug() << "DOM:" << l_dom->toString();
+    QDomElement l_domElem = l_dom->documentElement();
+    QDomElement l_textElem = l_domElem.namedItem ( "Text" ).toElement();
+    const QString l_textBase ( QByteArray::fromBase64 ( l_textElem.text().toUtf8() ) );
+    parseText ( l_textBase );
 
-        Q_FOREACH ( const QChar l_chr, l_textBase )
-        {
-            if ( l_count == 200 )
-            {
-                m_pages << l_text;
+    if ( m_pages.length() == 0 ) {
+        m_uuid = QUuid();
+        qDebug() << "No text was found from" << l_textBase;
+        return;
+    }
+
+    m_dom = l_dom;
+}
+
+/// @todo Implement a proper means of segmenting text into chunks.
+void Content::parseText ( const QString& p_text ) {
+    QString l_tmpText;
+    uint l_count = 0;
+
+    Q_FOREACH ( const QChar l_chr, p_text ) {
+        if ( l_count == CHUNK_SIZE ) {
+            if ( l_chr.isLetterOrNumber() )
+                l_count -= 1;
+            else {
+                m_pages << l_tmpText;
+                l_tmpText.clear();
                 l_count = 0;
             }
-
-            if ( l_chr.isLetterOrNumber() )
-                ++l_count;
-
-            l_text += l_chr;
         }
 
-        m_uuid = p_uuid;
+        l_tmpText.append ( l_chr );
+
+        ++l_count;
     }
-    else
-        qDebug() << "Can't open Content XML document.";
+}
+
+bool Content::isValid() const {
+    if ( !QFile::exists ( getPath ( m_uuid ) ) ) {
+        qDebug() << "Content's data file doesn't exists." << getPath ( m_uuid );
+        return false;
+    }
+
+    if ( m_pages.isEmpty() ) {
+        qDebug() << "Content has no pages." << m_uuid;
+        return false;
+    }
+
+    return true;
 }
 
 /// @todo Determine a means of finding the page count.
 /// @todo Define the size of one page.
-uint Content::pageCount() const
-{
+uint Content::pageCount() const {
     return m_pages.count();
 }
 
 /// @todo Determine a means of finding the words in the text.
-uint Content::words() const
-{
+uint Content::words() const {
     return m_pages.join ( "\n" ).split ( " " ).count();
 }
 
-uint Content::length() const
-{
+uint Content::length() const {
     return m_pages.join ( "\n" ).length();
 }
 
 /// @todo Determine a means of finding the count of alpha-numeric characters.
-uint Content::characters() const
-{
+uint Content::characters() const {
     return m_pages.join ( "\n" ).length();
 }
 
-QString Content::getPath ( const QUuid &p_uuid )
-{
-    return QDir::homePath() + "/.speechcontrol/contents/" + p_uuid.toString();
+QString Content::getPath ( const QUuid &p_uuid ) {
+    return QDir::homePath() + "/.speechcontrol/contents/" + p_uuid.toString() + ".xml";
 }
 
 /// @todo Find a cleaner, safer way of finding this info.
-const QString Content::title() const
-{
+const QString Content::title() const {
     QDomElement l_domElem = m_dom->documentElement();
     QDomElement l_bilboElem = l_domElem.namedItem ( "Bibliography" ).toElement();
     return l_bilboElem.attribute ( "Title" );
 }
 
 /// @todo Find a cleaner, safer way of finding this info.
-const QString Content::author() const
-{
+const QString Content::author() const {
     QDomElement l_domElem = m_dom->documentElement();
     QDomElement l_bilboElem = l_domElem.namedItem ( "Bibliography" ).toElement();
     return l_bilboElem.attribute ( "Author" );
 }
 
-Content::~Content()
-{
+Content::~Content() {
     // What to clean up?
 }
 
-const QUuid Content::uuid() const
-{
+const QUuid Content::uuid() const {
     return m_uuid;
 }
 
-ContentList Content::allContents()
-{
+ContentList Content::allContents() {
     ContentList l_lst;
     QDir l_dir ( QDir::homePath() + "/.speechcontrol/contents/" );
     l_dir.setFilter ( QDir::Files );
     QStringList l_results = l_dir.entryList ( QStringList() << "*" );
 
-    Q_FOREACH ( const QString l_uuid, l_results )
-    {
-        l_lst << Content::obtain ( QUuid ( l_uuid ) );
+    Q_FOREACH ( const QString l_uuid, l_results ) {
+        Content* l_content = Content::obtain ( QUuid ( l_uuid ) );
+        qDebug () << "Is content null?" << ( l_content == 0 );
+        qDebug () << "Is content" << l_uuid << "valid?" << l_content->isValid();
+
+        if ( l_content && l_content->isValid() )
+            l_lst << l_content;
+        else
+            QFile::remove ( l_dir.absoluteFilePath ( l_uuid ) );
     }
 
     return l_lst;
 }
 
-const QStringList Content::pages() const
-{
+const QStringList Content::pages() const {
     return m_pages;
 }
 
-const QString Content::pageAt ( const int &l_index ) const
-{
+const QString Content::pageAt ( const int &l_index ) const {
     if ( l_index < m_pages.count() )
         return m_pages.at ( l_index );
 
     return QString::null;
 }
 
-Content * Content::create ( const QString &p_author, const QString &p_title, const QString &p_content )
-{
+Content * Content::create ( const QString &p_author, const QString &p_title, const QString &p_content ) {
     QUuid l_uuid = QUuid::createUuid();
+    qDebug() << "Creating content with UUID " << l_uuid << "...";
+
     QDomDocument* l_dom = new QDomDocument ( "Content" );
     QDomElement l_domElem = l_dom->createElement ( "Content" );
     l_domElem.setAttribute ( "Uuid", l_uuid );
@@ -523,22 +526,21 @@ Content * Content::create ( const QString &p_author, const QString &p_title, con
     l_domElem.appendChild ( l_bilboElem );
 
     QDomElement l_textElem = l_dom->createElement ( "Text" );
-    QDomText l_textNode = l_dom->createTextNode ( p_content );
+    QDomText l_textNode = l_dom->createTextNode ( p_content.toUtf8().toBase64() );
     l_textElem.appendChild ( l_textNode );
     l_domElem.appendChild ( l_textElem );
 
-    const QString l_path = Content::getPath ( l_uuid );
-    QFile* l_file = new QFile ( l_path );
+    QFile* l_file = new QFile ( Content::getPath ( l_uuid ) );
     l_file->open ( QIODevice::WriteOnly | QIODevice::Truncate );
     QTextStream l_strm ( l_file );
     l_dom->save ( l_strm, 4 );
+    l_file->close();
 
-    qDebug() << l_file->readAll();
+    qDebug() << "Content XML:" << l_dom->toString();
     return Content::obtain ( l_uuid );
 }
 
+#include "session.moc"
+
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
 
-#ifdef HAVE_KDE
-#include "session.moc"
-#endif

@@ -46,9 +46,9 @@ void PluginsSettingsPane::updateList() {
 
     PluginList l_plgnLst = Factory::availablePlugins().values();
 
-    Q_FOREACH(AbstractPlugin* l_plgn, l_plgnLst){
-        QListWidgetItem* l_itm = new QListWidgetItem(l_plgn->name(),l_lstWidg);
-        l_lstWidg->addItem(l_itm);
+    Q_FOREACH ( AbstractPlugin* l_plgn, l_plgnLst ) {
+        QListWidgetItem* l_itm = new QListWidgetItem ( l_plgn->name(),l_lstWidg );
+        l_lstWidg->addItem ( l_itm );
     }
 }
 
@@ -75,7 +75,5 @@ void PluginsSettingsPane::on_btnInfo_clicked() {
 
 }
 
-#ifdef HAVE_KDE
 #include "plugins-pane.moc"
-#endif
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

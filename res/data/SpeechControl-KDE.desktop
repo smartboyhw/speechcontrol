@@ -9,3 +9,5 @@ Categories=Utility;Accessibility;System;Qt;KDE;
 StartupNotify=true
 Terminal=false
 X-AppInstall-Package=speechcontrol-kde
+X-DocPath=speechcontrol/index.html
+X-KDE-KHelpcenter=apps

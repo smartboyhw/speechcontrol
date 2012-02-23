@@ -25,54 +25,46 @@
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 
-GeneralSettingsPane::GeneralSettingsPane(QWidget *parent) :
-    QFrame(parent),
-    ui(new Ui::GeneralSettingsPane)
-{
-    ui->setupUi(this);
-    ui->lblSessionCount->setText(QString::number(Session::allSessions().count()));
-    ui->lblAccuracyRating->setText("<i>n/a</i>");
+GeneralSettingsPane::GeneralSettingsPane ( QWidget *parent ) :
+    QFrame ( parent ),
+    ui ( new Ui::GeneralSettingsPane ) {
+    ui->setupUi ( this );
+    ui->lblSessionCount->setText ( QString::number ( Session::allSessions().count() ) );
+    ui->lblAccuracyRating->setText ( "<i>n/a</i>" );
 }
 
-GeneralSettingsPane::~GeneralSettingsPane()
-{
+GeneralSettingsPane::~GeneralSettingsPane() {
     delete ui;
 }
 
-void GeneralSettingsPane::changeEvent(QEvent *e)
-{
-    QFrame::changeEvent(e);
-    switch (e->type()) {
+void GeneralSettingsPane::changeEvent ( QEvent *e ) {
+    QFrame::changeEvent ( e );
+    switch ( e->type() ) {
     case QEvent::LanguageChange:
-        ui->retranslateUi(this);
+        ui->retranslateUi ( this );
         break;
     default:
         break;
     }
 }
 
-const QString GeneralSettingsPane::title() const
-{
+const QString GeneralSettingsPane::title() const {
     return "General";
 }
 
-const QString GeneralSettingsPane::id() const
-{
+const QString GeneralSettingsPane::id() const {
     return "gnrl";
 }
 
 /// @todo Toggle the status of dictation.
-void GeneralSettingsPane::on_checkBoxEnableDictation_toggled(bool checked)
-{
+void GeneralSettingsPane::on_checkBoxEnableDictation_toggled ( bool checked ) {
 
 }
 
 /// @todo Toggle the status of desktop control.
-void GeneralSettingsPane::on_checkBoxEnableDesktopControl_toggled(bool checked)
-{
+void GeneralSettingsPane::on_checkBoxEnableDesktopControl_toggled ( bool checked ) {
 
 }
 
-#ifdef HAVE_KDE
 #include "general-pane.moc"
-#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

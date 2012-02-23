@@ -2,7 +2,6 @@
  *  This file is part of SpeechControl.
  *
  *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
- *            (C) 2012 Jacky Alcine <jacky.alcine@thesii.org>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -19,3 +18,37 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+
+#ifndef SESSIONINFORMATIONDIALOG_HPP
+#define SESSIONINFORMATIONDIALOG_HPP
+
+#include <QDialog>
+
+namespace Ui {
+class SessionInformationDialog;
+}
+
+namespace SpeechControl {
+class Session;
+namespace Windows {
+
+class SessionInformationDialog : public QDialog {
+    Q_OBJECT
+
+public:
+    explicit SessionInformationDialog ( QWidget *parent = 0 );
+    SessionInformationDialog ( Session* p_session );
+    ~SessionInformationDialog();
+
+private slots:
+
+private:
+    Ui::SessionInformationDialog *m_ui;
+    Session* m_session;
+};
+
+}
+}
+
+#endif // SESSIONINFORMATIONDIALOG_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

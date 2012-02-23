@@ -24,19 +24,18 @@
 #include <QWizardPage>
 
 namespace Ui {
-    class FileSelectionPage;
+class FileSelectionPage;
 }
 
 namespace SpeechControl {
 namespace Wizards {
 namespace Pages {
 
-class FileSelectionPage : public QWizardPage
-{
+class FileSelectionPage : public QWizardPage {
     Q_OBJECT
 
 public:
-    explicit FileSelectionPage(QWidget *parent = 0);
+    explicit FileSelectionPage ( QWidget *parent = 0 );
     ~FileSelectionPage();
 
 private slots:
@@ -46,6 +45,9 @@ private:
     Ui::FileSelectionPage *m_ui;
 };
 
-}}}
+}
+}
+}
 
 #endif // FILESELECT_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

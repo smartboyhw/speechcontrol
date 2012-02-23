@@ -39,8 +39,7 @@
 // local includes
 #include "config.hpp"
 
-namespace SpeechControl
-{
+namespace SpeechControl {
 
 /**
  * @brief Automatic Speech Recognition class
@@ -49,8 +48,7 @@ namespace SpeechControl
  * of dictionaries, language and acoustic models. It also performs
  * acoustic training and adjusts models to its needs.
  */
-class ASR : public QObject
-{
+class ASR : public QObject {
 
     Q_OBJECT
 
@@ -72,19 +70,19 @@ protected:
     void _prepare();
 
 public:
-    explicit ASR (QObject* parent = 0);
+    explicit ASR ( QObject* parent = 0 );
 
-    ASR (QGst::PipelinePtr pipeline, QObject* parent = 0);
-
-    /**
-     * This constructor creates GStreamer elements from description.
-     */
-    ASR (const char* description, QObject* parent = 0);
+    ASR ( QGst::PipelinePtr pipeline, QObject* parent = 0 );
 
     /**
      * This constructor creates GStreamer elements from description.
      */
-    ASR (const QString& description, QObject* parent = 0);
+    ASR ( const char* description, QObject* parent = 0 );
+
+    /**
+     * This constructor creates GStreamer elements from description.
+     */
+    ASR ( const QString& description, QObject* parent = 0 );
 
     virtual ~ASR();
 
@@ -148,9 +146,8 @@ public:
      * @param value Value for the property.
      */
     template<typename T>
-    void setPsProperty(const QString& property, T value)
-    {
-        _psphinx->setProperty(property.toStdString().c_str(), value);
+    void setPsProperty ( const QString& property, T value ) {
+        _psphinx->setProperty ( property.toStdString().c_str(), value );
     }
 
     /**
@@ -159,28 +156,27 @@ public:
      * @param value Value for the propery.
      */
     template<typename T>
-    void setVaderProperty(const QString& property, T value)
-    {
-        _vader->setProperty(property.toStdString().c_str(), value);
+    void setVaderProperty ( const QString& property, T value ) {
+        _vader->setProperty ( property.toStdString().c_str(), value );
     }
 
     /**
      * @brief Sets the language model to use.
      * @param path The path to the language to be used.
      */
-    void setLanguageModel(const QString& path);
+    void setLanguageModel ( const QString& path );
 
     /**
      * @brief Sets the dictionary to be used.
      * @param path The path to the dictionary.
      */
-    void setDictionary(const QString& path);
+    void setDictionary ( const QString& path );
 
     /**
      * @brief Sets the acoustic model to be used.
      * @param path The path to the acoustic model.
      */
-    void setAcousticModel(const QString& path);
+    void setAcousticModel ( const QString& path );
 
     /**
      * @brief Check whether ASR is ready to use
@@ -201,7 +197,7 @@ public:
 
 signals:
     /// @todo Useful or not?
-    void finished(QString& result);
+    void finished ( QString& result );
 
 public slots:
     /**
@@ -209,12 +205,12 @@ public slots:
      */
     void run();
 
-    void asrPartialResult (const QString& text, const QString& uttid);
-    void asrResult (const QString& text, const QString& uttid);
-    virtual void applicationMessage (const QGst::MessagePtr& message) = 0;
+    void asrPartialResult ( const QString& text, const QString& uttid );
+    void asrResult ( const QString& text, const QString& uttid );
+    virtual void applicationMessage ( const QGst::MessagePtr& message ) = 0;
 };
 
 }
 
 #endif // ASR_HPP
-// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

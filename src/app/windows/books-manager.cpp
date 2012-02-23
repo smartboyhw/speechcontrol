@@ -24,53 +24,51 @@
 #include "ui_manager-book.h"
 #include "session.hpp"
 #include "contents-wizard.hpp"
+#include "core.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
 using namespace SpeechControl::Windows::Managers;
 
-BooksManager::BooksManager(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::BookManager),
-    m_book(0)
-{
-    ui->setupUi(this);
+BooksManager::BooksManager ( QWidget *parent ) :
+    QDialog ( parent ),
+    ui ( new Ui::BookManager ),
+    m_book ( 0 ) {
+    ui->setupUi ( this );
     updateList();
 }
 
-BooksManager::~BooksManager()
-{
+BooksManager::~BooksManager() {
     delete ui;
 }
 
-void BooksManager::updateList(){
+void BooksManager::updateList() {
     ContentList l_lst = Content::allContents();
 
-    if (l_lst.empty())
-        ui->lblTitle->setText("No Books");
+    if ( l_lst.empty() )
+        ui->lblTitle->setText ( "No Books" );
     else
-        ui->lblTitle->setText("No Selection");
+        ui->lblTitle->setText ( "No Selection" );
 
-    if (!l_lst.empty()){
-        Q_FOREACH(const Content* l_cnt, l_lst){
-            QListWidgetItem* l_item = new QListWidgetItem(l_cnt->title(),ui->lstBooks);
-            l_item->setData(Qt::UserRole,l_cnt->uuid().toString());
-            ui->lstBooks->addItem(l_item);
+    if ( !l_lst.empty() ) {
+        Q_FOREACH ( const Content* l_cnt, l_lst ) {
+            QListWidgetItem* l_item = new QListWidgetItem ( l_cnt->title(),ui->lstBooks );
+            l_item->setData ( Qt::UserRole,l_cnt->uuid().toString() );
+            ui->lstBooks->addItem ( l_item );
 
-            if (m_book && m_book->uuid() == l_cnt->uuid())
-                l_item->setSelected(true);
+            if ( m_book && m_book->uuid() == l_cnt->uuid() )
+                l_item->setSelected ( true );
         }
 
-        if (!m_book)
-            ui->lstBooks->setCurrentRow(0);
+        if ( !m_book )
+            ui->lstBooks->setCurrentRow ( 0 );
     }
 }
 
-void BooksManager::on_btnSelect_clicked()
-{
+void BooksManager::on_btnSelect_clicked() {
     QListWidgetItem* l_item = ui->lstBooks->currentItem();
-    if (l_item){
-        m_book = Content::obtain(QUuid(l_item->data(Qt::UserRole).toString()));
+    if ( l_item ) {
+        m_book = Content::obtain ( QUuid ( l_item->data ( Qt::UserRole ).toString() ) );
         accept();
     } else {
         m_book = 0;
@@ -78,15 +76,14 @@ void BooksManager::on_btnSelect_clicked()
     }
 }
 
-Content* BooksManager::doSelectContent()
-{
+Content* BooksManager::doSelectContent() {
     BooksManager* l_wiz = new BooksManager;
 
-    if (Content::allContents().empty()){
+    if ( Content::allContents().empty() ) {
         l_wiz->on_btnAdd_clicked();
         return l_wiz->m_book;
     } else {
-        if (l_wiz->exec() == QDialog::Accepted)
+        if ( l_wiz->exec() == QDialog::Accepted )
             return l_wiz->m_book;
     }
 
@@ -94,36 +91,34 @@ Content* BooksManager::doSelectContent()
 }
 
 /// @todo Invoke the Book addition wizard here.
-void BooksManager::on_btnAdd_clicked()
-{
+void BooksManager::on_btnAdd_clicked() {
     ContentWizard* l_wiz = new ContentWizard;
 
-    if (l_wiz->exec() == QDialog::Accepted)
+    if ( l_wiz->exec() == QDialog::Accepted ){
+        Core::mainWindow()->updateContent();
         updateList();
+    }
 }
 
-void BooksManager::on_btnCancel_clicked()
-{
+void BooksManager::on_btnCancel_clicked() {
     m_book = 0;
     reject();
 }
 
-void BooksManager::on_lstBooks_itemSelectionChanged()
-{
+void BooksManager::on_lstBooks_itemSelectionChanged() {
     const QListWidgetItem* l_item = ui->lstBooks->currentItem();
-    if (l_item){
-        const QUuid l_uuid(l_item->data(Qt::UserRole).toString());
-        const Content* l_cnt = Content::obtain(l_uuid);
-        ui->lblTitle->setText(l_cnt->title());
-        ui->lcdWordCount->display(QString::number(l_cnt->words()));
-        ui->btnSelect->setEnabled(true);
+    if ( l_item ) {
+        const QUuid l_uuid ( l_item->data ( Qt::UserRole ).toString() );
+        const Content* l_cnt = Content::obtain ( l_uuid );
+        ui->lblTitle->setText ( l_cnt->title() );
+        ui->lcdWordCount->display ( QString::number ( l_cnt->words() ) );
+        ui->btnSelect->setEnabled ( true );
     } else {
-        ui->lblTitle->setText("No Selection");
-        ui->lcdWordCount->display(0);
-        ui->btnSelect->setEnabled(false);
+        ui->lblTitle->setText ( "No Selection" );
+        ui->lcdWordCount->display ( 0 );
+        ui->btnSelect->setEnabled ( false );
     }
 }
 
-#ifdef HAVE_KDE
 #include "books-manager.moc"
-#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

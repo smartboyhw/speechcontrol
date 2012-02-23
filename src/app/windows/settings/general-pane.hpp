@@ -24,35 +24,36 @@
 #include <QFrame>
 
 namespace Ui {
-    class GeneralSettingsPane;
+class GeneralSettingsPane;
 }
 
 namespace SpeechControl {
 namespace Windows {
 
-class GeneralSettingsPane : public QFrame
-{
+class GeneralSettingsPane : public QFrame {
     Q_OBJECT
-    Q_PROPERTY(const QString Title READ title)
-    Q_PROPERTY(const QString ID READ id)
+    Q_PROPERTY ( const QString Title READ title )
+    Q_PROPERTY ( const QString ID READ id )
 
 public:
-    explicit GeneralSettingsPane(QWidget *parent = 0);
+    explicit GeneralSettingsPane ( QWidget *parent = 0 );
     ~GeneralSettingsPane();
     const QString title() const;
     const QString id() const;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent ( QEvent *e );
 
 private slots:
-    void on_checkBoxEnableDictation_toggled(bool checked);
-    void on_checkBoxEnableDesktopControl_toggled(bool checked);
+    void on_checkBoxEnableDictation_toggled ( bool checked );
+    void on_checkBoxEnableDesktopControl_toggled ( bool checked );
 
 private:
     Ui::GeneralSettingsPane *ui;
 };
 
-}}
+}
+}
 
 #endif // GENERAL_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -18,3 +18,33 @@
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+
+
+#ifndef TEST_BASE_HPP
+#define TEST_BASE_HPP
+
+#include <QObject>
+#include <cpptest-suite.h>
+
+class MODULE;
+
+namespace SpeechControl {
+class TestModule : public QObject, public Test::Suite {
+    Q_OBJECT
+
+signals:
+    void testInvoked();
+
+private:
+    void handleTest();
+    static TestModule* s_inst;
+
+public:
+    TestModule();
+    virtual ~TestModule();
+    void dumpBacktrace();
+    static TestModule* instance();
+};
+}
+#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

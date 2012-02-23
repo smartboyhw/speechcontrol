@@ -6,34 +6,28 @@
 project(SpchCntrlTest-@TEST_ID@)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-## Required packages
-pkg_search_module(CPPTEST libcpptest)
-
-file(GLOB TEST_BASE_SRCS "*.cpp")
-file(GLOB TEST_BASE_HDRS "*.hpp")
-
+file(GLOB TEST_BASE_SRCS "../../*.cpp")
+file(GLOB TEST_EXTRA_SRCS "../../../src/app/*.cpp"
+                          "../../../src/app/windows/*/*.cpp"
+                          "../../../src/app/settings/*.cpp")
+set(TEST_BASE_SCPP ${TEST_BASE_SRCS} ${SPCHCNTRL_APP_SRCS} ${TEST_EXTRA_SRCS}
+                   ${SPCHCNTRL_WINDOWS_SRCS} "@TEST_SRC@")
 ## Variables
 set(TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS}
                              MODULE=@TEST_ID@Suite)
 set(TEST_COMPILE_FLAGS ${SPCHCNTRL_COMPILE_FLAGS})
 set(TEST_INCLUDE_DIRS ${SPCHCNTRL_INCLUDE_DIRS}
-    ${SPCHCNTRL_LIB_INCLUDE_DIRS} "include")
-set(TEST_LIBRARIES ${SPCHCNTRL_LIBRARIES} ${CPPTEST_LIBRARIES} spchcntrl)
+    ${SPCHCNTRL_APP_INCLUDE_DIRS}
+    ${SPCHCNTRL_LIB_INCLUDE_DIRS} "../../"
+    "../../../src/app" "../../../src/lib")
+set(TEST_LIBRARIES ${SPCHCNTRL_LIBRARIES}
+    ${SPCHCNTRL_APP_LIBRARIES}
+    ${CPPTEST_LIBRARIES} spchcntrl)
 
-## Add support for backtraces
-find_package(ExecInfo)
-if(EXECINFO_FOUND)
-    list(APPEND TEST_COMPILE_DEFINITIONS "HAVE_EXECINFO")
-    if (EXECINFO_LIBRARIES)
-        list(APPEND TEST_LIBRARIES ${EXECINFO_LIBRARIES})
-    endif(EXECINFO_LIBRARIES)
+QT4_AUTOMOC(${TEST_BASE_SCPP})
+QT4_WRAP_CPP(TEST_BASE_SCPP "../../include/base.hpp")
 
-    list(APPEND TEST_INCLUDE_DIRS ${EXECINFO_INCLUDES})
-endif(EXECINFO_FOUND)
-
-QT4_WRAP_CPP(TEST_BASE_SRCS ${TEST_BASE_HDRS})
-
-add_executable(test@TEST_ID@ ${TEST_BASE_SRCS} @TEST_SRC@)
+add_executable(test@TEST_ID@ ${TEST_BASE_SCPP})
 
 include_directories(${TEST_INCLUDE_DIRS})
 
@@ -49,3 +43,5 @@ add_dependencies(test@TEST_ID@ spchcntrl)
 add_dependencies(tests test@TEST_ID@)
 
 add_test(NAME test@TEST_ID@ COMMAND $<TARGET_FILE:test@TEST_ID@>)
+
+message(STATUS "Test ${TEST_ID} configured; awaiting build (i.e.: 'make test${TEST_ID}')")

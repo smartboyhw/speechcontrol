@@ -11,22 +11,37 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>WizardPage</string>
+   <string>Import WikiMedia Page</string>
+  </property>
+  <property name="title">
+   <string>WikiMedia Page Import</string>
+  </property>
+  <property name="subTitle">
+   <string>Importing a page from the WikiMedia project to be read for transcription (converted to a local format for off-line use).</string>
   </property>
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>10</x>
-     <y>8</y>
-     <width>388</width>
-     <height>229</height>
+     <x>2</x>
+     <y>4</y>
+     <width>406</width>
+     <height>241</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0" colspan="3">
      <widget class="QLabel" name="label">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="text">
-       <string>Select the Wikipedia page that you wish to obtain your transcript from.</string>
+       <string>Select the WikiMedia page that you wish to obtain your transcript from.</string>
+      </property>
+      <property name="scaledContents">
+       <bool>false</bool>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -61,9 +76,6 @@
     </item>
     <item row="1" column="1">
      <layout class="QFormLayout" name="formLayout">
-      <property name="fieldGrowthPolicy">
-       <enum>QFormLayout::ExpandingFieldsGrow</enum>
-      </property>
       <item row="0" column="0">
        <widget class="QLabel" name="label_3">
         <property name="text">

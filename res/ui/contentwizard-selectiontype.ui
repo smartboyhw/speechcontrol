@@ -62,6 +62,9 @@
       </item>
       <item>
        <widget class="QRadioButton" name="radioButtonWiki">
+        <property name="whatsThis">
+         <string>Select this to use a WikiMedia (WikiNews, Wikipedia, etc) to obtain information for your transcription.</string>
+        </property>
         <property name="text">
          <string>From Wikipedia</string>
         </property>
@@ -69,6 +72,9 @@
       </item>
       <item>
        <widget class="QRadioButton" name="radioButtonFile">
+        <property name="whatsThis">
+         <string>Select this option to use a local file (*.spch) to use for transcription.</string>
+        </property>
         <property name="text">
          <string>From file</string>
         </property>
@@ -83,7 +89,10 @@
          <enum>QLayout::SetFixedSize</enum>
         </property>
         <item>
-         <widget class="QRadioButton" name="radioButton">
+         <widget class="QRadioButton" name="radioButtonCustom">
+          <property name="whatsThis">
+           <string>Select this option to choose from a drop-list of other sources that you can pull sources from to use for transcription.</string>
+          </property>
           <property name="text">
            <string>Other...</string>
           </property>
@@ -128,7 +137,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>radioButton</sender>
+   <sender>radioButtonCustom</sender>
    <signal>toggled(bool)</signal>
    <receiver>comboBox</receiver>
    <slot>setEnabled(bool)</slot>

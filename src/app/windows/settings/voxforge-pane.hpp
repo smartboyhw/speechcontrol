@@ -23,26 +23,25 @@
 #include <QFrame>
 
 namespace Ui {
-    class VoxforgeSettingsPane;
+class VoxforgeSettingsPane;
 }
 
 namespace SpeechControl {
 namespace Windows {
 
-class VoxforgeSettingsPane : public QFrame
-{
+class VoxforgeSettingsPane : public QFrame {
     Q_OBJECT
-    Q_PROPERTY(const QString Title READ title)
-    Q_PROPERTY(const QString ID READ id)
+    Q_PROPERTY ( const QString Title READ title )
+    Q_PROPERTY ( const QString ID READ id )
 
 public:
-    explicit VoxforgeSettingsPane(QWidget *parent = 0);
+    explicit VoxforgeSettingsPane ( QWidget *parent = 0 );
     ~VoxforgeSettingsPane();
     const QString title() const;
     const QString id() const;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent ( QEvent *e );
 
 private slots:
     void on_checkBox_clicked();
@@ -51,6 +50,8 @@ private:
     Ui::VoxforgeSettingsPane *ui;
 };
 
-}}
+}
+}
 
 #endif // VOXFORGESETTINGSPANE_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

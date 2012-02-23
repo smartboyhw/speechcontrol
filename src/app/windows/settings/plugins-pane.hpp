@@ -24,27 +24,26 @@
 #include <QFrame>
 
 namespace Ui {
-    class PluginsSettingsPane;
+class PluginsSettingsPane;
 }
 
 namespace SpeechControl {
 namespace Windows {
 
-class PluginsSettingsPane : public QFrame
-{
+class PluginsSettingsPane : public QFrame {
     Q_OBJECT
-    Q_PROPERTY(const QString Title READ title)
-    Q_PROPERTY(const QString ID READ id)
+    Q_PROPERTY ( const QString Title READ title )
+    Q_PROPERTY ( const QString ID READ id )
 
 public:
-    explicit PluginsSettingsPane(QWidget *parent = 0);
+    explicit PluginsSettingsPane ( QWidget *parent = 0 );
     ~PluginsSettingsPane();
     void updateList();
     const QString title() const;
     const QString id() const;
 
 protected:
-    void changeEvent(QEvent *e);
+    void changeEvent ( QEvent *e );
 
 private slots:
     void on_btnInfo_clicked();
@@ -53,6 +52,8 @@ private:
     Ui::PluginsSettingsPane *ui;
 };
 
-}}
+}
+}
 
 #endif // PLUGINS_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

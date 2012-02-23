@@ -1,8 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
- *            (C) 2012 Jacky Alcine <jacky.alcine@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -15,35 +14,39 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-
-#ifndef TEST_BASE_HPP
-#define TEST_BASE_HPP
+#ifndef INDICATOR_HPP
+#define INDICATOR_HPP
 
 #include <QObject>
-#include <cpptest-suite.h>
+#include <QString>
 
-class MODULE;
+#include <qindicateindicator.h>
+
+class QImage;
 
 namespace SpeechControl {
-    class TestModule : public QObject, public Test::Suite {
-        Q_OBJECT
+class Indicator;
 
-    signals:
-        void testInvoked();
+class Indicator : public QObject {
+    Q_OBJECT
 
-    private:
-        void handleTest();
-        static TestModule* s_inst;
+public:
+    virtual ~Indicator();
+    static void show();
+    static void hide();
+    static void showMessage ( const QString& p_message );
+    static Indicator* instance();
 
-    public:
-        TestModule();
-        virtual ~TestModule();
-        void dumpBacktrace();
-        static TestModule* instance();
-    };
+private:
+    explicit Indicator ( QObject* parent = 0 );
+    QIndicate::Indicator* m_indctr;
+    static Indicator* s_inst;
+};
 }
+
 #endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

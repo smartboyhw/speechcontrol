@@ -24,19 +24,18 @@
 #include <QWizardPage>
 
 namespace Ui {
-    class UserInitialization;
+class UserInitialization;
 }
 
 namespace SpeechControl {
 namespace Wizards {
 namespace Pages {
 
-class UserInitialization : public QWizardPage
-{
+class UserInitialization : public QWizardPage {
     Q_OBJECT
 
 public:
-    explicit UserInitialization(QWidget *parent = 0);
+    explicit UserInitialization ( QWidget *parent = 0 );
     ~UserInitialization();
 
 private slots:
@@ -49,6 +48,9 @@ private:
     Ui::UserInitialization *ui;
 };
 
-}}}
+}
+}
+}
 
 #endif // USERINIT_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

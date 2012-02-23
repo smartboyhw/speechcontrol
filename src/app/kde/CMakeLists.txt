@@ -8,7 +8,6 @@ if(WITH_KDE_SUPPORT OR KDE4_FOUND)
         message(STATUS "KDE integration enabled.")
 
         option(WITH_KDE_PLASMOIDS       "Build plasmoids for the KDE desktop." ON)
-        option(WITH_KCM_SUPPORT         "Build a KControl module."             ON)
 
         ## Includes and new packages to add.
         list(APPEND CMAKE_MODULE_PATH ${KDE4_MODULE_DIR})
@@ -18,11 +17,10 @@ if(WITH_KDE_SUPPORT OR KDE4_FOUND)
         set(SPCHCNTRL_APP_KDE_UI ${SPCHCNTRL_UI})
         set(SPCHCNTRL_APP_KDE_COMPILE_FLAGS ${SPCHCNTRL_APP_COMPILE_FLAGS})
         set(SPCHCNTRL_APP_KDE_INCLUDE_DIRS ${SPCHCNTRL_APP_INCLUDE_DIRS} ${KDE4_INCLUDES})
-        set(SPCHCNTRL_APP_KDE_LIBRARIES ${SPCHCNTRL_LIBRARIES}
+        set(SPCHCNTRL_APP_KDE_LIBRARIES ${SPCHCNTRL_APP_LIBRARIES}
             ${KDE4_KDECORE_LIBS}
             ${KDE4_KDEUI_LIBRARY}
             ${KDE4_SOLID_LIBS}
-            ${QT_QTDBUS_LIBRRARY}
             spchcntrl)
         set(SPCHCNTRL_APP_KDE_DEFINTIONS "HAVE_KDE")
         set(SPCHCNTRL_APP_KDE_SCPP ${SPCHCNTRL_APP_SRCS}
@@ -51,15 +49,12 @@ if(WITH_KDE_SUPPORT OR KDE4_FOUND)
 
         include_directories(${SPCHCNTRL_APP_KDE_INCLUDE_DIRS})
 
-        if (WITH_KCM_SUPPORT)
-            message(STATUS "Building KControl module for SpeechControl.")
-            add_subdirectory(kcm)
-        endif(WITH_KCM_SUPPORT)
-
         if (WITH_KDE_PLASMOIDS)
             message(STATUS "Building plasmoids for SpeechControl.")
             add_subdirectory(plasmoids)
         endif(WITH_KDE_PLASMOIDS)
+
+        add_test(testapp-kde COMMAND $<TARGET_FILE:speechcontrol> --nofork --nocrashhandler)
 
     else(KDE4_FOUND)
         message(STATUS "KDE integration disabled; required development files not found.")

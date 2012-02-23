@@ -22,6 +22,7 @@
 #include <QMessageBox>
 #include <QListWidgetItem>
 
+#include "core.hpp"
 #include "settings-dialog.hpp"
 #include "settings/general-pane.hpp"
 #include "settings/plugins-pane.hpp"
@@ -35,43 +36,43 @@ using namespace SpeechControl::Windows;
 
 Settings* Settings::s_inst = 0;
 
-Settings::Settings(QWidget *m_prnt) :
-    QDialog(m_prnt),
-    m_ui(new Ui::SettingsDialog)
-{
+Settings::Settings ( QWidget *m_prnt ) :
+    QDialog ( m_prnt ),
+    m_ui ( new Ui::SettingsDialog ) {
     s_inst = this;
-    m_ui->setupUi(this);
+    m_ui->setupUi ( this );
 }
 
 /// @todo Add it to the list of options.
-void Settings::addPanel(QWidget* p_pane)
-{
-    const QString l_paneTitle = p_pane->property("Title").toString();
-    const QString l_paneID = p_pane->property("ID").toString();
-    QListWidgetItem* l_itm = new QListWidgetItem(l_paneTitle,instance()->m_ui->lstNavigation);
+void Settings::addPanel ( QWidget* p_pane ) {
+    const QString l_paneTitle = p_pane->property ( "Title" ).toString();
+    const QString l_paneID = p_pane->property ( "ID" ).toString();
+    QListWidgetItem* l_itm = new QListWidgetItem ( l_paneTitle,instance()->m_ui->lstNavigation );
 
-    instance()->m_panes.insert(l_paneID,p_pane);
-    l_itm->setData(Qt::UserRole,l_paneID);
-    p_pane->setParent(instance()->m_ui->frmPageContainer);
-    p_pane->setGeometry(QRect(0,0,310,246));
+    instance()->m_panes.insert ( l_paneID,p_pane );
+    l_itm->setData ( Qt::UserRole,l_paneID );
+    p_pane->setParent ( instance()->m_ui->frmPageContainer );
+    p_pane->setGeometry ( QRect ( 0,0,310,246 ) );
     p_pane->hide();
 }
 
-void Settings::switchToPanel(const QString &l_paneID)
-{
-    QWidget* l_currentPane = instance()->m_panes.value(l_paneID);
+void Settings::switchToPanel ( const QString &l_paneID ) {
+    QWidget* l_currentPane = instance()->m_panes.value ( l_paneID );
 
-    if (l_currentPane != 0)
+    if ( l_currentPane != 0 )
         l_currentPane->show();
+    else {
+        Core::mainWindow()->setStatusMessage ( "Invalid settings panel." );
+        instance()->m_panes.value ( "gnrl" )->show();
+    }
 
-    if (!instance()->isVisible())
+    if ( !instance()->isVisible() )
         instance()->exec();
 }
 
 /// @todo Add the initial panes here.
-Settings* Settings::instance()
-{
-    if (s_inst == 0){
+Settings* Settings::instance() {
+    if ( s_inst == 0 ) {
         s_inst = new Settings;
         GeneralSettingsPane* l_generalPane = new GeneralSettingsPane;
         PluginsSettingsPane* l_pluginsPane = new PluginsSettingsPane;
@@ -79,11 +80,11 @@ Settings* Settings::instance()
         VoxforgeSettingsPane* l_voxforgePane = new VoxforgeSettingsPane;
         SessionSettingsPane* l_sessionPane = new SessionSettingsPane;
 
-        addPanel(l_generalPane);
-        addPanel(l_pluginsPane);
-        addPanel(l_booksPane);
-        addPanel(l_sessionPane);
-        addPanel(l_voxforgePane);
+        addPanel ( l_generalPane );
+        addPanel ( l_pluginsPane );
+        addPanel ( l_booksPane );
+        addPanel ( l_sessionPane );
+        addPanel ( l_voxforgePane );
 
         l_generalPane->show();
     }
@@ -92,40 +93,35 @@ Settings* Settings::instance()
 }
 
 /// @todo Remove this from the list of options.
-void Settings::removePanel(const QString& p_paneID)
-{
-    instance()->m_panes.remove(p_paneID);
+void Settings::removePanel ( const QString& p_paneID ) {
+    instance()->m_panes.remove ( p_paneID );
 }
 
-void Settings::on_lstNavigation_itemSelectionChanged()
-{
+void Settings::on_lstNavigation_itemSelectionChanged() {
     QWidget* l_container = instance()->m_ui->frmPageContainer;
     QListWidget* l_lstNavi = instance()->m_ui->lstNavigation;
 
-    if (!l_lstNavi->selectedItems().empty()){
+    if ( !l_lstNavi->selectedItems().empty() ) {
         QListWidgetItem* l_itm = l_lstNavi->selectedItems().first();
-        const QString l_id = l_itm->data(Qt::UserRole).toString();
+        const QString l_id = l_itm->data ( Qt::UserRole ).toString();
 
         QWidget* l_pane = m_panes[l_id];
-        Q_FOREACH(QObject* l_subPane, l_container->children()){
-            ((QWidget*) l_subPane)->hide();
+        Q_FOREACH ( QObject* l_subPane, l_container->children() ) {
+            ( ( QWidget* ) l_subPane )->hide();
         }
 
-        l_pane->setParent(l_container);
+        l_pane->setParent ( l_container );
         l_pane->show();
     }
 }
 
-Settings::~Settings()
-{
+Settings::~Settings() {
     delete m_ui;
 }
 
-void SpeechControl::Windows::Settings::on_buttonBox_accepted()
-{
+void SpeechControl::Windows::Settings::on_buttonBox_accepted() {
     this->close();
 }
 
-#ifdef HAVE_KDE
 #include "settings-dialog.moc"
-#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -25,10 +25,9 @@
 #include "core.hpp"
 
 // pretty simple, huh?
-int main (int argc, char** argv)
-{
-    SpeechControl::Core l_core (argc, argv);
+int main ( int argc, char** argv ) {
+    SpeechControl::Core l_core ( argc, argv );
     l_core.start();
     return l_core.exec();
 }
-// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

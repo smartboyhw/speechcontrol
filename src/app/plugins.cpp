@@ -39,76 +39,66 @@ using SpeechControl::Plugins::PluginList;
 using SpeechControl::Plugins::AbstractPlugin;
 
 /// @bug #0000034
-AbstractPlugin::AbstractPlugin(QObject* p_prnt) :
-QObject(p_prnt), m_cfg(0), m_sttgs(0), m_ldr(0)
-{
+AbstractPlugin::AbstractPlugin ( QObject* p_prnt ) :
+    QObject ( p_prnt ), m_cfg ( 0 ), m_sttgs ( 0 ), m_ldr ( 0 ) {
 }
 
-AbstractPlugin::AbstractPlugin ( const AbstractPlugin& p_other ) : QObject(p_other.parent()),
-m_cfg(p_other.m_cfg), m_sttgs(p_other.m_sttgs), m_ldr(p_other.m_ldr)
-{
+AbstractPlugin::AbstractPlugin ( const AbstractPlugin& p_other ) : QObject ( p_other.parent() ),
+    m_cfg ( p_other.m_cfg ), m_sttgs ( p_other.m_sttgs ), m_ldr ( p_other.m_ldr ) {
 
 }
 
 /// @todo Determine if a plug-in has been loaded.
-bool AbstractPlugin::hasLoaded() const
-{
+bool AbstractPlugin::hasLoaded() const {
     return m_ldr && m_ldr->isLoaded();
 }
 
-bool AbstractPlugin::isSupported() const
-{
+bool AbstractPlugin::isSupported() const {
     return false;
 }
 
-const QString AbstractPlugin::name() const
-{
-    if (hasLoaded())
-        return m_cfg->value("Plugin/Name").toString();
+const QString AbstractPlugin::name() const {
+    if ( hasLoaded() )
+        return m_cfg->value ( "Plugin/Name" ).toString();
 
     return QString::null;
 }
 
-const QUuid AbstractPlugin::uuid() const
-{
-    if (hasLoaded())
-        return QUuid(m_cfg->value("Plugin/UUID").toString());
+const QUuid AbstractPlugin::uuid() const {
+    if ( hasLoaded() )
+        return QUuid ( m_cfg->value ( "Plugin/UUID" ).toString() );
 
-    return QUuid(QString::null);
+    return QUuid ( QString::null );
 }
 
-double AbstractPlugin::version() const
-{
-    if (hasLoaded())
-        return m_cfg->value("Plugin/Version").toDouble();
+double AbstractPlugin::version() const {
+    if ( hasLoaded() )
+        return m_cfg->value ( "Plugin/Version" ).toDouble();
 
     return -1.0;
 }
 
-const QString AbstractPlugin::description() const
-{
-    if (hasLoaded())
-        return m_cfg->value("Plugin/Description").toString();
+const QString AbstractPlugin::description() const {
+    if ( hasLoaded() )
+        return m_cfg->value ( "Plugin/Description" ).toString();
 
     return QString::null;
 }
 
-const QUrl AbstractPlugin::url() const
-{
-    if (hasLoaded())
-        return m_cfg->value("Plugin/URL").toUrl();
+const QUrl AbstractPlugin::url() const {
+    if ( hasLoaded() )
+        return m_cfg->value ( "Plugin/URL" ).toUrl();
 
-    return QUrl(QString::null);
+    return QUrl ( QString::null );
 }
 
-const PluginList AbstractPlugin::plugins() const
-{
-    if (hasLoaded()){
+const PluginList AbstractPlugin::plugins() const {
+    if ( hasLoaded() ) {
         PluginList l_lst;
-        const QStringList l_plgns = m_cfg->value("Dependencies/Plugins").toStringList();
+        const QStringList l_plgns = m_cfg->value ( "Dependencies/Plugins" ).toStringList();
 
-        Q_FOREACH(const QString l_plgnUuid, l_plgns){
-            l_lst << new GenericPlugin(l_plgnUuid);
+        Q_FOREACH ( const QString l_plgnUuid, l_plgns ) {
+            l_lst << new GenericPlugin ( l_plgnUuid );
         }
 
         return l_lst;
@@ -117,45 +107,40 @@ const PluginList AbstractPlugin::plugins() const
     return PluginList();
 }
 
-bool AbstractPlugin::loadComponents()
-{
-    if (loadPlugins())
+bool AbstractPlugin::loadComponents() {
+    if ( loadPlugins() )
         return loadLibrary();
 
     return false;
 }
 
-bool AbstractPlugin::loadLibrary()
-{
-    const QString l_libName = m_cfg->value("Dependencies/Library").toString();
-    m_ldr = new QPluginLoader(l_libName);
+bool AbstractPlugin::loadLibrary() {
+    const QString l_libName = m_cfg->value ( "Dependencies/Library" ).toString();
+    m_ldr = new QPluginLoader ( l_libName );
     return m_ldr->load();
 }
 
-bool AbstractPlugin::loadPlugins()
-{
-    Q_FOREACH(AbstractPlugin* l_plgn, plugins()){
-        if (!(l_plgn->isSupported() && Factory::isPluginLoaded(l_plgn->uuid())))
+bool AbstractPlugin::loadPlugins() {
+    Q_FOREACH ( AbstractPlugin* l_plgn, plugins() ) {
+        if ( ! ( l_plgn->isSupported() && Factory::isPluginLoaded ( l_plgn->uuid() ) ) )
             return false;
     }
 
     return true;
 }
 
-void AbstractPlugin::start()
-{
+void AbstractPlugin::start() {
     initialize();
     emit started();
 }
 
-void AbstractPlugin::stop()
-{
+void AbstractPlugin::stop() {
     deinitialize();
     emit stopped();
 }
 
 void AbstractPlugin::load() {
-    if (!isSupported())
+    if ( !isSupported() )
         return;
 
     loadComponents();
@@ -165,18 +150,15 @@ void AbstractPlugin::unload() {
 
 }
 
-AbstractPlugin::~AbstractPlugin()
-{
+AbstractPlugin::~AbstractPlugin() {
 
 }
 
-Plugins::GenericPlugin::GenericPlugin ( const QUuid& p_uuid ) : AbstractPlugin(Core::instance())
-{
-    m_cfg = Factory::pluginConfiguration(p_uuid);
+Plugins::GenericPlugin::GenericPlugin ( const QUuid& p_uuid ) : AbstractPlugin ( Core::instance() ) {
+    m_cfg = Factory::pluginConfiguration ( p_uuid );
     qDebug() << m_cfg->allKeys();
-    m_sttgs = Factory::pluginSettings(p_uuid);
+    m_sttgs = Factory::pluginSettings ( p_uuid );
 }
 
-#ifdef HAVE_KDE
 #include "plugins.moc"
-#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

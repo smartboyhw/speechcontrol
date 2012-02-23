@@ -29,97 +29,85 @@
 
 using namespace SpeechControl;
 
-void ASR::_prepare()
-{
-    _psphinx = _pipeline->getElementByName ("asr");
-    _vader   = _pipeline->getElementByName ("vad");
+void ASR::_prepare() {
+    _psphinx = _pipeline->getElementByName ( "asr" );
+    _vader   = _pipeline->getElementByName ( "vad" );
 
-    QGlib::connect (_psphinx, "partial_result", this, &ASR::asrPartialResult);
-    QGlib::connect (_psphinx, "result", this, &ASR::asrResult);
+    QGlib::connect ( _psphinx, "partial_result", this, &ASR::asrPartialResult );
+    QGlib::connect ( _psphinx, "result", this, &ASR::asrResult );
 //     _psphinx->setProperty ("configured", true);
 
     _bus = _pipeline->bus();
     _bus->addSignalWatch();
-    QGlib::connect (_bus, "message::application", this, &ASR::applicationMessage);
+    QGlib::connect ( _bus, "message::application", this, &ASR::applicationMessage );
 
-    _pipeline->setState (QGst::StateReady);
+    _pipeline->setState ( QGst::StateReady );
     _state = Ready;
 }
 
-ASR::ASR (QObject* parent) : QObject (parent)
-{
+ASR::ASR ( QObject* parent ) : QObject ( parent ) {
     _state = NotReady;
 }
 
-ASR::ASR (QGst::PipelinePtr pipeline, QObject* parent) : QObject (parent), _pipeline(pipeline)
-{
+ASR::ASR ( QGst::PipelinePtr pipeline, QObject* parent ) : QObject ( parent ), _pipeline ( pipeline ) {
     _state = NotReady;
 }
 
 /// @todo Automatically extract 'pocketsphinx' element name from description.
-ASR::ASR (const char* description, QObject* parent) : QObject (parent)
-{
+ASR::ASR ( const char* description, QObject* parent ) : QObject ( parent ) {
     _pipeline = QGst::Pipeline::create();
-    QGst::BinPtr bin = QGst::Bin::fromDescription (description);
-    _pipeline->add (bin);
+    QGst::BinPtr bin = QGst::Bin::fromDescription ( description );
+    _pipeline->add ( bin );
 
     _prepare();
 }
 
 /// @todo Automatically extract 'pocketsphinx' element name from description.
-ASR::ASR (const QString& description, QObject* parent) : QObject (parent)
-{
+ASR::ASR ( const QString& description, QObject* parent ) : QObject ( parent ) {
     _pipeline = QGst::Pipeline::create();
-    QGst::BinPtr bin = QGst::Bin::fromDescription (description.toStdString().c_str());
-    _pipeline->add (bin);
+    QGst::BinPtr bin = QGst::Bin::fromDescription ( description.toStdString().c_str() );
+    _pipeline->add ( bin );
 
     _prepare();
 }
 
-ASR::~ASR()
-{
-    _pipeline->setState(QGst::StateNull);
+ASR::~ASR() {
+    _pipeline->setState ( QGst::StateNull );
 }
 
-QString ASR::getStandardDescription()
-{
-    QString desc ("autoaudiosrc name=audiosrc ! audioconvert");
-    desc.append (" ! audioresample ! audiorate ! volume name=volume");
-    desc.append (" ! vader name=vad auto_threshold=true");
-    desc.append (" ! pocketsphinx name=asr");
-    desc.append (" ! fakesink");
+QString ASR::getStandardDescription() {
+    QString desc ( "autoaudiosrc name=audiosrc ! audioconvert" );
+    desc.append ( " ! audioresample ! audiorate ! volume name=volume" );
+    desc.append ( " ! vader name=vad auto_threshold=true" );
+    desc.append ( " ! pocketsphinx name=asr" );
+    desc.append ( " ! fakesink" );
     return desc;
 }
 
 /// @todo How to deal with this decoder in GValue?
-QGlib::Value ASR::getDecoder() const
-{
-    return _psphinx->property("decoder");
+QGlib::Value ASR::getDecoder() const {
+    return _psphinx->property ( "decoder" );
 }
 
 /// @todo Should we implement a class/struct to wrap these values more programatically?
-QDir ASR::getLanguageModel() const
-{
-    QGlib::Value lm = _psphinx->property("lm");
-    return QDir(lm.get<QString>());
+QDir ASR::getLanguageModel() const {
+    QGlib::Value lm = _psphinx->property ( "lm" );
+    return QDir ( lm.get<QString>() );
 }
 
 /// @todo Rewrite the @c Dictionary class to be used here.
-QDir ASR::getDictionary() const
-{
-    QGlib::Value dict = _psphinx->property("dict");
-    return QDir(dict.get<QString>());
+QDir ASR::getDictionary() const {
+    QGlib::Value dict = _psphinx->property ( "dict" );
+    return QDir ( dict.get<QString>() );
 }
 
 /// @todo Rewrite the @c AcousticModel class to be used here.
-QDir ASR::getAcousticsModel() const
-{
-    QGlib::Value hmm = _psphinx->property("hmm");
-    return QDir(hmm.get<QString>());
+QDir ASR::getAcousticsModel() const {
+    QGlib::Value hmm = _psphinx->property ( "hmm" );
+    return QDir ( hmm.get<QString>() );
 }
 
-const QGst::PipelinePtr ASR::getPipeline() const
-{
+const QGst::PipelinePtr ASR::getPipeline() const {
     return _pipeline;
 }
 
@@ -153,71 +141,63 @@ const QGst::BusPtr ASR::getBus() const
 //     _vader->setProperty(property.toStdString().c_str(), value.toStdString().c_str());
 // }
 
-void ASR::setLanguageModel (const QString& path)
-{
-    if (QDir(path).exists())
-        setPsProperty("lm", path);
+void ASR::setLanguageModel ( const QString& path ) {
+    if ( QDir ( path ).exists() )
+        setPsProperty ( "lm", path );
     else
         qWarning() << "[ASR] Given language model path" << path << "does not exist.";
 }
 
-void ASR::setDictionary (const QString& path)
-{
-    if (QDir(path).exists())
-        setPsProperty("dict", path);
+void ASR::setDictionary ( const QString& path ) {
+    if ( QDir ( path ).exists() )
+        setPsProperty ( "dict", path );
     else
         qWarning() << "[ASR] Given dictionary path" << path << "does not exist.";
 }
 
-void ASR::setAcousticModel (const QString& path)
-{
+void ASR::setAcousticModel ( const QString& path ) {
 
-    if (QDir(path).exists())
-        setPsProperty("hmm", path);
+    if ( QDir ( path ).exists() )
+        setPsProperty ( "hmm", path );
     else
         qWarning() << "[ASR] Given acoustic model path" << path << "does not exist.";
 }
 
-bool ASR::isReady() const
-{
+bool ASR::isReady() const {
     return _state == Ready;
 }
 
-void ASR::run()
-{
+void ASR::run() {
     qDebug() << "[ASR start]";
-    if ( isReady())
-        _pipeline->setState(QGst::StatePlaying);
+    if ( isReady() )
+        _pipeline->setState ( QGst::StatePlaying );
     else
         qWarning() << "[ASR] Object is not ready to run.";
 }
 
-void ASR::pause()
-{
-    _vader->setProperty("silent", true);
+void ASR::pause() {
+    _vader->setProperty ( "silent", true );
 }
 
-void ASR::stop()
-{
-    _pipeline->setState(QGst::StatePaused);
+void ASR::stop() {
+    _pipeline->setState ( QGst::StatePaused );
 }
 
-void ASR::asrPartialResult (const QString& text, const QString& uttid)
-{
-    QGst::Structure ps_structure("partial_result");
-    ps_structure.setValue("hyp", text);
-    ps_structure.setValue("uttid", uttid);
-    QGst::MessagePtr message = QGst::ApplicationMessage::create(_psphinx, ps_structure);
-    _bus->post(message);
+void ASR::asrPartialResult ( const QString& text, const QString& uttid ) {
+    QGst::Structure ps_structure ( "partial_result" );
+    ps_structure.setValue ( "hyp", text );
+    ps_structure.setValue ( "uttid", uttid );
+    QGst::MessagePtr message = QGst::ApplicationMessage::create ( _psphinx, ps_structure );
+    _bus->post ( message );
 }
 
-void ASR::asrResult (const QString& text, const QString& uttid)
-{
-    QGst::Structure ps_structure("result");
-    ps_structure.setValue("hyp", text);
-    ps_structure.setValue("uttid", uttid);
-    QGst::MessagePtr message = QGst::ApplicationMessage::create(_psphinx, ps_structure);
-    _bus->post(message);
+void ASR::asrResult ( const QString& text, const QString& uttid ) {
+    QGst::Structure ps_structure ( "result" );
+    ps_structure.setValue ( "hyp", text );
+    ps_structure.setValue ( "uttid", uttid );
+    QGst::MessagePtr message = QGst::ApplicationMessage::create ( _psphinx, ps_structure );
+    _bus->post ( message );
 }
 
-// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on;
+#include "asr.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

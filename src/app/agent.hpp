@@ -47,7 +47,7 @@ public:
      * @brief Constructor.
      * @param p_prnt Defaults to 0.
      **/
-    explicit AbstractAgent ( QObject* parent = 0 );
+    explicit AbstractAgent ( QObject* = 0 );
 
     /**
      * @brief Destructor.
@@ -106,4 +106,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

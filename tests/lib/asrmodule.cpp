@@ -26,22 +26,23 @@
 
 // local includes
 #include "include/asrmodule.hpp"
-#include "base.hpp"
+#include "include/base.hpp"
 
 using namespace SpeechControl;
 
 MODULE::MODULE() {
-    TEST_ADD( MODULE::testInitialize )
-    TEST_ADD( MODULE::testInvoke )
+    TEST_ADD ( MODULE::testInitialize )
+    TEST_ADD ( MODULE::testInvoke )
 
-    TestModule::instance()->add(std::auto_ptr<Test::Suite>(this));
+    TestModule::instance()->add ( std::auto_ptr<Test::Suite> ( this ) );
 }
 
 void MODULE::testInitialize() {
-    SpeechControl::DummySC* l_asr;
-    TEST_ASSERT_MSG(l_asr == new SpeechControl::DummySC, "Failed to initialize variable.")
+    SpeechControl::DummySC* l_asr = 0;
+    TEST_ASSERT_MSG ( l_asr != 0, "Failed to initialize variable." )
 }
 
 void MODULE::testInvoke() {
-    TEST_FAIL( "Testing failures." )
+    TEST_FAIL ( "Testing failures." )
 }
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

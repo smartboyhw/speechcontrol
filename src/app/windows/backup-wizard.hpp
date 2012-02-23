@@ -23,13 +23,11 @@
 
 #include "wizards/base.hpp"
 
-namespace SpeechControl
-{
+namespace SpeechControl {
 
 namespace Wizards {
 
-class Backup : public WizardBase
-{
+class Backup : public WizardBase {
     Q_OBJECT
     enum Pages {
         IntroductionPage = 0,
@@ -49,7 +47,7 @@ class Backup : public WizardBase
     };
 
 public:
-    explicit Backup (QWidget *parent = 0);
+    explicit Backup ( QWidget *parent = 0 );
     ~Backup();
 
 };
@@ -57,4 +55,4 @@ public:
 }
 }
 #endif // WIZARD_HPP
-// kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -31,3 +31,4 @@ private:
     void testInitialize();
     void testInvoke();
 };
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

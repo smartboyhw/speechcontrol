@@ -34,50 +34,59 @@
 #endif
 
 namespace Ui {
-    class MainWindow;
+class MainWindow;
 }
 
 namespace SpeechControl {
-    class User;
-    /**
-     * @brief ...
-     **/
-    namespace Windows {
-        /**
-         * @brief ...
-         **/
-        class Main : public SC_MW {
-            Q_OBJECT
-        public:
-            explicit Main();
-            ~Main();
+class User;
+/**
+ * @brief A namespace containing all of the classes dedicated to the user interface.
+ **/
+namespace Windows {
+/**
+ * @brief Represents the Main window of SpeechControl.
+ * Being the first thing (and perhaps the last thing) that users see when
+ * they start SpeechControl,
+ **/
+class Main : public SC_MW {
+    Q_OBJECT
+public:
+    explicit Main();
+    ~Main();
 
-        public slots:
-            void show();
-            void updateContent();
-            void setProgress(const double);
-            void setStatusMessage(const QString&, const int);
+public slots:
+    virtual void show();
+    virtual void close();
+    void updateContent();
+    void setProgress ( const double p_value );
+    void setStatusMessage ( const QString& p_message, const int p_timeout = 3000 );
 
-        private slots:
-            void on_actionOptionsDesktopControl_triggered();
-            void on_actionOptions_triggered();
-            void on_actionStartTraining_triggered();
-            void on_actionAdaptModels_triggered();
-            void on_actionStartDesktopControl_triggered();
-            void on_actionStartDictation_triggered();
-            void on_btnDsktpCntrl_checked (const bool);
-            void on_btnDctn_checked (const bool);
-            void on_actionAboutQt_triggered();
-            void on_actionAboutSpeechControl_triggered();
-            void desktopControlToggled(const bool);
-            void dictationToggled(const bool);
+private slots:
+    // desktop control
+    void on_actionDesktopControlOptions_triggered();
+    void on_actionDesktopControlActive_triggered ( bool p_checked );
+    void on_btnDsktpCntrl_clicked ( const bool p_checked );
 
-        private:
-            Ui::MainWindow* m_ui;
-            QProgressBar* m_prgStatusbar;
-            QTimer* m_tckr;
-        };
-    }
+    // dictation
+    void on_actionDictationActive_triggered ( const bool p_checked );
+    void on_btnDctn_clicked ( const bool p_checked );
+
+    // training
+    void on_actionStartTraining_triggered();
+    void on_actionAdaptModels_triggered();
+
+    // misc.
+    void on_actionOptions_triggered();
+    void on_actionAboutQt_triggered();
+    void on_actionAboutSpeechControl_triggered();
+
+private:
+    Ui::MainWindow* m_ui;
+    QProgressBar* m_prgStatusbar;
+    QTimer* m_tckr;
+};
+}
 }
 
 #endif // MAIN_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -27,8 +27,7 @@
 namespace SpeechControl {
 namespace Wizards {
 
-class MicrophoneSetup : public WizardBase
-{
+class MicrophoneSetup : public WizardBase {
     Q_OBJECT
     enum {
         IntroductionPage = 0,
@@ -38,7 +37,7 @@ class MicrophoneSetup : public WizardBase
     };
 
 public:
-    explicit MicrophoneSetup(QWidget *parent = 0);
+    explicit MicrophoneSetup ( QWidget *parent = 0 );
     ~MicrophoneSetup();
 
 public slots:
@@ -46,5 +45,7 @@ public slots:
 
 };
 
-}}
+}
+}
 #endif // WIZARD_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

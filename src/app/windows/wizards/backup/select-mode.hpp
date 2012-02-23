@@ -23,25 +23,27 @@
 #include <QWizardPage>
 
 namespace Ui {
-    class BackupSelection;
+class BackupSelection;
 }
 
 namespace SpeechControl {
 namespace Wizards {
 namespace Pages {
 
-class BackupSelection : public QWizardPage
-{
+class BackupSelection : public QWizardPage {
     Q_OBJECT
 
 public:
-    explicit BackupSelection(QWidget *parent = 0);
+    explicit BackupSelection ( QWidget *parent = 0 );
     ~BackupSelection();
 
 private:
     Ui::BackupSelection *ui;
 };
 
-}}}
+}
+}
+}
 
 #endif // BCKP_MODESELECT_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

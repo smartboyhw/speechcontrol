@@ -5,6 +5,6 @@ if(WITH_PLUGINS)
                       COMMENT "Building all plugins...")
 
     ## directories
-    add_subdirectory(indicator-applet)
+
     add_subdirectory(python)
 endif(WITH_PLUGINS)

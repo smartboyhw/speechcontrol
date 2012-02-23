@@ -29,11 +29,12 @@
 #include <cpptest-textoutput.h>
 
 // local includes
-#include "base.hpp"
+#include "include/base.hpp"
 
 using namespace SpeechControl;
 
-int main(int argc, char** argv){
-    Test::TextOutput l_output(Test::TextOutput::Verbose);
-    return TestModule::instance()->run(l_output) ? EXIT_SUCCESS : EXIT_FAILURE;
+int main ( int argc, char** argv ) {
+    Test::TextOutput l_output ( Test::TextOutput::Verbose );
+    return TestModule::instance()->run ( l_output ) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

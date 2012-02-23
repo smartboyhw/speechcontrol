@@ -23,19 +23,16 @@
 
 using namespace SpeechControl::Wizards::Pages;
 
-ConclusionPage::ConclusionPage(const QString& summary) :
+ConclusionPage::ConclusionPage ( const QString& summary ) :
     QWizardPage(),
-    ui(new Ui::Conclusion)
-{
-    ui->setupUi(this);
-    ui->labelSummary->setText(summary);
+    ui ( new Ui::Conclusion ) {
+    ui->setupUi ( this );
+    ui->labelSummary->setText ( summary );
 }
 
-ConclusionPage::~ConclusionPage()
-{
+ConclusionPage::~ConclusionPage() {
     delete ui;
 }
 
-#ifdef HAVE_KDE
 #include "outro.moc"
-#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

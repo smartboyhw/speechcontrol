@@ -113,10 +113,10 @@ void Dictionary::save()
 
 }
 
-Dictionary* Dictionary::fromDirectory ( const QDir& )
-{
-    return 0;
-}
+// Dictionary* Dictionary::fromDirectory ( const QDir& dir)
+// {
+//     return 0;
+// }
 
 Dictionary::Dictionary ( const Dictionary& p_other) : QObject(),
     m_words(p_other.m_words)
@@ -153,7 +153,7 @@ const QDateTime Corpus::timeCompleted() const
     return QDateTime::fromString (m_dom->elementsByTagName ("Date").at (0).toElement().attribute ("Completed"));
 }
 
-const QString Phrase::text() const
+QString Phrase::text() const
 {
     QDomElement* l_elem = m_sntnc->getPhraseElement (m_indx);
     const QString l_base64Data = l_elem->text();
@@ -168,7 +168,7 @@ QFile* Phrase::audio() const
     return new QFile (l_pth + "/" + l_fileName);
 }
 
-const int Phrase::index() const
+int Phrase::index() const
 {
     return m_indx;
 }
@@ -198,34 +198,14 @@ Phrase::~Phrase()
 
 }
 
-const bool Sentence::allPhrasesCompleted() const
-{
-    Q_FOREACH (const Phrase* l_phrs, m_phrsLst) {
-        if (!l_phrs->isCompleted())
-            return false;
-    }
-
-    return true;
-}
-
 const bool Sentence::isPhraseCompleted (const int &p_indx) const
 {
     return m_phrsLst.at (p_indx)->isCompleted();
     qDebug() << "Phrase" << this->text() << "rendered.";
 }
 
-const bool Phrase::isCompleted() const
+bool Phrase::isCompleted() const
 {
     return audio()->exists();
-}
-
-const int Sentence::index() const
-{
-    return m_elem->attribute ("index").toInt();
-}
-
-SpeechControl::Sentence* SpeechControl::Corpus::sentenceAt (const int &p_indx) const
-{
-    return m_sntncLst.at (p_indx);
 }
 // kate: indent-mode cstyle; space-indent on; indent-width 4; replace-tabs on; 

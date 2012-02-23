@@ -84,11 +84,6 @@ const bool Sentence::allPhrasesCompleted() const
     return true;
 }
 
-const bool Sentence::isPhraseCompleted(const int &p_indx) const
-{
-    return m_phrsLst.at(p_indx)->isCompleted();
-}
-
 const int Sentence::index() const
 {
     return m_elem->attribute("index").toInt();

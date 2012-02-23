@@ -29,14 +29,14 @@ class Phrase : public QObject
 public:
     virtual ~Phrase();
     QFile* audio() const;
-    const QString text() const;
-    const int index() const;
-    const bool isCompleted() const;
+    QString text() const;
+    int index() const;
+    bool isCompleted() const;
 
 private:
     explicit Phrase (const Sentence*, const int&);
     const Sentence* m_sntnc;
-    const int m_indx;
+    int m_indx;
 };
 
 class Sentence : public QObject

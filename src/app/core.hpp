@@ -109,6 +109,12 @@ public:
     static Core* instance();
 
     /**
+     * @brief Provides a pointer to the Main Window instance.
+     * @return KMainWindow*
+     **/
+    static SC_MW* mainWindow();
+
+    /**
      * @brief Invoke the application's main execution loop.
      */
     int exec();
@@ -137,6 +143,7 @@ public slots:
 
 private:
     SC_APP* m_app;
+    SC_MW* s_mw;
     QSettings* m_settings;
     static Core* s_inst;
 

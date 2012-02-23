@@ -25,7 +25,13 @@
 #include <QTimer>
 #include <QObject>
 #include <QProgressBar>
+#ifndef HAVE_KDE
 #include <QMainWindow>
+#define SC_MW QMainWindow
+#else
+#include <KMainWindow>
+#define SC_MW KMainWindow
+#endif
 
 namespace Ui {
     class MainWindow;
@@ -40,11 +46,17 @@ namespace SpeechControl {
         /**
          * @brief ...
          **/
-        class Main : public QMainWindow {
+        class Main : public SC_MW {
             Q_OBJECT
         public:
             explicit Main();
             ~Main();
+
+        public slots:
+            void show();
+            void updateContent();
+            void setProgress(const double);
+            void setStatusMessage(const QString&, const int);
 
         private slots:
             void on_actionOptionsDesktopControl_triggered();
@@ -53,14 +65,12 @@ namespace SpeechControl {
             void on_actionAdaptModels_triggered();
             void on_actionStartDesktopControl_triggered();
             void on_actionStartDictation_triggered();
-            void on_btnDsktpCntrl_checked (bool checked);
-            void on_btnDctn_checked (bool checked);
+            void on_btnDsktpCntrl_checked (const bool);
+            void on_btnDctn_checked (const bool);
             void on_actionAboutQt_triggered();
             void on_actionAboutSpeechControl_triggered();
             void desktopControlToggled(const bool);
             void dictationToggled(const bool);
-            void updateContent();
-            void setProgress(const double);
 
         private:
             Ui::MainWindow* m_ui;

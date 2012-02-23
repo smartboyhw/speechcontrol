@@ -59,12 +59,19 @@ Main::Main() : m_ui ( new Ui::MainWindow ), m_prgStatusbar ( 0 )
     this->restoreGeometry ( Core::instance()->configuration ( "MainWindow/Geometry" ).toByteArray() );
     this->restoreState ( Core::instance()->configuration ( "MainWindow/State" ).toByteArray() );
 
-    m_ui->statusBar->showMessage ( "Ready." );
     m_ui->statusBar->addPermanentWidget ( m_prgStatusbar );
 
     m_prgStatusbar->setValue ( 3 );
     m_prgStatusbar->setMaximum ( 10 );
+}
+
+void Main::show() {
     updateContent();
+    SC_MW::show();
+}
+
+void Main::setStatusMessage ( const QString& p_msg , const int p_tm ) {
+    m_ui->statusBar->showMessage ( p_msg, p_tm );
 }
 
 /// @todo Instead of this constant ticking, use signals to update this code.

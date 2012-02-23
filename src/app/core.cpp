@@ -127,18 +127,22 @@ Core::~Core () {
 }
 
 void Core::start() {
-    Windows::Main* l_mw = new Windows::Main;
+    instance()->s_mw = new Windows::Main;
 
     if ( !QFile::exists ( s_inst->m_settings->fileName() ) ) {
-        if ( QMessageBox::question ( l_mw, tr ( "First Run" ),
+        if ( QMessageBox::question ( instance()->s_mw, tr ( "First Run" ),
                                      tr ( "This seems to be the first time you've run SpeechControl on this system. "
                                           "A wizard allowing you to start SpeechControl will appear." ), QMessageBox::Yes, QMessageBox::No ) == QMessageBox::Yes ) {
-            QuickStart* l_win = new QuickStart ( l_mw );
+            QuickStart* l_win = new QuickStart ( instance()->s_mw );
             l_win->exec();
         }
     }
 
-    l_mw->show();
+    instance()->s_mw->show();
+}
+
+SC_MW* Core::mainWindow() {
+    return instance()->s_mw;
 }
 
 void Core::stop() { }

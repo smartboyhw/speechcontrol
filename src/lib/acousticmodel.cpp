@@ -59,7 +59,9 @@ void AcousticModel::setParameters (QVariantMap const& parameters)
 
 void AcousticModel::mergeParameters (QVariantMap const& parameters)
 {
-    for (auto it = parameters.constBegin(); it != parameters.constEnd(); ++it) {
+    for (QMap< QString, QVariant >::const_iterator it = parameters.constBegin();
+            it != parameters.constEnd(); ++it) {
+        
         _parameters.insert(it.key(), it.value());
     }
 }

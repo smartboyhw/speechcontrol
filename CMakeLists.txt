@@ -42,7 +42,7 @@ set(SPCHCNTRL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 set(SPCHCNTRL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
 set(SPCHCNTRL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include/speechcontrol")
 set(PROJECT_VERSION "0.1")
-add_definitions("-Wall -std=c++0x")
+add_definitions("-Wall")
 
 if(CMAKE_BUILD_TYPE EQUAL "Debug")
     set(Boost_USE_DEBUG_PYTHON ON)
@@ -64,7 +64,7 @@ if(DOXYGEN_FOUND)
         set(HAVE_DOT NO)
     endif(HAVE_DOT)
     configure_file("${PROJECT_SOURCE_DIR}/Doxyfile.in" "${PROJECT_BINARY_DIR}/Doxyfile")
-    add_custom_target(doc ALL
+    add_custom_target(doc 
         ${DOXYGEN_EXECUTABLE} Doxyfile
         WORKING_DIRECTORY "${PROJECT_BINARY_DIR}"
         COMMENT "Generating API documentation with Doxygen...")

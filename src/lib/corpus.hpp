@@ -74,7 +74,7 @@ public:
      * @param p_uuid The UUID of the corpus to be found.
      * @return A pointer to a @c Corpus object if found, else NULL.
      */
-    static Corpus* obtain ( const QUuid& );
+    static Corpus* obtain ( const QUuid& p_uuid );
 
     /**
      * @brief Generates a new, generic corpus from a list of strings.
@@ -202,4 +202,4 @@ private:
 
 }
 #endif // CORPUS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

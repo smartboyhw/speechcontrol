@@ -41,10 +41,14 @@ public:
 
 private slots:
     void updateUi();
+    void goToNextPage();
+    void goToPreviousPage();
 
 private:
+    void goToPage(const int p_index);
     Ui::ContentInformationDialog *m_ui;
     Content* m_content;
+    uint m_indx;
 };
 
 }

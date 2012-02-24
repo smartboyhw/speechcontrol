@@ -14,7 +14,7 @@
    <string>Session Information</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="../res.qrc">
     <normaloff>:/logo/sc</normaloff>:/logo/sc</iconset>
   </property>
   <widget class="QWidget" name="verticalLayoutWidget">
@@ -87,7 +87,7 @@
             <property name="geometry">
              <rect>
               <x>8</x>
-              <y>24</y>
+              <y>20</y>
               <width>273</width>
               <height>69</height>
              </rect>
@@ -104,7 +104,7 @@
          <item row="5" column="0" colspan="2">
           <widget class="QProgressBar" name="progressBarCompletion">
            <property name="value">
-            <number>24</number>
+            <number>0</number>
            </property>
            <property name="textVisible">
             <bool>true</bool>
@@ -131,7 +131,7 @@
          <item row="4" column="1">
           <widget class="QProgressBar" name="progressBarAccuracy">
            <property name="value">
-            <number>24</number>
+            <number>0</number>
            </property>
            <property name="format">
             <string>%p% Accurate</string>
@@ -162,7 +162,7 @@
           </widget>
          </item>
          <item row="2" column="0">
-          <widget class="QLabel" name="lblNickname">
+          <widget class="QLabel" name="label_2">
            <property name="text">
             <string>Nickname:</string>
            </property>
@@ -233,6 +233,8 @@
    </layout>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../res.qrc"/>
+ </resources>
  <connections/>
 </ui>

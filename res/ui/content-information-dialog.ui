@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>321</width>
-    <height>358</height>
+    <height>279</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
      <x>4</x>
      <y>4</y>
      <width>313</width>
-     <height>349</height>
+     <height>273</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -60,7 +60,32 @@ p, li { white-space: pre-wrap; }
      </widget>
     </item>
     <item>
-     <widget class="QPlainTextEdit" name="txtEdt"/>
+     <widget class="QPlainTextEdit" name="txtEdit">
+      <property name="autoFillBackground">
+       <bool>true</bool>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+      <property name="textInteractionFlags">
+       <set>Qt::TextBrowserInteraction</set>
+      </property>
+      <property name="backgroundVisible">
+       <bool>false</bool>
+      </property>
+      <property name="centerOnScroll">
+       <bool>true</bool>
+      </property>
+     </widget>
     </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -108,7 +133,7 @@ p, li { white-space: pre-wrap; }
        </spacer>
       </item>
       <item>
-       <widget class="QToolButton" name="bthGoRight">
+       <widget class="QToolButton" name="btnGoRight">
         <property name="text">
          <string>...</string>
         </property>
@@ -132,5 +157,22 @@ p, li { white-space: pre-wrap; }
  <resources>
   <include location="../res.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>ContentInformationDialog</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>160</x>
+     <y>339</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>160</x>
+     <y>178</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

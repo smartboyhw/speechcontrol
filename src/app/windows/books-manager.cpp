@@ -44,6 +44,7 @@ BooksManager::~BooksManager() {
 
 void BooksManager::updateList() {
     ContentList l_lst = Content::allContents();
+    ui->lstBooks->clear();
 
     if ( l_lst.empty() )
         ui->lblTitle->setText ( "No Books" );
@@ -94,7 +95,7 @@ Content* BooksManager::doSelectContent() {
 void BooksManager::on_btnAdd_clicked() {
     ContentWizard* l_wiz = new ContentWizard;
 
-    if ( l_wiz->exec() == QDialog::Accepted ){
+    if ( l_wiz->exec() == QDialog::Accepted ) {
         Core::mainWindow()->updateContent();
         updateList();
     }

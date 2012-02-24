@@ -69,6 +69,7 @@ public:
     const PhraseList phrases() const;
     bool allPhrasesCompleted() const;
     bool isPhraseCompleted ( const int& ) const;
+    double completedProgress() const;
     int index() const;
     Phrase* phrase ( const int& ) const;
 
@@ -83,4 +84,4 @@ private:
 }
 
 #endif // SENTENCE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

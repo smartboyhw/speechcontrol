@@ -73,12 +73,12 @@ Sentence* Sentence::create ( Corpus *p_corpus, const QString& p_text ) {
         if ( j < 4 )
             l_phrase += l_words.at ( i ) + " ";
 
-        if ( j == 3 || (i + 1 == l_words.count() ) ) { // build phrase
+        if ( j == 3 || (i - 1 == l_words.count() ) ) {
             l_phrase = l_phrase.trimmed();
 
             QDomElement* l_phrsElem = new QDomElement ( p_corpus->m_dom->createElement ( "Phrase" ) );
             l_phrsElem->setAttribute ( "uuid",QUuid::createUuid() );
-            l_phrsElem->appendChild ( p_corpus->m_dom->createTextNode ( l_phrase.toLocal8Bit().toBase64() ) );
+            l_phrsElem->appendChild ( p_corpus->m_dom->createTextNode ( l_phrase.toUtf8().toBase64() ) );
             l_elem->appendChild ( *l_phrsElem );
 
             j = -1;
@@ -90,7 +90,7 @@ Sentence* Sentence::create ( Corpus *p_corpus, const QString& p_text ) {
 }
 
 bool Sentence::allPhrasesCompleted() const {
-    Q_FOREACH ( const Phrase* l_phrs, m_phrsLst ) {
+    Q_FOREACH ( const Phrase* l_phrs, phrases() ) {
         if ( !l_phrs->isCompleted() )
             return false;
     }
@@ -99,15 +99,22 @@ bool Sentence::allPhrasesCompleted() const {
 }
 
 bool Sentence::isPhraseCompleted ( const int &p_indx ) const {
-    return m_phrsLst.at ( p_indx )->isCompleted();
+    return phrases().at ( p_indx )->isCompleted();
 }
 
 int Sentence::index() const {
     return m_elem->attribute ( "index" ).toInt();
 }
 
-SpeechControl::Sentence* SpeechControl::Corpus::sentenceAt ( const int &p_indx ) const {
-    return m_sntncLst.at ( p_indx );
+double Sentence::completedProgress() const {
+    uint l_count = 0;
+
+    for (int i = 0; i < phrases().count(); i++){
+        if (isPhraseCompleted(i))
+            l_count += 1;
+    }
+
+    return (double) (l_count) / (double) (phrases().count());
 }
 
 Sentence::~Sentence() {

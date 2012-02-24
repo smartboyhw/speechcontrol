@@ -25,6 +25,7 @@
 #include <QDebug>
 #include <QVariant>
 #include <QSettings>
+#include <QErrorMessage>
 #include <QMessageBox>
 #include <QPushButton>
 
@@ -97,6 +98,15 @@ Main::Main() : m_ui ( new Ui::MainWindow ), m_prgStatusbar ( 0 ) {
 }
 
 void Main::show() {
+    if ( Microphone::allMicrophones().empty() ) {
+        QErrorMessage* l_msg = new QErrorMessage(this);
+        l_msg->setModal(true);
+        l_msg->setWindowTitle ( "No Microphones Found" );
+        l_msg->showMessage ( tr ( "No microphones were found on your system. Please ensure that you have one installed and detectable by " ) +
+        tr ( "the audio system and make sure that <b>gstreamer-plugins-good</b> is installed on your system." ),
+             "NoMicrophonesFoundOnStart" );
+    }
+
     updateContent();
     SC_MW::show();
 }
@@ -137,13 +147,13 @@ void Main::on_actionOptions_triggered() {
 
 /// @todo Invoke the process of adapting a model. If anything, have a special window for such a process.
 void Main::on_actionAdaptModels_triggered() {
-    setStatusMessage ( "This feature hasn't been implemented yet." );
+    setStatusMessage ( "<b>This feature hasn't been implemented yet.</b>" );
 }
 
 void Main::on_actionStartTraining_triggered () {
     Session* l_session = SessionManager::pickSession();
     if ( l_session ) {
-        Training::startTraining ( l_session );
+        TrainingDialog::startTraining ( l_session );
         setStatusMessage ( "Training session \"" + l_session->content()->title() + "\"..." , 3000 );
     }
 }

@@ -131,7 +131,6 @@ const QDateTime Corpus::timeCompleted() const {
 const QString Phrase::text() const {
     QDomElement* l_elem = m_sntnc->getPhraseElement ( m_indx );
     const QString l_base64Data = l_elem->text();
-    qDebug() << l_base64Data << QByteArray::fromBase64 ( l_base64Data.toLocal8Bit() );
     return QByteArray::fromBase64 ( l_base64Data.toLocal8Bit() );
 }
 
@@ -159,7 +158,7 @@ const PhraseList Sentence::phrases() const {
 
 Phrase::Phrase ( const Sentence *p_sntnct, const int &p_index ) :
     m_sntnc ( p_sntnct ), m_indx ( p_index ) {
-    qDebug() << "Phrase" << this->text() << "rendered.";
+    //qDebug() << "Phrase" << this->text() << "rendered.";
 }
 
 bool Phrase::isCompleted() const {

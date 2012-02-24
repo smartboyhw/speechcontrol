@@ -38,7 +38,6 @@ class MainWindow;
 }
 
 namespace SpeechControl {
-class User;
 /**
  * @brief A namespace containing all of the classes dedicated to the user interface.
  **/
@@ -89,4 +88,4 @@ private:
 }
 
 #endif // MAIN_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

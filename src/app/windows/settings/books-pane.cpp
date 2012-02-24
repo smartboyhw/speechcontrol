@@ -115,7 +115,7 @@ void SpeechControl::Windows::BookSettingsPane::on_btnInfo_clicked() {
         Q_FOREACH ( QListWidgetItem* l_itm, l_widg->selectedItems() ) {
             Content* l_cntn = Content::obtain ( l_itm->data ( Qt::UserRole ).toString() );
             ContentInformationDialog l_dialog(l_cntn);
-            l_dialog.show();
+            l_dialog.exec();
         }
     }
 }

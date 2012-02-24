@@ -48,14 +48,14 @@ void SpeechControl::Wizards::Pages::MicrophoneSelection::initializePage() {
         /// @todo Add error saying no mics found.
     } else {
         Q_FOREACH ( const Microphone* l_mic, l_allMics ) {
-            ui->comboBoxMicrophones->addItem ( l_mic->friendlyName(),l_mic->uuid().toString() );
+            ui->comboBoxMicrophones->addItem ( l_mic->friendlyName(),l_mic->id() );
         }
     }
 }
 
 bool SpeechControl::Wizards::Pages::MicrophoneSelection::validatePage() {
     if ( m_mic )
-        wizard()->setProperty ( "mic-uuid",m_mic->uuid().toString() );
+        wizard()->setProperty ( "mic-id",m_mic->id() );
 
     return ui->progressBarFeedback->isEnabled();
 }

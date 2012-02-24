@@ -61,14 +61,14 @@ class Microphone : public QObject {
     Q_OBJECT
     Q_PROPERTY ( const bool Active READ active )
     Q_PROPERTY ( const QString Name READ friendlyName )
-    Q_PROPERTY ( const QUuid Uuid READ uuid )
-    Q_PROPERTY ( const QByteArray* Data READ data )
+    Q_PROPERTY ( const QString ID READ id )
+    Q_PROPERTY ( const QByteArray Data READ data )
     Q_PROPERTY ( const double Volume READ volume WRITE setVolume )
     Q_PROPERTY ( const bool Muted READ isMuted WRITE mute )
 
 public:
     Q_DISABLE_COPY ( Microphone )
-    explicit Microphone ( QGlib::Value = 0 );
+    explicit Microphone ( QGlib::Value p_glibPointer = 0 );
     virtual ~Microphone();
 
     /**
@@ -76,7 +76,7 @@ public:
      * @param micUuid UUID of the wanted microphone.
      * @returns Pointer to the microphone.
      */
-    static Microphone* getMicrophone ( const QUuid& );
+    static Microphone* getMicrophone ( const QUuid& p_uuid );
 
     /**
      * @brief Get default microphone
@@ -89,16 +89,17 @@ public:
     static void init();
 
     bool active() const;
-    const QByteArray* data() const;
-    QUuid uuid() const;
+    const QByteArray& data() const;
+    QString id() const;
     QString friendlyName() const;
     double volume() const;
     bool isMuted() const;
     bool isValid() const;
+    bool isRecording() const;
     QDataStream* stream() const;
 
-    void setVolume ( const double& );
-    void mute ( const bool& );
+    void setVolume ( const double& p_volume );
+    void mute ( const bool& p_muted );
 
 signals:
     void startedListening();
@@ -110,9 +111,9 @@ public slots:
 
 private slots:
     void release();
-    void onPipelineBusmessage ( const QGst::MessagePtr& );
-    void onSinkAudioEos ( const QGlib::Value& );
-    void onSinkAudioNewbuffer ( const QGlib::Value& );
+    void onPipelineBusmessage ( const QGst::MessagePtr& p_glibMsgPtr );
+    void onSinkAudioEos ( const QGlib::Value& p_glibValue );
+    void onSinkAudioNewbuffer ( const QGlib::Value& p_glibValue );
 
 private:
     /**
@@ -133,7 +134,7 @@ private:
     QGst::ElementPtr m_sinkAudio;
     QGst::PipelinePtr m_pipeline;
     QGlib::Value m_device;
-    QUuid m_uuid;
+    QUuid m_id;
     QByteArray m_data;
 
 };
@@ -142,4 +143,4 @@ private:
 #endif // MICROPHONE_HPP
 
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

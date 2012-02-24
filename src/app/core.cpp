@@ -22,7 +22,6 @@
 #include <QDir>
 #include <QFile>
 #include <QSettings>
-#include <QErrorMessage>
 
 #ifndef HAVE_KDE
 #include <QDebug>
@@ -57,6 +56,7 @@ using SpeechControl::Application::Core;
 
 Core* Core::s_inst = 0;
 
+/// @todo Add a check for the default microphone (if provided by the user).
 Core::Core ( int argc, char** argv ) :
 #ifndef HAVE_KDE
     QObject ( new QApplication ( argc, argv ) )
@@ -104,16 +104,6 @@ Core::Core ( int argc, char** argv ) :
 
     // build settings
     m_settings = new QSettings ( QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", this );
-
-    // check for microphones
-
-    if ( Microphone::allMicrophones().empty() ) {
-        QErrorMessage* l_msg = new QErrorMessage;
-        l_msg->setWindowTitle ( "No Microphones Found" );
-        l_msg->showMessage ( tr ( "No microphones were found on your system. Please ensure that you have one installed and detectable by " ) +
-                             tr ( "the audio system and make sure that <b>gstreamer-plugins-good</b> is installed on your system." ),
-                             "NoMicrophonesFoundOnStart" );
-    }
 
     dummyASR = new DummySC ( DummySC::getStandardDescription() );
     connect ( dummyASR, SIGNAL ( finished ( QString& ) ), this, SLOT ( asrFinished ( QString& ) ) );

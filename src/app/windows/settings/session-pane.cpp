@@ -20,9 +20,11 @@
 
 #include "session-pane.hpp"
 #include "session.hpp"
+#include "windows/session-information-dialog.hpp"
 #include "ui_settingspane-sessions.h"
 
 #include <QMenu>
+#include <QDebug>
 #include <QListWidget>
 #include <QMessageBox>
 
@@ -110,24 +112,51 @@ void SessionSettingsPane::updateList() {
 
 }
 
-/// @todo Present a dialog showing information about the session.
 void SpeechControl::Windows::SessionSettingsPane::on_btnInfo_clicked() {
-
-}
-
-/// @todo Implement a means of just clicking once for all to be affected by this action.
-void SpeechControl::Windows::SessionSettingsPane::on_actionDelete_triggered() {
     QListWidget* l_widget = m_ui->listWidgetSession;
     Q_FOREACH ( QListWidgetItem* l_itm, l_widget->selectedItems() ) {
         Session* l_ss = Session::obtain ( l_itm->data ( Qt::UserRole ).toString() );
-        if ( QMessageBox::Yes == QMessageBox::question ( this,"Confirm Session Deletion",
+        SessionInformationDialog l_dialog ( l_ss );
+        l_dialog.setParent ( this );
+        l_dialog.show();
+    }
+}
+
+void SpeechControl::Windows::SessionSettingsPane::on_actionDelete_triggered() {
+    QListWidget* l_widget = m_ui->listWidgetSession;
+    bool l_doAll = false;
+    const bool l_multiple = l_widget->selectedItems().size() >= 2;
+
+    if (l_multiple){
+        QMessageBox* l_msg = new QMessageBox(this);
+        l_msg->setIcon(QMessageBox::Question);
+        l_msg->setText(tr("Do you want to delete %1 sessions?").arg(l_widget->selectedItems().size()));
+        l_msg->setInformativeText("All of the training progress for these sessions will be destroyed. "
+                                  "However, the successfully formed acoustic models <b>will be</b> preserved.");
+        l_msg->setWindowTitle("Delete Multiple Sessions");
+        l_msg->setStandardButtons(QMessageBox::No | QMessageBox::Yes);
+        l_msg->setDefaultButton(QMessageBox::NoButton);
+        l_doAll = (l_msg->exec() == QMessageBox::Yes);
+    }
+
+    QList<QListWidgetItem*> l_itms = l_widget->selectedItems();
+    foreach ( QListWidgetItem* l_itm, l_itms ) {
+        qDebug() << l_itm->data ( Qt::UserRole );
+        const QString l_uuid = l_itm->data ( Qt::UserRole ).toString();
+        qDebug() << l_uuid;
+        Session* l_ss = Session::obtain ( l_uuid );
+        if ((l_multiple && l_doAll) ||
+            QMessageBox::Yes == QMessageBox::question ( this,"Confirm Session Deletion",
                 "Are you sure you want to <b>wipe all</b> of this session's data?",
                 QMessageBox::Yes | QMessageBox::No,
                 QMessageBox::No ) ) {
             l_ss->erase();
-            updateList();
+            l_widget->removeItemWidget(l_itm);
+            l_itms.removeAll(l_itm);
         }
     }
+
+    updateList();
 }
 
 /// @todo Add support for multiple session selection.

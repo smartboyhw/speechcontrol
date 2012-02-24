@@ -44,33 +44,46 @@ Settings::Settings ( QWidget *m_prnt ) :
 }
 
 /// @todo Add it to the list of options.
-void Settings::addPanel ( QWidget* p_pane ) {
-    const QString l_paneTitle = p_pane->property ( "Title" ).toString();
-    const QString l_paneID = p_pane->property ( "ID" ).toString();
+void Settings::addPanel ( QWidget* p_panelWidget ) {
+    const QString l_paneTitle = p_panelWidget->property ( "Title" ).toString();
+    const QString l_paneID = p_panelWidget->property ( "ID" ).toString();
     QListWidgetItem* l_itm = new QListWidgetItem ( l_paneTitle,instance()->m_ui->lstNavigation );
 
-    instance()->m_panes.insert ( l_paneID,p_pane );
+    instance()->m_panes.insert ( l_paneID,p_panelWidget );
     l_itm->setData ( Qt::UserRole,l_paneID );
-    p_pane->setParent ( instance()->m_ui->frmPageContainer );
-    p_pane->setGeometry ( QRect ( 0,0,310,246 ) );
-    p_pane->hide();
+    p_panelWidget->setParent ( instance()->m_ui->frmPageContainer );
+    p_panelWidget->setGeometry ( QRect ( 0,0,310,246 ) );
+    p_panelWidget->hide();
 }
 
-void Settings::switchToPanel ( const QString &l_paneID ) {
-    QWidget* l_currentPane = instance()->m_panes.value ( l_paneID );
+void Settings::switchToPanel ( const QString& p_panelID ) {
+    QWidget* l_currentPane = instance()->m_panes.value ( p_panelID );
+    QListWidget* l_lstNavi = instance()->m_ui->lstNavigation;
 
-    if ( l_currentPane != 0 )
+    if ( l_currentPane != 0 ) {
         l_currentPane->show();
-    else {
-        Core::mainWindow()->setStatusMessage ( "Invalid settings panel." );
+        l_lstNavi->setCurrentItem ( instance()->findPanelItem ( p_panelID ) );
+    } else {
+        Core::mainWindow()->setStatusMessage ( "Invalid settings panel ID" + p_panelID );
         instance()->m_panes.value ( "gnrl" )->show();
+        l_lstNavi->setCurrentItem ( instance()->findPanelItem ( "gnrl" ) );
     }
 
     if ( !instance()->isVisible() )
-        instance()->exec();
+        instance()->open();
 }
 
-/// @todo Add the initial panes here.
+QListWidgetItem* Settings::findPanelItem ( const QString& p_panelID ) {
+    QListWidget* l_lstNavi = instance()->m_ui->lstNavigation;
+    for ( uint i = 0; i < l_lstNavi->children().length(); i++ ) {
+        QListWidgetItem* l_itm = l_lstNavi->item ( i );
+        if ( l_itm->data ( Qt::UserRole ).toString() == p_panelID )
+            return l_itm;
+    }
+
+    return 0;
+}
+
 Settings* Settings::instance() {
     if ( s_inst == 0 ) {
         s_inst = new Settings;
@@ -93,8 +106,8 @@ Settings* Settings::instance() {
 }
 
 /// @todo Remove this from the list of options.
-void Settings::removePanel ( const QString& p_paneID ) {
-    instance()->m_panes.remove ( p_paneID );
+void Settings::removePanel ( const QString& p_panelID ) {
+    instance()->m_panes.remove ( p_panelID );
 }
 
 void Settings::on_lstNavigation_itemSelectionChanged() {

@@ -27,6 +27,7 @@
 
 // libspchcntrl includes
 #include <sentence.hpp>
+#include <microphone.hpp>
 
 // local includes
 #include "session.hpp"
@@ -42,12 +43,12 @@ namespace Windows {
 /**
  * @brief ...
  **/
-class Training : public QDialog {
+class TrainingDialog : public QDialog {
     Q_OBJECT
 
 public:
-    explicit Training ( QWidget *parent = 0 );
-    virtual ~Training();
+    explicit TrainingDialog ( QWidget *parent = 0 );
+    virtual ~TrainingDialog();
     static void startTraining ( Session* );
     void setSession ( Session* );
     Session* session() const;
@@ -59,6 +60,8 @@ public slots:
 
 private slots:
     void updateProgress ( const double p_progress );
+    void stoppedListening();
+    void startedListening();
     void on_pushButtonClose_clicked();
     void on_pushButtonProgress_toggled ( const bool& );
     void on_pushButtonReset_clicked();
@@ -66,21 +69,17 @@ private slots:
     void on_pushButtonNext_clicked();
 
 private:
-    /// @todo Use these functions to segment the phrase into parts that the user can read.
-    /// @todo In order for this to work properly, we'd need to detect empty pauses in the user's speech. We'd might have to record a 'garbage' model of empty noises
-    ///       and detect when empty noises are made and then advance.
-    /// @todo We also have to return this information to the root sentence, how do we combine these phrases to the originating sentence?
-    void navigateToPart ( const int& );
+    void navigateToPart ( const uint& l_index );
     void navigateNextPart();
     void navigatePreviousPart();
-    void startNavigating();
-    void stopNavigating();
 
     int m_curPos;
-    int m_initPos;
-    int m_posMin;
-    int m_posMax;
+    uint m_initPos;
+    uint m_initPosPhrs;
+    uint m_posMin;
+    uint m_posMax;
     Ui::Training *m_ui;
+    Microphone* m_mic;
     Session* m_session;
     Sentence* m_curSntct;
     Sentence* m_initSntct;

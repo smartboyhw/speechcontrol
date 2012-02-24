@@ -52,7 +52,7 @@ BOOST_PYTHON_MODULE ( spchcntrl ) {
     ;
 
     class_<Microphone> ( "Microphone", no_init )
-    .add_property ( "uuid"     , &Microphone::uuid )
+    .add_property ( "uuid"     , &Microphone::id )
     .add_property ( "active"       , &Microphone::active )
     .add_property ( "friendlyName" , &Microphone::friendlyName )
     //.def("defaultMicrophone", &Microphone::defaultMicrophone)

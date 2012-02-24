@@ -25,6 +25,8 @@
 #include <QMap>
 #include <QDialog>
 
+class QListWidgetItem;
+
 namespace Ui {
 class SettingsDialog;
 }
@@ -40,15 +42,16 @@ class Settings : public QDialog {
 
 public:
     explicit Settings ( QWidget *m_prnt = 0 );
-    static void addPanel ( QWidget* );
-    static void removePanel ( const QString& );
-    static void switchToPanel ( const QString& );
+    static void addPanel ( QWidget* p_panelWidget);
+    static void removePanel ( const QString& p_panelID);
+    static void switchToPanel ( const QString& p_paneID );
     static Settings* instance();
     ~Settings();
 
 private slots:
     void on_lstNavigation_itemSelectionChanged();
     void on_buttonBox_accepted();
+    QListWidgetItem* findPanelItem(const QString& p_panelID );
 
 private:
     static Settings* s_inst;
@@ -60,4 +63,4 @@ private:
 }
 
 #endif // SETTINGS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

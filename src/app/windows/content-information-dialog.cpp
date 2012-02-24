@@ -27,19 +27,47 @@ using SpeechControl::Core;
 using SpeechControl::Windows::ContentInformationDialog;
 
 ContentInformationDialog::ContentInformationDialog ( Content* p_content ) :
-    QDialog ( Core::mainWindow() ),
+    QDialog ( SC_APP::activeModalWidget() ),
     m_ui ( new Ui::ContentInformationDialog ),
     m_content ( p_content ) {
     m_ui->setupUi ( this );
     updateUi();
 }
 
-void ContentInformationDialog::updateUi(){
-    m_ui->lblTitle->setText(QString("<p><span style=\"font-size:16pt;\">%1</span></p>"
-                                    "<p>by <span style=\"font-weight:600;\">%2</span></p>")
-                           .arg(m_content->title(),m_content->author()));
+void ContentInformationDialog::updateUi() {
+    m_ui->lblTitle->setText ( QString ( "<p><span style=\"font-size:16pt;\">%1</span></p>"
+                                        "<p>by <span style=\"font-weight:600;\">%2</span></p>" )
+                              .arg ( m_content->title(),m_content->author() ) );
+    goToPage ( 0 );
 }
 
+void ContentInformationDialog::goToNextPage() {
+    goToPage ( m_indx + 1 );
+}
+
+void ContentInformationDialog::goToPreviousPage() {
+    goToPage ( m_indx - 1 );
+}
+
+void ContentInformationDialog::goToPage ( const int p_index ) {
+    if ( p_index > m_content->pageCount() )
+        return;
+
+    m_indx = p_index;
+    m_ui->txtEdit->setPlainText ( m_content->pageAt ( p_index ) );
+    m_ui->lblPageCounter->setText ( tr ( "Page %1 of %2" ).arg (p_index + 1).arg(m_content->pageCount() ) );
+
+    if ( m_indx == 0 ) {
+        m_ui->btnGoLeft->setEnabled ( false );
+        m_ui->btnGoRight->setEnabled ( true );
+    } else if ( m_indx == m_content->pageCount() - 1 ) {
+        m_ui->btnGoLeft->setEnabled ( true );
+        m_ui->btnGoRight->setEnabled ( false );
+    } else {
+        m_ui->btnGoLeft->setEnabled ( true );
+        m_ui->btnGoRight->setEnabled ( true );
+    }
+}
 
 ContentInformationDialog::~ContentInformationDialog() {
     delete m_ui;

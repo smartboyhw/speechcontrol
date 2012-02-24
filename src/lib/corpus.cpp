@@ -50,7 +50,7 @@ Sentence* Corpus::addSentence ( Sentence *l_phrs ) {
 }
 
 Sentence* Corpus::addSentence ( const QString &l_txt, const QFile *l_audio ) {
-    qDebug() << "Adding sentence" << l_txt << "...";
+    //qDebug() << "Adding sentence" << l_txt << "...";
     Sentence* l_sentence = Sentence::create ( this,l_txt );
 
     if ( l_audio )
@@ -101,13 +101,13 @@ Corpus * Corpus::create ( const QStringList& p_text ) {
     QTextStream l_strm ( l_file );
     l_dom.save ( l_strm,4 );
 
-    qDebug() << l_dom.toString();
+    //qDebug() << l_dom.toString();
 
     Corpus* l_corpus = Corpus::obtain ( l_uuid );
     Q_FOREACH ( const QString& l_str, p_text ) {
         Sentence* l_sent = l_corpus->addSentence ( l_str.simplified().trimmed(),0 );
         l_corpus->m_dom->documentElement().namedItem ( "Sentences" ).appendChild ( *l_sent->m_elem );
-        qDebug() << "Added sentence" << l_corpus->sentences().count();
+        //qDebug() << "Added sentence" << l_corpus->sentences().count();
     }
 
     l_corpus->save();
@@ -131,15 +131,16 @@ const QUuid Corpus::uuid() const {
 }
 
 Corpus* Corpus::obtain ( const QUuid &p_uuid ) {
+    Corpus* l_crps = 0;
     const QString l_path = getPath ( p_uuid ).toLocalFile() + "/corpus.xml";
-    qDebug() << "Obtaining corpus" << p_uuid << l_path;
+    //qDebug() << "Obtaining corpus" << p_uuid << l_path;
 
     if ( !QFile::exists ( l_path ) ) {
         qDebug() << "Corpus not found at" << l_path;
         return 0;
     }
 
-    Corpus* l_crps = new Corpus ( p_uuid );
+    l_crps = new Corpus ( p_uuid );
     if ( !l_crps->isValid() ){
         qDebug() << "Invalid corpus" << p_uuid;
         return 0;
@@ -165,12 +166,12 @@ void Corpus::load ( const QUuid &p_uuid ) {
 
         for ( int i = 0; i < l_elems.count(); ++i ) {
             QDomElement l_elem = l_elems.at ( i ).toElement();
-            qDebug() << "Loading sentence:" << l_elem.attribute ( "uuid" );
+            //qDebug() << "Loading sentence:" << l_elem.attribute ( "uuid" );
 
             if ( l_elem.isNull() ) continue;
 
             Sentence* l_sntc = new Sentence ( this, ( new QDomElement ( l_elems.at ( i ).toElement() ) ) );
-            qDebug() << "Loaded sentence:" << l_sntc->text();
+            //qDebug() << "Loaded sentence:" << l_sntc->text();
             addSentence ( l_sntc );
         }
         m_uuid = p_uuid;
@@ -184,8 +185,12 @@ void Corpus::load ( const QUuid &p_uuid ) {
 }
 
 /// @todo What happens if this corpus has no sentences?
+/// @todo The dictionary isn't checked at the moment, but should be in the future when the class is more defined.
 bool Corpus::isValid() const {
-    return m_dom && m_dict && !m_uuid.isNull();
+    const bool l_valid = m_dom && !m_uuid.isNull();
+    Q_ASSERT(l_valid == true);
+    qDebug() << "Is corpus valid?" << l_valid;
+    return l_valid;
 }
 
 void Corpus::save() {
@@ -230,6 +235,10 @@ Corpus* Corpus::clone() const {
     }
 
     return Corpus::obtain ( l_uuid );
+}
+
+SpeechControl::Sentence* SpeechControl::Corpus::sentenceAt ( const int &p_indx ) const {
+    return m_sntncLst.at ( p_indx );
 }
 
 /// @todo What to clean-up?

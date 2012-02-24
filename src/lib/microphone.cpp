@@ -34,15 +34,13 @@ QGst::PropertyProbePtr Microphone::s_propProbe;
 QGst::ChildProxyPtr Microphone::s_chldPrxy;
 
 Microphone::Microphone ( QGlib::Value device )
-    : m_device ( device ), m_uuid ( QUuid::createUuid() ) {
+    : m_device ( device ), m_id ( device.toString() ) {
     connect ( this, SIGNAL ( destroyed() ), this, SLOT ( release() ) );
-
-    // Get the microphone.
     obtain();
 }
 
 Microphone::Microphone ( const Microphone &p_mic ) :
-    m_device ( p_mic.m_device ), m_uuid ( p_mic.m_uuid ) {
+    m_device ( p_mic.m_device ), m_id ( p_mic.m_id ) {
     connect ( this, SIGNAL ( destroyed() ), &p_mic, SIGNAL ( destroyed() ) );
     obtain();
 }
@@ -102,8 +100,8 @@ QString Microphone::friendlyName() const {
     return m_device.toString();
 }
 
-QUuid Microphone::uuid() const {
-    return m_uuid;
+QString Microphone::id() const {
+    return m_id;
 }
 
 MicrophoneList Microphone::allMicrophones() {
@@ -128,23 +126,18 @@ void SpeechControl::Microphone::startRecording() {
 
     // Build the pipeline.
     m_pipeline = QGst::Pipeline::create ( "pipeline" );
-
     //m_pipeline->add(m_binAudio, m_sinkAudio);
 
     // Connect the bus to this Microphone to detect changes in the pipeline.
     m_pipeline->bus()->addSignalWatch();
 
     QGlib::connect ( m_pipeline->bus(), "message", this, &Microphone::onPipelineBusmessage );
-
     QGlib::connect ( m_sinkAudio, "eos", this, &Microphone::onSinkAudioEos );
-
-    QGlib::connect ( m_sinkAudio, "new-buffer", this, &Microphone::onSinkAudioNewbuffer );
+    QGlib::connect ( m_srcAudio, "new-buffer", this, &Microphone::onSinkAudioNewbuffer );
 
     // Get the party started :)
     m_sinkAudio->setState ( QGst::StatePlaying );
-
     m_srcAudio->setState ( QGst::StatePlaying );
-
     m_pipeline->setState ( QGst::StatePlaying );
 
     emit startedListening();
@@ -158,11 +151,8 @@ void SpeechControl::Microphone::stopRecording() {
     emit stoppedListening();
 }
 
-const QByteArray* Microphone::data() const {
-    if ( m_data.size() == 0 )
-        return 0;
-    else
-        return &m_data;
+const QByteArray& Microphone::data() const {
+    return m_data;
 }
 
 double SpeechControl::Microphone::volume() const {
@@ -171,6 +161,14 @@ double SpeechControl::Microphone::volume() const {
 
 bool SpeechControl::Microphone::isMuted() const {
     return m_srcVolume->property ( "mute" );
+}
+
+bool Microphone::isRecording() const {
+    return m_srcAudio->currentState() == QGst::StatePlaying;
+}
+
+QDataStream* Microphone::stream() const {
+    return new QDataStream ( new QByteArray ( m_data ),QIODevice::ReadOnly );
 }
 
 void SpeechControl::Microphone::setVolume ( const double &p_volume ) {
@@ -197,7 +195,7 @@ void SpeechControl::Microphone::obtain() {
         return;
     }
 
-    micMap.insert ( m_uuid, const_cast<Microphone*> ( this ) );
+    micMap.insert ( m_id, const_cast<Microphone*> ( this ) );
 
     // Obtain tools for recording like the encoder and the source.
     m_sinkAudio = m_binAudio->getElementByName ( "filesink" );
@@ -253,7 +251,6 @@ void Microphone::onPipelineBusmessage ( const QGst::MessagePtr & message ) {
         }
 
         qCritical() << tr ( "Pipeline Error" )
-
                     << message.staticCast<QGst::ErrorMessage>()->error().message();
         break;
 
@@ -267,12 +264,12 @@ void Microphone::onSinkAudioEos ( const QGlib::Value &p_eos ) {
 }
 
 void Microphone::onSinkAudioNewbuffer ( const QGlib::Value &p_strm ) {
+    m_data.append ( p_strm.toByteArray() );
     qDebug() << "BUFFER:" << p_strm;
 }
 
 Microphone::~Microphone() {
-    // Release the microphone.
-    release();
+    m_data.clear();
 }
 
 #include "microphone.moc"

@@ -19,15 +19,50 @@
  */
 
 #include "core.hpp"
+#include "session.hpp"
+#include "training-dialog.hpp"
 #include "session-information-dialog.hpp"
+#include "content-information-dialog.hpp"
 #include "ui_session-information-dialog.h"
 
 using SpeechControl::Core;
+using SpeechControl::Windows::TrainingDialog;
 using SpeechControl::Windows::SessionInformationDialog;
+using SpeechControl::Windows::ContentInformationDialog;
 
 SessionInformationDialog::SessionInformationDialog ( Session* p_session ) : QDialog ( Core::mainWindow() ),
     m_ui ( new Ui::SessionInformationDialog ), m_session ( p_session )  {
+    connect(m_session,SIGNAL(progressChanged(double)),this,SLOT(updateProgress(double)));
+}
 
+void SessionInformationDialog::updateUi() {
+    const int l_sharedSessionCount = 4;
+    m_ui->lblContentInfo->setText(tr("This session uses the text from %1. %2 use %1 for transcription as well.")
+        .arg(m_session->name())
+        .arg(l_sharedSessionCount)
+    );
+}
+
+void SessionInformationDialog::on_btnOpenContent_clicked() {
+    ContentInformationDialog l_dialog ( m_session->content() );
+    l_dialog.setParent ( this );
+    l_dialog.show();
+}
+
+void SessionInformationDialog::on_btnTrainSession_clicked() {
+    TrainingDialog::startTraining ( m_session );
+}
+
+void SessionInformationDialog::on_lineEditNickname_textChanged ( const QString& p_newNickname ) {
+    if (p_newNickname.isEmpty() || p_newNickname.isNull())
+        return;
+
+    m_session->setName(p_newNickname);
+    updateUi();
+}
+
+void SessionInformationDialog::updateProgress ( const double p_progress ) {
+    m_ui->progressBarCompletion->setValue((int) p_progress * 100 );
 }
 
 SessionInformationDialog::~SessionInformationDialog() {

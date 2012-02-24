@@ -121,8 +121,8 @@ public:
     const QUuid uuid() const;
 
     /**
-     * @brief Obtains the title of this @c Content.
-     * @return A string holding the title of this @c Content.
+     * @brief Obtains the title of this @c Content, or if provided, the nickname of the Session.
+     * @return A string holding the title of this @c Content, or the nickname if provided.
      **/
     const QString title() const;
 
@@ -145,6 +145,10 @@ public:
      **/
     const QString pageAt ( const int& p_indx ) const;
 
+    /**
+     * @brief Determines if this @c Session is valid.
+     * @return bool
+     **/
     bool isValid() const;
 
     /**
@@ -183,9 +187,6 @@ private:
 class Session : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY ( Session )
-    Q_PROPERTY ( Corpus* Corpus READ corpus WRITE setCorpus )
-    Q_PROPERTY ( QUuid Uuid READ uuid )
-    Q_PROPERTY ( Content* Content READ content WRITE setContent )
 
 public:
     /**
@@ -233,6 +234,9 @@ public:
      * @return const QUuid
      **/
     const QUuid uuid() const;
+
+
+    const QString name() const;
     /**
      * @brief ...
      *
@@ -251,6 +255,14 @@ public:
      * @return void
      **/
     void erase() const;
+
+    /**
+     * @brief Sets the name of this @c Session.
+     * @param  p_name The new name of the @c Session.
+     * @return void
+     **/
+    void setName (const QString& p_name);
+
     /**
      * @brief ...
      *

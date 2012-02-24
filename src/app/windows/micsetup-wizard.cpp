@@ -45,7 +45,7 @@ MicrophoneSetup::MicrophoneSetup ( QWidget *parent ) :
 }
 
 void MicrophoneSetup::accept() {
-    Core::instance()->setConfiguration ( "Microphone/Default",property ( "mic-uuid" ) );
+    Core::instance()->setConfiguration ( "Microphone/Default",property ( "mic-id" ) );
     this->QDialog::accept();
 }
 

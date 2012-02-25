@@ -1,6 +1,8 @@
 project(SpeechControl)
 cmake_minimum_required(VERSION 2.8)
 
+list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
+
 ## required packages
 find_package(Doxygen)
 find_package(PkgConfig REQUIRED)
@@ -14,7 +16,7 @@ find_package(Qt4 4.7 COMPONENTS
   QtXml
   REQUIRED)
 find_package(QtGStreamer REQUIRED)
-pkg_search_module(POCKETSPHINX REQUIRED pocketsphinx sphinxbase)
+find_package(PocketSphinx REQUIRED)
 
 EXEC_PROGRAM(${PKGCONFIG_EXECUTABLE} ARGS ${_package} --variable=modeldir
     OUTPUT_VARIABLE POCKETSPHINX_MODELDIR)

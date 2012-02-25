@@ -70,10 +70,10 @@ void QuickStart::accept() {
     l_core->setConfiguration ( "User/Name",l_name );
     l_core->setConfiguration ( "User/Gender",l_gender );
     l_core->setConfiguration ( "User/Language",l_language );
-
     l_core->setConfiguration ( "User/Age",property ( "age" ) );
     l_core->setConfiguration ( "User/Country",property ( "country" ) );
-    l_core->setConfiguration ( "Microphone/Default",property ( "mic-uuid" ) );
+
+    l_core->setConfiguration ( "Microphone/Default",property ( "mic-id" ) );
 
     this->QDialog::accept();
 }

@@ -18,25 +18,49 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef DESKTOPCONTROL_HPP
-#define DESKTOPCONTROL_HPP
+#include "core.hpp"
+#include "dictation.hpp"
 
-#include <QObject>
-#include "agent.hpp"
+using SpeechControl::Core;
+using SpeechControl::AbstractAgent;
+using SpeechControl::DictationAgent;
 
-namespace SpeechControl {
-class DesktopControlAgent : public AbstractAgent {
-    Q_OBJECT
-public:
-    DesktopControlAgent();
-    virtual ~DesktopControlAgent();
-    virtual bool isActive() const;
+DictationAgent* DictationAgent::s_inst = 0;
 
-private:
-    virtual const OperationState onStateChanged ( const OperationState );
-};
+DictationAgent::DictationAgent() : AbstractAgent ( Core::instance() ) {
 
 }
 
-#endif // DESKTOPCONTROL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+DictationAgent* DictationAgent::instance() {
+    if ( s_inst == 0 )
+        s_inst = new DictationAgent;
+
+    return s_inst;
+}
+
+AbstractAgent::OperationState DictationAgent::onStateChanged ( const AbstractAgent::OperationState p_stt ) {
+    switch ( p_stt ) {
+    case Enabled:
+        break;
+
+    case Disabled:
+        break;
+
+    case Undefined:
+    default:
+        break;
+    }
+
+    return Undefined;
+}
+
+bool DictationAgent::isActive() const {
+    return state() == Enabled;
+}
+
+DictationAgent::~DictationAgent() {
+
+}
+
+#include "dictation.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

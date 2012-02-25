@@ -55,7 +55,7 @@ void ContentInformationDialog::goToPage ( const int p_index ) {
 
     m_indx = p_index;
     m_ui->txtEdit->setPlainText ( m_content->pageAt ( p_index ) );
-    m_ui->lblPageCounter->setText ( tr ( "Page %1 of %2" ).arg (p_index + 1).arg(m_content->pageCount() ) );
+    m_ui->lblPageCounter->setText ( tr ( "Page %1 of %2" ).arg ( p_index + 1 ).arg ( m_content->pageCount() ) );
 
     if ( m_indx == 0 ) {
         m_ui->btnGoLeft->setEnabled ( false );

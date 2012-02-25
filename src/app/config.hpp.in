@@ -25,4 +25,4 @@
 #define SPCHCNTRL_PLUGINS_SPEC_DIR "@SPCHCNTRL_PLUGINS_SPEC_INSTALL_DIR@"
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

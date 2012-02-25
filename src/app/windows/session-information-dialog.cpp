@@ -32,15 +32,15 @@ using SpeechControl::Windows::ContentInformationDialog;
 
 SessionInformationDialog::SessionInformationDialog ( Session* p_session ) : QDialog ( Core::mainWindow() ),
     m_ui ( new Ui::SessionInformationDialog ), m_session ( p_session )  {
-    connect(m_session,SIGNAL(progressChanged(double)),this,SLOT(updateProgress(double)));
+    connect ( m_session,SIGNAL ( progressChanged ( double ) ),this,SLOT ( updateProgress ( double ) ) );
 }
 
 void SessionInformationDialog::updateUi() {
     const int l_sharedSessionCount = 4;
-    m_ui->lblContentInfo->setText(tr("This session uses the text from %1. %2 use %1 for transcription as well.")
-        .arg(m_session->name())
-        .arg(l_sharedSessionCount)
-    );
+    m_ui->lblContentInfo->setText ( tr ( "This session uses the text from %1. %2 use %1 for transcription as well." )
+                                    .arg ( m_session->name() )
+                                    .arg ( l_sharedSessionCount )
+                                  );
 }
 
 void SessionInformationDialog::on_btnOpenContent_clicked() {
@@ -54,15 +54,15 @@ void SessionInformationDialog::on_btnTrainSession_clicked() {
 }
 
 void SessionInformationDialog::on_lineEditNickname_textChanged ( const QString& p_newNickname ) {
-    if (p_newNickname.isEmpty() || p_newNickname.isNull())
+    if ( p_newNickname.isEmpty() || p_newNickname.isNull() )
         return;
 
-    m_session->setName(p_newNickname);
+    m_session->setName ( p_newNickname );
     updateUi();
 }
 
 void SessionInformationDialog::updateProgress ( const double p_progress ) {
-    m_ui->progressBarCompletion->setValue((int) p_progress * 100 );
+    m_ui->progressBarCompletion->setValue ( ( int ) p_progress * 100 );
 }
 
 SessionInformationDialog::~SessionInformationDialog() {
@@ -70,4 +70,4 @@ SessionInformationDialog::~SessionInformationDialog() {
 }
 
 #include "session-information-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

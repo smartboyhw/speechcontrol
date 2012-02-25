@@ -127,16 +127,16 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionDelete_triggered() {
     bool l_doAll = false;
     const bool l_multiple = l_widget->selectedItems().size() >= 2;
 
-    if (l_multiple){
-        QMessageBox* l_msg = new QMessageBox(this);
-        l_msg->setIcon(QMessageBox::Question);
-        l_msg->setText(tr("Do you want to delete %1 sessions?").arg(l_widget->selectedItems().size()));
-        l_msg->setInformativeText("All of the training progress for these sessions will be destroyed. "
-                                  "However, the successfully formed acoustic models <b>will be</b> preserved.");
-        l_msg->setWindowTitle("Delete Multiple Sessions");
-        l_msg->setStandardButtons(QMessageBox::No | QMessageBox::Yes);
-        l_msg->setDefaultButton(QMessageBox::NoButton);
-        l_doAll = (l_msg->exec() == QMessageBox::Yes);
+    if ( l_multiple ) {
+        QMessageBox* l_msg = new QMessageBox ( this );
+        l_msg->setIcon ( QMessageBox::Question );
+        l_msg->setText ( tr ( "Do you want to delete %1 sessions?" ).arg ( l_widget->selectedItems().size() ) );
+        l_msg->setInformativeText ( "All of the training progress for these sessions will be destroyed. "
+                                    "However, the successfully formed acoustic models <b>will be</b> preserved." );
+        l_msg->setWindowTitle ( "Delete Multiple Sessions" );
+        l_msg->setStandardButtons ( QMessageBox::No | QMessageBox::Yes );
+        l_msg->setDefaultButton ( QMessageBox::NoButton );
+        l_doAll = ( l_msg->exec() == QMessageBox::Yes );
     }
 
     QList<QListWidgetItem*> l_itms = l_widget->selectedItems();
@@ -145,14 +145,14 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionDelete_triggered() {
         const QString l_uuid = l_itm->data ( Qt::UserRole ).toString();
         qDebug() << l_uuid;
         Session* l_ss = Session::obtain ( l_uuid );
-        if ((l_multiple && l_doAll) ||
-            QMessageBox::Yes == QMessageBox::question ( this,"Confirm Session Deletion",
-                "Are you sure you want to <b>wipe all</b> of this session's data?",
-                QMessageBox::Yes | QMessageBox::No,
-                QMessageBox::No ) ) {
+        if ( ( l_multiple && l_doAll ) ||
+                QMessageBox::Yes == QMessageBox::question ( this,"Confirm Session Deletion",
+                        "Are you sure you want to <b>wipe all</b> of this session's data?",
+                        QMessageBox::Yes | QMessageBox::No,
+                        QMessageBox::No ) ) {
             l_ss->erase();
-            l_widget->removeItemWidget(l_itm);
-            l_itms.removeAll(l_itm);
+            l_widget->removeItemWidget ( l_itm );
+            l_itms.removeAll ( l_itm );
         }
     }
 
@@ -197,4 +197,4 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionRestoreBackup_trigger
 }
 
 #include "session-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

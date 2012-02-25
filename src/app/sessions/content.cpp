@@ -1,0 +1,254 @@
+/***
+ *  This file is part of SpeechControl.
+ *
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
+ *
+ *  SpeechControl is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Library General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  SpeechControl is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Library General Public License
+ *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+#include "config.hpp"
+#include "content.hpp"
+
+#include <QDir>
+#include <QFile>
+#include <QDebug>
+#include <QTextStream>
+
+#define CHUNK_SIZE 250
+
+using SpeechControl::Content;
+using SpeechControl::ContentList;
+using SpeechControl::ContentMap;
+
+Content::Content ( const QUuid& p_uuid ) {
+    load ( p_uuid );
+}
+
+Content::Content ( const Content& p_other ) : QObject(),
+    m_pages ( p_other.m_pages ), m_dom ( p_other.m_dom ), m_uuid ( p_other.m_uuid ) {
+}
+
+Content* Content::obtain ( const QUuid &p_uuid ) {
+    qDebug() << p_uuid;
+    Q_ASSERT ( !p_uuid.isNull() );
+    if ( p_uuid.isNull() ) {
+        qDebug() << "Null UUID passed.";
+        return 0;
+    }
+
+    if ( !s_lst.contains ( p_uuid ) ) {
+        Content* l_content = new Content ( p_uuid );
+        qDebug() << "Is content valid? " << l_content->isValid();
+        if ( !l_content->isValid() )
+            return 0;
+
+        s_lst.insert ( p_uuid, ( l_content ) );
+    }
+
+    return s_lst.value ( p_uuid );
+}
+
+void Content::erase() {
+    QFile* l_file = new QFile ( getPath ( m_uuid ) );
+    if ( l_file->remove() )
+        this->deleteLater();
+}
+
+void Content::load ( const QUuid &p_uuid ) {
+    m_uuid = p_uuid;
+    QFile* l_file = new QFile ( getPath ( m_uuid ) );
+    QDomDocument* l_dom = new QDomDocument ( "Content" );
+
+    if ( !l_file->exists() ) {
+        qDebug() << "Content" << m_uuid << "doesn't exist.";
+        m_uuid = QUuid();
+        return;
+    }
+
+    if ( !l_file->open ( QIODevice::ReadOnly | QIODevice::Text ) ) {
+        qDebug() << "Couldn't open Content" << m_uuid << ";" << l_file->errorString();
+        m_uuid = QUuid();
+        return;
+    }
+
+    {
+        QString l_errorMsg;
+        int l_errorLine, l_errorColumn;
+        if ( !l_dom->setContent ( l_file, &l_errorMsg ,&l_errorLine ,&l_errorColumn ) ) {
+            qDebug() << "Couldn't parse Content;" << l_errorMsg << "on l." << l_errorLine << "; col." << l_errorColumn;
+            m_uuid = QUuid();
+            return;
+        }
+    }
+
+    //qDebug() << "DOM:" << l_dom->toString();
+    QDomElement l_domElem = l_dom->documentElement();
+    QDomElement l_textElem = l_domElem.namedItem ( "Text" ).toElement();
+    const QString l_textBase ( QByteArray::fromBase64 ( l_textElem.text().toUtf8() ) );
+    parseText ( l_textBase );
+
+    if ( m_pages.length() == 0 ) {
+        m_uuid = QUuid();
+        qDebug() << "No text was found from" << l_textBase;
+        return;
+    }
+
+    m_dom = l_dom;
+}
+
+/// @todo Implement a proper means of segmenting text into chunks.
+void Content::parseText ( const QString& p_text ) {
+    QString l_tmpText;
+    uint l_count = 0;
+
+    Q_FOREACH ( const QChar l_chr, p_text ) {
+        if ( l_count == CHUNK_SIZE ) {
+            if ( l_chr.isLetterOrNumber() )
+                l_count -= 1;
+            else {
+                m_pages << l_tmpText;
+                l_tmpText.clear();
+                l_count = 0;
+            }
+        }
+
+        l_tmpText.append ( l_chr );
+
+        ++l_count;
+    }
+}
+
+bool Content::isValid() const {
+    if ( !QFile::exists ( getPath ( m_uuid ) ) ) {
+        qDebug() << "Content's data file doesn't exists." << getPath ( m_uuid );
+        Q_ASSERT ( QFile::exists ( getPath ( m_uuid ) ) == true );
+        return false;
+    }
+
+    if ( m_pages.isEmpty() ) {
+        qDebug() << "Content has no pages." << m_uuid;
+        Q_ASSERT ( m_pages.isEmpty() == true );
+        return false;
+    }
+
+    return true;
+}
+
+/// @todo Determine a means of finding the page count.
+/// @todo Define the size of one page.
+uint Content::pageCount() const {
+    return m_pages.count();
+}
+
+/// @todo Determine a means of finding the words in the text.
+uint Content::words() const {
+    return m_pages.join ( "\n" ).split ( " " ).count();
+}
+
+uint Content::length() const {
+    return m_pages.join ( "\n" ).length();
+}
+
+/// @todo Determine a means of finding the count of alpha-numeric characters.
+uint Content::characters() const {
+    return m_pages.join ( "\n" ).length();
+}
+
+QString Content::getPath ( const QUuid &p_uuid ) {
+    return QDir::homePath() + "/.speechcontrol/contents/" + p_uuid.toString() + ".xml";
+}
+
+const QString Content::title() const {
+    QDomElement l_domElem = m_dom->documentElement();
+    QDomElement l_bilboElem = l_domElem.namedItem ( "Bibliography" ).toElement();
+    return l_bilboElem.attribute ( "Title" );
+}
+
+const QString Content::author() const {
+    QDomElement l_domElem = m_dom->documentElement();
+    QDomElement l_bilboElem = l_domElem.namedItem ( "Bibliography" ).toElement();
+    return l_bilboElem.attribute ( "Author" );
+}
+
+Content::~Content() {
+}
+
+const QUuid Content::uuid() const {
+    return m_uuid;
+}
+
+ContentList Content::allContents() {
+    ContentList l_lst;
+    QDir l_dir ( QDir::homePath() + "/.speechcontrol/contents/" );
+    l_dir.setFilter ( QDir::Files );
+    QStringList l_results = l_dir.entryList ( QStringList() << "*" );
+
+    Q_FOREACH ( const QString l_uuid, l_results ) {
+        Content* l_content = Content::obtain ( QUuid ( l_uuid ) );
+        qDebug () << "Is content null?" << ( l_content == 0 );
+        qDebug () << "Is content" << l_uuid << "valid?" << l_content->isValid();
+
+        if ( l_content && l_content->isValid() )
+            l_lst << l_content;
+        else
+            QFile::remove ( l_dir.absoluteFilePath ( l_uuid ) );
+    }
+
+    return l_lst;
+}
+
+const QStringList Content::pages() const {
+    return m_pages;
+}
+
+const QString Content::pageAt ( const int &l_index ) const {
+    if ( l_index < m_pages.count() )
+        return m_pages.at ( l_index );
+
+    return QString::null;
+}
+
+Content * Content::create ( const QString &p_author, const QString &p_title, const QString &p_content ) {
+    QUuid l_uuid = QUuid::createUuid();
+    qDebug() << "Creating content with UUID " << l_uuid << "...";
+
+    QDomDocument* l_dom = new QDomDocument ( "Content" );
+    QDomElement l_domElem = l_dom->createElement ( "Content" );
+    l_domElem.setAttribute ( "Uuid", l_uuid );
+    l_dom->appendChild ( l_domElem );
+
+    QDomElement l_bilboElem = l_dom->createElement ( "Bibliography" );
+    l_bilboElem.setAttribute ( "Author", p_author );
+    l_bilboElem.setAttribute ( "Title", p_title );
+    l_domElem.appendChild ( l_bilboElem );
+
+    QDomElement l_textElem = l_dom->createElement ( "Text" );
+    QDomText l_textNode = l_dom->createTextNode ( p_content.toUtf8().toBase64() );
+    l_textElem.appendChild ( l_textNode );
+    l_domElem.appendChild ( l_textElem );
+
+    QFile* l_file = new QFile ( Content::getPath ( l_uuid ) );
+    l_file->open ( QIODevice::WriteOnly | QIODevice::Truncate );
+    QTextStream l_strm ( l_file );
+    l_dom->save ( l_strm, 4 );
+    l_file->close();
+
+    //qDebug() << "Content XML:" << l_dom->toString();
+    return Content::obtain ( l_uuid );
+}
+
+
+#include "content.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

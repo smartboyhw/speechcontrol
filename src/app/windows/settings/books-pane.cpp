@@ -114,11 +114,11 @@ void SpeechControl::Windows::BookSettingsPane::on_btnInfo_clicked() {
     if ( !l_widg->selectedItems().empty() ) {
         Q_FOREACH ( QListWidgetItem* l_itm, l_widg->selectedItems() ) {
             Content* l_cntn = Content::obtain ( l_itm->data ( Qt::UserRole ).toString() );
-            ContentInformationDialog l_dialog(l_cntn);
+            ContentInformationDialog l_dialog ( l_cntn );
             l_dialog.exec();
         }
     }
 }
 
 #include "books-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

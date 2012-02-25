@@ -45,7 +45,7 @@ private slots:
     void goToPreviousPage();
 
 private:
-    void goToPage(const int p_index);
+    void goToPage ( const int p_index );
     Ui::ContentInformationDialog *m_ui;
     Content* m_content;
     uint m_indx;
@@ -55,4 +55,4 @@ private:
 }
 
 #endif // CONTENTINFORMATIONDIALOG_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

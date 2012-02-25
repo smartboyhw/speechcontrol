@@ -67,4 +67,4 @@ void GeneralSettingsPane::on_checkBoxEnableDesktopControl_toggled ( bool checked
 }
 
 #include "general-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

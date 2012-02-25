@@ -65,16 +65,19 @@ private slots:
     void on_actionDesktopControlOptions_triggered();
     void on_actionDesktopControlActive_triggered ( bool p_checked );
     void on_btnDsktpCntrl_clicked ( const bool p_checked );
+    void desktopControlStateChanged();
 
     // dictation
     void on_actionDictationActive_triggered ( const bool p_checked );
     void on_btnDctn_clicked ( const bool p_checked );
+    void dictationStateChanged();
 
     // training
     void on_actionStartTraining_triggered();
     void on_actionAdaptModels_triggered();
 
     // misc.
+    void on_tabWidget_currentChanged(const int p_index);
     void on_actionOptions_triggered();
     void on_actionAboutQt_triggered();
     void on_actionAboutSpeechControl_triggered();

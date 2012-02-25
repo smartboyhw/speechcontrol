@@ -24,6 +24,9 @@ if(WITH_KDE_SUPPORT OR KDE4_FOUND)
             spchcntrl)
         set(SPCHCNTRL_APP_KDE_DEFINTIONS "HAVE_KDE")
         set(SPCHCNTRL_APP_KDE_SCPP ${SPCHCNTRL_APP_SRCS}
+            ${SPCHCNTRL_DESKTOPCONTROL_SRCS}
+            ${SPCHCNTRL_VOXFORGE_SRCS}
+            ${SPCHCNTRL_SESSIONS_SRCS}
             ${SPCHCNTRL_WINDOWS_SRCS})
 
         ## User facing code

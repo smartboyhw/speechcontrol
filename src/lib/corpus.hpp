@@ -26,7 +26,7 @@
 #include <QObject>
 #include <QStringList>
 
-#include "sentence.hpp"
+#include <sentence.hpp>
 
 class QDomDocument;
 
@@ -147,7 +147,7 @@ public:
      * @brief Obtains a specific @c Sentence object at a specified index.
      * @return A pointer to the @c Sentence object at that index, or NULL.
      */
-    Sentence* sentenceAt ( const int& ) const;
+    Sentence* sentenceAt ( const int& p_indx ) const;
 
     /**
      * @brief Obtains the @c QUuid identifying this @c Corpus

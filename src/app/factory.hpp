@@ -62,6 +62,10 @@ signals:
      **/
     void pluginUnloaded ( const QUuid& );
 
+public slots:
+    void start();
+    void stop();
+
 public:
     virtual ~Factory();
 
@@ -79,7 +83,7 @@ public:
      * @param  ...
      * @return const bool
      **/
-    static bool unloadPlugin ( const QUuid& );
+    void unloadPlugin ( const QUuid& p_uuid );
 
     /**
      * @brief ...
@@ -135,4 +139,4 @@ private:
 }
 
 #endif // FACTORY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

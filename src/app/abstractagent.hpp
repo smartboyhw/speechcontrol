@@ -98,7 +98,7 @@ protected:
      * Handles the actions depending on each of the states changing.
      * @return State The accepted state to render to, or Undefined if this state is invalid.
      **/
-    virtual const OperationState onStateChanged ( const OperationState ) = 0;
+    virtual OperationState onStateChanged ( const OperationState ) = 0;
 
 private:
     OperationState m_stt;
@@ -106,4 +106,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

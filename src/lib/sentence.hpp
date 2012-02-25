@@ -22,36 +22,27 @@
 #define SENTENCE_HPP
 
 #include <QDir>
+#include <QList>
 #include <QUuid>
 #include <QObject>
 
 class QDomElement;
 
 namespace SpeechControl {
-class Corpus;
 class Phrase;
+class Corpus;
 class Sentence;
 
+/**
+ * @brief Represents a @c QList of @c Sentence objects.
+ **/
 typedef QList<Sentence*> SentenceList;
+
+/**
+ * @brief Represents a @c QList of @c Phrase objects; components of a @c Sentence object.
+ **/
 typedef QList<Phrase*> PhraseList;
 
-class Phrase : public QObject {
-    Q_OBJECT
-    Q_DISABLE_COPY ( Phrase )
-    friend class Sentence;
-
-public:
-    virtual ~Phrase();
-    QFile* audio() const;
-    const QString text() const;
-    int index() const;
-    bool isCompleted() const;
-
-private:
-    explicit Phrase ( const Sentence*, const int& );
-    const Sentence* m_sntnc;
-    const int m_indx;
-};
 
 class Sentence : public QObject {
     Q_OBJECT

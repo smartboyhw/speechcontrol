@@ -34,14 +34,11 @@ PluginMap Factory::s_ldPlgns;
 Factory::Factory( ) : QObject ( Core::instance() ) {
     s_inst = this;
     SC_APP::addLibraryPath ( SPCHCNTRL_PLUGINS_LIB_DIR );
-    Q_FOREACH ( QUuid l_uuid, Factory::availablePlugins().keys() ) {
-        qDebug() << l_uuid;
-    }
 }
 
 PluginMap Factory::availablePlugins() {
     QDir l_specDir ( SPCHCNTRL_PLUGINS_SPEC_DIR );
-    l_specDir.setNameFilters ( QStringList() << "*.desktop" );
+    l_specDir.setNameFilters ( QStringList() << "*.spec" );
     l_specDir.setFilter ( QDir::Files );
     const QStringList l_specPths = l_specDir.entryList();
     PluginMap l_plgnLst;
@@ -50,8 +47,7 @@ PluginMap Factory::availablePlugins() {
         const QString l_pth = l_specDir.absolutePath() + "/" + l_specPth;
         QSettings* l_specCfg = new QSettings ( l_pth,QSettings::IniFormat,instance() );
         QFile l_file ( l_pth );
-        const QUuid l_uuid ( l_specCfg->value ( "SpeechControl/UUID" ).toString() );
-        qDebug() << "Path:" << l_pth;
+        const QUuid l_uuid ( l_specCfg->value ( "Plugin/UUID" ).toString() );
         l_plgnLst.insert ( l_uuid, new GenericPlugin ( l_uuid ) );
     }
 
@@ -71,22 +67,31 @@ bool Factory::loadPlugin ( const QUuid& p_uuid ) {
 
     if ( l_gnrcPlgn->isSupported() && l_gnrcPlgn->loadComponents() ) {
         AbstractPlugin* l_plgn = qobject_cast<AbstractPlugin*> ( l_gnrcPlgn->m_ldr->instance() );
-        s_ldPlgns.insert ( p_uuid,l_plgn );
-        emit instance()->pluginLoaded ( p_uuid );
-    }
+        if ( l_plgn->load() ) {
+            s_ldPlgns.insert ( p_uuid,l_plgn );
+            l_plgn->start();
+            emit instance()->pluginLoaded ( p_uuid );
+            qDebug() << "Plugin" << l_plgn->name() << "loaded.";
+            return true;
+        } else {
+            qDebug() << "Plugin" << l_plgn->name() << "refused to load.";
+            return false;
+        }
+    } else
+        qDebug() << "Plugin" << p_uuid << "unsupported.";
 
+    qDebug() << "Plugin" << p_uuid << "not loaded.";
     return false;
 }
 
-bool Factory::unloadPlugin ( const QUuid& p_uuid ) {
+void Factory::unloadPlugin ( const QUuid& p_uuid ) {
     if ( s_ldPlgns.contains ( p_uuid ) ) {
         AbstractPlugin* l_plgn = s_ldPlgns.value ( p_uuid );
+        l_plgn->stop();
         s_ldPlgns.remove ( p_uuid );
-        l_plgn->unload();
+        qDebug() << "Plugin" << p_uuid << "unloaded.";
         emit instance()->pluginUnloaded ( p_uuid );
     }
-
-    return false;
 }
 
 Factory* Factory::instance() {
@@ -98,12 +103,28 @@ Factory* Factory::instance() {
 
 QSettings* Factory::pluginConfiguration ( QUuid p_uuid ) {
     const QString l_pth ( QString ( SPCHCNTRL_PLUGINS_SPEC_DIR ) + QString ( "/" ) + p_uuid.toString().replace ( "{","" ).replace ( "}","" ) + QString ( ".spec" ) );
-    return new QSettings ( l_pth );
+    return new QSettings ( l_pth ,QSettings::IniFormat,Factory::instance());
 }
 
 QSettings* Factory::pluginSettings ( QUuid p_uuid ) {
     const QString l_pth ( QDir::homePath() + QString ( "/.speechcontrol/plugins/" ) + p_uuid.toString().replace ( "{","" ).replace ( "}","" ) + QString ( ".conf" ) );
-    return new QSettings ( l_pth );
+    return new QSettings ( l_pth ,QSettings::IniFormat,Factory::instance());
+}
+
+void Factory::start() {
+    qDebug() << "Factory started.";
+    const QStringList l_plgnLst = Core::configuration ( "Plugins/AutoStart" ).toStringList();
+    Q_FOREACH ( const QUuid l_plgn, availablePlugins().keys() ) {
+        Plugins::Factory::loadPlugin ( l_plgn );
+    }
+}
+
+void Factory::stop() {
+    Q_FOREACH ( AbstractPlugin* l_plgn, loadedPlugins() ) {
+        unloadPlugin(l_plgn->uuid());
+    }
+
+    qDebug() << "Factory stopped.";
 }
 
 Factory::~Factory() {

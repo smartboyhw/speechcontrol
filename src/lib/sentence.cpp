@@ -18,9 +18,14 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "sentence.hpp"
 #include "corpus.hpp"
+#include "phrase.hpp"
+#include "sentence.hpp"
+
+#include <QDebug>
 #include <QDomNodeList>
+
+#define MAX_SIZE 4
 
 using SpeechControl::Corpus;
 using SpeechControl::Sentence;
@@ -65,25 +70,36 @@ Sentence* Sentence::create ( Corpus *p_corpus, const QString& p_text ) {
     l_elem->setAttribute ( "index",p_corpus->sentences().count() );
     p_corpus->m_dom->documentElement().namedItem ( "Sentences" ).appendChild ( *l_elem );
 
-    // form phrases
     QStringList l_words = p_text.split ( " ",QString::SkipEmptyParts );
+    int l_phraseSize = l_words.count() / 4;
+    int l_wordSize = 0;
+
     QString l_phrase;
 
-    for ( int i = 0, j = 0; i < l_words.count(); i++, j++ ) {
-        if ( j < 4 )
-            l_phrase += l_words.at ( i ) + " ";
+    qDebug() << "Assumed word count:" << l_words.count();
+    qDebug() << "Words:" << l_words;
+    qDebug() << "If segmented into about 4 parts each, we get about" << l_words.count() / 4 << "words per phrase.";
 
-        if ( j == 3 || (i - 1 == l_words.count() ) ) {
+    Q_FOREACH(const QString l_word, l_words){
+        if ( l_wordSize <= l_phraseSize ){
+            l_phrase += l_word + " ";
+            qDebug() << "Appended" << l_wordSize << l_word;
+        }
+
+        if ( l_wordSize == l_phraseSize || l_word == l_words.last()) {
             l_phrase = l_phrase.trimmed();
+            qDebug() << "Phrase" << l_phrase << "formed. At end?" << (l_word == l_words.last());
 
             QDomElement* l_phrsElem = new QDomElement ( p_corpus->m_dom->createElement ( "Phrase" ) );
             l_phrsElem->setAttribute ( "uuid",QUuid::createUuid() );
             l_phrsElem->appendChild ( p_corpus->m_dom->createTextNode ( l_phrase.toUtf8().toBase64() ) );
             l_elem->appendChild ( *l_phrsElem );
 
-            j = -1;
+            l_wordSize = -1;
             l_phrase.clear();
         }
+
+        ++l_wordSize;
     }
 
     return p_corpus->addSentence ( new Sentence ( p_corpus,l_elem ) );
@@ -109,12 +125,16 @@ int Sentence::index() const {
 double Sentence::completedProgress() const {
     uint l_count = 0;
 
-    for (int i = 0; i < phrases().count(); i++){
-        if (isPhraseCompleted(i))
+    for ( int i = 0; i < phrases().count(); i++ ) {
+        if ( isPhraseCompleted ( i ) )
             l_count += 1;
     }
 
-    return (double) (l_count) / (double) (phrases().count());
+    return ( double ) ( l_count ) / ( double ) ( phrases().count() );
+}
+
+QDomElement* Sentence::getPhraseElement ( const int &p_indx ) const {
+    return new QDomElement ( m_elem->elementsByTagName ( "Phrase" ).at ( p_indx ).toElement() );
 }
 
 Sentence::~Sentence() {

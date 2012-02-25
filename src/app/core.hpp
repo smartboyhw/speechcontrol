@@ -87,7 +87,7 @@ public:
      * @param  p_attrDefVal The default value to return. Defaults to QVariant().
      * @return QVariant
      **/
-    QVariant configuration ( const QString&, QVariant = QVariant() ) const;
+    static QVariant configuration ( const QString&, QVariant = QVariant() );
 
     /**
      * @brief Sets a core configuration option of SpeechControl.
@@ -97,7 +97,7 @@ public:
      * @param  p_attrValue The value to be set.
      * @return void
      **/
-    void setConfiguration ( const QString&, const QVariant& );
+    static void setConfiguration ( const QString&, const QVariant& );
 
     /**
      * @brief Obtains a pointer to the @c Core object, the singleton representing the application.
@@ -114,7 +114,7 @@ public:
     /**
      * @brief Invoke the application's main execution loop.
      */
-    int exec();
+    static int exec();
 
     /**
      * @brief Quits the application's main execution loop.
@@ -154,4 +154,4 @@ typedef Application::Core Core;
 }
 
 #endif // CORE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

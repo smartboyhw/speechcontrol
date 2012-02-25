@@ -18,30 +18,33 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "agent.hpp"
+#ifndef DESKTOPCONTROL_HPP
+#define DESKTOPCONTROL_HPP
 
-using SpeechControl::AbstractAgent;
+#include <QObject>
 
-AbstractAgent::AbstractAgent ( QObject* p_prnt ) : QObject ( p_prnt ) {
+#include "abstractagent.hpp"
+
+namespace SpeechControl {
+namespace DesktopControl {
+class Agent : public AbstractAgent {
+    Q_OBJECT
+public:
+    Agent();
+    virtual ~Agent();
+    virtual bool isActive() const;
+    static Agent* instance();
+
+private:
+    virtual OperationState onStateChanged ( const SpeechControl::AbstractAgent::OperationState p_stt );
+    static Agent* s_inst;
+};
 
 }
 
-AbstractAgent::AbstractAgent ( const AbstractAgent&  p_agnt ) : QObject ( p_agnt.parent() ) {
+typedef DesktopControl::Agent DesktopControlAgent;
 
 }
 
-void AbstractAgent::setState ( const AbstractAgent::OperationState p_stt ) {
-    m_stt = onStateChanged ( p_stt );
-    emit stateChanged ( m_stt );
-}
-
-AbstractAgent::OperationState AbstractAgent::state() const {
-    return m_stt;
-}
-
-AbstractAgent::~AbstractAgent() {
-
-}
-
-#include "agent.moc"
+#endif // DESKTOPCONTROL_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

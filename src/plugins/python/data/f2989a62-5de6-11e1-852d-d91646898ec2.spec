@@ -5,5 +5,5 @@ UUID=f2989a62-5de6-11e1-852d-d91646898ec2
 URL=http://www.thesii.org
 Version=0.1
 
-[Dependenices]
-Library=speechcontrol-python
+[Dependencies]
+Library=pyspchcntrl

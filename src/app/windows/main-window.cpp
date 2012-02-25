@@ -19,7 +19,6 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-
 #include <QFile>
 #include <QUuid>
 #include <QDebug>
@@ -28,6 +27,7 @@
 #include <QErrorMessage>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QTableWidget>
 
 #include <sphinx.hpp>
 #include <corpus.hpp>
@@ -35,6 +35,9 @@
 #include "core.hpp"
 #include "indicator.hpp"
 #include "session.hpp"
+#include "dictation.hpp"
+#include "desktopcontrol/agent.hpp"
+#include "desktopcontrol/command.hpp"
 #include "main-window.hpp"
 #include "training-dialog.hpp"
 #include "settings-dialog.hpp"
@@ -62,10 +65,6 @@ Main::Main() : m_ui ( new Ui::MainWindow ), m_prgStatusbar ( 0 ) {
     this->setWindowIcon ( QIcon ( ":/logo/sc" ) );
     m_prgStatusbar = new QProgressBar ( this );
 
-    // Restore the window's state from last time it was opened.
-    this->restoreGeometry ( Core::instance()->configuration ( "MainWindow/Geometry" ).toByteArray() );
-    this->restoreState ( Core::instance()->configuration ( "MainWindow/State" ).toByteArray() );
-
     // Do a bit of cleanup on the status bar.
     m_ui->statusBar->addPermanentWidget ( m_prgStatusbar );
     m_prgStatusbar->setMaximum ( 100 );
@@ -88,6 +87,8 @@ Main::Main() : m_ui ( new Ui::MainWindow ), m_prgStatusbar ( 0 ) {
     m_ui->btnDsktpCntrl->setChecked ( m_ui->actionDesktopControlActive->isChecked() );
     m_ui->btnDctn->setChecked ( m_ui->actionDictationActive->isChecked() );
 
+    connect ( DesktopControl::Agent::instance(),SLOT ( onStateChanged() ),this,SLOT ( desktopControlStateChanged() ) );
+    connect ( DictationAgent::instance(),SLOT ( onStateChanged() ),this,SLOT ( dictationStateChanged() ) );
 #ifdef HAVE_KDE
     // Update the Help menu.
     m_ui->menuHelp->clear();
@@ -99,12 +100,12 @@ Main::Main() : m_ui ( new Ui::MainWindow ), m_prgStatusbar ( 0 ) {
 
 void Main::show() {
     if ( Microphone::allMicrophones().empty() ) {
-        QErrorMessage* l_msg = new QErrorMessage(this);
-        l_msg->setModal(true);
+        QErrorMessage* l_msg = new QErrorMessage ( this );
+        l_msg->setModal ( true );
         l_msg->setWindowTitle ( "No Microphones Found" );
         l_msg->showMessage ( tr ( "No microphones were found on your system. Please ensure that you have one installed and detectable by " ) +
-        tr ( "the audio system and make sure that <b>gstreamer-plugins-good</b> is installed on your system." ),
-             "NoMicrophonesFoundOnStart" );
+                             tr ( "the audio system and make sure that <b>gstreamer-plugins-good</b> is installed on your system." ),
+                             "NoMicrophonesFoundOnStart" );
     }
 
     updateContent();
@@ -115,8 +116,74 @@ void Main::close() {
     SC_MW::close();
 }
 
+void Main::on_tabWidget_currentChanged ( const int p_index ) {
+    switch ( p_index ) {
+    case 0: { // main info
+        updateContent();
+    }
+    break;
+
+    case 1: { // desktop control commands
+        using SpeechControl::DesktopControl::AbstractCommand;
+        using SpeechControl::DesktopControl::AbstractCategory;
+        using SpeechControl::DesktopControl::CommandList;
+
+        AbstractCategory* l_glbl = DesktopControl::AbstractCategory::global();
+        CommandList l_cmds = l_glbl->commands();
+        QTableWidget* l_widg = m_ui->tableWidget;
+
+        l_widg->clear();
+
+        l_widg->setHorizontalHeaderLabels(QStringList() << "Statement"
+                                                        << "Command"
+        );
+
+        Q_FOREACH ( AbstractCommand* l_cmd, l_cmds ) {
+            l_widg->setRowCount(l_cmd->statements().count() + l_widg->rowCount());
+            Q_FOREACH ( const QString l_statement, l_cmd->statements() ) {
+                const int l_row = l_widg->rowCount();
+                l_widg->setItem ( l_row,0, ( new QTableWidgetItem ( l_statement ) ) );
+                l_widg->setItem ( l_row,1, ( new QTableWidgetItem ( l_cmd->id() ) ) );
+                qDebug() << l_statement << l_cmd->id();
+            }
+        }
+    }
+    break;
+
+    case 2:
+    { } // voxforge info
+    break;
+    }
+}
+
 void Main::setStatusMessage ( const QString& p_message , const int p_timeout ) {
     m_ui->statusBar->showMessage ( p_message, p_timeout );
+}
+
+void Main::desktopControlStateChanged() {
+    switch ( DesktopControl::Agent::instance()->state() ) {
+    case AbstractAgent::OperationState::Enabled:
+        setStatusMessage ( tr ( "Desktop control enabled." ) );
+        break;
+    case AbstractAgent::OperationState::Disabled:
+        setStatusMessage ( tr ( "Desktop control disabled." ) );
+        break;
+    default:
+        break;
+    }
+}
+
+void Main::dictationStateChanged() {
+    switch ( DictationAgent::instance()->state() ) {
+    case AbstractAgent::OperationState::Enabled:
+        setStatusMessage ( tr ( "Dictation enabled." ) );
+        break;
+    case AbstractAgent::OperationState::Disabled:
+        setStatusMessage ( tr ( "Dictation disabled." ) );
+        break;
+    default:
+        break;
+    }
 }
 
 /// @todo Instead of this constant ticking, use signals to update this code.
@@ -170,12 +237,20 @@ void Main::on_btnDctn_clicked ( bool p_checked ) {
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
 void Main::on_actionDesktopControlActive_triggered ( const bool p_checked ) {
-    setStatusMessage ( ( ( p_checked == true ) ? "Activating desktop control..." : "Deactivating desktop control..." ) ,5 );
+    if ( p_checked )
+        DesktopControlAgent::instance()->setState ( SpeechControl::AbstractAgent::Enabled );
+    else
+        DesktopControlAgent::instance()->setState ( SpeechControl::AbstractAgent::Disabled );
+    setStatusMessage ( ( ( p_checked == true ) ? "Enabling desktop control..." : "Disabling desktop control..." ) ,5 );
 }
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
 void Main::on_actionDictationActive_triggered ( const bool p_checked ) {
-    setStatusMessage ( ( ( p_checked == true ) ? "Activating dictation..." : "Deactivating dictation..." ) ,5 );
+    if ( p_checked )
+        DictationAgent::instance()->setState ( SpeechControl::AbstractAgent::Enabled );
+    else
+        DictationAgent::instance()->setState ( SpeechControl::AbstractAgent::Disabled );
+    setStatusMessage ( ( ( p_checked == true ) ? "Enabling dictation..." : "Disabling dictation..." ) ,5 );
 }
 
 void Main::on_actionAboutQt_triggered() {
@@ -190,7 +265,6 @@ void Main::on_actionAboutSpeechControl_triggered() {
     l_dlg.exec();
 #endif
 }
-
 
 Main::~Main() {
     delete m_ui;

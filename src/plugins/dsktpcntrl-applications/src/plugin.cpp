@@ -2,6 +2,7 @@
  *  This file is part of SpeechControl.
  *
  *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *            (C) 2012 Jacky Alcine <jacky.alcine@thesii.org>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -17,40 +18,34 @@
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+#include <QDebug>
+#include <QtPlugin>
 
-#include "desktopcontrol.hpp"
-#include "core.hpp"
+#include "config.hpp"
+#include "plugin.hpp"
 
-using SpeechControl::AbstractAgent;
-using SpeechControl::DesktopControlAgent;
+APPLIST_NAMESPACE_BEGIN
 
-DesktopControlAgent::DesktopControlAgent() : AbstractAgent ( Core::instance() ) {
+Plugin::Plugin ( QObject* parent ) : AbstractPlugin (QUuid(PLUGIN_UUID),parent) {
+    qDebug() << "applist plug-in built.";
+}
+
+void Plugin::initialize() {
+    qDebug() << "Plug-in loaded! (applist)";
+}
+
+void Plugin::deinitialize() {
+    qDebug() << "Plug-in unloaded! (applist)";
+}
+
+Plugin::~Plugin() {
 
 }
 
-const AbstractAgent::OperationState DesktopControlAgent::onStateChanged ( const AbstractAgent::OperationState p_stt ) {
-    switch ( p_stt ) {
-    case Enabled:
-        break;
+#include "plugin.moc"
 
-    case Disabled:
-        break;
+APPLIST_NAMESPACE_END
 
-    case Undefined:
-    default:
-        break;
-    }
+Q_EXPORT_PLUGIN2(spchcntrl-applist, SpeechControl::Plugins::DesktopControl::ApplicationListing::Plugin)
 
-    return Undefined;
-}
-
-bool DesktopControlAgent::isActive() const {
-    return state() == Enabled;
-}
-
-DesktopControlAgent::~DesktopControlAgent() {
-
-}
-
-#include "desktopcontrol.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

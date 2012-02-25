@@ -23,17 +23,11 @@
 
 #ifndef HAVE_KDE
 #include <QDialog>
-#define SC_DIALOG QDialog
-#else
-#include <KDialog>
-#define SC_DIALOG KDialog
-#endif
-
 #include "ui_about-dialog.h"
 
 namespace SpeechControl {
 namespace Windows {
-class AboutDialog : public SC_DIALOG {
+class AboutDialog : public QDialog {
     Q_OBJECT
 
 public:
@@ -52,4 +46,5 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

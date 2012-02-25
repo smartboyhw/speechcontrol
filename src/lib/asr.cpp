@@ -200,4 +200,4 @@ void ASR::asrResult ( const QString& text, const QString& uttid ) {
 }
 
 #include "asr.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

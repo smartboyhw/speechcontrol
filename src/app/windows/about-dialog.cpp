@@ -17,17 +17,18 @@
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#include <QIcon>
-#include <QDateTime>
-#include <QApplication>
-
 #include <config.hpp>
 
 #include "about-dialog.hpp"
 
+#ifndef HAVE_KDE
+#include <QIcon>
+#include <QDateTime>
+#include <QApplication>
+
 using namespace SpeechControl::Windows;
 
-AboutDialog::AboutDialog ( QWidget *parent ) : SC_DIALOG ( parent ) {
+AboutDialog::AboutDialog ( QWidget *parent ) : QDialog ( parent ) {
     ui.setupUi ( this );
     ui.versionLabel->setText ( QString ( tr ( "<b>Version:</b> %1<br><b>Built:</b> %2" ) )
                                .arg ( SPCHCNTRL_BUILD_VERSION )
@@ -36,6 +37,7 @@ AboutDialog::AboutDialog ( QWidget *parent ) : SC_DIALOG ( parent ) {
     ui.authorTextBrowser->setHtml ( authors() );
     ui.contributorTextBrowser->setHtml ( contributors() );
     ui.thanksToTextBrowser->setHtml ( thanksTo() );
+    ui.logo->setPixmap ( QPixmap ( ":/logo/sc" ) );
     setWindowIcon ( QIcon ( ":/logo/sc" ) );
 }
 
@@ -94,4 +96,5 @@ QString AboutDialog::thanksTo() const {
 }
 
 #include "about-dialog.moc"
+#endif
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

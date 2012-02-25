@@ -32,10 +32,11 @@
 #endif
 
 #include "ui_training-dialog.h"
-#include "training-dialog.hpp"
+#include "core.hpp"
 #include "session.hpp"
-#include <core.hpp>
+#include "training-dialog.hpp"
 
+#include <phrase.hpp>
 #include <sentence.hpp>
 #include <corpus.hpp>
 
@@ -64,6 +65,7 @@ TrainingDialog::TrainingDialog ( QWidget *parent ) :
     connect ( this,SLOT ( updateProgress ( double ) ),m_session,SIGNAL ( progressChanged ( double ) ) );
     connect ( m_mic,SIGNAL ( startedListening() ),this,SLOT ( startedListening() ) );
     connect ( m_mic,SIGNAL ( stoppedListening() ),this,SLOT ( stoppedListening() ) );
+    stoppedListening();
 }
 
 TrainingDialog::~TrainingDialog() {
@@ -71,11 +73,11 @@ TrainingDialog::~TrainingDialog() {
 }
 
 void TrainingDialog::startedListening() {
-    m_ui->lblRecording->setPixmap(QIcon::fromTheme("audio-volume-high").pixmap(32,32));
+    m_ui->lblRecording->setPixmap ( QIcon::fromTheme ( "audio-volume-high" ).pixmap ( 32,32 ) );
 }
 
 void TrainingDialog::stoppedListening() {
-    m_ui->lblRecording->setPixmap(QIcon::fromTheme("audio-volume-muted").pixmap(32,32));
+    m_ui->lblRecording->setPixmap ( QIcon::fromTheme ( "audio-volume-muted" ).pixmap ( 32,32 ) );
 }
 
 
@@ -88,9 +90,8 @@ void TrainingDialog::startTraining ( Session* p_session ) {
         MESSAGEBOX::information ( Core::mainWindow() ,tr ( "Session Completed" ), tr ( "Session <b>%1</b> has been completed already." ).arg ( p_session->name() ) );
 }
 
-/// @todo Start training the session.
+/// @bug When training reaches the end of the sentence, it's unable to proceed to the next sentence when training is invoked from here. A manual (yet sloppy) fix is to click 'Undo' until you reach the beginning of the sentence and re-record everything.
 void TrainingDialog::startCollecting() {
-    // Determine the last saved sentence in the session.
     m_initSntct = m_curSntct = m_session->firstIncompleteSentence();
 
     // Begin an iteration of reading sentences until interrupted or completed.
@@ -167,15 +168,12 @@ void TrainingDialog::open() {
     QDialog::open();
 }
 
-/// @todo Use these functions to segment the phrase into parts that the user can read.
-/// @todo In order for this to work properly, we'd need to detect empty pauses in the user's speech. We'd might have to record a 'garbage' model of empty noises
-///       and detect when empty noises are made and then advance.
-/// @todo We also have to return this information to the root sentence, how do we combine these phrases to the originating sentence?
+/// @todo In order for this to work properly, we'd need to detect empty pauses in the user's speech. We'd might have to record a 'garbage' model of empty noises and detect when empty noises are made and then advance.
 void TrainingDialog::navigateToPart ( const uint &l_index ) {
     QString l_text;
     PhraseList l_phrsLst = m_curSntct->phrases();
 
-    for ( uint i = 0; i < (uint) l_phrsLst.count(); i++ ) {
+    for ( uint i = 0; i < ( uint ) l_phrsLst.count(); i++ ) {
         const QString l_curWord = l_phrsLst.at ( i )->text();
 
         if ( l_index == i ) {
@@ -188,18 +186,19 @@ void TrainingDialog::navigateToPart ( const uint &l_index ) {
         } else
             l_text += QString ( "<font style='color: gray; font-size: small;'>%1</font>" ).arg ( l_curWord );
 
-        if ( i != (uint) l_phrsLst.count() - 1 )
+        if ( i != ( uint ) l_phrsLst.count() - 1 )
             l_text += " ";
     }
+
+    qDebug() << l_text << m_curSntct->phrases();
 
     m_curPos = l_index;
     m_ui->labelText->setText ( l_text );
     m_session->assessProgress();
-    m_ui->pushButtonReset->setEnabled ( ! ( m_initPos == m_curPos && m_initSntct == m_curSntct ) );
+    m_ui->pushButtonReset->setEnabled ( ! ( (int) m_initPos == m_curPos && m_initSntct == m_curSntct ) );
     m_ui->pushButtonUndo->setEnabled ( m_ui->pushButtonReset->isEnabled() );
 }
 
-/// @todo When this goes over, advance to the next sentence.
 void TrainingDialog::navigateNextPart() {
     if ( m_curPos + 1 < m_curSntct->phrases().count() ) {
         navigateToPart ( m_curPos + 1 );
@@ -230,7 +229,7 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonReset_clicked() {
     // Now, revert and jump to the place that training when this dialog opened began at.
     m_curSntct = m_initSntct;
     m_curPos = m_initPos;
-    navigateToPart(m_curPos);
+    navigateToPart ( m_curPos );
 }
 
 /// @todo This should undo progress at a decrementing interval until it hits the point of where the dialog opened.
@@ -278,11 +277,11 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonNext_clicked() {
         if ( m_curSntct == 0 ) {
             updateProgress ( 1.0 );
             QMessageBox* l_msgComplete = new QMessageBox ( this );
-            l_msgComplete->setWindowTitle("Session Complete - SpeechControl");
+            l_msgComplete->setWindowTitle ( "Session Complete - SpeechControl" );
             l_msgComplete->setText ( "You've successfully completed the recording part of this session!" );
             l_msgComplete->setInformativeText ( "With the session completed, you can now queue it for either adaption or generation of a language model." );
             l_msgComplete->setIcon ( QMessageBox::Information );
-            l_msgComplete->setIconPixmap(QIcon::fromTheme("task-complete").pixmap(64,64));
+            l_msgComplete->setIconPixmap ( QIcon::fromTheme ( "task-complete" ).pixmap ( 64,64 ) );
             l_msgComplete->open();
             close();
             return;

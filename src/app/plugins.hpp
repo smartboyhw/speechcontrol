@@ -36,6 +36,7 @@ class QSettings;
 namespace SpeechControl {
 namespace Plugins {
 class Factory;
+class AbstractHandle;
 class AbstractPlugin;
 
 /**
@@ -55,6 +56,7 @@ class AbstractPlugin : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY ( AbstractPlugin )
     friend class Factory;
+    friend class GenericPlugin;
 
 signals:
     /**
@@ -78,6 +80,14 @@ public:
      * @param  ... Defaults to 0.
      **/
     explicit AbstractPlugin ( QObject* = 0 );
+
+    /**
+     * @brief ...
+     *
+     * @param p_uuid ...
+     * @param p_parent ... Defaults to 0.
+     **/
+    AbstractPlugin ( const QUuid& p_uuid, QObject* p_parent = 0 );
 
     /**
      * @brief ...
@@ -142,19 +152,13 @@ public:
     bool isSupported() const;
 
 public slots:
-    /**
-     * @brief ...
-     *
-     * @return void
-     **/
-    void unload();
 
     /**
      * @brief ...
      *
      * @return void
      **/
-    void load();
+    bool load();
 
 protected:
     /**
@@ -175,8 +179,9 @@ protected:
      * @return void
      **/
     bool loadComponents();
-    QSettings* m_cfg;
-    QSettings* m_sttgs;
+
+    QSettings* settings() const;
+    QSettings* configuration() const;
 
 private slots:
     /**
@@ -206,6 +211,8 @@ private:
      **/
     bool loadPlugins();
     QPluginLoader* m_ldr;
+    QSettings* m_cfg;
+    QSettings* m_sttgs;
 };
 
 /**
@@ -237,8 +244,9 @@ protected:
      **/
     virtual void deinitialize() { };
 };
+
 }
 }
 
 #endif // PLUGINS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

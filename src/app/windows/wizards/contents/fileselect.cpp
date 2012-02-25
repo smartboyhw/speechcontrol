@@ -69,4 +69,4 @@ void SpeechControl::Wizards::Pages::FileSelectionPage::on_toolButton_clicked() {
 }
 
 #include "fileselect.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -20,6 +20,7 @@
 
 #include "corpus.hpp"
 #include "sentence.hpp"
+#include "dictionary.hpp"
 
 #include <QDir>
 #include <QFileInfo>
@@ -29,6 +30,7 @@
 
 using SpeechControl::Corpus;
 using SpeechControl::Sentence;
+using SpeechControl::Dictionary;
 using SpeechControl::CorpusList;
 using SpeechControl::SentenceList;
 
@@ -141,7 +143,7 @@ Corpus* Corpus::obtain ( const QUuid &p_uuid ) {
     }
 
     l_crps = new Corpus ( p_uuid );
-    if ( !l_crps->isValid() ){
+    if ( !l_crps->isValid() ) {
         qDebug() << "Invalid corpus" << p_uuid;
         return 0;
     }
@@ -188,7 +190,7 @@ void Corpus::load ( const QUuid &p_uuid ) {
 /// @todo The dictionary isn't checked at the moment, but should be in the future when the class is more defined.
 bool Corpus::isValid() const {
     const bool l_valid = m_dom && !m_uuid.isNull();
-    Q_ASSERT(l_valid == true);
+    Q_ASSERT ( l_valid == true );
     qDebug() << "Is corpus valid?" << l_valid;
     return l_valid;
 }
@@ -237,8 +239,24 @@ Corpus* Corpus::clone() const {
     return Corpus::obtain ( l_uuid );
 }
 
-SpeechControl::Sentence* SpeechControl::Corpus::sentenceAt ( const int &p_indx ) const {
+Sentence* Corpus::sentenceAt ( const int &p_indx ) const {
     return m_sntncLst.at ( p_indx );
+}
+
+Dictionary * Corpus::dictionary() const {
+    return m_dict;
+}
+
+const QDateTime Corpus::timeStarted() const {
+    return QDateTime::fromString ( m_dom->elementsByTagName ( "Date" ).at ( 0 ).toElement().attribute ( "Started" ) );
+}
+
+const QDateTime Corpus::timeLastModified() const {
+    return QDateTime::fromString ( m_dom->elementsByTagName ( "Date" ).at ( 0 ).toElement().attribute ( "LastModified" ) );
+}
+
+const QDateTime Corpus::timeCompleted() const {
+    return QDateTime::fromString ( m_dom->elementsByTagName ( "Date" ).at ( 0 ).toElement().attribute ( "Completed" ) );
 }
 
 /// @todo What to clean-up?

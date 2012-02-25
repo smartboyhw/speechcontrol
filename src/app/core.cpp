@@ -107,9 +107,10 @@ Core::Core ( int argc, char** argv ) :
 
     dummyASR = new DummySC ( DummySC::getStandardDescription() );
     connect ( dummyASR, SIGNAL ( finished ( QString& ) ), this, SLOT ( asrFinished ( QString& ) ) );
+    connect ( m_app,SIGNAL(aboutToQuit()),this,SLOT(stop()));
     connect ( this,SIGNAL ( started() ),dummyASR,SLOT ( run() ) );
-
-    Plugins::Factory::availablePlugins();
+    connect ( this,SIGNAL ( started() ),Plugins::Factory::instance(),SLOT ( start() ) );
+    connect ( this,SIGNAL ( stopped() ),Plugins::Factory::instance(),SLOT ( stop() ) );
 }
 
 Core::~Core () {
@@ -129,11 +130,8 @@ void Core::start() {
         }
     }
 
-    // Load enabled plug-ins.
-    const QStringList l_plgnLst = s_inst->m_settings->value ( "Plugins/AutoStart" ).toStringList();
-    Q_FOREACH ( const QString l_plgn, l_plgnLst ) {
-        Plugins::Factory::loadPlugin ( QUuid ( l_plgn ) );
-    }
+
+    emit instance()->started();
 
     instance()->s_mw->show();
 }
@@ -142,7 +140,10 @@ Windows::Main* Core::mainWindow() {
     return instance()->s_mw;
 }
 
-void Core::stop() { }
+void Core::stop() {
+    qDebug() << "Core stopped.";
+    emit instance()->stopped();
+}
 
 /// Experimental
 void Core::asrFinished ( QString& text ) {
@@ -150,12 +151,12 @@ void Core::asrFinished ( QString& text ) {
     dummyASR->run();
 }
 
-QVariant Core::configuration ( const QString &p_pth, QVariant p_vrt ) const {
-    return m_settings->value ( p_pth, p_vrt );
+QVariant Core::configuration ( const QString &p_pth, QVariant p_vrt ) {
+    return instance()->m_settings->value ( p_pth, p_vrt );
 }
 
-void Core::setConfiguration ( const QString &p_pth, const QVariant &p_vrt ) {
-    m_settings->setValue ( p_pth, p_vrt );
+void Core::setConfiguration ( const QString& p_pth, const QVariant& p_vrt ) {
+    instance()->m_settings->setValue ( p_pth, p_vrt );
 }
 
 Core * SpeechControl::Core::instance() {
@@ -163,7 +164,7 @@ Core * SpeechControl::Core::instance() {
 }
 
 int Core::exec() {
-    return m_app->exec();
+    return instance()->m_app->exec();
 }
 
 #include "core.moc"

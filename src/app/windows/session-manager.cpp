@@ -56,7 +56,7 @@ void SessionManager::updateList() {
     Q_FOREACH ( const Session* l_sessionItr, l_lst ) {
         QListWidgetItem* l_item = new QListWidgetItem ( m_ui->listSession );
         l_item->setData ( Qt::UserRole,l_sessionItr->uuid().toString() );
-        l_item->setText ( QString("%1 - %2%").arg(l_sessionItr->name()).arg(30) );
+        l_item->setText ( QString ( "%1 - %2%" ).arg ( l_sessionItr->name() ).arg ( 30 ) );
         l_item->setIcon ( ( l_sessionItr->isCompleted() ) ? QIcon::fromTheme ( "task-complete" ) : QIcon::fromTheme ( "task-ongoing" ) );
         m_ui->listSession->addItem ( l_item );
 
@@ -123,4 +123,4 @@ void SessionManager::on_listSession_itemSelectionChanged() {
 }
 
 #include "session-manager.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

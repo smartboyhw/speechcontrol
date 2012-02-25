@@ -35,62 +35,70 @@
 
 class QFile;
 
-namespace SpeechControl {
-    class Sphinx;
-    class Trainer;
-    class AcousticModel;
-    class SphinxResult;
+namespace SpeechControl
+{
 
-    /**
-      * @brief A wrapping utility class for the PocketSphinx utility.
-      */
-    class Sphinx : public QObject {
-        Q_OBJECT
+class Sphinx;
 
-    signals:
-        void textRecognized(const QString&);
+class Trainer;
 
-    public:
+class AcousticModel;
 
-        Q_DISABLE_COPY(Sphinx)
-        explicit Sphinx(const AcousticModel* = 0);
-        virtual ~Sphinx();
-        void setAcousticModel(const AcousticModel* );
-        AcousticModel* acousticModel() const;
-        const bool isListening() const;
-        const QString text() const;
+class SphinxResult;
 
-    public slots:
-        void recognizeFromFile(const QFile* );
-        void recognizeFromMicrophone(const Microphone* = Microphone::defaultMicrophone());
-        void startRecognizing(Microphone* = Microphone::defaultMicrophone());
-        void stopRecognizing(Microphone* = Microphone::defaultMicrophone());
+/**
+  * @brief A wrapping utility class for the PocketSphinx utility.
+  */
 
-    private:
-        void initialize();
-        QString m_hypothesis;
-        Microphone* m_mic;
-        AcousticModel* m_mdl;
-        ps_decoder_t *m_decoder;
-        cmd_ln_t *m_config;
-    };
+class Sphinx : public QObject
+{
+    Q_OBJECT
 
-    class SphinxResult : public QObject {
-        Q_OBJECT
-        Q_PROPERTY(const double Confidence READ confidence)
-        Q_PROPERTY(const QString Text READ text)
+signals:
+    void textRecognized (const QString&);
 
-    public:
-        SphinxResult(Sphinx* );
-        virtual ~SphinxResult();
-        const QString text() const;
-        const double confidence() const;
+public:
 
-    private:
-        double m_cnfdnc;
-        QString m_txt;
-        Sphinx* m_sphnx;
-    };
+    Q_DISABLE_COPY (Sphinx)
+    explicit Sphinx (const AcousticModel* = 0);
+    virtual ~Sphinx();
+    void setAcousticModel (const AcousticModel*);
+    AcousticModel* acousticModel() const;
+    const bool isListening() const;
+    const QString text() const;
+
+public slots:
+    void recognizeFromFile (const QFile*);
+    void recognizeFromMicrophone (const Microphone* = Microphone::defaultMicrophone());
+    void startRecognizing (Microphone* = Microphone::defaultMicrophone());
+    void stopRecognizing (Microphone* = Microphone::defaultMicrophone());
+
+private:
+    void initialize();
+    QString m_hypothesis;
+    Microphone* m_mic;
+    AcousticModel* m_mdl;
+    ps_decoder_t *m_decoder;
+    cmd_ln_t *m_config;
+};
+
+class SphinxResult : public QObject
+{
+    Q_OBJECT
+    Q_PROPERTY (const double Confidence READ confidence)
+    Q_PROPERTY (const QString Text READ text)
+
+public:
+    SphinxResult (Sphinx*);
+    virtual ~SphinxResult();
+    const QString text() const;
+    const double confidence() const;
+
+private:
+    double m_cnfdnc;
+    QString m_txt;
+    Sphinx* m_sphnx;
+};
 }
 
 #endif // SPHINX_HPP

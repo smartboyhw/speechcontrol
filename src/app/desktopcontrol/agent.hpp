@@ -22,98 +22,122 @@
 #ifndef AGENT_HPP
 #define AGENT_HPP
 
+// Qt
 #include <QObject>
+
+// Local
 #include <sphinx.hpp>
+#include "desktopasr.hpp"
 
 /**
  * @brief Namespace containing all of SpeechControl's definitions.
  **/
-namespace SpeechControl {
+
+namespace SpeechControl
+{
+/**
+ * @brief Namespace containing the Desktop Control utilities.
+ **/
+
+namespace DesktopControl {
+
+class Agent;
+
+/**
+ * @brief Agent providing desktop control.
+ * DesktopControl::Agent provides an API for enabling our desktop control facilities.
+ * 
+ * Desktop Control is a technology of management using user's voice, it is one of the
+ * main SpeechControl's features. User has basically control over every aspect of work
+ * with his computer. Will it be creating/removing files, opening programs and files, starting new
+ * IM session, etc.
+ */
+
+class Agent : public QObject
+{
+    Q_OBJECT
+    Q_DISABLE_COPY (Agent)
+
+private:
+    static Agent* _instance;
+    DesktopASR* _asr;
+    Sphinx* m_sphinx;
+    
+public:
     /**
-     * @brief Namespace containing the Desktop Control utilities.
+     * @brief ...
+     *
+     * @return void
      **/
-    namespace DesktopControl {
-        class Agent;
+    explicit Agent (QObject* parent = 0);
+    
+    /**
+     * @brief ...
+     *
+     **/
+    virtual ~Agent();
 
-        /**
-         * @brief ...
-         **/
-        class Agent : public QObject
-        {
-            Q_OBJECT
-            Q_DISABLE_COPY(Agent)
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    static void start();
+    
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    static void stop();
+    
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @return void
+     **/
+    static void invokeCommand (const QString& command);
+    
+    /**
+     * @brief ...
+     *
+     * @return :DesktopControl::Agent*
+     **/
+    static Agent* instance();
+    
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    static const bool isActive();
 
-        signals:
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            void started();
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            void stopped();
-            /**
-             * @brief ...
-             *
-             * @param  ...
-             * @return void
-             **/
-            void stateChanged(const bool);
+signals:
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    void started();
+    
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    void stopped();
+    
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @return void
+     **/
+    void stateChanged (bool);
+};
 
-        public:
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            explicit Agent(QObject* = 0);
-            /**
-             * @brief ...
-             *
-             **/
-            virtual ~Agent();
-
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            static void start();
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            static void stop();
-            /**
-             * @brief ...
-             *
-             * @param  ...
-             * @return void
-             **/
-            static void invokeCommand(const QString&);
-            /**
-             * @brief ...
-             *
-             * @return :DesktopControl::Agent*
-             **/
-            static Agent* instance();
-            /**
-             * @brief ...
-             *
-             * @return void
-             **/
-            static const bool isActive();
-
-        private:
-            static Agent* s_inst;
-            Sphinx* m_sphnx;
-        };
-    }
+}
 }
 
 #endif // AGENT_H

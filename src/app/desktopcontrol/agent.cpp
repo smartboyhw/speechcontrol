@@ -25,19 +25,19 @@
 using namespace SpeechControl;
 using namespace SpeechControl::DesktopControl;
 
-Agent* Agent::s_inst = 0;
+Agent* Agent::_instance = 0;
 
 /// @todo #issue 0000032
-Agent::Agent(QObject* p_prnt) : QObject(p_prnt)
+Agent::Agent(QObject* parent) : QObject(parent)
 {
-  s_inst = this;
-  m_sphnx = new Sphinx;
-  connect(this, SIGNAL(started()), m_sphnx, SLOT(startRecognizing()));
-  connect(this, SIGNAL(stopped()), m_sphnx, SLOT(stopRecognizing()));
+  _instance = this;
+  m_sphinx = new Sphinx;
+  connect(this, SIGNAL(started()), m_sphinx, SLOT(startRecognizing()));
+  connect(this, SIGNAL(stopped()), m_sphinx, SLOT(stopRecognizing()));
 }
 
 Agent::Agent(const Agent& p_other) : QObject(p_other.parent()),
-    m_sphnx(p_other.m_sphnx)
+    m_sphinx(p_other.m_sphinx)
 {
 
 }
@@ -45,34 +45,31 @@ Agent::Agent(const Agent& p_other) : QObject(p_other.parent()),
 /// @todo Properly designate a means of determing if this agent is active.
 const bool Agent::isActive()
 {
-    return instance()->m_sphnx->isListening();
+    return instance()->m_sphinx->isListening();
 }
 
 Agent* Agent::instance()
 {
-  if (!s_inst)
-    s_inst = new Agent;
-
-  return s_inst;
+  return _instance;
 }
 
 /// @todo Instead of using Sphinx directly, use the ASR function.
 void Agent::start()
 {
-    instance()->m_sphnx->startRecognizing();
+    instance()->m_sphinx->startRecognizing();
     emit instance()->stateChanged(true);
     emit instance()->started();
 }
 
 void Agent::stop()
 {
-    instance()->m_sphnx->stopRecognizing();
+    instance()->m_sphinx->stopRecognizing();
     emit instance()->stateChanged(false);
     emit instance()->stopped();
 }
 
-void Agent::invokeCommand ( const QString& p_command )
-
+/// @todo That's bigger issue, we have to make a good design.
+void Agent::invokeCommand (const QString& command)
 {
 
 }

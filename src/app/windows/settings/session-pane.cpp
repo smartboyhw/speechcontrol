@@ -19,7 +19,7 @@
  */
 
 #include "session-pane.hpp"
-#include "session.hpp"
+#include "sessions/session.hpp"
 #include "windows/session-information-dialog.hpp"
 #include "ui_settingspane-sessions.h"
 
@@ -197,4 +197,4 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionRestoreBackup_trigger
 }
 
 #include "session-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

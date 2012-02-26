@@ -15,7 +15,8 @@ file(GLOB SPPY_HDRS "src/*.hpp")
 
 QT4_AUTOMOC(${SPPY_SRCS})
 
-include_directories(${SPPY_PLUGIN_INCLUDE_DIRS})
+include_directories(${SPPY_PLUGIN_INCLUDE_DIRS}
+    "${PROJECT_SOURCE_DIR}/../../")
 
 add_library(pyspchcntrl SHARED ${SPPY_SRCS})
 target_link_libraries(pyspchcntrl ${SPPY_PLUGIN_LIBRARIES})

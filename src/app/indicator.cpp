@@ -50,7 +50,7 @@ Indicator* Indicator::instance() {
 }
 
 void Indicator::showMessage ( const QString& p_message ) {
-
+    qDebug() << "Indicator message:" << p_message;
 }
 
 Indicator::~Indicator() {
@@ -58,4 +58,4 @@ Indicator::~Indicator() {
 }
 
 #include "indicator.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

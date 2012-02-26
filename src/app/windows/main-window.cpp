@@ -34,7 +34,7 @@
 
 #include "core.hpp"
 #include "indicator.hpp"
-#include "session.hpp"
+#include "sessions/session.hpp"
 #include "dictation.hpp"
 #include "desktopcontrol/agent.hpp"
 #include "desktopcontrol/command.hpp"

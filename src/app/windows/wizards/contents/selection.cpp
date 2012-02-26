@@ -30,19 +30,19 @@ AdditionSelectionPage::AdditionSelectionPage ( QWidget *parent ) :
     m_ui ( new Ui::AdditionSelectionPage ) {
     m_ui->setupUi ( this );
     registerField ( "selection.wiki",m_ui->radioButtonWiki );
-    registerField ( "selection.file",m_ui->radioButtonFile );
+    registerField ( "selection.url",m_ui->radioButtonUrl );
     registerField ( "selection.custom",m_ui->radioButtonCustom );
 
     connect ( m_ui->radioButtonWiki,SIGNAL ( clicked ( bool ) ),this,SLOT ( updateDescription() ) );
-    connect ( m_ui->radioButtonFile,SIGNAL ( clicked ( bool ) ),this,SLOT ( updateDescription() ) );
+    connect ( m_ui->radioButtonUrl,SIGNAL ( clicked ( bool ) ),this,SLOT ( updateDescription() ) );
     connect ( m_ui->radioButtonCustom,SIGNAL ( clicked ( bool ) ),this,SLOT ( updateDescription() ) );
 
     updateDescription();
 }
 
 void AdditionSelectionPage::updateDescription() {
-    if ( m_ui->radioButtonFile->isChecked() )
-        m_ui->lblDescription->setText ( m_ui->radioButtonFile->whatsThis() );
+    if ( m_ui->radioButtonUrl->isChecked() )
+        m_ui->lblDescription->setText ( m_ui->radioButtonUrl->whatsThis() );
     else if ( m_ui->radioButtonWiki->isChecked() )
         m_ui->lblDescription->setText ( m_ui->radioButtonWiki->whatsThis() );
     else if ( m_ui->radioButtonCustom->isChecked() )
@@ -54,4 +54,4 @@ AdditionSelectionPage::~AdditionSelectionPage() {
 }
 
 #include "selection.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -23,6 +23,7 @@
 #define CONTENTS_WIZARD_HPP
 
 #include "wizards/base.hpp"
+#include "sessions/content.hpp"
 
 namespace SpeechControl {
 namespace Wizards {
@@ -38,15 +39,11 @@ public:
         WikiSourcePage,
         PageSelectionPage,
 
-        // from a local file...
-        /// @todo Provide support for RTF.
-        /// @todo Provide support for ODT.
-        /// @todo Provide support for PDF.
-        /// @todo Provide support for ePub.
-        FileSelectionPage,
+        // from a URL
+        UriSelectionPage,
 
         // from a custom source defined by a plug-in.
-        CustomSelecionPage,
+        CustomSelectionPage,
 
         ConclusionPage
     };
@@ -56,11 +53,13 @@ public:
 
 public slots:
     virtual int nextId() const;
-    virtual void accept();
+    void setSource ( AbstractContentSource* p_src );
 
+private:
+    mutable AbstractContentSource* m_src;
 };
 
 }
 }
 #endif // WIZARD_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -21,15 +21,21 @@
 #ifndef CONTENT_HPP
 #define CONTENT_HPP
 
-#include <QUuid>
 #include <QMap>
-#include <QObject>
+#include <QUrl>
+#include <QUuid>
 #include <QList>
+#include <QFile>
+#include <QObject>
+#include <QVariant>
 #include <QStringList>
 #include <QDomElement>
 
 namespace SpeechControl {
 class Content;
+class AbstractContentSource;
+class TextContentSource;
+
 /**
  * @brief Represents a @c QList of @c Content objects.
  **/
@@ -161,6 +167,58 @@ private:
     QStringList m_pages;
     QDomDocument* m_dom;
     QUuid m_uuid;
+};
+
+/**
+ * @brief An abstract outline for content sources to base themselves upon.
+ * Content for model training can arise from anywhere. Thus, a base for
+ * manipulating and obtaining such sources need to be made. AbstractContentSource
+ * allows developers to implement a new source of content for the user to use within
+ * SpeechControl for training. This, however, does not cause it to appear in the
+ * the content creation wizard. In order to do this, one must implement an interface
+ * for that and register it with SpeechControl's wizard system.
+ **/
+class AbstractContentSource : public QObject {
+    Q_OBJECT
+
+public:
+    virtual ~AbstractContentSource();
+    AbstractContentSource ( const AbstractContentSource& p_other );
+    Content* generate();
+    QString id() const;
+    void setAuthor(const QString p_author);
+    void setTitle(const QString p_title);
+    void setText(const QString p_text);
+    const QString author() const;
+    const QString title() const;
+    const QString text() const;
+
+protected:
+    explicit AbstractContentSource ( QString p_id, QObject* p_parent = 0 );
+
+private:
+    QString m_id;
+    QString m_author;
+    QString m_text;
+    QString m_title;
+};
+
+/**
+ * @brief A content source that allows content generation from XML-formatted text sources.
+ * Sources that are formatted in the XML format for SpeechControl (typically end in the *.spch
+ * extension) can be used to render content for SpeechControl for corpus training. This format
+ * is typically the local and distributional format as it's usable for sharing.
+ *
+ * @see TextContentSource
+ **/
+class TextContentSource : public AbstractContentSource {
+    Q_OBJECT
+
+public:
+    explicit TextContentSource ( QObject* p_parent = 0 );
+    virtual ~TextContentSource();
+    bool setFile(QFile& p_file);
+    bool setUrl (const QUrl& p_url);
 };
 
 }

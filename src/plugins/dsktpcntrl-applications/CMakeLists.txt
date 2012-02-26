@@ -15,8 +15,8 @@ file(GLOB SPDSKAPP_HDRS "src/*.hpp")
 
 configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
                "${PROJECT_SOURCE_DIR}/src/config.hpp" @ONLY)
-
-include_directories(${SPDSKAPP_PLUGIN_INCLUDE_DIRS})
+include_directories(${SPDSKAPP_PLUGIN_INCLUDE_DIRS}
+    "${PROJECT_SOURCE_DIR}/../../")
 QT4_AUTOMOC(${SPDSKAPP_SRCS})
 
 add_library(spchcntrl-applist SHARED ${SPDSKAPP_SRCS})

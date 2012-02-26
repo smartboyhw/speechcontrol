@@ -22,7 +22,7 @@
 
 using namespace SpeechControl::DesktopControl;
 
-AbstractSource::AbstractSource ( QObject* parent ) {
+AbstractSource::AbstractSource ( QObject* p_parent ) : QObject( p_parent ) {
 
 }
 

@@ -19,7 +19,7 @@
  */
 
 #include "books-pane.hpp"
-#include "session.hpp"
+#include "sessions/session.hpp"
 #include "windows/content-information-dialog.hpp"
 #include "windows/contents-wizard.hpp"
 #include "ui_settingspane-books.h"
@@ -121,4 +121,4 @@ void SpeechControl::Windows::BookSettingsPane::on_btnInfo_clicked() {
 }
 
 #include "books-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

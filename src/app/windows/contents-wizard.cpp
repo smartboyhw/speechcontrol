@@ -18,17 +18,19 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-
-#include "session.hpp"
+#include "sessions/session.hpp"
 
 #include "contents-wizard.hpp"
 #include "wizards/intro.hpp"
 #include "wizards/outro.hpp"
 #include "wizards/contents/selection.hpp"
-#include "wizards/contents/fileselect.hpp"
+#include "wizards/contents/urlselect.hpp"
 #include "wizards/contents/wikiselect.hpp"
+#include "wizards/contents/customsource.hpp"
+#include "core.hpp"
 
 #include <QIcon>
+#include <QMessageBox>
 #include <QDebug>
 #include <QVariant>
 
@@ -36,7 +38,7 @@ using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
 
 ContentWizard::ContentWizard ( QWidget *parent ) :
-    WizardBase ( parent ) {
+    WizardBase ( parent ), m_src ( 0 ) {
     QIcon l_icon = QIcon::fromTheme ( "text-plain" );
     setPixmap ( QWizard::LogoPixmap,l_icon.pixmap ( 32,32,QIcon::Active,QIcon::On ) );
     setWindowTitle ( tr ( "Book Addition Wizard - SpeechControl" ) );
@@ -44,67 +46,69 @@ ContentWizard::ContentWizard ( QWidget *parent ) :
               ( new Wizards::Pages::IntroductionPage ( "This wizard allows you to add a new book into SpeechControl's collection." ) ) );
     setPage ( ContentWizard::AdditionSelectionPage,
               ( new Wizards::Pages::AdditionSelectionPage ( this ) ) );
-    setPage ( ContentWizard::FileSelectionPage,
-              ( new Wizards::Pages::FileSelectionPage ( this ) ) );
+    setPage ( ContentWizard::UriSelectionPage,
+              ( new Wizards::Pages::UrlSelectionPage ( this ) ) );
     setPage ( ContentWizard::WikiSourcePage,
               ( new Wizards::Pages::WikiSourcePage ( this ) ) );
+    setPage ( ContentWizard::CustomSelectionPage,
+              ( new Wizards::Pages::CustomSourcePage ( this ) ) );
     setPage ( ContentWizard::ConclusionPage,
               ( new Wizards::Pages::ConclusionPage ( "You've successfully added a book into SpeechControl." ) ) );
 }
 
+void ContentWizard::setSource ( AbstractContentSource* p_src ) {
+    if ( p_src != 0 ) {
+        m_src = new AbstractContentSource(*p_src);
+        qDebug() << "Got source" << m_src->id();
+    }
+}
+
+/// @todo Add a page showing
 int ContentWizard::nextId() const {
     switch ( currentId() ) {
     case IntroductionPage:
         return AdditionSelectionPage;
         break;
 
-    case AdditionSelectionPage:
+    case AdditionSelectionPage: {
+        m_src = 0;
         if ( field ( "selection.wiki" ).toBool() )
             return WikiSourcePage;
-        else if ( field ( "selection.file" ).toBool() )
-            return FileSelectionPage;
-        break;
+        else if ( field ( "selection.url" ).toBool() )
+            return UriSelectionPage;
+        else if ( field ( "selection.custom" ).toBool() )
+            return CustomSelectionPage;
+    }
+    break;
 
     case WikiSourcePage:
+    case UriSelectionPage:
+    case CustomSelectionPage:
         return ConclusionPage;
         break;
 
-    case FileSelectionPage:
-        return ConclusionPage;
-        break;
-
-    case ConclusionPage:
-        return -1;
-        break;
+    case ConclusionPage: {
+        Q_ASSERT ( m_src != 0 );
+        Content* l_cntn = m_src->generate();
+        if ( l_cntn == 0 ) {
+            QMessageBox::warning ( Core::mainWindow(),
+                                   "Failure Creating Content",
+                                   "There was an issue creating your content; thus resulting in a failure.",
+                                   QMessageBox::Ok
+                                 );
+            return AdditionSelectionPage;
+        } else {
+            return -1;
+        }
+    }
+    break;
     }
 
     return QWizard::nextId();
-}
-
-void ContentWizard::accept() {
-    qDebug() << currentId() << nextId();
-
-    if ( currentId() == -1 || currentId() == ConclusionPage ) {
-        Content* l_cntn = 0;
-        if ( field ( "selection.file" ).toBool() ) {
-            qDebug() << field ( "file.content" ).toString();
-            l_cntn = Content::create ( field ( "file.author" ).toString(),
-                                       field ( "file.title" ).toString(),
-                                       field ( "file.content" ).toString() );
-        }
-
-        if ( l_cntn ) {
-            qDebug() << l_cntn->title() << "created." << l_cntn->words() << "words found.";
-            WizardBase::accept();
-        } else {
-            qDebug() << "Content not created.";
-            WizardBase::reject();
-        }
-    }
 }
 
 ContentWizard::~ContentWizard() {
 }
 
 #include "contents-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

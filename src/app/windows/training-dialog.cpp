@@ -33,7 +33,7 @@
 
 #include "ui_training-dialog.h"
 #include "core.hpp"
-#include "session.hpp"
+#include "sessions/session.hpp"
 #include "training-dialog.hpp"
 
 #include <phrase.hpp>

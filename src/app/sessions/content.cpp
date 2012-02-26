@@ -25,12 +25,15 @@
 #include <QFile>
 #include <QDebug>
 #include <QTextStream>
+#include <QUrl>
 
 #define CHUNK_SIZE 250
 
 using SpeechControl::Content;
 using SpeechControl::ContentList;
 using SpeechControl::ContentMap;
+using SpeechControl::AbstractContentSource;
+using SpeechControl::TextContentSource;
 
 Content::Content ( const QUuid& p_uuid ) {
     load ( p_uuid );
@@ -133,13 +136,13 @@ void Content::parseText ( const QString& p_text ) {
 bool Content::isValid() const {
     if ( !QFile::exists ( getPath ( m_uuid ) ) ) {
         qDebug() << "Content's data file doesn't exists." << getPath ( m_uuid );
-        Q_ASSERT ( QFile::exists ( getPath ( m_uuid ) ) == true );
+        //Q_ASSERT ( QFile::exists ( getPath ( m_uuid ) ) == true );
         return false;
     }
 
     if ( m_pages.isEmpty() ) {
         qDebug() << "Content has no pages." << m_uuid;
-        Q_ASSERT ( m_pages.isEmpty() == true );
+        //Q_ASSERT ( m_pages.isEmpty() == true );
         return false;
     }
 
@@ -222,33 +225,141 @@ const QString Content::pageAt ( const int &l_index ) const {
 
 Content * Content::create ( const QString &p_author, const QString &p_title, const QString &p_content ) {
     QUuid l_uuid = QUuid::createUuid();
-    qDebug() << "Creating content with UUID " << l_uuid << "...";
+    qDebug() << "Creating content with UUID" << l_uuid << "...";
 
-    QDomDocument* l_dom = new QDomDocument ( "Content" );
-    QDomElement l_domElem = l_dom->createElement ( "Content" );
+    QDomDocument l_dom ( "Content" );
+    QDomElement l_domElem = l_dom.createElement ( "Content" );
     l_domElem.setAttribute ( "Uuid", l_uuid );
-    l_dom->appendChild ( l_domElem );
+    l_dom.appendChild ( l_domElem );
 
-    QDomElement l_bilboElem = l_dom->createElement ( "Bibliography" );
+    QDomElement l_bilboElem = l_dom.createElement ( "Bibliography" );
     l_bilboElem.setAttribute ( "Author", p_author );
     l_bilboElem.setAttribute ( "Title", p_title );
     l_domElem.appendChild ( l_bilboElem );
 
-    QDomElement l_textElem = l_dom->createElement ( "Text" );
-    QDomText l_textNode = l_dom->createTextNode ( p_content.toUtf8().toBase64() );
+    QDomElement l_textElem = l_dom.createElement ( "Text" );
+    QDomText l_textNode = l_dom.createTextNode ( p_content );
     l_textElem.appendChild ( l_textNode );
     l_domElem.appendChild ( l_textElem );
 
-    QFile* l_file = new QFile ( Content::getPath ( l_uuid ) );
-    l_file->open ( QIODevice::WriteOnly | QIODevice::Truncate );
-    QTextStream l_strm ( l_file );
-    l_dom->save ( l_strm, 4 );
-    l_file->close();
+    QFile l_file ( Content::getPath ( l_uuid ) );
+    l_file.open ( QIODevice::WriteOnly | QIODevice::Truncate );
+    QTextStream l_strm ( &l_file );
+    l_strm.setCodec("UTF-8");
+    l_dom.save ( l_strm, 4 );
+    l_file.close();
 
     //qDebug() << "Content XML:" << l_dom->toString();
     return Content::obtain ( l_uuid );
 }
 
+AbstractContentSource::AbstractContentSource ( QString p_id, QObject* p_parent ) : QObject ( p_parent ),
+    m_id ( p_id ) {
+
+}
+
+AbstractContentSource::AbstractContentSource ( const AbstractContentSource& p_other ) : QObject ( p_other.parent() ),
+    m_id ( p_other.id() ), m_author ( p_other.author() ), m_text ( p_other.text() ), m_title ( p_other.title() ) {
+
+}
+
+QString AbstractContentSource::id() const {
+    return m_id;
+}
+
+const QString AbstractContentSource::author() const {
+    return m_author;
+}
+
+const QString AbstractContentSource::text() const {
+    return m_text;
+}
+
+const QString AbstractContentSource::title() const {
+    return m_title;
+}
+
+void AbstractContentSource::setAuthor ( const QString p_author ) {
+    m_author = p_author;
+}
+
+void AbstractContentSource::setText ( const QString p_text ) {
+    m_text = p_text;
+}
+
+void AbstractContentSource::setTitle ( const QString p_title ) {
+    m_title = p_title;
+}
+
+Content* AbstractContentSource::generate() {
+    return Content::create ( m_author,m_title,m_text );
+}
+
+AbstractContentSource::~AbstractContentSource() {
+
+}
+
+TextContentSource::TextContentSource ( QObject* p_parent ) : AbstractContentSource ( "text", p_parent ) {
+
+}
+
+/// @todo Should make a schema for this file and check it against the file.
+bool TextContentSource::setFile ( QFile& p_file ) {
+    if ( !p_file.isOpen() ) {
+        if ( !p_file.open ( QIODevice::ReadOnly | QIODevice::Text ) ) {
+            qDebug() << "Unable to open file" << p_file.fileName() << p_file.errorString();
+            return false;
+        }
+
+        if ( !p_file.isReadable() ) {
+            qDebug() << "Unable to read file" << p_file.fileName() << p_file.errorString();
+            return false;
+        }
+    }
+
+    QDomDocument l_dom ( "Content" );
+    QString l_errMsg;
+    int l_errLn, l_errCol;
+    if ( !l_dom.setContent ( &p_file,&l_errMsg,&l_errLn,&l_errCol ) ) {
+        qDebug() << "Unable to parse content XML:"<< l_errMsg << l_errLn << l_errCol;
+        return false;
+    }
+
+    const QDomElement l_book = l_dom.documentElement().namedItem ( "Book" ).toElement();
+    const QString l_author = l_book.attribute ( "author" );
+    const QString l_title = l_book.attribute ( "title" );
+    const QString l_text = l_dom.documentElement().namedItem ( "Text" ).toElement().text();
+
+    setText ( l_text );
+    setTitle ( l_title );
+    setAuthor ( l_author );
+    return true;
+}
+
+/// @todo Implement support for pulling information from a HTTP(S) server (hosted file).
+/// @todo Implement support for pulling information from a FTP server (hosted file).
+bool TextContentSource::setUrl ( const QUrl& p_url ) {
+    if ( !p_url.isValid() ) {
+        qDebug() << "Invalid URL" << p_url;
+        return false;
+    }
+
+    if ( p_url.scheme() == "http" || p_url.scheme() == "https" ) {
+        qDebug() << "HTTP(S) addresses not yet supported." << p_url;
+        return false;
+    } else {
+        QFile l_file ( p_url.toLocalFile() );
+        return setFile ( l_file );
+    }
+
+    // Won't be reached.
+    qDebug() << "Unknown failure.";
+    return false;
+}
+
+TextContentSource::~TextContentSource() {
+
+}
 
 #include "content.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -18,7 +18,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "session.hpp"
+#include "sessions/session.hpp"
 #include "general-pane.hpp"
 #include "ui_settingspane-general.h"
 
@@ -67,4 +67,4 @@ void GeneralSettingsPane::on_checkBoxEnableDesktopControl_toggled ( bool checked
 }
 
 #include "general-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

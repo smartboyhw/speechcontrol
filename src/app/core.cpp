@@ -44,7 +44,7 @@
 // local includes
 #include "core.hpp"
 #include "factory.hpp"
-#include "session.hpp"
+#include "sessions/session.hpp"
 #include "windows/main-window.hpp"
 #include "windows/quickstart-wizard.hpp"
 

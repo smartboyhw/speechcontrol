@@ -19,7 +19,7 @@
  */
 
 #include "core.hpp"
-#include "session.hpp"
+#include "sessions/session.hpp"
 #include "training-dialog.hpp"
 #include "session-information-dialog.hpp"
 #include "content-information-dialog.hpp"
@@ -70,4 +70,4 @@ SessionInformationDialog::~SessionInformationDialog() {
 }
 
 #include "session-information-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

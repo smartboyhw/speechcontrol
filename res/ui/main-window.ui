@@ -844,8 +844,8 @@ padding-right: 4px;</string>
      <y>-1</y>
     </hint>
     <hint type="destinationlabel">
-     <x>325</x>
-     <y>165</y>
+     <x>414</x>
+     <y>194</y>
     </hint>
    </hints>
   </connection>
@@ -888,8 +888,8 @@ padding-right: 4px;</string>
    <slot>trigger()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>183</x>
-     <y>91</y>
+     <x>148</x>
+     <y>88</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>

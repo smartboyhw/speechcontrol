@@ -37,7 +37,7 @@ class MicrophoneSelection : public QWizardPage {
     Q_OBJECT
 
 public:
-    explicit MicrophoneSelection ( QWidget *parent = 0 );
+    explicit MicrophoneSelection ( QWidget *p_parent = 0 );
     ~MicrophoneSelection();
     virtual void initializePage();
     virtual void cleanupPage();
@@ -45,7 +45,7 @@ public:
     virtual bool isComplete();
 
 private slots:
-    void on_comboBoxMicrophones_activated ( int index );
+    void on_comboBoxMicrophones_activated ( int p_index );
 
 private:
     Ui::MicrophoneSelection *ui;

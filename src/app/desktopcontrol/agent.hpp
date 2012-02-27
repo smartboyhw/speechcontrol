@@ -94,14 +94,6 @@ public:
     /**
      * @brief ...
      *
-     * @param  ...
-     * @return void
-     **/
-    static void invokeCommand (const QString& command);
-    
-    /**
-     * @brief ...
-     *
      * @return :DesktopControl::Agent*
      **/
     static Agent* instance();
@@ -135,6 +127,15 @@ signals:
      * @return void
      **/
     void stateChanged (bool);
+    
+public slots:
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @return void
+     **/
+    static void invokeCommand (QString& command);
 };
 
 }

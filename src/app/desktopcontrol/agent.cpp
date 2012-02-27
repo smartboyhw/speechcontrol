@@ -31,13 +31,15 @@ Agent* Agent::_instance = 0;
 Agent::Agent(QObject* parent) : QObject(parent)
 {
   _instance = this;
-  m_sphinx = new Sphinx;
-  connect(this, SIGNAL(started()), m_sphinx, SLOT(startRecognizing()));
-  connect(this, SIGNAL(stopped()), m_sphinx, SLOT(stopRecognizing()));
+  
+  _asr = new DesktopASR(DesktopASR::getStandardDescription(), parent);
+  connect(this, SIGNAL(started()), _asr, SLOT(start()));
+  connect(this, SIGNAL(stopped()), _asr, SLOT(stop()));
+  connect(_asr, SIGNAL(finished(QString&)), this, SLOT(invokeCommand(QString&)));
 }
 
 Agent::Agent(const Agent& p_other) : QObject(p_other.parent()),
-    m_sphinx(p_other.m_sphinx)
+    _asr(p_other._asr)
 {
 
 }
@@ -69,7 +71,7 @@ void Agent::stop()
 }
 
 /// @todo That's bigger issue, we have to make a good design.
-void Agent::invokeCommand (const QString& command)
+void Agent::invokeCommand (QString& command)
 {
 
 }

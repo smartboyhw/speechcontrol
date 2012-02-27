@@ -43,5 +43,12 @@ SpeechControl::DesktopControl::DesktopASR::DesktopASR (QGst::PipelinePtr pipelin
 
 void DesktopASR::applicationMessage (const QGst::MessagePtr& message)
 {
-
+    QString msgType    = message->internalStructure()->name();
+    QString hypothesis = message->internalStructure()->value("hyp").toString();
+    QString uttid      = message->internalStructure()->value("uttid").toString();
+    if (msgType == "result") {
+        qDebug() << "ASR result:" << hypothesis;
+        stop();
+        emit finished(hypothesis);
+    }
 }

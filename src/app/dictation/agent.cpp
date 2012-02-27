@@ -18,28 +18,49 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef DICTATION_HPP
-#define DICTATION_HPP
+#include "core.hpp"
+#include "agent.hpp"
 
-#include <QUuid>
-#include <QObject>
-#include "abstractagent.hpp"
+using SpeechControl::Core;
+using SpeechControl::AbstractAgent;
+using SpeechControl::Dictation::Agent;
 
-namespace SpeechControl {
-class DictationAgent : public AbstractAgent {
-    Q_OBJECT
-public:
-    DictationAgent();
-    virtual ~DictationAgent();
-    virtual bool isActive() const;
-    static DictationAgent* instance();
+Agent* Agent::s_inst = 0;
 
-private:
-    virtual OperationState onStateChanged ( const OperationState );
-    static DictationAgent* s_inst;
-};
+Agent::Agent() : AbstractAgent ( Core::instance() ) {
 
 }
 
-#endif // DICTATION_HPP
+Agent* Agent::instance() {
+    if ( s_inst == 0 )
+        s_inst = new Agent;
+
+    return s_inst;
+}
+
+AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::OperationState p_stt ) {
+    switch ( p_stt ) {
+    case Enabled:
+        break;
+
+    case Disabled:
+        break;
+
+    case Undefined:
+    default:
+        break;
+    }
+
+    return Undefined;
+}
+
+bool Agent::isActive() const {
+    return state() == Enabled;
+}
+
+Agent::~Agent() {
+
+}
+
+#include "../dictation/agent.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

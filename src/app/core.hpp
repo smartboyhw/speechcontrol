@@ -41,14 +41,14 @@ class QSettings;
 
 namespace SpeechControl {
 
-namespace Application {
-
-/**
- * @brief Represents the entire heart of SpeechControl.
+/*!
+ * \brief Represents the entire heart of SpeechControl.
  *
  * The Core class is where most of the event handling for most utilities
  * lock into. It holds the @c Factory and all of the derived forms of @c AbstractPlugin
  * objects.
+ *
+ * \bz 34
  **/
 class Core : public QObject {
     Q_OBJECT
@@ -148,9 +148,7 @@ private:
     DummySC* dummyASR;
 
 };
-}
 
-typedef Application::Core Core;
 }
 
 #endif // CORE_HPP

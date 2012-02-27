@@ -52,7 +52,7 @@ using namespace SpeechControl;
 
 using namespace SpeechControl::Wizards;
 
-using SpeechControl::Application::Core;
+using SpeechControl::Core;
 
 Core* Core::s_inst = 0;
 

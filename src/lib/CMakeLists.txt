@@ -1,5 +1,6 @@
 project(SpeechControlLibrary)
 cmake_minimum_required(VERSION 2.8)
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 ## setting up sources
@@ -25,7 +26,7 @@ if(WITH_PYTHON_BINDINGS)
     if (Boost_FOUND AND PYTHONLIBS_FOUND)
         list(APPEND SPCHCNTRL_LIB_INCLUDE_DIRS ${Boost_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS})
         list(APPEND SPCHCNTRL_LIB_LIBRARIES ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
-        list(APPEND SPCHCNTRL_LIB_COMPILE_DEFINITIONS -DWITH_PYTHON_BINDINGS)
+        list(APPEND SPCHCNTRL_LIB_COMPILE_DEFINITIONS WITH_PYTHON_BINDINGS)
     endif (Boost_FOUND AND PYTHONLIBS_FOUND)
 else(WITH_PYTHON_BINDINGS)
     message(STATUS "Python bindings for libspeechcontrol disabled.")
@@ -39,26 +40,24 @@ configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
 QT4_AUTOMOC(${SPCHCNTRL_LIB_SOURCES})
 
 ## Define the target
-add_library(spchcntrl SHARED ${SPCHCNTRL_LIB_SOURCES})
+add_library(speechcontrol SHARED ${SPCHCNTRL_LIB_SOURCES})
 
 ## Format the flags and definitions for insertion.
-
 list(REMOVE_DUPLICATES SPCHCNTRL_LIB_COMPILE_FLAGS)
 set(SPCHCNTRL_LIB_COMPILE_FLAGS "${SPCHCNTRL_LIB_COMPILE_FLAGS}")
 string(REPLACE ";" " " SPCHCNTRL_LIB_COMPILE_FLAGS "${SPCHCNTRL_LIB_COMPILE_FLAGS}")
 
-add_definitions(${SPCHCNTRL_LIB_COMPILE_DEFINITIONS})
-
-set_target_properties(spchcntrl PROPERTIES
+set_target_properties(speechcontrol PROPERTIES
     COMPILE_FLAGS "${SPCHCNTRL_LIB_COMPILE_FLAGS}"
+    COMPILE_DEFINITIONS ${SPCHCNTRL_LIB_COMPILE_DEFINITIONS}
     DEFINE_SYMBOL "SPCHCNTRL_LIB"
     VERSION "${SPCHCNTRL_LIB_VERSION}"
     SOVERSION "${SPCHCNTRL_LIB_VERSION}")
 
-target_link_libraries(spchcntrl ${SPCHCNTRL_LIB_LIBRARIES})
+target_link_libraries(speechcontrol ${SPCHCNTRL_LIB_LIBRARIES})
 
 ## Install stuff.
-install(TARGETS spchcntrl
+install(TARGETS speechcontrol
     EXPORT SpeechControlLibraryDepends
     LIBRARY DESTINATION "${SPCHCNTRL_LIB_DIR}")
 

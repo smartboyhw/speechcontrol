@@ -1,8 +1,6 @@
 <RCC>
     <qresource prefix="/logo">
-        <file alias="sii">img/sii.png</file>
-        <file alias="sii-large">img/sii.xpm</file>
         <file alias="sc">img/sc.png</file>
-        <file alias="sc-large">img/sc.xpm</file>
+        <file alias="sc-large">img/sc.svg</file>
     </qresource>
 </RCC>

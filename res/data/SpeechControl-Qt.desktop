@@ -1,11 +1,11 @@
 [Desktop Entry]
 Name=SpeechControl
-Exec=speechcontrol %i -caption "%c"
+Exec=speechcontrol-qt %i -caption "%c"
 Icon=/usr/share/icons/speechcontrol.png
 Type=Application
-GenericName="Speech Control"
+GenericName=Speech Recognition Utility
 Comment="A Speech recognition utility for Linux"
 Categories=Utility;Accessibility;System;Qt;
 StartupNotify=true
 Terminal=false
-X-AppInstall-Package=speechcontrol
+X-AppInstall-Package=speechcontrol-qt

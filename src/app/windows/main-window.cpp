@@ -35,7 +35,7 @@
 #include "core.hpp"
 #include "indicator.hpp"
 #include "sessions/session.hpp"
-#include "dictation.hpp"
+#include "dictation/agent.hpp"
 #include "desktopcontrol/agent.hpp"
 #include "desktopcontrol/command.hpp"
 #include "main-window.hpp"
@@ -88,7 +88,7 @@ Main::Main() : m_ui ( new Ui::MainWindow ), m_prgStatusbar ( 0 ) {
     m_ui->btnDctn->setChecked ( m_ui->actionDictationActive->isChecked() );
 
     connect ( DesktopControl::Agent::instance(),SLOT ( onStateChanged() ),this,SLOT ( desktopControlStateChanged() ) );
-    connect ( DictationAgent::instance(),SLOT ( onStateChanged() ),this,SLOT ( dictationStateChanged() ) );
+    connect ( Dictation::Agent::instance(),SLOT ( onStateChanged() ),this,SLOT ( dictationStateChanged() ) );
 #ifdef HAVE_KDE
     // Update the Help menu.
     m_ui->menuHelp->clear();
@@ -174,7 +174,7 @@ void Main::desktopControlStateChanged() {
 }
 
 void Main::dictationStateChanged() {
-    switch ( DictationAgent::instance()->state() ) {
+    switch ( Dictation::Agent::instance()->state() ) {
     case AbstractAgent::OperationState::Enabled:
         setStatusMessage ( tr ( "Dictation enabled." ) );
         break;
@@ -238,18 +238,18 @@ void Main::on_btnDctn_clicked ( bool p_checked ) {
 /// @todo Allow configuration option to show specific notifications to prevent noise.
 void Main::on_actionDesktopControlActive_triggered ( const bool p_checked ) {
     if ( p_checked )
-        DesktopControlAgent::instance()->setState ( SpeechControl::AbstractAgent::Enabled );
+        DesktopControl::Agent::instance()->setState ( SpeechControl::AbstractAgent::Enabled );
     else
-        DesktopControlAgent::instance()->setState ( SpeechControl::AbstractAgent::Disabled );
+        DesktopControl::Agent::instance()->setState ( SpeechControl::AbstractAgent::Disabled );
     setStatusMessage ( ( ( p_checked == true ) ? "Enabling desktop control..." : "Disabling desktop control..." ) ,5 );
 }
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
 void Main::on_actionDictationActive_triggered ( const bool p_checked ) {
     if ( p_checked )
-        DictationAgent::instance()->setState ( SpeechControl::AbstractAgent::Enabled );
+        Dictation::Agent::instance()->setState ( SpeechControl::AbstractAgent::Enabled );
     else
-        DictationAgent::instance()->setState ( SpeechControl::AbstractAgent::Disabled );
+        Dictation::Agent::instance()->setState ( SpeechControl::AbstractAgent::Disabled );
     setStatusMessage ( ( ( p_checked == true ) ? "Enabling dictation..." : "Disabling dictation..." ) ,5 );
 }
 

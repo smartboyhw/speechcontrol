@@ -30,38 +30,89 @@
 #include <microphone.hpp>
 
 // local includes
+#include <core.hpp>
 #include <sessions/session.hpp>
 
 namespace Ui {
-class Training;
+    /**
+     * @brief Generated class used for SpeechControl::Windows::TrainingDialog.
+     */
+    class Training;
 }
 
 namespace SpeechControl {
-
 namespace Windows {
 
 /**
- * @brief ...
+ * @brief Represents a dialog that manages the graphical processing of acoustic data collection.
+ * The training dialog of SpeechControl permits users to build up Session objects with data for
+ * training. A progress indicator is provided as well as a visual display of what text is currently
+ * needed for training. With this dialog, it's possible to adequately collect volumes of text for
+ * training needed to adapt and perfect a model.
  **/
 class TrainingDialog : public QDialog {
     Q_OBJECT
 
 public:
-    explicit TrainingDialog ( QWidget *parent = 0 );
+    /**
+     * @brief Constructor.
+     * Initializes a new Training dialog.
+     * @param p_parent The parent QWidget this dialog will latch onto.
+     **/
+    explicit TrainingDialog ( QWidget *p_parent = Core::mainWindow() );
+
+    /**
+     * @brief Destructor.
+     **/
     virtual ~TrainingDialog();
-    static void startTraining ( Session* );
-    void setSession ( Session* );
+    /**
+     * @brief Initiates a new Training session.
+     * Starts a new training session with the specified session p_session.
+     * @param  p_session The @c Session to train.
+     * @return void
+     **/
+    static void startTraining ( Session* p_session );
+
+    /**
+     * @brief Changes the Session object used by this Training dialog.
+     * @warning This can cause serious damage, since it doesn't reload info in the window.
+     * @param p_session The @c Session to use in place of the currently used @c Session.
+     * @return void
+     **/
+    void setSession ( Session* p_session );
+
+    /**
+     * @brief Obtains the Session currently being trained.
+     * @return Session* A pointer to the Session being trained or NULL if no session is being trained.
+     **/
+
     Session* session() const;
 
 public slots:
+    /**
+     * @brief Stops the collection process.
+     * @return void
+     **/
     void stopCollecting();
+
+    /**
+     * @brief Starts the collection process.
+     * @return void
+     **/
     void startCollecting();
+
+    /**
+     * @brief Opens the Training dialog.
+     * @see QDialog::open()
+     * @overload
+     * @return void
+     **/
     virtual void open();
 
 private slots:
     void updateProgress ( const double p_progress );
-    void stoppedListening();
-    void startedListening();
+    void on_micStoppedListening();
+    void on_micStartedListening();
     void on_pushButtonClose_clicked();
     void on_pushButtonProgress_toggled ( const bool& );
     void on_pushButtonReset_clicked();
@@ -69,20 +120,37 @@ private slots:
     void on_pushButtonNext_clicked();
 
 private:
-    void navigateToPart ( const uint& l_index );
+
+    /**
+     * @brief Moves training to a specific position within the Session.
+     * Focuses training to the p_index'th Phrase in Sentence p_sentence.
+     * @param p_index uint The position of the Phrase within the specified sentence.
+     * @param p_sentence Sentence* Defaults to 0 (which changes to the current sentence, m_curSntct)
+     * @return void
+     **/
+    void navigateToPart ( const uint& p_index, Sentence* p_sentence = 0 );
+
+    /**
+     * @brief Moves the focused text to a spot ahead.
+     * Moves the current focus of training one position forward.
+     * @return void
+     **/
     void navigateNextPart();
+
+    /**
+     * @brief Moves the focused text to a previous spot.
+     * Moves the current focus of training one position backwards.
+     * @return void
+     **/
     void navigatePreviousPart();
 
-    int m_curPos;
-    uint m_initPos;
-    uint m_initPosPhrs;
-    uint m_posMin;
-    uint m_posMax;
-    Ui::Training *m_ui;
-    Microphone* m_mic;
-    Session* m_session;
-    Sentence* m_curSntct;
-    Sentence* m_initSntct;
+    int m_curPos;           /// < The current position of the phrase in the current sentence being trained.
+    uint m_initPos;         /// < The position that training began at in this dialog.
+    Ui::Training *m_ui;     /// < The object used to manage the dialog's widgets.
+    Microphone* m_mic;      /// < The Microphone used by this dialog.
+    Session* m_session;     /// < The current Session being trained.
+    Sentence* m_curSntct;   /// < The current sentence being focused on.
+    Sentence* m_initSntct;  /// < The Sentence that of which training began with when the dialog opened.
 };
 
 }

@@ -1,7 +1,8 @@
 project(SpeechControl-DesktopControl-Applications)
 cmake_minimum_required(VERSION 2.8)
 
-find_package(SpeechControlApplication REQUIRED)
+find_package(SpeechControlApplication REQUIRED QUIET)
+include(SpeechControlMacros)
 
 set(SPDSKAPP_PLUGIN_MINOR_VERSION 0)
 set(SPDSKAPP_PLUGIN_MAJOR_VERSION 1)
@@ -17,15 +18,12 @@ configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
                "${PROJECT_SOURCE_DIR}/src/config.hpp" @ONLY)
 include_directories(${SPDSKAPP_PLUGIN_INCLUDE_DIRS}
     "${PROJECT_SOURCE_DIR}/../../")
-QT4_AUTOMOC(${SPDSKAPP_SRCS})
 
 add_library(spchcntrl-applist SHARED ${SPDSKAPP_SRCS})
+QT4_AUTOMOC(${SPDSKAPP_SRCS})
+
 target_link_libraries(spchcntrl-applist ${SPDSKAPP_PLUGIN_LIBRARIES})
-
-add_dependencies(plugins spchcntrl-applist)
-
-install(TARGETS spchcntrl-applist
-        DESTINATION ${SPCHCNTRL_PLUGINS_LIB_INSTALL_DIR})
+speechcontrol_install_plugin(spchcntrl-applist)
 
 install(FILES "${PROJECT_SOURCE_DIR}/data/bbb53bbb-d879-43e3-b9ba-f24060293488.spec"
         DESTINATION ${SPCHCNTRL_PLUGINS_SPEC_INSTALL_DIR})

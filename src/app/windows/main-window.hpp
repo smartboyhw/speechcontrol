@@ -58,7 +58,7 @@ public slots:
     virtual void close();
     void updateContent();
     void setProgress ( const double p_value );
-    void setStatusMessage ( const QString& p_message, const int p_timeout = 3000 );
+    void setStatusMessage ( const QString& p_message, const int p_timeout = 8000 );
 
 private slots:
     // desktop control

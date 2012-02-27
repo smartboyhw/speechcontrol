@@ -52,7 +52,7 @@ using SpeechControl::Windows::TrainingDialog;
 
 TrainingDialog::TrainingDialog ( QWidget *parent ) :
     QDialog ( parent ),
-    m_curPos ( 0 ), m_initPos ( 0 ), m_posMin ( 0 ), m_posMax ( 0 ),
+    m_curPos ( 0 ), m_initPos ( 0 ),
     m_ui ( new Ui::Training ),
     m_mic ( Microphone::defaultMicrophone() ),
     m_session ( 0 ), m_curSntct ( 0 ), m_initSntct ( 0 ) {
@@ -63,20 +63,20 @@ TrainingDialog::TrainingDialog ( QWidget *parent ) :
     m_ui->pushButtonNext->setIcon ( QIcon::fromTheme ( ICON_NEXT ) );
 
     connect ( this,SLOT ( updateProgress ( double ) ),m_session,SIGNAL ( progressChanged ( double ) ) );
-    connect ( m_mic,SIGNAL ( startedListening() ),this,SLOT ( startedListening() ) );
-    connect ( m_mic,SIGNAL ( stoppedListening() ),this,SLOT ( stoppedListening() ) );
-    stoppedListening();
+    connect ( m_mic,SIGNAL ( startedListening() ),this,SLOT ( on_micStartedListening() ) );
+    connect ( m_mic,SIGNAL ( stoppedListening() ),this,SLOT ( on_micStoppedListening() ) );
+    on_micStoppedListening();
 }
 
 TrainingDialog::~TrainingDialog() {
     delete m_ui;
 }
 
-void TrainingDialog::startedListening() {
+void TrainingDialog::on_micStartedListening() {
     m_ui->lblRecording->setPixmap ( QIcon::fromTheme ( "audio-volume-high" ).pixmap ( 32,32 ) );
 }
 
-void TrainingDialog::stoppedListening() {
+void TrainingDialog::on_micStoppedListening() {
     m_ui->lblRecording->setPixmap ( QIcon::fromTheme ( "audio-volume-muted" ).pixmap ( 32,32 ) );
 }
 
@@ -169,14 +169,15 @@ void TrainingDialog::open() {
 }
 
 /// @todo In order for this to work properly, we'd need to detect empty pauses in the user's speech. We'd might have to record a 'garbage' model of empty noises and detect when empty noises are made and then advance.
-void TrainingDialog::navigateToPart ( const uint &l_index ) {
+void TrainingDialog::navigateToPart ( const uint &p_index, Sentence* p_sentence ) {
     QString l_text;
-    PhraseList l_phrsLst = m_curSntct->phrases();
+    PhraseList l_phrsLst = p_sentence->phrases();
+    p_sentence = (p_sentence == 0) ? m_curSntct : p_sentence;
 
     for ( uint i = 0; i < ( uint ) l_phrsLst.count(); i++ ) {
         const QString l_curWord = l_phrsLst.at ( i )->text();
 
-        if ( l_index == i ) {
+        if ( p_index == i ) {
             Q_FOREACH ( const QChar l_chr, l_curWord ) {
                 if ( l_chr.isLetterOrNumber() )
                     l_text += QString ( "<b>%1</b>" ).arg ( l_chr );
@@ -190,9 +191,10 @@ void TrainingDialog::navigateToPart ( const uint &l_index ) {
             l_text += " ";
     }
 
-    qDebug() << l_text << m_curSntct->phrases();
+    qDebug() << l_text << p_sentence->phrases();
 
-    m_curPos = l_index;
+    m_curPos = p_index;
+    m_curSntct = p_sentence;
     m_ui->labelText->setText ( l_text );
     m_session->assessProgress();
     m_ui->pushButtonReset->setEnabled ( ! ( (int) m_initPos == m_curPos && m_initSntct == m_curSntct ) );

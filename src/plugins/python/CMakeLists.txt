@@ -1,7 +1,8 @@
 project(SpeechControl-Python)
 cmake_minimum_required(VERSION 2.8)
 
-find_package(SpeechControlApplication REQUIRED)
+find_package(SpeechControlApplication REQUIRED QUIET)
+include(SpeechControlMacros)
 
 set(SPPY_PLUGIN_MINOR_VERSION 0)
 set(SPPY_PLUGIN_MAJOR_VERSION 1)
@@ -24,10 +25,7 @@ target_link_libraries(pyspchcntrl ${SPPY_PLUGIN_LIBRARIES})
 configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
                "${PROJECT_SOURCE_DIR}/src/config.hpp" @ONLY)
 
-add_dependencies(plugins pyspchcntrl)
-
-install(TARGETS pyspchcntrl
-        DESTINATION ${SPCHCNTRL_PLUGINS_LIB_INSTALL_DIR})
+speechcontrol_install_plugin(pyspchcntrl)
 
 install(FILES "${PROJECT_SOURCE_DIR}/data/f2989a62-5de6-11e1-852d-d91646898ec2.spec"
         DESTINATION ${SPCHCNTRL_PLUGINS_SPEC_INSTALL_DIR})

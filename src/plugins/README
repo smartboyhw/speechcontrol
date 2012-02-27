@@ -10,19 +10,3 @@ it. This directory holds the collection of plug-ins that are now packaged
 along with SpeechControl for the user to use at whim. These plug-ins are
 referred to as the 'Supported Plug-ins' and receive official support from
 the SpeechControl Development team.
-
-1. Building
-
-None of the plug-ins will register into the build system until you
-either install the headers for SpeechControl and its CMake information
-or manually point the plug-ins to the generated CMake information of the
-application. This is because (obviously) the plug-ins require the headers
-of the application in order to properly build. If the source code of the
-plug-in API changes too much, it'd be impossible to build the code unless
-it is rewritten to match it accordingly.
-
-With CMake, however, the plug-ins refuse to build if the headers aren't found.
-So for now, you'll have to comment out the 'add_subdirectory(plugins)' command
-in 'src/CMakeLists.txt' and then try to build (and install) the code. After
-you've satisfied that, you can uncomment that line once more and then attempt
-building the plug-in.

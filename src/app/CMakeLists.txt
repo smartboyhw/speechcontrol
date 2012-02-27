@@ -4,12 +4,15 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 ## Required application packages
 pkg_search_module(INDICATOR indicate-qt REQUIRED)
+#pkg_search_module(XDO xdo >= 2 REQUIRED)
 
 ## Required files
 file(GLOB SPCHCNTRL_APP_SRCS "*.cpp")
 file(GLOB SPCHCNTRL_APP_HDRS "*.hpp")
 file(GLOB SPCHCNTRL_VOXFORGE_HDRS "voxforge/*.hpp")
 file(GLOB SPCHCNTRL_VOXFORGE_SRCS "voxforge/*.cpp")
+file(GLOB SPCHCNTRL_DICTATION_HDRS "dictation/*.hpp")
+file(GLOB SPCHCNTRL_DICTATION_SRCS "dictation/*.cpp")
 file(GLOB SPCHCNTRL_SESSIONS_HDRS "sessions/*.hpp")
 file(GLOB SPCHCNTRL_SESSIONS_SRCS "sessions/*.cpp")
 file(GLOB SPCHCNTRL_DESKTOPCONTROL_HDRS "desktopcontrol/*.hpp")
@@ -24,28 +27,29 @@ set(SPCHCNTRL_APP_INCLUDE_DIR "${SPCHCNTRL_INCLUDE_DIR}/app")
 set(SPCHCNTRL_APP_INCLUDE_DIRS "${SPCHCNTRL_INCLUDE_DIR}"
     ${SPCHCNTRL_LIB_INCLUDE_DIR}
     ${SPCHCNTRL_APP_INCLUDE_DIR}
-    ${SPCHCNTRL_LIB_INCLUDE_DIRS}
     ${SPCHCNTRL_INCLUDE_DIRS}
+    ${SPCHCNTRL_LIB_INCLUDE_DIRS}
     ${INDICATOR_INCLUDE_DIRS})
 set(SPCHCNTRL_APP_LIBRARIES ${SPCHCNTRL_LIBRARIES}
     ${SPCHCNTRL_LIB_LIBRARIES}
-    ${QT_QTGUI_LIBRRARY}
-    ${QT_QTDBUS_LIBRRARY}
+    ${QT_QTGUI_LIBRARY}
+    ${QT_QTDBUS_LIBRARY}
     ${INDICATOR_LIBRARIES}
-    spchcntrl)
+    speechcontrol)
 set(SPCHCNTRL_APP_BUILD_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/../lib"
-    "${PROJECT_BINARY_DIR}")
-set(SPCHCNTRL_APP_DATA "${CMAKE_INSTALL_PREFIX}/share/speechcontrol")
-
-include_directories("${PROJECT_SOURCE_DIR}/../lib"
+    "${PROJECT_BINARY_DIR}"
     "${PROJECT_SOURCE_DIR}"
     "${PROJECT_SOURCE_DIR}/windows")
+
+include_directories(${SPCHCNTRL_APP_BUILD_INCLUDE_DIRS})
 
 # Some important definitions.
 add_definitions(${SPCHCNTRL_APP_COMPILE_DEFINITIONS})
 
 ## Add sub-directories.
+add_subdirectory(cmake)
 add_subdirectory(desktopcontrol)
+add_subdirectory(dictation)
 add_subdirectory(sessions)
 add_subdirectory(voxforge)
 add_subdirectory(windows)
@@ -61,5 +65,3 @@ add_subdirectory(kde)
 install(FILES ${SPCHCNTRL_APP_HDRS}
     DESTINATION "${SPCHCNTRL_APP_INCLUDE_DIR}"
     COMPONENT "dev")
-
-add_subdirectory(cmake)

@@ -18,6 +18,11 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+/*!
+ * \mainpage SpeechControl Library
+ *
+ */
+
 #include "system.hpp"
 #include "dummysc.hpp"
 #include "microphone.hpp"
@@ -61,4 +66,4 @@ void System::stop() {
 }
 
 #include "system.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

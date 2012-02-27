@@ -1,3 +1,5 @@
+include(SpeechControlDefaults)
+
 MACRO(PKGCONFIG_GETVAR _package _var _output_variable)
   SET(${_output_variable})
 
@@ -31,3 +33,16 @@ macro(dbus_add_activation_service _sources)
         install(FILES ${_target} DESTINATION ${DBUS_SERVICES_INSTALL_DIR} )
     endforeach (_i ${ARGN})
 endmacro(dbus_add_activation_service _sources)
+
+macro(speechcontrol_install_plugin _plugin_target)
+    install(TARGETS ${_plugin_target}
+            DESTINATION ${SPCHCNTRL_PLUGINS_LIB_INSTALL_DIR})
+
+    if (KDE4_FOUND)
+        install(TARGETS ${_plugin_target}
+                DESTINATION "${PLUGIN_INSTALL_DIR}/plugins/speechcontrol")
+
+        list(APPEND SPCHCNTRL_PLUGINS_LIB_INSTALL_DIR "${PLUGIN_INSTALL_DIR}/plugins/speechcontrol")
+        list(REMOVE_DUPLICATES SPCHCNTRL_PLUGINS_LIB_INSTALL_DIR)
+    endif (KDE4_FOUND)
+endmacro(speechcontrol_install_plugin _plugin_target)

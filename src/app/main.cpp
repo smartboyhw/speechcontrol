@@ -18,8 +18,15 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-// libspchcntrl includes
-#include <dummysc.hpp>
+/*!
+ * \mainpage %SpeechControl Application
+ *
+ * SpeechControl's primary goal is to provide efficient and simple speech recognition
+ * services to the Linux desktop (or whichever desktop it happens to be compiled on).
+ * Using CMU's Sphinx speech recognition libraries and the Voxforge collective, we take
+ * on a task never to be ventured before by a open-source community. It happens to also
+ * be one of the many applications to be released by the \page sii.
+ */
 
 // local includes
 #include "core.hpp"
@@ -30,4 +37,4 @@ int main ( int argc, char** argv ) {
     l_core.start();
     return l_core.exec();
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

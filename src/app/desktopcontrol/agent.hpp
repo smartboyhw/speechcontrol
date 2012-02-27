@@ -18,8 +18,8 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef DESKTOPCONTROL_HPP
-#define DESKTOPCONTROL_HPP
+#ifndef DESKTOPCONTROL_AGENT_HPP
+#define DESKTOPCONTROL_AGENT_HPP
 
 #include <QObject>
 
@@ -46,5 +46,5 @@ typedef DesktopControl::Agent DesktopControlAgent;
 
 }
 
-#endif // DESKTOPCONTROL_HPP
+#endif // DESKTOPCONTROL_AGENT_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

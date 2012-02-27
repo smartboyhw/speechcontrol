@@ -42,6 +42,7 @@ class SphinxResult;
 
 /**
   * @brief A wrapping utility class for the PocketSphinx utility.
+  * @deprecated The ASR class will be used instead of this class for PocketSphinx communications.
   */
 class Sphinx : public QObject {
     Q_OBJECT
@@ -93,4 +94,4 @@ private:
 }
 
 #endif // SPHINX_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -7,6 +7,7 @@ file(GLOB SPCHCNTRL_QT_APP_HDRS "*.hpp")
 set(SPCHCNTRL_APP_SCPP ${SPCHCNTRL_APP_SRCS}
     ${SPCHCNTRL_WINDOWS_SRCS}
     ${SPCHCNTRL_VOXFORGE_SRCS}
+    ${SPCHCNTRL_DICTATION_SRCS}
     ${SPCHCNTRL_SESSIONS_SRCS}
     ${SPCHCNTRL_DESKTOPCONTROL_SRCS}
     ${SPCHCNTRL_QT_APP_SRCS})
@@ -20,19 +21,17 @@ QT4_AUTOMOC(${SPCHCNTRL_APP_SCPP})
 include_directories(${SPCHCNTRL_APP_INCLUDE_DIRS})
 
 ## Define targets
-add_executable(speechcontrol ${SPCHCNTRL_APP_SCPP})
-set_target_properties(speechcontrol PROPERTIES
+add_executable(speechcontrol-qt ${SPCHCNTRL_APP_SCPP})
+set_target_properties(speechcontrol-qt PROPERTIES
     DEFINE_SYMBOL "SPCHCNTRL_APP"
     COMPILE_DEFINITIONS "${SPCHCNTRL_APP_COMPILE_DEFINITIONS}"
     COMPILE_FLAGS "${SPCHCNTRL_APP_COMPILE_FLAGS}"
     PROJECT_LABEL "SpeechControl")
-add_dependencies(speechcontrol spchcntrl)
-target_link_libraries(speechcontrol ${SPCHCNTRL_APP_LIBRARIES})
+add_dependencies(speechcontrol-qt spchcntrl)
+target_link_libraries(speechcontrol-qt ${SPCHCNTRL_APP_LIBRARIES})
 
 ## Installs
-install(TARGETS speechcontrol
+install(TARGETS speechcontrol-qt
         DESTINATION "${SPCHCNTRL_BIN_DIR}")
 
-include_directories(${SPCHCNTRL_APP_INCLUDE_DIRS})
-
-add_test(testapp COMMAND $<TARGET_FILE:speechcontrol>)
+add_test(testapp COMMAND $<TARGET_FILE:speechcontrol-qt>)

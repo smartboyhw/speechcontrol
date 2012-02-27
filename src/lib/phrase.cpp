@@ -45,8 +45,7 @@ bool Phrase::isCompleted() const {
 
 const QString Phrase::text() const {
     QDomElement* l_elem = m_sntnc->getPhraseElement ( m_indx );
-    const QString l_base64Data = l_elem->text();
-    return QByteArray::fromBase64 ( l_base64Data.toLocal8Bit() );
+    return l_elem->text();
 }
 
 QFile* Phrase::audio() const {

@@ -28,13 +28,13 @@
 #include <QDomDocument>
 
 // libspchcntrl includes
-#include <corpus.hpp>
+#include <lib/corpus.hpp>
 
 // speechcontrol includes
-#include <sessions/content.hpp>
+#include <app/sessions/content.hpp>
 
 namespace SpeechControl {
-    class Session;
+class Session;
 /**
  * @brief Represents a @c QList of @c Session objects.
  **/

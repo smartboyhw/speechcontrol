@@ -23,38 +23,82 @@
 #define COMMANDS_HPP
 
 #include <QStringList>
-#include "config.hpp"
+#include <config.hpp>
+#include <app/desktopcontrol/agent.hpp>
 #include <app/desktopcontrol/command.hpp>
-
-APPLIST_NAMESPACE_BEGIN
 
 using SpeechControl::DesktopControl::AbstractCommand;
 using SpeechControl::DesktopControl::AbstractCategory;
 
+
+APPLIST_NAMESPACE_BEGIN
+
+/**
+ * @brief ...
+ **/
 class ApplicationListCategory : public AbstractCategory {
     Q_OBJECT
 
 public:
+    /**
+     * @brief ...
+     *
+     * @return const QString
+     **/
     virtual const QString id() const;
+    /**
+     * @brief ...
+     *
+     * @return const QString
+     **/
     virtual const QString title();
+    /**
+     * @brief ...
+     *
+     * @return :Plugins::DesktopControl::ApplicationListing::ApplicationListCategory*
+     **/
+    static ApplicationListCategory* instance();
 
 private:
+    /**
+     * @brief ...
+     *
+     **/
     explicit ApplicationListCategory ();
+    static ApplicationListCategory* s_inst;
 };
 
+/**
+ * @brief ...
+ **/
 class StartCommand : public AbstractCommand {
     Q_OBJECT
 
 public:
+    /**
+     * @brief ...
+     *
+     * @return QString
+     **/
     virtual QString id();
+    /**
+     * @brief ...
+     *
+     * @param p_statement ... Defaults to QString::null.
+     * @return bool
+     **/
     virtual bool invoke ( const QString& p_statement = QString::null ) const;
 
 private:
-    explicit StartCommand ( QObject* parent = 0 );
+    /**
+     * @brief ...
+     *
+     **/
+    explicit StartCommand ( );
     QStringList m_cmds;
 };
 
 APPLIST_NAMESPACE_END
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

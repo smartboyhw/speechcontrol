@@ -14,7 +14,7 @@
    <string>Content Information</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../res.qrc">
+   <iconset>
     <normaloff>:/logo/sc</normaloff>:/logo/sc</iconset>
   </property>
   <widget class="QWidget" name="verticalLayoutWidget">
@@ -61,26 +61,25 @@ p, li { white-space: pre-wrap; }
     </item>
     <item>
      <widget class="QPlainTextEdit" name="txtEdit">
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
       <property name="autoFillBackground">
        <bool>true</bool>
       </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
+      <property name="verticalScrollBarPolicy">
+       <enum>Qt::ScrollBarAsNeeded</enum>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Sunken</enum>
-      </property>
-      <property name="lineWidth">
-       <number>0</number>
+      <property name="horizontalScrollBarPolicy">
+       <enum>Qt::ScrollBarAsNeeded</enum>
       </property>
       <property name="readOnly">
        <bool>true</bool>
       </property>
       <property name="textInteractionFlags">
        <set>Qt::TextBrowserInteraction</set>
-      </property>
-      <property name="backgroundVisible">
-       <bool>false</bool>
       </property>
       <property name="centerOnScroll">
        <bool>true</bool>

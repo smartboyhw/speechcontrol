@@ -69,6 +69,7 @@ install(FILES ${SPCHCNTRL_LIB_HEADERS}
     DESTINATION "${SPCHCNTRL_LIB_INCLUDE_DIR}"
     COMPONENT "dev")
 
-include_directories(${SPCHCNTRL_LIB_INCLUDE_DIRS})
+include_directories(${SPCHCNTRL_LIB_INCLUDE_DIRS}
+    "${PROJECT_SOURCE_DIR}")
 
 add_subdirectory(cmake)

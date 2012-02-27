@@ -34,10 +34,10 @@
 #include <sessions/session.hpp>
 
 namespace Ui {
-    /**
-     * @brief Generated class used for SpeechControl::Windows::TrainingDialog.
-     */
-    class Training;
+/**
+ * @brief Generated class used for SpeechControl::Windows::TrainingDialog.
+ */
+class Training;
 }
 
 namespace SpeechControl {
@@ -144,17 +144,17 @@ private:
      **/
     void navigatePreviousPart();
 
-    int m_curPos;           /// < The current position of the phrase in the current sentence being trained.
-    uint m_initPos;         /// < The position that training began at in this dialog.
-    Ui::Training *m_ui;     /// < The object used to manage the dialog's widgets.
-    Microphone* m_mic;      /// < The Microphone used by this dialog.
-    Session* m_session;     /// < The current Session being trained.
-    Sentence* m_curSntct;   /// < The current sentence being focused on.
-    Sentence* m_initSntct;  /// < The Sentence that of which training began with when the dialog opened.
+    int m_currentPosition;           ///< The current position of the phrase in the current sentence being trained.
+    uint m_initialPosition;          ///< The position that training began at in this dialog.
+    Ui::Training *m_ui;              ///< The object used to manage the dialog's widgets.
+    Microphone* m_mic;               ///< The Microphone used by this dialog.
+    Session* m_session;              ///< The current Session being trained.
+    Sentence* m_currentSentence;     ///< The current sentence being focused on.
+    Sentence* m_initialSentence;     ///< The Sentence that of which training began with when the dialog opened.
 };
 
 }
 }
 
 #endif // TRAINING_WINDOW_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

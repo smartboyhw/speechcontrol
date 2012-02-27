@@ -39,7 +39,7 @@ Microphone::Microphone ( QGlib::Value device )
     obtain();
 }
 
-Microphone::Microphone ( const Microphone &p_mic ) :
+Microphone::Microphone ( const Microphone &p_mic ) : QObject ( p_mic.parent() ),
     m_device ( p_mic.m_device ), m_id ( p_mic.m_id ) {
     connect ( this, SIGNAL ( destroyed() ), &p_mic, SIGNAL ( destroyed() ) );
     obtain();

@@ -80,19 +80,19 @@ Sentence* Sentence::create ( Corpus *p_corpus, const QString& p_text ) {
     qDebug() << "Words:" << l_words;
     qDebug() << "If segmented into about 4 parts each, we get about" << l_words.count() / 4 << "words per phrase.";
 
-    Q_FOREACH(const QString l_word, l_words){
-        if ( l_wordSize <= l_phraseSize ){
+    Q_FOREACH ( const QString l_word, l_words ) {
+        if ( l_wordSize <= l_phraseSize ) {
             l_phrase += l_word + " ";
             qDebug() << "Appended" << l_wordSize << l_word;
         }
 
-        if ( l_wordSize == l_phraseSize || l_word == l_words.last()) {
+        if ( l_wordSize == l_phraseSize || l_word == l_words.last() ) {
             l_phrase = l_phrase.trimmed();
-            qDebug() << "Phrase" << l_phrase << "formed. At end?" << (l_word == l_words.last());
+            qDebug() << "Phrase" << l_phrase << "formed. At end?" << ( l_word == l_words.last() );
 
             QDomElement* l_phrsElem = new QDomElement ( p_corpus->m_dom->createElement ( "Phrase" ) );
             l_phrsElem->setAttribute ( "uuid",QUuid::createUuid() );
-            l_phrsElem->appendChild ( p_corpus->m_dom->createTextNode ( l_phrase.toUtf8().toBase64() ) );
+            l_phrsElem->appendChild ( p_corpus->m_dom->createTextNode ( l_phrase.toUtf8() ) );
             l_elem->appendChild ( *l_phrsElem );
 
             l_wordSize = -1;

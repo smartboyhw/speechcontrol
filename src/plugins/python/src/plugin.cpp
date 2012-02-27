@@ -25,7 +25,7 @@
 
 using namespace SpeechControl::Plugins::Python;
 
-Plugin::Plugin ( QObject* parent ) : AbstractPlugin (QUuid(PLUGIN_UUID),parent) {
+Plugin::Plugin ( QObject* parent ) : AbstractPlugin ( QUuid ( PLUGIN_UUID ),parent ) {
 
 }
 
@@ -42,7 +42,7 @@ Plugin::~Plugin() {
 }
 
 
-Q_EXPORT_PLUGIN2(pyspchcntrl, SpeechControl::Plugins::Python::Plugin)
+Q_EXPORT_PLUGIN2 ( pyspchcntrl, SpeechControl::Plugins::Python::Plugin )
 #include "plugin.moc"
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

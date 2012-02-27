@@ -45,8 +45,8 @@ const QString Dictionary::getPath ( const QUuid &l_uuid ) {
     return QDir::homePath() + "/.speechcontrol/dictionaries/" + l_uuid.toString() + ".dic";
 }
 
-DictionaryEntry::DictionaryEntry ( Dictionary *p_dict, const QString &p_word, const QString &p_phoneme ) :
-    QObject ( p_dict ), m_dict ( p_dict ), m_word ( p_word ), m_phnm ( p_phoneme ) {
+DictionaryEntry::DictionaryEntry ( Dictionary* p_dictionary, const QString& p_word, const QString& p_phoneme ) :
+    QObject ( p_dictionary ), m_dict ( p_dictionary ), m_word ( p_word ), m_phnm ( p_phoneme ) {
 
 }
 
@@ -88,6 +88,8 @@ Dictionary& Dictionary::operator << ( DictionaryEntry *p_entry ) {
 }
 
 Dictionary& Dictionary::operator << ( DictionaryEntryList& p_lst ) {
+    Q_FOREACH ( DictionaryEntry* l_entry, p_lst )
+    m_words.insert ( l_entry->word(),l_entry );
     return *this;
 }
 
@@ -113,4 +115,4 @@ Dictionary::~Dictionary() {
 }
 
 #include "dictionary.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

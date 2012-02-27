@@ -23,7 +23,8 @@
     namespace Plugins {\
         namespace DesktopControl {\
             namespace ApplicationListing {\
-
+ 
 #define APPLIST_NAMESPACE_END } } } }
 
 #define PLUGIN_UUID "@SPDSKAPP_PLUGIN_UUID@"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

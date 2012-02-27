@@ -6,7 +6,10 @@ if (WITH_PLUGINS)
 
     find_package(SpeechControlApplication QUIET)
     find_package(SpeechControlLibrary QUIET)
-    message(STATUS "Plug-ins are being built. Ensure that you've installed the SpeechControl application's headers first before attempting to build the plug-ins.")
+    message(STATUS "Plug-ins are being built.")
+
+    add_custom_target(plugins ALL
+        COMMENT "Built plug-ins.")
 
     ## directories
     add_subdirectory(python)

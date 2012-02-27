@@ -25,7 +25,11 @@
  * services to the Linux desktop (or whichever desktop it happens to be compiled on).
  * Using CMU's Sphinx speech recognition libraries and the Voxforge collective, we take
  * on a task never to be ventured before by a open-source community. It happens to also
- * be one of the many applications to be released by the \page sii.
+ * be one of the many applications to be released by the Synthetic Intellect Institute.
+ *
+ * \section authors Authors
+ * The authors of this documentation are largely the developers who took the time out
+ * to comment out their code as they continue to develop SpeechControl.
  */
 
 // local includes
@@ -37,4 +41,4 @@ int main ( int argc, char** argv ) {
     l_core.start();
     return l_core.exec();
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

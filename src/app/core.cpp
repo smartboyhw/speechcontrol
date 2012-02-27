@@ -37,16 +37,16 @@
 #endif
 
 // libspchcntrl includes
-#include "system.hpp"
-#include "microphone.hpp"
-#include "dummysc.hpp"
+#include <lib/system.hpp>
+#include <lib/microphone.hpp>
+#include <lib/dummysc.hpp>
 
 // local includes
-#include "core.hpp"
-#include "factory.hpp"
-#include "sessions/session.hpp"
-#include "windows/main-window.hpp"
-#include "windows/quickstart-wizard.hpp"
+#include "app/core.hpp"
+#include "app/factory.hpp"
+#include "app/sessions/session.hpp"
+#include "app/windows/main-window.hpp"
+#include "app/windows/quickstart-wizard.hpp"
 
 using namespace SpeechControl;
 
@@ -74,13 +74,15 @@ Core::Core ( int argc, char** argv ) :
                        ki18n ( "Speech Recognition for Linux." ),
                        KAboutData::License_GPL_V3,
                        ki18n ( "Copyright (c) 2010 - 2012 Synthetic Intellect Institute" ),
-                       KLocalizedString(),
+                       ki18n ( "SpeechControl provides the basis of speech recognition technologies on Linux and quality-grade software equal to its alternative, Dragon NaturallySpeaking. " ),
                        "http://www.thesii.org",
-                       "http://tasks.thesii.org/buglist.cgi?query=product:spchcntrl"
+                       "http://tasks.thesii.org/enter_bug.cgi?product=speechcontrol"
                      );
 
-    l_abt.addAuthor ( ki18n ( "Jacky Alcine" ) , ki18n ( "" ), "jacky.alcine@thesii.org" );
-    l_abt.addAuthor ( ki18n ( "Adrian Borucki" ) , ki18n ( "" ), "adrian@thesii.org" );
+    l_abt.addAuthor ( ki18n ( "Jacky Alcine" )  , ki18n ( "Core Developer, Maintainer" ), "jacky.alcine@thesii.org", "http://jackyalcine.co.cc" );
+    l_abt.addAuthor ( ki18n ( "Adrian Borucki" ), ki18n ( "Core Developer" ), "adrian@thesii.org" );
+    l_abt.addCredit ( ki18n ( "Dante Ashton" )  , ki18n ( "CPU of Synthetic Intellect Institute" )  , "dante.ashton@thesii.org" );
+    l_abt.setBugAddress ( "bugzilla@thesii.org" );
 
     KCmdLineArgs::init ( argc, argv, &l_abt );
 
@@ -107,7 +109,7 @@ Core::Core ( int argc, char** argv ) :
 
     dummyASR = new DummySC ( DummySC::getStandardDescription() );
     connect ( dummyASR, SIGNAL ( finished ( QString& ) ), this, SLOT ( asrFinished ( QString& ) ) );
-    connect ( m_app,SIGNAL(aboutToQuit()),this,SLOT(stop()));
+    connect ( m_app,SIGNAL ( aboutToQuit() ),this,SLOT ( stop() ) );
     connect ( this,SIGNAL ( started() ),dummyASR,SLOT ( run() ) );
     connect ( this,SIGNAL ( started() ),Plugins::Factory::instance(),SLOT ( start() ) );
     connect ( this,SIGNAL ( stopped() ),Plugins::Factory::instance(),SLOT ( stop() ) );
@@ -168,4 +170,4 @@ int Core::exec() {
 }
 
 #include "core.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

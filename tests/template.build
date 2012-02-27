@@ -9,7 +9,10 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 file(GLOB TEST_BASE_SRCS "../../*.cpp")
 file(GLOB TEST_EXTRA_SRCS "../../../src/app/*.cpp"
                           "../../../src/app/windows/*/*.cpp"
-                          "../../../src/app/settings/*.cpp")
+                          "../../../src/app/dictation/*.cpp"
+                          "../../../src/app/voxforge/*.cpp"
+                          "../../../src/app/sessions/*.cpp"
+                          "../../../src/app/desktopcontrol/*.cpp")
 set(TEST_BASE_SCPP ${TEST_BASE_SRCS} ${SPCHCNTRL_APP_SRCS} ${TEST_EXTRA_SRCS}
                    ${SPCHCNTRL_WINDOWS_SRCS} "@TEST_SRC@")
 ## Variables

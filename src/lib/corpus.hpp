@@ -60,9 +60,9 @@ typedef QMap<QUuid, Corpus*> CorpusMap;
 class Corpus : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY ( Corpus )
-    Q_PROPERTY ( SentenceList Sentences READ sentences )
-    Q_PROPERTY ( Dictionary* Dictionary READ dictionary )
-    Q_PROPERTY ( const QUuid Uuid READ uuid )
+    Q_PROPERTY ( SentenceList Sentences READ sentences )    ///<
+    Q_PROPERTY ( Dictionary* Dictionary READ dictionary )   ///<
+    Q_PROPERTY ( const QUuid Uuid READ uuid )               ///<
     friend class Sentence;
     friend class Dictionary;
 

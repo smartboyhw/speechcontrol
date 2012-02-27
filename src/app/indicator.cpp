@@ -32,6 +32,8 @@ Indicator::Indicator ( QObject* parent ) : QObject ( parent ), m_indctr ( new QI
 
     m_indctr->setIconProperty ( QImage ( ":/logo/sc-large" ) );
     m_indctr->setNameProperty ( "SpeechControl" );
+    show();
+    showMessage ( "Test message!" );
 }
 
 void Indicator::hide() {
@@ -40,6 +42,7 @@ void Indicator::hide() {
 
 void Indicator::show() {
     instance()->m_indctr->show();
+    instance()->m_indctr->emitDisplay();
 }
 
 Indicator* Indicator::instance() {
@@ -51,6 +54,7 @@ Indicator* Indicator::instance() {
 
 void Indicator::showMessage ( const QString& p_message ) {
     qDebug() << "Indicator message:" << p_message;
+    instance()->m_indctr->emitDisplay();
 }
 
 Indicator::~Indicator() {
@@ -58,4 +62,4 @@ Indicator::~Indicator() {
 }
 
 #include "indicator.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

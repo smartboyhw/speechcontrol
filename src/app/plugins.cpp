@@ -43,14 +43,14 @@ AbstractPlugin::AbstractPlugin ( QObject* p_prnt ) :
     QObject ( p_prnt ), m_ldr ( 0 ), m_cfg ( 0 ), m_sttgs ( 0 ) {
 }
 
-AbstractPlugin::AbstractPlugin ( const QUuid& p_uuid , QObject* p_parent ) : QObject(p_parent),
-    m_ldr(0), m_cfg(Factory::pluginConfiguration(p_uuid)), m_sttgs(Factory::pluginSettings(p_uuid)) {
+AbstractPlugin::AbstractPlugin ( const QUuid& p_uuid , QObject* p_parent ) : QObject ( p_parent ),
+    m_ldr ( 0 ), m_cfg ( Factory::pluginConfiguration ( p_uuid ) ), m_sttgs ( Factory::pluginSettings ( p_uuid ) ) {
 
 }
 
 
 AbstractPlugin::AbstractPlugin ( const AbstractPlugin& p_other ) : QObject ( p_other.parent() ),
-m_ldr ( p_other.m_ldr ), m_cfg ( p_other.m_cfg ), m_sttgs ( p_other.m_sttgs ) {
+    m_ldr ( p_other.m_ldr ), m_cfg ( p_other.m_cfg ), m_sttgs ( p_other.m_sttgs ) {
 
 }
 
@@ -126,8 +126,8 @@ bool AbstractPlugin::loadLibrary() {
     const QString l_libName = "lib" + m_cfg->value ( "Dependencies/Library" ).toString() + ".so";
     const QString l_pth = SPCHCNTRL_PLUGINS_LIB_DIR "/" + l_libName;
     m_ldr = new QPluginLoader;
-    m_ldr->setFileName(l_pth);
-    if (!m_ldr->load()){
+    m_ldr->setFileName ( l_pth );
+    if ( !m_ldr->load() ) {
         qDebug() << name() << "'s library failed to load."
                  << m_ldr->errorString() << m_ldr->fileName() << l_pth;
         return false;
@@ -138,7 +138,7 @@ bool AbstractPlugin::loadLibrary() {
 
 bool AbstractPlugin::loadPlugins() {
     Q_FOREACH ( AbstractPlugin* l_plgn, plugins() ) {
-        if ( ! ( l_plgn->isSupported() && Factory::isPluginLoaded ( l_plgn->uuid() ) ) ){
+        if ( ! ( l_plgn->isSupported() && Factory::isPluginLoaded ( l_plgn->uuid() ) ) ) {
             qDebug() << "Plugin" << uuid() << "is missing a dependency:" << l_plgn->uuid();
             return false;
         }
@@ -181,4 +181,4 @@ Plugins::GenericPlugin::GenericPlugin ( const QUuid& p_uuid ) : AbstractPlugin (
 }
 
 #include "plugins.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

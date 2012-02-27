@@ -19,16 +19,25 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+// local includes
 #include "commands.hpp"
 
 APPLIST_NAMESPACE_BEGIN
 
-ApplicationListCategory::ApplicationListCategory (  ) : AbstractCategory ( ) {
+ApplicationListCategory* ApplicationListCategory::s_inst = 0;
 
+ApplicationListCategory::ApplicationListCategory ( ) : AbstractCategory ( global() ) {
 }
 
 const QString ApplicationListCategory::id() const {
     return "applicationlist";
+}
+
+ApplicationListCategory* ApplicationListCategory::instance() {
+    if ( s_inst == 0 )
+        s_inst = new ApplicationListCategory;
+
+    return s_inst;
 }
 
 const QString ApplicationListCategory::title() {
@@ -39,18 +48,18 @@ QString StartCommand::id() {
     return "start-applist";
 }
 
-StartCommand::StartCommand ( QObject* parent ) : AbstractCommand ( parent ,
-    (QStringList() << "Start application"
-                   << "Run application"
-                   << "Open application") ) {
+StartCommand::StartCommand ( ) : AbstractCommand ( ApplicationListCategory::instance() ,
+            ( QStringList() << "Start application"
+              << "Run application"
+              << "Open application" ) ) {
 }
 
 /// @todo Detect the application name and invoke it.
 bool StartCommand::invoke ( const QString& p_statement ) const {
-    if (!isValidStatement (p_statement))
+    if ( !isValidStatement ( p_statement ) )
         return false;
 
-    const QString l_tokenArgument = AbstractCommand::santizeStatement(p_statement);
+    const QString l_tokenArgument = AbstractCommand::santizeStatement ( p_statement );
 
     return true;
 }
@@ -59,4 +68,4 @@ bool StartCommand::invoke ( const QString& p_statement ) const {
 
 APPLIST_NAMESPACE_END
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

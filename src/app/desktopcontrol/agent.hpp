@@ -16,6 +16,10 @@
  *  You should have received a copy of the GNU Library General Public License
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ *
+ */
+/**
+ * @author Jacky Alcine <jacky.alcine@thesii.org>
  */
 
 #ifndef DESKTOPCONTROL_AGENT_HPP
@@ -23,28 +27,54 @@
 
 #include <QObject>
 
-#include "abstractagent.hpp"
+#include <app/abstractagent.hpp>
 
 namespace SpeechControl {
+/**
+ * @brief Container namespace for all of the desktop control related clases.
+ **/
 namespace DesktopControl {
+/**
+ * @brief Agent managing desktop control.
+ *
+ * The desktop control system revolves (in a hierarchical manner) around the
+ * agent; if it's not active, no desktop control can occur.
+ *
+ * @see AbstractAgent
+ **/
 class Agent : public AbstractAgent {
     Q_OBJECT
 public:
+    /**
+     * @brief Constructor.
+     **/
     Agent();
     virtual ~Agent();
+
+    /**
+     * @brief Determines the active status of desktop control.
+     * @overload Determines the active status of desktop control.
+     * @return bool
+     **/
     virtual bool isActive() const;
+
+    /**
+     * @brief Pointer to agent instance.
+     *
+     * A means of obtaining a pointer to the desktop control class.
+     * If it doesn't exist, it's created.
+     *
+     * @return A pointer to the desktop control class's singleton instance.
+     **/
     static Agent* instance();
 
 private:
-    virtual OperationState onStateChanged ( const SpeechControl::AbstractAgent::OperationState p_stt );
-    static Agent* s_inst;
+    virtual OperationState onStateChanged ( const AbstractAgent::OperationState p_state );
+    static Agent* s_instance;
 };
 
 }
-
-typedef DesktopControl::Agent DesktopControlAgent;
-
 }
 
 #endif // DESKTOPCONTROL_AGENT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

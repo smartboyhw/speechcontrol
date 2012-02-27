@@ -26,8 +26,12 @@
 namespace SpeechControl {
 /**
  * @brief Abstract class representing an executing module within SpeechControl.
+ *
  * Agents are used in SpeechControl to wrap the status and exportability of
- * certain events within it like desktop control and dictation.
+ * certain events within it like desktop control and dictation. Using agents
+ * also permit a basis of toggling specific features of the system on and off.
+ *
+ * @author Jacky Alcine <jacky.alcine@thesii.org>
  **/
 class AbstractAgent : public QObject {
     Q_OBJECT
@@ -36,18 +40,27 @@ class AbstractAgent : public QObject {
 public:
     /**
      * @brief Defines the possible operational states of an AbstractAgent.
+     *
+     * States allow agents to publicly express what mode of activity that
+     * the agent is currently in. They can be either in the Enabled or Disabled
+     * state. The Undefined state is provided for mediation purposes and may be
+     * removed in a future release.
      **/
     enum OperationState {
-        Disabled = -1,
-        Undefined,
-        Enabled
+        Disabled = -1,  ///< Defines the state of the agent as disabled.
+        ///< All activity defined by the agent should be halted if active.
+
+        Undefined,      ///< Defines the state of the agent as undefined.
+
+        Enabled         ///< Defines the state of the agent as enabled.
+        ///< All activity defined by the agent should be activated.
     };
 
     /**
      * @brief Constructor.
-     * @param p_prnt Defaults to 0.
+     * @param p_parent Defaults to 0.
      **/
-    explicit AbstractAgent ( QObject* = 0 );
+    explicit AbstractAgent ( QObject* p_parent = 0 );
 
     /**
      * @brief Destructor.
@@ -55,15 +68,18 @@ public:
     virtual ~AbstractAgent();
 
     /**
-     * @brief ...
+     * @brief Determines active state of the agent.
      *
-     * @return bool
+     * A convenience method as opposed to using the state() method.
+     *
+     * @return TRUE if state() == Enabled, else FALSE.
      **/
     virtual bool isActive() const = 0;
 
     /**
      * Obtains the current state of the Agent.
-     * @return State&
+     * @return OperationState
+     * @see OperationState
      **/
     OperationState state() const;
 
@@ -71,39 +87,44 @@ public slots:
     /**
      * Changes the state of this Agent to the specified state.
      * @return void
+     * @see OperationState
      **/
-    void setState ( const OperationState );
+    void setState ( const OperationState p_state );
 
 signals:
     /**
-     * Emitted when the state of this Agent is set to the Active state.
+     * Emitted when the state of this Agent is set to the Enabled state.
      * @return void
+     * @see OperationState::Enabled
      **/
-    void activated();
+    void enabled();
 
     /**
-     * Emitted when the state of this Agent is set to the Inactive state.
+     * Emitted when the state of this Agent is set to the Disabled state.
      * @return void
+     * @see OperationState::Disabled
      **/
-    void inactivated();
+    void disabled();
 
     /**
      * Emitted when the state of this Agent has changed to an arbitrary state.
      * @return void
+     * @see OperationState
      **/
-    void stateChanged ( const OperationState& );
+    void stateChanged ( const OperationState& p_state );
 
 protected:
     /**
      * Handles the actions depending on each of the states changing.
      * @return State The accepted state to render to, or Undefined if this state is invalid.
+     * @see OperationState
      **/
-    virtual OperationState onStateChanged ( const OperationState ) = 0;
+    virtual OperationState onStateChanged ( const OperationState p_state ) = 0;
 
 private:
-    OperationState m_stt;
+    OperationState m_state; ///< The state of the agent.
 };
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

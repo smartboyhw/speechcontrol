@@ -21,25 +21,23 @@
 #include "core.hpp"
 #include "agent.hpp"
 
-using SpeechControl::Core;
-using SpeechControl::AbstractAgent;
-using SpeechControl::DesktopControl::Agent;
-
-Agent* Agent::s_inst = 0;
+namespace SpeechControl {
+namespace DesktopControl {
+Agent* Agent::s_instance = 0;
 
 Agent::Agent() : AbstractAgent ( Core::instance() ) {
 
 }
 
 Agent* Agent::instance() {
-    if ( s_inst == 0 )
-        s_inst = new Agent;
+    if ( s_instance == 0 )
+        s_instance = new Agent;
 
-    return s_inst;
+    return s_instance;
 }
 
-AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::OperationState p_stt ) {
-    switch ( p_stt ) {
+AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::OperationState p_state ) {
+    switch ( p_state ) {
     case Enabled:
         break;
 
@@ -62,5 +60,7 @@ Agent::~Agent() {
 
 }
 
+}
+}
 #include "../desktopcontrol/agent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

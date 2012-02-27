@@ -31,20 +31,53 @@ class QImage;
 namespace SpeechControl {
 class Indicator;
 
+/**
+ * @brief ...
+ **/
 class Indicator : public QObject {
     Q_OBJECT
 
 public:
+    /**
+     * @brief ...
+     *
+     **/
     virtual ~Indicator();
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
     static void show();
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
     static void hide();
+    /**
+     * @brief ...
+     *
+     * @param p_message ...
+     * @return void
+     **/
     static void showMessage ( const QString& p_message );
+    /**
+     * @brief ...
+     *
+     * @return :Indicator*
+     **/
     static Indicator* instance();
 
 private:
+    /**
+     * @brief ...
+     *
+     * @param parent ... Defaults to 0.
+     **/
     explicit Indicator ( QObject* parent = 0 );
-    QIndicate::Indicator* m_indctr;
-    static Indicator* s_inst;
+    QIndicate::Indicator* m_indctr;     ///< Indicator instance.
+    static Indicator* s_inst;           ///< Singleton instance.
 };
 }
 

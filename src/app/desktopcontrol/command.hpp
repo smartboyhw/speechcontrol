@@ -32,7 +32,13 @@ namespace DesktopControl {
 class AbstractCommand;
 class AbstractCategory;
 
+/**
+ * @brief ...
+ **/
 typedef QList<AbstractCommand*> CommandList;
+/**
+ * @brief ...
+ **/
 typedef QList<AbstractCategory*> CategoryList;
 
 /**
@@ -48,53 +54,154 @@ class AbstractCommand : public QObject {
     Q_OBJECT
 
 public:
+    /**
+     * @brief ...
+     *
+     **/
     virtual ~AbstractCommand();
+    /**
+     * @brief ...
+     *
+     * @return QString
+     **/
     virtual QString id() = 0;
+    /**
+     * @brief ...
+     *
+     * @return const QStringList
+     **/
     virtual const QStringList statements() const;
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @return bool
+     **/
     bool isValidStatement ( const QString& ) const;
 
 public slots:
+    /**
+     * @brief ...
+     *
+     * @param p_statement ... Defaults to QString::null.
+     * @return bool
+     **/
     virtual bool invoke ( const QString& p_statement = QString::null ) const = 0;
 
 protected:
-    explicit AbstractCommand ( QObject* p_parent , QStringList p_commands );
+    /**
+     * @brief ...
+     *
+     * @param p_parent ...
+     * @param p_commands ...
+     **/
+    explicit AbstractCommand ( AbstractCategory* p_parentCategory , QStringList p_commands );
+    /**
+     * @brief ...
+     *
+     * @param p_statement ...
+     * @return QString
+     **/
     QString santizeStatement ( const QString p_statement ) const;
+    /**
+     * @brief ...
+     *
+     * @param p_command ...
+     * @param p_statement ...
+     * @return bool
+     **/
     bool areStatementsEquivalent ( const QString p_command, const QString p_statement ) const;
 
 private:
-    QStringList m_commands;
+    QStringList m_commands;     ///< The commands.
 };
 
 /**
  * @brief A collection of commands in a defining manner.
+ *
  * Categories are used here to organize specific commands into groups.
  * Commands are not confined to remain to a specific group, thus allowing
  * a sense of flexibility when assigning commands to groups. The use of
  * categories permits a global categories (really, a collection of all
  * implemented categories) for immediate searching.
+ *
+ * @see AbstractCommand
+ * @see SpeechControl::DesktopControl::Agent
  */
 class AbstractCategory : public QObject {
     Q_OBJECT
+    Q_PROPERTY ( CommandList Commands READ commands ) ///< A property representing all of the immediate commands held by this category.
 
 public:
+    /**
+     * @brief Destructor.
+     *
+     **/
     virtual ~AbstractCategory();
+
+    /**
+     * @brief Obtains the title of this AbstractCategory.
+     * @return const QString
+     **/
     virtual const QString title() = 0;
+
+    /**
+     * @brief Obtains the unique ID of this AbstractCategory.
+     * @return const QString
+     **/
     virtual const QString id() const = 0;
+
+    /**
+     * @brief Attempts to match up a potential command.
+     *
+     * Queries all of the commands available by invoking commands() if
+     * they can handle p_statement as a valid command.
+     *
+     * @param p_command The command to match up.
+     * @return CommandList
+     **/
     CommandList matchCommands ( const QString& p_command );
+
+    /**
+     * @brief Returns a list of Command objects held by this AbstractCategory.
+     *
+     * @return CommandList
+     **/
     CommandList commands();
+    /**
+     * @brief ...
+     *
+     * @param p_command ...
+     * @return CommandList
+     **/
     static CommandList matchAllCommands ( const QString& p_command );
+    /**
+     * @brief ...
+     *
+     * @return AbstractCategory*
+     **/
     static AbstractCategory* global();
+    /**
+     * @brief ...
+     *
+     * @return CategoryList
+     **/
     static CategoryList categories();
 
 protected:
-    explicit AbstractCategory ( AbstractCategory* parent = AbstractCategory::global() );
+    /**
+     * @brief ...
+     *
+     * @param parent ... Defaults to AbstractCategory::global().
+     **/
+    explicit AbstractCategory ( AbstractCategory* p_parentCategory = AbstractCategory::global() );
 
 private:
-    static QMap<QString,AbstractCategory*> s_ctgrs;
-    CommandList m_lst;
+    static QMap<QString,AbstractCategory*> s_ctgrs;     ///< A global listing of all categories.
+    CommandList m_lst;                                  ///< The commands held by the category.
 };
 }
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

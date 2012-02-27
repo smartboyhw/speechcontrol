@@ -19,7 +19,7 @@
  */
 
 
-#include "core.hpp"
+#include "app/core.hpp"
 #include "wizards/intro.hpp"
 #include "wizards/outro.hpp"
 #include "micsetup-wizard.hpp"

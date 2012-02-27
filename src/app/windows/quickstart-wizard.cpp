@@ -82,4 +82,4 @@ QuickStart::~QuickStart() {
 }
 
 #include "quickstart-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

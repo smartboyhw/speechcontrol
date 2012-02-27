@@ -186,9 +186,9 @@ public:
     AbstractContentSource ( const AbstractContentSource& p_other );
     Content* generate();
     QString id() const;
-    void setAuthor(const QString p_author);
-    void setTitle(const QString p_title);
-    void setText(const QString p_text);
+    void setAuthor ( const QString p_author );
+    void setTitle ( const QString p_title );
+    void setText ( const QString p_text );
     const QString author() const;
     const QString title() const;
     const QString text() const;
@@ -217,11 +217,11 @@ class TextContentSource : public AbstractContentSource {
 public:
     explicit TextContentSource ( QObject* p_parent = 0 );
     virtual ~TextContentSource();
-    bool setFile(QFile& p_file);
-    bool setUrl (const QUrl& p_url);
+    bool setFile ( QFile& p_file );
+    bool setUrl ( const QUrl& p_url );
 };
 
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

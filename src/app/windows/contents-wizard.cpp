@@ -58,7 +58,7 @@ ContentWizard::ContentWizard ( QWidget *parent ) :
 
 void ContentWizard::setSource ( AbstractContentSource* p_src ) {
     if ( p_src != 0 ) {
-        m_src = new AbstractContentSource(*p_src);
+        m_src = new AbstractContentSource ( *p_src );
         qDebug() << "Got source" << m_src->id();
     }
 }
@@ -111,4 +111,4 @@ ContentWizard::~ContentWizard() {
 }
 
 #include "contents-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

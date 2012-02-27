@@ -19,10 +19,10 @@
  */
 
 // libspchcntrl includes
-#include <microphone.hpp>
+#include <lib/microphone.hpp>
 
 #include "micselect.hpp"
-#include "windows/micsetup-wizard.hpp"
+#include "app/windows/micsetup-wizard.hpp"
 #include "ui_micwizard-select.h"
 
 using namespace SpeechControl;

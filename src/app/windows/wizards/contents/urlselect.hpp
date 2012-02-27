@@ -41,7 +41,7 @@ public:
 
 private slots:
     void on_toolButton_clicked();
-    void on_lineEdit_textChanged(const QString p_path);
+    void on_lineEdit_textChanged ( const QString p_path );
     void updateContentData ( QUrl fromUserInput );
 
 private:
@@ -54,4 +54,4 @@ private:
 }
 
 #endif // FILESELECT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

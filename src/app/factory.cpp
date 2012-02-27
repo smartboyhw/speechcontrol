@@ -103,12 +103,12 @@ Factory* Factory::instance() {
 
 QSettings* Factory::pluginConfiguration ( QUuid p_uuid ) {
     const QString l_pth ( QString ( SPCHCNTRL_PLUGINS_SPEC_DIR ) + QString ( "/" ) + p_uuid.toString().replace ( "{","" ).replace ( "}","" ) + QString ( ".spec" ) );
-    return new QSettings ( l_pth ,QSettings::IniFormat,Factory::instance());
+    return new QSettings ( l_pth ,QSettings::IniFormat,Factory::instance() );
 }
 
 QSettings* Factory::pluginSettings ( QUuid p_uuid ) {
     const QString l_pth ( QDir::homePath() + QString ( "/.speechcontrol/plugins/" ) + p_uuid.toString().replace ( "{","" ).replace ( "}","" ) + QString ( ".conf" ) );
-    return new QSettings ( l_pth ,QSettings::IniFormat,Factory::instance());
+    return new QSettings ( l_pth ,QSettings::IniFormat,Factory::instance() );
 }
 
 void Factory::start() {
@@ -121,7 +121,7 @@ void Factory::start() {
 
 void Factory::stop() {
     Q_FOREACH ( AbstractPlugin* l_plgn, loadedPlugins() ) {
-        unloadPlugin(l_plgn->uuid());
+        unloadPlugin ( l_plgn->uuid() );
     }
 
     qDebug() << "Factory stopped.";
@@ -132,4 +132,4 @@ Factory::~Factory() {
 }
 
 #include "factory.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

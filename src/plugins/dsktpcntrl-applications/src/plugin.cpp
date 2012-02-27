@@ -26,7 +26,7 @@
 
 APPLIST_NAMESPACE_BEGIN
 
-Plugin::Plugin ( QObject* parent ) : AbstractPlugin (QUuid(PLUGIN_UUID),parent) {
+Plugin::Plugin ( QObject* parent ) : AbstractPlugin ( QUuid ( PLUGIN_UUID ),parent ) {
     qDebug() << "applist plug-in built.";
 }
 
@@ -46,6 +46,6 @@ Plugin::~Plugin() {
 
 APPLIST_NAMESPACE_END
 
-Q_EXPORT_PLUGIN2(spchcntrl-applist, SpeechControl::Plugins::DesktopControl::ApplicationListing::Plugin)
+Q_EXPORT_PLUGIN2 ( spchcntrl-applist, SpeechControl::Plugins::DesktopControl::ApplicationListing::Plugin )
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

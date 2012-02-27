@@ -1,12 +1,10 @@
 cmake_minimum_required(VERSION 2.8)
 
-install(FILES "sc.png"
-        DESTINATION "${CMAKE_INSTALL_PREFIX}/share/icons"
-        RENAME speechcontrol.png)
+install(FILES "speechcontrol.png"
+        DESTINATION "${CMAKE_INSTALL_PREFIX}/share/icons")
 
-install(FILES "sc.svg"
-        DESTINATION "${CMAKE_INSTALL_PREFIX}/share/icons"
-        RENAME speechcontrol.svg)
+install(FILES "speechcontrol.svg"
+        DESTINATION "${CMAKE_INSTALL_PREFIX}/share/icons")
 
 if (WITH_KDE_SUPPORT)
     find_package(KDE4 QUIET)

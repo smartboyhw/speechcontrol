@@ -17,13 +17,14 @@ file(GLOB SPDSKAPP_HDRS "src/*.hpp")
 configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
                "${PROJECT_SOURCE_DIR}/src/config.hpp" @ONLY)
 include_directories(${SPDSKAPP_PLUGIN_INCLUDE_DIRS}
-    "${PROJECT_SOURCE_DIR}/../../")
+    "${PROJECT_SOURCE_DIR}/../../"
+    "${PROJECT_SOURCE_DIR}/src")
 
 add_library(spchcntrl-applist SHARED ${SPDSKAPP_SRCS})
 QT4_AUTOMOC(${SPDSKAPP_SRCS})
-
 target_link_libraries(spchcntrl-applist ${SPDSKAPP_PLUGIN_LIBRARIES})
 speechcontrol_install_plugin(spchcntrl-applist)
+add_dependencies(plugins spchcntrl-applist)
 
 install(FILES "${PROJECT_SOURCE_DIR}/data/bbb53bbb-d879-43e3-b9ba-f24060293488.spec"
         DESTINATION ${SPCHCNTRL_PLUGINS_SPEC_INSTALL_DIR})

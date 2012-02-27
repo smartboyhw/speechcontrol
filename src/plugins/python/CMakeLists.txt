@@ -16,16 +16,16 @@ file(GLOB SPPY_HDRS "src/*.hpp")
 
 QT4_AUTOMOC(${SPPY_SRCS})
 
+configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
+               "${PROJECT_SOURCE_DIR}/src/config.hpp" @ONLY)
+
 include_directories(${SPPY_PLUGIN_INCLUDE_DIRS}
     "${PROJECT_SOURCE_DIR}/../../")
 
 add_library(pyspchcntrl SHARED ${SPPY_SRCS})
 target_link_libraries(pyspchcntrl ${SPPY_PLUGIN_LIBRARIES})
-
-configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
-               "${PROJECT_SOURCE_DIR}/src/config.hpp" @ONLY)
-
 speechcontrol_install_plugin(pyspchcntrl)
+add_dependencies(plugins spchcntrl-applist)
 
 install(FILES "${PROJECT_SOURCE_DIR}/data/f2989a62-5de6-11e1-852d-d91646898ec2.spec"
         DESTINATION ${SPCHCNTRL_PLUGINS_SPEC_INSTALL_DIR})

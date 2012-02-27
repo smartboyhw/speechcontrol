@@ -21,9 +21,8 @@
 #include "core.hpp"
 #include "agent.hpp"
 
-using SpeechControl::Core;
-using SpeechControl::AbstractAgent;
-using SpeechControl::Dictation::Agent;
+namespace SpeechControl {
+namespace Dictation {
 
 Agent* Agent::s_inst = 0;
 
@@ -59,8 +58,10 @@ bool Agent::isActive() const {
 }
 
 Agent::~Agent() {
+}
 
+}
 }
 
 #include "../dictation/agent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -86,10 +86,13 @@ void Content::load ( const QUuid &p_uuid ) {
         return;
     }
 
+    QTextStream l_strm ( l_file );
+    l_strm.setCodec ( "UTF-8" );
+
     {
         QString l_errorMsg;
         int l_errorLine, l_errorColumn;
-        if ( !l_dom->setContent ( l_file, &l_errorMsg ,&l_errorLine ,&l_errorColumn ) ) {
+        if ( !l_dom->setContent ( l_strm.readAll() , &l_errorMsg ,&l_errorLine ,&l_errorColumn ) ) {
             qDebug() << "Couldn't parse Content;" << l_errorMsg << "on l." << l_errorLine << "; col." << l_errorColumn;
             m_uuid = QUuid();
             return;
@@ -99,7 +102,7 @@ void Content::load ( const QUuid &p_uuid ) {
     //qDebug() << "DOM:" << l_dom->toString();
     QDomElement l_domElem = l_dom->documentElement();
     QDomElement l_textElem = l_domElem.namedItem ( "Text" ).toElement();
-    const QString l_textBase ( QByteArray::fromBase64 ( l_textElem.text().toUtf8() ) );
+    const QString l_textBase ( l_textElem.text() );
     parseText ( l_textBase );
 
     if ( m_pages.length() == 0 ) {
@@ -109,6 +112,7 @@ void Content::load ( const QUuid &p_uuid ) {
     }
 
     m_dom = l_dom;
+    l_file->close();
 }
 
 /// @todo Implement a proper means of segmenting text into chunks.
@@ -123,7 +127,7 @@ void Content::parseText ( const QString& p_text ) {
             else {
                 m_pages << l_tmpText;
                 l_tmpText.clear();
-                l_count = 0;
+                l_count = -1;
             }
         }
 
@@ -218,7 +222,7 @@ const QStringList Content::pages() const {
 
 const QString Content::pageAt ( const int &l_index ) const {
     if ( l_index < m_pages.count() )
-        return m_pages.at ( l_index );
+        return m_pages.at ( l_index ).trimmed();
 
     return QString::null;
 }
@@ -245,7 +249,7 @@ Content * Content::create ( const QString &p_author, const QString &p_title, con
     QFile l_file ( Content::getPath ( l_uuid ) );
     l_file.open ( QIODevice::WriteOnly | QIODevice::Truncate );
     QTextStream l_strm ( &l_file );
-    l_strm.setCodec("UTF-8");
+    l_strm.setCodec ( "UTF-8" );
     l_dom.save ( l_strm, 4 );
     l_file.close();
 
@@ -362,4 +366,4 @@ TextContentSource::~TextContentSource() {
 }
 
 #include "content.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

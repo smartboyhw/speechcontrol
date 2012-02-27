@@ -32,6 +32,9 @@ ContentInformationDialog::ContentInformationDialog ( Content* p_content ) :
     m_content ( p_content ) {
     m_ui->setupUi ( this );
     updateUi();
+
+    connect ( m_ui->btnGoLeft,SIGNAL ( clicked() ),this,SLOT ( goToPreviousPage() ) );
+    connect ( m_ui->btnGoRight,SIGNAL ( clicked() ),this,SLOT ( goToNextPage() ) );
 }
 
 void ContentInformationDialog::updateUi() {
@@ -50,7 +53,7 @@ void ContentInformationDialog::goToPreviousPage() {
 }
 
 void ContentInformationDialog::goToPage ( const int p_index ) {
-    if ( p_index > m_content->pageCount() )
+    if ( p_index < 0 || ( uint ) p_index > m_content->pageCount() )
         return;
 
     m_indx = p_index;

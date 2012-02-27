@@ -40,26 +40,68 @@ class Sentence;
 class Dictionary;
 class DictionaryEntry;
 
+/**
+ * @brief Represents a list of Dictionary objects.
+ **/
 typedef QList<Dictionary*> DictionaryList;
+
+/**
+ * @brief Represents a list of DictionaryEntry objects.
+ **/
 typedef QList<DictionaryEntry*> DictionaryEntryList;
 
+/**
+ * @brief Represents a mapping of QUuids to Dictionary objects.
+ **/
 typedef QMap<QUuid, Dictionary*> DictionaryMap;
+
+/**
+ * @brief Represents a mapping of QStrings to DictionaryEntry objects.
+ **/
 typedef QMap<QString, DictionaryEntry*> DictionaryEntryMap;
 
+/**
+ * @brief Represents an entry in a Dictionary object.
+ * Entries within a dictionary are typically used to provide the most
+ * accurate pronunciation (phoneme) of words for Sphinx to use during
+ * the act of building or adapting acoustic models.
+ *
+ * @see Dictionary
+ **/
 class DictionaryEntry : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY ( DictionaryEntry )
+    Q_PROPERTY ( QString Word READ word )
+    Q_PROPERTY ( QString Phoneme READ phoneme )
     friend class Dictionary;
 
 public:
-    DictionaryEntry ( Dictionary*, const QString&, const QString& );
+    /**
+     * @brief Constructor.
+     * Creates the representation of an entry for a Dictionary p_dictionary with the specified
+     * word p_word and the phoneme p_phoneme.
+     * @param p_dictionary Dictionary
+     * @param p_word QString
+     * @param p_phoneme QString
+     **/
+    DictionaryEntry ( Dictionary* p_dictionary , const QString& p_word, const QString& p_phoneme );
     virtual ~DictionaryEntry();
+
+    /**
+     * @brief Obtains the word represented.
+     * @return QString
+     **/
     QString word() const;
+
+    /**
+     * @brief Obtains the phoneme represented.
+     * @return QString
+     **/
     QString phoneme() const;
 
 private:
-    Dictionary* m_dict;
-    QString m_word;
+    Dictionary* m_dict;     /// < The Dictionary that owns this object.
+    QString m_word;         /// < The QString of the
     QString m_phnm;
 };
 

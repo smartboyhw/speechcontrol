@@ -20,14 +20,14 @@ you to:
 
 Any and all bugs should be reported to http://tasks.thesii.org/.
 That link points to the issue tracking system used to maintain any and all
-activities pertaining to SpeechControl.
+activities pertaining to SpeechControl. The exact link for bug reporting
+when it comes to SpeechControl is <http://tasks.thesii.org/enter_bug.cgi?product=speechcontrol>.
 
 It's recommended that you first test if SpeechControl works on your system
 and then try debugging SpeechControl. To produce meaningful information
 for SpeechControl bug reporting, try building SpeechControl with
 CMAKE_BUILD_TYPE set to 'RelWithDebInfo' or 'Debugfull'. Check the INSTALL
 file for more information about the build and execution cycle of SpeechControl.
-
 
 3. Contact
 You can reach the development team behind SpeechControl at their

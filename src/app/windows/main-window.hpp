@@ -77,7 +77,7 @@ private slots:
     void on_actionAdaptModels_triggered();
 
     // misc.
-    void on_tabWidget_currentChanged(const int p_index);
+    void on_tabWidget_currentChanged ( const int p_index );
     void on_actionOptions_triggered();
     void on_actionAboutQt_triggered();
     void on_actionAboutSpeechControl_triggered();
@@ -91,4 +91,4 @@ private:
 }
 
 #endif // MAIN_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -34,8 +34,7 @@
 #endif
 
 #include <dummysc.hpp>
-
-#include "windows/main-window.hpp"
+#include <windows/main-window.hpp>
 
 class QSettings;
 
@@ -152,4 +151,4 @@ private:
 }
 
 #endif // CORE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

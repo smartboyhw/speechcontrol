@@ -22,7 +22,7 @@
 #define FILESELECT_HPP
 
 #include <QWizardPage>
-#include <sessions/content.hpp>
+#include <app/sessions/content.hpp>
 
 namespace Ui {
 class CustomSourcePage;
@@ -49,4 +49,4 @@ private:
 }
 
 #endif // FILESELECT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

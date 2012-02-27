@@ -134,12 +134,12 @@ void Main::on_tabWidget_currentChanged ( const int p_index ) {
 
         l_widg->clear();
 
-        l_widg->setHorizontalHeaderLabels(QStringList() << "Statement"
-                                                        << "Command"
-        );
+        l_widg->setHorizontalHeaderLabels ( QStringList() << "Statement"
+                                            << "Command"
+                                          );
 
         Q_FOREACH ( AbstractCommand* l_cmd, l_cmds ) {
-            l_widg->setRowCount(l_cmd->statements().count() + l_widg->rowCount());
+            l_widg->setRowCount ( l_cmd->statements().count() + l_widg->rowCount() );
             Q_FOREACH ( const QString l_statement, l_cmd->statements() ) {
                 const int l_row = l_widg->rowCount();
                 l_widg->setItem ( l_row,0, ( new QTableWidgetItem ( l_statement ) ) );
@@ -271,5 +271,5 @@ Main::~Main() {
 }
 
 #include "main-window.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
 

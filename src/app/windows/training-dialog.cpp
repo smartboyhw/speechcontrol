@@ -52,10 +52,10 @@ using SpeechControl::Windows::TrainingDialog;
 
 TrainingDialog::TrainingDialog ( QWidget *parent ) :
     QDialog ( parent ),
-    m_curPos ( 0 ), m_initPos ( 0 ),
+    m_currentPosition ( 0 ), m_initialPosition ( 0 ),
     m_ui ( new Ui::Training ),
     m_mic ( Microphone::defaultMicrophone() ),
-    m_session ( 0 ), m_curSntct ( 0 ), m_initSntct ( 0 ) {
+    m_session ( 0 ), m_currentSentence ( 0 ), m_initialSentence ( 0 ) {
     m_ui->setupUi ( this );
     m_ui->pushButtonProgress->setIcon ( QIcon::fromTheme ( ICON_RECORD ) );
     m_ui->pushButtonReset->setIcon ( QIcon::fromTheme ( ICON_CLEAR ) );
@@ -92,16 +92,16 @@ void TrainingDialog::startTraining ( Session* p_session ) {
 
 /// @bug When training reaches the end of the sentence, it's unable to proceed to the next sentence when training is invoked from here. A manual (yet sloppy) fix is to click 'Undo' until you reach the beginning of the sentence and re-record everything.
 void TrainingDialog::startCollecting() {
-    m_initSntct = m_curSntct = m_session->firstIncompleteSentence();
+    m_initialSentence = m_currentSentence = m_session->firstIncompleteSentence();
 
     // Begin an iteration of reading sentences until interrupted or completed.
-    if ( m_curSntct ) {
+    if ( m_currentSentence ) {
         int l_start = 0;
-        const int l_max = m_curSntct->phrases().count();
+        const int l_max = m_currentSentence->phrases().count();
 
         for ( ; l_start < l_max; l_start++ ) {
-            if ( !m_curSntct->isPhraseCompleted ( l_start ) ) {
-                m_initPos = l_start;
+            if ( !m_currentSentence->isPhraseCompleted ( l_start ) ) {
+                m_initialPosition = l_start;
                 break;
             }
         }
@@ -114,7 +114,7 @@ void TrainingDialog::startCollecting() {
         m_ui->labelText->setEnabled ( true );
         m_ui->labelText->setText ( tr ( "<i>Rendering...</i>" ) );
 
-        navigateToPart ( l_start );
+        navigateToPart ( l_start , m_currentSentence );
     } else {
         reject();
         hide();
@@ -164,15 +164,15 @@ void TrainingDialog::updateProgress ( const double p_progress ) {
 }
 
 void TrainingDialog::open() {
-    m_ui->pushButtonProgress->setChecked ( true );
     QDialog::open();
+    m_ui->pushButtonProgress->setChecked ( true );
 }
 
 /// @todo In order for this to work properly, we'd need to detect empty pauses in the user's speech. We'd might have to record a 'garbage' model of empty noises and detect when empty noises are made and then advance.
 void TrainingDialog::navigateToPart ( const uint &p_index, Sentence* p_sentence ) {
     QString l_text;
+    p_sentence = ( p_sentence == 0 ) ? m_currentSentence : p_sentence;
     PhraseList l_phrsLst = p_sentence->phrases();
-    p_sentence = (p_sentence == 0) ? m_curSntct : p_sentence;
 
     for ( uint i = 0; i < ( uint ) l_phrsLst.count(); i++ ) {
         const QString l_curWord = l_phrsLst.at ( i )->text();
@@ -193,24 +193,27 @@ void TrainingDialog::navigateToPart ( const uint &p_index, Sentence* p_sentence 
 
     qDebug() << l_text << p_sentence->phrases();
 
-    m_curPos = p_index;
-    m_curSntct = p_sentence;
+    m_currentPosition = p_index;
+    m_currentSentence = p_sentence;
     m_ui->labelText->setText ( l_text );
     m_session->assessProgress();
-    m_ui->pushButtonReset->setEnabled ( ! ( (int) m_initPos == m_curPos && m_initSntct == m_curSntct ) );
+    m_ui->pushButtonReset->setEnabled ( ! ( ( int ) m_initialPosition == m_currentPosition && m_initialSentence == m_currentSentence ) );
     m_ui->pushButtonUndo->setEnabled ( m_ui->pushButtonReset->isEnabled() );
 }
 
 void TrainingDialog::navigateNextPart() {
-    if ( m_curPos + 1 < m_curSntct->phrases().count() ) {
-        navigateToPart ( m_curPos + 1 );
-    }
+    if ( m_currentPosition + 1 < m_currentSentence->phrases().count() )
+        navigateToPart ( m_currentPosition + 1 );
+    else
+        navigateToPart ( m_currentSentence->phrases().count() - 1 );
 }
 
 /// @todo When this hits -1, it should head back to the previous sentence.
 void TrainingDialog::navigatePreviousPart() {
-    if ( m_curPos - 1 >= 0 )
-        navigateToPart ( m_curPos - 1 );
+    if ( m_currentPosition - 1 >= 0 )
+        navigateToPart ( m_currentPosition - 1 );
+    else
+        navigateToPart ( 0 );
 }
 
 /// @todo This should clear all of the progress made since the start of training WHEN this dialog opened.
@@ -220,7 +223,7 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonReset_clicked() {
         return;
 
     // Undo the work up to the initial point.
-    for ( int i = m_curSntct->index(); i >= m_initSntct->index(); i-- ) {
+    for ( int i = m_currentSentence->index(); i >= m_initialSentence->index(); i-- ) {
         Sentence* l_sntc = m_session->corpus()->sentenceAt ( i );
         qDebug() << "Wiping sentence" << l_sntc->text();
         Q_FOREACH ( Phrase* l_phrs, l_sntc->phrases() ) {
@@ -229,34 +232,34 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonReset_clicked() {
     }
 
     // Now, revert and jump to the place that training when this dialog opened began at.
-    m_curSntct = m_initSntct;
-    m_curPos = m_initPos;
-    navigateToPart ( m_curPos );
+    m_currentSentence = m_initialSentence;
+    m_currentPosition = m_initialPosition;
+    navigateToPart ( m_currentPosition );
 }
 
 /// @todo This should undo progress at a decrementing interval until it hits the point of where the dialog opened.
 /// @todo Prevent going back further than what the history index recommends.
 void SpeechControl::Windows::TrainingDialog::on_pushButtonUndo_clicked() {
     // Wipe out the previous part (and this part).
-    m_curSntct->phrase ( m_curPos )->audio()->remove();
+    m_currentSentence->phrase ( m_currentPosition )->audio()->remove();
     uint l_pos = 0;
 
-    if ( m_curPos == 0 ) {
-        Sentence* l_prevSntct = m_session->corpus()->sentenceAt ( m_curSntct->index() - 1 );
+    if ( m_currentPosition == 0 ) {
+        Sentence* l_prevSntct = m_session->corpus()->sentenceAt ( m_currentSentence->index() - 1 );
 
         if ( l_prevSntct ) {
             l_pos = l_prevSntct->phrases().count() - 1;
 
-            if ( l_prevSntct == m_initSntct && l_pos == m_initPos )
+            if ( l_prevSntct == m_initialSentence && l_pos == m_initialPosition )
                 return;
 
-            m_curSntct = l_prevSntct;
+            m_currentSentence = l_prevSntct;
         } else
             return;
     } else {
-        m_curSntct->phrase ( m_curPos - 1 )->audio()->remove();
-        qDebug() << "Wiping phrase" << m_curSntct->phrase ( m_curPos - 1 )->text();
-        l_pos = m_curPos - 1;
+        m_currentSentence->phrase ( m_currentPosition - 1 )->audio()->remove();
+        qDebug() << "Wiping phrase" << m_currentSentence->phrase ( m_currentPosition - 1 )->text();
+        l_pos = m_currentPosition - 1;
     }
 
     // Rewind to that part.
@@ -267,16 +270,16 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonUndo_clicked() {
 void SpeechControl::Windows::TrainingDialog::on_pushButtonNext_clicked() {
     if ( m_mic->isRecording() ) {
         m_mic->stopRecording();
-        QFile* l_file = m_curSntct->phrase ( m_curPos )->audio();
+        QFile* l_file = m_currentSentence->phrase ( m_currentPosition )->audio();
         l_file->open ( QIODevice::WriteOnly | QIODevice::Truncate );
         l_file->write ( m_mic->data() );
         l_file->close();
     }
 
-    if ( m_curSntct->allPhrasesCompleted() ) {
-        m_curSntct = m_session->firstIncompleteSentence();
+    if ( m_currentSentence->allPhrasesCompleted() ) {
+        m_currentSentence = m_session->firstIncompleteSentence();
 
-        if ( m_curSntct == 0 ) {
+        if ( m_currentSentence == 0 ) {
             updateProgress ( 1.0 );
             QMessageBox* l_msgComplete = new QMessageBox ( this );
             l_msgComplete->setWindowTitle ( "Session Complete - SpeechControl" );
@@ -289,7 +292,7 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonNext_clicked() {
             return;
         }
 
-        m_curPos = -1;
+        m_currentPosition = -1;
     }
 
     // Advance to that part and start recording.

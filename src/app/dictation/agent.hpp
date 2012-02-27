@@ -26,7 +26,7 @@
 #include "abstractagent.hpp"
 
 namespace SpeechControl {
-    namespace Dictation {
+namespace Dictation {
 class Agent : public AbstractAgent {
     Q_OBJECT
 public:
@@ -39,8 +39,8 @@ private:
     virtual OperationState onStateChanged ( const OperationState );
     static Agent* s_inst;
 };
-    }
+}
 }
 
 #endif // DICTATION_AGENT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

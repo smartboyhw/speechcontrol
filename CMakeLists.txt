@@ -1,7 +1,8 @@
 project(SpeechControl)
 cmake_minimum_required(VERSION 2.8)
 
-list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/modules")
+set(PROJECT_CMAKE_DIR "${PROJECT_SOURCE_DIR}/cmake/modules")
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_CMAKE_DIR})
 
 ## required packages
 find_package(Doxygen)
@@ -75,3 +76,14 @@ if(DOXYGEN_FOUND)
             DESTINATION "${CMAKE_INSTALL_PREFIX}/share/doc/libspeechcontrol"
             COMPONENT "doc")
 endif()
+
+
+## Install CMake Find* modules.
+set(CMAKE_FIND_MODULES
+    "${PROJECT_BINARY_DIR}/FindSphinxBase.cmake"
+    "${PROJECT_BINARY_DIR}/FindPocketSphinx.cmake")
+
+install(FILES ${CMAKE_FIND_MODULES}
+    DESTINATION
+    "${CMAKE_INSTALL_PREFIX}/share/cmake-${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}/Modules"
+    COMPONENT dev)

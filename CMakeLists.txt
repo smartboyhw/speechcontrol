@@ -14,6 +14,7 @@ option(WITH_TESTS              "Generate the test build system?"            OFF)
 
 ## required packages
 find_package(PkgConfig REQUIRED)
+find_package(Xdo REQUIRED)
 find_package(Qt4 4.7 COMPONENTS
   QtCore
   QtGui
@@ -35,16 +36,19 @@ set(SPCHCNTRL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
 set(SPCHCNTRL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include/speechcontrol")
 set(SPCHCNTRL_INCLUDE_DIRS ${QT_INCLUDE_DIR}
     ${SPCHCNTRL_INCLUDE_DIR}
+    ${XDO_INCLUDE_DIRS}
     ${POCKETSPHINX_INCLUDE_DIRS}
     ${QTGSTREAMER_INCLUDE_DIR})
 set(SPCHCNTRL_LIBRARIES ${QT_QTCORE_LIBRARY}
     ${QT_QTXML_LIBRARY}
     ${QTGLIB_LIBRARIES}
+    ${XDO_LIBRARIES}
     ${QTGSTREAMER_LIBRARIES}
     ${QTGSTREAMER_UI_LIBRARIES}
     ${QTGSTREAMER_UTILS_LIBRARIES}
     ${POCKETSPHINX_LIBRARIES})
-set(SPCHCNTRL_COMPILE_FLAGS "-Wall -Wextra -std=c++0x ${QTGSTREAMER_FLAGS} -fexceptions")
+set(SPCHCNTRL_COMPILE_FLAGS "${QTGSTREAMER_FLAGS} -fexceptions -feliminate-unused-debug-symbols")
+set(SPCHCNTRL_COMPILE_FLAGS_DEBUG "-Wall -Wextra -Wabi -Wctor-dtor-privacy -Wformat -Wunused")
 set(SPCHCNTRL_COMPILE_DEFINITIONS ${QT_DEFINITIONS})
 set(SPCHCNTRL_QRESC )
 file(GLOB SPCHCNTRL_UI "res/ui/*.ui")

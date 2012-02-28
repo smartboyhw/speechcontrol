@@ -1,0 +1,22 @@
+# Searches for the XDO library.
+
+find_path(XDO_INCLUDE_DIRS "xdo.h")
+
+if(XDO_INCLUDE_DIRS STREQUAL "XDO_INCLUDE_DIRS-NOTFOUND")
+    set(XDO_INCLUDE_DIRS "")
+else(XDO_INCLUDE_DIRS STREQUAL "XDO_INCLUDE_DIRS-NOTFOUND")
+
+    find_library(XDO_LIBRARIES "xdo")
+    if(XDO_LIBRARIES STREQUAL "XDO_LIBRARIES-NOTFOUND")
+        set(XDO_LIBRARIES "")
+        message(WARNING "xdo library not found.")
+    else(XDO_LIBRARIES STREQUAL "XDO_LIBRARIES-NOTFOUND")
+        # It's an external library.
+        message(STATUS "Found xdo: ${XDO_LIBRARIES}")
+    endif(XDO_LIBRARIES STREQUAL "XDO_LIBRARIES-NOTFOUND")
+endif(XDO_INCLUDE_DIRS STREQUAL "XDO_INCLUDE_DIRS-NOTFOUND")
+
+if (NOT XDO-NOTFOUND)
+    set(XDO_LIBRARIES ${XDO})
+    set(XDO_INCLUDE_DIRS "${CMAKE_INSTALL_PREFIX}/include")
+endif(NOT XDO-NOTFOUND)

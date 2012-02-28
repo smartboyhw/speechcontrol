@@ -29,104 +29,127 @@ namespace Plugins {
 class Factory;
 
 /**
- * @brief ...
+ * @brief Represents a manipulative system to control plug-ins.
+ *
+ * The Factory of SpeechControl allows the system to load and unload plug-ins at whim.
+ * Configuration and settings about plug-ins can also be obtained via convenience methods
+ * provided by the Factory.
+ *
+ * @section configuration-settings Settings and Configuration
+ *
+ * The term 'configuration' and 'setting' are synonyms, but here in SpeechControl, we use the
+ * terms to define two separate things.
+ *
+ * @subsection configuration Plug-in Configuration
+ * <b>Configuration</b> refers to the settings used to define the plug-in so that SpeechControl can determine its dependencies and manage the (un)loading process.
+ *
+ * @subsection settings Plug-in Settings
+ * <b>Settings</b> refer to the options and values that the plug-in will use within SpeechControl to extend its functionality.
+ *
  **/
 class Factory : public QObject {
     Q_OBJECT
 
 signals:
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Emitted when the Factory's started.
      **/
     void started();
+
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Emitted when the Factory's stopped.
      **/
     void stopped();
+
     /**
-     * @brief ...
-     *
-     * @param  ...
-     * @return void
+     * @brief Emitted when a plug-in is loaded.
+     * @param p_uuid The UUID of the plug-in loaded.
      **/
-    void pluginLoaded ( const QUuid& );
+    void pluginLoaded ( const QUuid& p_uuid );
+
     /**
-     * @brief ...
-     *
-     * @param  ...
-     * @return void
+     * @brief Emitted when a plug-in is unloaded.
+     * @param p_uuid The UUID of the plug-in unloaded.
      **/
     void pluginUnloaded ( const QUuid& );
 
 public slots:
+    /**
+     * @brief Starts the Factory.
+     **/
     void start();
+
+    /**
+     * @brief Stops the Factory.
+     **/
     void stop();
 
 public:
+    /**
+     * @brief Destructor.
+     **/
     virtual ~Factory();
 
     /**
-     * @brief ...
+     * @brief Loads a plug-in.
      *
-     * @param  ...
-     * @return const bool
+     * Invokes the loading process for a plug-in and readies it
+     * for integration with SpeechControl.
+     *
+     * @param p_uuid The UUID of the plug-in to load.
+     * @return const bool True if the plug-in loaded successfully, false otherwise.
      **/
     static bool loadPlugin ( const QUuid& );
 
     /**
-     * @brief ...
+     * @brief Unloads a plug-in.
      *
-     * @param  ...
-     * @return const bool
+     * Invokes the unloading process for a plug-in and readies it
+     * for removal from SpeechControl.
+     *
+     * @param p_uuid The UUID of the plug-in to unload.
+     * @return const bool True if the plug-in unloaded successfully, false otherwise.
      **/
     void unloadPlugin ( const QUuid& p_uuid );
 
     /**
-     * @brief ...
-     *
-     * @param  ...
-     * @return bool
+     * @brief Determines if a plug-in has been loaded.
+     * @param p_uuid The plug-in's UUID to verify.
+     * @return bool True if the plug-in is loaded, false otherwise.
      **/
     static bool isPluginLoaded ( const QUuid& );
 
     /**
-     * @brief ...
-     *
-     * @return :Plugins::PluginList
+     * @brief Obtains a list of loaded plug-ins.
+     * @return A PluginList. length() == 0 if there's no loaded plug-ins.
      **/
     static PluginList loadedPlugins();
+
     /**
-     * @brief ...
-     *
-     * @return :Plugins::PluginList
+     * @brief Obtains a mapping of all of the plug-ins that can be loaded by SpeechControl.
+     * @return A PluginMap of all of the discovered plug-ins for SpeechControl on the system.
      **/
     static PluginMap availablePlugins();
+
     /**
-     * @brief ...
-     *
-     * @return :Plugins::Factory*
+     * @brief Obtains a pointer to the Factory's instance.
+     * @return Factory.
      **/
     static Factory* instance();
 
     /**
-     *
-     *
-     * @brief ...
-     *
-     * @param p_uuid ...
-     * @return QSettings*
+     * @brief Obtains the configuration of a plug-in by its specified UUID.
+     * @param p_uuid The UUID of the plug-in whose configuration is requested.
+     * @return A pointer to a QSettings* object. NULL if the UUID points to an invalid plug-in.
+     * @see pluginSettings()
      **/
     static QSettings* pluginConfiguration ( QUuid p_uuid );
 
     /**
-     * @brief ...
-     *
-     * @param p_uuid ...
-     * @return QSettings*
+     * @brief Obtains the settings of a plug-in by its specified UUID.
+     * @param p_uuid The UUID of the plug-in whose settings is requested.
+     * @return A pointer to a QSettings* object. NULL if the UUID points to an invalid plug-in.
+     * @see pluginConfiguration()
      **/
     static QSettings* pluginSettings ( QUuid p_uuid );
 
@@ -139,4 +162,4 @@ private:
 }
 
 #endif // FACTORY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

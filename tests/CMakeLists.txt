@@ -4,13 +4,14 @@ if(WITH_TESTS)
     message(STATUS "Building tests enabled.")
 
     ## required packages
-    list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR}/src/app/InstallFiles")
+    list(APPEND CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR}/src/lib/InstallFiles")
     include(CTest)
     enable_testing()
 
     ## Required packages
     pkg_search_module(CPPTEST libcpptest)
-    find_package(ExecInfo)
+    find_package(ExecInfo REQUIRED)
     if(EXECINFO_FOUND)
         list(APPEND TEST_COMPILE_DEFINITIONS "HAVE_EXECINFO")
         if (EXECINFO_LIBRARIES)

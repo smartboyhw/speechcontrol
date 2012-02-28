@@ -47,13 +47,16 @@ public:
      * removed in a future release.
      **/
     enum OperationState {
-        Disabled = -1,  ///< Defines the state of the agent as disabled.
-        ///< All activity defined by the agent should be halted if active.
+        Disabled = -1,  /** Defines the state of the agent as disabled.
+                         *  All activity defined by the agent should be halted if active.
+                         */
 
-        Undefined,      ///< Defines the state of the agent as undefined.
+        Undefined,      /** Defines the state of the agent as undefined.
+                         */
 
-        Enabled         ///< Defines the state of the agent as enabled.
-        ///< All activity defined by the agent should be activated.
+        Enabled         /** Defines the state of the agent as enabled.
+                         *  All activity defined by the agent should be activated.
+                         */
     };
 
     /**
@@ -127,4 +130,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -46,8 +46,6 @@ namespace SpeechControl {
  * The Core class is where most of the event handling for most utilities
  * lock into. It holds the @c Factory and all of the derived forms of @c AbstractPlugin
  * objects.
- *
- * \bz 34
  **/
 class Core : public QObject {
     Q_OBJECT
@@ -90,6 +88,7 @@ public:
 
     /**
      * @brief Sets a core configuration option of SpeechControl.
+     *
      * This method allows for a centralized means of obtaining values about
      * SpeechControl's core configuration.
      * @param  p_attrName The path to the value to find.
@@ -138,10 +137,10 @@ public slots:
     void asrFinished ( QString& text );
 
 private:
-    SC_APP* m_app;
-    Windows::Main* s_mw;
-    QSettings* m_settings;
-    static Core* s_inst;
+    SC_APP* m_app;          /// Holds the Application instance.
+    Windows::Main* s_mw;    /// Holds the main window.
+    QSettings* m_settings;  /// Holds the application's global configuration.
+    static Core* s_inst;    /// Holds a instance.
 
     /// Experimental
     DummySC* dummyASR;
@@ -151,4 +150,4 @@ private:
 }
 
 #endif // CORE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

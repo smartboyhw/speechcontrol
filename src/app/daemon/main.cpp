@@ -1,7 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -14,22 +14,10 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef SPCHCNTRL_APP_CONFIG_HPP
-#define SPCHCNTRL_APP_CONFIG_HPP
-
-/// Provides the location to the libraries to be used as plug-ins.
-/// @see AbstractPlugin
-/// @see Factory
-#define SPCHCNTRL_PLUGINS_LIB_DIR "@SPCHCNTRL_PLUGINS_LIB_INSTALL_DIR@"
-
-/// Provides the location to the specification files to be used as meta-data for plug-ins.
-/// @see AbstractPlugin
-/// @see Factory
-#define SPCHCNTRL_PLUGINS_SPEC_DIR "@SPCHCNTRL_PLUGINS_SPEC_INSTALL_DIR@"
-
-#endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+int main(int p_argc, char** p_argv){
+    return 0;
+}

@@ -20,13 +20,14 @@
 
 #include "core.hpp"
 #include "agent.hpp"
+#include "xdo.hpp"
 
 namespace SpeechControl {
 namespace Dictation {
 
 Agent* Agent::s_inst = 0;
 
-Agent::Agent() : AbstractAgent ( Core::instance() ) {
+Agent::Agent() : AbstractAgent ( KeyboardEmulator::instance() ) {
 
 }
 
@@ -64,4 +65,4 @@ Agent::~Agent() {
 }
 
 #include "../dictation/agent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

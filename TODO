@@ -1,3 +1,7 @@
+*** To see a live list of TODOs, we recommend that you
+*** use Doxygen to generate all of the @todo mentions
+*** in the source code.
+
 Library
 ----------------------------------------------------------
 * List audio devices.
@@ -25,3 +29,4 @@ Miscellaneous
 ----------------------------------------------------------
 * Re-work SpeechControl to have a daemon run in the background that handles all of the speech recognition requests (speechcontrold).
 * Work on the theming for the documentation.
+* Exclude the plug-in's code from the documentation.

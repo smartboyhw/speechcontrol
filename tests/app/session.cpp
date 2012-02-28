@@ -21,7 +21,7 @@
 #include <cpptest-assert.h>
 
 // application includes
-#include <app/session.hpp>
+#include <app/sessions/session.hpp>
 
 // local includes
 #include "include/session.hpp"
@@ -65,4 +65,4 @@ void MODULE::testCreateSession() {
 void MODULE::testDeinitialize() {
     TEST_THROWS_NOTHING_MSG ( 0,"No deinitialization available." );
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

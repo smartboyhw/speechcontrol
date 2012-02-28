@@ -6,15 +6,21 @@
 project(SpchCntrlTest-@TEST_ID@)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+message("${CMAKE_MODULE_PATH}")
+
+find_package(SpeechControlApplication REQUIRED)
+find_package(SpeechControlLibrary REQUIRED)
+
 file(GLOB TEST_BASE_SRCS "../../*.cpp")
-file(GLOB TEST_EXTRA_SRCS "../../../src/app/*.cpp"
-                          "../../../src/app/windows/*/*.cpp"
-                          "../../../src/app/dictation/*.cpp"
-                          "../../../src/app/voxforge/*.cpp"
-                          "../../../src/app/sessions/*.cpp"
-                          "../../../src/app/desktopcontrol/*.cpp")
-set(TEST_BASE_SCPP ${TEST_BASE_SRCS} ${SPCHCNTRL_APP_SRCS} ${TEST_EXTRA_SRCS}
-                   ${SPCHCNTRL_WINDOWS_SRCS} "@TEST_SRC@")
+file(GLOB TEST_EXTRA_HDRS "../../../src/app/*.hpp"
+                          "../../../src/app/windows/*/*.hpp"
+                          "../../../src/app/dictation/*.hpp"
+                          "../../../src/app/voxforge/*.hpp"
+                          "../../../src/app/sessions/*.hpp"
+                          "../../../src/app/dictation/*.hpp"
+                          "../../../src/app/desktopcontrol/*.hpp")
+set(TEST_BASE_SCPP ${TEST_BASE_SRCS} "@TEST_SRC@")
+
 ## Variables
 set(TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS}
                              MODULE=@TEST_ID@Suite)
@@ -29,9 +35,11 @@ set(TEST_LIBRARIES ${SPCHCNTRL_LIBRARIES}
 
 QT4_AUTOMOC(${TEST_BASE_SCPP})
 QT4_WRAP_CPP(TEST_BASE_SCPP "../../include/base.hpp")
+QT4_WRAP_CPP(TEST_BASE_SCPP ${TEST_EXTRA_HDRS})
 
 add_executable(test@TEST_ID@ ${TEST_BASE_SCPP})
 
+message("${TEST_INCLUDE_DIRS}")
 include_directories(${TEST_INCLUDE_DIRS})
 
 set_target_properties(test@TEST_ID@ PROPERTIES

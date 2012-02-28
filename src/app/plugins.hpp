@@ -40,17 +40,27 @@ class AbstractHandle;
 class AbstractPlugin;
 
 /**
- * @brief ...
+ * @brief Represents a list of plug-ins.
  **/
 typedef QList<AbstractPlugin*> PluginList;
 
 /**
- * @brief ...
+ * @brief Represents a mapping of UUIDs and plug-ins.
  **/
 typedef QMap<QUuid, AbstractPlugin*> PluginMap;
 
 /**
- * @brief ...
+ * @brief An abstract base for plug-ins to define their entry class.
+ *
+ * This class provides a basis for all plug-ins to begin their executional
+ * cycle as well as to terminate it. It comes with convenience methods for
+ * most of the values you'd find  in the plug-in's configuration file like it's
+ * name (@c name()), version (@c version()) and dependencies (@c plugins()). Such
+ * values make the Factory's execution more simpler, but on the developer's end; they
+ * can easily read + write configuration using QSettings by obtaining the plug-in's
+ * method of nabbing its settings (@c settings()).
+ *
+ * @see Factory
  **/
 class AbstractPlugin : public QObject {
     Q_OBJECT
@@ -60,94 +70,82 @@ class AbstractPlugin : public QObject {
 
 signals:
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Emitted when the plug-in has been started.
      **/
     void started();
 
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Emitted when the plug-in has been stopped.
      **/
     void stopped();
 
 public:
     /**
-     * @brief ...
-     *
-     * @param  ... Defaults to 0.
+     * @brief Default constructor.
+     * @param p_parent The parent of this QObject.
      **/
-    explicit AbstractPlugin ( QObject* = 0 );
+    explicit AbstractPlugin ( QObject* p_parent = 0 );
 
     /**
-     * @brief ...
+     * @brief Initializing constructor.
      *
-     * @param p_uuid ...
-     * @param p_parent ... Defaults to 0.
+     * Builds an AbstractPlugin and loads the configuration.
+     *
+     * @param p_uuid The UUID of the plug-in to build.
+     * @param p_parent The parent of this QObject.
      **/
     AbstractPlugin ( const QUuid& p_uuid, QObject* p_parent = 0 );
 
     /**
-     * @brief ...
-     *
+     * @brief Destructor.
      **/
     virtual ~AbstractPlugin();
 
     /**
-     * @brief ...
-     *
-     * @return const bool
+     * @brief Determines if the plug-in has been loaded.
+     * @return TRUE, if the plug-in has been loaded. FALSE otherwise.
      **/
     bool hasLoaded() const;
 
     /**
-     * @brief ...
-     *
-     * @return const double
+     * @brief Obtains the version of the plug-in.
+     * @return A positive value if the version's found, else -1.0 if not.
      **/
     double version() const;
 
     /**
-     * @brief ...
-     *
-     * @return const QString
+     * @brief Obtains the name of the plug-in.
+     * @return QString::null if it couldn't be determined, a QString otherwise.
      **/
     const QString name() const;
 
     /**
-     * @brief ...
-     *
-     * @return const QString
+     * @brief Obtains the description of the plug-in.
+     * @return QString::null if it couldn't be determined, a QString otherwise.
      **/
     const QString description() const;
 
     /**
-     * @brief ...
-     *
-     * @return const QUrl
+     * @brief Obtains a URL to a page that provides more information about the plug-in.
+     * @return An invalid QUrl if it couldn't be determined, a QUrl otherwise.
      **/
     const QUrl url() const;
 
     /**
-     * @brief ...
-     *
-     * @return const QUuid
+     * @brief Obtains the QUuid of the plug-in.
+     * @return A invalid QUuid if it couldn't be determined, a QUuid otherwise.
      **/
     const QUuid uuid() const;
 
     /**
-     * @brief ...
-     *
-     * @return :Plugins::PluginList
+     * @brief Obtains a list of dependency plug-ins.
+     * @return A PluginList of plug-ins that have to be loaded in order for this plug-in to be used correctly.
      **/
     const PluginList plugins() const;
 
     /**
-     * @brief ...
-     *
-     * @return const bool
+     * @brief Determines if the plug-in can be loaded at the moment.
+     * @return TRUE if the plug-in is supported, FALSE otherwise.
      **/
     bool isSupported() const;
 
@@ -249,4 +247,4 @@ protected:
 }
 
 #endif // PLUGINS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

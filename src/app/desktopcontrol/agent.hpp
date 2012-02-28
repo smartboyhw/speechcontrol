@@ -26,7 +26,6 @@
 #include <QObject>
 
 // Local
-#include <sphinx.hpp>
 #include "desktopasr.hpp"
 
 /**
@@ -61,7 +60,6 @@ class Agent : public QObject
 private:
     static Agent* _instance;
     DesktopASR* _asr;
-    Sphinx* m_sphinx;
     
 public:
     /**
@@ -82,14 +80,14 @@ public:
      *
      * @return void
      **/
-    static void start();
+    void start();
     
     /**
      * @brief ...
      *
      * @return void
      **/
-    static void stop();
+    void stop();
     
     /**
      * @brief ...
@@ -101,9 +99,9 @@ public:
     /**
      * @brief ...
      *
-     * @return void
+     * @return bool
      **/
-    static const bool isActive();
+    bool isActive() const;
 
 signals:
     /**

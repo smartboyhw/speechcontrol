@@ -41,6 +41,7 @@ void ASR::_prepare()
 
     _pipeline->setState (QGst::StateReady);
     _state = Ready;
+    _running = false;
 }
 
 ASR::ASR (QObject* parent) : QObject (parent)
@@ -180,13 +181,23 @@ bool ASR::isReady() const
     return _state == Ready;
 }
 
-void ASR::run()
+bool ASR::isRunning() const
+{
+    return _running;
+}
+
+bool ASR::run()
 {
     qDebug() << "[ASR start]";
-    if ( isReady())
+    if ( isReady()) {
         _pipeline->setState(QGst::StatePlaying);
-    else
+        _running = true;
+        return true;
+    }
+    else {
         qWarning() << "[ASR] Object is not ready to run.";
+        return false;
+    }
 }
 
 void ASR::pause()
@@ -197,6 +208,7 @@ void ASR::pause()
 void ASR::stop()
 {
     _pipeline->setState(QGst::StatePaused);
+    _running = false;
 }
 
 void ASR::asrPartialResult (const QString& text, const QString& uttid)

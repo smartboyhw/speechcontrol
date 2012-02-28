@@ -20,14 +20,12 @@
  */
 
 #include "agent.hpp"
-#include "sphinx.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::DesktopControl;
 
 Agent* Agent::_instance = 0;
 
-/// @todo #issue 0000032
 Agent::Agent(QObject* parent) : QObject(parent)
 {
   _instance = this;
@@ -44,10 +42,9 @@ Agent::Agent(const Agent& p_other) : QObject(p_other.parent()),
 
 }
 
-/// @todo Properly designate a means of determing if this agent is active.
-const bool Agent::isActive()
+bool Agent::isActive() const
 {
-    return instance()->m_sphinx->isListening();
+    return _asr->isRunning();
 }
 
 Agent* Agent::instance()
@@ -55,19 +52,19 @@ Agent* Agent::instance()
   return _instance;
 }
 
-/// @todo Instead of using Sphinx directly, use the ASR function.
 void Agent::start()
 {
-    instance()->m_sphinx->startRecognizing();
-    emit instance()->stateChanged(true);
-    emit instance()->started();
+    if(_asr->run())
+        emit started();
+    else {
+        qWarning() << "[DesktopControl::Agent] Start unsuccessful.";
+    }
 }
 
 void Agent::stop()
 {
-    instance()->m_sphinx->stopRecognizing();
-    emit instance()->stateChanged(false);
-    emit instance()->stopped();
+    _asr->stop();
+    emit stopped();
 }
 
 /// @todo That's bigger issue, we have to make a good design.

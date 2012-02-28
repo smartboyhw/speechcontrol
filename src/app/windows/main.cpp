@@ -61,13 +61,13 @@ Main::Main() : m_ui(new Ui::MainWindow), m_prgTraining(0) {
    m_ui->statusBar->showMessage("Ready.");
    m_ui->statusBar->addPermanentWidget(m_prgTraining);
 
-   connect(DesktopControl::Agent::instance(),SIGNAL(stateChanged(bool)),this,SLOT(desktopControlToggled(bool)));
-   connect(Dictation::Agent::instance(),SIGNAL(stateChanged(bool)),this,SLOT(dictationToggled(bool)));
+//    connect(DesktopControl::Agent::instance(),SIGNAL(stateChanged(bool)),this,SLOT(desktopControlToggled(bool)));
+//    connect(Dictation::Agent::instance(),SIGNAL(stateChanged(bool)),this,SLOT(dictationToggled(bool)));
 
-   m_ui->btnDsktpCntrl->setChecked(DesktopControl::Agent::isActive());
+   m_ui->btnDsktpCntrl->setChecked(DesktopControl::Agent::instance()->isActive());
    m_ui->btnDctn->setChecked(Dictation::Agent::isActive());
-   on_btnDsktpCntrl_toggled(DesktopControl::Agent::isActive());
-   on_btnDctn_toggled(DesktopControl::Agent::isActive());
+   on_btnDsktpCntrl_toggled(DesktopControl::Agent::instance()->isActive());
+   on_btnDctn_toggled(DesktopControl::Agent::instance()->isActive());
    m_prgTraining->setValue(3);
    m_prgTraining->setMaximum(10);
    updateContent();
@@ -113,7 +113,7 @@ void Main::on_actionStartTraining_triggered()
 void SpeechControl::Windows::Main::on_actionStartDesktopControl_triggered()
 {
     m_ui->statusBar->showMessage("This feature hasn't been implemented yet.");
-    DesktopControl::Agent::start();
+    DesktopControl::Agent::instance()->start();
 }
 
 void SpeechControl::Windows::Main::on_btnDsktpCntrl_toggled(bool checked)
@@ -156,10 +156,10 @@ void SpeechControl::Windows::Main::dictationToggled(const bool p_val)
 
 void SpeechControl::Windows::Main::on_btnDsktpCntrl_clicked()
 {
-    if (DesktopControl::Agent::isActive())
-        DesktopControl::Agent::stop();
+    if (DesktopControl::Agent::instance()->isActive())
+        DesktopControl::Agent::instance()->stop();
     else
-        DesktopControl::Agent::start();
+        DesktopControl::Agent::instance()->stop();
 }
 
 void SpeechControl::Windows::Main::on_btnDctn_clicked()

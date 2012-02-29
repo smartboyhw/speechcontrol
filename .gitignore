@@ -1,5 +1,4 @@
 debian
-doc
 build
 .*
 *~
@@ -7,6 +6,5 @@ CMakeLists.txt.user
 *.kdev4
 .kdev*
 *.pyc
-debian
 config.hpp
 tests/cmake/*

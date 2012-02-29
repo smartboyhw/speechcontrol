@@ -28,18 +28,27 @@ Agent* Agent::_instance = 0;
 
 Agent::Agent(QObject* parent) : QObject(parent)
 {
-  _instance = this;
-  
   _asr = new DesktopASR(DesktopASR::getStandardDescription(), parent);
-  connect(this, SIGNAL(started()), _asr, SLOT(start()));
+  connect(this, SIGNAL(started()), _asr, SLOT(run()));
   connect(this, SIGNAL(stopped()), _asr, SLOT(stop()));
   connect(_asr, SIGNAL(finished(QString&)), this, SLOT(invokeCommand(QString&)));
 }
 
-Agent::Agent(const Agent& p_other) : QObject(p_other.parent()),
-    _asr(p_other._asr)
-{
+// Agent::Agent(const Agent& p_other) : QObject(p_other.parent()),
+//     _asr(p_other._asr)
+// {
+// 
+// }
 
+void Agent::setup()
+{
+    if (!_instance)
+        _instance = new Agent();
+}
+
+Agent::~Agent()
+{
+    
 }
 
 bool Agent::isActive() const
@@ -69,11 +78,6 @@ void Agent::stop()
 
 /// @todo That's bigger issue, we have to make a good design.
 void Agent::invokeCommand (QString& command)
-{
-
-}
-
-Agent::~Agent()
 {
 
 }

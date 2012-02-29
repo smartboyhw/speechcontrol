@@ -61,20 +61,26 @@ private:
     static Agent* _instance;
     DesktopASR* _asr;
     
-public:
+protected:
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Default constructor
+     * Creation of individual Agents is blocked, use @c setup() instead.
      **/
     explicit Agent (QObject* parent = 0);
     
+public:
     /**
-     * @brief ...
-     *
+     * @brief Destructor
      **/
     virtual ~Agent();
 
+    /**
+     * @brief Setup Desktop Control Agent
+     * This static method initializes the instance of DesktopControl::Agent
+     * caring about every possible requirement.
+     */
+    static void setup();
+    
     /**
      * @brief ...
      *
@@ -92,17 +98,17 @@ public:
     /**
      * @brief ...
      *
-     * @return :DesktopControl::Agent*
+     * @return bool
      **/
-    static Agent* instance();
+    bool isActive() const;
     
     /**
      * @brief ...
      *
-     * @return bool
+     * @return DesktopControl::Agent*
      **/
-    bool isActive() const;
-
+    static Agent* instance();
+    
 signals:
     /**
      * @brief ...

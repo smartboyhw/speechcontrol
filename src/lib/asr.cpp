@@ -41,21 +41,20 @@ void ASR::_prepare()
 
     _pipeline->setState (QGst::StateReady);
     _state = Ready;
-    _running = false;
 }
 
-ASR::ASR (QObject* parent) : QObject (parent)
+ASR::ASR (QObject* parent) : QObject (parent), _running(false)
 {
     _state = NotReady;
 }
 
-ASR::ASR (QGst::PipelinePtr pipeline, QObject* parent) : QObject (parent), _pipeline(pipeline)
+ASR::ASR (QGst::PipelinePtr pipeline, QObject* parent) : QObject (parent), _pipeline(pipeline), _running(false)
 {
     _state = NotReady;
 }
 
 /// @todo Automatically extract 'pocketsphinx' element name from description.
-ASR::ASR (const char* description, QObject* parent) : QObject (parent)
+ASR::ASR (const char* description, QObject* parent) : QObject (parent), _running(false)
 {
     _pipeline = QGst::Pipeline::create();
     QGst::BinPtr bin = QGst::Bin::fromDescription (description);
@@ -65,7 +64,7 @@ ASR::ASR (const char* description, QObject* parent) : QObject (parent)
 }
 
 /// @todo Automatically extract 'pocketsphinx' element name from description.
-ASR::ASR (const QString& description, QObject* parent) : QObject (parent)
+ASR::ASR (const QString& description, QObject* parent) : QObject (parent), _running(false)
 {
     _pipeline = QGst::Pipeline::create();
     QGst::BinPtr bin = QGst::Bin::fromDescription (description.toStdString().c_str());

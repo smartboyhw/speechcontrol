@@ -197,12 +197,6 @@ public:
      */
     void pause();
 
-    /**
-     * @brief Stop the pipeline
-     * This method puts the whole pipline in the StatePaused state.
-     */
-    void stop();
-
 signals:
     /// @todo Useful or not?
     void finished(QString& result);
@@ -212,6 +206,12 @@ public slots:
      * @brief Run the pipeline
      */
     bool run();
+    
+    /**
+     * @brief Stop the pipeline
+     * This method puts the whole pipline in the StatePaused state.
+     */
+    void stop();
 
     void asrPartialResult (const QString& text, const QString& uttid);
     void asrResult (const QString& text, const QString& uttid);

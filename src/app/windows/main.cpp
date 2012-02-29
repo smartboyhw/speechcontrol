@@ -61,6 +61,8 @@ Main::Main() : m_ui(new Ui::MainWindow), m_prgTraining(0) {
    m_ui->statusBar->showMessage("Ready.");
    m_ui->statusBar->addPermanentWidget(m_prgTraining);
 
+   // Desktop Control
+   DesktopControl::Agent::setup();
 //    connect(DesktopControl::Agent::instance(),SIGNAL(stateChanged(bool)),this,SLOT(desktopControlToggled(bool)));
 //    connect(Dictation::Agent::instance(),SIGNAL(stateChanged(bool)),this,SLOT(dictationToggled(bool)));
 
@@ -159,7 +161,7 @@ void SpeechControl::Windows::Main::on_btnDsktpCntrl_clicked()
     if (DesktopControl::Agent::instance()->isActive())
         DesktopControl::Agent::instance()->stop();
     else
-        DesktopControl::Agent::instance()->stop();
+        DesktopControl::Agent::instance()->start();
 }
 
 void SpeechControl::Windows::Main::on_btnDctn_clicked()

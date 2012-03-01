@@ -48,7 +48,6 @@ void DesktopASR::applicationMessage (const QGst::MessagePtr& message)
     QString uttid      = message->internalStructure()->value("uttid").toString();
     if (msgType == "result") {
         qDebug() << "ASR result:" << hypothesis;
-        stop();
         emit finished(hypothesis);
     }
 }

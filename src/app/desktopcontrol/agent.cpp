@@ -29,7 +29,6 @@ Agent* Agent::_instance = 0;
 Agent::Agent(QObject* parent) : QObject(parent)
 {
   _asr = new DesktopASR(DesktopASR::getStandardDescription(), parent);
-  connect(this, SIGNAL(started()), _asr, SLOT(run()));
   connect(this, SIGNAL(stopped()), _asr, SLOT(stop()));
   connect(_asr, SIGNAL(finished(QString&)), this, SLOT(invokeCommand(QString&)));
 }
@@ -79,5 +78,5 @@ void Agent::stop()
 /// @todo That's bigger issue, we have to make a good design.
 void Agent::invokeCommand (QString& command)
 {
-
+    qDebug() << "[DesktopControl::Agent] command invoked:" << command;
 }

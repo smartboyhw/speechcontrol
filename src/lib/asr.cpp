@@ -188,7 +188,7 @@ bool ASR::isRunning() const
 bool ASR::run()
 {
     qDebug() << "[ASR start]";
-    if ( isReady()) {
+    if (isReady()) {
         _pipeline->setState(QGst::StatePlaying);
         _running = true;
         return true;

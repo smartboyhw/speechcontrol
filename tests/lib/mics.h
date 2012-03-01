@@ -1,8 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
- *            (C) 2012 Jacky Alcine <jacky.alcine@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -15,26 +14,19 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#ifndef TEST_LIB_MICS_HPP
+#define TEST_LIB_MICS_HPP
+#include <QObject>
 
-#define TEST_SUITE
+class TestMicrophone : public QObject {
+    Q_OBJECT
 
-#include <cstdlib>
-#include <iostream>
+private slots:
+    void listMicrophones();
+};
 
-// libcpptest includes
-#include <cpptest-textoutput.h>
-
-// local includes
-#include "include/base.hpp"
-
-using namespace SpeechControl;
-
-int main ( int argc, char** argv ) {
-    Test::TextOutput l_output ( Test::TextOutput::Verbose );
-    return TestModule::instance()->run ( l_output ) ? EXIT_SUCCESS : EXIT_FAILURE;
-}
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#endif

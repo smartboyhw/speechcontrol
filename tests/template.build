@@ -5,56 +5,65 @@
 
 project(SpchCntrlTest-@TEST_ID@)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(TEST_MODE "@TEST_MODE@")
+set(TEST_INCLUDE_FILE "${CMAKE_SOURCE_DIR}/tests/CTestConfig.cmake")
+
+include(CTest)
+enable_testing()
 
 ## Add paths to find CMake information about the library and application.
-set(SpeechControlApplication_DIR "${CMAKE_BINARY_DIR}/src/app/InstallFiles")
 set(SpeechControlLibrary_DIR "${CMAKE_BINARY_DIR}/src/lib/InstallFiles")
-
-## Search for the SpeechControl application and library.
-find_package(SpeechControlApplication REQUIRED)
 find_package(SpeechControlLibrary REQUIRED)
 
-## Files.
-file(GLOB TEST_BASE_SRCS "../../*.cpp")
-file(GLOB TEST_EXTRA_SRCS
-    "../../../src/app/*.cpp"
-    "../../../src/app/dictation/*.cpp"
-    "../../../src/app/voxforge/*.cpp"
-    "../../../src/app/sessions/*.cpp"
-    "../../../src/app/dictation/*.cpp"
-    "../../../src/app/desktopcontrol/*.cpp")
-file (GLOB_RECURSE TEST_EXTRA_WINDOW_SRCS "../../../src/app/windows/*.cpp")
-set(TEST_BASE_SCPP ${TEST_BASE_SRCS} "@TEST_SRC@")
-list(APPEND TEST_EXTRA_SRCS ${TEST_EXTRA_WINDOW_SRCS})
+if (TEST_MODE STREQUAL "APP")
+    set(SpeechControlApplication_DIR "${CMAKE_BINARY_DIR}/src/app/InstallFiles")
+    find_package(SpeechControlApplication REQUIRED)
+endif (TEST_MODE STREQUAL "APP")
 
-# Take out the main.cpp of the application, to avoid multiple symbol definitions.
-list(REMOVE_ITEM TEST_EXTRA_SRCS "${PROJECT_SOURCE_DIR}/../../../src/app/main.cpp")
+set(TEST_BASE_SCPP "@TEST_SRC@")
+
+if (TEST_MODE STREQUAL "APP")
+    file(GLOB TEST_APP_SRCS
+        "../../../src/app/*.cpp"
+        "../../../src/app/dictation/*.cpp"
+        "../../../src/app/voxforge/*.cpp"
+        "../../../src/app/sessions/*.cpp"
+        "../../../src/app/dictation/*.cpp"
+        "../../../src/app/desktopcontrol/*.cpp")
+    file (GLOB_RECURSE TEST_APP_WINDOW_SRCS "../../../src/app/windows/*.cpp")
+    list(APPEND TEST_APP_SRCS ${TEST_APP_WINDOW_SRCS})
+    list(REMOVE_ITEM TEST_APP_SRCS "${PROJECT_SOURCE_DIR}/../../../src/app/main.cpp")
+endif (TEST_MODE STREQUAL "APP")
 
 ## Variables
-set(TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS} MODULE=@TEST_ID@Suite)
+set(TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS})
 set(TEST_COMPILE_FLAGS ${SPCHCNTRL_COMPILE_FLAGS})
 set(TEST_INCLUDE_DIRS ${SPCHCNTRL_INCLUDE_DIRS}
-    ${SPCHCNTRL_APP_INCLUDE_DIRS}
-    ${PROJECT_BINARY_DIR}
-    "${PROJECT_BINARY_DIR}/../../../src/app/frontend"
-    "${PROJECT_BINARY_DIR}/../../../src/lib"
     ${SPCHCNTRL_LIB_INCLUDE_DIRS}
+    ${QT_INCLUDE_DIRS}
+    "${PROJECT_BINARY_DIR}"
+    "${PROJECT_BINARY_DIR}/../../../src/lib"
     "${PROJECT_SOURCE_DIR}/../../"
-    "${PROJECT_SOURCE_DIR}/../../../src/app"
+    "${PROJECT_SOURCE_DIR}/../../../src"
     "${PROJECT_SOURCE_DIR}/../../../src/lib")
 set(TEST_LIBRARIES ${SPCHCNTRL_LIBRARIES}
-    ${SPCHCNTRL_APP_LIBRARIES}
-    ${CPPTEST_LIBRARIES})
+    ${QT_QTTEST_LIBRARY})
+
+if (TEST_MODE STREQUAL "APP")
+    list(APPEND TEST_INCLUDE_DIRS ${SPCHCNTRL_APP_INCLUDE_DIRS}
+                                 "${PROJECT_BINARY_DIR}/../../../src/app/frontend"
+                                 "${PROJECT_SOURCE_DIR}/../../../src/app")
+    list(APPEND TEST_LIBRARIES ${SPCHCNTRL_APP_LIBRARIES})
+    list(APPEND TEST_BASE_SCPP ${TEST_APP_SRCS})
+endif(TEST_MODE STREQUAL "APP")
 
 include_directories(${TEST_INCLUDE_DIRS})
-message(${TEST_EXTRA_SRCS})
+
 ## Qt-specific actions.
 QT4_AUTOMOC(${TEST_BASE_SCPP})
-QT4_AUTOMOC(${TEST_EXTRA_SRCS})
-QT4_WRAP_CPP(TEST_BASE_SCPP "../../include/base.hpp")
 
 ## Build test executable.
-add_executable(test@TEST_ID@ ${TEST_BASE_SCPP} ${TEST_EXTRA_SRCS})
+add_executable(test@TEST_ID@ ${TEST_BASE_SCPP})
 set_target_properties(test@TEST_ID@ PROPERTIES
     COMPILE_DEFINITIONS "${TEST_COMPILE_DEFINITIONS}"
     COMPILE_FLAGS "${TEST_COMPILE_FLAGS}"
@@ -63,10 +72,14 @@ set_target_properties(test@TEST_ID@ PROPERTIES
 target_link_libraries(test@TEST_ID@ ${TEST_LIBRARIES})
 
 ## Set up dependencies.
-add_dependencies(test@TEST_ID@ speechcontrol speechcontrol-frontend)
-add_dependencies(tests test@TEST_ID@)
+if (TEST_MODE STREQUAL "LIB")
+    add_dependencies(test@TEST_ID@ speechcontrol)
+else(TEST_MODE STREQUAL "LIB")
+    add_dependencies(test@TEST_ID@ speechcontrol-frontend)
+endif(TEST_MODE STREQUAL "LIB")
 
 ## Add test.
 add_test(NAME test@TEST_ID@ COMMAND $<TARGET_FILE:test@TEST_ID@>)
+create_test_sourcelist(TEST_BASE_SCPP test.@TEST_ID@ test@TEST_ID@)
 
-message(STATUS "Test ${TEST_ID} configured; awaiting build (i.e.: 'make test${TEST_ID}')")
+message(STATUS "Test '${TEST_ID}' configured; awaiting build [i.e.: 'make test${TEST_ID}']")

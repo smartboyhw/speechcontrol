@@ -14,25 +14,17 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <cpptest-suite.h>
+#include <QtTest/QTest>
+#include "sessions.h"
 
-namespace SpeechControl {
-class Content;
+void TestSessions::listSessions() {
+
 }
 
-class MODULE : public Test::Suite {
-public:
-    MODULE();
+QTEST_MAIN(TestSessions)
 
-private:
-    static MODULE* s_inst;
-    void testInitialize();
-    void testCreateContent();
-    void testCreateSession();
-    void testDeinitialize();
-};
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "sessions.moc"

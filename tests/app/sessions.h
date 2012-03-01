@@ -1,8 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
- *            (C) 2012 Jacky Alcine <jacky.alcine@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -15,36 +14,19 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-
-#ifndef TEST_BASE_HPP
-#define TEST_BASE_HPP
-
+#ifndef TEST_APP_SESSIONS_HPP
+#define TEST_APP_SESSIONS_HPP
 #include <QObject>
-#include <cpptest-suite.h>
 
-class MODULE;
-
-namespace SpeechControl {
-class TestModule : public QObject, public Test::Suite {
+class TestSessions : public QObject {
     Q_OBJECT
 
-signals:
-    void testInvoked();
-
-private:
-    void handleTest();
-    static TestModule* s_inst;
-
-public:
-    TestModule();
-    virtual ~TestModule();
-    void dumpBacktrace();
-    static TestModule* instance();
+private slots:
+    void listSessions();
 };
-}
+
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

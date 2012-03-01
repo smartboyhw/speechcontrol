@@ -18,21 +18,12 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <cpptest-assert.h>
+#include <QtTest/QtTest>
+#include "mics.h"
 
-// local includes
-#include "include/mic.hpp"
-#include "include/base.hpp"
+void TestMicrophone::listMicrophones() {
 
-using namespace SpeechControl;
-
-MODULE::MODULE() {
-    TEST_ADD ( MODULE::listMics )
-    TEST_ADD ( MODULE::dumpMicProps )
-
-    TestModule::instance()->add ( std::auto_ptr<Test::Suite> ( this ) );
 }
 
-void MODULE::listMics() { }
-void MODULE::dumpMicProps() { }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+QTEST_MAIN( TestMicrophone )
+#include "mics.moc"

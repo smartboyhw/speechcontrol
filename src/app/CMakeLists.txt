@@ -62,10 +62,10 @@ add_subdirectory(windows)
 configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
                "${PROJECT_SOURCE_DIR}/config.hpp" @ONLY)
 
-# Add build information for pure Qt app and quasi-KDE app.
-add_subdirectory(qt)
-add_subdirectory(kde)
+# Add build information for front-end application, daemon and KDE features
+add_subdirectory(frontend)
 add_subdirectory(daemon)
+add_subdirectory(kde)
 
 ## Installs
 install(FILES ${SPCHCNTRL_APP_HDRS}

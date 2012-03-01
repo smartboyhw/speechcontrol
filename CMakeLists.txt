@@ -7,7 +7,7 @@ include(SpeechControlDefaults)
 
 ## Options to toggle components of SpeechControl.
 option(WITH_DOCS               "Generate Doxygen-made documentation?"       ON)
-option(WITH_KDE_SUPPORT        "Build another application for KDE?"         ON)
+option(WITH_KDE_SUPPORT        "Build KDE specific features?"               ON)
 option(WITH_PYTHON_BINDINGS    "Generate Python support for SpeechControl?" ON)
 option(WITH_PLUGINS            "Build the included plug-ins?"               ON)
 option(WITH_TESTS              "Generate the test build system?"            OFF)
@@ -50,7 +50,7 @@ set(SPCHCNTRL_LIBRARIES ${QT_QTCORE_LIBRARY}
 set(SPCHCNTRL_COMPILE_FLAGS "${QTGSTREAMER_FLAGS} -fexceptions -feliminate-unused-debug-symbols")
 set(SPCHCNTRL_COMPILE_FLAGS_DEBUG "-Wall -Wextra -Wabi -Wctor-dtor-privacy -Wformat -Wunused")
 set(SPCHCNTRL_COMPILE_DEFINITIONS ${QT_DEFINITIONS})
-set(SPCHCNTRL_QRESC )
+set(SPCHCNTRL_QRESC "${CMAKE_SOURCE_DIR}/res/res.qrc")
 file(GLOB SPCHCNTRL_UI "res/ui/*.ui")
 
 

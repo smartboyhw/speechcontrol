@@ -12,18 +12,16 @@ set(SPCHCNTRL_DAEMON_LIBRARIES ${SPCHCNTRL_LIB_LIBRARIES}
 file(GLOB SPCHCNTRL_DAEMON_SRCS "*.cpp")
 QT4_AUTOMOC(${SPCHCNTRL_DAEMON_SRCS})
 
-
 include_directories(${SPCHCNTRL_DAEMON_INCLUDE_DIRS}
     ${PROJECT_SOURCE_DIR})
 
-
 ## The target!
-add_executable(speechcontrold ${SPCHCNTRL_DAEMON_SRCS})
-target_link_libraries(speechcontrold ${SPCHCNTRL_DAEMON_LIBRARIES})
-set_target_properties(speechcontrold PROPERTIES
+add_executable(speechcontrol-daemon ${SPCHCNTRL_DAEMON_SRCS})
+target_link_libraries(speechcontrol-daemon ${SPCHCNTRL_DAEMON_LIBRARIES})
+set_target_properties(speechcontrol-daemon PROPERTIES
     COMPILE_FLAGS "${SPCHCNTRL_DAEMON_COMPILE_FLAGS}"
     COMPILE_DEFINITIONS "${SPCHCNTRL_DAEMON_COMPILE_DEFINITIONS}")
 
 ## Installs
-install(TARGETS speechcontrold
+install(TARGETS speechcontrol-daemon
         DESTINATION ${SPCHCNTRL_BIN_DIR})

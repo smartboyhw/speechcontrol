@@ -44,6 +44,7 @@ namespace SpeechControl {
 namespace Windows {
 /**
  * @brief Represents the Main window of SpeechControl.
+ *
  * Being the first thing (and perhaps the last thing) that users see when
  * they start SpeechControl,
  **/
@@ -91,4 +92,4 @@ private:
 }
 
 #endif // MAIN_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -466,7 +466,7 @@ padding-right: 4px;</string>
       <property name="checkable">
        <bool>true</bool>
       </property>
-      <widget class="QTableWidget" name="tableWidget">
+      <widget class="QTableWidget" name="tableWidgetDesktopControlCommands">
        <property name="geometry">
         <rect>
          <x>4</x>

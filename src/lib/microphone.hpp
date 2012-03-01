@@ -38,6 +38,7 @@
 #include <QGst/PropertyProbe>
 #include <QGst/StreamVolume>
 
+#include <export.hpp>
 
 namespace SpeechControl {
 
@@ -57,7 +58,7 @@ typedef QMap<QUuid, Microphone*> MicrophoneMap;
  * @brief Represents a handle of an audio input device on this computer.
  **/
 
-class Microphone : public QObject {
+class SPCH_EXPORT Microphone : public QObject {
     Q_OBJECT
     Q_PROPERTY ( const bool Active READ active )
     Q_PROPERTY ( const QString Name READ friendlyName )
@@ -68,7 +69,16 @@ class Microphone : public QObject {
 
 public:
     Q_DISABLE_COPY ( Microphone )
+    /**
+     * @brief ...
+     *
+     * @param p_glibPointer ... Defaults to 0.
+     **/
     explicit Microphone ( QGlib::Value p_glibPointer = 0 );
+    /**
+     * @brief ...
+     *
+     **/
     virtual ~Microphone();
 
     /**
@@ -84,29 +94,118 @@ public:
      */
     static Microphone* defaultMicrophone();
 
+    /**
+     * @brief ...
+     *
+     * @return :MicrophoneList
+     **/
     static MicrophoneList allMicrophones();
 
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
     static void init();
 
+    /**
+     * @brief ...
+     *
+     * @return bool
+     **/
     bool active() const;
+
+    /**
+     * @brief ...
+     *
+     * @return const QByteArray&
+     **/
     const QByteArray& data() const;
+    /**
+     * @brief ...
+     *
+     * @return QString
+     **/
+
     QString id() const;
+    /**
+     * @brief ...
+     *
+     * @return QString
+     **/
     QString friendlyName() const;
+    /**
+     * @brief ...
+     *
+     * @return double
+     **/
     double volume() const;
+    /**
+     * @brief ...
+     *
+     * @return bool
+     **/
     bool isMuted() const;
+    /**
+     * @brief ...
+     *
+     * @return bool
+     **/
     bool isValid() const;
+    /**
+     * @brief ...
+     *
+     * @return bool
+     **/
     bool isRecording() const;
+    /**
+     * @brief ...
+     *
+     * @return QDataStream*
+     **/
     QDataStream* stream() const;
 
+    /**
+     * @brief ...
+     *
+     * @param p_volume ...
+     * @return void
+     **/
     void setVolume ( const double& p_volume );
+    /**
+     * @brief ...
+     *
+     * @param p_muted ...
+     * @return void
+     **/
     void mute ( const bool& p_muted );
 
 signals:
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
     void startedListening();
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
     void stoppedListening();
 
 public slots:
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
     void startRecording();
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
     void stopRecording();
 
 private slots:
@@ -143,4 +242,4 @@ private:
 #endif // MICROPHONE_HPP
 
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

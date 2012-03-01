@@ -13,8 +13,9 @@ you to:
   * train multiple acoustic models
   * manipulate and redistribute sessions made with SpeechControl.
   * upload session information to VoxForge
-  * dictate text
-  * control your desktop using commands
+  * dictate text to applications
+  * control your desktop using arbitrary commands
+  * provide speech recognition to other applications
 
 2. Bug Reporting
 

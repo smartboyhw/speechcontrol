@@ -15,11 +15,15 @@ if(WITH_DOCS)
         ## The magical targets
         add_custom_target(docs-app
             COMMAND ${DOXYGEN_EXECUTABLE} ${PROJECT_BINARY_DIR}/Doxyfile.app
+            SOURCES "Doxyfile.app.in"
+            DEPENDS speechcontrol-qt speechcontrol-kde
             COMMENT "Built documentation for SpeechControl application.")
         add_custom_target(docs-lib
             COMMAND ${DOXYGEN_EXECUTABLE} ${PROJECT_BINARY_DIR}/Doxyfile.lib
+            SOURCES "Doxyfile.lib.in"
+            DEPENDS speechcontrol
             COMMENT "Built documentation for SpeechControl library.")
-        add_custom_target(docs ALL
+        add_custom_target(docs
             COMMENT "Built documentation.")
 
         add_dependencies(docs docs-lib docs-app)
@@ -30,9 +34,6 @@ if(WITH_DOCS)
 
         install(DIRECTORY ${SPCHCNTRL_APP_DOC_BUILD_DIR}/html/
                 DESTINATION ${SPCHCNTRL_DOC_INSTALL_DIR}/speechcontrol/api)
-
-        install(DIRECTORY ${PROJECT_SOURCE_DIR}/doc/manual
-                DESTINATION ${SPCHCNTRL_DOC_INSTALL_DIR}/speechcontrol)
 
         if (WITH_KDE_SUPPORT)
             find_package(KDE4 QUIET)

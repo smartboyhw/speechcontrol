@@ -1,8 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
- *            (C) 2012 Jacky Alcine <jacky.alcine@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -18,36 +17,16 @@
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#include <QDebug>
-#include <QtPlugin>
 
-#include "config.hpp"
-#include "plugin.hpp"
-#include "commands.hpp"
+#ifndef SPCHCNTRL_LIB_EXPORT_HPP
+#define SPCHCNTRL_LIB_EXPORT_HPP
+#include <QtGlobal>
 
-APPLIST_NAMESPACE_BEGIN
+#if defined(SPCH_EXPORT_SYMBOLS)
+#define SPCH_EXPORT Q_DECL_EXPORT
+#else
+#define SPCH_EXPORT Q_DECL_IMPORT
+#endif
 
-Plugin::Plugin ( QObject* parent ) : AbstractPlugin ( QUuid ( PLUGIN_UUID ),parent ) {
-}
-
-void Plugin::initialize() {
-    qDebug() << "Plug-in loaded! (applist)";
-    ApplicationListCategory::instance()->addCommand((new StartCommand));
-}
-
-void Plugin::deinitialize() {
-    qDebug() << "Plug-in unloaded! (applist)";
-    ApplicationListCategory::instance()->deleteLater();
-}
-
-Plugin::~Plugin() {
-
-}
-
-#include "plugin.moc"
-
-APPLIST_NAMESPACE_END
-
-Q_EXPORT_PLUGIN2 ( spchcntrl-applist, SpeechControl::Plugins::DesktopControl::ApplicationListing::Plugin )
-
+#endif
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -24,6 +24,7 @@
 
 #include <QStringList>
 #include <config.hpp>
+#include "plugin.hpp"
 #include <app/desktopcontrol/agent.hpp>
 #include <app/desktopcontrol/command.hpp>
 
@@ -38,6 +39,7 @@ APPLIST_NAMESPACE_BEGIN
  **/
 class ApplicationListCategory : public AbstractCategory {
     Q_OBJECT
+    friend class Plugin;
 
 public:
     /**
@@ -73,6 +75,7 @@ private:
  **/
 class StartCommand : public AbstractCommand {
     Q_OBJECT
+    friend class Plugin;
 
 public:
     /**
@@ -101,4 +104,4 @@ private:
 APPLIST_NAMESPACE_END
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

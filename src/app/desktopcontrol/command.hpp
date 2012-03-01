@@ -52,6 +52,7 @@ typedef QList<AbstractCategory*> CategoryList;
  **/
 class AbstractCommand : public QObject {
     Q_OBJECT
+    friend class AbstractCategory;
 
 public:
     /**
@@ -131,6 +132,7 @@ private:
 class AbstractCategory : public QObject {
     Q_OBJECT
     Q_PROPERTY ( CommandList Commands READ commands ) ///< A property representing all of the immediate commands held by this category.
+    friend class AbstractCommand;
 
 public:
     /**
@@ -188,17 +190,25 @@ public:
      **/
     static CategoryList categories();
 
+    bool hasCommand(AbstractCommand* p_command);
+    bool hasCommand(const QString& p_id);
+
 protected:
     /**
      * @brief ...
      *
      * @param parent ... Defaults to AbstractCategory::global().
      **/
-    explicit AbstractCategory ( AbstractCategory* p_parentCategory = AbstractCategory::global() );
+    explicit AbstractCategory ( AbstractCategory* p_parentCategory );
+    AbstractCategory();
+
+    void addCommand(AbstractCommand* p_command);
+    void removeCommand(AbstractCommand* p_command);
+    void removeCommand(const QString& p_id);
 
 private:
     static QMap<QString,AbstractCategory*> s_ctgrs;     ///< A global listing of all categories.
-    CommandList m_lst;                                  ///< The commands held by the category.
+    QMap<QString,AbstractCommand*> m_map;                                  ///< The commands held by the category.
 };
 }
 }

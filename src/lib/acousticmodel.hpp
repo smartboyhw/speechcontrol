@@ -24,6 +24,8 @@
 #include <QObject>
 #include <QVariant>
 
+#include <export.hpp>
+
 namespace SpeechControl {
 class AcousticModel;
 
@@ -34,7 +36,7 @@ typedef QList<AcousticModel*> AcousticModelList;
  *
  * Acoustic models are
  */
-class AcousticModel : public QObject {
+class SPCH_EXPORT AcousticModel : public QObject {
     Q_OBJECT
     Q_PROPERTY ( const QVariantMap Parameters READ parameters WRITE setParameters )
     Q_PROPERTY ( const quint16 SampleRate READ sampleRate WRITE setSampleRate )
@@ -54,4 +56,4 @@ public:
 
 
 #endif // ACOUSTICMODEL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

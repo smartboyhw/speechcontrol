@@ -92,7 +92,7 @@ Sentence* Sentence::create ( Corpus *p_corpus, const QString& p_text ) {
 
             QDomElement* l_phrsElem = new QDomElement ( p_corpus->m_dom->createElement ( "Phrase" ) );
             l_phrsElem->setAttribute ( "uuid",QUuid::createUuid() );
-            l_phrsElem->appendChild ( p_corpus->m_dom->createTextNode ( l_phrase.toUtf8() ) );
+            l_phrsElem->appendChild ( p_corpus->m_dom->createTextNode ( l_phrase.toAscii().toBase64() ) );
             l_elem->appendChild ( *l_phrsElem );
 
             l_wordSize = -1;

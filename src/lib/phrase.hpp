@@ -24,22 +24,54 @@
 #include <QObject>
 #include <QFile>
 
+#include <export.hpp>
+
 namespace SpeechControl {
 class Phrase;
 class Sentence;
 
+/**
+ * @brief ...
+ **/
 typedef QList<Phrase*> PhraseList;
 
-class Phrase : public QObject {
+/**
+ * @brief ...
+ **/
+class SPCH_EXPORT Phrase : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY ( Phrase )
     friend class Sentence;
 
 public:
+    /**
+     * @brief ...
+     *
+     **/
     virtual ~Phrase();
+    /**
+     * @brief ...
+     *
+     * @return QFile*
+     **/
     QFile* audio() const;
+    /**
+     * @brief ...
+     *
+     * @return const QString
+     **/
     const QString text() const;
+    /**
+     * @brief ...
+     *
+     * @return int
+     **/
     int index() const;
+    /**
+     * @brief ...
+     *
+     * @return bool
+     **/
     bool isCompleted() const;
 
 private:
@@ -51,4 +83,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

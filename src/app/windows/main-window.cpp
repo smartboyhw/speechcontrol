@@ -49,8 +49,11 @@
 
 #ifndef HAVE_KDE
 #include "about-dialog.hpp"
+#include <QMenu>
+#define SC_Menu QMenu
 #else
 #include <KMenu>
+#define SC_Menu KMenu
 #endif
 
 using namespace SpeechControl;
@@ -58,11 +61,14 @@ using namespace SpeechControl::Windows;
 using namespace SpeechControl::Wizards;
 using namespace SpeechControl::Windows::Managers;
 
+using SpeechControl::DesktopControl::AbstractCommand;
+using SpeechControl::DesktopControl::AbstractCategory;
+using SpeechControl::DesktopControl::CommandList;
+
 /// @todo Add icons to the QActions.
 Main::Main() : m_ui ( new Ui::MainWindow ), m_prgStatusbar ( 0 ) {
     m_ui->setupUi ( this );
     m_ui->retranslateUi ( this );
-    this->setWindowIcon ( QIcon ( ":/logo/sc" ) );
     m_prgStatusbar = new QProgressBar ( this );
 
     // Do a bit of cleanup on the status bar.
@@ -124,27 +130,28 @@ void Main::on_tabWidget_currentChanged ( const int p_index ) {
     break;
 
     case 1: { // desktop control commands
-        using SpeechControl::DesktopControl::AbstractCommand;
-        using SpeechControl::DesktopControl::AbstractCategory;
-        using SpeechControl::DesktopControl::CommandList;
-
         AbstractCategory* l_glbl = DesktopControl::AbstractCategory::global();
         CommandList l_cmds = l_glbl->commands();
-        QTableWidget* l_widg = m_ui->tableWidget;
-
+        QTableWidget* l_widg = m_ui->tableWidgetDesktopControlCommands;
         l_widg->clear();
-
-        l_widg->setHorizontalHeaderLabels ( QStringList() << "Statement"
-                                            << "Command"
-                                          );
+        l_widg->setHorizontalHeaderLabels ( QStringList() << "Statement" << "Command" );
+        l_widg->setRowCount ( 0 );
+        l_widg->setColumnCount ( 2 );
 
         Q_FOREACH ( AbstractCommand* l_cmd, l_cmds ) {
             l_widg->setRowCount ( l_cmd->statements().count() + l_widg->rowCount() );
+            int l_count = 0;
             Q_FOREACH ( const QString l_statement, l_cmd->statements() ) {
-                const int l_row = l_widg->rowCount();
-                l_widg->setItem ( l_row,0, ( new QTableWidgetItem ( l_statement ) ) );
-                l_widg->setItem ( l_row,1, ( new QTableWidgetItem ( l_cmd->id() ) ) );
-                qDebug() << l_statement << l_cmd->id();
+                const int l_row = l_widg->rowCount() - l_cmd->statements().count() - l_count;
+                QTableWidgetItem* l_itemStatement = new QTableWidgetItem;
+                QTableWidgetItem* l_commandStatement = new QTableWidgetItem;
+
+                l_itemStatement->setText ( l_statement );
+                l_commandStatement->setText ( l_cmd->id() );
+
+                l_widg->setItem ( l_row, 0, l_itemStatement );
+                l_widg->setItem ( l_row, 1, l_commandStatement );
+                l_count--;
             }
         }
     }
@@ -241,7 +248,9 @@ void Main::on_actionDesktopControlActive_triggered ( const bool p_checked ) {
         DesktopControl::Agent::instance()->setState ( SpeechControl::AbstractAgent::Enabled );
     else
         DesktopControl::Agent::instance()->setState ( SpeechControl::AbstractAgent::Disabled );
+
     setStatusMessage ( ( ( p_checked == true ) ? "Enabling desktop control..." : "Disabling desktop control..." ) ,5 );
+    m_ui->btnDsktpCntrl->setIcon ( ( ( p_checked == true ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
 }
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
@@ -251,6 +260,7 @@ void Main::on_actionDictationActive_triggered ( const bool p_checked ) {
     else
         Dictation::Agent::instance()->setState ( SpeechControl::AbstractAgent::Disabled );
     setStatusMessage ( ( ( p_checked == true ) ? "Enabling dictation..." : "Disabling dictation..." ) ,5 );
+    m_ui->btnDctn->setIcon ( ( ( p_checked == true ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
 }
 
 void Main::on_actionAboutQt_triggered() {

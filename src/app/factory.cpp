@@ -67,7 +67,10 @@ bool Factory::loadPlugin ( const QUuid& p_uuid ) {
 
     if ( l_gnrcPlgn->isSupported() && l_gnrcPlgn->loadComponents() ) {
         AbstractPlugin* l_plgn = qobject_cast<AbstractPlugin*> ( l_gnrcPlgn->m_ldr->instance() );
-        if ( l_plgn->load() ) {
+        if ( !l_plgn ) {
+            qDebug() << "Couldn't nab core object.";
+            return false;
+        } else if ( l_plgn->load() ) {
             s_ldPlgns.insert ( p_uuid,l_plgn );
             l_plgn->start();
             emit instance()->pluginLoaded ( p_uuid );

@@ -19,10 +19,15 @@
  */
 
 #include <algorithm>
+
 #include <QDebug>
+
+#include "core.hpp"
+#include "agent.hpp"
 #include "command.hpp"
 
 using namespace std;
+using namespace SpeechControl;
 using namespace SpeechControl::DesktopControl;
 
 struct GlobalCategory : public AbstractCategory {
@@ -43,7 +48,7 @@ struct GlobalCategory : public AbstractCategory {
         return s_inst;
     }
 
-    explicit GlobalCategory ( ) : AbstractCategory ( 0 ) {
+    explicit GlobalCategory ( ) : AbstractCategory() {
     }
 };
 
@@ -83,34 +88,70 @@ const QStringList AbstractCommand::statements() const {
     return m_commands;
 }
 
+void AbstractCategory::addCommand ( AbstractCommand* p_command ) {
+    if ( !hasCommand ( p_command ) ) {
+        m_map.insert ( p_command->id(),p_command );
+        qDebug() << "Added command" << p_command->id() << "to category" << id();
+    }
+}
+
+bool AbstractCategory::hasCommand ( AbstractCommand* p_command ) {
+    return hasCommand ( p_command->id() );
+}
+
+bool AbstractCategory::hasCommand ( const QString& p_id ) {
+    qDebug() << id() << "has" << p_id << "?" << m_map.contains ( p_id );
+    return m_map.contains ( p_id );
+}
+
+void AbstractCategory::removeCommand ( AbstractCommand* p_command ) {
+    removeCommand ( p_command->id() );
+}
+
+void AbstractCategory::removeCommand ( const QString& p_id ) {
+    if ( hasCommand ( p_id ) )
+        m_map.remove ( p_id );
+}
+
 AbstractCommand::~AbstractCommand() {
 
 }
 
 AbstractCategory::AbstractCategory ( AbstractCategory* p_parentCategory ) : QObject ( p_parentCategory ) {
+    s_ctgrs.insert ( QString::null,this );
+}
+
+AbstractCategory::AbstractCategory() : QObject ( Core::instance() ) {
+    s_ctgrs.insert ( QString::null,this );
 }
 
 /// @note The list of Commands represented here are only done within this AbstractCategory; it's not recursive.
 /// @bug There's a lack of a recursive nature to this method.
 /// @todo Implement a means of picking out child categories and have them return their commands upward.
 CommandList AbstractCategory::commands() {
-    return m_lst;
+    CommandList l_lst;
+
+    l_lst.append ( m_map.values() );
+
+    Q_FOREACH ( QObject* l_child, children() ) {
+        if ( l_child->metaObject()->superClass()->className() == AbstractCategory::staticMetaObject.className() ) {
+            AbstractCategory* l_category = qobject_cast<AbstractCategory*> ( l_child );
+            l_lst << l_category->commands();
+        }
+    }
+
+    unique ( l_lst.begin(),l_lst.end() );
+    return l_lst;
 }
 
 CommandList AbstractCategory::matchCommands ( const QString& p_command ) {
     CommandList l_lst;
-
-    Q_FOREACH ( QObject* l_child, children() ) {
-        AbstractCategory* l_category = qobject_cast<AbstractCategory*> ( l_child );
-        l_lst << l_category->matchCommands ( p_command );
-    }
 
     Q_FOREACH ( AbstractCommand* l_cmd, commands() ) {
         if ( l_cmd->isValidStatement ( p_command ) )
             l_lst << l_cmd;
     }
 
-    unique ( l_lst.begin(),l_lst.end() );
     return l_lst;
 }
 
@@ -120,14 +161,7 @@ CategoryList AbstractCategory::categories() {
 }
 
 CommandList AbstractCategory::matchAllCommands ( const QString& p_command ) {
-    CommandList l_lst;
-
-    Q_FOREACH ( AbstractCategory* l_ctgry, categories() ) {
-        l_lst << l_ctgry->matchCommands ( p_command );
-    }
-
-    unique ( l_lst.begin(),l_lst.end() );
-    return l_lst;
+    return AbstractCategory::global()->matchCommands ( p_command );
 }
 
 AbstractCategory* AbstractCategory::global() {
@@ -135,7 +169,6 @@ AbstractCategory* AbstractCategory::global() {
 }
 
 AbstractCategory::~AbstractCategory() {
-
 }
 
 #include "command.moc"

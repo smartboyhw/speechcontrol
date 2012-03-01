@@ -11,5 +11,6 @@ set(SPCHCNTRL_APP_LIBRARIES "@SPCHCNTRL_APP_LIBRARIES@")
 set(SPCHCNTRL_UI_DATA "@SPCHCNTRL_APP_DATA@")
 
 # Our library dependencies (contains definitions for IMPORTED targets)
-include("@SPCHCNTRL_CMAKE_DIR@/SpeechControlLibraryDepends.cmake" OPTIONAL)
-
+if (NOT SPCHCNTRL_BUILDING)
+    include("@SPCHCNTRL_CMAKE_DIR@/SpeechControlLibraryDepends.cmake" OPTIONAL)
+endif (NOT SPCHCNTRL_BUILDING)

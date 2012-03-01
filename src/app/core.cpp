@@ -106,11 +106,7 @@ Core::Core ( int argc, char** argv ) :
 
     // build settings
     m_settings = new QSettings ( QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", this );
-
-    dummyASR = new DummySC ( DummySC::getStandardDescription() );
-    connect ( dummyASR, SIGNAL ( finished ( QString& ) ), this, SLOT ( asrFinished ( QString& ) ) );
     connect ( m_app,SIGNAL ( aboutToQuit() ),this,SLOT ( stop() ) );
-    connect ( this,SIGNAL ( started() ),dummyASR,SLOT ( run() ) );
     connect ( this,SIGNAL ( started() ),Plugins::Factory::instance(),SLOT ( start() ) );
     connect ( this,SIGNAL ( stopped() ),Plugins::Factory::instance(),SLOT ( stop() ) );
 }
@@ -170,4 +166,4 @@ int Core::exec() {
 }
 
 #include "core.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -9,6 +9,7 @@ if (WITH_PLUGINS)
     message(STATUS "Plug-ins are being built.")
 
     add_custom_target(plugins ALL
+        DEPENDS speechcontrol-frontend
         COMMENT "Built plug-ins.")
 
     ## directories

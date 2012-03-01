@@ -26,6 +26,8 @@
 #include <QUuid>
 #include <QObject>
 
+#include <export.hpp>
+
 class QDomElement;
 
 namespace SpeechControl {
@@ -44,24 +46,87 @@ typedef QList<Sentence*> SentenceList;
 typedef QList<Phrase*> PhraseList;
 
 
-class Sentence : public QObject {
+class SPCH_EXPORT Sentence : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY ( Sentence )
     friend class Corpus;
     friend class Phrase;
 
 public:
+    /**
+     * @brief ...
+     *
+     **/
     virtual ~Sentence();
+    /**
+     * @brief ...
+     *
+     * @param p_corpus ...
+     * @param p_text ...
+     * @return :Sentence*
+     **/
     static Sentence* create ( SpeechControl::Corpus* p_corpus, const QString& p_text );
+    /**
+     * @brief ...
+     *
+     * @return :Corpus*
+     **/
     Corpus* parentSession() const;
+    /**
+     * @brief ...
+     *
+     * @return const QUuid
+     **/
     const QUuid uuid() const;
+    /**
+     * @brief ...
+     *
+     * @return const QString
+     **/
     const QString text() const;
+    /**
+     * @brief ...
+     *
+     * @return const QDir
+     **/
     const QDir audioPath() const;
+    /**
+     * @brief ...
+     *
+     * @return :PhraseList
+     **/
     const PhraseList phrases() const;
+    /**
+     * @brief ...
+     *
+     * @return bool
+     **/
     bool allPhrasesCompleted() const;
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @return bool
+     **/
     bool isPhraseCompleted ( const int& ) const;
+    /**
+     * @brief ...
+     *
+     * @return double
+     **/
     double completedProgress() const;
+    /**
+     * @brief ...
+     *
+     * @return int
+     **/
     int index() const;
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @return :Phrase*
+     **/
     Phrase* phrase ( const int& ) const;
 
 private:

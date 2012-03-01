@@ -21,17 +21,15 @@ QT4_AUTOMOC(${SPCHCNTRL_APP_SCPP})
 include_directories(${SPCHCNTRL_APP_INCLUDE_DIRS})
 
 ## Define targets
-add_executable(speechcontrol-qt ${SPCHCNTRL_APP_SCPP})
-set_target_properties(speechcontrol-qt PROPERTIES
+add_executable(speechcontrol-frontend ${SPCHCNTRL_APP_SCPP})
+set_target_properties(speechcontrol-frontend PROPERTIES
     DEFINE_SYMBOL "SPCHCNTRL_APP"
     COMPILE_DEFINITIONS "${SPCHCNTRL_APP_COMPILE_DEFINITIONS}"
     COMPILE_FLAGS "${SPCHCNTRL_APP_COMPILE_FLAGS}"
     PROJECT_LABEL "SpeechControl")
-add_dependencies(speechcontrol-qt spchcntrl)
-target_link_libraries(speechcontrol-qt ${SPCHCNTRL_APP_LIBRARIES})
+add_dependencies(speechcontrol-frontend speechcontrol)
+target_link_libraries(speechcontrol-frontend ${SPCHCNTRL_APP_LIBRARIES})
 
 ## Installs
-install(TARGETS speechcontrol-qt
+install(TARGETS speechcontrol-frontend
         DESTINATION "${SPCHCNTRL_BIN_DIR}")
-
-add_test(testapp COMMAND $<TARGET_FILE:speechcontrol-qt>)

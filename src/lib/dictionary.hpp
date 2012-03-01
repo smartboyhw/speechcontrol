@@ -28,6 +28,8 @@
 #include <QObject>
 #include <QDateTime>
 
+#include <export.hpp>
+
 class QUrl;
 class QFile;
 class QDomDocument;
@@ -68,7 +70,7 @@ typedef QMap<QString, DictionaryEntry*> DictionaryEntryMap;
  *
  * @see Dictionary
  **/
-class DictionaryEntry : public QObject {
+class SPCH_EXPORT DictionaryEntry : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY ( DictionaryEntry )
     Q_PROPERTY ( QString Word READ word )
@@ -105,24 +107,88 @@ private:
     QString m_phnm;
 };
 
-class Dictionary : public QObject {
+/**
+ * @brief ...
+ **/
+class SPCH_EXPORT Dictionary : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY ( Dictionary )
     friend class Corpus;
 
 public:
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     **/
     Dictionary ( const QUuid& );
+    /**
+     * @brief ...
+     *
+     **/
     virtual ~Dictionary();
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @return :Dictionary*
+     **/
     static Dictionary* obtain ( const QUuid& );
+    /**
+     * @brief ...
+     *
+     * @return :DictionaryEntryList*
+     **/
     DictionaryEntryList* entries() const;
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @return void
+     **/
     void addEntry ( DictionaryEntry* );
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @return :DictionaryEntry*
+     **/
     DictionaryEntry* removeEntry ( const QString& );
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @return :Dictionary&
+     **/
     Dictionary& operator<< ( DictionaryEntry* );
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @return :Dictionary&
+     **/
     Dictionary& operator<< ( DictionaryEntryList& );
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @return :Dictionary*
+     **/
     static Dictionary* fromDirectory ( const QDir& );
 
 public slots:
+    /**
+     * @brief ...
+     *
+     * @param  ...
+     * @return void
+     **/
     void load ( const QUuid& );
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
     void save();
 
 private:
@@ -132,4 +198,4 @@ private:
 };
 }
 #endif // DICTIONARY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

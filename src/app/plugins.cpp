@@ -39,6 +39,7 @@ using SpeechControl::Plugins::PluginMap;
 using SpeechControl::Plugins::PluginList;
 using SpeechControl::Plugins::AbstractPlugin;
 
+/// @bug The symbols for this class aren't exported properly.
 AbstractPlugin::AbstractPlugin ( QObject* p_prnt ) :
     QObject ( p_prnt ), m_ldr ( 0 ), m_cfg ( 0 ), m_sttgs ( 0 ) {
 }

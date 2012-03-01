@@ -18,12 +18,24 @@ Application (general)
 * Implement D-Bus integration of application.
 * Implement an abstract means of displaying notifications (includes QSystemTrayIcon, indicators, etc). [Going to use QIndicate for this.]
 * Build functionality for Ayanta notifications.
+* Hook into speechcontrold and allow modifying of local user options.
 
 Application (KDE)
 ----------------------------------------------------------
 * Build functionality for KDE notifications.
 * Build plasmoids (KDE-only) for desktop control, dictation and voice input.
 * Add support for KDE's System Settings panel to tweak SpeechControl (kcm-module).
+
+Application (daemon)
+----------------------------------------------------------
+* Work on adding D-Bus support.
+* Perhaps using an unique header that allows developers to wrap around the D-Bus code?
+    - Would need to export this header to C for binding support.
+* Implement the ability to queue instances of recognition.
+* Implement a configuration file (per-user and system) for default devices and options.
+    - Dump possible values for each configuration on command-line when queried.
+    - Warn about invalid/incompatible values and revert to default.
+* Implement a logging system (NONE, MININAL, WARNING, INFORMATIVE, DEBUG, VERBOSE, FULL)
 
 Miscellaneous
 ----------------------------------------------------------

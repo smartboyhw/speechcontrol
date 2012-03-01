@@ -57,7 +57,7 @@ typedef QMap<QUuid, Corpus*> CorpusMap;
  * @see Sentence
  * @see Dictionary
  */
-class Corpus : public QObject {
+class SPCH_EXPORT Corpus : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY ( Corpus )
     Q_PROPERTY ( SentenceList Sentences READ sentences )    ///<

@@ -1,7 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -14,40 +14,25 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef SYSTEM_HPP
-#define SYSTEM_HPP
+#ifndef SPEECHCONTROL_DAEMON_DAEMON_HPP
+#define SPEECHCONTROL_DAEMON_DAEMON_HPP
 
 #include <QObject>
-
-#include <export.hpp>
+#include <QDBusAbstractAdaptor>
 
 namespace SpeechControl {
+namespace Daemon {
 
 /**
  * @brief ...
  **/
-class SPCH_EXPORT System : public QObject {
+class Daemon : public QObject {
     Q_OBJECT
-    Q_DISABLE_COPY ( System )
-
-public:
-    /**
-     * @brief ...
-     *
-     * @param argc ...
-     * @param  ...
-     **/
-    explicit System ( int* argc, char**[] );
-    /**
-     * @brief ...
-     *
-     * @return :System*
-     **/
-    static System* instance();
+    Q_PROPERTY ( bool Active READ isActive )
 
 signals:
     /**
@@ -63,34 +48,43 @@ signals:
      **/
     void stopped();
 
+public:
+    /**
+     * @brief ...
+     *
+     **/
+    Daemon();
+    /**
+     * @brief ...
+     *
+     * @return bool
+     **/
+    bool isActive() const;
+
 public slots:
     /**
      * @brief ...
      *
-     * @param  ...
-     * @param  ...
      * @return void
      **/
-    static void start ( int*, char**[] );
+    Q_NOREPLY void start();
     /**
      * @brief ...
      *
      * @return void
      **/
-    static void start();
+    Q_NOREPLY void stop();
     /**
      * @brief ...
      *
-     * @return void
+     * @return QString
      **/
-    static void stop();
-
-private:
-    static System* s_inst;
-
+    QString listen();
 };
 
 }
 
-#endif // SYSTEM_HPP
+}
+
+#endif // SPEECHCONTROL_DAEMON_DAEMON_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

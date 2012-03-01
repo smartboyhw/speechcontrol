@@ -21,7 +21,6 @@
 #ifndef ABOUTDIALOG_HPP
 #define ABOUTDIALOG_HPP
 
-#ifndef HAVE_KDE
 #include <QDialog>
 #include "ui_about-dialog.h"
 
@@ -46,5 +45,4 @@ private:
 }
 
 #endif
-#endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -27,7 +27,7 @@ using SpeechControl::Core;
 using SpeechControl::Windows::ContentInformationDialog;
 
 ContentInformationDialog::ContentInformationDialog ( Content* p_content ) :
-    QDialog ( SC_APP::activeModalWidget() ),
+    QDialog ( QApplication::activeModalWidget() ),
     m_ui ( new Ui::ContentInformationDialog ),
     m_content ( p_content ) {
     m_ui->setupUi ( this );

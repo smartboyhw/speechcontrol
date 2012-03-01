@@ -14,33 +14,20 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <cpptest-assert.h>
 
-// local includes
-#include "include/abi.hpp"
-#include "include/base.hpp"
+#include <cpptest-suite.h>
 
-using namespace SpeechControl;
+class MODULE : public Test::Suite {
+public:
+    MODULE();
 
-MODULE::MODULE() {
-    TEST_ADD ( MODULE::testSystemStart )
-    TEST_ADD ( MODULE::testSystemStop )
-    TEST_ADD ( MODULE::testMicrophones )
-    TEST_ADD ( MODULE::testCorpus )
-    TEST_ADD ( MODULE::testAcousticModel )
-
-    TestModule::instance()->add ( std::auto_ptr<Test::Suite> ( this ) );
-}
-
-void MODULE::testSystemStart() { }
-void MODULE::testSystemStop() { }
-void MODULE::testMicrophones() { }
-void MODULE::testCorpus() { }
-void MODULE::testAcousticModel() {
-    TEST_FAIL ( "DAMN." )
-}
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+private:
+    static MODULE* s_inst;
+    void listMics();
+    void dumpMicProps();
+};
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

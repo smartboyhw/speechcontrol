@@ -22,14 +22,7 @@
 #include <QDebug>
 #include <QDateTime>
 #include <QProgressBar>
-
-#ifdef HAVE_KDE
-#include <KMessageBox>
-#define MESSAGEBOX KMessageBox
-#else
 #include <QMessageBox>
-#define MESSAGEBOX QMessageBox
-#endif
 
 #include "ui_training-dialog.h"
 #include "core.hpp"
@@ -87,7 +80,7 @@ void TrainingDialog::startTraining ( Session* p_session ) {
         l_dialog->setSession ( p_session );
         l_dialog->open();
     } else
-        MESSAGEBOX::information ( Core::mainWindow() ,tr ( "Session Completed" ), tr ( "Session <b>%1</b> has been completed already." ).arg ( p_session->name() ) );
+        QMessageBox::information ( Core::mainWindow() ,tr ( "Session Completed" ), tr ( "Session <b>%1</b> has been completed already." ).arg ( p_session->name() ) );
 }
 
 /// @bug When training reaches the end of the sentence, it's unable to proceed to the next sentence when training is invoked from here. A manual (yet sloppy) fix is to click 'Undo' until you reach the beginning of the sentence and re-record everything.
@@ -118,7 +111,7 @@ void TrainingDialog::startCollecting() {
     } else {
         reject();
         hide();
-        MESSAGEBOX::information ( this,tr ( "Session Completed" ),tr ( "No text is available for this session." ) );
+        QMessageBox::information ( this,tr ( "Session Completed" ),tr ( "No text is available for this session." ) );
     }
 }
 

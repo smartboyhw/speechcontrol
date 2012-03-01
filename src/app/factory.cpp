@@ -33,7 +33,7 @@ PluginMap Factory::s_ldPlgns;
 
 Factory::Factory( ) : QObject ( Core::instance() ) {
     s_inst = this;
-    SC_APP::addLibraryPath ( SPCHCNTRL_PLUGINS_LIB_DIR );
+    QApplication::addLibraryPath ( SPCHCNTRL_PLUGINS_LIB_DIR );
 }
 
 PluginMap Factory::availablePlugins() {

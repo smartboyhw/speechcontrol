@@ -1,8 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
- *            (C) 2012 Jacky Alcine <jacky.alcine@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -15,20 +14,25 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <cpptest-assert.h>
 
-#include <cpptest-suite.h>
+// local includes
+#include "include/mic.hpp"
+#include "include/base.hpp"
 
-class MODULE : public Test::Suite {
-public:
-    MODULE();
+using namespace SpeechControl;
 
-private:
-    static MODULE* s_inst;
-    void testInitialize();
-    void testInvoke();
-};
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+MODULE::MODULE() {
+    TEST_ADD ( MODULE::listMics )
+    TEST_ADD ( MODULE::dumpMicProps )
+
+    TestModule::instance()->add ( std::auto_ptr<Test::Suite> ( this ) );
+}
+
+void MODULE::listMics() { }
+void MODULE::dumpMicProps() { }
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

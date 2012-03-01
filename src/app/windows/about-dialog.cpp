@@ -17,14 +17,13 @@
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#include <config.hpp>
 
-#include "about-dialog.hpp"
-
-#ifndef HAVE_KDE
 #include <QIcon>
 #include <QDateTime>
 #include <QApplication>
+
+#include "about-dialog.hpp"
+#include <lib/config.hpp>
 
 using namespace SpeechControl::Windows;
 
@@ -96,5 +95,4 @@ QString AboutDialog::thanksTo() const {
 }
 
 #include "about-dialog.moc"
-#endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

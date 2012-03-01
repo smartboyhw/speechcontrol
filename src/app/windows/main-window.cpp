@@ -28,6 +28,8 @@
 #include <QMessageBox>
 #include <QPushButton>
 #include <QTableWidget>
+#include <QMenu>
+
 
 #include <sphinx.hpp>
 #include <corpus.hpp>
@@ -44,18 +46,9 @@
 #include "books-manager.hpp"
 #include "session-manager.hpp"
 #include "quickstart-wizard.hpp"
-
 #include "ui_main-window.h"
 
-#ifndef HAVE_KDE
 #include "about-dialog.hpp"
-#include <QMenu>
-#define SC_Menu QMenu
-#else
-#include <KMenu>
-#define SC_Menu KMenu
-#endif
-
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 using namespace SpeechControl::Wizards;
@@ -95,11 +88,6 @@ Main::Main() : m_ui ( new Ui::MainWindow ), m_prgStatusbar ( 0 ) {
 
     connect ( DesktopControl::Agent::instance(),SLOT ( onStateChanged() ),this,SLOT ( desktopControlStateChanged() ) );
     connect ( Dictation::Agent::instance(),SLOT ( onStateChanged() ),this,SLOT ( dictationStateChanged() ) );
-#ifdef HAVE_KDE
-    // Update the Help menu.
-    m_ui->menuHelp->clear();
-    m_ui->menuHelp->addActions ( SC_MW::helpMenu()->actions() );
-#endif
 
     Indicator::show();
 }
@@ -115,11 +103,11 @@ void Main::show() {
     }
 
     updateContent();
-    SC_MW::show();
+    QMainWindow::show();
 }
 
 void Main::close() {
-    SC_MW::close();
+    QMainWindow::close();
 }
 
 void Main::on_tabWidget_currentChanged ( const int p_index ) {
@@ -264,16 +252,12 @@ void Main::on_actionDictationActive_triggered ( const bool p_checked ) {
 }
 
 void Main::on_actionAboutQt_triggered() {
-#ifndef HAVE_KDE
     QApplication::aboutQt();
-#endif
 }
 
 void Main::on_actionAboutSpeechControl_triggered() {
-#ifndef HAVE_KDE
     AboutDialog l_dlg ( this );
     l_dlg.exec();
-#endif
 }
 
 Main::~Main() {

@@ -6,53 +6,67 @@
 project(SpchCntrlTest-@TEST_ID@)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-message("${CMAKE_MODULE_PATH}")
+## Add paths to find CMake information about the library and application.
+set(SpeechControlApplication_DIR "${CMAKE_BINARY_DIR}/src/app/InstallFiles")
+set(SpeechControlLibrary_DIR "${CMAKE_BINARY_DIR}/src/lib/InstallFiles")
 
+## Search for the SpeechControl application and library.
 find_package(SpeechControlApplication REQUIRED)
 find_package(SpeechControlLibrary REQUIRED)
 
+## Files.
 file(GLOB TEST_BASE_SRCS "../../*.cpp")
-file(GLOB TEST_EXTRA_HDRS "../../../src/app/*.hpp"
-                          "../../../src/app/windows/*/*.hpp"
-                          "../../../src/app/dictation/*.hpp"
-                          "../../../src/app/voxforge/*.hpp"
-                          "../../../src/app/sessions/*.hpp"
-                          "../../../src/app/dictation/*.hpp"
-                          "../../../src/app/desktopcontrol/*.hpp")
+file(GLOB TEST_EXTRA_SRCS
+    "../../../src/app/*.cpp"
+    "../../../src/app/dictation/*.cpp"
+    "../../../src/app/voxforge/*.cpp"
+    "../../../src/app/sessions/*.cpp"
+    "../../../src/app/dictation/*.cpp"
+    "../../../src/app/desktopcontrol/*.cpp")
+file (GLOB_RECURSE TEST_EXTRA_WINDOW_SRCS "../../../src/app/windows/*.cpp")
 set(TEST_BASE_SCPP ${TEST_BASE_SRCS} "@TEST_SRC@")
+list(APPEND TEST_EXTRA_SRCS ${TEST_EXTRA_WINDOW_SRCS})
+
+# Take out the main.cpp of the application, to avoid multiple symbol definitions.
+list(REMOVE_ITEM TEST_EXTRA_SRCS "${PROJECT_SOURCE_DIR}/../../../src/app/main.cpp")
 
 ## Variables
-set(TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS}
-                             MODULE=@TEST_ID@Suite)
+set(TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS} MODULE=@TEST_ID@Suite)
 set(TEST_COMPILE_FLAGS ${SPCHCNTRL_COMPILE_FLAGS})
 set(TEST_INCLUDE_DIRS ${SPCHCNTRL_INCLUDE_DIRS}
     ${SPCHCNTRL_APP_INCLUDE_DIRS}
-    ${SPCHCNTRL_LIB_INCLUDE_DIRS} "../../"
-    "../../../src/app" "../../../src/lib")
+    ${PROJECT_BINARY_DIR}
+    "${PROJECT_BINARY_DIR}/../../../src/app/frontend"
+    "${PROJECT_BINARY_DIR}/../../../src/lib"
+    ${SPCHCNTRL_LIB_INCLUDE_DIRS}
+    "${PROJECT_SOURCE_DIR}/../../"
+    "${PROJECT_SOURCE_DIR}/../../../src/app"
+    "${PROJECT_SOURCE_DIR}/../../../src/lib")
 set(TEST_LIBRARIES ${SPCHCNTRL_LIBRARIES}
     ${SPCHCNTRL_APP_LIBRARIES}
-    ${CPPTEST_LIBRARIES} spchcntrl)
+    ${CPPTEST_LIBRARIES})
 
-QT4_AUTOMOC(${TEST_BASE_SCPP})
-QT4_WRAP_CPP(TEST_BASE_SCPP "../../include/base.hpp")
-QT4_WRAP_CPP(TEST_BASE_SCPP ${TEST_EXTRA_HDRS})
-
-add_executable(test@TEST_ID@ ${TEST_BASE_SCPP})
-
-message("${TEST_INCLUDE_DIRS}")
 include_directories(${TEST_INCLUDE_DIRS})
+message(${TEST_EXTRA_SRCS})
+## Qt-specific actions.
+QT4_AUTOMOC(${TEST_BASE_SCPP})
+QT4_AUTOMOC(${TEST_EXTRA_SRCS})
+QT4_WRAP_CPP(TEST_BASE_SCPP "../../include/base.hpp")
 
+## Build test executable.
+add_executable(test@TEST_ID@ ${TEST_BASE_SCPP} ${TEST_EXTRA_SRCS})
 set_target_properties(test@TEST_ID@ PROPERTIES
     COMPILE_DEFINITIONS "${TEST_COMPILE_DEFINITIONS}"
     COMPILE_FLAGS "${TEST_COMPILE_FLAGS}"
     EchoString "Built test @TEST_ID@"
     EXCLUDE_FROM_ALL ON)
-
 target_link_libraries(test@TEST_ID@ ${TEST_LIBRARIES})
 
-add_dependencies(test@TEST_ID@ spchcntrl)
+## Set up dependencies.
+add_dependencies(test@TEST_ID@ speechcontrol speechcontrol-frontend)
 add_dependencies(tests test@TEST_ID@)
 
+## Add test.
 add_test(NAME test@TEST_ID@ COMMAND $<TARGET_FILE:test@TEST_ID@>)
 
 message(STATUS "Test ${TEST_ID} configured; awaiting build (i.e.: 'make test${TEST_ID}')")

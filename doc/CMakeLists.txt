@@ -16,7 +16,7 @@ if(WITH_DOCS)
         add_custom_target(docs-app
             COMMAND ${DOXYGEN_EXECUTABLE} ${PROJECT_BINARY_DIR}/Doxyfile.app
             SOURCES "Doxyfile.app.in"
-            DEPENDS speechcontrol-qt speechcontrol-kde
+            DEPENDS speechcontrol-frontend
             COMMENT "Built documentation for SpeechControl application.")
         add_custom_target(docs-lib
             COMMAND ${DOXYGEN_EXECUTABLE} ${PROJECT_BINARY_DIR}/Doxyfile.lib

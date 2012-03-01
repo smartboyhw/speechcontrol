@@ -4,8 +4,6 @@ if(WITH_TESTS)
     message(STATUS "Building tests enabled.")
 
     ## required packages
-    list(APPEND CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR}/src/app/InstallFiles")
-    list(APPEND CMAKE_MODULE_PATH "${CMAKE_BINARY_DIR}/src/lib/InstallFiles")
     include(CTest)
     enable_testing()
 

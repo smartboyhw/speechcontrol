@@ -25,13 +25,7 @@
 #include <QTimer>
 #include <QObject>
 #include <QProgressBar>
-#ifndef HAVE_KDE
 #include <QMainWindow>
-#define SC_MW QMainWindow
-#else
-#include <KMainWindow>
-#define SC_MW KMainWindow
-#endif
 
 namespace Ui {
 class MainWindow;
@@ -48,7 +42,7 @@ namespace Windows {
  * Being the first thing (and perhaps the last thing) that users see when
  * they start SpeechControl,
  **/
-class Main : public SC_MW {
+class Main : public QMainWindow {
     Q_OBJECT
 public:
     explicit Main();

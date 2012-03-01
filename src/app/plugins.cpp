@@ -27,12 +27,6 @@
 #include <QPluginLoader>
 #include <QApplication>
 
-#include "factory.hpp"
-
-#include <QSettings>
-#include <QPluginLoader>
-#include <QApplication>
-
 using namespace SpeechControl;
 using SpeechControl::Plugins::Factory;
 using SpeechControl::Plugins::PluginMap;

@@ -21,20 +21,10 @@
 // Qt includes
 #include <QDir>
 #include <QFile>
-#include <QSettings>
-
-#ifndef HAVE_KDE
 #include <QDebug>
+#include <QSettings>
 #include <QApplication>
 #include <QMessageBox>
-#else
-#include <KDebug>
-#include <KLocalizedString>
-#include <KAboutData>
-#include <KCmdLineArgs>
-#include <KApplication>
-#include <KMessageBox>
-#endif
 
 // libspchcntrl includes
 #include <lib/system.hpp>
@@ -58,45 +48,15 @@ Core* Core::s_inst = 0;
 
 /// @todo Add a check for the default microphone (if provided by the user).
 Core::Core ( int argc, char** argv ) :
-#ifndef HAVE_KDE
     QObject ( new QApplication ( argc, argv ) )
-#else
-    QObject ( 0 )
-#endif
 {
     s_inst = this;
-
-#ifdef HAVE_KDE
-    KAboutData l_abt ( "speechcontrol",
-                       0,
-                       ki18n ( "Speech Control" ),
-                       SPCHCNTRL_BUILD_VERSION,
-                       ki18n ( "Speech Recognition for Linux." ),
-                       KAboutData::License_GPL_V3,
-                       ki18n ( "Copyright (c) 2010 - 2012 Synthetic Intellect Institute" ),
-                       ki18n ( "SpeechControl provides the basis of speech recognition technologies on Linux and quality-grade software equal to its alternative, Dragon NaturallySpeaking. " ),
-                       "http://www.thesii.org",
-                       "http://tasks.thesii.org/enter_bug.cgi?product=speechcontrol"
-                     );
-
-    l_abt.addAuthor ( ki18n ( "Jacky Alcine" )  , ki18n ( "Core Developer, Maintainer" ), "jacky.alcine@thesii.org", "http://jackyalcine.co.cc" );
-    l_abt.addAuthor ( ki18n ( "Adrian Borucki" ), ki18n ( "Core Developer" ), "adrian@thesii.org" );
-    l_abt.addCredit ( ki18n ( "Dante Ashton" )  , ki18n ( "CPU of Synthetic Intellect Institute" )  , "dante.ashton@thesii.org" );
-    l_abt.setBugAddress ( "bugzilla@thesii.org" );
-
-    KCmdLineArgs::init ( argc, argv, &l_abt );
-
-    KCmdLineOptions l_options;
-    m_app = new KApplication;
-    setParent ( m_app );
-#else
     // start application.
     m_app = qobject_cast< QApplication* > ( QApplication::instance() );
     m_app->setApplicationName ( "SpeechControl" );
     m_app->setOrganizationDomain ( "thesii.org" );
     m_app->setOrganizationName ( "Synthetic Intellect Institute" );
     m_app->setApplicationVersion ( SPCHCNTRL_BUILD_VERSION );
-#endif /* HAVE_KDE */
 
     System::start ( &argc, &argv );
     Session::init();

@@ -10,7 +10,7 @@ option(WITH_DOCS               "Generate Doxygen-made documentation?"       ON)
 option(WITH_KDE_SUPPORT        "Build KDE specific features?"               ON)
 option(WITH_PYTHON_BINDINGS    "Generate Python support for SpeechControl?" ON)
 option(WITH_PLUGINS            "Build the included plug-ins?"               ON)
-option(WITH_TESTS              "Generate the test build system?"            OFF)
+option(WITH_TESTS              "Generate the test build system?"            ON)
 
 ## required packages
 find_package(PkgConfig REQUIRED)

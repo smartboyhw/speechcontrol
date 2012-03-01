@@ -24,14 +24,7 @@
 
 #include <QObject>
 #include <QVariant>
-
-#ifdef HAVE_KDE
-#include <KApplication>
-#define SC_APP KApplication
-#else
 #include <QApplication>
-#define SC_APP QApplication
-#endif
 
 #include <dummysc.hpp>
 #include <windows/main-window.hpp>
@@ -137,7 +130,7 @@ public slots:
     void asrFinished ( QString& text );
 
 private:
-    SC_APP* m_app;          /// Holds the Application instance.
+    QApplication* m_app;          /// Holds the Application instance.
     Windows::Main* s_mw;    /// Holds the main window.
     QSettings* m_settings;  /// Holds the application's global configuration.
     static Core* s_inst;    /// Holds a instance.

@@ -95,8 +95,7 @@ bool Microphone::active() const {
     return ! ( !this->m_pipeline );
 }
 
-/// @todo This does NOT return a friendly name. Find it, seize it and return it.
-QString Microphone::friendlyName() const {
+QString Microphone::name() const {
     return m_device.toString();
 }
 
@@ -273,4 +272,4 @@ Microphone::~Microphone() {
 }
 
 #include "microphone.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

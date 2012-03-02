@@ -1,7 +1,7 @@
 project(SpeechControl)
 cmake_minimum_required(VERSION 2.8)
 
-## Let's use our own modules as well.
+## Let's use our own modules to find some softwares not packed with the system.
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(SpeechControlDefaults)
 
@@ -12,7 +12,7 @@ option(WITH_PYTHON_BINDINGS    "Generate Python support for SpeechControl?" ON)
 option(WITH_PLUGINS            "Build the included plug-ins?"               ON)
 option(WITH_TESTS              "Generate the test build system?"            ON)
 
-## required packages
+## Required packages
 find_package(PkgConfig REQUIRED)
 find_package(Xdo REQUIRED)
 find_package(Qt4 4.7 COMPONENTS

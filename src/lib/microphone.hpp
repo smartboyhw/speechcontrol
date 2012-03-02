@@ -61,7 +61,7 @@ typedef QMap<QUuid, Microphone*> MicrophoneMap;
 class SPCH_EXPORT Microphone : public QObject {
     Q_OBJECT
     Q_PROPERTY ( const bool Active READ active )
-    Q_PROPERTY ( const QString Name READ friendlyName )
+    Q_PROPERTY ( const QString Name READ name )
     Q_PROPERTY ( const QString ID READ id )
     Q_PROPERTY ( const QByteArray Data READ data )
     Q_PROPERTY ( const double Volume READ volume WRITE setVolume )
@@ -129,32 +129,31 @@ public:
 
     QString id() const;
     /**
-     * @brief ...
-     *
+     * Obtains the name of the microphone as it's recognized by the system.
      * @return QString
      **/
-    QString friendlyName() const;
+    QString name() const;
+
     /**
-     * @brief ...
-     *
+     * Obtains the volume of the microphone.
      * @return double
      **/
     double volume() const;
+
     /**
-     * @brief ...
-     *
+     * Determines if the Microphone is muted.
      * @return bool
      **/
     bool isMuted() const;
+
     /**
-     * @brief ...
-     *
+     * Determines if this Microphone object is valid.
      * @return bool
      **/
     bool isValid() const;
+
     /**
-     * @brief ...
-     *
+     * Determines if this Microphone is currently recording.+
      * @return bool
      **/
     bool isRecording() const;

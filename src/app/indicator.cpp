@@ -27,19 +27,22 @@ using SpeechControl::Core;
 
 Indicator* Indicator::s_inst = 0;
 
+/// @todo Check for a configuration value to determine whether or not the indicator should be shown on initialization.
 Indicator::Indicator ( QObject* parent ) : QObject ( parent ), m_indctr ( new QIndicate::Indicator ( this ) ) {
     s_inst = this;
 
     m_indctr->setIconProperty ( QImage ( ":/logo/sc-large" ) );
     m_indctr->setNameProperty ( "SpeechControl" );
     show();
-    showMessage ( "Test message!" );
+    presentMessage ( "Test message!" );
 }
 
+/// @todo Implement the appropriate code using QtIndicate to hide the indicator.
 void Indicator::hide() {
     instance()->m_indctr->hide();
 }
 
+/// @todo Implement the appropriate code using QtIndicate to show the indicator.
 void Indicator::show() {
     instance()->m_indctr->show();
     instance()->m_indctr->emitDisplay();
@@ -52,7 +55,8 @@ Indicator* Indicator::instance() {
     return s_inst;
 }
 
-void Indicator::showMessage ( const QString& p_message ) {
+/// @todo Implement the appropriate code using QtIndicate to present a non-blocking message to the user.
+void Indicator::presentMessage ( const QString& p_message ) {
     qDebug() << "Indicator message:" << p_message;
     instance()->m_indctr->emitDisplay();
 }
@@ -62,4 +66,4 @@ Indicator::~Indicator() {
 }
 
 #include "indicator.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

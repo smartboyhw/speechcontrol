@@ -32,49 +32,43 @@ namespace SpeechControl {
 class Indicator;
 
 /**
- * @brief ...
+ * @brief Provides an abstract means of accessing the indicator system used in SpeechControl.
+ *
+ * In an attempt to ensure ABI support with any plug-in or future linkages of SpeechControl's code;
+ * the Indicator singleton class is provided to permit the raising and using of indicators.
  **/
 class Indicator : public QObject {
     Q_OBJECT
 
 public:
     /**
-     * @brief ...
-     *
+     * @brief Destructor.
      **/
     virtual ~Indicator();
+
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Shows the visual representation of SpeechControl's indicator to the system.
      **/
     static void show();
+
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Hides the visual representation of SpeechControl's indicator from the system.
      **/
     static void hide();
+
     /**
-     * @brief ...
-     *
-     * @param p_message ...
-     * @return void
+     * @brief Raises a new message to the system.
+     * @param p_message The message to present to the user.
      **/
-    static void showMessage ( const QString& p_message );
+    static void presentMessage ( const QString& p_message );
+
     /**
-     * @brief ...
-     *
-     * @return :Indicator*
+     * @brief Obtains a pointer to the Indicator instance.
+     * @return Indicator* The instance of the class.
      **/
     static Indicator* instance();
 
 private:
-    /**
-     * @brief ...
-     *
-     * @param parent ... Defaults to 0.
-     **/
     explicit Indicator ( QObject* parent = 0 );
     QIndicate::Indicator* m_indctr;     ///< Indicator instance.
     static Indicator* s_inst;           ///< Singleton instance.
@@ -82,4 +76,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

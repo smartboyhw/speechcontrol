@@ -21,8 +21,16 @@
 #include <QtTest/QtTest>
 #include "mics.h"
 
-void TestMicrophone::listMicrophones() {
+#include <lib/microphone.hpp>
 
+using namespace SpeechControl;
+
+void TestMicrophone::listMicrophones() {
+    MicrophoneList l_mics = Microphone::allMicrophones();
+
+    Q_FOREACH(const Microphone* l_mic, l_mics){
+        qDebug() << "(mic)" << l_mic->name();
+    }
 }
 
 QTEST_MAIN( TestMicrophone )

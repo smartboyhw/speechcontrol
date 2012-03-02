@@ -14,30 +14,29 @@ Library
 
 Application (general)
 ----------------------------------------------------------
-* Construct individual segmentation audio recording; the recording of audio files to chunks, permitting undo and marginal training support.
-* Permit serialization to tarballs of segmented audio recording.
-* Correct the CMake build system to use sub-directories for each layer of code and UI.
-* Implement D-Bus integration of application.
-* Implement an abstract means of displaying notifications (includes QSystemTrayIcon, indicators, etc). [Going to use QIndicate for this.]
-* Build functionality for Ayanta notifications.
-* Hook into speechcontrold and allow modifying of local user options.
-* Integrate the code for the training utilities of SphinxTrain to the SpeechControl application.
+* Construct individual segmentation audio recording; the recording of audio files to chunks, permitting undo and marginal training support. (bug #000008)
+* Permit serialization to tarballs of segmented audio recording. (bug #000009)
+* Correct the CMake build system to use sub-directories for each layer of code and UI. (bug #000010)
+* Implement D-Bus integration of application. (bug #000011)
+* Implement an abstract means of displaying notifications (includes QSystemTrayIcon, indicators, etc). [Going to use QIndicate for this.] (bug #000012)
+    - Build functionality for Ayanta notifications.
+* Hook into speechcontrold and allow modifying of local user options for the daemon. (bug #000013)
+* Integrate the code for the training utilities of SphinxTrain to the SpeechControl application. (bug #000014)
 
 
 Application (daemon)
 ----------------------------------------------------------
-* Work on adding D-Bus support.
-* Perhaps using an unique header that allows developers to wrap around the D-Bus code?
+* Work on adding D-Bus support. (bug #000016)
+    - Perhaps using an unique header that allows developers to wrap around the D-Bus code?
     - Would need to export this header to C for binding support.
-* Implement the ability to queue instances of recognition.
-* Implement a configuration file (per-user and system) for default devices and options.
+* Implement the ability to queue instances of recognition. (bug #000017)
+* Implement a configuration file (per-user and system) for default devices and options. (bug #000018)
     - Dump possible values for each configuration on command-line when queried.
     - Warn about invalid/incompatible values and revert to default.
-* Implement a logging system (NONE, MININAL, WARNING, INFORMATIVE, DEBUG, VERBOSE, FULL)
+* Implement a logging system (NONE, MININAL, WARNING, INFORMATIVE, DEBUG, VERBOSE, FULL) (bug #000019)
 
 Miscellaneous
 ----------------------------------------------------------
-* Re-work SpeechControl to have a daemon run in the background that handles all of the speech recognition requests (speechcontrold).
-* Work on the theming for the documentation.
-* Exclude the plug-in's code from the documentation.
+* Re-work SpeechControl to have a daemon run in the background that handles all of the speech recognition requests (speechcontrold). (bug #000020)
+* Work on the theming for the documentation. (bug #000021)
 ! For Sphinx-related libraries create CMake modules instead of using pkg-config. -- Adrian Borucki <gentoolx@gmail.com>

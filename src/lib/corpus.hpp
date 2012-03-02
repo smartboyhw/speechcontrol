@@ -21,6 +21,7 @@
 #ifndef CORPUS_HPP
 #define CORPUS_HPP
 
+#include <QMap>
 #include <QUrl>
 #include <QUuid>
 #include <QObject>
@@ -199,7 +200,7 @@ private:
     SentenceList m_sntncLst;
     Dictionary* m_dict;
 };
-
 }
+
 #endif // CORPUS_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

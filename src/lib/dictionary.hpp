@@ -31,8 +31,11 @@
 #include <export.hpp>
 
 class QUrl;
+
 class QFile;
+
 class QDomDocument;
+
 class QDomElement;
 
 namespace SpeechControl {

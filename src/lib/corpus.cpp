@@ -52,7 +52,7 @@ Sentence* Corpus::addSentence ( Sentence *l_phrs ) {
 }
 
 Sentence* Corpus::addSentence ( const QString &l_txt, const QFile *l_audio ) {
-    //qDebug() << "Adding sentence" << l_txt << "...";
+    qDebug() << "Adding sentence" << l_txt << "...";
     Sentence* l_sentence = Sentence::create ( this,l_txt );
 
     if ( l_audio )
@@ -69,7 +69,7 @@ Corpus & Corpus::operator << ( Sentence *l_phrs ) {
 /// @todo Just invoke the above method.
 Corpus & Corpus::operator << ( SentenceList &l_lst ) {
     foreach ( Sentence* l_phrs, l_lst )
-    this->addSentence ( l_phrs );
+        this->addSentence ( l_phrs );
 
     return *this;
 }
@@ -109,7 +109,7 @@ Corpus * Corpus::create ( const QStringList& p_text ) {
     Q_FOREACH ( const QString& l_str, p_text ) {
         Sentence* l_sent = l_corpus->addSentence ( l_str.simplified().trimmed(),0 );
         l_corpus->m_dom->documentElement().namedItem ( "Sentences" ).appendChild ( *l_sent->m_elem );
-        //qDebug() << "Added sentence" << l_corpus->sentences().count();
+        qDebug() << "Added sentence" << l_corpus->sentences().count();
     }
 
     l_corpus->save();
@@ -168,14 +168,15 @@ void Corpus::load ( const QUuid &p_uuid ) {
 
         for ( int i = 0; i < l_elems.count(); ++i ) {
             QDomElement l_elem = l_elems.at ( i ).toElement();
-            //qDebug() << "Loading sentence:" << l_elem.attribute ( "uuid" );
+            qDebug() << "Loading sentence:" << l_elem.attribute ( "uuid" );
 
             if ( l_elem.isNull() ) continue;
 
             Sentence* l_sntc = new Sentence ( this, ( new QDomElement ( l_elems.at ( i ).toElement() ) ) );
-            //qDebug() << "Loaded sentence:" << l_sntc->text();
+            qDebug() << "Loaded sentence:" << l_sntc->text();
             addSentence ( l_sntc );
         }
+
         m_uuid = p_uuid;
     } else {
         m_dom = 0;
@@ -265,4 +266,4 @@ Corpus::~Corpus() {
 }
 
 #include "corpus.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

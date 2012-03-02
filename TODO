@@ -1,6 +1,9 @@
 *** To see a live list of TODOs, we recommend that you
 *** use Doxygen to generate all of the @todo mentions
 *** in the source code.
+***
+*** Completed tasks have a (!), whereas incompleted tasks have a (*).
+*** At the end of each task description, a bug number (bug #NNN) is typically provided.
 
 Library
 ----------------------------------------------------------
@@ -42,3 +45,4 @@ Miscellaneous
 * Re-work SpeechControl to have a daemon run in the background that handles all of the speech recognition requests (speechcontrold).
 * Work on the theming for the documentation.
 * Exclude the plug-in's code from the documentation.
+! For Sphinx-related libraries create CMake modules instead of using pkg-config. -- Adrian Borucki <gentoolx@gmail.com>

@@ -34,26 +34,45 @@ typedef QList<AcousticModel*> AcousticModelList;
 /**
  * @brief Represents an acoustic model for Sphinx.
  *
- * Acoustic models are
+ * This class provides API for setting and getting meta-data of
+ * acoustic models. The main property is a path where the model is stored.
+ * This and all other properties are contained in the QVariantMap, inside the object.
+ *
+ * Currently supported parameters are:
+ * @li path - Path where the model is stored.
+ *
+ * @note Should we use enum rather than QString for keys?
+ * @todo Add more properties to use.
  */
 class SPCH_EXPORT AcousticModel : public QObject {
     Q_OBJECT
     Q_PROPERTY ( const QVariantMap Parameters READ parameters WRITE setParameters )
     Q_PROPERTY ( const quint16 SampleRate READ sampleRate WRITE setSampleRate )
 
+private:
+    QVariantMap _parameters;
+    quint16 _sampRate;
+
 public:
     Q_DISABLE_COPY ( AcousticModel )
     virtual ~AcousticModel();
-    void setParameter ( const QString&, const QVariant& );
-    void setParameters ( const QVariantMap& );
-    void mergeParameters ( const QVariantMap& );
-    QVariant parameter ( const QString& ) const;
-    const QVariantMap parameters() const;
-    const quint16 sampleRate() const;
-    void setSampleRate ( const quint16& );
-};
-}
+    explicit AcousticModel(QObject* parent = 0);
+    AcousticModel (QString const& path, QObject* parent = 0);
+    void setParameter ( const QString& p_key , const QVariant& p_value );
+    void setParameters ( const QVariantMap& p_values);
+    void mergeParameters ( const QVariantMap& p_values);
+    QVariant parameter ( const QString& p_key) const;
+    QVariantMap parameters() const;
+    quint16 sampleRate() const;
+    void setSampleRate ( const quint16& p_rate );
+    QString path() const;
+    bool isValid() const;
 
+};
+
+typedef QList<AcousticModel*> AcousticModelList;
+
+}
 
 #endif // ACOUSTICMODEL_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

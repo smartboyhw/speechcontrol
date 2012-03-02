@@ -57,6 +57,8 @@ protected:
         NotReady = 0,
         Ready
     } _state;
+    
+    bool _running;
 
     // Gstreamer objects
     QGst::PipelinePtr   _pipeline;
@@ -182,18 +184,17 @@ public:
      * @brief Check whether ASR is ready to use
      */
     bool isReady() const;
+    
+    /**
+     * @brief Check if ASR is currently running.
+     */
+    bool isRunning() const;
 
     /**
      * @brief Pause the pipeline
      * This method simply forces VADER to be in the silent region.
      */
     void pause();
-
-    /**
-     * @brief Stop the pipeline
-     * This method puts the whole pipline in the StatePaused state.
-     */
-    void stop();
 
 signals:
     /// @todo Useful or not?
@@ -203,7 +204,13 @@ public slots:
     /**
      * @brief Run the pipeline
      */
-    void run();
+    bool run();
+    
+    /**
+     * @brief Stop the pipeline
+     * This method puts the whole pipline in the StatePaused state.
+     */
+    void stop();
 
     void asrPartialResult ( const QString& text, const QString& uttid );
     void asrResult ( const QString& text, const QString& uttid );

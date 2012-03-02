@@ -45,16 +45,19 @@ void ASR::_prepare() {
     _state = Ready;
 }
 
-ASR::ASR ( QObject* parent ) : QObject ( parent ) {
+ASR::ASR (QObject* parent) : QObject (parent), _running(false)
+{
     _state = NotReady;
 }
 
-ASR::ASR ( QGst::PipelinePtr pipeline, QObject* parent ) : QObject ( parent ), _pipeline ( pipeline ) {
+ASR::ASR (QGst::PipelinePtr pipeline, QObject* parent) : QObject (parent), _pipeline(pipeline), _running(false)
+{
     _state = NotReady;
 }
 
 /// @todo Automatically extract 'pocketsphinx' element name from description.
-ASR::ASR ( const char* description, QObject* parent ) : QObject ( parent ) {
+ASR::ASR (const char* description, QObject* parent) : QObject (parent), _running(false)
+{
     _pipeline = QGst::Pipeline::create();
     QGst::BinPtr bin = QGst::Bin::fromDescription ( description );
     _pipeline->add ( bin );
@@ -63,7 +66,8 @@ ASR::ASR ( const char* description, QObject* parent ) : QObject ( parent ) {
 }
 
 /// @todo Automatically extract 'pocketsphinx' element name from description.
-ASR::ASR ( const QString& description, QObject* parent ) : QObject ( parent ) {
+ASR::ASR (const QString& description, QObject* parent) : QObject (parent), _running(false)
+{
     _pipeline = QGst::Pipeline::create();
     QGst::BinPtr bin = QGst::Bin::fromDescription ( description.toStdString().c_str() );
     _pipeline->add ( bin );
@@ -167,20 +171,33 @@ bool ASR::isReady() const {
     return _state == Ready;
 }
 
-void ASR::run() {
+bool ASR::isRunning() const
+{
+    return _running;
+}
+
+bool ASR::run()
+{
     qDebug() << "[ASR start]";
-    if ( isReady() )
-        _pipeline->setState ( QGst::StatePlaying );
-    else
+    if (isReady()) {
+        _pipeline->setState(QGst::StatePlaying);
+        _running = true;
+        return true;
+    }
+    else {
         qWarning() << "[ASR] Object is not ready to run.";
+        return false;
+    }
 }
 
 void ASR::pause() {
     _vader->setProperty ( "silent", true );
 }
 
-void ASR::stop() {
-    _pipeline->setState ( QGst::StatePaused );
+void ASR::stop()
+{
+    _pipeline->setState(QGst::StatePaused);
+    _running = false;
 }
 
 void ASR::asrPartialResult ( const QString& text, const QString& uttid ) {
@@ -200,4 +217,4 @@ void ASR::asrResult ( const QString& text, const QString& uttid ) {
 }
 
 #include "asr.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

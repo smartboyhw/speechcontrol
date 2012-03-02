@@ -25,8 +25,11 @@
 #ifndef DESKTOPCONTROL_AGENT_HPP
 #define DESKTOPCONTROL_AGENT_HPP
 
+// Qt
 #include <QObject>
 
+// Local
+#include "desktopasr.hpp"
 #include <app/abstractagent.hpp>
 
 namespace SpeechControl {
@@ -39,6 +42,13 @@ namespace DesktopControl {
  *
  * The desktop control system revolves (in a hierarchical manner) around the
  * agent; if it's not active, no desktop control can occur.
+ * The agent provides an API for enabling our desktop control facilities.
+ *
+ * @section about-dsktpcntrl About DesktopControl
+ * Desktop Control is a technology of management using user's voice, it is one of the
+ * main SpeechControl's features. User has basically control over every aspect of work
+ * with his computer. Will it be creating/removing files, opening programs and files, starting new
+ * IM session, etc.
  *
  * @see AbstractAgent
  **/
@@ -71,10 +81,10 @@ public:
 private:
     virtual OperationState onStateChanged ( const AbstractAgent::OperationState p_state );
     static Agent* s_instance;
+    DesktopASR* _asr;
 };
-
 }
 }
 
 #endif // DESKTOPCONTROL_AGENT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

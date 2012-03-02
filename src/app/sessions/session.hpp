@@ -245,7 +245,6 @@ public slots:
     void assessProgress();
 
 private:
-    //static const QString getPath(const QUuid&);
     static QDomDocument* s_dom;
     static QMap<QUuid, QDomElement*> s_elems;
     Corpus* m_corpus;

@@ -2,7 +2,7 @@ project(SpeechControl)
 cmake_minimum_required(VERSION 2.8)
 
 ## Let's use our own modules to find some softwares not packed with the system.
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
 include(SpeechControlDefaults)
 
 ## Options to toggle components of SpeechControl.
@@ -22,9 +22,7 @@ find_package(Qt4 4.7 COMPONENTS
   QtXml
   REQUIRED)
 find_package(QtGStreamer REQUIRED)
-pkg_check_modules(POCKETSPHINX REQUIRED pocketsphinx sphinxbase)
-
-execute_process(COMMAND ${PKGCONFIG_EXECUTABLE} pocketsphinx --variable=modeldir RESULT_VARIABLE POCKETSPHINX_MODELDIR)
+find_package(PocketSphinx REQUIRED)
 
 ## variables
 set(PROJECT_VERSION "0.1")
@@ -52,7 +50,6 @@ set(SPCHCNTRL_COMPILE_FLAGS_DEBUG "-Wall -Wextra -Wabi -Wctor-dtor-privacy -Wfor
 set(SPCHCNTRL_COMPILE_DEFINITIONS ${QT_DEFINITIONS})
 set(SPCHCNTRL_QRESC "${CMAKE_SOURCE_DIR}/res/res.qrc")
 file(GLOB SPCHCNTRL_UI "res/ui/*.ui")
-
 
 ## Now we'll add in the Qt stuff
 include("${QT_USE_FILE}")

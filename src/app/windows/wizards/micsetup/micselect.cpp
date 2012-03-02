@@ -48,7 +48,7 @@ void SpeechControl::Wizards::Pages::MicrophoneSelection::initializePage() {
         /// @todo Add error saying no mics found.
     } else {
         Q_FOREACH ( const Microphone* l_mic, l_allMics ) {
-            ui->comboBoxMicrophones->addItem ( l_mic->friendlyName(),l_mic->id() );
+            ui->comboBoxMicrophones->addItem ( l_mic->name(),l_mic->id() );
         }
     }
 }
@@ -78,4 +78,4 @@ void SpeechControl::Wizards::Pages::MicrophoneSelection::on_comboBoxMicrophones_
 }
 
 #include "micselect.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

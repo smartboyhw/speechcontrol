@@ -24,9 +24,13 @@
 
 namespace SpeechControl {
 namespace DesktopControl {
+
 Agent* Agent::s_instance = 0;
 
 Agent::Agent() : AbstractAgent ( AbstractCategory::global() ) {
+    _asr = new DesktopASR(DesktopASR::getStandardDescription(), parent());
+    connect(this, SIGNAL(stopped()), _asr, SLOT(stop()));
+    connect(_asr, SIGNAL(finished(QString&)), this, SLOT(invokeCommand(QString&)));
 
 }
 
@@ -39,11 +43,15 @@ Agent* Agent::instance() {
 
 AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::OperationState p_state ) {
     switch ( p_state ) {
-    case Enabled:
-        break;
+    case Enabled: {
+        if(!_asr->run())
+            qWarning() << "[DesktopControl::Agent] Start unsuccessful.";
+
+    }break;
 
     case Disabled:
-        break;
+        _asr->stop();
+    break;
 
     case Undefined:
     default:
@@ -54,7 +62,7 @@ AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::Opera
 }
 
 bool Agent::isActive() const {
-    return state() == Enabled;
+    return _asr->isRunning();
 }
 
 Agent::~Agent() {

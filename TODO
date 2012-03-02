@@ -7,11 +7,10 @@
 
 Library
 ----------------------------------------------------------
-* List audio devices.
-* Get selected audio device's volume.
+* List audio devices. (bug #000006)
+* Get selected audio device's volume. (bug #000007)
  * Get threshold of user's input for typical speaking volume.
  * Offset that result to determine background noise.
-* Integrate the code for the training utilities of SphinxTrain to the SpeechControl library.
 
 Application (general)
 ----------------------------------------------------------
@@ -22,12 +21,8 @@ Application (general)
 * Implement an abstract means of displaying notifications (includes QSystemTrayIcon, indicators, etc). [Going to use QIndicate for this.]
 * Build functionality for Ayanta notifications.
 * Hook into speechcontrold and allow modifying of local user options.
+* Integrate the code for the training utilities of SphinxTrain to the SpeechControl application.
 
-Application (KDE)
-----------------------------------------------------------
-* Build functionality for KDE notifications.
-* Build plasmoids (KDE-only) for desktop control, dictation and voice input.
-* Add support for KDE's System Settings panel to tweak SpeechControl (kcm-module).
 
 Application (daemon)
 ----------------------------------------------------------

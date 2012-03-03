@@ -42,7 +42,7 @@ namespace SpeechControl {
  **/
 class Core : public QObject {
     Q_OBJECT
-    Q_DISABLE_COPY ( Core )
+    Q_DISABLE_COPY ( Core ) const SpeechControl::Core& p_other
 
     friend class Windows::Main;
 
@@ -116,7 +116,7 @@ public:
      * @brief Quits the application's main execution loop.
      * @param p_exitCode The exit code for the application to use.
      */
-    void quit ( const int& = 0 );
+    void quit ( const int& p_exitCode = 0 );
 
 public slots:
     /**
@@ -134,6 +134,9 @@ public slots:
     /// Experimental
     void asrFinished ( QString& text );
 
+private slots:
+    void invokeAutoStart();
+
 private:
     QApplication* m_app;          /// Holds the Application instance.
     Windows::Main* s_mw;    /// Holds the main window.
@@ -148,4 +151,4 @@ private:
 }
 
 #endif // CORE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -37,6 +37,7 @@
 #include "app/sessions/session.hpp"
 #include "app/windows/main-window.hpp"
 #include "app/windows/quickstart-wizard.hpp"
+#include "desktopcontrol/agent.hpp"
 
 using namespace SpeechControl;
 
@@ -75,8 +76,8 @@ Core::Core ( int argc, char** argv ) :
     connect ( this,SIGNAL ( stopped() ),Plugins::Factory::instance(),SLOT ( stop() ) );
 }
 
-Core::~Core () {
-    m_settings->sync();
+Core::Core ( const Core& p_other ) : QObject(p_other.parent()) {
+
 }
 
 void Core::start() {
@@ -127,5 +128,17 @@ int Core::exec() {
     return instance()->m_app->exec();
 }
 
+void Core::quit ( const int& p_exitCode ) {
+    instance()->m_app->exit(p_exitCode);
+}
+
+void Core::invokeAutoStart() {
+    if (configuration("AutoStart/DesktopControl").toBool() == true)
+        DesktopControl::Agent::instance()->setState(SpeechControl::AbstractAgent::Enabled);
+}
+
+Core::~Core () {
+    m_settings->sync();
+}
 #include "core.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

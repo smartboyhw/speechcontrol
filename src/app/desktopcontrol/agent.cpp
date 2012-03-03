@@ -29,7 +29,7 @@ Agent* Agent::s_instance = 0;
 
 Agent::Agent() : AbstractAgent ( AbstractCategory::global() ) {
     _asr = new DesktopASR ( DesktopASR::getStandardDescription(), parent() );
-    connect ( _asr, SIGNAL ( finished ( QString& ) ), this, SLOT ( invokeCommand ( QString& ) ) );
+    connect ( _asr, SIGNAL ( finished ( QString ) ), this, SLOT ( invokeCommand ( QString ) ) );
 }
 
 Agent* Agent::instance() {
@@ -83,4 +83,4 @@ Agent::~Agent() {
 }
 }
 #include "../desktopcontrol/agent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

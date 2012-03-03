@@ -227,7 +227,7 @@ public:
 
 signals:
     /// @todo Useful or not?
-    void finished ( QString& result );
+    void finished ( const QString& result );
 
 public slots:
     /**

@@ -45,6 +45,7 @@ namespace Windows {
 
 /**
  * @brief Represents a dialog that manages the graphical processing of acoustic data collection.
+ *
  * The training dialog of SpeechControl permits users to build up Session objects with data for
  * training. A progress indicator is provided as well as a visual display of what text is currently
  * needed for training. With this dialog, it's possible to adequately collect volumes of text for
@@ -59,7 +60,7 @@ public:
      * Initializes a new Training dialog.
      * @param p_parent The parent QWidget this dialog will latch onto.
      **/
-    explicit TrainingDialog ( QWidget *p_parent = Core::mainWindow() );
+    explicit TrainingDialog ( QWidget *p_parent = 0 );
 
     /**
      * @brief Destructor.
@@ -157,4 +158,4 @@ private:
 }
 
 #endif // TRAINING_WINDOW_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

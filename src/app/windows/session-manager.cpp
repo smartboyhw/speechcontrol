@@ -28,6 +28,7 @@
 
 #include "sessions/session.hpp"
 #include "windows/about-dialog.hpp"
+#include "windows/main-window.hpp"
 #include "books-manager.hpp"
 #include "session-manager.hpp"
 #include "core.hpp"
@@ -129,4 +130,4 @@ void SessionManager::on_listSession_itemSelectionChanged() {
 }
 
 #include "session-manager.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

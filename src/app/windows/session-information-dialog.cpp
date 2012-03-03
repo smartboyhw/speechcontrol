@@ -30,7 +30,7 @@ using SpeechControl::Windows::TrainingDialog;
 using SpeechControl::Windows::SessionInformationDialog;
 using SpeechControl::Windows::ContentInformationDialog;
 
-SessionInformationDialog::SessionInformationDialog ( Session* p_session ) : QDialog ( Core::mainWindow() ),
+SessionInformationDialog::SessionInformationDialog ( Session* p_session ) : QDialog ( 0 ),
     m_ui ( new Ui::SessionInformationDialog ), m_session ( p_session ) {
     connect ( m_session,SIGNAL ( progressChanged ( double ) ),this,SLOT ( updateProgress ( double ) ) );
 }
@@ -71,4 +71,4 @@ SessionInformationDialog::~SessionInformationDialog() {
 }
 
 #include "session-information-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -92,7 +92,7 @@ int ContentWizard::nextId() const {
         Q_ASSERT ( m_src != 0 );
         Content* l_cntn = m_src->generate();
         if ( l_cntn == 0 ) {
-            QMessageBox::warning ( Core::mainWindow(),
+            QMessageBox::warning ( 0,
                                    "Failure Creating Content",
                                    "There was an issue creating your content; thus resulting in a failure.",
                                    QMessageBox::Ok
@@ -112,4 +112,4 @@ ContentWizard::~ContentWizard() {
 }
 
 #include "contents-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

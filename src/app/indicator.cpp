@@ -21,8 +21,10 @@
 #include <QImage>
 #include <QDateTime>
 #include <QDebug>
+
 #include "core.hpp"
 #include "indicator.hpp"
+#include "windows/main-window.hpp"
 
 using SpeechControl::Indicator;
 using SpeechControl::Core;

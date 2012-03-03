@@ -23,6 +23,7 @@
 #include <QListWidgetItem>
 
 #include "core.hpp"
+#include "windows/main-window.hpp"
 #include "settings-dialog.hpp"
 #include "settings/general-pane.hpp"
 #include "settings/plugins-pane.hpp"
@@ -139,4 +140,4 @@ void SpeechControl::Windows::Settings::on_buttonBox_accepted() {
 }
 
 #include "settings-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

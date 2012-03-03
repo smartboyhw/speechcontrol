@@ -43,8 +43,8 @@
 using namespace SpeechControl;
 using SpeechControl::Windows::TrainingDialog;
 
-TrainingDialog::TrainingDialog ( QWidget *parent ) :
-    QDialog ( parent ),
+TrainingDialog::TrainingDialog ( QWidget* p_parent ) :
+    QDialog ( p_parent ),
     m_currentPosition ( 0 ), m_initialPosition ( 0 ),
     m_ui ( new Ui::Training ),
     m_mic ( Microphone::defaultMicrophone() ),
@@ -80,7 +80,7 @@ void TrainingDialog::startTraining ( Session* p_session ) {
         l_dialog->setSession ( p_session );
         l_dialog->open();
     } else {
-        QMessageBox::information ( Core::mainWindow() ,tr ( "Session Completed" ), tr ( "Session <b>%1</b> has been completed already." ).arg ( p_session->name() ) );
+        QMessageBox::information ( 0 ,tr ( "Session Completed" ), tr ( "Session <b>%1</b> has been completed already." ).arg ( p_session->name() ) );
     }
 }
 

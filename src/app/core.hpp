@@ -26,14 +26,16 @@
 #include <QVariant>
 #include <QApplication>
 
-#include <windows/main-window.hpp>
-
 class QSettings;
 
 namespace SpeechControl {
+namespace Windows {
+class Main;
+}
 
-/*!
- * \brief Represents the entire heart of SpeechControl.
+
+/**
+ * @brief Represents the entire heart of SpeechControl.
  *
  * The Core class is where most of the event handling for most utilities
  * lock into. It holds the @c Factory and all of the derived forms of @c AbstractPlugin

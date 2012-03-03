@@ -80,9 +80,13 @@ Main::Main() : m_ui ( new Ui::MainWindow ), m_prgStatusbar ( 0 ) {
     m_ui->actionDesktopControlCommands->setIcon ( QIcon::fromTheme ( "view-list-text" ) );
     m_ui->actionStartTraining->setIcon ( QIcon::fromTheme ( "system-run" ) );
 
-    // Link up the buttons to their corresponding actions.
+    // Update the actions and buttons.
+    m_ui->actionDesktopControlActive->setChecked ( !DesktopControl::Agent::instance()->isActive() );
+    m_ui->actionDictationActive->setChecked ( !Dictation::Agent::instance()->isActive() );
     m_ui->btnDsktpCntrl->setChecked ( m_ui->actionDesktopControlActive->isChecked() );
     m_ui->btnDctn->setChecked ( m_ui->actionDictationActive->isChecked() );
+    m_ui->actionDesktopControlActive->trigger();
+    m_ui->actionDictationActive->trigger();
 
     connect ( DesktopControl::Agent::instance(), SIGNAL ( stateChanged ( OperationState ) ),this,SLOT ( desktopControlStateChanged() ) );
     connect ( Dictation::Agent::instance(),SIGNAL ( stateChanged ( OperationState ) ),this,SLOT ( dictationStateChanged() ) );
@@ -218,18 +222,18 @@ void Main::on_actionStartTraining_triggered () {
     }
 }
 
-/// @todo Ensure that the style of the button updates with the status.
-void Main::on_btnDsktpCntrl_clicked ( bool p_checked ) {
-    on_actionDesktopControlActive_triggered ( p_checked );
+void Main::on_btnDctn_checked ( bool p_checked ) {
+    m_ui->btnDctn->setIcon ( ( ( p_checked == true ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
+    on_actionDictationActive_triggered ( m_ui->btnDctn->isChecked() );
 }
 
-/// @todo Ensure that the style of the button updates with the status.
-void Main::on_btnDctn_clicked ( bool p_checked ) {
-    on_actionDictationActive_triggered ( p_checked );
+void Main::on_btnDsktpCntrl_checked ( bool p_checked ) {
+    m_ui->btnDsktpCntrl->setIcon ( ( ( p_checked == true ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
+    on_actionDesktopControlActive_triggered ( m_ui->btnDsktpCntrl->isChecked() );
 }
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
-void Main::on_actionDesktopControlActive_triggered ( const bool p_checked ) {
+void Main::on_actionDesktopControlActive_triggered ( bool p_checked ) {
     if ( p_checked ) {
         DesktopControl::Agent::instance()->setState ( SpeechControl::AbstractAgent::Enabled );
     } else {
@@ -237,7 +241,6 @@ void Main::on_actionDesktopControlActive_triggered ( const bool p_checked ) {
     }
 
     setStatusMessage ( ( ( p_checked == true ) ? "Enabling desktop control..." : "Disabling desktop control..." ) , 5000 );
-    m_ui->btnDsktpCntrl->setIcon ( ( ( p_checked == true ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
 }
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
@@ -248,7 +251,6 @@ void Main::on_actionDictationActive_triggered ( const bool p_checked ) {
         Dictation::Agent::instance()->setState ( SpeechControl::AbstractAgent::Disabled );
     }
     setStatusMessage ( ( ( p_checked == true ) ? "Enabling dictation..." : "Disabling dictation..." ) ,5000 );
-    m_ui->btnDctn->setIcon ( ( ( p_checked == true ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
 }
 
 void Main::on_actionAboutQt_triggered() {

@@ -32,6 +32,7 @@ class MainWindow;
 }
 
 namespace SpeechControl {
+class Core;
 /**
  * @brief A namespace containing all of the classes dedicated to the user interface.
  **/
@@ -44,27 +45,62 @@ namespace Windows {
  **/
 class Main : public QMainWindow {
     Q_OBJECT
+    Q_DISABLE_COPY(Main)
+    friend class SpeechControl::Core;
+
 public:
+    /**
+     * @brief Destructor.
+     **/
+    virtual ~Main();
+
+private:
+    /**
+     * @brief Constructor.
+     **/
     explicit Main();
-    ~Main();
 
 public slots:
+    /**
+     * @brief Shows the window.
+     **/
     virtual void show();
+
+    /**
+     * @brief Closes the window.
+     **/
     virtual void close();
+    /**
+     * @brief Updates the window's data.
+     **/
     void updateContent();
+
+    /**
+     * @brief Shows progress in the task bar.
+     *
+     * @note At 1.0, the progress bar is hidden.
+     * @param p_value The value of the progress on a scale of 0.0 to 1.0
+     **/
     void setProgress ( const double p_value );
+
+    /**
+     * @brief Shows a brief message in the status bar of the main window.
+     *
+     * @param p_message The message to display.
+     * @param p_timeout How long it should be displayed without disturbance (in milliseconds) .Defaults to 8000.
+     **/
     void setStatusMessage ( const QString& p_message, const int p_timeout = 8000 );
 
 private slots:
     // desktop control
     void on_actionDesktopControlOptions_triggered();
     void on_actionDesktopControlActive_triggered ( bool p_checked );
-    void on_btnDsktpCntrl_clicked ( const bool p_checked );
+    void on_btnDsktpCntrl_checked ( const bool p_checked );
     void desktopControlStateChanged();
 
     // dictation
     void on_actionDictationActive_triggered ( const bool p_checked );
-    void on_btnDctn_clicked ( const bool p_checked );
+    void on_btnDctn_checked ( const bool p_checked );
     void dictationStateChanged();
 
     // training
@@ -86,4 +122,4 @@ private:
 }
 
 #endif // MAIN_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

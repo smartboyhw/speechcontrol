@@ -20,6 +20,8 @@
 
 #include "sessions/session.hpp"
 #include "general-pane.hpp"
+#include "core.hpp"
+#include <desktopcontrol/agent.hpp>
 #include "ui_settingspane-general.h"
 
 using namespace SpeechControl;
@@ -56,15 +58,14 @@ const QString GeneralSettingsPane::id() const {
     return "gnrl";
 }
 
-/// @todo Toggle the status of dictation.
-void GeneralSettingsPane::on_checkBoxEnableDictation_toggled ( bool checked ) {
-
+void GeneralSettingsPane::on_checkBoxEnableDictation_toggled ( bool p_checked ) {
+    Core::setConfiguration("Dictation/Enabled",p_checked );
 }
 
-/// @todo Toggle the status of desktop control.
-void GeneralSettingsPane::on_checkBoxEnableDesktopControl_toggled ( bool checked ) {
-
+void GeneralSettingsPane::on_checkBoxEnableDesktopControl_toggled ( bool p_checked ) {
+    Core::setConfiguration("DesktopControl/Enabled",p_checked );
+    DesktopControl::Agent::setState(((p_checked) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled ));
 }
 
 #include "general-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

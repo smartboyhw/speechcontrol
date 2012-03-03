@@ -2,6 +2,7 @@
  *  This file is part of SpeechControl.
  *
  *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *            (C) 2012 Jacky Alcine <jacky.alcine@thesii.org>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -17,9 +18,6 @@
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
- */
-/**
- * @author Jacky Alcine <jacky.alcine@thesii.org>
  */
 
 #ifndef DESKTOPCONTROL_AGENT_HPP
@@ -67,6 +65,12 @@ public:
      * @return bool
      **/
     virtual bool isActive() const;
+
+    /**
+     * @brief Determines if the Desktop Control agent has been enabled or disabled by the user.
+     * @return TRUE if it has been enabled, FALSE if it's disabled.
+     **/
+    bool isEnabled();
 
     /**
      * @brief Pointer to agent instance.

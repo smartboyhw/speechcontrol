@@ -43,15 +43,21 @@ Agent* Agent::instance() {
 AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::OperationState p_state ) {
     switch ( p_state ) {
     case Enabled: {
+        if (!isEnabled())
+            return Disabled;
+
         if ( !_asr->start() ) {
             qWarning() << "[DesktopControl::Agent] Start unsuccessful.";
+            return Disabled;
         }
 
     }
+    return Enabled;
     break;
 
     case Disabled:
         _asr->stop();
+        return Disabled;
         break;
 
     case Undefined:
@@ -64,6 +70,10 @@ AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::Opera
 
 bool Agent::isActive() const {
     return _asr->isRunning();
+}
+
+bool Agent::isEnabled() {
+    return Core::configuration("DesktopControl/Enabled").toBool();
 }
 
 /// @todo Since this returns more than one command, should we provide a UI that allows you to pick which command you might want?

@@ -29,9 +29,7 @@ Agent* Agent::s_instance = 0;
 
 Agent::Agent() : AbstractAgent ( AbstractCategory::global() ) {
     _asr = new DesktopASR(DesktopASR::getStandardDescription(), parent());
-    connect(this, SIGNAL(stopped()), _asr, SLOT(stop()));
     connect(_asr, SIGNAL(finished(QString&)), this, SLOT(invokeCommand(QString&)));
-
 }
 
 Agent* Agent::instance() {

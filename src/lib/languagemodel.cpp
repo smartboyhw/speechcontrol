@@ -1,8 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
- *            (C) 2012 Jacky Alcine <jacky.alcine@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -18,31 +17,42 @@
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#include <QtPlugin>
 
-#include "config.hpp"
-#include "plugin.hpp"
 
-using namespace SpeechControl::Plugins::Python;
+#include "languagemodel.hpp"
 
-Plugin::Plugin ( QObject* parent ) : AbstractPlugin ( QUuid ( PLUGIN_UUID ),parent ) {
+using namespace SpeechControl;
 
-}
-
-void Plugin::initialize() {
+LanguageModel::LanguageModel ( QObject* p_parent ) : QObject(p_parent) {
 
 }
 
-void Plugin::deinitialize() {
+LanguageModel::LanguageModel ( const QUuid& p_uuid ) : QObject() {
 
 }
 
-Plugin::~Plugin() {
+LanguageModel::LanguageModel() {
 
 }
 
+LanguageModel* LanguageModel::fromCompressedFile ( const QFile* p_archiveFile ) {
+    return 0;
+}
 
-Q_EXPORT_PLUGIN2 ( spchcntrl-python, SpeechControl::Plugins::Python::Plugin )
-#include "plugin.moc"
+LanguageModel* LanguageModel::fromDirectory ( const QDir& p_directory ) {
+    return 0;
+}
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+LanguageModel* LanguageModel::fromPath ( const QString& p_path ) {
+    return 0;
+}
+
+QString LanguageModel::path() const {
+    return QString::null;
+}
+
+LanguageModel::~LanguageModel() {
+
+}
+
+#include "languagemodel.moc"

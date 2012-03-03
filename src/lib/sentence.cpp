@@ -87,7 +87,7 @@ Sentence* Sentence::create ( Corpus *p_corpus, const QString& p_text ) {
             qDebug() << "Appended" << l_wordSize << l_word;
         }
 
-        if ( l_wordSize == l_phraseSize || l_word == l_words.last() ) {
+        if ( (l_wordSize == l_phraseSize || l_word == l_words.last()) && !l_phrase.trimmed().isEmpty() ) {
             l_phrase = l_phrase.trimmed();
             qDebug() << "Phrase" << l_phrase << "formed. At end?" << ( l_word == l_words.last() );
 
@@ -145,4 +145,4 @@ Sentence::~Sentence() {
 }
 
 #include "sentence.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

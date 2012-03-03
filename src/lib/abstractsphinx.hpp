@@ -36,11 +36,19 @@
 #include <QGst/Bus>
 #include <QGst/Message>
 
+// PocketSphinx includes
+#include <pocketsphinx.h>
+
 // local includes
 #include "config.hpp"
 #include "export.hpp"
 
+
 namespace SpeechControl {
+
+class LanguageModel;
+
+class Microphone;
 class AcousticModel;
 class Dictionary;
 /**
@@ -128,7 +136,7 @@ public:
     /**
      * @brief Obtains the language model used by Sphinx.
      */
-    QDir languageModel() const;
+    LanguageModel* languageModel() const;
 
     /**
      * @brief Obtains the dictionary used.
@@ -165,6 +173,24 @@ public:
     const QGst::BusPtr busElement() const;
 
     /**
+     * @brief Gets the element representing the current audio source.
+     *
+     **/
+    const QGst::ElementPtr audioSrcElement() const ;
+
+    /**
+     * @brief Gets the element representing the volume element.
+     **/
+    const QGst::ElementPtr volumeElement() const;
+
+    /**
+     * @brief Hooks up a microphone to be used with this AbstractSphinx instance.
+     *
+     * @param p_microphone The microphone to use.
+     **/
+    void useMicrophone(const Microphone* p_microphone);
+
+    /**
      * @brief Set PocketSphinx element property
      * @param property Name of the property.
      * @param value Value for the property.
@@ -183,6 +209,12 @@ public:
      * @param path The path to the language to be used.
      */
     void setLanguageModel ( const QString& p_path );
+
+    /**
+     * @brief Sets the language model to use.
+     * @param p_languageModel The LanguageModel to be used.
+     **/
+    void setLanguageModel(const LanguageModel* p_languageModel);
 
     /**
      * @brief Sets the dictionary to be used.
@@ -262,7 +294,7 @@ public slots:
      **/
     void formResult ( QString& p_text, QString& p_uttid );
 
-private slots:
+protected slots:
 
     /**
      * @brief Invokes an application-wide message to be raised.
@@ -271,7 +303,7 @@ private slots:
      **/
     virtual void applicationMessage ( const QGst::MessagePtr& p_message ) = 0;
 
-private:
+protected:
     /**
      * @brief Builds a pipeline from a description p_description.
      *

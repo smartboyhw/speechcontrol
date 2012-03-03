@@ -18,19 +18,22 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <QDir>
 #include <QString>
+#include <QDebug>
+#include <QTextStream>
 #include <QStringList>
 
+#include "noisedictionary.hpp"
 #include "acousticmodel.hpp"
-#include <QDir>
 
 using SpeechControl::AcousticModel;
 
 AcousticModel::AcousticModel ( const AcousticModel &p_mdl ) :
-    QObject ( p_mdl.parent() ) {
+    QObject ( p_mdl.parent() ), m_params ( p_mdl.m_params ), m_path ( p_mdl.m_path ) {
 }
 AcousticModel::AcousticModel ( const QString& p_path, QObject* p_parent ) : QObject ( p_parent ) {
-    m_params.insert ( "path", p_path );
+    load ( p_path );
 }
 
 AcousticModel::AcousticModel ( QObject* p_parent ) : QObject ( p_parent ) {
@@ -38,6 +41,37 @@ AcousticModel::AcousticModel ( QObject* p_parent ) : QObject ( p_parent ) {
 }
 
 AcousticModel::~AcousticModel() {
+}
+
+void AcousticModel::load ( QString p_path ) {
+    QDir l_dir ( p_path );
+    if ( !l_dir.exists() )
+        return;
+
+    m_path = p_path;
+
+    loadFeatureParameters();
+    loadNoiseDictionary();
+}
+
+void AcousticModel::loadFeatureParameters() {
+    QFile* l_file = new QFile ( m_path + "/feat.params" );
+    l_file->open ( QIODevice::ReadOnly | QIODevice::Text );
+
+    QTextStream l_strm ( l_file );
+
+    while ( !l_strm.atEnd() ) {
+        const QStringList l_tokens = l_strm.readLine().split ( " " );
+        qDebug() << "Parsing parameter" << l_tokens[0] << "=" << l_tokens[1];
+        setParameter ( l_tokens[0],l_tokens[1] );
+    }
+
+    l_file->close();
+}
+
+void AcousticModel::loadNoiseDictionary() {
+    QFile* l_noiseDictFile = new QFile ( m_path +  "/noisedict"  );
+    m_noisedict = NoiseDictionary::fromFile ( l_noiseDictFile );
 }
 
 void AcousticModel::setParameter ( const QString &p_key, const QVariant &p_value ) {
@@ -69,12 +103,11 @@ quint16 AcousticModel::sampleRate() const {
 }
 
 QString AcousticModel::path() const {
-    return m_params.value ( "path" ).toString();
+    return m_path;
 }
 
 bool AcousticModel::isValid() const {
-    QDir l_path ( m_params.value ( "path" ).toString() );
-    return l_path.exists();
+    return (QDir( m_path )).exists();
 }
 
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

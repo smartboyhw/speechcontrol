@@ -30,6 +30,7 @@
 #include <QObject>
 #include <QStringList>
 
+class QAction;
 class QPluginLoader;
 class QSettings;
 
@@ -193,6 +194,11 @@ protected:
      **/
     QSettings* configuration() const;
 
+    QList<QAction*> actions();
+
+    void addAction(QAction* p_action);
+    void addActions(QList<QAction*> p_actions);
+
 private slots:
 
     /**
@@ -225,6 +231,7 @@ private:
     QPluginLoader* m_ldr;   ///< The magical QPluginLoader!
     QSettings* m_cfg;       ///< Holds the configuration of the plug-in.
     QSettings* m_sttgs;     ///< Holds the settings of the plug-in.
+    QList<QAction*> m_acts;
 };
 
 /**
@@ -261,4 +268,4 @@ protected:
 }
 
 #endif // PLUGINS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

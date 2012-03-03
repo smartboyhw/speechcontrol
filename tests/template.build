@@ -12,12 +12,18 @@ include(CTest)
 enable_testing()
 
 ## Add paths to find CMake information about the library and application.
-set(SpeechControlLibrary_DIR "${CMAKE_BINARY_DIR}/src/lib/InstallFiles")
-find_package(SpeechControlLibrary REQUIRED)
+find_package(SpeechControlLibrary QUIET)
+if (SpeechControlLibrary-NOTFOUND)
+    set(SpeechControlLibrary_DIR "${CMAKE_BINARY_DIR}/src/lib/InstallFiles")
+    find_package(SpeechControlLibrary QUIET)
+endif (SpeechControlLibrary-NOTFOUND)
 
 if (TEST_MODE STREQUAL "APP")
-    set(SpeechControlApplication_DIR "${CMAKE_BINARY_DIR}/src/app/InstallFiles")
-    find_package(SpeechControlApplication REQUIRED)
+    find_package(SpeechControlApplication QUIET)
+    if (SpeechControlApplication-NOTFOUND)
+        set(SpeechControlApplication_DIR "${CMAKE_BINARY_DIR}/src/app/InstallFiles")
+        find_package(SpeechControlApplication QUIET)
+    endif (SpeechControlApplication-NOTFOUND)
 endif (TEST_MODE STREQUAL "APP")
 
 set(TEST_BASE_SCPP "@TEST_SRC@")

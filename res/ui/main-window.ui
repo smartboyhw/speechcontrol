@@ -462,14 +462,13 @@ padding-right: 4px;</string>
      <addaction name="separator"/>
      <addaction name="actionDesktopControlOptions"/>
     </widget>
-    <widget class="QMenu" name="menuWizards">
+    <widget class="QMenu" name="menuDictation">
      <property name="title">
-      <string>Wizards</string>
+      <string>Dictation</string>
      </property>
-     <addaction name="actionWizardMicrophone"/>
-     <addaction name="actionWizardBooks"/>
-     <addaction name="actionWizardSessions"/>
-     <addaction name="actionWizardVoxForge"/>
+     <addaction name="actionDictationActive"/>
+     <addaction name="separator"/>
+     <addaction name="actionDictationOptions"/>
     </widget>
     <widget class="QMenu" name="menuTraining">
      <property name="title">
@@ -480,17 +479,26 @@ padding-right: 4px;</string>
      <addaction name="separator"/>
      <addaction name="actionOptions_2"/>
     </widget>
-    <widget class="QMenu" name="menuDictation">
+    <widget class="QMenu" name="menuWizards">
      <property name="title">
-      <string>Dictation</string>
+      <string>Wizards</string>
      </property>
-     <addaction name="actionDictationActive"/>
+     <addaction name="actionWizardMicrophone"/>
+     <addaction name="actionWizardBooks"/>
+     <addaction name="actionWizardSessions"/>
+     <addaction name="actionWizardVoxForge"/>
+    </widget>
+    <widget class="QMenu" name="menuPlugins">
+     <property name="title">
+      <string>Plugins</string>
+     </property>
+     <addaction name="actionPluginOptions"/>
      <addaction name="separator"/>
-     <addaction name="actionDicatationOptions"/>
     </widget>
     <addaction name="menuDesktopControl"/>
     <addaction name="menuDictation"/>
     <addaction name="menuTraining"/>
+    <addaction name="menuPlugins"/>
     <addaction name="separator"/>
     <addaction name="menuWizards"/>
     <addaction name="actionOptions"/>
@@ -613,12 +621,17 @@ padding-right: 4px;</string>
     <string>Adapt Models</string>
    </property>
   </action>
-  <action name="actionDicatationOptions">
+  <action name="actionDictationOptions">
    <property name="text">
     <string>Options</string>
    </property>
   </action>
   <action name="actionOptions_2">
+   <property name="text">
+    <string>Options</string>
+   </property>
+  </action>
+  <action name="actionPluginOptions">
    <property name="text">
     <string>Options</string>
    </property>

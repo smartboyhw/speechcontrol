@@ -21,10 +21,7 @@ QT4_AUTOMOC(${SPCHCNTRL_APP_SCPP})
 QT4_CREATE_TRANSLATION("speechcontrol.qm" "${SPCHCNTRL_APP_SRCS};${SPCHCNTRL_UI}" "speechcontrol.ts")
 #QT4_ADD_TRANSLATION("speechcontrol.ts" "speechcontrol.qm")
 
-message("TS: ${SPCHCNTRL_APP_TS_FILES} ${TS} ${CMAKE_SOURCE_DIR}")
-message("QM: ${SPCHCNTRL_APP_QM_FILES}")
-
-include_directories(${SPCHCNTRL_APP_INCLUDE_DIRS})
+include_directories(${SPCHCNTRL_APP_BUILD_INCLUDE_DIRS})
 
 ## Define targets
 add_executable(speechcontrol-frontend ${SPCHCNTRL_APP_SCPP})

@@ -18,31 +18,6 @@
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#include <QtPlugin>
 
-#include "config.hpp"
-#include "plugin.hpp"
-
-using namespace SpeechControl::Plugins::Python;
-
-Plugin::Plugin ( QObject* parent ) : AbstractPlugin ( QUuid ( PLUGIN_UUID ),parent ) {
-
-}
-
-void Plugin::initialize() {
-
-}
-
-void Plugin::deinitialize() {
-
-}
-
-Plugin::~Plugin() {
-
-}
-
-
-Q_EXPORT_PLUGIN2 ( spchcntrl-python, SpeechControl::Plugins::Python::Plugin )
-#include "plugin.moc"
-
+#define PLUGIN_UUID "@SPTRSB_PLUGIN_UUID@"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

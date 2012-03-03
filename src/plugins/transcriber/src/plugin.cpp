@@ -19,30 +19,39 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 #include <QtPlugin>
+#include <QAction>
 
 #include "config.hpp"
 #include "plugin.hpp"
+#include "transcriber-dialog.hpp"
 
-using namespace SpeechControl::Plugins::Python;
+using namespace SpeechControl::Windows;
+using namespace SpeechControl::Plugins::Transcriber;
 
 Plugin::Plugin ( QObject* parent ) : AbstractPlugin ( QUuid ( PLUGIN_UUID ),parent ) {
 
 }
 
 void Plugin::initialize() {
-
+    QAction* l_action = new QAction(QIcon::fromTheme("audio-headset"),"Transcribe",this);
+    connect(l_action,SIGNAL(triggered()),this,SLOT(showTranscriberDialog()));
+    addAction(l_action);
 }
 
 void Plugin::deinitialize() {
 
 }
 
+void Plugin::showTranscriberDialog ( ) {
+    TranscriberDialog* l_dialog = new TranscriberDialog;
+    l_dialog->exec();
+}
+
 Plugin::~Plugin() {
 
 }
 
-
-Q_EXPORT_PLUGIN2 ( spchcntrl-python, SpeechControl::Plugins::Python::Plugin )
+Q_EXPORT_PLUGIN2 ( spchcntrl-transcriber, SpeechControl::Plugins::Transcriber::Plugin )
 #include "plugin.moc"
 
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

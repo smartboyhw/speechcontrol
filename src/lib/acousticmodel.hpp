@@ -28,6 +28,7 @@
 
 namespace SpeechControl {
 class AcousticModel;
+class NoiseDictionary;
 
 typedef QList<AcousticModel*> AcousticModelList;
 
@@ -37,6 +38,24 @@ typedef QList<AcousticModel*> AcousticModelList;
  * This class provides API for setting and getting meta-data of
  * acoustic models. The main property is a path where the model is stored.
  * This and all other properties are contained in the QVariantMap, inside the object.
+ *
+ * @subsection params Parameters
+ *
+ * The parameters here are represented in <b>feat.params</b> of the acoustic model's
+ * directory. An example dump of such a file would be the following:
+ *
+ * @code
+- lowerf 1 *
+-upperf 4000
+-nfilt 20
+-transform dct
+-round_filters no
+-remove_dc yes
+-feat s2_4x
+ * @endcode
+ *
+ * Each of these properties can be set by their key (the value to the left)
+ * and update its value (the value to the right).
  *
  * Currently supported parameters are:
  * @li path - Path where the model is stored.
@@ -51,7 +70,11 @@ class SPCH_EXPORT AcousticModel : public QObject {
     Q_PROPERTY ( const quint16 SampleRate READ sampleRate )
 
 private:
-    QVariantMap m_params;   ///< Holds the properties of the model.
+    QVariantMap m_params;         ///< Holds the properties of the model.
+    QString m_path;               ///< Holds the path to the base directory of the acoustic model.
+    NoiseDictionary* m_noisedict;  ///< Holds information about the noise dictionary.
+    void loadFeatureParameters();
+    void loadNoiseDictionary();
 
 public:
     /**
@@ -129,6 +152,8 @@ public:
      * @return boolean
      **/
     bool isValid() const;
+
+    void load ( QString p_path );
 
 };
 

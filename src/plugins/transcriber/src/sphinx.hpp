@@ -1,8 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
- *            (C) 2012 Jacky Alcine <jacky.alcine@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -15,34 +14,31 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#include <QtPlugin>
 
-#include "config.hpp"
-#include "plugin.hpp"
+#ifndef SPEECHCONTROL_PLUGINS_TRANSCRIBER_SPHINX_HPP
+#define SPEECHCONTROL_PLUGINS_TRANSCRIBER_SPHINX_HPP
+#include <lib/abstractsphinx.hpp>
 
-using namespace SpeechControl::Plugins::Python;
+namespace SpeechControl {
+namespace Plugins {
+namespace Transcriber {
+class Sphinx : public SpeechControl::AbstractSphinx {
 
-Plugin::Plugin ( QObject* parent ) : AbstractPlugin ( QUuid ( PLUGIN_UUID ),parent ) {
-
-}
-
-void Plugin::initialize() {
-
-}
-
-void Plugin::deinitialize() {
-
-}
-
-Plugin::~Plugin() {
+public:
+    Sphinx();
+    void prepareForFile( const QString& p_path );
+    virtual void applicationMessage ( const QGst::MessagePtr& p_message );
+    virtual ~Sphinx();
+private:
+    void onUnknownTypeEncountered(QGst::PadPtr p_pad, QGst::CapsPtr p_caps);
+};
 
 }
+}
+}
 
-
-Q_EXPORT_PLUGIN2 ( spchcntrl-python, SpeechControl::Plugins::Python::Plugin )
-#include "plugin.moc"
-
+#endif // SPEECHCONTROL_PLUGINS_TRANSCRIBER_SPHINX_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

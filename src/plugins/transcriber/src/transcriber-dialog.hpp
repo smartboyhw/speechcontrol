@@ -2,7 +2,6 @@
  *  This file is part of SpeechControl.
  *
  *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
- *            (C) 2012 Jacky Alcine <jacky.alcine@thesii.org>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -18,31 +17,41 @@
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#include <QtPlugin>
 
-#include "config.hpp"
-#include "plugin.hpp"
 
-using namespace SpeechControl::Plugins::Python;
+#ifndef TRANSCRIBERDIALOG_HPP
+#define TRANSCRIBERDIALOG_HPP
 
-Plugin::Plugin ( QObject* parent ) : AbstractPlugin ( QUuid ( PLUGIN_UUID ),parent ) {
+#include <QDialog>
+#include "sphinx.hpp"
 
+namespace Ui {
+class TranscriberDialog;
 }
 
-void Plugin::initialize() {
+namespace SpeechControl {
+namespace Windows {
+
+class TranscriberDialog : public QDialog {
+    Q_OBJECT
+
+public:
+    explicit TranscriberDialog ( QWidget *parent = 0 );
+    ~TranscriberDialog();
+
+private slots:
+    void on_btnOpen_clicked();
+    void on_btnTranscribe_clicked();
+
+private:
+    Ui::TranscriberDialog *m_ui;
+    SpeechControl::Plugins::Transcriber::Sphinx* m_sphnx;
+public slots:
+    void outputValue ( const QString& p_value );
+};
 
 }
-
-void Plugin::deinitialize() {
-
 }
 
-Plugin::~Plugin() {
-
-}
-
-
-Q_EXPORT_PLUGIN2 ( spchcntrl-python, SpeechControl::Plugins::Python::Plugin )
-#include "plugin.moc"
-
+#endif // TRANSCRIBERDIALOG_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

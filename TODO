@@ -11,6 +11,8 @@ Library
 * Get selected audio device's volume. (bug #000007)
  * Get threshold of user's input for typical speaking volume.
  * Offset that result to determine background noise.
+* Implement the programmatic representation of the acoustic model.
+ * Decipher and interpret the data held in the binary files.
 
 Application (general)
 ----------------------------------------------------------

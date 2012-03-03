@@ -70,7 +70,7 @@ Corpus & Corpus::operator << ( Sentence *p_phrs ) {
 /// @todo Just invoke the above method.
 Corpus & Corpus::operator << ( SentenceList& p_sentenceList ) {
     Q_FOREACH ( Sentence* l_phrs, p_sentenceList )
-        this->addSentence ( l_phrs );
+    this->addSentence ( l_phrs );
 
     return *this;
 }
@@ -107,10 +107,14 @@ Corpus * Corpus::create ( const QStringList& p_text ) {
     //qDebug() << l_dom.toString();
 
     Corpus* l_corpus = Corpus::obtain ( l_uuid );
-    Q_FOREACH ( const QString& l_str, p_text ) {
-        Sentence* l_sent = l_corpus->addSentence ( l_str.simplified().trimmed(),0 );
+    Q_FOREACH ( QString l_str, p_text ) {
+        l_str = l_str.simplified().trimmed();
+        if ( l_str.isEmpty() )
+            continue;
+
+        Sentence* l_sent = l_corpus->addSentence ( l_str ,0 );
         l_corpus->m_dom->documentElement().namedItem ( "Sentences" ).appendChild ( *l_sent->m_elem );
-        qDebug() << "Added sentence" << l_corpus->sentences().count();
+        qDebug() << "Added sentence" << l_corpus->sentences().count() << l_str;
     }
 
     l_corpus->save();

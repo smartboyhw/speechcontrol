@@ -22,11 +22,14 @@
 #include "abstractsphinx.hpp"
 #include "acousticmodel.hpp"
 #include "dictionary.hpp"
+#include "microphone.hpp"
+#include "languagemodel.hpp"
 
 #include <QGlib/Connect>
 
 #include <QGst/enums.h>
 #include <QGst/ElementFactory>
+#include <pocketsphinx.h>
 
 using namespace SpeechControl;
 
@@ -42,13 +45,14 @@ AbstractSphinx::AbstractSphinx ( QGst::PipelinePtr p_pipeline, QObject* p_parent
 AbstractSphinx::AbstractSphinx ( const QString& p_description, QObject* p_parent ) : QObject ( p_parent ),
     m_running ( NotPrepared ), m_ready ( NotPrepared ) {
     buildPipeline ( p_description );
-    prepare();
 }
 
 void AbstractSphinx::buildPipeline ( QString p_description ) {
     m_pipeline = QGst::Pipeline::create();
     QGst::BinPtr bin = QGst::Bin::fromDescription ( p_description );
     m_pipeline->add ( bin );
+    qDebug() << "Built pipeline for AbstractSphinx (" << p_description << ").";
+    prepare();
 }
 
 void AbstractSphinx::prepare() {
@@ -57,7 +61,7 @@ void AbstractSphinx::prepare() {
 
     QGlib::connect ( m_psphinx, "partial_result", this, &AbstractSphinx::formPartialResult );
     QGlib::connect ( m_psphinx, "result", this, &AbstractSphinx::formResult );
-    //     _psphinx->setProperty ("configured", true);
+    m_psphinx->setProperty ( "configured", true );
 
     m_bus = m_pipeline->bus();
     m_bus->addSignalWatch();
@@ -65,10 +69,6 @@ void AbstractSphinx::prepare() {
 
     m_pipeline->setState ( QGst::StateReady );
     m_ready = Ready;
-}
-
-AbstractSphinx::~AbstractSphinx() {
-    m_pipeline->setState ( QGst::StateNull );
 }
 
 QString AbstractSphinx::standardDescription() {
@@ -79,15 +79,14 @@ QString AbstractSphinx::standardDescription() {
                      " ! fakesink" );
 }
 
-/// @todo How to deal with this decoder in GValue?
+/// @todo Determine how to pull the pointer of the held data from the QGlib::Value (or GValue) and use that as the ps_decoder_t.
 QGlib::Value AbstractSphinx::decoder() const {
     return m_psphinx->property ( "decoder" );
 }
 
-/// @todo Should we implement a class/struct to wrap these values more programatically?
-QDir AbstractSphinx::languageModel() const {
+LanguageModel* AbstractSphinx::languageModel() const {
     QGlib::Value lm = m_psphinx->property ( "lm" );
-    return QDir ( lm.get<QString>() );
+    return LanguageModel::fromPath ( lm.toString() );
 }
 
 Dictionary* AbstractSphinx::dictionary() const {
@@ -104,6 +103,20 @@ const QGst::PipelinePtr AbstractSphinx::pipeline() const {
     return m_pipeline;
 }
 
+const QGst::ElementPtr AbstractSphinx::volumeElement() const {
+    return m_pipeline->getElementByName ( "volume" );
+}
+
+const QGst::ElementPtr AbstractSphinx::audioSrcElement() const {
+    return m_pipeline->getElementByName ( "audiosrc" );
+}
+
+/// @todo Implement a means of using Microphone as audio sources with AbstractSphinx so that users can specify which microphone to be used.
+void AbstractSphinx::useMicrophone ( const Microphone* p_microphone ) {
+    qFatal ( "This method hasn't been implemented as of yet." );
+}
+
+
 const QGst::ElementPtr AbstractSphinx::pocketSphinxElement() const {
     return m_psphinx;
 }
@@ -116,7 +129,6 @@ const QGst::BusPtr AbstractSphinx::busElement() const {
     return m_bus;
 }
 
-
 void AbstractSphinx::setVaderProperty ( const QString& p_property, const QVariant& p_value ) {
     m_vader->setProperty ( p_property.toStdString().c_str(), QGlib::Value ( p_value.toString() ) );
 }
@@ -126,19 +138,27 @@ void AbstractSphinx::setPsProperty ( const QString& p_property, const QVariant& 
 }
 
 void AbstractSphinx::setLanguageModel ( const QString& p_path ) {
-    if ( QFile::exists(p_path) ) {
+    if ( QFile::exists ( p_path ) ) {
         setPsProperty ( "lm", p_path );
     } else {
         qWarning() << "[ASR] Given language model path" << p_path << "does not exist.";
     }
 }
 
+void AbstractSphinx::setLanguageModel(const LanguageModel* p_languageModel){
+    setPsProperty("lm",p_languageModel->path());
+}
+
 void AbstractSphinx::setDictionary ( const QString& p_path ) {
-    if ( QFile::exists( p_path ) ) {
+    if ( QFile::exists ( p_path ) ) {
         setPsProperty ( "dict", p_path );
     } else {
         qWarning() << "[ASR] Given dictionary path" << p_path << "does not exist.";
     }
+}
+
+void AbstractSphinx::setDictionary ( const Dictionary* p_dictionary ) {
+
 }
 
 void AbstractSphinx::setAcousticModel ( const QString& p_path ) {
@@ -148,6 +168,10 @@ void AbstractSphinx::setAcousticModel ( const QString& p_path ) {
     } else {
         qWarning() << "[ASR] Given acoustic model path" << p_path << "does not exist.";
     }
+}
+
+void AbstractSphinx::setAcousticModel ( const AcousticModel* p_acousticModel ) {
+
 }
 
 bool AbstractSphinx::isReady() const {
@@ -172,7 +196,8 @@ bool AbstractSphinx::start() {
 }
 
 void AbstractSphinx::stop() {
-    m_pipeline->setState ( QGst::StatePaused );
+    if ( m_pipeline->setState ( QGst::StateNull ) == QGst::StateChangeSuccess )
+        m_running = NotPrepared;
 }
 
 void AbstractSphinx::togglePause() {
@@ -196,5 +221,8 @@ void AbstractSphinx::formResult ( QString& p_text, QString& p_uttid ) {
     m_bus->post ( l_message );
 }
 
+AbstractSphinx::~AbstractSphinx() {
+    m_pipeline->setState ( QGst::StateNull );
+}
 #include "abstractsphinx.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

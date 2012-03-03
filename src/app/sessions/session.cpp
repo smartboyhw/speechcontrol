@@ -331,6 +331,7 @@ Session::Backup* Session::Backup::generate ( const Session& p_sssn ) {
     // Compress corpus data.
     const Corpus* l_corpus = p_sssn.corpus();
     QFile* l_corpusFile = new QFile ( Corpus::getPath ( l_corpus->uuid() ).toLocalFile() );
+    l_file->open ( QIODevice::ReadOnly | QIODevice::Text );
     QByteArray l_corpusData;
     l_corpusData = qCompress ( l_corpusFile->readAll() );
 
@@ -342,7 +343,9 @@ Session::Backup* Session::Backup::generate ( const Session& p_sssn ) {
     l_domElem.appendChild ( l_crpsElem );
     l_crpsElem.appendChild ( l_dom.createTextNode ( l_corpusData.toBase64() ) );
 
-    qDebug() << l_domElem.text();
+    qDebug() << l_domElem.text()
+             << l_corpusData
+             << l_sssnData;
     return 0;
 }
 

@@ -32,6 +32,11 @@ class MainWindow;
 }
 
 namespace SpeechControl {
+namespace Plugins {
+
+class AbstractPlugin;
+}
+
 class Core;
 /**
  * @brief A namespace containing all of the classes dedicated to the user interface.
@@ -47,6 +52,7 @@ class Main : public QMainWindow {
     Q_OBJECT
     Q_DISABLE_COPY(Main)
     friend class SpeechControl::Core;
+    friend class Plugins::AbstractPlugin;
 
 public:
     /**
@@ -98,6 +104,7 @@ private slots:
     void desktopControlStateChanged();
 
     // dictation
+    void on_actionDictationOptions_triggered();
     void on_actionDictationActive_triggered ( const bool p_checked );
     void dictationStateChanged();
 
@@ -105,7 +112,14 @@ private slots:
     void on_actionStartTraining_triggered();
     void on_actionAdaptModels_triggered();
 
+    // wizards
+    void on_actionWizardMicrophone_triggered();
+    void on_actionWizardBooks_triggered();
+    void on_actionWizardSessions_triggered();
+    void on_actionWizardVoxForge_triggered();
+
     // misc.
+    void on_actionPluginOptions_triggered();
     void on_actionOptions_triggered();
     void on_actionAboutQt_triggered();
     void on_actionAboutSpeechControl_triggered();

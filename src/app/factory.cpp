@@ -104,7 +104,8 @@ void Factory::unloadPlugin ( const QUuid& p_uuid ) {
         AbstractPlugin* l_plgn = s_ldPlgns.value ( p_uuid );
         l_plgn->stop();
         s_ldPlgns.remove ( p_uuid );
-        qDebug() << "Plugin" << p_uuid << "unloaded.";
+        qDebug() << "Plugin" << l_plgn->name() << "unloaded.";
+        delete l_plgn;
         emit instance()->pluginUnloaded ( p_uuid );
     }
 }

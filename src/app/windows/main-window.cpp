@@ -44,9 +44,12 @@
 #include "books-manager.hpp"
 #include "session-manager.hpp"
 #include "quickstart-wizard.hpp"
+#include "about-dialog.hpp"
+#include "micsetup-wizard.hpp"
+#include "contents-wizard.hpp"
+#include "sessions-wizard.hpp"
 #include "ui_main-window.h"
 
-#include "about-dialog.hpp"
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 using namespace SpeechControl::Wizards;
@@ -201,6 +204,34 @@ void Main::on_actionAboutQt_triggered() {
 void Main::on_actionAboutSpeechControl_triggered() {
     AboutDialog l_dlg ( this );
     l_dlg.exec();
+}
+
+void Main::on_actionPluginOptions_triggered() {
+    Settings::switchToPanel ( "dsktpcntrl" );
+}
+
+void Main::on_actionDictationOptions_triggered() {
+    Settings::switchToPanel ( "dctn" );
+}
+
+void Main::on_actionWizardMicrophone_triggered() {
+    MicrophoneSetup* l_wiz = new MicrophoneSetup;
+    l_wiz->exec();
+}
+
+void Main::Main::on_actionWizardBooks_triggered() {
+    ContentWizard* l_wiz = new ContentWizard;
+    l_wiz->exec();
+}
+
+void Main::Main::on_actionWizardSessions_triggered() {
+    SessionWizard* l_wiz = new SessionWizard;
+    l_wiz->exec();
+}
+
+/// @todo Build the Voxforge Wizard.
+void Main::Main::on_actionWizardVoxForge_triggered() {
+
 }
 
 Main::~Main() {

@@ -22,28 +22,23 @@
 
 using namespace SpeechControl::DesktopControl;
 
-DesktopASR::DesktopASR ( QObject* parent ) : ASR ( parent )
-{
+DesktopASR::DesktopASR ( QObject* parent ) : ASR ( parent ) {
 
 }
 
-DesktopASR::DesktopASR ( const char* description, QObject* parent ) : ASR ( description, parent )
-{
+DesktopASR::DesktopASR ( const char* description, QObject* parent ) : ASR ( description, parent ) {
 
 }
 
-DesktopASR::DesktopASR ( const QString& description, QObject* parent ) : ASR ( description, parent )
-{
+DesktopASR::DesktopASR ( const QString& description, QObject* parent ) : ASR ( description, parent ) {
 
 }
 
-DesktopASR::DesktopASR ( QGst::PipelinePtr pipeline, QObject* parent ) : ASR ( pipeline, parent )
-{
+DesktopASR::DesktopASR ( QGst::PipelinePtr pipeline, QObject* parent ) : ASR ( pipeline, parent ) {
 
 }
 
-void DesktopASR::applicationMessage ( const QGst::MessagePtr& message )
-{
+void DesktopASR::applicationMessage ( const QGst::MessagePtr& message ) {
     QString msgType    = message->internalStructure()->name();
     QString hypothesis = message->internalStructure()->value ( "hyp" ).toString();
     QString uttid      = message->internalStructure()->value ( "uttid" ).toString();

@@ -21,6 +21,7 @@
 #include "core.hpp"
 #include "agent.hpp"
 #include "xdo.hpp"
+#include "sphinx.hpp"
 
 namespace SpeechControl {
 namespace Dictation {
@@ -28,7 +29,8 @@ namespace Dictation {
 Agent* Agent::s_inst = 0;
 
 Agent::Agent() : AbstractAgent ( KeyboardEmulator::instance() ) {
-
+    m_sphinx = new Sphinx ( Sphinx::standardDescription(), parent() );
+    connect ( m_sphinx, SIGNAL ( finished ( QString ) ), this, SLOT ( handleText(QString) ) );
 }
 
 Agent* Agent::instance() {
@@ -59,6 +61,10 @@ bool Agent::isActive() const {
     return state() == Enabled;
 }
 
+void Agent::handleText ( const QString& p_text ) {
+
+}
+
 Agent::~Agent() {
 }
 
@@ -66,4 +72,4 @@ Agent::~Agent() {
 }
 
 #include "../dictation/agent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

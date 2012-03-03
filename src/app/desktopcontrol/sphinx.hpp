@@ -21,24 +21,47 @@
 #ifndef DESKTOPASR_HPP
 #define DESKTOPASR_HPP
 
-#include <lib/asr.hpp>
+#include <lib/abstractsphinx.hpp>
+#include <desktopcontrol/agent.hpp>
 
 namespace SpeechControl {
 namespace DesktopControl {
 
-class DesktopASR : public ASR {
+/**
+ * @brief Represents the Sphinx instance for DesktopControl.
+ *
+ * @note This class is not meant for casual programming. It's solely used in DesktopControl::Agent.
+ * @internal
+ **/
+class Sphinx : public AbstractSphinx {
     Q_OBJECT
+    Q_DISABLE_COPY ( Sphinx )
+    friend class Agent;
 
-public:
-    explicit DesktopASR ( QObject* parent = 0 );
+protected:
+    /**
+     * @brief Null constructor.
+     *
+     * @param p_parent Defaults to 0.
+     **/
+    explicit Sphinx ( QObject* p_parent = 0 );
 
-    DesktopASR ( const char* description, QObject* parent = 0 );
+    /**
+     * @brief Constructor.
+     *
+     * @param p_description The description used to build the pipeline.
+     * @param p_parent Defaults to 0.
+     **/
+    Sphinx ( const QString& p_description, QObject* p_parent = 0 );
+    /**
+     * @brief Constructor.
+     *
+     * @param p_pipeline The pipeline to be used.
+     * @param p_parent Defaults to 0.
+     **/
+    Sphinx ( QGst::PipelinePtr p_pipeline, QObject* p_parent );
 
-    DesktopASR ( const QString& description, QObject* parent = 0 );
-
-    DesktopASR ( QGst::PipelinePtr pipeline, QObject* parent = 0 );
-
-public slots:
+private slots:
     void applicationMessage ( const QGst::MessagePtr& message );
 };
 

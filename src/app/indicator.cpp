@@ -19,6 +19,8 @@
 */
 
 #include <QImage>
+#include <QDateTime>
+#include <QDebug>
 #include "core.hpp"
 #include "indicator.hpp"
 

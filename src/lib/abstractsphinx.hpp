@@ -20,8 +20,8 @@
  */
 
 
-#ifndef ASR_HPP
-#define ASR_HPP
+#ifndef ABSTRACTSPHINX_HPP
+#define ABSTRACTSPHINX_HPP
 
 // Qt includes
 #include <QMap>
@@ -46,19 +46,19 @@ class Dictionary;
 /**
  * @brief Implementation of automatic speech recognition.
  *
- * ASR (or automatic speech recognition) is an abstract class responsible
+ * AbstractSphinx is an abstract class responsible
  * for handling GStreamer audio and PocketSphinx plugins and management
  * of dictionaries, language and acoustic models. It also performs
  * acoustic training and adjusts models to its needs.
  */
-class SPCH_EXPORT ASR : public QObject {
+class SPCH_EXPORT AbstractSphinx : public QObject {
 
     Q_OBJECT
-    Q_DISABLE_COPY ( ASR )
+    Q_DISABLE_COPY ( AbstractSphinx )
 
 protected:
     /**
-     * @brief Represents the possible states of ASR.
+     * @brief Represents the possible states of the AbstractSphinx.
      * @internal
      **/
     enum States {
@@ -87,31 +87,31 @@ public:
      * @brief Null constructor.
      * @param p_parent Defaults to 0.
      **/
-    explicit ASR ( QObject* p_parent = 0 );
+    explicit AbstractSphinx ( QObject* p_parent = 0 );
 
     /**
-     * @brief Renders a new ASR instance with a pipeline.
+     * @brief Renders a new the AbstractSphinx instance with a pipeline.
      *
-     * @param p_pipeline The pipeline to use for ASR.
+     * @param p_pipeline The pipeline to use for the AbstractSphinx.
      * @param p_parent Defaults to 0.
      **/
-    ASR ( QGst::PipelinePtr p_pipeline, QObject* p_parent = 0 );
+    AbstractSphinx ( QGst::PipelinePtr p_pipeline, QObject* p_parent = 0 );
 
     /**
-     * @brief Renders a new ASR instance from a GStreamer-compatible description.
+     * @brief Renders a new the AbstractSphinx instance from a GStreamer-compatible description.
      *
      * This constructor creates GStreamer elements from description.
      *
-     * @param p_description The description to use to build with this ASR instance.
+     * @param p_description The description to use to build with this the AbstractSphinx instance.
      * @param p_parent Defaults to 0.
      **/
-    ASR ( const QString& p_description, QObject* p_parent = 0 );
+    AbstractSphinx ( const QString& p_description, QObject* p_parent = 0 );
 
     /**
      * @brief Destructor.
      *
      **/
-    virtual ~ASR();
+    virtual ~AbstractSphinx();
 
     /**
      * @brief Get description of the standard Bin
@@ -127,19 +127,16 @@ public:
 
     /**
      * @brief Obtains the language model used by Sphinx.
-     * @return A @c QDir to the langauge model in use.
      */
     QDir languageModel() const;
 
     /**
      * @brief Obtains the dictionary used.
-     * @return A @c QDir pointing to the directory.
      */
     Dictionary* dictionary() const;
 
     /**
      * @brief Obtains the acoustic model in use.
-     * @return The acoustic model used by this.
      */
     AcousticModel* acousticModel() const;
 
@@ -162,8 +159,8 @@ public:
     const QGst::ElementPtr vaderElement() const;
 
     /**
-     * @brief Get ASR message bus
-     * @return Pointer to the ASR bus.
+     * @brief Get the AbstractSphinx message bus
+     * @return Pointer to the the AbstractSphinx bus.
      */
     const QGst::BusPtr busElement() const;
 
@@ -185,13 +182,13 @@ public:
      * @brief Sets the language model to use.
      * @param path The path to the language to be used.
      */
-    void setLanguageModel ( const QString& path );
+    void setLanguageModel ( const QString& p_path );
 
     /**
      * @brief Sets the dictionary to be used.
      * @param path The path to the dictionary.
      */
-    void setDictionary ( const QString& path );
+    void setDictionary ( const QString& p_path );
 
     /**
      * @brief Sets the dictionary to be used.
@@ -214,18 +211,19 @@ public:
     void setAcousticModel ( const AcousticModel* p_acousticModel );
 
     /**
-     * @brief Check whether ASR is ready to use
+     * @brief Check whether the AbstractSphinx is ready to use
      */
     bool isReady() const;
 
     /**
-     * @brief Check if ASR is currently running.
+     * @brief Check if the AbstractSphinx is currently running.
      */
     bool isRunning() const;
 
     /**
-     * @brief Pause the pipeline
-     * This method simply forces VADER to be in the silent region.
+     * @brief Pauses the pipeline.
+     *
+     * @note This method simply forces VADER to be in the silent region.
      */
     void togglePause();
 
@@ -235,16 +233,16 @@ signals:
 
 public slots:
     /**
-     * @brief Starts ASR.
+     * @brief Starts the AbstractSphinx.
      *
-     * Starts the ASR instance by invoking the pipeline's execution.
+     * Starts the the AbstractSphinx instance by invoking the pipeline's execution.
      */
     bool start();
 
     /**
-     * @brief Stops ASR.
+     * @brief Stops the AbstractSphinx.
      *
-     * Stops the ASR instance by halting the pipeline's execution.
+     * Stops the the AbstractSphinx instance by halting the pipeline's execution.
      */
     void stop();
 
@@ -264,6 +262,8 @@ public slots:
      **/
     void formResult ( QString& p_text, QString& p_uttid );
 
+private slots:
+
     /**
      * @brief Invokes an application-wide message to be raised.
      *
@@ -282,5 +282,5 @@ private:
 
 }
 
-#endif // ASR_HPP
+#endif // ABSTRACTSPHINX_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

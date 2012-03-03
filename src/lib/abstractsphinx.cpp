@@ -19,7 +19,7 @@
  */
 
 
-#include "asr.hpp"
+#include "abstractsphinx.hpp"
 #include "acousticmodel.hpp"
 #include "dictionary.hpp"
 
@@ -30,48 +30,48 @@
 
 using namespace SpeechControl;
 
-ASR::ASR ( QObject* p_parent ) : QObject ( p_parent ),
+AbstractSphinx::AbstractSphinx ( QObject* p_parent ) : QObject ( p_parent ),
     m_running ( NotPrepared ), m_ready ( NotPrepared ) {
 }
 
-ASR::ASR ( QGst::PipelinePtr p_pipeline, QObject* p_parent ) : QObject ( p_parent ),
+AbstractSphinx::AbstractSphinx ( QGst::PipelinePtr p_pipeline, QObject* p_parent ) : QObject ( p_parent ),
     m_running ( NotPrepared ), m_ready ( NotPrepared ), m_pipeline ( p_pipeline ) {
 }
 
 /// @todo Automatically extract 'pocketsphinx' element name from description.
-ASR::ASR ( const QString& p_description, QObject* p_parent ) : QObject ( p_parent ),
+AbstractSphinx::AbstractSphinx ( const QString& p_description, QObject* p_parent ) : QObject ( p_parent ),
     m_running ( NotPrepared ), m_ready ( NotPrepared ) {
     buildPipeline ( p_description );
     prepare();
 }
 
-void ASR::buildPipeline ( QString p_description ) {
+void AbstractSphinx::buildPipeline ( QString p_description ) {
     m_pipeline = QGst::Pipeline::create();
     QGst::BinPtr bin = QGst::Bin::fromDescription ( p_description );
     m_pipeline->add ( bin );
 }
 
-void ASR::prepare() {
+void AbstractSphinx::prepare() {
     m_psphinx = m_pipeline->getElementByName ( "asr" );
     m_vader   = m_pipeline->getElementByName ( "vad" );
 
-    QGlib::connect ( m_psphinx, "partial_result", this, &ASR::formPartialResult );
-    QGlib::connect ( m_psphinx, "result", this, &ASR::formResult );
+    QGlib::connect ( m_psphinx, "partial_result", this, &AbstractSphinx::formPartialResult );
+    QGlib::connect ( m_psphinx, "result", this, &AbstractSphinx::formResult );
     //     _psphinx->setProperty ("configured", true);
 
     m_bus = m_pipeline->bus();
     m_bus->addSignalWatch();
-    QGlib::connect ( m_bus, "message::application", this, &ASR::applicationMessage );
+    QGlib::connect ( m_bus, "message::application", this, &AbstractSphinx::applicationMessage );
 
     m_pipeline->setState ( QGst::StateReady );
     m_ready = Ready;
 }
 
-ASR::~ASR() {
+AbstractSphinx::~AbstractSphinx() {
     m_pipeline->setState ( QGst::StateNull );
 }
 
-QString ASR::standardDescription() {
+QString AbstractSphinx::standardDescription() {
     return QString ( "autoaudiosrc name=audiosrc ! audioconvert"
                      " ! audioresample ! audiorate ! volume name=volume"
                      " ! vader name=vad auto_threshold=true"
@@ -80,52 +80,52 @@ QString ASR::standardDescription() {
 }
 
 /// @todo How to deal with this decoder in GValue?
-QGlib::Value ASR::decoder() const {
+QGlib::Value AbstractSphinx::decoder() const {
     return m_psphinx->property ( "decoder" );
 }
 
 /// @todo Should we implement a class/struct to wrap these values more programatically?
-QDir ASR::languageModel() const {
+QDir AbstractSphinx::languageModel() const {
     QGlib::Value lm = m_psphinx->property ( "lm" );
     return QDir ( lm.get<QString>() );
 }
 
-Dictionary* ASR::dictionary() const {
+Dictionary* AbstractSphinx::dictionary() const {
     const QString l_dict = m_psphinx->property ( "dict" ).toString();
     return Dictionary::obtain ( l_dict );
 }
 
-AcousticModel* ASR::acousticModel() const {
+AcousticModel* AbstractSphinx::acousticModel() const {
     const QString l_hmm = m_psphinx->property ( "hmm" ).toString();
     return new AcousticModel ( l_hmm );
 }
 
-const QGst::PipelinePtr ASR::pipeline() const {
+const QGst::PipelinePtr AbstractSphinx::pipeline() const {
     return m_pipeline;
 }
 
-const QGst::ElementPtr ASR::pocketSphinxElement() const {
+const QGst::ElementPtr AbstractSphinx::pocketSphinxElement() const {
     return m_psphinx;
 }
 
-const QGst::ElementPtr ASR::vaderElement() const {
+const QGst::ElementPtr AbstractSphinx::vaderElement() const {
     return m_vader;
 }
 
-const QGst::BusPtr ASR::busElement() const {
+const QGst::BusPtr AbstractSphinx::busElement() const {
     return m_bus;
 }
 
 
-void ASR::setVaderProperty ( const QString& p_property, const QVariant& p_value ) {
+void AbstractSphinx::setVaderProperty ( const QString& p_property, const QVariant& p_value ) {
     m_vader->setProperty ( p_property.toStdString().c_str(), QGlib::Value ( p_value.toString() ) );
 }
 
-void ASR::setPsProperty ( const QString& p_property, const QVariant& p_value ) {
+void AbstractSphinx::setPsProperty ( const QString& p_property, const QVariant& p_value ) {
     m_psphinx->setProperty ( p_property.toStdString().c_str(), QGlib::Value ( p_value.toString() ) );
 }
 
-void ASR::setLanguageModel ( const QString& p_path ) {
+void AbstractSphinx::setLanguageModel ( const QString& p_path ) {
     if ( QFile::exists(p_path) ) {
         setPsProperty ( "lm", p_path );
     } else {
@@ -133,7 +133,7 @@ void ASR::setLanguageModel ( const QString& p_path ) {
     }
 }
 
-void ASR::setDictionary ( const QString& p_path ) {
+void AbstractSphinx::setDictionary ( const QString& p_path ) {
     if ( QFile::exists( p_path ) ) {
         setPsProperty ( "dict", p_path );
     } else {
@@ -141,7 +141,7 @@ void ASR::setDictionary ( const QString& p_path ) {
     }
 }
 
-void ASR::setAcousticModel ( const QString& p_path ) {
+void AbstractSphinx::setAcousticModel ( const QString& p_path ) {
 
     if ( QDir ( p_path ).exists() ) {
         setPsProperty ( "hmm", p_path );
@@ -150,15 +150,15 @@ void ASR::setAcousticModel ( const QString& p_path ) {
     }
 }
 
-bool ASR::isReady() const {
+bool AbstractSphinx::isReady() const {
     return m_ready == Ready;
 }
 
-bool ASR::isRunning() const {
+bool AbstractSphinx::isRunning() const {
     return m_running == Running;
 }
 
-bool ASR::start() {
+bool AbstractSphinx::start() {
     qDebug() << "[ASR start]";
 
     if ( isReady() ) {
@@ -171,16 +171,16 @@ bool ASR::start() {
     return isRunning();
 }
 
-void ASR::stop() {
+void AbstractSphinx::stop() {
     m_pipeline->setState ( QGst::StatePaused );
 }
 
-void ASR::togglePause() {
+void AbstractSphinx::togglePause() {
     const bool l_silent = ! ( m_vader->property ( "silent" ).toBool() );
     m_vader->setProperty ( "silent", l_silent );
 }
 
-void ASR::formPartialResult ( QString& p_text, QString& p_uttid ) {
+void AbstractSphinx::formPartialResult ( QString& p_text, QString& p_uttid ) {
     QGst::Structure l_psStructure ( "partial_result" );
     l_psStructure.setValue ( "hyp", p_text );
     l_psStructure.setValue ( "uttid", p_uttid );
@@ -188,7 +188,7 @@ void ASR::formPartialResult ( QString& p_text, QString& p_uttid ) {
     m_bus->post ( l_message );
 }
 
-void ASR::formResult ( QString& p_text, QString& p_uttid ) {
+void AbstractSphinx::formResult ( QString& p_text, QString& p_uttid ) {
     QGst::Structure l_psStructure ( "result" );
     l_psStructure.setValue ( "hyp", p_text );
     l_psStructure.setValue ( "uttid", p_uttid );
@@ -196,5 +196,5 @@ void ASR::formResult ( QString& p_text, QString& p_uttid ) {
     m_bus->post ( l_message );
 }
 
-#include "asr.moc"
+#include "abstractsphinx.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -27,7 +27,6 @@
 #include <QObject>
 
 // Local
-#include "desktopasr.hpp"
 #include <app/abstractagent.hpp>
 
 namespace SpeechControl {
@@ -35,6 +34,7 @@ namespace SpeechControl {
  * @brief Container namespace for all of the desktop control related clases.
  **/
 namespace DesktopControl {
+    class Sphinx;
 /**
  * @brief Agent managing desktop control.
  *
@@ -97,7 +97,7 @@ public slots:
 private:
     virtual OperationState onStateChanged ( const AbstractAgent::OperationState p_state );
     static Agent* s_instance;
-    DesktopASR* _asr;
+    Sphinx* m_sphinx;
 };
 }
 }

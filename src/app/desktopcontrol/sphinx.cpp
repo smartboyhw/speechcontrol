@@ -18,35 +18,31 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "desktopasr.hpp"
+#include "sphinx.hpp"
 
 using namespace SpeechControl::DesktopControl;
 
-DesktopASR::DesktopASR ( QObject* parent ) : ASR ( parent ) {
+Sphinx::Sphinx ( QObject* p_parent ) : AbstractSphinx ( p_parent ) {
 
 }
 
-DesktopASR::DesktopASR ( const char* description, QObject* parent ) : ASR ( description, parent ) {
+Sphinx::Sphinx ( const QString& p_description, QObject* p_parent ) : AbstractSphinx ( p_description, p_parent ) {
 
 }
 
-DesktopASR::DesktopASR ( const QString& description, QObject* parent ) : ASR ( description, parent ) {
+Sphinx::Sphinx ( QGst::PipelinePtr p_pipeline, QObject* p_parent ) : AbstractSphinx ( p_pipeline, p_parent ) {
 
 }
 
-DesktopASR::DesktopASR ( QGst::PipelinePtr pipeline, QObject* parent ) : ASR ( pipeline, parent ) {
-
-}
-
-void DesktopASR::applicationMessage ( const QGst::MessagePtr& message ) {
-    QString msgType    = message->internalStructure()->name();
-    QString hypothesis = message->internalStructure()->value ( "hyp" ).toString();
-    QString uttid      = message->internalStructure()->value ( "uttid" ).toString();
-    if ( msgType == "result" ) {
-        qDebug() << "ASR result:" << hypothesis;
-        emit finished ( hypothesis );
+void Sphinx::applicationMessage ( const QGst::MessagePtr& p_message ) {
+    QString l_msgType    = p_message->internalStructure()->name();
+    QString l_hypothesis = p_message->internalStructure()->value ( "hyp" ).toString();
+    QString l_uttid      = p_message->internalStructure()->value ( "uttid" ).toString();
+    if ( l_msgType == "result" ) {
+        qDebug() << "ASR result:" << l_hypothesis << l_uttid;
+        emit finished ( l_hypothesis );
     }
 }
 
-#include "desktopasr.moc"
+#include "../desktopcontrol/sphinx.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

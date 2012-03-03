@@ -18,6 +18,9 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <QDir>
+#include <QFile>
+#include <QDebug>
 #include <QSettings>
 #include <QPluginLoader>
 
@@ -142,4 +145,4 @@ Factory::~Factory() {
 }
 
 #include "factory.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -27,9 +27,9 @@
 #include <QMessageBox>
 
 // libspchcntrl includes
+#include <lib/config.hpp>
 #include <lib/system.hpp>
 #include <lib/microphone.hpp>
-#include <lib/dummysc.hpp>
 
 // local includes
 #include "app/core.hpp"
@@ -109,7 +109,6 @@ void Core::stop() {
 /// Experimental
 void Core::asrFinished ( QString& text ) {
     qDebug() << "[ASR] Completed with " << text;
-    dummyASR->start();
 }
 
 QVariant Core::configuration ( const QString& p_attrName, QVariant p_attrDefValue ) {

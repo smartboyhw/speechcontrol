@@ -26,7 +26,6 @@
 #include <QVariant>
 #include <QApplication>
 
-#include <dummysc.hpp>
 #include <windows/main-window.hpp>
 
 class QSettings;
@@ -138,14 +137,10 @@ private slots:
     void invokeAutoStart();
 
 private:
-    QApplication* m_app;          /// Holds the Application instance.
+    QApplication* m_app;    /// Holds the Application instance.
     Windows::Main* s_mw;    /// Holds the main window.
     QSettings* m_settings;  /// Holds the application's global configuration.
     static Core* s_inst;    /// Holds a instance.
-
-    /// Experimental
-    DummySC* dummyASR;
-
 };
 
 }

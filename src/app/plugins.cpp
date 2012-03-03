@@ -23,6 +23,7 @@
 #include "plugins.hpp"
 #include "factory.hpp"
 
+#include <QDebug>
 #include <QSettings>
 #include <QPluginLoader>
 #include <QApplication>
@@ -181,4 +182,4 @@ Plugins::GenericPlugin::GenericPlugin ( const QUuid& p_uuid ) : AbstractPlugin (
 }
 
 #include "plugins.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

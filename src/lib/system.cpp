@@ -24,7 +24,6 @@
  */
 
 #include "system.hpp"
-#include "dummysc.hpp"
 #include "microphone.hpp"
 
 #include <QDir>
@@ -47,7 +46,6 @@ System::System ( int *argc, char** argv[] ) : QObject ( QApplication::instance()
     QDir l_dir;
 
     l_dir.mkpath ( QDir::homePath() + "/.speechcontrol/corpus" );
-
     l_dir.mkpath ( QDir::homePath() + "/.speechcontrol/dictionaries" );
 }
 

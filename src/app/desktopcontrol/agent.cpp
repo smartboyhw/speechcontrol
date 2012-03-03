@@ -21,6 +21,7 @@
 #include "core.hpp"
 #include "agent.hpp"
 #include "command.hpp"
+#include "sphinx.hpp"
 
 namespace SpeechControl {
 namespace DesktopControl {
@@ -28,8 +29,8 @@ namespace DesktopControl {
 Agent* Agent::s_instance = 0;
 
 Agent::Agent() : AbstractAgent ( AbstractCategory::global() ) {
-    _asr = new DesktopASR ( DesktopASR::standardDescription(), parent() );
-    connect ( _asr, SIGNAL ( finished ( QString ) ), this, SLOT ( invokeCommand ( QString ) ) );
+    m_sphinx = new Sphinx ( Sphinx::standardDescription(), parent() );
+    connect ( m_sphinx, SIGNAL ( finished ( QString ) ), this, SLOT ( invokeCommand ( QString ) ) );
 }
 
 Agent* Agent::instance() {
@@ -46,7 +47,7 @@ AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::Opera
         if (!isEnabled())
             return Disabled;
 
-        if ( !_asr->start() ) {
+        if ( !m_sphinx->start() ) {
             qWarning() << "[DesktopControl::Agent] Start unsuccessful.";
             return Disabled;
         }
@@ -56,7 +57,7 @@ AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::Opera
     break;
 
     case Disabled:
-        _asr->stop();
+        m_sphinx->stop();
         return Disabled;
         break;
 
@@ -69,7 +70,7 @@ AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::Opera
 }
 
 bool Agent::isActive() const {
-    return _asr->isRunning();
+    return m_sphinx->isRunning();
 }
 
 bool Agent::isEnabled() {

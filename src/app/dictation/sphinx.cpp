@@ -44,5 +44,5 @@ void Sphinx::applicationMessage ( const QGst::MessagePtr& p_message ) {
     }
 }
 
-#include "../dictation/sphinx.moc"
+#include "dictation/sphinx.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

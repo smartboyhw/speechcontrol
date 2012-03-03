@@ -66,7 +66,7 @@ configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
                "${PROJECT_SOURCE_DIR}/config.hpp" @ONLY)
 
 # Add build information for front-end application, daemon and KDE features
-add_subdirectory(frontend)
+include(application.cmake)
 add_subdirectory(daemon)
 add_subdirectory(kde)
 

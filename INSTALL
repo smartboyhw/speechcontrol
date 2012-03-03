@@ -19,6 +19,9 @@ SpeechControl's core requires that you have the following packages installed:
       files
       # apt-get install libpocketsphinx-dev libsphinxbase-dev
 
+    * XDO library and development files (for dictation functionality)
+      # apt-get install libxdo-dev
+
     * [Optional] Development files for Python 2.7 (or higher)
       # apt-get install python-dev
 

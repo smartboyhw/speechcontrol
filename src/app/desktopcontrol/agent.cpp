@@ -43,7 +43,7 @@ Agent* Agent::instance() {
 AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::OperationState p_state ) {
     switch ( p_state ) {
     case Enabled: {
-        if ( !_asr->run() ) {
+        if ( !_asr->start() ) {
             qWarning() << "[DesktopControl::Agent] Start unsuccessful.";
         }
 

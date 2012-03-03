@@ -33,6 +33,8 @@ GeneralSettingsPane::GeneralSettingsPane ( QWidget *parent ) :
     ui->setupUi ( this );
     ui->lblSessionCount->setText ( QString::number ( Session::allSessions().count() ) );
     ui->lblAccuracyRating->setText ( "<i>n/a</i>" );
+    ui->checkBoxEnableDesktopControl->setChecked(Core::configuration("DesktopControl/AutoStart").toBool());
+    ui->checkBoxEnableDictation->setChecked(Core::configuration("Dictation/AutoStart").toBool());
 }
 
 GeneralSettingsPane::~GeneralSettingsPane() {

@@ -677,6 +677,38 @@ padding-right: 4px;</string>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>btnTrain</sender>
+   <signal>clicked()</signal>
+   <receiver>actionStartTraining</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>121</x>
+     <y>55</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnAdapt</sender>
+   <signal>clicked()</signal>
+   <receiver>actionAdaptModels</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>55</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <designerdata>
   <property name="gridDeltaX">

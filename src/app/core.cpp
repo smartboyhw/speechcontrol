@@ -51,7 +51,7 @@ Core* Core::s_inst = 0;
 Core::Core ( int p_argc, char** p_argv ) :
     QObject ( new QApplication ( p_argc, p_argv ) ) {
     if ( s_inst ) {
-        qFatal ( QObject::tr ( "The Core instance of SpeechControl was being invoked again. This is a fatal and funny error." ).toStdString().c_str() );
+        qFatal ( "The Core instance of SpeechControl was being invoked again. This is a fatal and funny error." );
     }
 
     s_inst = this;
@@ -143,6 +143,7 @@ void Core::invokeAutoStart() {
 }
 
 void Core::loadTranslations ( const QLocale& p_locale ) {
+    qDebug() << "Loading locale" << p_locale.name();
     instance()->m_trnsltr->load ( "speechcontrol_" + p_locale.name() );
 }
 

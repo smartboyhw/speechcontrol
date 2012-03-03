@@ -21,12 +21,10 @@
 #ifndef CORE_HPP
 #define CORE_HPP
 
-
 #include <QObject>
 #include <QVariant>
 #include <QApplication>
 
-#include <dummysc.hpp>
 #include <windows/main-window.hpp>
 
 class QSettings;
@@ -48,26 +46,20 @@ class Core : public QObject
 
     friend class Windows::Main;
 
-signals:
-    /**
-     * @brief Emitted when SpeechControl has started.
-     * @return void
-     **/
-    void started();
-
-    /**
-     * @brief Emitted when SpeechControl has completed its shutdown process.
-     * @return void
-     **/
-    void stopped();
-
+private:
+    QApplication* m_app;    /// Holds the Application instance.
+    Windows::Main* s_mw;    /// Holds the main window.
+    QSettings* m_settings;  /// Holds the application's global configuration.
+    static Core* s_inst;    /// Holds the instance.
+    
 public:
     /**
-     * @brief Constructor.
-     * @param p_argc The argument count from command-line.
-     * @param p_argv The arguments passed from command-line.
+     * @brief Constructor
+     * @param argc The argument count from command-line.
+     * @param argv The arguments passed from command-line.
+     * @param app  The QApplication object pointer.
      **/
-    Core (int, char**, QApplication*);
+    Core (int argc, char** argv, QApplication* app);
 
     virtual ~Core();
 
@@ -79,7 +71,7 @@ public:
      * @param  p_attrDefVal The default value to return. Defaults to QVariant().
      * @return QVariant
      **/
-    static QVariant configuration (const QString&, QVariant = QVariant());
+    static QVariant configuration (const QString& path, const QVariant& alt = QVariant());
 
     /**
      * @brief Sets a core configuration option of SpeechControl.
@@ -90,7 +82,7 @@ public:
      * @param  p_attrValue The value to be set.
      * @return void
      **/
-    static void setConfiguration (const QString&, const QVariant&);
+    static void setConfiguration (const QString& path, const QVariant& value);
 
     /**
      * @brief Obtains a pointer to the @c Core object, the singleton representing the application.
@@ -115,6 +107,19 @@ public:
      */
     void quit (const int& = 0);
 
+signals:
+    /**
+     * @brief Emitted when SpeechControl has started.
+     * @return void
+     **/
+    void started();
+    
+    /**
+     * @brief Emitted when SpeechControl has completed its shutdown process.
+     * @return void
+     **/
+    void stopped();
+    
 public slots:
     /**
      * @brief Starts SpeechControl's main loop.
@@ -127,12 +132,6 @@ public slots:
      * @return void
      **/
     void stop();
-
-private:
-    QApplication* m_app;          /// Holds the Application instance.
-    Windows::Main* s_mw;    /// Holds the main window.
-    QSettings* m_settings;  /// Holds the application's global configuration.
-    static Core* s_inst;    /// Holds the instance.
 
 };
 

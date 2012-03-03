@@ -67,7 +67,7 @@ void Settings::switchToPanel ( const QString& p_panelID ) {
         l_currentPane->show();
         l_lstNavi->setCurrentItem ( instance()->findPanelItem ( p_panelID ) );
     } else {
-        Core::mainWindow()->setStatusMessage ( "Invalid settings panel ID" + p_panelID );
+        Core::mainWindow()->setStatusMessage ( tr("Invalid settings panel ID '%1'").arg(p_panelID) );
         instance()->m_panes.value ( "gnrl" )->show();
         l_lstNavi->setCurrentItem ( instance()->findPanelItem ( "gnrl" ) );
     }

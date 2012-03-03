@@ -48,9 +48,9 @@ void BooksManager::updateList() {
     ui->lstBooks->clear();
 
     if ( l_lst.empty() ) {
-        ui->lblTitle->setText ( "No Books" );
+        ui->lblTitle->setText ( tr("No Books") );
     } else {
-        ui->lblTitle->setText ( "No Selection" );
+        ui->lblTitle->setText ( tr("No Selection") );
     }
 
     if ( !l_lst.empty() ) {
@@ -120,7 +120,7 @@ void BooksManager::on_lstBooks_itemSelectionChanged() {
         ui->lcdWordCount->display ( QString::number ( l_cnt->words() ) );
         ui->btnSelect->setEnabled ( true );
     } else {
-        ui->lblTitle->setText ( "No Selection" );
+        ui->lblTitle->setText ( tr("No Selection") );
         ui->lcdWordCount->display ( 0 );
         ui->btnSelect->setEnabled ( false );
     }

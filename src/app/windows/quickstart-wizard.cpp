@@ -39,7 +39,7 @@ QuickStart::QuickStart ( QWidget *parent ) :
     setWindowTitle ( tr ( "Quick Start - SpeechControl" ) );
     setPixmap ( QWizard::LogoPixmap,l_icon.pixmap ( 32,32,QIcon::Active,QIcon::On ) );
     setPage ( QuickStart::IntroductionPage,
-              ( new Wizards::Pages::IntroductionPage ( "This wizard allows you to tweak SpeechControl to your personal configuration." ) ) );
+              ( new Wizards::Pages::IntroductionPage ( tr("This wizard allows you to tweak SpeechControl to your personal configuration." ) ) ));
     setPage ( QuickStart::UserCreationPage,
               ( new Wizards::Pages::UserInitialization ) );
     setPage ( QuickStart::MicrophoneCreationPage,
@@ -83,4 +83,4 @@ QuickStart::~QuickStart() {
 }
 
 #include "quickstart-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

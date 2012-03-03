@@ -80,7 +80,7 @@ void SpeechControl::Windows::BookSettingsPane::updateList() {
             l_widget->addItem ( l_item );
 
             if ( l_lbl.isEmpty() ) {
-                l_item->setText ( "Unnamed" );
+                l_item->setText ( tr ( "Unnamed" ) );
             } else {
                 l_item->setText ( l_lbl );
             }
@@ -93,7 +93,9 @@ void SpeechControl::Windows::BookSettingsPane::on_btnDelete_clicked() {
     if ( !l_widg->selectedItems().empty() ) {
         Q_FOREACH ( QListWidgetItem* l_itm, l_widg->selectedItems() ) {
             Content* l_cntn = Content::obtain ( l_itm->data ( Qt::UserRole ).toString() );
-            if ( QMessageBox::Yes == QMessageBox::question ( this,"Confirm Book Delete", "Are you sure you want to delete this book?\nAny session connected to the book will become invalid and untrainable.",
+            if ( QMessageBox::Yes == QMessageBox::question ( this,
+                    tr ( "Confirm Book Delete" ),
+                    tr ( "Are you sure you want to delete this book '%1' by '%2'?\nAny session connected to the book will become invalid and untrainable." ).arg(l_cntn->title()).arg(l_cntn->author()),
                     QMessageBox::Yes | QMessageBox::No,
                     QMessageBox::No ) ) {
                 l_cntn->erase();
@@ -123,4 +125,4 @@ void SpeechControl::Windows::BookSettingsPane::on_btnInfo_clicked() {
 }
 
 #include "books-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

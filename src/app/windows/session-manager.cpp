@@ -57,7 +57,7 @@ void SessionManager::updateList() {
     Q_FOREACH ( const Session* l_sessionItr, l_lst ) {
         QListWidgetItem* l_item = new QListWidgetItem ( m_ui->listSession );
         l_item->setData ( Qt::UserRole,l_sessionItr->uuid().toString() );
-        l_item->setText ( QString ( "%1 - %2%" ).arg ( l_sessionItr->name() ).arg ( 30 ) );
+        l_item->setText ( tr ( "%1 - %2%" ).arg ( l_sessionItr->name() ).arg ( 30 ) );
         l_item->setIcon ( ( l_sessionItr->isCompleted() ) ? QIcon::fromTheme ( "task-complete" ) : QIcon::fromTheme ( "task-ongoing" ) );
         m_ui->listSession->addItem ( l_item );
 
@@ -97,7 +97,10 @@ void SessionManager::on_btnCancel_clicked() {
 
 void SessionManager::on_btnOk_clicked() {
     if ( m_session->isCompleted() ) {
-        if ( QMessageBox::Yes == QMessageBox::question ( this,"Continue Training?","This session has already been completed, do you want to create a new session based on the content of this session?",QMessageBox::Yes,QMessageBox::No ) ) {
+        if ( QMessageBox::Yes == QMessageBox::question ( this,
+                                                         tr("Continue Training?"),
+                                                         tr("This session has already been completed, do you want to create a new session based on the content of this session?"),
+                                                         QMessageBox::Yes,QMessageBox::No ) ) {
             m_session = Session::create ( m_session->content() );
             this->accept();
         }

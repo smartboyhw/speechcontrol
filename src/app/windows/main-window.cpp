@@ -66,7 +66,6 @@ Main::Main() : m_ui ( new Ui::MainWindow ), m_prgStatusbar ( 0 ) {
     m_ui->statusBar->addPermanentWidget ( m_prgStatusbar );
     m_prgStatusbar->setMaximum ( 100 );
     setProgress ( 0.0 );
-    setStatusMessage ( "Welcome to SpeechControl, speech recognition for Linux.",4000 );
 
     // Update icons.
     m_ui->actionQuit->setIcon ( QIcon::fromTheme ( "application-exit" ) );
@@ -85,18 +84,21 @@ Main::Main() : m_ui ( new Ui::MainWindow ), m_prgStatusbar ( 0 ) {
     connect ( Dictation::Agent::instance(),SIGNAL ( stateChanged ( OperationState ) ),this,SLOT ( dictationStateChanged() ) );
     desktopControlStateChanged();
     dictationStateChanged();
-    on_actionDesktopControlActive_triggered(DesktopControl::Agent::instance()->isActive());
-    on_actionDictationActive_triggered(Dictation::Agent::instance()->isActive());
+    on_actionDesktopControlActive_triggered ( DesktopControl::Agent::instance()->isActive() );
+    on_actionDictationActive_triggered ( Dictation::Agent::instance()->isActive() );
     Indicator::show();
+
+    // Greet the user :)
+    setStatusMessage ( tr ( "Welcome to %1, speech recognition for Linux." ).arg ( QApplication::applicationName() ),4000 );
 }
 
 void Main::show() {
     if ( Microphone::allMicrophones().empty() ) {
         QErrorMessage* l_msg = new QErrorMessage ( this );
         l_msg->setModal ( true );
-        l_msg->setWindowTitle ( "No Microphones Found" );
-        l_msg->showMessage ( tr ( "No microphones were found on your system. Please ensure that you have one installed and detectable by " ) +
-                             tr ( "the audio system and make sure that <b>gstreamer-plugins-good</b> is installed on your system." ),
+        l_msg->setWindowTitle ( tr ( "No Microphones Found" ) );
+        l_msg->showMessage ( tr ( "No microphones were found on your system. Please ensure that you have one installed and detectable by "
+                                  "the audio system and make sure that <b>%1</b> is installed on your system." ).arg ( "gstreamer-plugins-good" ),
                              "NoMicrophonesFoundOnStart" );
     }
 
@@ -166,31 +168,30 @@ void Main::on_actionOptions_triggered() {
 
 /// @todo Invoke the process of adapting a model. If anything, have a special window for such a process.
 void Main::on_actionAdaptModels_triggered() {
-    setStatusMessage ( "<b>This feature hasn't been implemented yet.</b>" );
 }
 
 void Main::on_actionStartTraining_triggered () {
     Session* l_session = SessionManager::pickSession();
     if ( l_session ) {
         TrainingDialog::startTraining ( l_session );
-        setStatusMessage ( tr("Training session \"%1\"").arg(l_session->content()->title()) , 3000 );
+        setStatusMessage ( tr ( "Training session \"%1\"" ).arg ( l_session->content()->title() ) , 3000 );
     }
 }
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
 void Main::on_actionDesktopControlActive_triggered ( bool p_checked ) {
     DesktopControl::Agent::instance()->setState ( ( p_checked ) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled );
-    setStatusMessage ( ( ( p_checked == true ) ? tr("Desktop control enabled.") : tr("Desktop control disabled.")) , 3000 );
+    setStatusMessage ( ( ( p_checked == true ) ? tr ( "Desktop control enabled." ) : tr ( "Desktop control disabled." ) ) , 3000 );
     m_ui->btnDsktpCntrl->setIcon ( ( ( p_checked == true ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
-    m_ui->btnDsktpCntrl->setChecked(p_checked);
+    m_ui->btnDsktpCntrl->setChecked ( p_checked );
 }
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
 void Main::on_actionDictationActive_triggered ( const bool p_checked ) {
     Dictation::Agent::instance()->setState ( ( p_checked ) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled );
-    setStatusMessage ( ( ( p_checked ) ? tr("Dictation enabled.") : tr("Dictation disabled."))  ,3000 );
+    setStatusMessage ( ( ( p_checked ) ? tr ( "Dictation enabled." ) : tr ( "Dictation disabled." ) )  ,3000 );
     m_ui->btnDctn->setIcon ( ( ( p_checked ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
-    m_ui->btnDctn->setChecked(p_checked);
+    m_ui->btnDctn->setChecked ( p_checked );
 }
 
 void Main::on_actionAboutQt_triggered() {

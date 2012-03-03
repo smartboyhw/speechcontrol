@@ -67,7 +67,7 @@ void DesktopControlSettingsPane::updateContent() {
     CommandList l_cmds = l_glbl->commands();
     QTableWidget* l_widg = m_ui->tableWidget;
     l_widg->clear();
-    l_widg->setHorizontalHeaderLabels ( QStringList() << "Statement" << "Command" );
+    l_widg->setHorizontalHeaderLabels ( QStringList() << tr("Statement") << tr("Command") );
     l_widg->setRowCount ( 0 );
     l_widg->setColumnCount ( 2 );
 

@@ -112,7 +112,9 @@ void TrainingDialog::startCollecting() {
     } else {
         reject();
         hide();
-        QMessageBox::information ( this,tr ( "Session Completed" ),tr ( "No text is available for this session." ) );
+        QMessageBox::information ( this,
+                                   tr ( "Session Completed" ),
+                                   tr ( "No text is available for this session." ) );
     }
 }
 
@@ -219,7 +221,9 @@ void TrainingDialog::navigatePreviousPart() {
 /// @todo This should clear all of the progress made since the start of training WHEN this dialog opened.
 /// @todo Implement a means of tracking history.
 void SpeechControl::Windows::TrainingDialog::on_pushButtonReset_clicked() {
-    if ( QMessageBox::No == QMessageBox::question ( this, tr ( "Undo Current Progress" ) ,tr ( "Are you sure you want to reset your training progress back to the state it was initially?" ) ) ) {
+    if ( QMessageBox::No == QMessageBox::question ( this,
+            tr ( "Undo Current Progress" ),
+            tr ( "Are you sure you want to reset your training progress back to the state it was initially?" ) ) ) {
         return;
     }
 
@@ -285,9 +289,9 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonNext_clicked() {
         if ( m_currentSentence == 0 ) {
             updateProgress ( 1.0 );
             QMessageBox* l_msgComplete = new QMessageBox ( this );
-            l_msgComplete->setWindowTitle ( "Session Complete - SpeechControl" );
-            l_msgComplete->setText ( "You've successfully completed the recording part of this session!" );
-            l_msgComplete->setInformativeText ( "With the session completed, you can now queue it for either adaption or generation of a language model." );
+            l_msgComplete->setWindowTitle ( tr ( "Session Complete - SpeechControl" ) );
+            l_msgComplete->setText ( tr ( "You've successfully completed the recording part of this session!" ) );
+            l_msgComplete->setInformativeText ( tr ( "With the session completed, you can now queue it for either adaption or generation of a language model." ) );
             l_msgComplete->setIcon ( QMessageBox::Information );
             l_msgComplete->setIconPixmap ( QIcon::fromTheme ( "task-complete" ).pixmap ( 64,64 ) );
             l_msgComplete->open();

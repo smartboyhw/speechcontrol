@@ -104,7 +104,7 @@ void SessionSettingsPane::updateList() {
                 l_item->setText ( l_lbl );
             }
         } else {
-            l_item->setText ( "* missing book data *" );
+            l_item->setText ( tr ( "* missing book data *" ) );
         }
 
         l_widget->clearSelection();
@@ -133,9 +133,9 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionDelete_triggered() {
         QMessageBox* l_msg = new QMessageBox ( this );
         l_msg->setIcon ( QMessageBox::Question );
         l_msg->setText ( tr ( "Do you want to delete %1 sessions?" ).arg ( l_widget->selectedItems().size() ) );
-        l_msg->setInformativeText ( "All of the training progress for these sessions will be destroyed. "
-                                    "However, the successfully formed acoustic models <b>will be</b> preserved." );
-        l_msg->setWindowTitle ( "Delete Multiple Sessions" );
+        l_msg->setInformativeText ( tr ( "All of the training progress for these sessions will be destroyed. "
+                                         "However, the successfully formed acoustic models <b>will be</b> preserved." ) );
+        l_msg->setWindowTitle ( tr ( "Delete Multiple Sessions" ) );
         l_msg->setStandardButtons ( QMessageBox::No | QMessageBox::Yes );
         l_msg->setDefaultButton ( QMessageBox::NoButton );
         l_doAll = ( l_msg->exec() == QMessageBox::Yes );
@@ -148,8 +148,9 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionDelete_triggered() {
         qDebug() << l_uuid;
         Session* l_ss = Session::obtain ( l_uuid );
         if ( ( l_multiple && l_doAll ) ||
-                QMessageBox::Yes == QMessageBox::question ( this,"Confirm Session Deletion",
-                        "Are you sure you want to <b>wipe all</b> of this session's data?",
+                QMessageBox::Yes == QMessageBox::question ( this,
+                        tr ( "Confirm Session Deletion" ),
+                        tr ( "Are you sure you want to <b>wipe all</b> of this session's data?" ),
                         QMessageBox::Yes | QMessageBox::No,
                         QMessageBox::No ) ) {
             l_ss->erase();
@@ -202,4 +203,4 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionRestoreBackup_trigger
 }
 
 #include "session-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

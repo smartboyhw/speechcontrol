@@ -342,9 +342,9 @@ Session::Backup* Session::Backup::generate ( const Session& p_sssn ) {
     l_domElem.appendChild ( l_crpsElem );
     l_crpsElem.appendChild ( l_dom.createTextNode ( l_corpusData.toBase64() ) );
 
-    //qDebug() << l_domElem.text();
+    qDebug() << l_domElem.text();
     return 0;
 }
 
 #include "session.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

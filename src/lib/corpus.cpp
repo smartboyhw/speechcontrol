@@ -46,31 +46,31 @@ SentenceList Corpus::sentences() const {
 }
 
 /// @todo Add the Sentence to the XML document and then to the list.
-Sentence* Corpus::addSentence ( Sentence *l_phrs ) {
-    m_sntncLst << l_phrs;
-    return l_phrs;
+Sentence* Corpus::addSentence ( Sentence *p_phrs ) {
+    m_sntncLst << p_phrs;
+    return p_phrs;
 }
 
-Sentence* Corpus::addSentence ( const QString &l_txt, const QFile *l_audio ) {
-    qDebug() << "Adding sentence" << l_txt << "...";
-    Sentence* l_sentence = Sentence::create ( this,l_txt );
+Sentence* Corpus::addSentence ( const QString &p_txt, const QFile *p_audio ) {
+    qDebug() << "Adding sentence" << p_txt << "...";
+    Sentence* l_sentence = Sentence::create ( this,p_txt );
 
-    if ( l_audio ) {
-        l_sentence->m_elem->attribute ( QUrl::fromLocalFile ( l_audio->fileName() ).toString() );
+    if ( p_audio ) {
+        l_sentence->m_elem->attribute ( QUrl::fromLocalFile ( p_audio->fileName() ).toString() );
     }
 
     return l_sentence;
 }
 
-Corpus & Corpus::operator << ( Sentence *l_phrs ) {
-    this->addSentence ( l_phrs );
+Corpus & Corpus::operator << ( Sentence *p_phrs ) {
+    this->addSentence ( p_phrs );
     return *this;
 }
 
 /// @todo Just invoke the above method.
-Corpus & Corpus::operator << ( SentenceList &l_lst ) {
-    foreach ( Sentence* l_phrs, l_lst )
-    this->addSentence ( l_phrs );
+Corpus & Corpus::operator << ( SentenceList& p_sentenceList ) {
+    Q_FOREACH ( Sentence* l_phrs, p_sentenceList )
+        this->addSentence ( l_phrs );
 
     return *this;
 }
@@ -117,12 +117,12 @@ Corpus * Corpus::create ( const QStringList& p_text ) {
     return l_corpus;
 }
 
-bool Corpus::exists ( const QUuid& l_uuid ) {
-    return QFile::exists ( getPath ( l_uuid ).toLocalFile() );
+bool Corpus::exists ( const QUuid& p_uuid ) {
+    return QFile::exists ( getPath ( p_uuid ).toLocalFile() );
 }
 
-QUrl Corpus::getPath ( const QUuid &l_uuid ) {
-    return QDir::homePath() + "/.speechcontrol/corpus/" + l_uuid.toString();
+QUrl Corpus::getPath ( const QUuid& p_uuid ) {
+    return QDir::homePath() + "/.speechcontrol/corpus/" + p_uuid.toString();
 }
 
 QUrl Corpus::audioPath() const {
@@ -271,4 +271,4 @@ Corpus::~Corpus() {
 }
 
 #include "corpus.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

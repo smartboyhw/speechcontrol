@@ -35,8 +35,7 @@ using namespace SpeechControl;
 
 System* System::s_inst = 0;
 
-System::System ( int *argc, char** argv[] )
-    : QObject ( QApplication::instance() ) {
+System::System ( int *argc, char** argv[] ) : QObject ( QApplication::instance() ) {
     if ( argc && argv ) {
         QGst::init ( argc, argv );
     } else {
@@ -69,4 +68,4 @@ void System::stop() {
 }
 
 #include "system.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

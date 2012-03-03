@@ -38,107 +38,128 @@
 
 // local includes
 #include "config.hpp"
+#include "export.hpp"
 
 namespace SpeechControl {
-
+class AcousticModel;
+class Dictionary;
 /**
- * @brief Automatic Speech Recognition class
+ * @brief Implementation of automatic speech recognition.
+ *
  * ASR (or automatic speech recognition) is an abstract class responsible
  * for handling GStreamer audio and PocketSphinx plugins and management
  * of dictionaries, language and acoustic models. It also performs
  * acoustic training and adjusts models to its needs.
  */
-class ASR : public QObject {
+class SPCH_EXPORT ASR : public QObject {
 
     Q_OBJECT
+    Q_DISABLE_COPY ( ASR )
 
 protected:
+    /**
+     * @brief Represents the possible states of ASR.
+     * @internal
+     **/
     enum ASRState {
         NotReady = 0,
         Ready
     } _state;
 
-    bool _running;
-
-    // Gstreamer objects
-    QGst::PipelinePtr   _pipeline;
-    QGst::ElementPtr    _psphinx;
-    QGst::ElementPtr    _vader;
-    QGst::BusPtr        _bus;
+    // GStreamer objects
+    QGst::PipelinePtr   m_pipeline;     ///< Holds the pipeline for GStreamer.
+    QGst::ElementPtr    m_psphinx;      ///< Holds our lucky PocketSphinx object.
+    QGst::ElementPtr    m_vader;        ///< Holds the Vader element.
+    QGst::BusPtr        m_bus;          ///< Holds the executing bus for GStreamer.
 
     /**
-     * @brief Do all needed preparation steps
+     * @brief Enacts all of the preparation steps.
+     * @internal
      */
-    void _prepare();
+    void prepare();
 
 public:
-    explicit ASR ( QObject* parent = 0 );
-
-    ASR ( QGst::PipelinePtr pipeline, QObject* parent = 0 );
+    /**
+     * @brief Null constructor.
+     * @param p_parent Defaults to 0.
+     **/
+    explicit ASR ( QObject* p_parent = 0 );
 
     /**
-     * This constructor creates GStreamer elements from description.
-     */
-    ASR ( const char* description, QObject* parent = 0 );
+     * @brief Renders a new ASR instance with a pipeline.
+     *
+     * @param p_pipeline The pipeline to use for ASR.
+     * @param p_parent Defaults to 0.
+     **/
+    ASR ( QGst::PipelinePtr p_pipeline, QObject* p_parent = 0 );
 
     /**
+     * @brief Renders a new ASR instance from a GStreamer-compatible description.
+     *
      * This constructor creates GStreamer elements from description.
-     */
-    ASR ( const QString& description, QObject* parent = 0 );
+     *
+     * @param p_description The description to use to build with this ASR instance.
+     * @param p_parent Defaults to 0.
+     **/
+    ASR ( const QString& p_description, QObject* p_parent = 0 );
 
+    /**
+     * @brief Destructor.
+     *
+     **/
     virtual ~ASR();
 
     /**
      * @brief Get description of the standard Bin
-     * @returns String with standard description.
+     * @return String with standard description.
      */
     static QString getStandardDescription();
 
     /**
      * @brief Get underlying decoder
-     * @returns Pointer to the decoder.
+     * @return Pointer to the decoder.
      */
     QGlib::Value getDecoder() const;
 
     /**
      * @brief Obtains the language model used by Sphinx.
-     * @returns A @c QDir to the langauge model in use.
+     * @return A @c QDir to the langauge model in use.
      */
     QDir getLanguageModel() const;
 
     /**
      * @brief Obtains the dictionary used.
-     * @returns A @c QDir pointing to the directory.
+     * @return A @c QDir pointing to the directory.
      */
-    QDir getDictionary() const;
+    Dictionary* getDictionary() const;
 
     /**
      * @brief Obtains the acoustic model in use.
-     * @returns The acoustic model used by this.
+     * @return The acoustic model used by this.
      */
-    QDir getAcousticsModel() const;
+    AcousticModel* getAcousticModel() const;
 
     /**
      * @brief Get the pointer to the internal Pipeline
-     * @returns Pointer to the internal Pipeline.
+     * @return Pointer to the internal Pipeline.
      */
     const QGst::PipelinePtr getPipeline() const;
 
     /**
      * @brief Get 'pocketsphinx' element
-     * @returns Pointer to the 'pocketsphinx' element.
+     * @return Pointer to the 'pocketsphinx' element.
      */
     const QGst::ElementPtr getPocketSphinx() const;
 
     /**
      * @brief Get 'vader' element
-     * @returns Pointer to the 'vader' element.
+     * @return Pointer to the 'vader' element.
      */
     const QGst::ElementPtr getVader() const;
 
     /**
      * @brief Get ASR message bus
-     * @returns Pointer to the ASR bus.
+     * @return Pointer to the ASR bus.
      */
     const QGst::BusPtr getBus() const;
 
@@ -147,20 +168,14 @@ public:
      * @param property Name of the property.
      * @param value Value for the property.
      */
-    template<typename T>
-    void setPsProperty ( const QString& property, T value ) {
-        _psphinx->setProperty ( property.toStdString().c_str(), value );
-    }
+    void setPsProperty ( const QString& p_property, const QVariant& p_value );
 
     /**
      * @brief Set VADER element property
      * @param property Name of the property.
      * @param value Value for the propery.
      */
-    template<typename T>
-    void setVaderProperty ( const QString& property, T value ) {
-        _vader->setProperty ( property.toStdString().c_str(), value );
-    }
+    void setVaderProperty ( const QString& p_property, const QVariant& p_value );
 
     /**
      * @brief Sets the language model to use.
@@ -175,10 +190,24 @@ public:
     void setDictionary ( const QString& path );
 
     /**
+     * @brief Sets the dictionary to be used.
+     *
+     * @param p_dictionary The Dictionary object to use.
+     **/
+    void setDictionary ( const Dictionary* p_dictionary );
+
+    /**
      * @brief Sets the acoustic model to be used.
      * @param path The path to the acoustic model.
      */
     void setAcousticModel ( const QString& path );
+
+    /**
+     * @brief Sets the acoustic model to be used.
+     *
+     * @param p_acousticModel The AcousticModel to use.
+     **/
+    void setAcousticModel ( const AcousticModel* p_acousticModel );
 
     /**
      * @brief Check whether ASR is ready to use
@@ -194,7 +223,7 @@ public:
      * @brief Pause the pipeline
      * This method simply forces VADER to be in the silent region.
      */
-    void pause();
+    void togglePause();
 
 signals:
     /// @todo Useful or not?
@@ -202,22 +231,52 @@ signals:
 
 public slots:
     /**
-     * @brief Run the pipeline
+     * @brief Starts ASR.
+     *
+     * Starts the ASR instance by invoking the pipeline's execution.
      */
-    bool run();
+    bool start();
 
     /**
-     * @brief Stop the pipeline
-     * This method puts the whole pipline in the StatePaused state.
+     * @brief Stops ASR.
+     *
+     * Stops the ASR instance by halting the pipeline's execution.
      */
     void stop();
 
-    void asrPartialResult ( const QString& text, const QString& uttid );
-    void asrResult ( const QString& text, const QString& uttid );
-    virtual void applicationMessage ( const QGst::MessagePtr& message ) = 0;
+    /**
+     * @brief Obtains a partial value from the specified text p_text and utterance p_uttid.
+     *
+     * @param p_text The text to be passed.
+     * @param p_uttid The utterance to be passed.
+     **/
+    void formPartialResult ( QString& p_text, QString& p_uttid );
+
+    /**
+     * @brief Obtains a value from the specified text p_text and utterance p_uttid.
+     *
+     * @param p_text The text to be passed.
+     * @param p_uttid The utterance to be passed.
+     **/
+    void formResult ( QString& p_text, QString& p_uttid );
+
+    /**
+     * @brief Invokes an application-wide message to be raised.
+     *
+     * @param p_message The message to be passed.
+     **/
+    virtual void applicationMessage ( const QGst::MessagePtr& p_message ) = 0;
+
+private:
+    /**
+     * @brief Builds a pipeline from a description p_description.
+     *
+     * @param p_description The description to be used to build a pipeline.
+     **/
+    void buildPipeline ( QString p_description );
 };
 
 }
 
 #endif // ASR_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -61,9 +61,9 @@ typedef QMap<QUuid, Corpus*> CorpusMap;
 class SPCH_EXPORT Corpus : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY ( Corpus )
-    Q_PROPERTY ( SentenceList Sentences READ sentences )    ///<
-    Q_PROPERTY ( Dictionary* Dictionary READ dictionary )   ///<
-    Q_PROPERTY ( const QUuid Uuid READ uuid )               ///<
+    Q_PROPERTY ( SentenceList Sentences READ sentences )    ///< Represents the Sentence objects of this Corpus.
+    Q_PROPERTY ( Dictionary* Dictionary READ dictionary )   ///< Represents the Dictionary used by this Corpus.
+    Q_PROPERTY ( const QUuid Uuid READ uuid )               ///< The identifying UUID of this Corpus.
     friend class Sentence;
     friend class Dictionary;
 
@@ -104,7 +104,7 @@ public:
      * @param p_sntct The @c Sentence to be added.
      * @return The @c Sentence that was added.
      */
-    Sentence* addSentence ( Sentence* );
+    Sentence* addSentence ( SpeechControl::Sentence* p_phrs );
 
     /**
      * @brief Adds a sentence to this @c Corpus , in its more raw format.
@@ -112,7 +112,7 @@ public:
      * @param p_audio The @c QFile that represents the transcribed audio of the @c Sentence.
      * @return The @c Sentence that was formed and then added.
      */
-    Sentence* addSentence ( const QString&, const QFile* );
+    Sentence* addSentence ( const QString& p_txt, const QFile* p_audio );
 
     /**
      * @brief Determines the time when training of this @c Corpus began.
@@ -174,10 +174,8 @@ public:
      */
     bool isValid() const;
 
-    static QUrl getPath ( const QUuid& );
-
-    Corpus& operator<< ( Sentence* );
-    Corpus& operator<< ( SentenceList& );
+    Corpus& operator<< ( SpeechControl::Sentence* p_phrs );
+    Corpus& operator<< ( SentenceList& p_sentenceList );
 
 public slots:
     /**
@@ -191,6 +189,14 @@ public slots:
      */
     void save();
 
+    /**
+     * @brief Obtains the path to a Corpus's data.
+     *
+     * @param p_uuid The UUID of the Corpus.
+     * @return A QUrl to the Corpus data or an invalid one if the UUID doesn't point to a valid Corpus.
+     **/
+    static QUrl getPath ( const QUuid& p_uuid );
+
 private:
     static CorpusMap s_lst; /** < Used to centralize the obtaining of @c Corpus objects. */
 
@@ -203,4 +209,4 @@ private:
 }
 
 #endif // CORPUS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -29,52 +29,53 @@ using SpeechControl::AcousticModel;
 AcousticModel::AcousticModel ( const AcousticModel &p_mdl ) :
     QObject ( p_mdl.parent() ) {
 }
-AcousticModel::AcousticModel ( const QString& path, QObject* parent ) : QObject ( parent ) {
-    _parameters.insert ( "path", path );
+AcousticModel::AcousticModel ( const QString& p_path, QObject* p_parent ) : QObject ( p_parent ) {
+    m_params.insert ( "path", p_path );
+}
+
+AcousticModel::AcousticModel ( QObject* p_parent ) : QObject ( p_parent ) {
+
 }
 
 AcousticModel::~AcousticModel() {
 }
 
-void AcousticModel::setParameter ( const QString &key, const QVariant &value ) {
-    _parameters.insert ( key, value );
+void AcousticModel::setParameter ( const QString &p_key, const QVariant &p_value ) {
+    m_params.insert ( p_key, p_value );
 }
 
-void AcousticModel::setParameters ( QVariantMap const& parameters ) {
-    _parameters = parameters;
+void AcousticModel::setParameters ( QVariantMap const& p_params ) {
+    m_params = p_params;
 }
 
-void AcousticModel::mergeParameters ( QVariantMap const& parameters ) {
-    for ( QMap< QString, QVariant >::const_iterator it = parameters.constBegin();
-            it != parameters.constEnd(); ++it ) {
+void AcousticModel::mergeParameters ( QVariantMap const& p_params ) {
+    for ( QMap< QString, QVariant >::const_iterator it = p_params.constBegin();
+            it != p_params.constEnd(); ++it ) {
 
-        _parameters.insert ( it.key(), it.value() );
+        m_params.insert ( it.key(), it.value() );
     }
 }
 
-QVariant AcousticModel::parameter ( const QString &key ) const {
-    return _parameters.value ( key );
+QVariant AcousticModel::parameter ( const QString &p_key ) const {
+    return m_params.value ( p_key );
 }
 
 QVariantMap AcousticModel::parameters() const {
-    return _parameters;
+    return m_params;
 }
 
 quint16 AcousticModel::sampleRate() const {
     return 16000;
 }
 
-void AcousticModel::setSampleRate ( const quint16& p_rate ) {
-}
-
 QString AcousticModel::path() const {
-    return _parameters.value ( "path" ).toString();
+    return m_params.value ( "path" ).toString();
 }
 
 bool AcousticModel::isValid() const {
-    QDir path ( _parameters.value ( "path" ).toString() );
-    return path.exists();
+    QDir l_path ( m_params.value ( "path" ).toString() );
+    return l_path.exists();
 }
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
 #include "acousticmodel.moc"

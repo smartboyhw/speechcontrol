@@ -81,16 +81,12 @@ Main::Main() : m_ui ( new Ui::MainWindow ), m_prgStatusbar ( 0 ) {
     m_ui->actionStartTraining->setIcon ( QIcon::fromTheme ( "system-run" ) );
 
     // Update the actions and buttons.
-    m_ui->actionDesktopControlActive->setChecked ( !DesktopControl::Agent::instance()->isActive() );
-    m_ui->actionDictationActive->setChecked ( !Dictation::Agent::instance()->isActive() );
-    m_ui->btnDsktpCntrl->setChecked ( m_ui->actionDesktopControlActive->isChecked() );
-    m_ui->btnDctn->setChecked ( m_ui->actionDictationActive->isChecked() );
-    m_ui->actionDesktopControlActive->trigger();
-    m_ui->actionDictationActive->trigger();
-
     connect ( DesktopControl::Agent::instance(), SIGNAL ( stateChanged ( OperationState ) ),this,SLOT ( desktopControlStateChanged() ) );
     connect ( Dictation::Agent::instance(),SIGNAL ( stateChanged ( OperationState ) ),this,SLOT ( dictationStateChanged() ) );
-    connect ( m_ui->groupBoxDesktopControl, SIGNAL ( clicked ( bool ) ), m_ui->actionDesktopControlActive, SIGNAL ( triggered ( bool ) ) );
+    desktopControlStateChanged();
+    dictationStateChanged();
+    on_actionDesktopControlActive_triggered(DesktopControl::Agent::instance()->isActive());
+    on_actionDictationActive_triggered(Dictation::Agent::instance()->isActive());
     Indicator::show();
 }
 
@@ -110,47 +106,6 @@ void Main::show() {
 
 void Main::close() {
     QMainWindow::close();
-}
-
-void Main::on_tabWidget_currentChanged ( const int p_index ) {
-    switch ( p_index ) {
-    case 0: { // main info
-        updateContent();
-    }
-    break;
-
-    case 1: { // desktop control commands
-        AbstractCategory* l_glbl = DesktopControl::AbstractCategory::global();
-        CommandList l_cmds = l_glbl->commands();
-        QTableWidget* l_widg = m_ui->tableWidgetDesktopControlCommands;
-        l_widg->clear();
-        l_widg->setHorizontalHeaderLabels ( QStringList() << "Statement" << "Command" );
-        l_widg->setRowCount ( 0 );
-        l_widg->setColumnCount ( 2 );
-
-        Q_FOREACH ( AbstractCommand* l_cmd, l_cmds ) {
-            l_widg->setRowCount ( l_cmd->statements().count() + l_widg->rowCount() );
-            int l_count = 0;
-            Q_FOREACH ( const QString l_statement, l_cmd->statements() ) {
-                const int l_row = l_widg->rowCount() - l_cmd->statements().count() - l_count;
-                QTableWidgetItem* l_itemStatement = new QTableWidgetItem;
-                QTableWidgetItem* l_commandStatement = new QTableWidgetItem;
-
-                l_itemStatement->setText ( l_statement );
-                l_commandStatement->setText ( l_cmd->id() );
-
-                l_widg->setItem ( l_row, 0, l_itemStatement );
-                l_widg->setItem ( l_row, 1, l_commandStatement );
-                l_count--;
-            }
-        }
-    }
-    break;
-
-    case 2:
-    { } // voxforge info
-    break;
-    }
 }
 
 void Main::setStatusMessage ( const QString& p_message , const int p_timeout ) {
@@ -218,39 +173,24 @@ void Main::on_actionStartTraining_triggered () {
     Session* l_session = SessionManager::pickSession();
     if ( l_session ) {
         TrainingDialog::startTraining ( l_session );
-        setStatusMessage ( "Training session \"" + l_session->content()->title() + "\"..." , 3000 );
+        setStatusMessage ( tr("Training session \"%1\"").arg(l_session->content()->title()) , 3000 );
     }
-}
-
-void Main::on_btnDctn_checked ( bool p_checked ) {
-    m_ui->btnDctn->setIcon ( ( ( p_checked == true ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
-    on_actionDictationActive_triggered ( m_ui->btnDctn->isChecked() );
-}
-
-void Main::on_btnDsktpCntrl_checked ( bool p_checked ) {
-    m_ui->btnDsktpCntrl->setIcon ( ( ( p_checked == true ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
-    on_actionDesktopControlActive_triggered ( m_ui->btnDsktpCntrl->isChecked() );
 }
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
 void Main::on_actionDesktopControlActive_triggered ( bool p_checked ) {
-    if ( p_checked ) {
-        DesktopControl::Agent::instance()->setState ( SpeechControl::AbstractAgent::Enabled );
-    } else {
-        DesktopControl::Agent::instance()->setState ( SpeechControl::AbstractAgent::Disabled );
-    }
-
-    setStatusMessage ( ( ( p_checked == true ) ? "Enabling desktop control..." : "Disabling desktop control..." ) , 5000 );
+    DesktopControl::Agent::instance()->setState ( ( p_checked ) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled );
+    setStatusMessage ( ( ( p_checked == true ) ? tr("Desktop control enabled.") : tr("Desktop control disabled.")) , 3000 );
+    m_ui->btnDsktpCntrl->setIcon ( ( ( p_checked == true ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
+    m_ui->btnDsktpCntrl->setChecked(p_checked);
 }
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
 void Main::on_actionDictationActive_triggered ( const bool p_checked ) {
-    if ( p_checked ) {
-        Dictation::Agent::instance()->setState ( SpeechControl::AbstractAgent::Enabled );
-    } else {
-        Dictation::Agent::instance()->setState ( SpeechControl::AbstractAgent::Disabled );
-    }
-    setStatusMessage ( ( ( p_checked == true ) ? "Enabling dictation..." : "Disabling dictation..." ) ,5000 );
+    Dictation::Agent::instance()->setState ( ( p_checked ) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled );
+    setStatusMessage ( ( ( p_checked ) ? tr("Dictation enabled.") : tr("Dictation disabled."))  ,3000 );
+    m_ui->btnDctn->setIcon ( ( ( p_checked ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
+    m_ui->btnDctn->setChecked(p_checked);
 }
 
 void Main::on_actionAboutQt_triggered() {

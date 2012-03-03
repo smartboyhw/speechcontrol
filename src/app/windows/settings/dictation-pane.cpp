@@ -19,52 +19,52 @@
  */
 
 #include "sessions/session.hpp"
-#include "general-pane.hpp"
+#include "dictation-pane.hpp"
 #include "core.hpp"
-#include <desktopcontrol/agent.hpp>
-#include "ui_settingspane-general.h"
+#include <dictation/agent.hpp>
+#include "ui_settingspane-dictation.h"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 
-GeneralSettingsPane::GeneralSettingsPane ( QWidget *parent ) :
+DictationSettingsPane::DictationSettingsPane ( QWidget *parent ) :
     QFrame ( parent ),
-    ui ( new Ui::GeneralSettingsPane ) {
-    ui->setupUi ( this );
-    ui->lblSessionCount->setText ( QString::number ( Session::allSessions().count() ) );
-    ui->lblAccuracyRating->setText ( "<i>n/a</i>" );
+    m_ui ( new Ui::DictationSettingsPane ) {
+    m_ui->setupUi ( this );
+    updateContent();
 }
 
-GeneralSettingsPane::~GeneralSettingsPane() {
-    delete ui;
+DictationSettingsPane::~DictationSettingsPane() {
+    delete m_ui;
 }
 
-void GeneralSettingsPane::changeEvent ( QEvent *e ) {
+void DictationSettingsPane::changeEvent ( QEvent *e ) {
     QFrame::changeEvent ( e );
     switch ( e->type() ) {
     case QEvent::LanguageChange:
-        ui->retranslateUi ( this );
+        m_ui->retranslateUi ( this );
         break;
     default:
         break;
     }
 }
 
-const QString GeneralSettingsPane::title() const {
-    return "General";
+const QString DictationSettingsPane::title() const {
+    return "Dictation";
 }
 
-const QString GeneralSettingsPane::id() const {
-    return "gnrl";
+const QString DictationSettingsPane::id() const {
+    return "dctn";
 }
 
-void GeneralSettingsPane::on_checkBoxEnableDictation_toggled ( bool p_checked ) {
-    Core::setConfiguration("Dictation/AutoStart",p_checked );
+void DictationSettingsPane::updateContent() {
+    m_ui->checkBoxEnable->setChecked(Dictation::Agent::instance()->isEnabled());
 }
 
-void GeneralSettingsPane::on_checkBoxEnableDesktopControl_toggled ( bool p_checked ) {
-    Core::setConfiguration("DesktopControl/AutoStart",p_checked );
+void DictationSettingsPane::on_checkBoxEnable_toggled ( bool p_checked ) {
+    Core::setConfiguration("Dictation/Enabled",p_checked );
+    Dictation::Agent::instance()->setState(((p_checked) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled ));
 }
 
-#include "general-pane.moc"
+#include "dictation-pane.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

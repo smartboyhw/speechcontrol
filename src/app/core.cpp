@@ -38,6 +38,7 @@
 #include "app/windows/main-window.hpp"
 #include "app/windows/quickstart-wizard.hpp"
 #include "desktopcontrol/agent.hpp"
+#include "dictation/agent.hpp"
 
 using namespace SpeechControl;
 
@@ -72,11 +73,12 @@ Core::Core ( int p_argc, char** p_argv ) :
     // build settings
     m_settings = new QSettings ( QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", this );
     connect ( m_app,SIGNAL ( aboutToQuit() ),this,SLOT ( stop() ) );
+    connect ( this,SIGNAL ( started() ),this, SLOT ( invokeAutoStart() ) );
     connect ( this,SIGNAL ( started() ),Plugins::Factory::instance(),SLOT ( start() ) );
     connect ( this,SIGNAL ( stopped() ),Plugins::Factory::instance(),SLOT ( stop() ) );
 }
 
-Core::Core ( const Core& p_other ) : QObject(p_other.parent()) {
+Core::Core ( const Core& p_other ) : QObject ( p_other.parent() ) {
 
 }
 
@@ -128,12 +130,14 @@ int Core::exec() {
 }
 
 void Core::quit ( const int& p_exitCode ) {
-    instance()->m_app->exit(p_exitCode);
+    instance()->m_app->exit ( p_exitCode );
 }
 
 void Core::invokeAutoStart() {
-    if (configuration("AutoStart/DesktopControl").toBool() == true)
-        DesktopControl::Agent::instance()->setState(SpeechControl::AbstractAgent::Enabled);
+    const bool l_dsktpCntrlState = configuration ( "DesktopControl/AutoStart" ).toBool();
+    const bool l_dctnState = configuration ( "Dictation/AutoStart" ).toBool();
+    DesktopControl::Agent::instance()->setState ( ( l_dsktpCntrlState ) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled );
+    Dictation::Agent::instance()->setState ( ( l_dctnState ) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled );
 }
 
 Core::~Core () {

@@ -61,6 +61,10 @@ bool Agent::isActive() const {
     return state() == Enabled;
 }
 
+bool Agent::isEnabled() const {
+    return Core::configuration("Dictation/Enabled").toBool() == true;
+}
+
 void Agent::handleText ( const QString& p_text ) {
 
 }

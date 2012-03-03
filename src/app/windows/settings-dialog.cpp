@@ -30,6 +30,8 @@
 #include "settings/books-pane.hpp"
 #include "settings/session-pane.hpp"
 #include "settings/voxforge-pane.hpp"
+#include "settings/desktopcontrol-pane.hpp"
+#include "settings/dictation-pane.hpp"
 #include "ui_settings-dialog.h"
 
 using namespace SpeechControl;
@@ -95,11 +97,15 @@ Settings* Settings::instance() {
         BookSettingsPane* l_booksPane = new BookSettingsPane;
         VoxforgeSettingsPane* l_voxforgePane = new VoxforgeSettingsPane;
         SessionSettingsPane* l_sessionPane = new SessionSettingsPane;
+        DesktopControlSettingsPane* l_dsktpCntrlPane = new DesktopControlSettingsPane;
+        DictationSettingsPane* l_dctnPane = new DictationSettingsPane;
 
         addPanel ( l_generalPane );
         addPanel ( l_pluginsPane );
         addPanel ( l_booksPane );
         addPanel ( l_sessionPane );
+        addPanel ( l_dctnPane );
+        addPanel ( l_dsktpCntrlPane );
         addPanel ( l_voxforgePane );
 
         l_generalPane->show();

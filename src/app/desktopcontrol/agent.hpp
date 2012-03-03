@@ -78,6 +78,18 @@ public:
      **/
     static Agent* instance();
 
+public slots:
+    /**
+     * @brief Invokes a command for desktop control to parse.
+     *
+     * Takes a string p_cmd as the argument spoken by the user
+     * and searches all of the commands available to the system
+     * to find a match (or matches) to invoke said commands.
+     *
+     * @param p_cmd The command to be parsed.
+     **/
+    void invokeCommand(const QString& p_cmd);
+
 private:
     virtual OperationState onStateChanged ( const AbstractAgent::OperationState p_state );
     static Agent* s_instance;

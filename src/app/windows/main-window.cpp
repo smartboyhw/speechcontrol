@@ -84,9 +84,8 @@ Main::Main() : m_ui ( new Ui::MainWindow ), m_prgStatusbar ( 0 ) {
     m_ui->btnDsktpCntrl->setChecked ( m_ui->actionDesktopControlActive->isChecked() );
     m_ui->btnDctn->setChecked ( m_ui->actionDictationActive->isChecked() );
 
-    connect ( DesktopControl::Agent::instance(),SLOT ( onStateChanged() ),this,SLOT ( desktopControlStateChanged() ) );
-    connect ( Dictation::Agent::instance(),SLOT ( onStateChanged() ),this,SLOT ( dictationStateChanged() ) );
-
+    connect ( DesktopControl::Agent::instance(), SIGNAL(stateChanged(OperationState)),this,SLOT(desktopControlStateChanged()));
+    connect ( Dictation::Agent::instance(),SIGNAL(stateChanged(OperationState)),this,SLOT(dictationStateChanged()));
     Indicator::show();
 }
 

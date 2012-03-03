@@ -29,22 +29,22 @@ Indicator* Indicator::s_inst = 0;
 
 /// @todo Check for a configuration value to determine whether or not the indicator should be shown on initialization.
 Indicator::Indicator ( QObject* parent ) : QObject ( parent ),
-    m_indctr(0), m_indctrSvr(0) {
+    m_indctr ( 0 ), m_indctrSvr ( 0 ) {
     s_inst = this;
 
     m_indctrSvr = QIndicate::Server::defaultInstance();
-    m_indctrSvr->setType("speechcontrol");
+    m_indctrSvr->setType ( "speechcontrol" );
     //m_indicateServer->setDesktopFile();
     m_indctrSvr->show();
 
-    m_indctr = new QIndicate::Indicator(m_indctrSvr);
-    m_indctr->setNameProperty("SpeechControl");
-    m_indctr->setTimeProperty(QDateTime::currentDateTime());
-    m_indctr->setDrawAttentionProperty(true);
+    m_indctr = new QIndicate::Indicator ( m_indctrSvr );
+    m_indctr->setNameProperty ( "SpeechControl" );
+    m_indctr->setTimeProperty ( QDateTime::currentDateTime() );
+    m_indctr->setDrawAttentionProperty ( true );
     m_indctr->show();
 
-    connect(m_indctr, SIGNAL(display(QIndicate::Indicator*)), SLOT(displayIndicator(QIndicate::Indicator*)));
-    connect(m_indctrSvr, SIGNAL(serverDisplay()), SLOT(showMainWindow()));
+    connect ( m_indctr, SIGNAL ( display ( QIndicate::Indicator* ) ), SLOT ( displayIndicator ( QIndicate::Indicator* ) ) );
+    connect ( m_indctrSvr, SIGNAL ( serverDisplay() ), SLOT ( showMainWindow() ) );
 
     presentMessage ( "Test message!" );
 }
@@ -69,8 +69,9 @@ void Indicator::displayIndicator ( QIndicate::Indicator* p_indctr ) {
 }
 
 Indicator* Indicator::instance() {
-    if ( s_inst == 0 )
+    if ( s_inst == 0 ) {
         s_inst = new Indicator ( Core::instance() );
+    }
 
     return s_inst;
 }

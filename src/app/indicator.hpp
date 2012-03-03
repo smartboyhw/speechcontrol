@@ -71,7 +71,7 @@ public:
 
 private slots:
     void showMainWindow();
-    void displayIndicator(QIndicate::Indicator* p_indctr);
+    void displayIndicator ( QIndicate::Indicator* p_indctr );
 
 private:
     explicit Indicator ( QObject* parent = 0 );

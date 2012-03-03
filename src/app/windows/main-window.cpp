@@ -84,8 +84,9 @@ Main::Main() : m_ui ( new Ui::MainWindow ), m_prgStatusbar ( 0 ) {
     m_ui->btnDsktpCntrl->setChecked ( m_ui->actionDesktopControlActive->isChecked() );
     m_ui->btnDctn->setChecked ( m_ui->actionDictationActive->isChecked() );
 
-    connect ( DesktopControl::Agent::instance(), SIGNAL(stateChanged(OperationState)),this,SLOT(desktopControlStateChanged()));
-    connect ( Dictation::Agent::instance(),SIGNAL(stateChanged(OperationState)),this,SLOT(dictationStateChanged()));
+    connect ( DesktopControl::Agent::instance(), SIGNAL ( stateChanged ( OperationState ) ),this,SLOT ( desktopControlStateChanged() ) );
+    connect ( Dictation::Agent::instance(),SIGNAL ( stateChanged ( OperationState ) ),this,SLOT ( dictationStateChanged() ) );
+    connect ( m_ui->groupBoxDesktopControl, SIGNAL ( clicked ( bool ) ), m_ui->actionDesktopControlActive, SIGNAL ( triggered ( bool ) ) );
     Indicator::show();
 }
 
@@ -235,7 +236,7 @@ void Main::on_actionDesktopControlActive_triggered ( const bool p_checked ) {
         DesktopControl::Agent::instance()->setState ( SpeechControl::AbstractAgent::Disabled );
     }
 
-    setStatusMessage ( ( ( p_checked == true ) ? "Enabling desktop control..." : "Disabling desktop control..." ) ,5 );
+    setStatusMessage ( ( ( p_checked == true ) ? "Enabling desktop control..." : "Disabling desktop control..." ) , 5000 );
     m_ui->btnDsktpCntrl->setIcon ( ( ( p_checked == true ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
 }
 
@@ -246,7 +247,7 @@ void Main::on_actionDictationActive_triggered ( const bool p_checked ) {
     } else {
         Dictation::Agent::instance()->setState ( SpeechControl::AbstractAgent::Disabled );
     }
-    setStatusMessage ( ( ( p_checked == true ) ? "Enabling dictation..." : "Disabling dictation..." ) ,5 );
+    setStatusMessage ( ( ( p_checked == true ) ? "Enabling dictation..." : "Disabling dictation..." ) ,5000 );
     m_ui->btnDctn->setIcon ( ( ( p_checked == true ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
 }
 

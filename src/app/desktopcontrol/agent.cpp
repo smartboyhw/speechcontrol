@@ -28,7 +28,7 @@ namespace DesktopControl {
 Agent* Agent::s_instance = 0;
 
 Agent::Agent() : AbstractAgent ( AbstractCategory::global() ) {
-    _asr = new DesktopASR ( DesktopASR::getStandardDescription(), parent() );
+    _asr = new DesktopASR ( DesktopASR::standardDescription(), parent() );
     connect ( _asr, SIGNAL ( finished ( QString ) ), this, SLOT ( invokeCommand ( QString ) ) );
 }
 

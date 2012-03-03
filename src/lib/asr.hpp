@@ -61,10 +61,14 @@ protected:
      * @brief Represents the possible states of ASR.
      * @internal
      **/
-    enum ASRState {
-        NotReady = 0,
-        Ready
-    } _state;
+    enum States {
+        NotPrepared = 0,
+        Ready,
+        Running
+    };
+
+    States m_running;
+    States m_ready;
 
     // GStreamer objects
     QGst::PipelinePtr   m_pipeline;     ///< Holds the pipeline for GStreamer.
@@ -113,55 +117,55 @@ public:
      * @brief Get description of the standard Bin
      * @return String with standard description.
      */
-    static QString getStandardDescription();
+    static QString standardDescription();
 
     /**
      * @brief Get underlying decoder
      * @return Pointer to the decoder.
      */
-    QGlib::Value getDecoder() const;
+    QGlib::Value decoder() const;
 
     /**
      * @brief Obtains the language model used by Sphinx.
      * @return A @c QDir to the langauge model in use.
      */
-    QDir getLanguageModel() const;
+    QDir languageModel() const;
 
     /**
      * @brief Obtains the dictionary used.
      * @return A @c QDir pointing to the directory.
      */
-    Dictionary* getDictionary() const;
+    Dictionary* dictionary() const;
 
     /**
      * @brief Obtains the acoustic model in use.
      * @return The acoustic model used by this.
      */
-    AcousticModel* getAcousticModel() const;
+    AcousticModel* acousticModel() const;
 
     /**
      * @brief Get the pointer to the internal Pipeline
      * @return Pointer to the internal Pipeline.
      */
-    const QGst::PipelinePtr getPipeline() const;
+    const QGst::PipelinePtr pipeline() const;
 
     /**
      * @brief Get 'pocketsphinx' element
      * @return Pointer to the 'pocketsphinx' element.
      */
-    const QGst::ElementPtr getPocketSphinx() const;
+    const QGst::ElementPtr pocketSphinxElement() const;
 
     /**
      * @brief Get 'vader' element
      * @return Pointer to the 'vader' element.
      */
-    const QGst::ElementPtr getVader() const;
+    const QGst::ElementPtr vaderElement() const;
 
     /**
      * @brief Get ASR message bus
      * @return Pointer to the ASR bus.
      */
-    const QGst::BusPtr getBus() const;
+    const QGst::BusPtr busElement() const;
 
     /**
      * @brief Set PocketSphinx element property

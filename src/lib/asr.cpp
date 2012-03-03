@@ -30,14 +30,17 @@
 
 using namespace SpeechControl;
 
-ASR::ASR ( QObject* p_parent ) : QObject ( p_parent ) {
+ASR::ASR ( QObject* p_parent ) : QObject ( p_parent ),
+    m_running ( NotPrepared ), m_ready ( NotPrepared ) {
 }
 
-ASR::ASR ( QGst::PipelinePtr p_pipeline, QObject* p_parent ) : QObject ( p_parent ), m_pipeline ( p_pipeline ) {
+ASR::ASR ( QGst::PipelinePtr p_pipeline, QObject* p_parent ) : QObject ( p_parent ),
+    m_running ( NotPrepared ), m_ready ( NotPrepared ), m_pipeline ( p_pipeline ) {
 }
 
 /// @todo Automatically extract 'pocketsphinx' element name from description.
-ASR::ASR ( const QString& p_description, QObject* p_parent ) : QObject ( p_parent ) {
+ASR::ASR ( const QString& p_description, QObject* p_parent ) : QObject ( p_parent ),
+    m_running ( NotPrepared ), m_ready ( NotPrepared ) {
     buildPipeline ( p_description );
     prepare();
 }
@@ -61,13 +64,14 @@ void ASR::prepare() {
     QGlib::connect ( m_bus, "message::application", this, &ASR::applicationMessage );
 
     m_pipeline->setState ( QGst::StateReady );
+    m_ready = Ready;
 }
 
 ASR::~ASR() {
     m_pipeline->setState ( QGst::StateNull );
 }
 
-QString ASR::getStandardDescription() {
+QString ASR::standardDescription() {
     return QString ( "autoaudiosrc name=audiosrc ! audioconvert"
                      " ! audioresample ! audiorate ! volume name=volume"
                      " ! vader name=vad auto_threshold=true"
@@ -76,39 +80,39 @@ QString ASR::getStandardDescription() {
 }
 
 /// @todo How to deal with this decoder in GValue?
-QGlib::Value ASR::getDecoder() const {
+QGlib::Value ASR::decoder() const {
     return m_psphinx->property ( "decoder" );
 }
 
 /// @todo Should we implement a class/struct to wrap these values more programatically?
-QDir ASR::getLanguageModel() const {
+QDir ASR::languageModel() const {
     QGlib::Value lm = m_psphinx->property ( "lm" );
     return QDir ( lm.get<QString>() );
 }
 
-Dictionary* ASR::getDictionary() const {
+Dictionary* ASR::dictionary() const {
     const QString l_dict = m_psphinx->property ( "dict" ).toString();
     return Dictionary::obtain ( l_dict );
 }
 
-AcousticModel* ASR::getAcousticModel() const {
+AcousticModel* ASR::acousticModel() const {
     const QString l_hmm = m_psphinx->property ( "hmm" ).toString();
     return new AcousticModel ( l_hmm );
 }
 
-const QGst::PipelinePtr ASR::getPipeline() const {
+const QGst::PipelinePtr ASR::pipeline() const {
     return m_pipeline;
 }
 
-const QGst::ElementPtr ASR::getPocketSphinx() const {
+const QGst::ElementPtr ASR::pocketSphinxElement() const {
     return m_psphinx;
 }
 
-const QGst::ElementPtr ASR::getVader() const {
+const QGst::ElementPtr ASR::vaderElement() const {
     return m_vader;
 }
 
-const QGst::BusPtr ASR::getBus() const {
+const QGst::BusPtr ASR::busElement() const {
     return m_bus;
 }
 
@@ -121,37 +125,37 @@ void ASR::setPsProperty ( const QString& p_property, const QVariant& p_value ) {
     m_psphinx->setProperty ( p_property.toStdString().c_str(), QGlib::Value ( p_value.toString() ) );
 }
 
-void ASR::setLanguageModel ( const QString& path ) {
-    if ( QDir ( path ).exists() ) {
-        setPsProperty ( "lm", path );
+void ASR::setLanguageModel ( const QString& p_path ) {
+    if ( QFile::exists(p_path) ) {
+        setPsProperty ( "lm", p_path );
     } else {
-        qWarning() << "[ASR] Given language model path" << path << "does not exist.";
+        qWarning() << "[ASR] Given language model path" << p_path << "does not exist.";
     }
 }
 
-void ASR::setDictionary ( const QString& path ) {
-    if ( QDir ( path ).exists() ) {
-        setPsProperty ( "dict", path );
+void ASR::setDictionary ( const QString& p_path ) {
+    if ( QFile::exists( p_path ) ) {
+        setPsProperty ( "dict", p_path );
     } else {
-        qWarning() << "[ASR] Given dictionary path" << path << "does not exist.";
+        qWarning() << "[ASR] Given dictionary path" << p_path << "does not exist.";
     }
 }
 
-void ASR::setAcousticModel ( const QString& path ) {
+void ASR::setAcousticModel ( const QString& p_path ) {
 
-    if ( QDir ( path ).exists() ) {
-        setPsProperty ( "hmm", path );
+    if ( QDir ( p_path ).exists() ) {
+        setPsProperty ( "hmm", p_path );
     } else {
-        qWarning() << "[ASR] Given acoustic model path" << path << "does not exist.";
+        qWarning() << "[ASR] Given acoustic model path" << p_path << "does not exist.";
     }
 }
 
 bool ASR::isReady() const {
-    return m_pipeline->currentState() == QGst::StateReady;
+    return m_ready == Ready;
 }
 
 bool ASR::isRunning() const {
-    return m_pipeline->currentState() == QGst::StatePlaying;
+    return m_running == Running;
 }
 
 bool ASR::start() {
@@ -159,6 +163,7 @@ bool ASR::start() {
 
     if ( isReady() ) {
         m_pipeline->setState ( QGst::StatePlaying );
+        m_running = Running;
     } else {
         qWarning() << "[ASR] Object is not ready to run.";
     }

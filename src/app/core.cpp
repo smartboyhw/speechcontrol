@@ -108,7 +108,7 @@ void Core::stop() {
 /// Experimental
 void Core::asrFinished ( QString& text ) {
     qDebug() << "[ASR] Completed with " << text;
-    dummyASR->run();
+    dummyASR->start();
 }
 
 QVariant Core::configuration ( const QString &p_pth, QVariant p_vrt ) {

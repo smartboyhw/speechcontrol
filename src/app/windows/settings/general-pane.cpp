@@ -64,7 +64,7 @@ void GeneralSettingsPane::on_checkBoxEnableDictation_toggled ( bool p_checked ) 
 
 void GeneralSettingsPane::on_checkBoxEnableDesktopControl_toggled ( bool p_checked ) {
     Core::setConfiguration("DesktopControl/Enabled",p_checked );
-    DesktopControl::Agent::setState(((p_checked) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled ));
+    DesktopControl::Agent::instance()->setState(((p_checked) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled ));
 }
 
 #include "general-pane.moc"

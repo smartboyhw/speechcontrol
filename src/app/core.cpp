@@ -48,8 +48,8 @@ using SpeechControl::Core;
 Core* Core::s_inst = 0;
 
 /// @todo Add a check for the default microphone (if provided by the user).
-Core::Core ( int argc, char** argv ) :
-    QObject ( new QApplication ( argc, argv ) ) {
+Core::Core ( int p_argc, char** p_argv ) :
+    QObject ( new QApplication ( p_argc, p_argv ) ) {
     if ( s_inst ) {
         qFatal ( "The Core instance of SpeechControl was being invoked again. This is a fatal and funny error." );
     }
@@ -63,7 +63,7 @@ Core::Core ( int argc, char** argv ) :
     m_app->setOrganizationName ( "Synthetic Intellect Institute" );
     m_app->setApplicationVersion ( SPCHCNTRL_BUILD_VERSION );
 
-    System::start ( &argc, &argv );
+    System::start ( &p_argc, &p_argv );
     Session::init();
 
     QDir l_dir;
@@ -112,12 +112,12 @@ void Core::asrFinished ( QString& text ) {
     dummyASR->start();
 }
 
-QVariant Core::configuration ( const QString &p_pth, QVariant p_vrt ) {
-    return instance()->m_settings->value ( p_pth, p_vrt );
+QVariant Core::configuration ( const QString& p_attrName, QVariant p_attrDefValue ) {
+    return instance()->m_settings->value ( p_attrName, p_attrDefValue );
 }
 
-void Core::setConfiguration ( const QString& p_pth, const QVariant& p_vrt ) {
-    instance()->m_settings->setValue ( p_pth, p_vrt );
+void Core::setConfiguration ( const QString& p_attrName, const QVariant& p_attrValue ) {
+    instance()->m_settings->setValue ( p_attrName, p_attrValue );
 }
 
 Core * SpeechControl::Core::instance() {

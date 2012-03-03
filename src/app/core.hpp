@@ -42,7 +42,7 @@ namespace SpeechControl {
  **/
 class Core : public QObject {
     Q_OBJECT
-    Q_DISABLE_COPY ( Core ) const SpeechControl::Core& p_other
+    Q_DISABLE_COPY ( Core );
 
     friend class Windows::Main;
 
@@ -66,7 +66,7 @@ public:
      * @param p_argv The arguments passed from command-line.
      * @internal
      **/
-    Core ( int, char** );
+    Core ( int p_argc, char** p_argv );
 
     /**
      * @brief Destructor.
@@ -79,10 +79,10 @@ public:
      * This method allows for a centralized means of obtaining values about
      * SpeechControl's core configuration.
      * @param  p_attrName The path to the value to find.
-     * @param  p_attrDefVal The default value to return. Defaults to QVariant().
+     * @param  p_attrDefValue The default value to return. Defaults to QVariant().
      * @return QVariant
      **/
-    static QVariant configuration ( const QString&, QVariant = QVariant() );
+    static QVariant configuration ( const QString& p_attrName, QVariant p_attrDefValue = QVariant() );
 
     /**
      * @brief Sets a core configuration option of SpeechControl.
@@ -91,9 +91,9 @@ public:
      * SpeechControl's core configuration.
      * @param  p_attrName The path to the value to find.
      * @param  p_attrValue The value to be set.
-     * @return void
+     *
      **/
-    static void setConfiguration ( const QString&, const QVariant& );
+    static void setConfiguration ( const QString& p_attrName, const QVariant& p_attrValue );
 
     /**
      * @brief Obtains a pointer to the @c Core object, the singleton representing the application.
@@ -121,13 +121,13 @@ public:
 public slots:
     /**
      * @brief Starts SpeechControl's main loop.
-     * @return void
+     *
      **/
     void start();
 
     /**
      * @brief Stops SpeechControl's main loop.
-     * @return void
+     *
      **/
     void stop();
 

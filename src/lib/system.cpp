@@ -37,10 +37,11 @@ System* System::s_inst = 0;
 
 System::System ( int *argc, char** argv[] )
     : QObject ( QApplication::instance() ) {
-    if ( argc && argv )
+    if ( argc && argv ) {
         QGst::init ( argc, argv );
-    else
+    } else {
         QGst::init();
+    }
 
     Microphone::init();
 
@@ -52,13 +53,15 @@ System::System ( int *argc, char** argv[] )
 }
 
 void System::start() {
-    if ( !s_inst )
+    if ( !s_inst ) {
         s_inst = new System ( 0, 0 );
+    }
 }
 
 void System::start ( int *argc, char **argv[] ) {
-    if ( !s_inst )
+    if ( !s_inst ) {
         s_inst = new System ( argc, argv );
+    }
 }
 
 void System::stop() {

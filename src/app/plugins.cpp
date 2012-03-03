@@ -59,35 +59,40 @@ bool AbstractPlugin::isSupported() const {
 }
 
 const QString AbstractPlugin::name() const {
-    if ( hasLoaded() )
+    if ( hasLoaded() ) {
         return m_cfg->value ( "Plugin/Name" ).toString();
+    }
     return QString::null;
 }
 
 const QUuid AbstractPlugin::uuid() const {
-    if ( hasLoaded() )
+    if ( hasLoaded() ) {
         return QUuid ( m_cfg->value ( "Plugin/UUID" ).toString() );
+    }
 
     return QUuid ( QString::null );
 }
 
 double AbstractPlugin::version() const {
-    if ( hasLoaded() )
+    if ( hasLoaded() ) {
         return m_cfg->value ( "Plugin/Version" ).toDouble();
+    }
 
     return -1.0;
 }
 
 const QString AbstractPlugin::description() const {
-    if ( hasLoaded() )
+    if ( hasLoaded() ) {
         return m_cfg->value ( "Plugin/Description" ).toString();
+    }
 
     return QString::null;
 }
 
 const QUrl AbstractPlugin::url() const {
-    if ( hasLoaded() )
+    if ( hasLoaded() ) {
         return m_cfg->value ( "Plugin/URL" ).toUrl();
+    }
 
     return QUrl ( QString::null );
 }
@@ -108,8 +113,9 @@ const PluginList AbstractPlugin::plugins() const {
 }
 
 bool AbstractPlugin::loadComponents() {
-    if ( loadPlugins() )
+    if ( loadPlugins() ) {
         return loadLibrary();
+    }
 
     qDebug() << "Failed to load components for " << uuid();
     return false;
@@ -151,8 +157,9 @@ void AbstractPlugin::stop() {
 }
 
 bool AbstractPlugin::load() {
-    if ( !isSupported() )
+    if ( !isSupported() ) {
         return false;
+    }
 
     return loadComponents();
 }
@@ -174,4 +181,4 @@ Plugins::GenericPlugin::GenericPlugin ( const QUuid& p_uuid ) : AbstractPlugin (
 }
 
 #include "plugins.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

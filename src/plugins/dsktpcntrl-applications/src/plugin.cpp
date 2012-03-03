@@ -32,7 +32,7 @@ Plugin::Plugin ( QObject* parent ) : AbstractPlugin ( QUuid ( PLUGIN_UUID ),pare
 
 void Plugin::initialize() {
     qDebug() << "Plug-in loaded! (applist)";
-    ApplicationListCategory::instance()->addCommand((new StartCommand));
+    ApplicationListCategory::instance()->addCommand ( ( new StartCommand ) );
 }
 
 void Plugin::deinitialize() {
@@ -50,4 +50,4 @@ APPLIST_NAMESPACE_END
 
 Q_EXPORT_PLUGIN2 ( spchcntrl-applist, SpeechControl::Plugins::DesktopControl::ApplicationListing::Plugin )
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

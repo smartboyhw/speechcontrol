@@ -28,13 +28,14 @@ namespace DesktopControl {
 Agent* Agent::s_instance = 0;
 
 Agent::Agent() : AbstractAgent ( AbstractCategory::global() ) {
-    _asr = new DesktopASR(DesktopASR::getStandardDescription(), parent());
-    connect(_asr, SIGNAL(finished(QString&)), this, SLOT(invokeCommand(QString&)));
+    _asr = new DesktopASR ( DesktopASR::getStandardDescription(), parent() );
+    connect ( _asr, SIGNAL ( finished ( QString& ) ), this, SLOT ( invokeCommand ( QString& ) ) );
 }
 
 Agent* Agent::instance() {
-    if ( s_instance == 0 )
+    if ( s_instance == 0 ) {
         s_instance = new Agent;
+    }
 
     return s_instance;
 }
@@ -42,14 +43,16 @@ Agent* Agent::instance() {
 AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::OperationState p_state ) {
     switch ( p_state ) {
     case Enabled: {
-        if(!_asr->run())
+        if ( !_asr->run() ) {
             qWarning() << "[DesktopControl::Agent] Start unsuccessful.";
+        }
 
-    }break;
+    }
+    break;
 
     case Disabled:
         _asr->stop();
-    break;
+        break;
 
     case Undefined:
     default:
@@ -66,9 +69,9 @@ bool Agent::isActive() const {
 /// @todo Since this returns more than one command, should we provide a UI that allows you to pick which command you might want?
 void Agent::invokeCommand ( const QString& p_cmd ) {
     AbstractCategory* l_glbl = AbstractCategory::global();
-    CommandList l_cmds = l_glbl->matchAllCommands(p_cmd);
+    CommandList l_cmds = l_glbl->matchAllCommands ( p_cmd );
 
-    Q_FOREACH(AbstractCommand* l_cmd, l_cmds){
+    Q_FOREACH ( AbstractCommand* l_cmd, l_cmds ) {
         qDebug() << l_cmd->id() << l_cmd->statements();
     }
 }
@@ -80,4 +83,4 @@ Agent::~Agent() {
 }
 }
 #include "../desktopcontrol/agent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

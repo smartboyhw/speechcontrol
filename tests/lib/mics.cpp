@@ -28,10 +28,11 @@ using namespace SpeechControl;
 void TestMicrophone::listMicrophones() {
     MicrophoneList l_mics = Microphone::allMicrophones();
 
-    Q_FOREACH(const Microphone* l_mic, l_mics){
+    Q_FOREACH ( const Microphone* l_mic, l_mics ) {
         qDebug() << "(mic)" << l_mic->name();
     }
 }
 
-QTEST_MAIN( TestMicrophone )
+QTEST_MAIN ( TestMicrophone )
 #include "mics.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

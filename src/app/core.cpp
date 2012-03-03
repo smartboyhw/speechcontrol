@@ -48,10 +48,10 @@ Core* Core::s_inst = 0;
 
 /// @todo Add a check for the default microphone (if provided by the user).
 Core::Core ( int argc, char** argv ) :
-    QObject ( new QApplication ( argc, argv ) )
-{
-    if (s_inst)
-        qFatal("The Core instance of SpeechControl was being invoked again. This is a fatal and funny error.");
+    QObject ( new QApplication ( argc, argv ) ) {
+    if ( s_inst ) {
+        qFatal ( "The Core instance of SpeechControl was being invoked again. This is a fatal and funny error." );
+    }
 
     s_inst = this;
 
@@ -128,4 +128,4 @@ int Core::exec() {
 }
 
 #include "core.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -63,8 +63,9 @@ bool Factory::isPluginLoaded ( const QUuid& p_uuid ) {
 }
 
 bool Factory::loadPlugin ( const QUuid& p_uuid ) {
-    if (isPluginLoaded(p_uuid))
+    if ( isPluginLoaded ( p_uuid ) ) {
         return true;
+    }
 
     GenericPlugin* l_gnrcPlgn = new GenericPlugin ( p_uuid );
 
@@ -83,16 +84,18 @@ bool Factory::loadPlugin ( const QUuid& p_uuid ) {
             qDebug() << "Plugin" << l_plgn->name() << "refused to load.";
             return false;
         }
-    } else
+    } else {
         qDebug() << "Plugin" << p_uuid << "unsupported.";
+    }
 
     qDebug() << "Plugin" << p_uuid << "not loaded.";
     return false;
 }
 
 void Factory::unloadPlugin ( const QUuid& p_uuid ) {
-    if (!isPluginLoaded(p_uuid))
+    if ( !isPluginLoaded ( p_uuid ) ) {
         return;
+    }
 
     if ( s_ldPlgns.contains ( p_uuid ) ) {
         AbstractPlugin* l_plgn = s_ldPlgns.value ( p_uuid );
@@ -104,8 +107,9 @@ void Factory::unloadPlugin ( const QUuid& p_uuid ) {
 }
 
 Factory* Factory::instance() {
-    if ( s_inst == 0 )
+    if ( s_inst == 0 ) {
         s_inst = new Factory;
+    }
 
     return s_inst;
 }
@@ -138,4 +142,4 @@ Factory::~Factory() {
 }
 
 #include "factory.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

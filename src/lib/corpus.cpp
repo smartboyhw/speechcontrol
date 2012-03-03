@@ -55,8 +55,9 @@ Sentence* Corpus::addSentence ( const QString &l_txt, const QFile *l_audio ) {
     qDebug() << "Adding sentence" << l_txt << "...";
     Sentence* l_sentence = Sentence::create ( this,l_txt );
 
-    if ( l_audio )
+    if ( l_audio ) {
         l_sentence->m_elem->attribute ( QUrl::fromLocalFile ( l_audio->fileName() ).toString() );
+    }
 
     return l_sentence;
 }
@@ -69,7 +70,7 @@ Corpus & Corpus::operator << ( Sentence *l_phrs ) {
 /// @todo Just invoke the above method.
 Corpus & Corpus::operator << ( SentenceList &l_lst ) {
     foreach ( Sentence* l_phrs, l_lst )
-        this->addSentence ( l_phrs );
+    this->addSentence ( l_phrs );
 
     return *this;
 }
@@ -156,8 +157,9 @@ void Corpus::load ( const QUuid &p_uuid ) {
     QFile* l_file = new QFile ( l_path.toLocalFile() + "/corpus.xml" );
 
     if ( l_file->exists() && l_file->open ( QIODevice::ReadOnly ) ) {
-        if ( !m_dom )
+        if ( !m_dom ) {
             m_dom = new QDomDocument ( "Corpus" );
+        }
 
         if ( !m_dom->setContent ( l_file ) ) {
             qDebug() << "Failed to load corpus.";
@@ -170,7 +172,9 @@ void Corpus::load ( const QUuid &p_uuid ) {
             QDomElement l_elem = l_elems.at ( i ).toElement();
             qDebug() << "Loading sentence:" << l_elem.attribute ( "uuid" );
 
-            if ( l_elem.isNull() ) continue;
+            if ( l_elem.isNull() ) {
+                continue;
+            }
 
             Sentence* l_sntc = new Sentence ( this, ( new QDomElement ( l_elems.at ( i ).toElement() ) ) );
             qDebug() << "Loaded sentence:" << l_sntc->text();
@@ -202,8 +206,9 @@ void Corpus::save() {
     if ( l_file->open ( QIODevice::WriteOnly | QIODevice::Truncate ) ) {
         QTextStream l_strm ( l_file );
         m_dom->save ( l_strm,4 );
-    } else
+    } else {
         qWarning() << "Can't write to" << l_file->fileName() << ":" << l_file->errorString();
+    }
 }
 
 CorpusList Corpus::allCorpuses() {
@@ -266,4 +271,4 @@ Corpus::~Corpus() {
 }
 
 #include "corpus.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

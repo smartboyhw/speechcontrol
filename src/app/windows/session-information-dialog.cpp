@@ -31,7 +31,7 @@ using SpeechControl::Windows::SessionInformationDialog;
 using SpeechControl::Windows::ContentInformationDialog;
 
 SessionInformationDialog::SessionInformationDialog ( Session* p_session ) : QDialog ( Core::mainWindow() ),
-    m_ui ( new Ui::SessionInformationDialog ), m_session ( p_session )  {
+    m_ui ( new Ui::SessionInformationDialog ), m_session ( p_session ) {
     connect ( m_session,SIGNAL ( progressChanged ( double ) ),this,SLOT ( updateProgress ( double ) ) );
 }
 
@@ -54,8 +54,9 @@ void SessionInformationDialog::on_btnTrainSession_clicked() {
 }
 
 void SessionInformationDialog::on_lineEditNickname_textChanged ( const QString& p_newNickname ) {
-    if ( p_newNickname.isEmpty() || p_newNickname.isNull() )
+    if ( p_newNickname.isEmpty() || p_newNickname.isNull() ) {
         return;
+    }
 
     m_session->setName ( p_newNickname );
     updateUi();

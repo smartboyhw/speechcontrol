@@ -41,12 +41,13 @@ AdditionSelectionPage::AdditionSelectionPage ( QWidget *parent ) :
 }
 
 void AdditionSelectionPage::updateDescription() {
-    if ( m_ui->radioButtonUrl->isChecked() )
+    if ( m_ui->radioButtonUrl->isChecked() ) {
         m_ui->lblDescription->setText ( m_ui->radioButtonUrl->whatsThis() );
-    else if ( m_ui->radioButtonWiki->isChecked() )
+    } else if ( m_ui->radioButtonWiki->isChecked() ) {
         m_ui->lblDescription->setText ( m_ui->radioButtonWiki->whatsThis() );
-    else if ( m_ui->radioButtonCustom->isChecked() )
+    } else if ( m_ui->radioButtonCustom->isChecked() ) {
         m_ui->lblDescription->setText ( m_ui->radioButtonCustom->whatsThis() );
+    }
 }
 
 AdditionSelectionPage::~AdditionSelectionPage() {

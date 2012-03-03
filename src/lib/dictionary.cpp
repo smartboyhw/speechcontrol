@@ -54,8 +54,7 @@ DictionaryEntry::DictionaryEntry ( const DictionaryEntry& p_other ) : QObject(),
 
 }
 
-DictionaryEntry::~DictionaryEntry()
-{
+DictionaryEntry::~DictionaryEntry() {
 
 }
 
@@ -111,9 +110,8 @@ Dictionary::Dictionary ( const QUuid &p_uuid ) {
     load ( p_uuid );
 }
 
-Dictionary::~Dictionary()
-{
+Dictionary::~Dictionary() {
 }
 
 #include "dictionary.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -58,8 +58,9 @@ void Microphone::findMicrophones() {
         s_src->setState ( QGst::StateReady );
         s_chldPrxy = s_src.dynamicCast<QGst::ChildProxy>();
 
-        if ( s_chldPrxy )
+        if ( s_chldPrxy ) {
             s_propProbe = s_chldPrxy->childByIndex ( 0 ).dynamicCast<QGst::PropertyProbe>();
+        }
 
         if ( s_propProbe ) {
             QList<QGlib::Value> devices = s_propProbe->probeAndGetValues ( "device" );
@@ -85,8 +86,9 @@ Microphone* Microphone::getMicrophone ( const QUuid &micUuid ) {
 
 /// @todo How do you determine which microphone is the default one?
 Microphone* Microphone::defaultMicrophone() {
-    if ( !micMap.empty() )
+    if ( !micMap.empty() ) {
         return micMap.values().first();
+    }
 
     return 0;
 }
@@ -272,4 +274,4 @@ Microphone::~Microphone() {
 }
 
 #include "microphone.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

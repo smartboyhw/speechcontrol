@@ -79,10 +79,11 @@ void SpeechControl::Windows::BookSettingsPane::updateList() {
             l_item->setData ( Qt::UserRole,l_cnt->uuid().toString() );
             l_widget->addItem ( l_item );
 
-            if ( l_lbl.isEmpty() )
+            if ( l_lbl.isEmpty() ) {
                 l_item->setText ( "Unnamed" );
-            else
+            } else {
                 l_item->setText ( l_lbl );
+            }
         }
     }
 }
@@ -105,8 +106,9 @@ void SpeechControl::Windows::BookSettingsPane::on_btnDelete_clicked() {
 
 void SpeechControl::Windows::BookSettingsPane::on_btnAdd_clicked() {
     Wizards::ContentWizard* l_wiz = new Wizards::ContentWizard ( this );
-    if ( l_wiz->exec() == QDialog::Accepted )
+    if ( l_wiz->exec() == QDialog::Accepted ) {
         updateList();
+    }
 }
 
 void SpeechControl::Windows::BookSettingsPane::on_btnInfo_clicked() {

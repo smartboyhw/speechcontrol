@@ -57,7 +57,7 @@ protected:
         NotReady = 0,
         Ready
     } _state;
-    
+
     bool _running;
 
     // Gstreamer objects
@@ -184,7 +184,7 @@ public:
      * @brief Check whether ASR is ready to use
      */
     bool isReady() const;
-    
+
     /**
      * @brief Check if ASR is currently running.
      */
@@ -205,7 +205,7 @@ public slots:
      * @brief Run the pipeline
      */
     bool run();
-    
+
     /**
      * @brief Stop the pipeline
      * This method puts the whole pipline in the StatePaused state.

@@ -72,12 +72,13 @@ int ContentWizard::nextId() const {
 
     case AdditionSelectionPage: {
         m_src = 0;
-        if ( field ( "selection.wiki" ).toBool() )
+        if ( field ( "selection.wiki" ).toBool() ) {
             return WikiSourcePage;
-        else if ( field ( "selection.url" ).toBool() )
+        } else if ( field ( "selection.url" ).toBool() ) {
             return UriSelectionPage;
-        else if ( field ( "selection.custom" ).toBool() )
+        } else if ( field ( "selection.custom" ).toBool() ) {
             return CustomSelectionPage;
+        }
     }
     break;
 

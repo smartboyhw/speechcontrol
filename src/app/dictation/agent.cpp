@@ -32,8 +32,9 @@ Agent::Agent() : AbstractAgent ( KeyboardEmulator::instance() ) {
 }
 
 Agent* Agent::instance() {
-    if ( s_inst == 0 )
+    if ( s_inst == 0 ) {
         s_inst = new Agent;
+    }
 
     return s_inst;
 }
@@ -65,4 +66,4 @@ Agent::~Agent() {
 }
 
 #include "../dictation/agent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

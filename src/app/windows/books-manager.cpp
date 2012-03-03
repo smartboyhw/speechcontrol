@@ -46,10 +46,11 @@ void BooksManager::updateList() {
     ContentList l_lst = Content::allContents();
     ui->lstBooks->clear();
 
-    if ( l_lst.empty() )
+    if ( l_lst.empty() ) {
         ui->lblTitle->setText ( "No Books" );
-    else
+    } else {
         ui->lblTitle->setText ( "No Selection" );
+    }
 
     if ( !l_lst.empty() ) {
         Q_FOREACH ( const Content* l_cnt, l_lst ) {
@@ -57,12 +58,14 @@ void BooksManager::updateList() {
             l_item->setData ( Qt::UserRole,l_cnt->uuid().toString() );
             ui->lstBooks->addItem ( l_item );
 
-            if ( m_book && m_book->uuid() == l_cnt->uuid() )
+            if ( m_book && m_book->uuid() == l_cnt->uuid() ) {
                 l_item->setSelected ( true );
+            }
         }
 
-        if ( !m_book )
+        if ( !m_book ) {
             ui->lstBooks->setCurrentRow ( 0 );
+        }
     }
 }
 
@@ -84,8 +87,9 @@ Content* BooksManager::doSelectContent() {
         l_wiz->on_btnAdd_clicked();
         return l_wiz->m_book;
     } else {
-        if ( l_wiz->exec() == QDialog::Accepted )
+        if ( l_wiz->exec() == QDialog::Accepted ) {
             return l_wiz->m_book;
+        }
     }
 
     return 0;

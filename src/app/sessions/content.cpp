@@ -54,8 +54,9 @@ Content* Content::obtain ( const QUuid &p_uuid ) {
     if ( !s_lst.contains ( p_uuid ) ) {
         Content* l_content = new Content ( p_uuid );
         qDebug() << "Is content valid? " << l_content->isValid();
-        if ( !l_content->isValid() )
+        if ( !l_content->isValid() ) {
             return 0;
+        }
 
         s_lst.insert ( p_uuid, ( l_content ) );
     }
@@ -65,8 +66,9 @@ Content* Content::obtain ( const QUuid &p_uuid ) {
 
 void Content::erase() {
     QFile* l_file = new QFile ( getPath ( m_uuid ) );
-    if ( l_file->remove() )
+    if ( l_file->remove() ) {
         this->deleteLater();
+    }
 }
 
 void Content::load ( const QUuid &p_uuid ) {
@@ -122,9 +124,9 @@ void Content::parseText ( const QString& p_text ) {
 
     Q_FOREACH ( const QChar l_chr, p_text ) {
         if ( l_count == CHUNK_SIZE ) {
-            if ( l_chr.isLetterOrNumber() )
+            if ( l_chr.isLetterOrNumber() ) {
                 l_count -= 1;
-            else {
+            } else {
                 m_pages << l_tmpText;
                 l_tmpText.clear();
                 l_count = -1;
@@ -207,10 +209,11 @@ ContentList Content::allContents() {
         qDebug () << "Is content null?" << ( l_content == 0 );
         qDebug () << "Is content" << l_uuid << "valid?" << l_content->isValid();
 
-        if ( l_content && l_content->isValid() )
+        if ( l_content && l_content->isValid() ) {
             l_lst << l_content;
-        else
+        } else {
             QFile::remove ( l_dir.absoluteFilePath ( l_uuid ) );
+        }
     }
 
     return l_lst;
@@ -221,8 +224,9 @@ const QStringList Content::pages() const {
 }
 
 const QString Content::pageAt ( const int &l_index ) const {
-    if ( l_index < m_pages.count() )
+    if ( l_index < m_pages.count() ) {
         return m_pages.at ( l_index ).trimmed();
+    }
 
     return QString::null;
 }

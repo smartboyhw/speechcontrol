@@ -42,4 +42,4 @@ int main ( int argc, char** argv ) {
     l_core.start();
     return l_core.exec();
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

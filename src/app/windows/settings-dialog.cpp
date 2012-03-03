@@ -69,16 +69,18 @@ void Settings::switchToPanel ( const QString& p_panelID ) {
         l_lstNavi->setCurrentItem ( instance()->findPanelItem ( "gnrl" ) );
     }
 
-    if ( !instance()->isVisible() )
+    if ( !instance()->isVisible() ) {
         instance()->open();
+    }
 }
 
 QListWidgetItem* Settings::findPanelItem ( const QString& p_panelID ) {
     QListWidget* l_lstNavi = instance()->m_ui->lstNavigation;
     for ( uint i = 0; i < ( uint ) l_lstNavi->children().length(); i++ ) {
         QListWidgetItem* l_itm = l_lstNavi->item ( i );
-        if ( l_itm->data ( Qt::UserRole ).toString() == p_panelID )
+        if ( l_itm->data ( Qt::UserRole ).toString() == p_panelID ) {
             return l_itm;
+        }
     }
 
     return 0;

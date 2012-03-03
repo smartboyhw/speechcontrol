@@ -53,8 +53,9 @@ void ContentInformationDialog::goToPreviousPage() {
 }
 
 void ContentInformationDialog::goToPage ( const int p_index ) {
-    if ( p_index < 0 || ( uint ) p_index > m_content->pageCount() )
+    if ( p_index < 0 || ( uint ) p_index > m_content->pageCount() ) {
         return;
+    }
 
     m_indx = p_index;
     m_ui->txtEdit->setPlainText ( m_content->pageAt ( p_index ) );
@@ -77,4 +78,4 @@ ContentInformationDialog::~ContentInformationDialog() {
 }
 
 #include "content-information-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

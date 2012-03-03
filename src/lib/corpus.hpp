@@ -203,4 +203,4 @@ private:
 }
 
 #endif // CORPUS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

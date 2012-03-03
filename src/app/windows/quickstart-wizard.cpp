@@ -62,10 +62,11 @@ void QuickStart::accept() {
     l_language["Spoken"] = field ( "language-spoken" );
     l_language["Native"] = field ( "language-native" );
 
-    if ( field ( "is-gender-male" ).toBool() )
+    if ( field ( "is-gender-male" ).toBool() ) {
         l_gender = "Male";
-    else
+    } else {
         l_gender = "Female";
+    }
 
     l_core->setConfiguration ( "User/Name",l_name );
     l_core->setConfiguration ( "User/Gender",l_gender );

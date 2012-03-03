@@ -31,8 +31,9 @@ System::System ( int p_argc,char** p_argv ) : QObject ( qApp ),
 }
 
 System* System::instance ( int p_argc,char** p_argv ) {
-    if ( s_inst == 0 )
+    if ( s_inst == 0 ) {
         s_inst = new System ( p_argc,p_argv );
+    }
 
     return s_inst;
 }
@@ -47,4 +48,4 @@ int System::exec() {
 }
 
 #include "system.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

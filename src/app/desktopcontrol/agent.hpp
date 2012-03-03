@@ -88,7 +88,7 @@ public slots:
      *
      * @param p_cmd The command to be parsed.
      **/
-    void invokeCommand(const QString& p_cmd);
+    void invokeCommand ( const QString& p_cmd );
 
 private:
     virtual OperationState onStateChanged ( const AbstractAgent::OperationState p_state );
@@ -99,4 +99,4 @@ private:
 }
 
 #endif // DESKTOPCONTROL_AGENT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

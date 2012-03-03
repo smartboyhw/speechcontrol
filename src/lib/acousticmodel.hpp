@@ -56,12 +56,12 @@ private:
 public:
     Q_DISABLE_COPY ( AcousticModel )
     virtual ~AcousticModel();
-    explicit AcousticModel(QObject* parent = 0);
-    AcousticModel (QString const& path, QObject* parent = 0);
+    explicit AcousticModel ( QObject* parent = 0 );
+    AcousticModel ( QString const& path, QObject* parent = 0 );
     void setParameter ( const QString& p_key , const QVariant& p_value );
-    void setParameters ( const QVariantMap& p_values);
-    void mergeParameters ( const QVariantMap& p_values);
-    QVariant parameter ( const QString& p_key) const;
+    void setParameters ( const QVariantMap& p_values );
+    void mergeParameters ( const QVariantMap& p_values );
+    QVariant parameter ( const QString& p_key ) const;
     QVariantMap parameters() const;
     quint16 sampleRate() const;
     void setSampleRate ( const quint16& p_rate );
@@ -75,4 +75,4 @@ typedef QList<AcousticModel*> AcousticModelList;
 }
 
 #endif // ACOUSTICMODEL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

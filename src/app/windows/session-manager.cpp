@@ -60,12 +60,14 @@ void SessionManager::updateList() {
         l_item->setIcon ( ( l_sessionItr->isCompleted() ) ? QIcon::fromTheme ( "task-complete" ) : QIcon::fromTheme ( "task-ongoing" ) );
         m_ui->listSession->addItem ( l_item );
 
-        if ( m_session && m_session->uuid() == l_sessionItr->uuid() )
+        if ( m_session && m_session->uuid() == l_sessionItr->uuid() ) {
             l_item->setSelected ( true );
+        }
     }
 
-    if ( !m_session )
+    if ( !m_session ) {
         m_ui->listSession->setCurrentRow ( 0 );
+    }
 }
 
 Session* SessionManager::session() const {
@@ -80,8 +82,9 @@ Session* SessionManager::pickSession() {
         l_win->on_btnCreate_clicked();
         return l_win->session();
     } else {
-        if ( l_win->exec() == QDialog::Accepted )
+        if ( l_win->exec() == QDialog::Accepted ) {
             return l_win->session();
+        }
     }
 
     return 0;
@@ -97,7 +100,9 @@ void SessionManager::on_btnOk_clicked() {
             m_session = Session::create ( m_session->content() );
             this->accept();
         }
-    } else this->accept();
+    } else {
+        this->accept();
+    }
 }
 
 void SessionManager::on_btnCreate_clicked() {
@@ -118,8 +123,9 @@ void SessionManager::on_listSession_itemSelectionChanged() {
     m_session = 0;
     const QListWidgetItem* l_item = m_ui->listSession->currentItem();
 
-    if ( l_item )
+    if ( l_item ) {
         m_session = Session::obtain ( QUuid ( l_item->data ( Qt::UserRole ).toString() ) );
+    }
 }
 
 #include "session-manager.moc"

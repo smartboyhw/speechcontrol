@@ -100,10 +100,12 @@ void SessionSettingsPane::updateList() {
                 QString l_sssnUuid = l_sssn->uuid().toString();
                 l_sssnUuid.chop ( l_sssnUuid.lastIndexOf ( "-" ) );
                 l_item->setText ( l_sssnUuid );
-            } else
+            } else {
                 l_item->setText ( l_lbl );
-        } else
+            }
+        } else {
             l_item->setText ( "* missing book data *" );
+        }
 
         l_widget->clearSelection();
         l_widget->setCurrentItem ( l_item );
@@ -166,8 +168,9 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionCopy_triggered() {
     QListWidgetItem* l_itm = l_widget->selectedItems().first();
     Session* l_ss = Session::obtain ( l_itm->data ( Qt::UserRole ).toString() );
     Session* l_newSs = l_ss->clone();
-    if ( l_newSs )
+    if ( l_newSs ) {
         updateList();
+    }
 }
 
 /// @todo Add support for multiple session selection.
@@ -177,8 +180,9 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionBackup_triggered() {
     QListWidgetItem* l_itm = l_widget->selectedItems().first();
     Session* l_ss = Session::obtain ( l_itm->data ( Qt::UserRole ).toString() );
     Session::Backup* l_bckpSs = l_ss->createBackup();
-    if ( l_bckpSs )
+    if ( l_bckpSs ) {
         updateList();
+    }
 }
 
 /// @todo Add support for multiple session selection.
@@ -191,8 +195,9 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionRestoreBackup_trigger
 #ifdef RESTORESESSIONWIZARD_HPP
     Wizards::RestoreSessionWizard* l_wiz = new Wizards::RestoreSessionWizard ( this,l_ss );
 
-    if ( l_wiz->exec() == QWizard::Accepted )
+    if ( l_wiz->exec() == QWizard::Accepted ) {
         updateList();
+    }
 #endif //RESTORESESSIONWIZARD_HPP
 }
 

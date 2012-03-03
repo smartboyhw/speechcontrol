@@ -25,6 +25,7 @@ void TestSessions::listSessions() {
 
 }
 
-QTEST_MAIN(TestSessions)
+QTEST_MAIN ( TestSessions )
 
 #include "sessions.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -191,9 +191,9 @@ void Main::updateContent() {
 
 void Main::setProgress ( const double p_progress ) {
     const int l_val = ( int ) ( p_progress * 100 );
-    if ( l_val == 0 || l_val == 100 )
+    if ( l_val == 0 || l_val == 100 ) {
         m_prgStatusbar->hide();
-    else {
+    } else {
         m_prgStatusbar->show();
         m_prgStatusbar->setValue ( l_val );
     }
@@ -232,10 +232,11 @@ void Main::on_btnDctn_clicked ( bool p_checked ) {
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
 void Main::on_actionDesktopControlActive_triggered ( const bool p_checked ) {
-    if ( p_checked )
+    if ( p_checked ) {
         DesktopControl::Agent::instance()->setState ( SpeechControl::AbstractAgent::Enabled );
-    else
+    } else {
         DesktopControl::Agent::instance()->setState ( SpeechControl::AbstractAgent::Disabled );
+    }
 
     setStatusMessage ( ( ( p_checked == true ) ? "Enabling desktop control..." : "Disabling desktop control..." ) ,5 );
     m_ui->btnDsktpCntrl->setIcon ( ( ( p_checked == true ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
@@ -243,10 +244,11 @@ void Main::on_actionDesktopControlActive_triggered ( const bool p_checked ) {
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
 void Main::on_actionDictationActive_triggered ( const bool p_checked ) {
-    if ( p_checked )
+    if ( p_checked ) {
         Dictation::Agent::instance()->setState ( SpeechControl::AbstractAgent::Enabled );
-    else
+    } else {
         Dictation::Agent::instance()->setState ( SpeechControl::AbstractAgent::Disabled );
+    }
     setStatusMessage ( ( ( p_checked == true ) ? "Enabling dictation..." : "Disabling dictation..." ) ,5 );
     m_ui->btnDctn->setIcon ( ( ( p_checked == true ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
 }
@@ -265,5 +267,5 @@ Main::~Main() {
 }
 
 #include "main-window.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
 

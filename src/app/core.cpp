@@ -22,7 +22,9 @@
 #include <QDir>
 #include <QFile>
 #include <QDebug>
+#include <QLibraryInfo>
 #include <QSettings>
+#include <qtranslator.h>
 #include <QApplication>
 #include <QMessageBox>
 
@@ -41,10 +43,7 @@
 #include "dictation/agent.hpp"
 
 using namespace SpeechControl;
-
 using namespace SpeechControl::Wizards;
-
-using SpeechControl::Core;
 
 Core* Core::s_inst = 0;
 
@@ -52,7 +51,7 @@ Core* Core::s_inst = 0;
 Core::Core ( int p_argc, char** p_argv ) :
     QObject ( new QApplication ( p_argc, p_argv ) ) {
     if ( s_inst ) {
-        qFatal ( "The Core instance of SpeechControl was being invoked again. This is a fatal and funny error." );
+        qFatal ( QObject::tr ( "The Core instance of SpeechControl was being invoked again. This is a fatal and funny error." ).toStdString().c_str() );
     }
 
     s_inst = this;
@@ -63,6 +62,8 @@ Core::Core ( int p_argc, char** p_argv ) :
     m_app->setOrganizationDomain ( "thesii.org" );
     m_app->setOrganizationName ( "Synthetic Intellect Institute" );
     m_app->setApplicationVersion ( SPCHCNTRL_BUILD_VERSION );
+    m_trnsltr = new QTranslator ( this );
+    m_app->installTranslator ( m_trnsltr );
 
     System::start ( &p_argc, &p_argv );
     Session::init();
@@ -76,6 +77,7 @@ Core::Core ( int p_argc, char** p_argv ) :
     connect ( this,SIGNAL ( started() ),this, SLOT ( invokeAutoStart() ) );
     connect ( this,SIGNAL ( started() ),Plugins::Factory::instance(),SLOT ( start() ) );
     connect ( this,SIGNAL ( stopped() ),Plugins::Factory::instance(),SLOT ( stop() ) );
+    loadTranslations ( QLocale::system() );
 }
 
 Core::Core ( const Core& p_other ) : QObject ( p_other.parent() ) {
@@ -87,9 +89,9 @@ void Core::start() {
 
     // Detect if a first-run wizard should be run.
     if ( !QFile::exists ( s_inst->m_settings->fileName() ) ) {
-        if ( QMessageBox::question ( instance()->s_mw, tr ( "First Run" ),
-                                     tr ( "This seems to be the first time you've run SpeechControl on this system. "
-                                          "A wizard allowing you to start SpeechControl will appear." ), QMessageBox::Yes, QMessageBox::No ) == QMessageBox::Yes ) {
+        if ( QMessageBox::question ( instance()->s_mw, QMessageBox::tr ( "First Run" ),
+                                     QMessageBox::tr ( "This seems to be the first time you've run SpeechControl on this system. "
+                                             "A wizard allowing you to start SpeechControl will appear." ), QMessageBox::Yes, QMessageBox::No ) == QMessageBox::Yes ) {
             QuickStart* l_win = new QuickStart ( instance()->s_mw );
             l_win->exec();
         }
@@ -138,6 +140,10 @@ void Core::invokeAutoStart() {
     const bool l_dctnState = configuration ( "Dictation/AutoStart" ).toBool();
     DesktopControl::Agent::instance()->setState ( ( l_dsktpCntrlState ) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled );
     Dictation::Agent::instance()->setState ( ( l_dctnState ) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled );
+}
+
+void Core::loadTranslations ( const QLocale& p_locale ) {
+    instance()->m_trnsltr->load ( "speechcontrol_" + p_locale.name() );
 }
 
 Core::~Core () {

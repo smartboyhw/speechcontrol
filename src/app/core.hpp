@@ -114,6 +114,13 @@ public:
     static int exec();
 
     /**
+     * @brief Loads the specified locale p_locale into SpeechControl for translation.
+     *
+     * @param p_locale The locale to load.
+     **/
+    static void loadTranslations(const QLocale& p_locale);
+
+    /**
      * @brief Quits the application's main execution loop.
      * @param p_exitCode The exit code for the application to use.
      */
@@ -142,6 +149,7 @@ private:
     QApplication* m_app;    /// Holds the Application instance.
     Windows::Main* s_mw;    /// Holds the main window.
     QSettings* m_settings;  /// Holds the application's global configuration.
+    QTranslator* m_trnsltr; /// Holds the translating agent.
     static Core* s_inst;    /// Holds a instance.
 };
 

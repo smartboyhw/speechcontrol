@@ -22,6 +22,7 @@ Application (general)
     - Build functionality for Ayanta notifications.
 * Hook into speechcontrold and allow modifying of local user options for the daemon. (bug #000013)
 * Integrate the code for the training utilities of SphinxTrain to the SpeechControl application. (bug #000014)
+* Add support for multiple languages (i18n) into SpeechControl. (bug #000022)
 
 
 Application (daemon)

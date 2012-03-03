@@ -18,9 +18,13 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QImage>
+// Local
 #include "core.hpp"
 #include "indicator.hpp"
+
+// Qt
+#include <QImage>
+#include <QDebug>
 
 using SpeechControl::Indicator;
 using SpeechControl::Core;

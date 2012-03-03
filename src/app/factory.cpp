@@ -18,9 +18,14 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+// Qt
+#include <QString>
+#include <QDir>
 #include <QSettings>
 #include <QPluginLoader>
+#include <QDebug>
 
+// Local
 #include "core.hpp"
 #include "config.hpp"
 #include "factory.hpp"
@@ -31,49 +36,55 @@ using namespace SpeechControl::Plugins;
 Factory* Factory::s_inst = 0;
 PluginMap Factory::s_ldPlgns;
 
-Factory::Factory( ) : QObject ( Core::instance() ) {
+Factory::Factory() : QObject (Core::instance())
+{
     s_inst = this;
-    QApplication::addLibraryPath ( SPCHCNTRL_PLUGINS_LIB_DIR );
+    QApplication::addLibraryPath (SPCHCNTRL_PLUGINS_LIB_DIR);
 }
 
-PluginMap Factory::availablePlugins() {
-    QDir l_specDir ( SPCHCNTRL_PLUGINS_SPEC_DIR );
-    l_specDir.setNameFilters ( QStringList() << "*.spec" );
-    l_specDir.setFilter ( QDir::Files );
+PluginMap Factory::availablePlugins()
+{
+    QDir l_specDir (SPCHCNTRL_PLUGINS_SPEC_DIR);
+    l_specDir.setNameFilters (QStringList() << "*.spec");
+    l_specDir.setFilter (QDir::Files);
     const QStringList l_specPths = l_specDir.entryList();
     PluginMap l_plgnLst;
 
-    Q_FOREACH ( const QString l_specPth, l_specPths ) {
+    Q_FOREACH (const QString l_specPth, l_specPths) {
         const QString l_pth = l_specDir.absolutePath() + "/" + l_specPth;
-        QSettings* l_specCfg = new QSettings ( l_pth,QSettings::IniFormat,instance() );
-        QFile l_file ( l_pth );
-        const QUuid l_uuid ( l_specCfg->value ( "Plugin/UUID" ).toString() );
-        l_plgnLst.insert ( l_uuid, new GenericPlugin ( l_uuid ) );
+        QSettings* l_specCfg = new QSettings (l_pth, QSettings::IniFormat, instance());
+        QFile l_file (l_pth);
+        const QUuid l_uuid (l_specCfg->value ("Plugin/UUID").toString());
+        l_plgnLst.insert (l_uuid, new GenericPlugin (l_uuid));
     }
 
     return l_plgnLst;
 }
 
-PluginList Factory::loadedPlugins() {
+PluginList Factory::loadedPlugins()
+{
     return s_ldPlgns.values();
 }
 
-bool Factory::isPluginLoaded ( const QUuid& p_uuid ) {
-    return s_ldPlgns.keys().contains ( p_uuid );
+bool Factory::isPluginLoaded (const QUuid& p_uuid)
+{
+    return s_ldPlgns.keys().contains (p_uuid);
 }
 
-bool Factory::loadPlugin ( const QUuid& p_uuid ) {
-    GenericPlugin* l_gnrcPlgn = new GenericPlugin ( p_uuid );
+bool Factory::loadPlugin (const QUuid& p_uuid)
+{
+    GenericPlugin* l_gnrcPlgn = new GenericPlugin (p_uuid);
 
-    if ( l_gnrcPlgn->isSupported() && l_gnrcPlgn->loadComponents() ) {
-        AbstractPlugin* l_plgn = qobject_cast<AbstractPlugin*> ( l_gnrcPlgn->m_ldr->instance() );
-        if ( !l_plgn ) {
+    if (l_gnrcPlgn->isSupported() && l_gnrcPlgn->loadComponents()) {
+        AbstractPlugin* l_plgn = qobject_cast<AbstractPlugin*> (l_gnrcPlgn->m_ldr->instance());
+
+        if (!l_plgn) {
             qDebug() << "Couldn't nab core object.";
             return false;
-        } else if ( l_plgn->load() ) {
-            s_ldPlgns.insert ( p_uuid,l_plgn );
+        } else if (l_plgn->load()) {
+            s_ldPlgns.insert (p_uuid, l_plgn);
             l_plgn->start();
-            emit instance()->pluginLoaded ( p_uuid );
+            emit instance()->pluginLoaded (p_uuid);
             qDebug() << "Plugin" << l_plgn->name() << "loaded.";
             return true;
         } else {
@@ -87,52 +98,59 @@ bool Factory::loadPlugin ( const QUuid& p_uuid ) {
     return false;
 }
 
-void Factory::unloadPlugin ( const QUuid& p_uuid ) {
-    if ( s_ldPlgns.contains ( p_uuid ) ) {
-        AbstractPlugin* l_plgn = s_ldPlgns.value ( p_uuid );
+void Factory::unloadPlugin (const QUuid& p_uuid)
+{
+    if (s_ldPlgns.contains (p_uuid)) {
+        AbstractPlugin* l_plgn = s_ldPlgns.value (p_uuid);
         l_plgn->stop();
-        s_ldPlgns.remove ( p_uuid );
+        s_ldPlgns.remove (p_uuid);
         qDebug() << "Plugin" << p_uuid << "unloaded.";
-        emit instance()->pluginUnloaded ( p_uuid );
+        emit instance()->pluginUnloaded (p_uuid);
     }
 }
 
-Factory* Factory::instance() {
-    if ( s_inst == 0 )
+Factory* Factory::instance()
+{
+    if (s_inst == 0)
         s_inst = new Factory;
 
     return s_inst;
 }
 
-QSettings* Factory::pluginConfiguration ( QUuid p_uuid ) {
-    const QString l_pth ( QString ( SPCHCNTRL_PLUGINS_SPEC_DIR ) + QString ( "/" ) + p_uuid.toString().replace ( "{","" ).replace ( "}","" ) + QString ( ".spec" ) );
-    return new QSettings ( l_pth ,QSettings::IniFormat,Factory::instance() );
+QSettings* Factory::pluginConfiguration (QUuid p_uuid)
+{
+    const QString l_pth (QString (SPCHCNTRL_PLUGINS_SPEC_DIR) + QString ("/") + p_uuid.toString().replace ("{", "").replace ("}", "") + QString (".spec"));
+    return new QSettings (l_pth , QSettings::IniFormat, Factory::instance());
 }
 
-QSettings* Factory::pluginSettings ( QUuid p_uuid ) {
-    const QString l_pth ( QDir::homePath() + QString ( "/.speechcontrol/plugins/" ) + p_uuid.toString().replace ( "{","" ).replace ( "}","" ) + QString ( ".conf" ) );
-    return new QSettings ( l_pth ,QSettings::IniFormat,Factory::instance() );
+QSettings* Factory::pluginSettings (QUuid p_uuid)
+{
+    const QString l_pth (QDir::homePath() + QString ("/.speechcontrol/plugins/") + p_uuid.toString().replace ("{", "").replace ("}", "") + QString (".conf"));
+    return new QSettings (l_pth , QSettings::IniFormat, Factory::instance());
 }
 
-void Factory::start() {
+void Factory::start()
+{
     qDebug() << "Factory started.";
-    const QStringList l_plgnLst = Core::configuration ( "Plugins/AutoStart" ).toStringList();
-    Q_FOREACH ( const QUuid l_plgn, availablePlugins().keys() ) {
-        Plugins::Factory::loadPlugin ( l_plgn );
+    const QStringList l_plgnLst = Core::configuration ("Plugins/AutoStart").toStringList();
+    Q_FOREACH (const QUuid l_plgn, availablePlugins().keys()) {
+        Plugins::Factory::loadPlugin (l_plgn);
     }
 }
 
-void Factory::stop() {
-    Q_FOREACH ( AbstractPlugin* l_plgn, loadedPlugins() ) {
-        unloadPlugin ( l_plgn->uuid() );
+void Factory::stop()
+{
+    Q_FOREACH (AbstractPlugin * l_plgn, loadedPlugins()) {
+        unloadPlugin (l_plgn->uuid());
     }
 
     qDebug() << "Factory stopped.";
 }
 
-Factory::~Factory() {
+Factory::~Factory()
+{
 
 }
 
 #include "factory.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -61,8 +61,6 @@ bool AbstractPlugin::isSupported() const {
 const QString AbstractPlugin::name() const {
     if ( hasLoaded() )
         return m_cfg->value ( "Plugin/Name" ).toString();
-
-    qDebug() << m_cfg->fileName();
     return QString::null;
 }
 

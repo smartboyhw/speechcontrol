@@ -50,7 +50,11 @@ Core* Core::s_inst = 0;
 Core::Core ( int argc, char** argv ) :
     QObject ( new QApplication ( argc, argv ) )
 {
+    if (s_inst)
+        qFatal("The Core instance of SpeechControl was being invoked again. This is a fatal and funny error.");
+
     s_inst = this;
+
     // start application.
     m_app = qobject_cast< QApplication* > ( QApplication::instance() );
     m_app->setApplicationName ( "SpeechControl" );
@@ -88,7 +92,6 @@ void Core::start() {
         }
     }
 
-
     emit instance()->started();
 
     instance()->s_mw->show();
@@ -99,7 +102,6 @@ Windows::Main* Core::mainWindow() {
 }
 
 void Core::stop() {
-    qDebug() << "Core stopped.";
     emit instance()->stopped();
 }
 

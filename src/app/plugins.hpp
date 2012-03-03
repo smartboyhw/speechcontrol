@@ -152,65 +152,79 @@ public:
 public slots:
 
     /**
-     * @brief ...
+     * @brief Loads the required components of the plug-in to SpeechControl.
      *
-     * @return void
+     * @return TRUE if the load was successful, FALSE otherwise.
      **/
     bool load();
 
 protected:
+
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief This method is invoked when the plug-in has been successfully loaded.
+     * @internal
      **/
     virtual void initialize() = 0;
+
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief This method is invoked when the plug-in is about to be unloaded.
+     * @internal
      **/
     virtual void deinitialize() = 0;
+
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Loads the internal parts of the plug-in like dependencies and the library.
+     * @internal
+     * @return TRUE if the loading was successful, FALSE otherwise.
      **/
     bool loadComponents();
 
+    /**
+     * @brief Obtains the QSettings object that represents the settings (custom) for the plug-in.
+     *
+     * @return QSettings* A pointer to the QSettings object.
+     **/
     QSettings* settings() const;
+
+    /**
+     * @brief Obtains the QSettings* object that represents the configuration (non-custom) of the plug-in.
+     *
+     * @return QSettings* A pointer to the QSettings object.
+     **/
     QSettings* configuration() const;
 
 private slots:
+
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Starts the plug-in's internal workings.
+     * @internal
      **/
     void start();
+
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Stops the plug-in's activity and readies it for unloading.
+     * @internal
      **/
     void stop();
 
 private:
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Loads the library into memory.
+     * @internal
+     * @return TRUE if the plug-in could be loaded, FALSE otherwise.
      **/
     bool loadLibrary();
+
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Loads all of the plug-in's dependency plug-ins.
+     * @internal
+     * @return TRUE if the plug-ins were ALL loaded, FALSE otherwise.
      **/
     bool loadPlugins();
-    QPluginLoader* m_ldr;
-    QSettings* m_cfg;
-    QSettings* m_sttgs;
+
+    QPluginLoader* m_ldr;   ///< The magical QPluginLoader!
+    QSettings* m_cfg;       ///< Holds the configuration of the plug-in.
+    QSettings* m_sttgs;     ///< Holds the settings of the plug-in.
 };
 
 /**
@@ -232,13 +246,13 @@ protected:
     /**
      * @brief ...
      *
-     * @return void
+
      **/
     virtual void initialize() { };
     /**
      * @brief ...
      *
-     * @return void
+
      **/
     virtual void deinitialize() { };
 };

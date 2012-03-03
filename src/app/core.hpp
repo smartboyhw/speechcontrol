@@ -49,13 +49,13 @@ class Core : public QObject {
 signals:
     /**
      * @brief Emitted when SpeechControl has started.
-     * @return void
+     * @see start()
      **/
     void started();
 
     /**
      * @brief Emitted when SpeechControl has completed its shutdown process.
-     * @return void
+     * @see stop()
      **/
     void stopped();
 
@@ -64,9 +64,14 @@ public:
      * @brief Constructor.
      * @param p_argc The argument count from command-line.
      * @param p_argv The arguments passed from command-line.
+     * @internal
      **/
     Core ( int, char** );
 
+    /**
+     * @brief Destructor.
+     * @internal
+     **/
     virtual ~Core();
 
     /**

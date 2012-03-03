@@ -63,6 +63,9 @@ bool Factory::isPluginLoaded ( const QUuid& p_uuid ) {
 }
 
 bool Factory::loadPlugin ( const QUuid& p_uuid ) {
+    if (isPluginLoaded(p_uuid))
+        return true;
+
     GenericPlugin* l_gnrcPlgn = new GenericPlugin ( p_uuid );
 
     if ( l_gnrcPlgn->isSupported() && l_gnrcPlgn->loadComponents() ) {
@@ -88,6 +91,9 @@ bool Factory::loadPlugin ( const QUuid& p_uuid ) {
 }
 
 void Factory::unloadPlugin ( const QUuid& p_uuid ) {
+    if (!isPluginLoaded(p_uuid))
+        return;
+
     if ( s_ldPlgns.contains ( p_uuid ) ) {
         AbstractPlugin* l_plgn = s_ldPlgns.value ( p_uuid );
         l_plgn->stop();
@@ -115,7 +121,6 @@ QSettings* Factory::pluginSettings ( QUuid p_uuid ) {
 }
 
 void Factory::start() {
-    qDebug() << "Factory started.";
     const QStringList l_plgnLst = Core::configuration ( "Plugins/AutoStart" ).toStringList();
     Q_FOREACH ( const QUuid l_plgn, availablePlugins().keys() ) {
         Plugins::Factory::loadPlugin ( l_plgn );
@@ -126,8 +131,6 @@ void Factory::stop() {
     Q_FOREACH ( AbstractPlugin* l_plgn, loadedPlugins() ) {
         unloadPlugin ( l_plgn->uuid() );
     }
-
-    qDebug() << "Factory stopped.";
 }
 
 Factory::~Factory() {

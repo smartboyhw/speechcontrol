@@ -47,46 +47,46 @@ using SpeechControl::Core;
 Core* Core::s_inst = 0;
 
 /// @todo Add a check for the default microphone (if provided by the user).
-Core::Core ( int argc, char** argv ) :
-    QObject ( new QApplication ( argc, argv ) )
+Core::Core (int argc, char** argv, QApplication* app) : QObject(), m_app (app)
 {
     s_inst = this;
     // start application.
-    m_app = qobject_cast< QApplication* > ( QApplication::instance() );
-    m_app->setApplicationName ( "SpeechControl" );
-    m_app->setOrganizationDomain ( "thesii.org" );
-    m_app->setOrganizationName ( "Synthetic Intellect Institute" );
-    m_app->setApplicationVersion ( SPCHCNTRL_BUILD_VERSION );
+    m_app->setApplicationName ("SpeechControl");
+    m_app->setOrganizationDomain ("thesii.org");
+    m_app->setOrganizationName ("Synthetic Intellect Institute");
+    m_app->setApplicationVersion (SPCHCNTRL_BUILD_VERSION);
 
-    System::start ( &argc, &argv );
+    System::start (&argc, &argv);
     Session::init();
 
     QDir l_dir;
-    l_dir.mkdir ( QDir::homePath() + "/.speechcontrol/contents" );
+    l_dir.mkdir (QDir::homePath() + "/.speechcontrol/contents");
 
     // build settings
-    m_settings = new QSettings ( QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", this );
-    connect ( m_app,SIGNAL ( aboutToQuit() ),this,SLOT ( stop() ) );
-    connect ( this,SIGNAL ( started() ),Plugins::Factory::instance(),SLOT ( start() ) );
-    connect ( this,SIGNAL ( stopped() ),Plugins::Factory::instance(),SLOT ( stop() ) );
+    m_settings = new QSettings (QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", this);
+    connect (m_app, SIGNAL (aboutToQuit()), this, SLOT (stop()));
+    connect (this, SIGNAL (started()), Plugins::Factory::instance(), SLOT (start()));
+    connect (this, SIGNAL (stopped()), Plugins::Factory::instance(), SLOT (stop()));
 }
 
-Core::~Core () {
+Core::~Core ()
+{
     m_settings->sync();
 }
 
-void Core::start() {
+void Core::start()
+{
     instance()->s_mw = new Windows::Main;
 
     // Detect if a first-run wizard should be run.
-    if ( !QFile::exists ( s_inst->m_settings->fileName() ) ) {
-        if ( QMessageBox::question ( instance()->s_mw, tr ( "First Run" ),
-                                     tr ( "This seems to be the first time you've run SpeechControl on this system. "
-                                          "A wizard allowing you to start SpeechControl will appear." ), QMessageBox::Yes, QMessageBox::No ) == QMessageBox::Yes ) {
-            QuickStart* l_win = new QuickStart ( instance()->s_mw );
-            l_win->exec();
-        }
-    }
+//     if ( !QFile::exists ( s_inst->m_settings->fileName() ) ) {
+//         if ( QMessageBox::question ( instance()->s_mw, tr ( "First Run" ),
+//                                      tr ( "This seems to be the first time you've run SpeechControl on this system. "
+//                                           "A wizard allowing you to start SpeechControl will appear." ), QMessageBox::Yes, QMessageBox::No ) == QMessageBox::Yes ) {
+//             QuickStart* l_win = new QuickStart ( instance()->s_mw );
+//             l_win->exec();
+//         }
+//     }
 
 
     emit instance()->started();
@@ -94,36 +94,36 @@ void Core::start() {
     instance()->s_mw->show();
 }
 
-Windows::Main* Core::mainWindow() {
+Windows::Main* Core::mainWindow()
+{
     return instance()->s_mw;
 }
 
-void Core::stop() {
+void Core::stop()
+{
     qDebug() << "Core stopped.";
     emit instance()->stopped();
 }
 
-/// Experimental
-void Core::asrFinished ( QString& text ) {
-    qDebug() << "[ASR] Completed with " << text;
-    dummyASR->run();
+QVariant Core::configuration (const QString& p_pth, QVariant p_vrt)
+{
+    return instance()->m_settings->value (p_pth, p_vrt);
 }
 
-QVariant Core::configuration ( const QString &p_pth, QVariant p_vrt ) {
-    return instance()->m_settings->value ( p_pth, p_vrt );
+void Core::setConfiguration (const QString& p_pth, const QVariant& p_vrt)
+{
+    instance()->m_settings->setValue (p_pth, p_vrt);
 }
 
-void Core::setConfiguration ( const QString& p_pth, const QVariant& p_vrt ) {
-    instance()->m_settings->setValue ( p_pth, p_vrt );
-}
-
-Core * SpeechControl::Core::instance() {
+Core* SpeechControl::Core::instance()
+{
     return Core::s_inst;
 }
 
-int Core::exec() {
+int Core::exec()
+{
     return instance()->m_app->exec();
 }
 
 #include "core.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

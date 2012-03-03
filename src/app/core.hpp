@@ -31,7 +31,8 @@
 
 class QSettings;
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 
 /*!
  * \brief Represents the entire heart of SpeechControl.
@@ -40,9 +41,10 @@ namespace SpeechControl {
  * lock into. It holds the @c Factory and all of the derived forms of @c AbstractPlugin
  * objects.
  **/
-class Core : public QObject {
+class Core : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( Core )
+    Q_DISABLE_COPY (Core)
 
     friend class Windows::Main;
 
@@ -65,7 +67,7 @@ public:
      * @param p_argc The argument count from command-line.
      * @param p_argv The arguments passed from command-line.
      **/
-    Core ( int, char** );
+    Core (int, char**, QApplication*);
 
     virtual ~Core();
 
@@ -77,7 +79,7 @@ public:
      * @param  p_attrDefVal The default value to return. Defaults to QVariant().
      * @return QVariant
      **/
-    static QVariant configuration ( const QString&, QVariant = QVariant() );
+    static QVariant configuration (const QString&, QVariant = QVariant());
 
     /**
      * @brief Sets a core configuration option of SpeechControl.
@@ -88,7 +90,7 @@ public:
      * @param  p_attrValue The value to be set.
      * @return void
      **/
-    static void setConfiguration ( const QString&, const QVariant& );
+    static void setConfiguration (const QString&, const QVariant&);
 
     /**
      * @brief Obtains a pointer to the @c Core object, the singleton representing the application.
@@ -111,7 +113,7 @@ public:
      * @brief Quits the application's main execution loop.
      * @param p_exitCode The exit code for the application to use.
      */
-    void quit ( const int& = 0 );
+    void quit (const int& = 0);
 
 public slots:
     /**
@@ -126,21 +128,15 @@ public slots:
      **/
     void stop();
 
-    /// Experimental
-    void asrFinished ( QString& text );
-
 private:
     QApplication* m_app;          /// Holds the Application instance.
     Windows::Main* s_mw;    /// Holds the main window.
     QSettings* m_settings;  /// Holds the application's global configuration.
-    static Core* s_inst;    /// Holds a instance.
-
-    /// Experimental
-    DummySC* dummyASR;
+    static Core* s_inst;    /// Holds the instance.
 
 };
 
 }
 
 #endif // CORE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

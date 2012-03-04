@@ -50,11 +50,13 @@ namespace DesktopControl {
  *
  * @see AbstractAgent
  **/
-class Agent : public AbstractAgent {
+class Agent : public AbstractAgent
+{
     Q_OBJECT
+    
 public:
     /**
-     * @brief Constructor.
+     * @brief Constructor
      **/
     Agent();
     virtual ~Agent();

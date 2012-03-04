@@ -22,9 +22,14 @@
 #include <QDateTime>
 #include <QDebug>
 
+// Local
 #include "core.hpp"
 #include "indicator.hpp"
 #include "windows/main-window.hpp"
+
+// Qt
+#include <QImage>
+#include <QDebug>
 
 using SpeechControl::Indicator;
 using SpeechControl::Core;
@@ -91,4 +96,4 @@ Indicator::~Indicator() {
 }
 
 #include "indicator.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

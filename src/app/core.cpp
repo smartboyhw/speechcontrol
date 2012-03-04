@@ -68,8 +68,12 @@ Core::Core ( int p_argc, char** p_argv ) :
     System::start ( &p_argc, &p_argv );
     Session::init();
 
-    QDir l_dir;
-    l_dir.mkdir ( QDir::homePath() + "/.speechcontrol/contents" );
+    // Create application's configuration directory.
+    QDir configDir;
+    configDir.mkdir (QDir::homePath() + "/.config/speechcontrol");
+
+    // Settings
+    m_settings = new QSettings (QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", this);
 
     // build settings
     m_settings = new QSettings ( QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", this );
@@ -84,7 +88,8 @@ Core::Core ( const Core& p_other ) : QObject ( p_other.parent() ) {
 
 }
 
-void Core::start() {
+void Core::start()
+{
     instance()->s_mw = new Windows::Main;
 
     // Detect if a first-run wizard should be run.
@@ -102,7 +107,8 @@ void Core::start() {
     instance()->s_mw->show();
 }
 
-Windows::Main* Core::mainWindow() {
+Windows::Main* Core::mainWindow()
+{
     return instance()->s_mw;
 }
 
@@ -123,7 +129,8 @@ void Core::setConfiguration ( const QString& p_attrName, const QVariant& p_attrV
     instance()->m_settings->setValue ( p_attrName, p_attrValue );
 }
 
-Core * SpeechControl::Core::instance() {
+Core* SpeechControl::Core::instance()
+{
     return Core::s_inst;
 }
 
@@ -151,4 +158,4 @@ Core::~Core () {
     m_settings->sync();
 }
 #include "core.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

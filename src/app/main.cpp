@@ -37,9 +37,11 @@
 #include "core.hpp"
 
 // pretty simple, huh?
-int main ( int argc, char** argv ) {
-    SpeechControl::Core l_core ( argc, argv );
-    l_core.start();
-    return l_core.exec();
+int main (int argc, char** argv)
+{
+    QApplication* app = new QApplication (argc, argv);
+    SpeechControl::Core appCore (argc, argv, app);
+    appCore.start();
+    return app->exec();
 }
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

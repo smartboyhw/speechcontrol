@@ -21,7 +21,6 @@
 #ifndef CORE_HPP
 #define CORE_HPP
 
-
 #include <QObject>
 #include <QVariant>
 #include <QApplication>
@@ -41,7 +40,8 @@ class Main;
  * lock into. It holds the @c Factory and all of the derived forms of @c AbstractPlugin
  * objects.
  **/
-class Core : public QObject {
+class Core : public QObject
+{
     Q_OBJECT
     Q_DISABLE_COPY ( Core );
 
@@ -126,6 +126,19 @@ public:
      */
     void quit ( const int& p_exitCode = 0 );
 
+signals:
+    /**
+     * @brief Emitted when SpeechControl has started.
+     * @return void
+     **/
+    void started();
+
+    /**
+     * @brief Emitted when SpeechControl has completed its shutdown process.
+     * @return void
+     **/
+    void stopped();
+
 public slots:
     /**
      * @brief Starts SpeechControl's main loop.
@@ -156,4 +169,4 @@ private:
 }
 
 #endif // CORE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

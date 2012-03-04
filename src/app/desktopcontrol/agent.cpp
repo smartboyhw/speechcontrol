@@ -30,9 +30,12 @@ namespace DesktopControl
 
 Agent* Agent::s_instance = 0;
 
-Agent::Agent() : AbstractAgent ( AbstractCategory::global() ) {
-    m_sphinx = new Sphinx ( Sphinx::standardDescription(), parent() );
-    connect ( m_sphinx, SIGNAL ( finished ( QString ) ), this, SLOT ( invokeCommand ( QString ) ) );
+Agent::Agent() : AbstractAgent (AbstractCategory::global())
+{
+    _asr = new DesktopASR (DesktopASR::getStandardDescription(), parent());
+    connect (this, SIGNAL (stopped()), _asr, SLOT (stop()));
+    connect (_asr, SIGNAL (finished (QString&)), this, SLOT (invokeCommand (QString&)));
+
 }
 
 Agent::~Agent()
@@ -40,10 +43,10 @@ Agent::~Agent()
 
 }
 
-Agent* Agent::instance() {
-    if ( s_instance == 0 ) {
+Agent* Agent::instance()
+{
+    if (s_instance == 0)
         s_instance = new Agent;
-    }
 
     return s_instance;
 }
@@ -64,8 +67,7 @@ AbstractAgent::OperationState Agent::onStateChanged (const AbstractAgent::Operat
         break;
 
     case Disabled:
-        m_sphinx->stop();
-        return Disabled;
+        _asr->stop();
         break;
 
     case Undefined:
@@ -92,6 +94,11 @@ void Agent::invokeCommand ( const QString& cmd ) {
     Q_FOREACH ( AbstractCommand* l_cmd, l_cmds ) {
         qDebug() << l_cmd->id() << l_cmd->statements();
     }
+}
+
+void Agent::invokeCommand (QString& cmd)
+{
+
 }
 
 }

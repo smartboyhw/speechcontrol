@@ -357,8 +357,7 @@ Session::Backup* Session::Backup::generate (const Session& p_sssn)
 
     // Compress corpus data.
     const Corpus* l_corpus = p_sssn.corpus();
-    QFile* l_corpusFile = new QFile ( Corpus::getPath ( l_corpus->uuid() ).toLocalFile() );
-    l_file->open ( QIODevice::ReadOnly | QIODevice::Text );
+    QFile* l_corpusFile = new QFile (Corpus::getPath (l_corpus->uuid()).toLocalFile());
     QByteArray l_corpusData;
     l_corpusData = qCompress (l_corpusFile->readAll());
 

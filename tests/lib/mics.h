@@ -34,7 +34,7 @@ private slots:
     void cleanup();
     void listMicrophones();
     void adjustVolume();
-    SpeechControl::Microphone* defaultMicrophone();
+    void defaultMicrophone();
 };
 
 #endif

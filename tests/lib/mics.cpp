@@ -41,21 +41,22 @@ void TestMicrophone::listMicrophones() {
     }
 }
 
-Microphone* TestMicrophone::defaultMicrophone() {
+void TestMicrophone::defaultMicrophone() {
     Microphone* l_defaultMic = Microphone::defaultMicrophone();
     QCOMPARE ( l_defaultMic != 0 && !Microphone::allMicrophones().isEmpty(),true );
     QCOMPARE ( l_defaultMic->isValid() == true,true );
     qDebug() << "Default mic is:" << l_defaultMic->name();
-
-    return l_defaultMic;
 }
 
-void TestMicrophone::adjustMicrophone() {
-    Microphone* l_defaultMic = defaultMicrophone();
+void TestMicrophone::adjustVolume() {
+    Microphone* l_defaultMic = Microphone::defaultMicrophone();
+    QCOMPARE ( l_defaultMic != 0 && !Microphone::allMicrophones().isEmpty(),true );
+    QCOMPARE ( l_defaultMic->isValid() == true,true );
     l_defaultMic->setVolume ( 0.8 );
     QCOMPARE ( l_defaultMic->volume() == 0.8,true );
 }
 
 QTEST_MAIN ( TestMicrophone )
+
 #include "mics.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

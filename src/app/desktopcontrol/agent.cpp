@@ -23,8 +23,10 @@
 #include "command.hpp"
 #include "sphinx.hpp"
 
-namespace SpeechControl {
-namespace DesktopControl {
+namespace SpeechControl
+{
+namespace DesktopControl
+{
 
 Agent* Agent::s_instance = 0;
 
@@ -41,9 +43,10 @@ Agent* Agent::instance() {
     return s_instance;
 }
 
-AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::OperationState p_state ) {
-    switch ( p_state ) {
-    case Enabled: {
+AbstractAgent::OperationState Agent::onStateChanged (const AbstractAgent::OperationState p_state)
+{
+    switch (p_state) {
+    case Enabled:
         if ( !isEnabled() )
             return Disabled;
 
@@ -52,9 +55,8 @@ AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::Opera
             return Disabled;
         }
 
-    }
-    return Enabled;
-    break;
+        return Enabled;
+        break;
 
     case Disabled:
         m_sphinx->stop();
@@ -87,7 +89,8 @@ void Agent::invokeCommand ( const QString& p_cmd ) {
     }
 }
 
-Agent::~Agent() {
+void Agent::invokeCommand (QString& cmd)
+{
 
 }
 

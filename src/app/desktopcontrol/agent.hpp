@@ -29,12 +29,13 @@
 // Local
 #include <app/abstractagent.hpp>
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 /**
  * @brief Container namespace for all of the desktop control related clases.
  **/
-namespace DesktopControl {
-    class Sphinx;
+namespace DesktopControl
+{
 /**
  * @brief Agent managing desktop control.
  *
@@ -53,7 +54,12 @@ namespace DesktopControl {
 class Agent : public AbstractAgent
 {
     Q_OBJECT
-    
+
+private:
+    virtual OperationState onStateChanged (const AbstractAgent::OperationState p_state);
+    static Agent* s_instance;
+    Sphinx* m_sphinx;
+
 public:
     /**
      * @brief Constructor
@@ -83,7 +89,7 @@ public:
      * @return A pointer to the desktop control class's singleton instance.
      **/
     static Agent* instance();
-
+    
 public slots:
     /**
      * @brief Invokes a command for desktop control to parse.
@@ -94,15 +100,11 @@ public slots:
      *
      * @param p_cmd The command to be parsed.
      **/
-    void invokeCommand ( const QString& p_cmd );
+    void invokeCommand ( const QString& cmd );
 
-private:
-    virtual OperationState onStateChanged ( const AbstractAgent::OperationState p_state );
-    static Agent* s_instance;
-    Sphinx* m_sphinx;
 };
 }
 }
 
 #endif // DESKTOPCONTROL_AGENT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

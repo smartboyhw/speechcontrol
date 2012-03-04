@@ -350,4 +350,4 @@ Session::Backup* Session::Backup::generate ( const Session& p_sssn ) {
 }
 
 #include "session.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

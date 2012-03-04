@@ -188,19 +188,19 @@ public:
      *
      * @param p_microphone The microphone to use.
      **/
-    void useMicrophone(const Microphone* p_microphone);
+    void useMicrophone ( const Microphone* p_microphone );
 
     /**
      * @brief Set PocketSphinx element property
-     * @param property Name of the property.
-     * @param value Value for the property.
+     * @param p_property Name of the property.
+     * @param p_value Value for the property.
      */
     void setPsProperty ( const QString& p_property, const QVariant& p_value );
 
     /**
      * @brief Set VADER element property
-     * @param property Name of the property.
-     * @param value Value for the propery.
+     * @param p_property Name of the property.
+     * @param p_value Value for the propery.
      */
     void setVaderProperty ( const QString& p_property, const QVariant& p_value );
 
@@ -214,11 +214,11 @@ public:
      * @brief Sets the language model to use.
      * @param p_languageModel The LanguageModel to be used.
      **/
-    void setLanguageModel(const LanguageModel* p_languageModel);
+    void setLanguageModel ( const LanguageModel* p_languageModel );
 
     /**
      * @brief Sets the dictionary to be used.
-     * @param path The path to the dictionary.
+     * @param p_path The path to the dictionary.
      */
     void setDictionary ( const QString& p_path );
 
@@ -231,9 +231,9 @@ public:
 
     /**
      * @brief Sets the acoustic model to be used.
-     * @param path The path to the acoustic model.
+     * @param p_path The path to the acoustic model.
      */
-    void setAcousticModel ( const QString& path );
+    void setAcousticModel ( const QString& p_path );
 
     /**
      * @brief Sets the acoustic model to be used.
@@ -260,8 +260,10 @@ public:
     void togglePause();
 
 signals:
-    /// @todo Useful or not?
-    void finished ( const QString& result );
+    /**
+     * Emitted by the AbstractSphinx instance when recognition has produced a result.
+     */
+    void finished ( const QString& p_result );
 
 public slots:
     /**

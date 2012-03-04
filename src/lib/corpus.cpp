@@ -46,14 +46,14 @@ SentenceList Corpus::sentences() const {
 }
 
 /// @todo Add the Sentence to the XML document and then to the list.
-Sentence* Corpus::addSentence ( Sentence *p_phrs ) {
-    m_sntncLst << p_phrs;
-    return p_phrs;
+Sentence* Corpus::addSentence ( Sentence* p_sentence ) {
+    m_sntncLst << p_sentence;
+    return p_sentence;
 }
 
-Sentence* Corpus::addSentence ( const QString &p_txt, const QFile *p_audio ) {
-    qDebug() << "Adding sentence" << p_txt << "...";
-    Sentence* l_sentence = Sentence::create ( this,p_txt );
+Sentence* Corpus::addSentence ( const QString& p_text, const QFile* p_audio ) {
+    qDebug() << "Adding sentence" << p_text << "...";
+    Sentence* l_sentence = Sentence::create ( this, p_text );
 
     if ( p_audio ) {
         l_sentence->m_elem->attribute ( QUrl::fromLocalFile ( p_audio->fileName() ).toString() );
@@ -62,8 +62,8 @@ Sentence* Corpus::addSentence ( const QString &p_txt, const QFile *p_audio ) {
     return l_sentence;
 }
 
-Corpus & Corpus::operator << ( Sentence *p_phrs ) {
-    this->addSentence ( p_phrs );
+Corpus & Corpus::operator << ( Sentence* p_sentence ) {
+    this->addSentence ( p_sentence );
     return *this;
 }
 
@@ -249,8 +249,8 @@ Corpus* Corpus::clone() const {
     return Corpus::obtain ( l_uuid );
 }
 
-Sentence* Corpus::sentenceAt ( const int &p_indx ) const {
-    return m_sntncLst.at ( p_indx );
+Sentence* Corpus::sentenceAt ( const int& p_index ) const {
+    return m_sntncLst.at ( p_index );
 }
 
 Dictionary * Corpus::dictionary() const {

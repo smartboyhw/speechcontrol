@@ -23,7 +23,7 @@
 
 using namespace SpeechControl;
 
-LanguageModel::LanguageModel ( QObject* p_parent ) : QObject(p_parent) {
+LanguageModel::LanguageModel ( QObject* p_parent ) : QObject ( p_parent ) {
 
 }
 
@@ -56,3 +56,4 @@ LanguageModel::~LanguageModel() {
 }
 
 #include "languagemodel.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

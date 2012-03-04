@@ -109,7 +109,7 @@ void NoiseDictionary::save() {
     }
 
     QTextStream l_strm ( m_device );
-    const QString l_padSpace = QString (l_size, ' ');
+    const QString l_padSpace = QString ( l_size, ' ' );
 
     for ( QStringMap::iterator l_itr = m_entries.begin();
             l_itr != m_entries.end(); l_itr++ ) {
@@ -121,4 +121,4 @@ void NoiseDictionary::save() {
 
 #include "noisedictionary.moc"
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

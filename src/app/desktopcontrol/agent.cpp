@@ -44,7 +44,7 @@ Agent* Agent::instance() {
 AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::OperationState p_state ) {
     switch ( p_state ) {
     case Enabled: {
-        if (!isEnabled())
+        if ( !isEnabled() )
             return Disabled;
 
         if ( !m_sphinx->start() ) {
@@ -74,7 +74,7 @@ bool Agent::isActive() const {
 }
 
 bool Agent::isEnabled() {
-    return Core::configuration("DesktopControl/Enabled").toBool();
+    return Core::configuration ( "DesktopControl/Enabled" ).toBool();
 }
 
 /// @todo Since this returns more than one command, should we provide a UI that allows you to pick which command you might want?
@@ -94,4 +94,4 @@ Agent::~Agent() {
 }
 }
 #include "desktopcontrol/agent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

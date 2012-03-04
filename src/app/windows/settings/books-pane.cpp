@@ -95,7 +95,7 @@ void SpeechControl::Windows::BookSettingsPane::on_btnDelete_clicked() {
             Content* l_cntn = Content::obtain ( l_itm->data ( Qt::UserRole ).toString() );
             if ( QMessageBox::Yes == QMessageBox::question ( this,
                     tr ( "Confirm Book Delete" ),
-                    tr ( "Are you sure you want to delete this book '%1' by '%2'?\nAny session connected to the book will become invalid and untrainable." ).arg(l_cntn->title()).arg(l_cntn->author()),
+                    tr ( "Are you sure you want to delete this book '%1' by '%2'?\nAny session connected to the book will become invalid and untrainable." ).arg ( l_cntn->title() ).arg ( l_cntn->author() ),
                     QMessageBox::Yes | QMessageBox::No,
                     QMessageBox::No ) ) {
                 l_cntn->erase();
@@ -125,4 +125,4 @@ void SpeechControl::Windows::BookSettingsPane::on_btnInfo_clicked() {
 }
 
 #include "books-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

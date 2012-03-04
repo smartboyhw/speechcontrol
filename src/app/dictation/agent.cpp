@@ -30,7 +30,7 @@ Agent* Agent::s_inst = 0;
 
 Agent::Agent() : AbstractAgent ( KeyboardEmulator::instance() ) {
     m_sphinx = new Sphinx ( Sphinx::standardDescription(), parent() );
-    connect ( m_sphinx, SIGNAL ( finished ( QString ) ), this, SLOT ( handleText(QString) ) );
+    connect ( m_sphinx, SIGNAL ( finished ( QString ) ), this, SLOT ( handleText ( QString ) ) );
 }
 
 Agent* Agent::instance() {
@@ -62,7 +62,7 @@ bool Agent::isActive() const {
 }
 
 bool Agent::isEnabled() const {
-    return Core::configuration("Dictation/Enabled").toBool() == true;
+    return Core::configuration ( "Dictation/Enabled" ).toBool() == true;
 }
 
 void Agent::handleText ( const QString& p_text ) {
@@ -76,4 +76,4 @@ Agent::~Agent() {
 }
 
 #include "dictation/agent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

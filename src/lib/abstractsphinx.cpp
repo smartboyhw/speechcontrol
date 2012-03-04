@@ -68,6 +68,8 @@ void AbstractSphinx::prepare() {
     QGlib::connect ( m_bus, "message::application", this, &AbstractSphinx::applicationMessage );
 
     m_pipeline->setState ( QGst::StateReady );
+    m_psphinx->setState ( QGst::StateReady );
+    m_vader->setState ( QGst::StateReady );
     m_ready = Ready;
 }
 
@@ -145,8 +147,8 @@ void AbstractSphinx::setLanguageModel ( const QString& p_path ) {
     }
 }
 
-void AbstractSphinx::setLanguageModel(const LanguageModel* p_languageModel){
-    setPsProperty("lm",p_languageModel->path());
+void AbstractSphinx::setLanguageModel ( const LanguageModel* p_languageModel ) {
+    setPsProperty ( "lm",p_languageModel->path() );
 }
 
 void AbstractSphinx::setDictionary ( const QString& p_path ) {
@@ -205,6 +207,7 @@ void AbstractSphinx::togglePause() {
     m_vader->setProperty ( "silent", l_silent );
 }
 
+/// @todo Does this obtain the partial result from the internal PocketSphinx component?
 void AbstractSphinx::formPartialResult ( QString& p_text, QString& p_uttid ) {
     QGst::Structure l_psStructure ( "partial_result" );
     l_psStructure.setValue ( "hyp", p_text );
@@ -213,6 +216,7 @@ void AbstractSphinx::formPartialResult ( QString& p_text, QString& p_uttid ) {
     m_bus->post ( l_message );
 }
 
+/// @todo Does this obtain the partial result from the internal PocketSphinx component?
 void AbstractSphinx::formResult ( QString& p_text, QString& p_uttid ) {
     QGst::Structure l_psStructure ( "result" );
     l_psStructure.setValue ( "hyp", p_text );

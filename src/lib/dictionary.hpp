@@ -153,7 +153,7 @@ public:
      * @param p_path The path of which the dictionary resides.
      * @return A pointer to a Dictionary object if found, NULL otherwise.
      **/
-    static Dictionary* obtain (const QString& p_path);
+    static Dictionary* obtain ( const QString& p_path );
 
     /**
      * @brief Obtains the list of entries representing this Dictionary.
@@ -194,7 +194,7 @@ public:
      **/
     void load ( QIODevice* p_device );
 
-    void load(const QUuid& p_uuid);
+    void load ( const QUuid& p_uuid );
 
     /**
      * @brief Saves the Dictionary.
@@ -210,4 +210,4 @@ private:
 };
 }
 #endif // DICTIONARY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

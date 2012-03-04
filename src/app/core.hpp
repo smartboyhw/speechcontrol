@@ -118,7 +118,7 @@ public:
      *
      * @param p_locale The locale to load.
      **/
-    static void loadTranslations(const QLocale& p_locale);
+    static void loadTranslations ( const QLocale& p_locale );
 
     /**
      * @brief Quits the application's main execution loop.
@@ -156,4 +156,4 @@ private:
 }
 
 #endif // CORE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

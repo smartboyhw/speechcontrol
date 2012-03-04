@@ -28,7 +28,7 @@
 
 using namespace SpeechControl;
 
-MicrophoneMap Microphone::micMap;
+MicrophoneMap Microphone::p_micLst;
 QGst::ElementPtr Microphone::s_src;
 QGst::PropertyProbePtr Microphone::s_propProbe;
 QGst::ChildProxyPtr Microphone::s_chldPrxy;
@@ -80,14 +80,14 @@ void Microphone::findMicrophones() {
     }
 }
 
-Microphone* Microphone::getMicrophone ( const QUuid &micUuid ) {
-    return micMap.value ( micUuid, 0 );
+Microphone* Microphone::getMicrophone ( const QUuid &p_uuid ) {
+    return p_micLst.value ( p_uuid, 0 );
 }
 
 /// @todo How do you determine which microphone is the default one?
 Microphone* Microphone::defaultMicrophone() {
-    if ( !micMap.empty() ) {
-        return micMap.values().first();
+    if ( !p_micLst.empty() ) {
+        return p_micLst.values().first();
     }
 
     return 0;
@@ -106,7 +106,7 @@ QString Microphone::id() const {
 }
 
 MicrophoneList Microphone::allMicrophones() {
-    return micMap.values();
+    return p_micLst.values();
 }
 
 /// @todo In addition, you will NEED TO MAKE SURE THAT YOU RECORD AT A SAMPLING RATE OF 16 KHZ (or 8 kHz if you adapt a telephone model) IN MONO WITH SINGLE CHANNEL.
@@ -196,7 +196,7 @@ void SpeechControl::Microphone::obtain() {
         return;
     }
 
-    micMap.insert ( m_id, const_cast<Microphone*> ( this ) );
+    p_micLst.insert ( m_id, const_cast<Microphone*> ( this ) );
 
     // Obtain tools for recording like the encoder and the source.
     m_sinkAudio = m_binAudio->getElementByName ( "filesink" );
@@ -274,4 +274,4 @@ Microphone::~Microphone() {
 }
 
 #include "microphone.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

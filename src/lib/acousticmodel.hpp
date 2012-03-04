@@ -39,7 +39,7 @@ typedef QList<AcousticModel*> AcousticModelList;
  * acoustic models. The main property is a path where the model is stored.
  * This and all other properties are contained in the QVariantMap, inside the object.
  *
- * @subsection params Parameters
+ * @section params Parameters
  *
  * The parameters here are represented in <b>feat.params</b> of the acoustic model's
  * directory. An example dump of such a file would be the following:
@@ -55,13 +55,8 @@ typedef QList<AcousticModel*> AcousticModelList;
  * @endcode
  *
  * Each of these properties can be set by their key (the value to the left)
- * and update its value (the value to the right).
- *
- * Currently supported parameters are:
- * @li path - Path where the model is stored.
- *
- * @note Should we use enum rather than QString for keys?
- * @todo Add more properties to use.
+ * and update its value (the value to the right). The properties supported are
+ * all of the ones recognized by PocketSphinx.
  */
 class SPCH_EXPORT AcousticModel : public QObject {
     Q_OBJECT
@@ -165,4 +160,4 @@ typedef QList<AcousticModel*> AcousticModelList;
 }
 
 #endif // ACOUSTICMODEL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

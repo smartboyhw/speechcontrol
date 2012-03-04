@@ -63,6 +63,7 @@ void System::start ( int *argc, char **argv[] ) {
 
 void System::stop() {
     s_inst->deleteLater();
+    QGst::cleanup();
 }
 
 #include "system.moc"

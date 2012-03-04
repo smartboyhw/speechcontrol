@@ -31,7 +31,7 @@ AbstractAgent::AbstractAgent ( const AbstractAgent&  p_agent ) : QObject ( p_age
 }
 
 void AbstractAgent::setState ( const AbstractAgent::OperationState p_state ) {
-    if (p_state == m_state)
+    if ( p_state == m_state )
         return;
 
     m_state = onStateChanged ( p_state );
@@ -46,4 +46,4 @@ AbstractAgent::~AbstractAgent() {
 }
 
 #include "abstractagent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -71,8 +71,7 @@ build directory.
     $ make docs                     # Generates API documentation (if
                                     # WITH_API_DOCS = ON)
 
-    $ make tests                    # Builds the tests (but doesn't execute
-                                    # them, see 4. Testing)
+    $ make tests                    # Builds the tests (see 4. Testing)
 
 It's possible to produce more concise dumps of information regarding your
 build experience. See the "Testing" section for more information.
@@ -85,7 +84,7 @@ From the build directory, you can invoke SpeechControl by:
         $ make run
 
     * directly running the application or,
-        $ src/app/speechcontrol
+        $ src/app/speechcontrol-frontend
 
 It's possible to produce more verbose information during execution.
 See the "Testing" section for more information.
@@ -135,7 +134,20 @@ Such information provides developers with valuable information. There's three
 tags used for such purposes, but the other two ('Continuous' and 'Nightly')
 are reserved for automated builds. Invoke the following:
 
-    $ make Experimental
     $ make Experimental                     # invokes all of the Experimental commands.
 
-CMake will then switch
+CMake will then switch over to the CTest system and begin executing the tests
+that are packaged along with the source code. There's typically two sectors of
+tests, one of the library and another of the front-end's internal API. This
+allows developers and testers to catch potential glitches and iron out ways to
+prevent these issues from occurring again.
+
+The output from the make command may be a bit verbose for some, so instead you
+can do the following (from ${CMAKE_BINARY_DIR}/tests):
+
+    $ ctest
+    $ make tests                # Builds the tests and then invokes 'ctest'.
+
+This'll invoke the CTest system directly, however, the tests themselves have to
+be built before you invoke this command. As a means of shorthand, you can just
+use the 'tests' target to build and then execute all of the tests.

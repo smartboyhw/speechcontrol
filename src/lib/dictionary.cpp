@@ -82,12 +82,12 @@ Dictionary* Dictionary::obtain ( const QUuid &p_uuid ) {
 }
 
 Dictionary* Dictionary::obtain ( const QString& p_path ) {
-    QFile* l_file = new QFile(p_path);
+    QFile* l_file = new QFile ( p_path );
     Dictionary* l_dict = new Dictionary;
-    if (!l_file->exists())
+    if ( !l_file->exists() )
         return 0;
 
-    l_dict->load(l_file);
+    l_dict->load ( l_file );
     return l_dict;
 }
 
@@ -152,4 +152,4 @@ DictionaryEntry::~DictionaryEntry() {
 }
 
 #include "dictionary.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

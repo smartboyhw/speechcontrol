@@ -122,6 +122,7 @@ private slots:
     void on_actionPluginOptions_triggered();
     void on_actionOptions_triggered();
     void on_actionAboutQt_triggered();
+    void on_actionReportBug_triggered();
     void on_actionAboutSpeechControl_triggered();
 
 private:

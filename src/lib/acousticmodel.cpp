@@ -70,7 +70,7 @@ void AcousticModel::loadFeatureParameters() {
 }
 
 void AcousticModel::loadNoiseDictionary() {
-    QFile* l_noiseDictFile = new QFile ( m_path +  "/noisedict"  );
+    QFile* l_noiseDictFile = new QFile ( m_path +  "/noisedict" );
     m_noisedict = NoiseDictionary::fromFile ( l_noiseDictFile );
 }
 
@@ -107,8 +107,8 @@ QString AcousticModel::path() const {
 }
 
 bool AcousticModel::isValid() const {
-    return (QDir( m_path )).exists();
+    return ( QDir ( m_path ) ).exists();
 }
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
 #include "acousticmodel.moc"

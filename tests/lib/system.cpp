@@ -18,24 +18,21 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef TEST_LIB_MICS_HPP
-#define TEST_LIB_MICS_HPP
-#include <QObject>
+#include <QtTest/QtTest>
+#include <QtGStreamer/QGst/Init>
+#include "system.h"
+#include <lib/system.hpp>
 
-namespace SpeechControl {
-    class Microphone;
+using namespace SpeechControl;
+
+void TestSystem::init() {
+    SpeechControl::System::start();
 }
 
-class TestMicrophone : public QObject {
-    Q_OBJECT
+void TestSystem::cleanup() {
+    QGst::cleanup();
+}
 
-private slots:
-    void init();
-    void cleanup();
-    void listMicrophones();
-    void adjustVolume();
-    SpeechControl::Microphone* defaultMicrophone();
-};
-
-#endif
+QTEST_MAIN ( TestSystem )
+#include "mics.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

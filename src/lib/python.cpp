@@ -20,10 +20,6 @@
 
 #ifdef WITH_PYTHON_BINDINGS
 
-#include "corpus.hpp"
-#include "dictionary.hpp"
-#include "microphone.hpp"
-#include "sentence.hpp"
 #include "system.hpp"
 
 #include <boost/python.hpp>
@@ -44,13 +40,6 @@ BOOST_PYTHON_MODULE ( spchcntrl ) {
     using namespace boost::python;
     using namespace SpeechControl;
 
-    class_<Microphone> ( "Microphone", no_init )
-    .add_property ( "uuid"   , &Microphone::id )
-    .add_property ( "active" , &Microphone::active )
-    .add_property ( "name"   , &Microphone::name )
-    //.def("defaultMicrophone", &Microphone::defaultMicrophone)
-    ;
-
     class_<SystemStruct> ( "System", no_init )
     .def ( "stop" , &SystemStruct::stop )
     .def ( "start", &SystemStruct::start )
@@ -58,4 +47,4 @@ BOOST_PYTHON_MODULE ( spchcntrl ) {
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

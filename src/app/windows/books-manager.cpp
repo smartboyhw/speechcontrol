@@ -48,9 +48,9 @@ void BooksManager::updateList() {
     ui->lstBooks->clear();
 
     if ( l_lst.empty() ) {
-        ui->lblTitle->setText ( tr("No Books") );
+        ui->lblTitle->setText ( tr ( "No Books" ) );
     } else {
-        ui->lblTitle->setText ( tr("No Selection") );
+        ui->lblTitle->setText ( tr ( "No Selection" ) );
     }
 
     if ( !l_lst.empty() ) {
@@ -120,11 +120,11 @@ void BooksManager::on_lstBooks_itemSelectionChanged() {
         ui->lcdWordCount->display ( QString::number ( l_cnt->words() ) );
         ui->btnSelect->setEnabled ( true );
     } else {
-        ui->lblTitle->setText ( tr("No Selection") );
+        ui->lblTitle->setText ( tr ( "No Selection" ) );
         ui->lcdWordCount->display ( 0 );
         ui->btnSelect->setEnabled ( false );
     }
 }
 
 #include "books-manager.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

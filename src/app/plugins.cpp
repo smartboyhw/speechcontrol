@@ -156,10 +156,10 @@ void AbstractPlugin::start() {
 }
 
 void AbstractPlugin::stop() {
-    Q_FOREACH(QAction* l_action, actions()){
-        if (!l_action)
+    Q_FOREACH ( QAction* l_action, actions() ) {
+        if ( !l_action )
             continue;
-        Core::mainWindow()->m_ui->menuPlugins->removeAction(l_action);
+        Core::mainWindow()->m_ui->menuPlugins->removeAction ( l_action );
     }
     deinitialize();
     emit stopped();
@@ -186,13 +186,13 @@ QList< QAction* > AbstractPlugin::actions() {
 }
 
 void AbstractPlugin::addAction ( QAction* p_action ) {
-    p_action->setParent(this);
-    Core::mainWindow()->m_ui->menuPlugins->insertAction(0,p_action);
+    p_action->setParent ( this );
+    Core::mainWindow()->m_ui->menuPlugins->insertAction ( 0,p_action );
 }
 
 void AbstractPlugin::addActions ( QList< QAction* > p_actions ) {
-    Q_FOREACH(QAction* l_action, p_actions){
-        addAction(l_action);
+    Q_FOREACH ( QAction* l_action, p_actions ) {
+        addAction ( l_action );
     }
 }
 
@@ -204,4 +204,4 @@ Plugins::GenericPlugin::GenericPlugin ( const QUuid& p_uuid ) : AbstractPlugin (
 }
 
 #include "plugins.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

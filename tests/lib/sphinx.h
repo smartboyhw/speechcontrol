@@ -18,24 +18,27 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef TEST_LIB_MICS_HPP
-#define TEST_LIB_MICS_HPP
+#ifndef TEST_LIB_SPHINX_HPP
+#define TEST_LIB_SPHINX_HPP
 #include <QObject>
 
-namespace SpeechControl {
-    class Microphone;
-}
+#include <lib/abstractsphinx.hpp>
 
-class TestMicrophone : public QObject {
+class TestAbstractSphinx : public SpeechControl::AbstractSphinx {
+public:
+    explicit TestAbstractSphinx ( QObject* = 0 );
+    virtual void applicationMessage ( const QGst::MessagePtr& p_message );
+};
+
+class TestSphinx : public QObject {
     Q_OBJECT
 
 private slots:
     void init();
     void cleanup();
-    void listMicrophones();
-    void adjustVolume();
-    SpeechControl::Microphone* defaultMicrophone();
+    void obtainSphinxInstance();
+    void recognizeTextFromSample();
+    void benchSphinx();
 };
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

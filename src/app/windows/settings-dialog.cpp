@@ -67,7 +67,7 @@ void Settings::switchToPanel ( const QString& p_panelID ) {
         l_currentPane->show();
         l_lstNavi->setCurrentItem ( instance()->findPanelItem ( p_panelID ) );
     } else {
-        Core::mainWindow()->setStatusMessage ( tr("Invalid settings panel ID '%1'").arg(p_panelID) );
+        Core::mainWindow()->setStatusMessage ( tr ( "Invalid settings panel ID '%1'" ).arg ( p_panelID ) );
         instance()->m_panes.value ( "gnrl" )->show();
         l_lstNavi->setCurrentItem ( instance()->findPanelItem ( "gnrl" ) );
     }
@@ -146,4 +146,4 @@ void SpeechControl::Windows::Settings::on_buttonBox_accepted() {
 }
 
 #include "settings-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

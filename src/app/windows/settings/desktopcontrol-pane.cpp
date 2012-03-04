@@ -62,12 +62,12 @@ const QString DesktopControlSettingsPane::id() const {
 }
 
 void DesktopControlSettingsPane::updateContent() {
-    m_ui->checkBoxEnable->setChecked(DesktopControl::Agent::instance()->isEnabled());
+    m_ui->checkBoxEnable->setChecked ( DesktopControl::Agent::instance()->isEnabled() );
     AbstractCategory* l_glbl = DesktopControl::AbstractCategory::global();
     CommandList l_cmds = l_glbl->commands();
     QTableWidget* l_widg = m_ui->tableWidget;
     l_widg->clear();
-    l_widg->setHorizontalHeaderLabels ( QStringList() << tr("Statement") << tr("Command") );
+    l_widg->setHorizontalHeaderLabels ( QStringList() << tr ( "Statement" ) << tr ( "Command" ) );
     l_widg->setRowCount ( 0 );
     l_widg->setColumnCount ( 2 );
 
@@ -95,4 +95,4 @@ void DesktopControlSettingsPane::on_checkBoxEnable_toggled ( bool p_checked ) {
 }
 
 #include "desktopcontrol-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

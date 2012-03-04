@@ -58,13 +58,13 @@ const QString DictationSettingsPane::id() const {
 }
 
 void DictationSettingsPane::updateContent() {
-    m_ui->checkBoxEnable->setChecked(Dictation::Agent::instance()->isEnabled());
+    m_ui->checkBoxEnable->setChecked ( Dictation::Agent::instance()->isEnabled() );
 }
 
 void DictationSettingsPane::on_checkBoxEnable_toggled ( bool p_checked ) {
-    Core::setConfiguration("Dictation/Enabled",p_checked );
-    Dictation::Agent::instance()->setState(((p_checked) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled ));
+    Core::setConfiguration ( "Dictation/Enabled",p_checked );
+    Dictation::Agent::instance()->setState ( ( ( p_checked ) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled ) );
 }
 
 #include "dictation-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

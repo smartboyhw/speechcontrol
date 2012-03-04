@@ -75,7 +75,7 @@ public:
      * @param p_path ...
      * @return LanguageModel*
      **/
-    static LanguageModel* fromPath(const QString& p_path);
+    static LanguageModel* fromPath ( const QString& p_path );
     /**
      * @brief ...
      *
@@ -92,4 +92,4 @@ public:
 }
 
 #endif // SPEECHCONTROL_LANGUAGEMODEL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

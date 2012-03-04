@@ -18,23 +18,16 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef TEST_LIB_MICS_HPP
-#define TEST_LIB_MICS_HPP
+#ifndef TEST_LIB_SYSTEM_HPP
+#define TEST_LIB_SYSTEM_HPP
 #include <QObject>
 
-namespace SpeechControl {
-    class Microphone;
-}
-
-class TestMicrophone : public QObject {
+class TestSystem : public QObject {
     Q_OBJECT
 
 private slots:
     void init();
     void cleanup();
-    void listMicrophones();
-    void adjustVolume();
-    SpeechControl::Microphone* defaultMicrophone();
 };
 
 #endif

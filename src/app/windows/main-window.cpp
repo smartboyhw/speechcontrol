@@ -24,6 +24,7 @@
 #include <QDebug>
 #include <QVariant>
 #include <QSettings>
+#include <QProcess>
 #include <QErrorMessage>
 #include <QMessageBox>
 #include <QPushButton>
@@ -76,9 +77,10 @@ Main::Main() : m_ui ( new Ui::MainWindow ), m_prgStatusbar ( 0 ) {
     m_ui->actionReportBug->setIcon ( QIcon::fromTheme ( "tools-report-bug" ) );
     m_ui->actionOptions->setIcon ( QIcon::fromTheme ( "configure" ) );
     m_ui->actionWizardMicrophone->setIcon ( QIcon::fromTheme ( "audio-input-microphone" ) );
+    m_ui->menuDictation->setIcon(QIcon::fromTheme ( "audio-input-microphone" ));
+    m_ui->menuDesktopControl->setIcon ( QIcon::fromTheme ( "audio-headset" ) );
     m_ui->actionWizardBooks->setIcon ( QIcon::fromTheme ( "x-office-document" ) );
     m_ui->actionWizardSessions->setIcon ( QIcon::fromTheme ( "application-x-tar" ) );
-    m_ui->actionDesktopControlActive->setIcon ( QIcon::fromTheme ( "audio-headset" ) );
     m_ui->actionDesktopControlCommands->setIcon ( QIcon::fromTheme ( "view-list-text" ) );
     m_ui->actionStartTraining->setIcon ( QIcon::fromTheme ( "system-run" ) );
 
@@ -102,7 +104,7 @@ void Main::show() {
         l_msg->setWindowTitle ( tr ( "No Microphones Found" ) );
         l_msg->showMessage ( tr ( "No microphones were found on your system. Please ensure that you have one installed and detectable by "
                                   "the audio system and make sure that <b>%1</b> is installed on your system." ).arg ( "gstreamer-plugins-good" ),
-                             "NoMicrophonesFoundOnStart" );
+                                  "NoMicrophonesFoundOnStart" );
     }
 
     updateContent();
@@ -219,19 +221,23 @@ void Main::on_actionWizardMicrophone_triggered() {
     l_wiz->exec();
 }
 
-void Main::Main::on_actionWizardBooks_triggered() {
+void Main::on_actionWizardBooks_triggered() {
     ContentWizard* l_wiz = new ContentWizard;
     l_wiz->exec();
 }
 
-void Main::Main::on_actionWizardSessions_triggered() {
+void Main::on_actionWizardSessions_triggered() {
     SessionWizard* l_wiz = new SessionWizard;
     l_wiz->exec();
 }
 
 /// @todo Build the Voxforge Wizard.
-void Main::Main::on_actionWizardVoxForge_triggered() {
+void Main::on_actionWizardVoxForge_triggered() {
 
+}
+
+void Main::on_actionReportBug_triggered() {
+    QProcess::startDetached("sensible-browser", (QStringList() << "http://dev.thesii.org/reporting-bugs"));
 }
 
 Main::~Main() {

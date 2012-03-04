@@ -98,9 +98,9 @@ void SessionManager::on_btnCancel_clicked() {
 void SessionManager::on_btnOk_clicked() {
     if ( m_session->isCompleted() ) {
         if ( QMessageBox::Yes == QMessageBox::question ( this,
-                                                         tr("Continue Training?"),
-                                                         tr("This session has already been completed, do you want to create a new session based on the content of this session?"),
-                                                         QMessageBox::Yes,QMessageBox::No ) ) {
+                tr ( "Continue Training?" ),
+                tr ( "This session has already been completed, do you want to create a new session based on the content of this session?" ),
+                QMessageBox::Yes,QMessageBox::No ) ) {
             m_session = Session::create ( m_session->content() );
             this->accept();
         }
@@ -133,4 +133,4 @@ void SessionManager::on_listSession_itemSelectionChanged() {
 }
 
 #include "session-manager.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -498,9 +498,9 @@ padding-right: 4px;</string>
     <addaction name="menuDesktopControl"/>
     <addaction name="menuDictation"/>
     <addaction name="menuTraining"/>
-    <addaction name="menuPlugins"/>
     <addaction name="separator"/>
     <addaction name="menuWizards"/>
+    <addaction name="menuPlugins"/>
     <addaction name="actionOptions"/>
    </widget>
    <addaction name="menuFile"/>
@@ -551,6 +551,9 @@ padding-right: 4px;</string>
    </property>
    <property name="shortcut">
     <string>F12</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
   <action name="actionWizardMicrophone">

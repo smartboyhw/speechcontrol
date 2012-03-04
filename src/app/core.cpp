@@ -55,10 +55,16 @@ Core::Core ( int p_argc, char** p_argv, QApplication* app ) {
     }
 
     s_inst = this;
-    m_trnsltr = new QTranslator ( this );
-    m_app->installTranslator ( m_trnsltr );
 
-    System::start ( &p_argc, &p_argv );
+    // start application.
+    m_app->setApplicationName ("SpeechControl");
+    m_app->setOrganizationDomain ("thesii.org");
+    m_app->setOrganizationName ("Synthetic Intellect Institute");
+    m_app->setApplicationVersion (SPCHCNTRL_BUILD_VERSION);
+    m_trnsltr = new QTranslator (this);
+    m_app->installTranslator (m_trnsltr);
+
+    System::start (&p_argc, &p_argv);
     Session::init();
 
     // Create application's configuration directory.

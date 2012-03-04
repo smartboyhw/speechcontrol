@@ -47,6 +47,7 @@ class Core : public QObject
     friend class Windows::Main;
 
 private:
+    /// @note It this pointer needed? Every piece of code can just use QApplication::instance() to get the instance...
     QApplication* m_app;    /// Holds the Application instance.
     Windows::Main* s_mw;    /// Holds the main window.
     QSettings* m_settings;  /// Holds the application's global configuration.

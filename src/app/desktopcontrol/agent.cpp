@@ -22,36 +22,47 @@
 #include "agent.hpp"
 #include "command.hpp"
 
-namespace SpeechControl {
-namespace DesktopControl {
+namespace SpeechControl
+{
+namespace DesktopControl
+{
 
 Agent* Agent::s_instance = 0;
 
-Agent::Agent() : AbstractAgent ( AbstractCategory::global() ) {
-    _asr = new DesktopASR(DesktopASR::getStandardDescription(), parent());
-    connect(this, SIGNAL(stopped()), _asr, SLOT(stop()));
-    connect(_asr, SIGNAL(finished(QString&)), this, SLOT(invokeCommand(QString&)));
+Agent::Agent() : AbstractAgent (AbstractCategory::global())
+{
+    _asr = new DesktopASR (DesktopASR::getStandardDescription(), parent());
+    connect (this, SIGNAL (stopped()), _asr, SLOT (stop()));
+    connect (_asr, SIGNAL (finished (QString&)), this, SLOT (invokeCommand (QString&)));
 
 }
 
-Agent* Agent::instance() {
-    if ( s_instance == 0 )
+Agent::~Agent()
+{
+
+}
+
+Agent* Agent::instance()
+{
+    if (s_instance == 0)
         s_instance = new Agent;
 
     return s_instance;
 }
 
-AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::OperationState p_state ) {
-    switch ( p_state ) {
+AbstractAgent::OperationState Agent::onStateChanged (const AbstractAgent::OperationState p_state)
+{
+    switch (p_state) {
     case Enabled: {
-        if(!_asr->run())
+        if (!_asr->run())
             qWarning() << "[DesktopControl::Agent] Start unsuccessful.";
 
-    }break;
+    }
+    break;
 
     case Disabled:
         _asr->stop();
-    break;
+        break;
 
     case Undefined:
     default:
@@ -61,15 +72,17 @@ AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::Opera
     return Undefined;
 }
 
-bool Agent::isActive() const {
+bool Agent::isActive() const
+{
     return _asr->isRunning();
 }
 
-Agent::~Agent() {
+void Agent::invokeCommand (QString& cmd)
+{
 
 }
 
 }
 }
 #include "../desktopcontrol/agent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

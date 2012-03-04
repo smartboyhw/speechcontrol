@@ -70,7 +70,7 @@ QT4_AUTOMOC(${TEST_BASE_SCPP})
 add_executable(test@TEST_ID@ ${TEST_BASE_SCPP})
 set_target_properties(test@TEST_ID@ PROPERTIES
     COMPILE_DEFINITIONS "${TEST_COMPILE_DEFINITIONS}"
-    COMPILE_FLAGS "${TEST_COMPILE_FLAGS} -fnopermissive"
+    COMPILE_FLAGS "${TEST_COMPILE_FLAGS}"
     EchoString "Built test @TEST_ID@"
     EXCLUDE_FROM_ALL ON)
 target_link_libraries(test@TEST_ID@ ${TEST_LIBRARIES})

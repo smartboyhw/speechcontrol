@@ -37,9 +37,12 @@ set(SPCHCNTRL_APP_LIBRARIES ${SPCHCNTRL_LIBRARIES}
     ${QT_QTDBUS_LIBRARY}
     ${INDICATOR_LIBRARIES}
     speechcontrol)
-set(SPCHCNTRL_APP_BUILD_INCLUDE_DIRS ${PROJECT_BINARY_DIR}
+set(SPCHCNTRL_APP_BUILD_INCLUDE_DIRS ${SPCHCNTRL_APP_INCLUDE_DIRS}
+    "${PROJECT_BINARY_DIR}"
+    "${PROJECT_BINARY_DIR}/frontend"
     "${PROJECT_SOURCE_DIR}/../lib"
     "${PROJECT_SOURCE_DIR}/../app"
+    "${PROJECT_SOURCE_DIR}/../app/windows"
     "${PROJECT_SOURCE_DIR}/../")
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
@@ -63,7 +66,7 @@ configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
                "${PROJECT_SOURCE_DIR}/config.hpp" @ONLY)
 
 # Add build information for front-end application, daemon and KDE features
-add_subdirectory(frontend)
+include(application.cmake)
 add_subdirectory(daemon)
 add_subdirectory(kde)
 

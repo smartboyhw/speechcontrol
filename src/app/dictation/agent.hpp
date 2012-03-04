@@ -23,24 +23,31 @@
 
 #include <QUuid>
 #include <QObject>
+
 #include "abstractagent.hpp"
 
 namespace SpeechControl {
 namespace Dictation {
+class Sphinx;
 class Agent : public AbstractAgent {
     Q_OBJECT
 public:
     Agent();
     virtual ~Agent();
     virtual bool isActive() const;
+    bool isEnabled() const;
     static Agent* instance();
+
+public slots:
+    void handleText ( const QString& p_text );
 
 private:
     virtual OperationState onStateChanged ( const OperationState );
     static Agent* s_inst;
+    Sphinx* m_sphinx;
 };
 }
 }
 
 #endif // DICTATION_AGENT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

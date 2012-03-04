@@ -46,30 +46,31 @@ SentenceList Corpus::sentences() const {
 }
 
 /// @todo Add the Sentence to the XML document and then to the list.
-Sentence* Corpus::addSentence ( Sentence *l_phrs ) {
-    m_sntncLst << l_phrs;
-    return l_phrs;
+Sentence* Corpus::addSentence ( Sentence* p_sentence ) {
+    m_sntncLst << p_sentence;
+    return p_sentence;
 }
 
-Sentence* Corpus::addSentence ( const QString &l_txt, const QFile *l_audio ) {
-    qDebug() << "Adding sentence" << l_txt << "...";
-    Sentence* l_sentence = Sentence::create ( this,l_txt );
+Sentence* Corpus::addSentence ( const QString& p_text, const QFile* p_audio ) {
+    qDebug() << "Adding sentence" << p_text << "...";
+    Sentence* l_sentence = Sentence::create ( this, p_text );
 
-    if ( l_audio )
-        l_sentence->m_elem->attribute ( QUrl::fromLocalFile ( l_audio->fileName() ).toString() );
+    if ( p_audio ) {
+        l_sentence->m_elem->attribute ( QUrl::fromLocalFile ( p_audio->fileName() ).toString() );
+    }
 
     return l_sentence;
 }
 
-Corpus & Corpus::operator << ( Sentence *l_phrs ) {
-    this->addSentence ( l_phrs );
+Corpus & Corpus::operator << ( Sentence* p_sentence ) {
+    this->addSentence ( p_sentence );
     return *this;
 }
 
 /// @todo Just invoke the above method.
-Corpus & Corpus::operator << ( SentenceList &l_lst ) {
-    foreach ( Sentence* l_phrs, l_lst )
-        this->addSentence ( l_phrs );
+Corpus & Corpus::operator << ( SentenceList& p_sentenceList ) {
+    Q_FOREACH ( Sentence* l_phrs, p_sentenceList )
+    this->addSentence ( l_phrs );
 
     return *this;
 }
@@ -106,22 +107,26 @@ Corpus * Corpus::create ( const QStringList& p_text ) {
     //qDebug() << l_dom.toString();
 
     Corpus* l_corpus = Corpus::obtain ( l_uuid );
-    Q_FOREACH ( const QString& l_str, p_text ) {
-        Sentence* l_sent = l_corpus->addSentence ( l_str.simplified().trimmed(),0 );
+    Q_FOREACH ( QString l_str, p_text ) {
+        l_str = l_str.simplified().trimmed();
+        if ( l_str.isEmpty() )
+            continue;
+
+        Sentence* l_sent = l_corpus->addSentence ( l_str ,0 );
         l_corpus->m_dom->documentElement().namedItem ( "Sentences" ).appendChild ( *l_sent->m_elem );
-        qDebug() << "Added sentence" << l_corpus->sentences().count();
+        qDebug() << "Added sentence" << l_corpus->sentences().count() << l_str;
     }
 
     l_corpus->save();
     return l_corpus;
 }
 
-bool Corpus::exists ( const QUuid& l_uuid ) {
-    return QFile::exists ( getPath ( l_uuid ).toLocalFile() );
+bool Corpus::exists ( const QUuid& p_uuid ) {
+    return QFile::exists ( getPath ( p_uuid ).toLocalFile() );
 }
 
-QUrl Corpus::getPath ( const QUuid &l_uuid ) {
-    return QDir::homePath() + "/.speechcontrol/corpus/" + l_uuid.toString();
+QUrl Corpus::getPath ( const QUuid& p_uuid ) {
+    return QDir::homePath() + "/.speechcontrol/corpus/" + p_uuid.toString();
 }
 
 QUrl Corpus::audioPath() const {
@@ -156,8 +161,9 @@ void Corpus::load ( const QUuid &p_uuid ) {
     QFile* l_file = new QFile ( l_path.toLocalFile() + "/corpus.xml" );
 
     if ( l_file->exists() && l_file->open ( QIODevice::ReadOnly ) ) {
-        if ( !m_dom )
+        if ( !m_dom ) {
             m_dom = new QDomDocument ( "Corpus" );
+        }
 
         if ( !m_dom->setContent ( l_file ) ) {
             qDebug() << "Failed to load corpus.";
@@ -170,7 +176,9 @@ void Corpus::load ( const QUuid &p_uuid ) {
             QDomElement l_elem = l_elems.at ( i ).toElement();
             qDebug() << "Loading sentence:" << l_elem.attribute ( "uuid" );
 
-            if ( l_elem.isNull() ) continue;
+            if ( l_elem.isNull() ) {
+                continue;
+            }
 
             Sentence* l_sntc = new Sentence ( this, ( new QDomElement ( l_elems.at ( i ).toElement() ) ) );
             qDebug() << "Loaded sentence:" << l_sntc->text();
@@ -202,8 +210,9 @@ void Corpus::save() {
     if ( l_file->open ( QIODevice::WriteOnly | QIODevice::Truncate ) ) {
         QTextStream l_strm ( l_file );
         m_dom->save ( l_strm,4 );
-    } else
+    } else {
         qWarning() << "Can't write to" << l_file->fileName() << ":" << l_file->errorString();
+    }
 }
 
 CorpusList Corpus::allCorpuses() {
@@ -240,8 +249,8 @@ Corpus* Corpus::clone() const {
     return Corpus::obtain ( l_uuid );
 }
 
-Sentence* Corpus::sentenceAt ( const int &p_indx ) const {
-    return m_sntncLst.at ( p_indx );
+Sentence* Corpus::sentenceAt ( const int& p_index ) const {
+    return m_sntncLst.at ( p_index );
 }
 
 Dictionary * Corpus::dictionary() const {

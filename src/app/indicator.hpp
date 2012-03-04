@@ -25,6 +25,7 @@
 #include <QString>
 
 #include <qindicateindicator.h>
+#include <qindicateserver.h>
 
 class QImage;
 
@@ -68,9 +69,14 @@ public:
      **/
     static Indicator* instance();
 
+private slots:
+    void showMainWindow();
+    void displayIndicator ( QIndicate::Indicator* p_indctr );
+
 private:
     explicit Indicator ( QObject* parent = 0 );
     QIndicate::Indicator* m_indctr;     ///< Indicator instance.
+    QIndicate::Server* m_indctrSvr;
     static Indicator* s_inst;           ///< Singleton instance.
 };
 }

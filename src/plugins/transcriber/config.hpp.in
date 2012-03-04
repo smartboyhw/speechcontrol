@@ -1,7 +1,8 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
+ *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *            (C) 2012 Jacky Alcine <jacky.alcine@thesii.org>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -14,21 +15,9 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "source.hpp"
-
-using namespace SpeechControl::DesktopControl;
-
-AbstractSource::AbstractSource ( QObject* p_parent ) : QObject ( p_parent ) {
-
-}
-
-AbstractSource::~AbstractSource() {
-
-}
-
-#include "source.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#define PLUGIN_UUID "@SPTRSB_PLUGIN_UUID@"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

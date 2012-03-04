@@ -28,6 +28,7 @@
 
 #include "sessions/session.hpp"
 #include "windows/about-dialog.hpp"
+#include "windows/main-window.hpp"
 #include "books-manager.hpp"
 #include "session-manager.hpp"
 #include "core.hpp"
@@ -56,16 +57,18 @@ void SessionManager::updateList() {
     Q_FOREACH ( const Session* l_sessionItr, l_lst ) {
         QListWidgetItem* l_item = new QListWidgetItem ( m_ui->listSession );
         l_item->setData ( Qt::UserRole,l_sessionItr->uuid().toString() );
-        l_item->setText ( QString ( "%1 - %2%" ).arg ( l_sessionItr->name() ).arg ( 30 ) );
+        l_item->setText ( tr ( "%1 - %2%" ).arg ( l_sessionItr->name() ).arg ( 30 ) );
         l_item->setIcon ( ( l_sessionItr->isCompleted() ) ? QIcon::fromTheme ( "task-complete" ) : QIcon::fromTheme ( "task-ongoing" ) );
         m_ui->listSession->addItem ( l_item );
 
-        if ( m_session && m_session->uuid() == l_sessionItr->uuid() )
+        if ( m_session && m_session->uuid() == l_sessionItr->uuid() ) {
             l_item->setSelected ( true );
+        }
     }
 
-    if ( !m_session )
+    if ( !m_session ) {
         m_ui->listSession->setCurrentRow ( 0 );
+    }
 }
 
 Session* SessionManager::session() const {
@@ -80,8 +83,9 @@ Session* SessionManager::pickSession() {
         l_win->on_btnCreate_clicked();
         return l_win->session();
     } else {
-        if ( l_win->exec() == QDialog::Accepted )
+        if ( l_win->exec() == QDialog::Accepted ) {
             return l_win->session();
+        }
     }
 
     return 0;
@@ -93,11 +97,16 @@ void SessionManager::on_btnCancel_clicked() {
 
 void SessionManager::on_btnOk_clicked() {
     if ( m_session->isCompleted() ) {
-        if ( QMessageBox::Yes == QMessageBox::question ( this,"Continue Training?","This session has already been completed, do you want to create a new session based on the content of this session?",QMessageBox::Yes,QMessageBox::No ) ) {
+        if ( QMessageBox::Yes == QMessageBox::question ( this,
+                tr ( "Continue Training?" ),
+                tr ( "This session has already been completed, do you want to create a new session based on the content of this session?" ),
+                QMessageBox::Yes,QMessageBox::No ) ) {
             m_session = Session::create ( m_session->content() );
             this->accept();
         }
-    } else this->accept();
+    } else {
+        this->accept();
+    }
 }
 
 void SessionManager::on_btnCreate_clicked() {
@@ -118,8 +127,9 @@ void SessionManager::on_listSession_itemSelectionChanged() {
     m_session = 0;
     const QListWidgetItem* l_item = m_ui->listSession->currentItem();
 
-    if ( l_item )
+    if ( l_item ) {
         m_session = Session::obtain ( QUuid ( l_item->data ( Qt::UserRole ).toString() ) );
+    }
 }
 
 #include "session-manager.moc"

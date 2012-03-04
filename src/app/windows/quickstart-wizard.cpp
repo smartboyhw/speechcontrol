@@ -39,7 +39,7 @@ QuickStart::QuickStart ( QWidget *parent ) :
     setWindowTitle ( tr ( "Quick Start - SpeechControl" ) );
     setPixmap ( QWizard::LogoPixmap,l_icon.pixmap ( 32,32,QIcon::Active,QIcon::On ) );
     setPage ( QuickStart::IntroductionPage,
-              ( new Wizards::Pages::IntroductionPage ( "This wizard allows you to tweak SpeechControl to your personal configuration." ) ) );
+              ( new Wizards::Pages::IntroductionPage ( tr ( "This wizard allows you to tweak SpeechControl to your personal configuration." ) ) ) );
     setPage ( QuickStart::UserCreationPage,
               ( new Wizards::Pages::UserInitialization ) );
     setPage ( QuickStart::MicrophoneCreationPage,
@@ -62,10 +62,11 @@ void QuickStart::accept() {
     l_language["Spoken"] = field ( "language-spoken" );
     l_language["Native"] = field ( "language-native" );
 
-    if ( field ( "is-gender-male" ).toBool() )
+    if ( field ( "is-gender-male" ).toBool() ) {
         l_gender = "Male";
-    else
+    } else {
         l_gender = "Female";
+    }
 
     l_core->setConfiguration ( "User/Name",l_name );
     l_core->setConfiguration ( "User/Gender",l_gender );

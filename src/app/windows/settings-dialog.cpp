@@ -23,12 +23,15 @@
 #include <QListWidgetItem>
 
 #include "core.hpp"
+#include "windows/main-window.hpp"
 #include "settings-dialog.hpp"
 #include "settings/general-pane.hpp"
 #include "settings/plugins-pane.hpp"
 #include "settings/books-pane.hpp"
 #include "settings/session-pane.hpp"
 #include "settings/voxforge-pane.hpp"
+#include "settings/desktopcontrol-pane.hpp"
+#include "settings/dictation-pane.hpp"
 #include "ui_settings-dialog.h"
 
 using namespace SpeechControl;
@@ -64,21 +67,23 @@ void Settings::switchToPanel ( const QString& p_panelID ) {
         l_currentPane->show();
         l_lstNavi->setCurrentItem ( instance()->findPanelItem ( p_panelID ) );
     } else {
-        Core::mainWindow()->setStatusMessage ( "Invalid settings panel ID" + p_panelID );
+        Core::mainWindow()->setStatusMessage ( tr ( "Invalid settings panel ID '%1'" ).arg ( p_panelID ) );
         instance()->m_panes.value ( "gnrl" )->show();
         l_lstNavi->setCurrentItem ( instance()->findPanelItem ( "gnrl" ) );
     }
 
-    if ( !instance()->isVisible() )
+    if ( !instance()->isVisible() ) {
         instance()->open();
+    }
 }
 
 QListWidgetItem* Settings::findPanelItem ( const QString& p_panelID ) {
     QListWidget* l_lstNavi = instance()->m_ui->lstNavigation;
     for ( uint i = 0; i < ( uint ) l_lstNavi->children().length(); i++ ) {
         QListWidgetItem* l_itm = l_lstNavi->item ( i );
-        if ( l_itm->data ( Qt::UserRole ).toString() == p_panelID )
+        if ( l_itm->data ( Qt::UserRole ).toString() == p_panelID ) {
             return l_itm;
+        }
     }
 
     return 0;
@@ -92,11 +97,15 @@ Settings* Settings::instance() {
         BookSettingsPane* l_booksPane = new BookSettingsPane;
         VoxforgeSettingsPane* l_voxforgePane = new VoxforgeSettingsPane;
         SessionSettingsPane* l_sessionPane = new SessionSettingsPane;
+        DesktopControlSettingsPane* l_dsktpCntrlPane = new DesktopControlSettingsPane;
+        DictationSettingsPane* l_dctnPane = new DictationSettingsPane;
 
         addPanel ( l_generalPane );
         addPanel ( l_pluginsPane );
         addPanel ( l_booksPane );
         addPanel ( l_sessionPane );
+        addPanel ( l_dctnPane );
+        addPanel ( l_dsktpCntrlPane );
         addPanel ( l_voxforgePane );
 
         l_generalPane->show();

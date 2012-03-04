@@ -22,14 +22,16 @@
 #include <QDir>
 #include <QFile>
 #include <QDebug>
+#include <QLibraryInfo>
 #include <QSettings>
+#include <qtranslator.h>
 #include <QApplication>
 #include <QMessageBox>
 
 // libspchcntrl includes
+#include <lib/config.hpp>
 #include <lib/system.hpp>
 #include <lib/microphone.hpp>
-#include <lib/dummysc.hpp>
 
 // local includes
 #include "app/core.hpp"
@@ -37,30 +39,33 @@
 #include "app/sessions/session.hpp"
 #include "app/windows/main-window.hpp"
 #include "app/windows/quickstart-wizard.hpp"
+#include "desktopcontrol/agent.hpp"
+#include "dictation/agent.hpp"
 
 using namespace SpeechControl;
-
 using namespace SpeechControl::Wizards;
-
-using SpeechControl::Core;
 
 Core* Core::s_inst = 0;
 
 /// @todo Add a check for the default microphone (if provided by the user).
-Core::Core (int argc, char** argv, QApplication* app) : QObject(), m_app (app)
-{
+Core::Core ( int p_argc, char** p_argv ) :
+    QObject ( new QApplication ( p_argc, p_argv ) ) {
+    if ( s_inst ) {
+        qFatal ( "The Core instance of SpeechControl was being invoked again. This is a fatal and funny error." );
+    }
+
     s_inst = this;
 
-    // Set application meta-data.
-    m_app->setApplicationName ("SpeechControl");
-    m_app->setOrganizationDomain ("thesii.org");
-    m_app->setOrganizationName ("Synthetic Intellect Institute");
-    m_app->setApplicationVersion (SPCHCNTRL_BUILD_VERSION);
+    // start application.
+    m_app = qobject_cast< QApplication* > ( QApplication::instance() );
+    m_app->setApplicationName ( "SpeechControl" );
+    m_app->setOrganizationDomain ( "thesii.org" );
+    m_app->setOrganizationName ( "Synthetic Intellect Institute" );
+    m_app->setApplicationVersion ( SPCHCNTRL_BUILD_VERSION );
+    m_trnsltr = new QTranslator ( this );
+    m_app->installTranslator ( m_trnsltr );
 
-    // System initialization
-    System::start (&argc, &argv);
-
-    // Session initialization
+    System::start ( &p_argc, &p_argv );
     Session::init();
 
     // Create application's configuration directory.
@@ -70,14 +75,17 @@ Core::Core (int argc, char** argv, QApplication* app) : QObject(), m_app (app)
     // Settings
     m_settings = new QSettings (QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", this);
 
-    connect (m_app, SIGNAL (aboutToQuit()), this, SLOT (stop()));
-    connect (this, SIGNAL (started()), Plugins::Factory::instance(), SLOT (start()));
-    connect (this, SIGNAL (stopped()), Plugins::Factory::instance(), SLOT (stop()));
+    // build settings
+    m_settings = new QSettings ( QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", this );
+    connect ( m_app,SIGNAL ( aboutToQuit() ),this,SLOT ( stop() ) );
+    connect ( this,SIGNAL ( started() ),this, SLOT ( invokeAutoStart() ) );
+    connect ( this,SIGNAL ( started() ),Plugins::Factory::instance(),SLOT ( start() ) );
+    connect ( this,SIGNAL ( stopped() ),Plugins::Factory::instance(),SLOT ( stop() ) );
+    loadTranslations ( QLocale::system() );
 }
 
-Core::~Core ()
-{
-    m_settings->sync();
+Core::Core ( const Core& p_other ) : QObject ( p_other.parent() ) {
+
 }
 
 void Core::start()
@@ -85,12 +93,11 @@ void Core::start()
     instance()->s_mw = new Windows::Main;
 
     // Detect if a first-run wizard should be run.
-    if (!QFile::exists (s_inst->m_settings->fileName())) {
-        if (QMessageBox::question (instance()->s_mw, tr ("First Run"),
-                                   tr ("This seems to be the first time you've run SpeechControl on this system. "
-                                       "A wizard allowing you to start SpeechControl will appear."),
-                                   QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
-            QuickStart* l_win = new QuickStart (instance()->s_mw);
+    if ( !QFile::exists ( s_inst->m_settings->fileName() ) ) {
+        if ( QMessageBox::question ( instance()->s_mw, QMessageBox::tr ( "First Run" ),
+                                     QMessageBox::tr ( "This seems to be the first time you've run SpeechControl on this system. "
+                                             "A wizard allowing you to start SpeechControl will appear." ), QMessageBox::Yes, QMessageBox::No ) == QMessageBox::Yes ) {
+            QuickStart* l_win = new QuickStart ( instance()->s_mw );
             l_win->exec();
         }
     }
@@ -105,20 +112,21 @@ Windows::Main* Core::mainWindow()
     return instance()->s_mw;
 }
 
-void Core::stop()
-{
-    qDebug() << "Core stopped.";
+void Core::stop() {
     emit instance()->stopped();
 }
 
-QVariant Core::configuration (const QString& path, const QVariant& alt)
-{
-    return instance()->m_settings->value (path, alt);
+/// Experimental
+void Core::asrFinished ( QString& text ) {
+    qDebug() << "[ASR] Completed with " << text;
 }
 
-void Core::setConfiguration (const QString& path, const QVariant& value)
-{
-    instance()->m_settings->setValue (path, value);
+QVariant Core::configuration ( const QString& p_attrName, QVariant p_attrDefValue ) {
+    return instance()->m_settings->value ( p_attrName, p_attrDefValue );
+}
+
+void Core::setConfiguration ( const QString& p_attrName, const QVariant& p_attrValue ) {
+    instance()->m_settings->setValue ( p_attrName, p_attrValue );
 }
 
 Core* SpeechControl::Core::instance()
@@ -126,5 +134,28 @@ Core* SpeechControl::Core::instance()
     return Core::s_inst;
 }
 
+int Core::exec() {
+    return instance()->m_app->exec();
+}
+
+void Core::quit ( const int& p_exitCode ) {
+    instance()->m_app->exit ( p_exitCode );
+}
+
+void Core::invokeAutoStart() {
+    const bool l_dsktpCntrlState = configuration ( "DesktopControl/AutoStart" ).toBool();
+    const bool l_dctnState = configuration ( "Dictation/AutoStart" ).toBool();
+    DesktopControl::Agent::instance()->setState ( ( l_dsktpCntrlState ) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled );
+    Dictation::Agent::instance()->setState ( ( l_dctnState ) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled );
+}
+
+void Core::loadTranslations ( const QLocale& p_locale ) {
+    qDebug() << "Loading locale" << p_locale.name();
+    instance()->m_trnsltr->load ( "speechcontrol_" + p_locale.name() );
+}
+
+Core::~Core () {
+    m_settings->sync();
+}
 #include "core.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -42,8 +42,9 @@ struct GlobalCategory : public AbstractCategory {
     }
 
     static AbstractCategory* instance() {
-        if ( s_inst == 0 )
+        if ( s_inst == 0 ) {
             s_inst = new GlobalCategory;
+        }
 
         return s_inst;
     }
@@ -68,8 +69,9 @@ bool AbstractCommand::areStatementsEquivalent ( const QString p_command, const Q
 /// @todo When @c areStatementsEquivalent is updated, this should return an average.
 bool AbstractCommand::isValidStatement ( const QString& p_statement ) const {
     Q_FOREACH ( const QString l_statement, m_commands ) {
-        if ( AbstractCommand::areStatementsEquivalent ( l_statement,p_statement ) )
+        if ( AbstractCommand::areStatementsEquivalent ( l_statement,p_statement ) ) {
             return true;
+        }
     }
     return false;
 }
@@ -109,8 +111,9 @@ void AbstractCategory::removeCommand ( AbstractCommand* p_command ) {
 }
 
 void AbstractCategory::removeCommand ( const QString& p_id ) {
-    if ( hasCommand ( p_id ) )
+    if ( hasCommand ( p_id ) ) {
         m_map.remove ( p_id );
+    }
 }
 
 AbstractCommand::~AbstractCommand() {
@@ -148,8 +151,9 @@ CommandList AbstractCategory::matchCommands ( const QString& p_command ) {
     CommandList l_lst;
 
     Q_FOREACH ( AbstractCommand* l_cmd, commands() ) {
-        if ( l_cmd->isValidStatement ( p_command ) )
+        if ( l_cmd->isValidStatement ( p_command ) ) {
             l_lst << l_cmd;
+        }
     }
 
     return l_lst;
@@ -172,4 +176,4 @@ AbstractCategory::~AbstractCategory() {
 }
 
 #include "command.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

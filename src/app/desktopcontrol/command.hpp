@@ -190,8 +190,8 @@ public:
      **/
     static CategoryList categories();
 
-    bool hasCommand(AbstractCommand* p_command);
-    bool hasCommand(const QString& p_id);
+    bool hasCommand ( AbstractCommand* p_command );
+    bool hasCommand ( const QString& p_id );
 
 protected:
     /**
@@ -202,9 +202,9 @@ protected:
     explicit AbstractCategory ( AbstractCategory* p_parentCategory );
     AbstractCategory();
 
-    void addCommand(AbstractCommand* p_command);
-    void removeCommand(AbstractCommand* p_command);
-    void removeCommand(const QString& p_id);
+    void addCommand ( AbstractCommand* p_command );
+    void removeCommand ( AbstractCommand* p_command );
+    void removeCommand ( const QString& p_id );
 
 private:
     static QMap<QString,AbstractCategory*> s_ctgrs;     ///< A global listing of all categories.
@@ -214,4 +214,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

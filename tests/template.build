@@ -8,16 +8,13 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(TEST_MODE "@TEST_MODE@")
 set(TEST_INCLUDE_FILE "${CMAKE_SOURCE_DIR}/tests/CTestConfig.cmake")
 
-include(CTest)
-enable_testing()
-
 ## Add paths to find CMake information about the library and application.
-set(SpeechControlLibrary_DIR "${CMAKE_BINARY_DIR}/src/lib/InstallFiles")
-find_package(SpeechControlLibrary REQUIRED)
+find_package(SpeechControlLibrary)
+find_package(Qt4 COMPONENTS
+    QtTest REQUIRED)
 
 if (TEST_MODE STREQUAL "APP")
-    set(SpeechControlApplication_DIR "${CMAKE_BINARY_DIR}/src/app/InstallFiles")
-    find_package(SpeechControlApplication REQUIRED)
+    find_package(SpeechControlApplication)
 endif (TEST_MODE STREQUAL "APP")
 
 set(TEST_BASE_SCPP "@TEST_SRC@")
@@ -28,7 +25,6 @@ if (TEST_MODE STREQUAL "APP")
         "../../../src/app/dictation/*.cpp"
         "../../../src/app/voxforge/*.cpp"
         "../../../src/app/sessions/*.cpp"
-        "../../../src/app/dictation/*.cpp"
         "../../../src/app/desktopcontrol/*.cpp")
     file (GLOB_RECURSE TEST_APP_WINDOW_SRCS "../../../src/app/windows/*.cpp")
     list(APPEND TEST_APP_SRCS ${TEST_APP_WINDOW_SRCS})
@@ -38,24 +34,25 @@ endif (TEST_MODE STREQUAL "APP")
 ## Variables
 set(TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS})
 set(TEST_COMPILE_FLAGS ${SPCHCNTRL_COMPILE_FLAGS})
+set(TEST_LIBRARIES ${QT_QTTEST_LIBRARY})
 set(TEST_INCLUDE_DIRS ${SPCHCNTRL_INCLUDE_DIRS}
     ${SPCHCNTRL_LIB_INCLUDE_DIRS}
     ${QT_INCLUDE_DIRS}
     "${PROJECT_BINARY_DIR}"
-    "${PROJECT_BINARY_DIR}/../../../src/lib"
-    "${PROJECT_SOURCE_DIR}/../../"
-    "${PROJECT_SOURCE_DIR}/../../../src"
-    "${PROJECT_SOURCE_DIR}/../../../src/lib")
-set(TEST_LIBRARIES ${SPCHCNTRL_LIBRARIES}
-    speechcontrol
-    ${QT_QTTEST_LIBRARY})
+    "${CMAKE_BINARY_DIR}/src/lib"
+    "${CMAKE_SOURCE_DIR}/src"
+    "${CMAKE_SOURCE_DIR}/src/lib")
 
 if (TEST_MODE STREQUAL "APP")
     list(APPEND TEST_INCLUDE_DIRS ${SPCHCNTRL_APP_INCLUDE_DIRS}
-                                 "${PROJECT_BINARY_DIR}/../../../src/app/frontend"
-                                 "${PROJECT_SOURCE_DIR}/../../../src/app")
+                                 "${CMAKE_BINARY_DIR}/src/app"
+                                 "${CMAKE_SOURCE_DIR}/src/app")
     list(APPEND TEST_LIBRARIES ${SPCHCNTRL_APP_LIBRARIES})
     list(APPEND TEST_BASE_SCPP ${TEST_APP_SRCS})
+else (TEST_MODE STREQUAL "APP")
+    set(TEST_LIBRARIES ${SPCHCNTRL_LIBRARIES}
+                        speechcontrol
+                        ${QT_QTTEST_LIBRARY})
 endif(TEST_MODE STREQUAL "APP")
 
 include_directories(${TEST_INCLUDE_DIRS})
@@ -63,11 +60,17 @@ include_directories(${TEST_INCLUDE_DIRS})
 ## Qt-specific actions.
 QT4_AUTOMOC(${TEST_BASE_SCPP})
 
+## Begin included code.
+
+@TEST_CONFIG_CODE@
+
+## End included code.
+
 ## Build test executable.
 add_executable(test@TEST_ID@ ${TEST_BASE_SCPP})
 set_target_properties(test@TEST_ID@ PROPERTIES
     COMPILE_DEFINITIONS "${TEST_COMPILE_DEFINITIONS}"
-    COMPILE_FLAGS "${TEST_COMPILE_FLAGS}"
+    COMPILE_FLAGS "${TEST_COMPILE_FLAGS} -fnopermissive"
     EchoString "Built test @TEST_ID@"
     EXCLUDE_FROM_ALL ON)
 target_link_libraries(test@TEST_ID@ ${TEST_LIBRARIES})
@@ -81,6 +84,6 @@ endif(TEST_MODE STREQUAL "LIB")
 
 ## Add test.
 add_test(NAME test@TEST_ID@ COMMAND $<TARGET_FILE:test@TEST_ID@>)
-create_test_sourcelist(TEST_BASE_SCPP test.@TEST_ID@ test@TEST_ID@)
+add_dependencies(tests test@TEST_ID@)
 
 message(STATUS "Test '${TEST_ID}' configured; awaiting build [i.e.: 'make test${TEST_ID}']")

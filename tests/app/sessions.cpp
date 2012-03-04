@@ -21,10 +21,19 @@
 #include <QtTest/QTest>
 #include "sessions.h"
 
-void TestSessions::listSessions() {
+#include <sessions/session.hpp>
 
+using namespace SpeechControl;
+
+void TestSessions::listSessions() {
+    SessionList l_lst = Session::allSessions();
+
+    Q_FOREACH(const Session* l_ss, l_lst){
+        QVERIFY(l_ss->isValid() == true);
+    }
 }
 
-QTEST_MAIN(TestSessions)
+QTEST_MAIN ( TestSessions )
 
 #include "sessions.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

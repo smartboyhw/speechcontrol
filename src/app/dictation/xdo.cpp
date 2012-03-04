@@ -27,7 +27,7 @@ using SpeechControl::Dictation::KeyboardEmulator;
 KeyboardEmulator* KeyboardEmulator::s_inst = 0;
 
 /// @bug We can't use libxdo because one of the methods in the header uses a C++ keyword (class). This is not only a serious problem, it prevents us from using the library in C++ code altogether.
-KeyboardEmulator::KeyboardEmulator() : QObject ( Core::instance() ){
+KeyboardEmulator::KeyboardEmulator() : QObject ( Core::instance() ) {
 //    m_xdo = xdo_new(0);
 //    Q_ASSERT ( m_xdo != 0 );
 
@@ -36,8 +36,9 @@ KeyboardEmulator::KeyboardEmulator() : QObject ( Core::instance() ){
 }
 
 KeyboardEmulator* KeyboardEmulator::instance() {
-    if ( s_inst == 0 )
+    if ( s_inst == 0 ) {
         s_inst = new KeyboardEmulator;
+    }
 
     return s_inst;
 }
@@ -47,9 +48,10 @@ bool KeyboardEmulator::sendKey ( const QChar& p_character ) {
 }
 
 bool KeyboardEmulator::sendKeys ( const QString& p_characters ) {
-    Q_FOREACH(const QChar l_char, p_characters){
-        if (!sendKey(l_char))
+    Q_FOREACH ( const QChar l_char, p_characters ) {
+        if ( !sendKey ( l_char ) ) {
             return false;
+        }
     }
 
     return false;
@@ -60,4 +62,4 @@ KeyboardEmulator::~KeyboardEmulator() {
 }
 
 #include "xdo.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

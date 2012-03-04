@@ -2,6 +2,7 @@
  *  This file is part of SpeechControl.
  *
  *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *            (C) 2012 Jacky Alcine <jacky.alcine@thesii.org>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -18,9 +19,6 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  */
-/**
- * @author Jacky Alcine <jacky.alcine@thesii.org>
- */
 
 #ifndef DESKTOPCONTROL_AGENT_HPP
 #define DESKTOPCONTROL_AGENT_HPP
@@ -29,7 +27,6 @@
 #include <QObject>
 
 // Local
-#include "desktopasr.hpp"
 #include <app/abstractagent.hpp>
 
 namespace SpeechControl
@@ -39,6 +36,8 @@ namespace SpeechControl
  **/
 namespace DesktopControl
 {
+class Sphinx;
+
 /**
  * @brief Agent managing desktop control.
  *
@@ -62,6 +61,7 @@ private:
     virtual OperationState onStateChanged (const AbstractAgent::OperationState p_state);
     static Agent* s_instance;
     DesktopASR* _asr;
+    Sphinx* m_sphinx;
 
 public:
     /**
@@ -78,6 +78,12 @@ public:
     virtual bool isActive() const;
 
     /**
+     * @brief Determines if the Desktop Control agent has been enabled or disabled by the user.
+     * @return TRUE if it has been enabled, FALSE if it's disabled.
+     **/
+    bool isEnabled();
+
+    /**
      * @brief Pointer to agent instance.
      *
      * A means of obtaining a pointer to the desktop control class.
@@ -88,8 +94,16 @@ public:
     static Agent* instance();
     
 public slots:
-    void invokeCommand(QString& cmd);
-
+    /**
+     * @brief Invokes a command for desktop control to parse.
+     *
+     * Takes a string p_cmd as the argument spoken by the user
+     * and searches all of the commands available to the system
+     * to find a match (or matches) to invoke said commands.
+     *
+     * @param p_cmd The command to be parsed.
+     **/
+    void invokeCommand ( const QString& p_cmd );
 };
 }
 }

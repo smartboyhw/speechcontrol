@@ -48,17 +48,17 @@ UserInitialization::~UserInitialization() {
 
 bool SpeechControl::Wizards::Pages::UserInitialization::validatePage() {
     if ( ui->lineEditNameFirst->text().isEmpty() ) {
-        this->setSubTitle ( "<b><font color='red'>Please enter your first name.</font></b>" );
+        this->setSubTitle ( tr ( "<b><font color='red'>Please enter your first name.</font></b>" ) );
         return false;
     }
 
     if ( ui->lineEditNameLast->text().isEmpty() ) {
-        this->setSubTitle ( "<b><font color='red'>Please enter at least the first letter of your last name.</font></b>" );
+        this->setSubTitle ( tr ( "<b><font color='red'>Please enter at least the first letter of your last name.</font></b>" ) );
         return false;
     }
 
     if ( !ui->radioButtonFemale->isChecked() && !ui->radioButtonMale->isChecked() ) {
-        this->setSubTitle ( "<b><font color='red'>Please select your gender.</font></b>" );
+        this->setSubTitle ( tr ( "<b><font color='red'>Please select your gender.</font></b>" ) );
         return false;
     }
 

@@ -43,8 +43,8 @@
 using namespace SpeechControl;
 using SpeechControl::Windows::TrainingDialog;
 
-TrainingDialog::TrainingDialog ( QWidget *parent ) :
-    QDialog ( parent ),
+TrainingDialog::TrainingDialog ( QWidget* p_parent ) :
+    QDialog ( p_parent ),
     m_currentPosition ( 0 ), m_initialPosition ( 0 ),
     m_ui ( new Ui::Training ),
     m_mic ( Microphone::defaultMicrophone() ),
@@ -79,8 +79,9 @@ void TrainingDialog::startTraining ( Session* p_session ) {
         TrainingDialog* l_dialog = new TrainingDialog;
         l_dialog->setSession ( p_session );
         l_dialog->open();
-    } else
-        QMessageBox::information ( Core::mainWindow() ,tr ( "Session Completed" ), tr ( "Session <b>%1</b> has been completed already." ).arg ( p_session->name() ) );
+    } else {
+        QMessageBox::information ( 0 ,tr ( "Session Completed" ), tr ( "Session <b>%1</b> has been completed already." ).arg ( p_session->name() ) );
+    }
 }
 
 /// @bug When training reaches the end of the sentence, it's unable to proceed to the next sentence when training is invoked from here. A manual (yet sloppy) fix is to click 'Undo' until you reach the beginning of the sentence and re-record everything.
@@ -111,7 +112,9 @@ void TrainingDialog::startCollecting() {
     } else {
         reject();
         hide();
-        QMessageBox::information ( this,tr ( "Session Completed" ),tr ( "No text is available for this session." ) );
+        QMessageBox::information ( this,
+                                   tr ( "Session Completed" ),
+                                   tr ( "No text is available for this session." ) );
     }
 }
 
@@ -143,10 +146,11 @@ void TrainingDialog::on_pushButtonClose_clicked() {
 
 void TrainingDialog::on_pushButtonProgress_toggled ( const bool& checked ) {
     m_ui->labelText->setEnabled ( !checked );
-    if ( !checked )
+    if ( !checked ) {
         stopCollecting();
-    else
+    } else {
         startCollecting();
+    }
 }
 
 void TrainingDialog::updateProgress ( const double p_progress ) {
@@ -172,16 +176,19 @@ void TrainingDialog::navigateToPart ( const uint &p_index, Sentence* p_sentence 
 
         if ( p_index == i ) {
             Q_FOREACH ( const QChar l_chr, l_curWord ) {
-                if ( l_chr.isLetterOrNumber() )
+                if ( l_chr.isLetterOrNumber() ) {
                     l_text += QString ( "<b>%1</b>" ).arg ( l_chr );
-                else
+                } else {
                     l_text += l_chr;
+                }
             }
-        } else
+        } else {
             l_text += QString ( "<font style='color: gray; font-size: small;'>%1</font>" ).arg ( l_curWord );
+        }
 
-        if ( i != ( uint ) l_phrsLst.count() - 1 )
+        if ( i != ( uint ) l_phrsLst.count() - 1 ) {
             l_text += " ";
+        }
     }
 
     qDebug() << l_text << p_sentence->phrases();
@@ -195,25 +202,30 @@ void TrainingDialog::navigateToPart ( const uint &p_index, Sentence* p_sentence 
 }
 
 void TrainingDialog::navigateNextPart() {
-    if ( m_currentPosition + 1 < m_currentSentence->phrases().count() )
+    if ( m_currentPosition + 1 < m_currentSentence->phrases().count() ) {
         navigateToPart ( m_currentPosition + 1 );
-    else
+    } else {
         navigateToPart ( m_currentSentence->phrases().count() - 1 );
+    }
 }
 
 /// @todo When this hits -1, it should head back to the previous sentence.
 void TrainingDialog::navigatePreviousPart() {
-    if ( m_currentPosition - 1 >= 0 )
+    if ( m_currentPosition - 1 >= 0 ) {
         navigateToPart ( m_currentPosition - 1 );
-    else
+    } else {
         navigateToPart ( 0 );
+    }
 }
 
 /// @todo This should clear all of the progress made since the start of training WHEN this dialog opened.
 /// @todo Implement a means of tracking history.
 void SpeechControl::Windows::TrainingDialog::on_pushButtonReset_clicked() {
-    if ( QMessageBox::No == QMessageBox::question ( this, tr ( "Undo Current Progress" ) ,tr ( "Are you sure you want to reset your training progress back to the state it was initially?" ) ) )
+    if ( QMessageBox::No == QMessageBox::question ( this,
+            tr ( "Undo Current Progress" ),
+            tr ( "Are you sure you want to reset your training progress back to the state it was initially?" ) ) ) {
         return;
+    }
 
     // Undo the work up to the initial point.
     for ( int i = m_currentSentence->index(); i >= m_initialSentence->index(); i-- ) {
@@ -243,12 +255,14 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonUndo_clicked() {
         if ( l_prevSntct ) {
             l_pos = l_prevSntct->phrases().count() - 1;
 
-            if ( l_prevSntct == m_initialSentence && l_pos == m_initialPosition )
+            if ( l_prevSntct == m_initialSentence && l_pos == m_initialPosition ) {
                 return;
+            }
 
             m_currentSentence = l_prevSntct;
-        } else
+        } else {
             return;
+        }
     } else {
         m_currentSentence->phrase ( m_currentPosition - 1 )->audio()->remove();
         qDebug() << "Wiping phrase" << m_currentSentence->phrase ( m_currentPosition - 1 )->text();
@@ -275,9 +289,9 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonNext_clicked() {
         if ( m_currentSentence == 0 ) {
             updateProgress ( 1.0 );
             QMessageBox* l_msgComplete = new QMessageBox ( this );
-            l_msgComplete->setWindowTitle ( "Session Complete - SpeechControl" );
-            l_msgComplete->setText ( "You've successfully completed the recording part of this session!" );
-            l_msgComplete->setInformativeText ( "With the session completed, you can now queue it for either adaption or generation of a language model." );
+            l_msgComplete->setWindowTitle ( tr ( "Session Complete - SpeechControl" ) );
+            l_msgComplete->setText ( tr ( "You've successfully completed the recording part of this session!" ) );
+            l_msgComplete->setInformativeText ( tr ( "With the session completed, you can now queue it for either adaption or generation of a language model." ) );
             l_msgComplete->setIcon ( QMessageBox::Information );
             l_msgComplete->setIconPixmap ( QIcon::fromTheme ( "task-complete" ).pixmap ( 64,64 ) );
             l_msgComplete->open();
@@ -294,5 +308,4 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonNext_clicked() {
 }
 
 #include "training-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
-
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

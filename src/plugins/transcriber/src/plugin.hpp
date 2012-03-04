@@ -1,7 +1,8 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
+ *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *            (C) 2012 Jacky Alcine <jacky.alcine@thesii.org>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -14,35 +15,34 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef SOURCE_HPP
-#define SOURCE_HPP
+#ifndef PLUGIN_HPP
+#define PLUGIN_HPP
 
-#include <QObject>
-#include "command.hpp"
+#include <app/plugins.hpp>
 
 namespace SpeechControl {
-namespace DesktopControl {
-class AbstractSource;
-
-class AbstractSource : public QObject {
+namespace Plugins {
+namespace Transcriber {
+class Plugin : public AbstractPlugin {
     Q_OBJECT
 
-signals:
-    void resultOfQuery ( const CommandList& );
-
 public:
-    virtual ~AbstractSource();
-    virtual void query ( const QString& ) = 0;
+    explicit Plugin ( QObject* parent = 0 );
+    virtual ~Plugin();
 
 protected:
-    explicit AbstractSource ( QObject* parent = 0 );
+    virtual void initialize();
+    virtual void deinitialize();
+public slots:
+    void showTranscriberDialog();
 };
+}
 }
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

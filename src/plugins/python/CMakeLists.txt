@@ -22,10 +22,10 @@ configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
 include_directories(${SPPY_PLUGIN_INCLUDE_DIRS}
     "${PROJECT_SOURCE_DIR}/../../")
 
-add_library(pyspchcntrl SHARED ${SPPY_SRCS})
-target_link_libraries(pyspchcntrl ${SPPY_PLUGIN_LIBRARIES})
-speechcontrol_install_plugin(pyspchcntrl)
-add_dependencies(plugins spchcntrl-applist)
+add_library(spchcntrl-python SHARED ${SPPY_SRCS})
+target_link_libraries(spchcntrl-python ${SPPY_PLUGIN_LIBRARIES})
+speechcontrol_install_plugin(spchcntrl-python)
+add_dependencies(plugins spchcntrl-python)
 
 install(FILES "${PROJECT_SOURCE_DIR}/data/f2989a62-5de6-11e1-852d-d91646898ec2.spec"
         DESTINATION ${SPCHCNTRL_PLUGINS_SPEC_INSTALL_DIR})

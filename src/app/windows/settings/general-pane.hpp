@@ -30,15 +30,38 @@ class GeneralSettingsPane;
 namespace SpeechControl {
 namespace Windows {
 
+/**
+ * @brief General settings of SpeechControl.
+ *
+ * This window presents the user in the Settings dialog with general, overlying
+ * options that can manipulate SpeechControl's operation.
+ **/
 class GeneralSettingsPane : public QFrame {
     Q_OBJECT
-    Q_PROPERTY ( const QString Title READ title )
-    Q_PROPERTY ( const QString ID READ id )
+    Q_PROPERTY ( const QString Title READ title )   ///< The title of the pane.
+    Q_PROPERTY ( const QString ID READ id )         ///< The ID of the pane.
 
 public:
-    explicit GeneralSettingsPane ( QWidget *parent = 0 );
+    /**
+     * @brief Constructor.
+     * @param parent Defaults to 0.
+     **/
+    explicit GeneralSettingsPane ( QWidget *p_parent = 0 );
+
+    /**
+     * @brief Destructor.
+     **/
     ~GeneralSettingsPane();
+
+    /**
+     * @brief Obtains the title of this configuration pane.
+     **/
     const QString title() const;
+
+    /**
+     * @brief Obtains the ID of this configuration pane.
+     **/
+
     const QString id() const;
 
 protected:
@@ -46,7 +69,7 @@ protected:
 
 private slots:
     void on_checkBoxEnableDictation_toggled ( bool checked );
-    void on_checkBoxEnableDesktopControl_toggled ( bool checked );
+    void on_checkBoxEnableDesktopControl_toggled ( bool p_checked );
 
 private:
     Ui::GeneralSettingsPane *ui;
@@ -56,4 +79,4 @@ private:
 }
 
 #endif // GENERAL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -1,0 +1,27 @@
+Tests in SpeechControl
+-----------------------------------------------------------
+
+0. Introduction
+
+SpeechControl is a data-driven, dynamically used application. For such an
+application, tests are required in order to ensure that users, developers
+and packagers alike can see SpeechControl working correctly.
+
+SpeechControl uses the QtTest system in conjunction with CDash and CTest so that
+the developers here at the Synthetic Intellect Institute can collect, assess and
+determine problems when they happen, how they'd occur and discern on a effective
+way to solve them.
+
+1. CDash & Bugzilla
+
+Being that SpeechControl (and most, if not all of the Institute's software
+projects) use CMake and Qt, we've used CTest and CDash extensively to ensure a
+working and stable system for our testing framework. CDash provides a dashboard,
+hosted on the Institute's server, allowing anyone to view and examine uploaded
+test information. The URI to this page is http://dev.thesii.org/testboard.
+
+With a bit of integration with Bugzilla, our bug tracking system, tests can be
+referred to by their invocation index in CDash and new bugs can be created auto-
+matically in CDash, thus closing the gap between testing and bug reporting.
+
+    *** You can learn more about building and running tests in INSTALL. ***

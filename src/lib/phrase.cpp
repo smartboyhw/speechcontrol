@@ -45,7 +45,7 @@ bool Phrase::isCompleted() const {
 
 const QString Phrase::text() const {
     QDomElement* l_elem = m_sntnc->getPhraseElement ( m_indx );
-    return QByteArray::fromBase64(l_elem->text().toAscii());
+    return QByteArray::fromBase64 ( l_elem->text().toAscii() );
 }
 
 QFile* Phrase::audio() const {
@@ -63,4 +63,4 @@ Phrase::~Phrase() {
 }
 
 #include "phrase.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

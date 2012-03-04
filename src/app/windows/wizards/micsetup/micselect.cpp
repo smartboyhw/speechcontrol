@@ -54,8 +54,9 @@ void SpeechControl::Wizards::Pages::MicrophoneSelection::initializePage() {
 }
 
 bool SpeechControl::Wizards::Pages::MicrophoneSelection::validatePage() {
-    if ( m_mic )
+    if ( m_mic ) {
         wizard()->setProperty ( "mic-id",m_mic->id() );
+    }
 
     return ui->progressBarFeedback->isEnabled();
 }
@@ -78,4 +79,4 @@ void SpeechControl::Wizards::Pages::MicrophoneSelection::on_comboBoxMicrophones_
 }
 
 #include "micselect.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

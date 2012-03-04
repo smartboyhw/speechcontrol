@@ -150,6 +150,7 @@ SessionList Session::allSessions()
 
         if (l_session && l_session->isValid())
             l_lst << l_session;
+        }
     }
 
     return l_lst;
@@ -215,9 +216,9 @@ Sentence* Session::firstIncompleteSentence() const
     for (int i = 0; i < l_lst.count(); i++) {
         Sentence* l_sent = l_lst.at (i);
 
-        if (!l_sent->allPhrasesCompleted())
+        if (!l_sent->allPhrasesCompleted()) {
             return l_sent;
-        else {
+        } else {
             qDebug() << l_sent->text() << "already completed @" << l_sent->audioPath().absolutePath();
             continue;
         }
@@ -234,10 +235,11 @@ Sentence* Session::lastIncompleteSentence() const
     for (SentenceList::ConstIterator l_itr = l_lst.end(); l_itr != l_endItr; l_itr--) {
         const Sentence* l_sent = (*l_itr);
 
-        if (!l_sent->allPhrasesCompleted())
+        if (!l_sent->allPhrasesCompleted()) {
             return *l_itr;
-        else
+        } else {
             continue;
+        }
     }
 
     return 0;
@@ -251,8 +253,9 @@ SentenceList Session::incompletedSentences() const
     for (SentenceList::Iterator l_itr = l_baseLst.begin(); l_itr != l_baseLst.end(); l_itr++) {
         Sentence* l_sent = (*l_itr);
 
-        if (!l_sent->allPhrasesCompleted())
+        if ( !l_sent->allPhrasesCompleted() ) {
             l_lst << l_sent;
+        }
 
         continue;
     }
@@ -293,16 +296,16 @@ Session::Backup* Session::createBackup() const
     return Backup::generate (*this);
 }
 
-void Session::setName (const QString& p_name)
-{
-    if (!p_name.isEmpty() && !p_name.isEmpty())
-        m_elem->setAttribute ("Name", p_name);
+void Session::setName ( const QString& p_name ) {
+    if ( !p_name.isEmpty() && !p_name.isEmpty() ) {
+        m_elem->setAttribute ( "Name",p_name );
+    }
 }
 
-const QString Session::name() const
-{
-    if (m_elem->hasAttribute ("Name"))
-        return m_elem->attribute ("Name");
+const QString Session::name() const {
+    if ( m_elem->hasAttribute ( "Name" ) ) {
+        return m_elem->attribute ( "Name" );
+    }
 
     return content()->title();
 }
@@ -357,7 +360,8 @@ Session::Backup* Session::Backup::generate (const Session& p_sssn)
 
     // Compress corpus data.
     const Corpus* l_corpus = p_sssn.corpus();
-    QFile* l_corpusFile = new QFile (Corpus::getPath (l_corpus->uuid()).toLocalFile());
+    QFile* l_corpusFile = new QFile ( Corpus::getPath ( l_corpus->uuid() ).toLocalFile() );
+    l_file->open ( QIODevice::ReadOnly | QIODevice::Text );
     QByteArray l_corpusData;
     l_corpusData = qCompress (l_corpusFile->readAll());
 
@@ -369,7 +373,9 @@ Session::Backup* Session::Backup::generate (const Session& p_sssn)
     l_domElem.appendChild (l_crpsElem);
     l_crpsElem.appendChild (l_dom.createTextNode (l_corpusData.toBase64()));
 
-    //qDebug() << l_domElem.text();
+    qDebug() << l_domElem.text()
+             << l_corpusData
+             << l_sssnData;
     return 0;
 }
 

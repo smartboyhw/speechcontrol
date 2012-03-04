@@ -1,8 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
- *            (C) 2012 Adrian Borucki <gentoolx@gmail.com>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -20,32 +19,41 @@
  */
 
 
-#ifndef DUMMYSC_HPP
-#define DUMMYSC_HPP
+#include "languagemodel.hpp"
 
-#include <QObject>
-#include <QGst/Pipeline>
+using namespace SpeechControl;
 
-#include "asr.hpp"
-
-namespace SpeechControl {
-
-class DummySC : public ASR {
-    Q_OBJECT
-
-public:
-    explicit DummySC ( QObject* parent = 0 );
-
-    DummySC ( QGst::PipelinePtr pipeline, QObject* parent = 0 );
-
-    DummySC ( const char* description, QObject* parent = 0 );
-
-    DummySC ( const QString& description, QObject* parent = 0 );
-
-public slots:
-    void applicationMessage ( const QGst::MessagePtr& message );
-};
+LanguageModel::LanguageModel ( QObject* p_parent ) : QObject ( p_parent ) {
 
 }
-#endif // DUMMYSC_HPP
+
+LanguageModel::LanguageModel ( const QUuid& p_uuid ) : QObject() {
+
+}
+
+LanguageModel::LanguageModel() {
+
+}
+
+LanguageModel* LanguageModel::fromCompressedFile ( const QFile* p_archiveFile ) {
+    return 0;
+}
+
+LanguageModel* LanguageModel::fromDirectory ( const QDir& p_directory ) {
+    return 0;
+}
+
+LanguageModel* LanguageModel::fromPath ( const QString& p_path ) {
+    return 0;
+}
+
+QString LanguageModel::path() const {
+    return QString::null;
+}
+
+LanguageModel::~LanguageModel() {
+
+}
+
+#include "languagemodel.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

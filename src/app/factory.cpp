@@ -18,9 +18,9 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-// Qt
-#include <QString>
 #include <QDir>
+#include <QFile>
+#include <QDebug>
 #include <QSettings>
 #include <QPluginLoader>
 #include <QDebug>
@@ -71,9 +71,12 @@ bool Factory::isPluginLoaded (const QUuid& p_uuid)
     return s_ldPlgns.keys().contains (p_uuid);
 }
 
-bool Factory::loadPlugin (const QUuid& p_uuid)
-{
-    GenericPlugin* l_gnrcPlgn = new GenericPlugin (p_uuid);
+bool Factory::loadPlugin ( const QUuid& p_uuid ) {
+    if ( isPluginLoaded ( p_uuid ) ) {
+        return true;
+    }
+
+    GenericPlugin* l_gnrcPlgn = new GenericPlugin ( p_uuid );
 
     if (l_gnrcPlgn->isSupported() && l_gnrcPlgn->loadComponents()) {
         AbstractPlugin* l_plgn = qobject_cast<AbstractPlugin*> (l_gnrcPlgn->m_ldr->instance());
@@ -91,28 +94,33 @@ bool Factory::loadPlugin (const QUuid& p_uuid)
             qDebug() << "Plugin" << l_plgn->name() << "refused to load.";
             return false;
         }
-    } else
+    } else {
         qDebug() << "Plugin" << p_uuid << "unsupported.";
+    }
 
     qDebug() << "Plugin" << p_uuid << "not loaded.";
     return false;
 }
 
-void Factory::unloadPlugin (const QUuid& p_uuid)
-{
-    if (s_ldPlgns.contains (p_uuid)) {
-        AbstractPlugin* l_plgn = s_ldPlgns.value (p_uuid);
+void Factory::unloadPlugin ( const QUuid& p_uuid ) {
+    if ( !isPluginLoaded ( p_uuid ) ) {
+        return;
+    }
+
+    if ( s_ldPlgns.contains ( p_uuid ) ) {
+        AbstractPlugin* l_plgn = s_ldPlgns.value ( p_uuid );
         l_plgn->stop();
-        s_ldPlgns.remove (p_uuid);
-        qDebug() << "Plugin" << p_uuid << "unloaded.";
-        emit instance()->pluginUnloaded (p_uuid);
+        s_ldPlgns.remove ( p_uuid );
+        qDebug() << "Plugin" << l_plgn->name() << "unloaded.";
+        delete l_plgn;
+        emit instance()->pluginUnloaded ( p_uuid );
     }
 }
 
-Factory* Factory::instance()
-{
-    if (s_inst == 0)
+Factory* Factory::instance() {
+    if ( s_inst == 0 ) {
         s_inst = new Factory;
+    }
 
     return s_inst;
 }
@@ -129,12 +137,10 @@ QSettings* Factory::pluginSettings (QUuid p_uuid)
     return new QSettings (l_pth , QSettings::IniFormat, Factory::instance());
 }
 
-void Factory::start()
-{
-    qDebug() << "Factory started.";
-    const QStringList l_plgnLst = Core::configuration ("Plugins/AutoStart").toStringList();
-    Q_FOREACH (const QUuid l_plgn, availablePlugins().keys()) {
-        Plugins::Factory::loadPlugin (l_plgn);
+void Factory::start() {
+    const QStringList l_plgnLst = Core::configuration ( "Plugins/AutoStart" ).toStringList();
+    Q_FOREACH ( const QUuid l_plgn, availablePlugins().keys() ) {
+        Plugins::Factory::loadPlugin ( l_plgn );
     }
 }
 
@@ -143,8 +149,6 @@ void Factory::stop()
     Q_FOREACH (AbstractPlugin * l_plgn, loadedPlugins()) {
         unloadPlugin (l_plgn->uuid());
     }
-
-    qDebug() << "Factory stopped.";
 }
 
 Factory::~Factory()
@@ -153,4 +157,4 @@ Factory::~Factory()
 }
 
 #include "factory.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

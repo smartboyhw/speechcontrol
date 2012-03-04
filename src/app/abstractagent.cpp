@@ -31,6 +31,9 @@ AbstractAgent::AbstractAgent ( const AbstractAgent&  p_agent ) : QObject ( p_age
 }
 
 void AbstractAgent::setState ( const AbstractAgent::OperationState p_state ) {
+    if ( p_state == m_state )
+        return;
+
     m_state = onStateChanged ( p_state );
     emit stateChanged ( m_state );
 }

@@ -2,13 +2,18 @@ project(SpeechControlTests)
 
 if(WITH_TESTS)
     message(STATUS "Building tests enabled.")
+    set(SpeechControlLibrary_DIR "${CMAKE_BINARY_DIR}/src/lib/InstallFiles")
+    set(SpeechControlApplication_DIR "${CMAKE_BINARY_DIR}/src/app/InstallFiles")
 
-    ## required packages
-    find_package(Qt4 COMPONENTS
-        QtTest REQUIRED)
+    add_custom_target(tests ALL
+        COMMAND "ctest"
+        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
+        COMMENT "Invoking CTest..")
 
     ## Variables
     set(TEST_CMAKE_DIR "cmake")
+    include(CTest)
+    enable_testing()
 
     file(REMOVE_RECURSE ${TEST_CMAKE_DIR})
     file(MAKE_DIRECTORY ${TEST_CMAKE_DIR})
@@ -21,9 +26,16 @@ if(WITH_TESTS)
     macro(buildtest _test_mode _test_src)
         set(TEST_MODE "${_test_mode}")
         set(TEST_SRC "${_test_src}")
+        set(TEST_CONFIG_CODE "# Node provided.")
         string(REPLACE ".cpp" "" TEST_ID "${_test_src}")
         string(REPLACE "${PROJECT_SOURCE_DIR}/" "" TEST_ID ${TEST_ID})
         string(REPLACE "/" "_" TEST_ID ${TEST_ID})
+
+        if (EXISTS "${CMAKE_SOURCE_DIR}/tests/config/${TEST_ID}.cmake.in")
+            file(READ "${CMAKE_SOURCE_DIR}/tests/config/${TEST_ID}.cmake.in" TEST_CONFIG_CODE)
+            string(CONFIGURE "${TEST_CONFIG_CODE}" TEST_CONFIG_CODE @ONLY)
+        endif (EXISTS "${CMAKE_SOURCE_DIR}/tests/config/${TEST_ID}.cmake.in")
+
         string(CONFIGURE "${TEST_BUILD_TEMPLATE}" TEST_DATA @ONLY)
 
         set(TEST_BUILDFILE "${TEST_CMAKE_DIR}/${TEST_ID}/CMakeLists.txt")

@@ -35,8 +35,9 @@ const QString ApplicationListCategory::id() const {
 }
 
 ApplicationListCategory* ApplicationListCategory::instance() {
-    if ( s_inst == 0 )
+    if ( s_inst == 0 ) {
         s_inst = new ApplicationListCategory;
+    }
 
     return s_inst;
 }
@@ -57,8 +58,9 @@ StartCommand::StartCommand ( ) : AbstractCommand ( ApplicationListCategory::inst
 
 /// @todo Detect the application name and invoke it.
 bool StartCommand::invoke ( const QString& p_statement ) const {
-    if ( !isValidStatement ( p_statement ) )
+    if ( !isValidStatement ( p_statement ) ) {
         return false;
+    }
 
     const QString l_tokenArgument = AbstractCommand::santizeStatement ( p_statement );
 
@@ -69,4 +71,4 @@ bool StartCommand::invoke ( const QString& p_statement ) const {
 
 APPLIST_NAMESPACE_END
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

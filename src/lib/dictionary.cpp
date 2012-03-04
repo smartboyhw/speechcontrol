@@ -28,21 +28,106 @@
 
 using namespace SpeechControl;
 
+Dictionary::Dictionary ( QObject* p_parent ) : QObject ( p_parent ) {
 
-void Dictionary::load ( const QUuid &l_uuid ) {
-    QFile* l_file = new QFile ( getPath ( l_uuid ) );
-    l_file->open ( QIODevice::ReadOnly );
-    QTextStream l_strm ( l_file );
+}
+
+Dictionary::Dictionary ( const Dictionary& p_other ) : QObject ( p_other.parent() ), m_words ( p_other.m_words ),
+    m_device ( p_other.m_device ) {
+
+}
+
+Dictionary::Dictionary ( const QUuid &p_uuid ) {
+    load ( new QFile ( getPathFromUuid ( p_uuid ) ) );
+}
+
+void Dictionary::load ( const QUuid& p_uuid ) {
+    load ( getPathFromUuid ( p_uuid ) );
+}
+
+void Dictionary::load ( QIODevice* p_device ) {
+    Q_ASSERT ( m_device != 0 || p_device != 0 );
+
+    if ( p_device )
+        m_device = p_device;
+
+    if ( !m_device->open ( QIODevice::ReadOnly | QIODevice::Text ) ) {
+        qWarning() << "Failed to open dictionary" << m_device->errorString();
+        return;
+    }
+
+    QTextStream l_strm ( m_device );
 
     while ( !l_strm.atEnd() ) {
         const QString l_line = l_strm.readLine();
         const QStringList l_tokens = l_line.split ( "\t",QString::SkipEmptyParts );
-        m_words.insert ( l_tokens[0],new DictionaryEntry ( this,l_tokens[0],l_tokens[1] ) );
+        addEntry ( new DictionaryEntry ( this,l_tokens[0],l_tokens[1] ) );
     }
+
+    m_device->close();
+
+    qDebug() << m_words.size() << "words found in this dictionary.";
 }
 
-const QString Dictionary::getPath ( const QUuid &l_uuid ) {
-    return QDir::homePath() + "/.speechcontrol/dictionaries/" + l_uuid.toString() + ".dic";
+QString Dictionary::getPathFromUuid ( const QUuid& p_uuid ) {
+    return QDir::homePath() + "/.speechcontrol/dictionaries/" + p_uuid.toString() + ".dic";
+}
+
+Dictionary* Dictionary::obtain ( const QUuid &p_uuid ) {
+    if ( !QFile::exists ( getPathFromUuid ( p_uuid ) ) )
+        return 0;
+
+    Dictionary* l_dict = new Dictionary ( p_uuid );
+    return l_dict;
+}
+
+Dictionary* Dictionary::obtain ( const QString& p_path ) {
+    QFile* l_file = new QFile ( p_path );
+    Dictionary* l_dict = new Dictionary;
+    if ( !l_file->exists() )
+        return 0;
+
+    l_dict->load ( l_file );
+    return l_dict;
+}
+
+DictionaryEntryList Dictionary::entries() const {
+    return m_words.values();
+}
+
+void Dictionary::addEntry ( DictionaryEntry *p_entry ) {
+    m_words.insert ( p_entry->word(),p_entry );
+}
+
+DictionaryEntry * Dictionary::removeEntry ( const QString& p_word ) {
+    return m_words.take ( p_word );
+}
+
+Dictionary& Dictionary::operator << ( DictionaryEntry *p_entry ) {
+    addEntry ( p_entry );
+    return *this;
+}
+
+Dictionary& Dictionary::operator << ( DictionaryEntryList& p_list ) {
+    Q_FOREACH ( DictionaryEntry* l_entry, p_list )
+    addEntry ( l_entry );
+
+    return *this;
+}
+
+/// @todo Implement the saving ability.
+void Dictionary::save() {
+    m_device->open ( QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text );
+    QTextStream l_strm ( m_device );
+
+    Q_FOREACH ( const DictionaryEntry* l_entry, entries() ) {
+        l_strm << l_entry->word() << "\t" << l_entry->phoneme();
+    }
+
+    m_device->close();
+}
+
+Dictionary::~Dictionary() {
 }
 
 DictionaryEntry::DictionaryEntry ( Dictionary* p_dictionary, const QString& p_word, const QString& p_phoneme ) :
@@ -54,11 +139,6 @@ DictionaryEntry::DictionaryEntry ( const DictionaryEntry& p_other ) : QObject(),
 
 }
 
-DictionaryEntry::~DictionaryEntry()
-{
-
-}
-
 QString DictionaryEntry::word() const {
     return m_word;
 }
@@ -67,53 +147,9 @@ QString DictionaryEntry::phoneme() const {
     return m_phnm;
 }
 
-Dictionary* Dictionary::obtain ( const QUuid &l_uuid ) {
-    return 0;
-}
+DictionaryEntry::~DictionaryEntry() {
 
-DictionaryEntryList * Dictionary::entries() const {
-    return 0;
-}
-
-void Dictionary::addEntry ( DictionaryEntry *l_entry ) {
-}
-
-DictionaryEntry * Dictionary::removeEntry ( const QString& p_word ) {
-    return m_words.take ( p_word );
-}
-
-Dictionary& Dictionary::operator << ( DictionaryEntry *p_entry ) {
-    m_words.insert ( p_entry->word(),p_entry );
-    return *this;
-}
-
-Dictionary& Dictionary::operator << ( DictionaryEntryList& p_lst ) {
-    Q_FOREACH ( DictionaryEntry* l_entry, p_lst )
-    m_words.insert ( l_entry->word(),l_entry );
-    return *this;
-}
-
-/// @todo Implement the saving ability.
-void Dictionary::save() {
-
-}
-
-Dictionary* Dictionary::fromDirectory ( const QDir& ) {
-    return 0;
-}
-
-Dictionary::Dictionary ( const Dictionary& p_other ) : QObject(),
-    m_words ( p_other.m_words ) {
-
-}
-
-Dictionary::Dictionary ( const QUuid &p_uuid ) {
-    load ( p_uuid );
-}
-
-Dictionary::~Dictionary()
-{
 }
 
 #include "dictionary.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

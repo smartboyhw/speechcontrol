@@ -20,6 +20,8 @@
 
 #include "sessions/session.hpp"
 #include "general-pane.hpp"
+#include "core.hpp"
+#include <desktopcontrol/agent.hpp>
 #include "ui_settingspane-general.h"
 
 using namespace SpeechControl;
@@ -31,6 +33,8 @@ GeneralSettingsPane::GeneralSettingsPane ( QWidget *parent ) :
     ui->setupUi ( this );
     ui->lblSessionCount->setText ( QString::number ( Session::allSessions().count() ) );
     ui->lblAccuracyRating->setText ( "<i>n/a</i>" );
+    ui->checkBoxEnableDesktopControl->setChecked ( Core::configuration ( "DesktopControl/AutoStart" ).toBool() );
+    ui->checkBoxEnableDictation->setChecked ( Core::configuration ( "Dictation/AutoStart" ).toBool() );
 }
 
 GeneralSettingsPane::~GeneralSettingsPane() {
@@ -56,14 +60,12 @@ const QString GeneralSettingsPane::id() const {
     return "gnrl";
 }
 
-/// @todo Toggle the status of dictation.
-void GeneralSettingsPane::on_checkBoxEnableDictation_toggled ( bool checked ) {
-
+void GeneralSettingsPane::on_checkBoxEnableDictation_toggled ( bool p_checked ) {
+    Core::setConfiguration ( "Dictation/AutoStart",p_checked );
 }
 
-/// @todo Toggle the status of desktop control.
-void GeneralSettingsPane::on_checkBoxEnableDesktopControl_toggled ( bool checked ) {
-
+void GeneralSettingsPane::on_checkBoxEnableDesktopControl_toggled ( bool p_checked ) {
+    Core::setConfiguration ( "DesktopControl/AutoStart",p_checked );
 }
 
 #include "general-pane.moc"

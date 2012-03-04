@@ -20,18 +20,42 @@
 
 #include <QtTest/QtTest>
 #include "mics.h"
-
 #include <lib/microphone.hpp>
+#include <lib/system.hpp>
 
 using namespace SpeechControl;
+
+void TestMicrophone::init() {
+    SpeechControl::System::start();
+}
+
+void TestMicrophone::cleanup() {
+    SpeechControl::System::stop();
+}
 
 void TestMicrophone::listMicrophones() {
     MicrophoneList l_mics = Microphone::allMicrophones();
 
-    Q_FOREACH(const Microphone* l_mic, l_mics){
+    Q_FOREACH ( const Microphone* l_mic, l_mics ) {
         qDebug() << "(mic)" << l_mic->name();
     }
 }
 
-QTEST_MAIN( TestMicrophone )
+Microphone* TestMicrophone::defaultMicrophone() {
+    Microphone* l_defaultMic = Microphone::defaultMicrophone();
+    QCOMPARE ( l_defaultMic != 0 && !Microphone::allMicrophones().isEmpty(),true );
+    QCOMPARE ( l_defaultMic->isValid() == true,true );
+    qDebug() << "Default mic is:" << l_defaultMic->name();
+
+    return l_defaultMic;
+}
+
+void TestMicrophone::adjustMicrophone() {
+    Microphone* l_defaultMic = defaultMicrophone();
+    l_defaultMic->setVolume ( 0.8 );
+    QCOMPARE ( l_defaultMic->volume() == 0.8,true );
+}
+
+QTEST_MAIN ( TestMicrophone )
 #include "mics.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

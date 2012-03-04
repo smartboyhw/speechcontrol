@@ -28,6 +28,7 @@
 
 namespace SpeechControl {
 class AcousticModel;
+class NoiseDictionary;
 
 typedef QList<AcousticModel*> AcousticModelList;
 
@@ -38,41 +39,125 @@ typedef QList<AcousticModel*> AcousticModelList;
  * acoustic models. The main property is a path where the model is stored.
  * This and all other properties are contained in the QVariantMap, inside the object.
  *
- * Currently supported parameters are:
- * @li path - Path where the model is stored.
+ * @section params Parameters
  *
- * @note Should we use enum rather than QString for keys?
- * @todo Add more properties to use.
+ * The parameters here are represented in <b>feat.params</b> of the acoustic model's
+ * directory. An example dump of such a file would be the following:
+ *
+ * @code
+- lowerf 1 *
+-upperf 4000
+-nfilt 20
+-transform dct
+-round_filters no
+-remove_dc yes
+-feat s2_4x
+ * @endcode
+ *
+ * Each of these properties can be set by their key (the value to the left)
+ * and update its value (the value to the right). The properties supported are
+ * all of the ones recognized by PocketSphinx.
  */
 class SPCH_EXPORT AcousticModel : public QObject {
     Q_OBJECT
+    Q_DISABLE_COPY ( AcousticModel )
     Q_PROPERTY ( const QVariantMap Parameters READ parameters WRITE setParameters )
-    Q_PROPERTY ( const quint16 SampleRate READ sampleRate WRITE setSampleRate )
+    Q_PROPERTY ( const quint16 SampleRate READ sampleRate )
 
 private:
-    QVariantMap _parameters;
-    quint16 _sampRate;
+    QVariantMap m_params;         ///< Holds the properties of the model.
+    QString m_path;               ///< Holds the path to the base directory of the acoustic model.
+    NoiseDictionary* m_noisedict;  ///< Holds information about the noise dictionary.
+    void loadFeatureParameters();
+    void loadNoiseDictionary();
 
 public:
-    Q_DISABLE_COPY ( AcousticModel )
+    /**
+     * @brief Destructor.
+     **/
     virtual ~AcousticModel();
-    explicit AcousticModel(QObject* parent = 0);
-    AcousticModel (QString const& path, QObject* parent = 0);
+
+    /**
+     * @brief Constructor.
+     * @param p_parent Defaults to 0.
+     **/
+    explicit AcousticModel ( QObject* p_parent = 0 );
+
+    /**
+     * @brief Constructor.
+     * @param p_path The path to the acoustic model.
+     * @param p_parent Defaults to 0.
+     **/
+    AcousticModel ( QString const& p_path, QObject* p_parent = 0 );
+
+    /**
+     * @brief Sets a paramater within the acoustic model.
+     *
+     * @param p_key The key to change.
+     * @param p_value The new value of the key to change.
+     **/
     void setParameter ( const QString& p_key , const QVariant& p_value );
-    void setParameters ( const QVariantMap& p_values);
-    void mergeParameters ( const QVariantMap& p_values);
-    QVariant parameter ( const QString& p_key) const;
+
+    /**
+     * @brief Sets an array of parameters within the acoustic model.
+     *
+     * @param p_values The values and their corresponding keys to change.
+     **/
+    void setParameters ( const QVariantMap& p_values );
+
+    /**
+     * @brief Merges the passed parameters p_params with the one of this model.
+     *
+     * @param p_params The parameters to merge.
+     **/
+    void mergeParameters ( const QVariantMap& p_params );
+
+    /**
+     * @brief Obtains the value of the key.
+     *
+     * @param p_key The key of the desired value.
+     * @return A QVariant of the value. If the key wasn't found, then the returned QVariant is invalid.
+     **/
+    QVariant parameter ( const QString& p_key ) const;
+
+    /**
+     * @brief Obtains all of the parameters of the acoustic model.
+     *
+     * @return A QVariantMap of all of the values.
+     **/
     QVariantMap parameters() const;
+
+    /**
+     * @brief Obtains the sample rate of the acoustic model.
+     *
+     * @note This always returns 16 KHz (16,000).
+     * @return 16,000 KHz (kilohertz) as an quint16.
+     **/
     quint16 sampleRate() const;
-    void setSampleRate ( const quint16& p_rate );
+
+    /**
+     * @brief Obtains the path to the acoustic model.
+     * @return The path to the acoustic model's directory.
+     **/
     QString path() const;
+
+    /**
+     * @brief Determines if the acoustic model is valid.
+     *
+     * @return boolean
+     **/
     bool isValid() const;
+
+    void load ( QString p_path );
 
 };
 
+/**
+ * @brief Represents a list of acoustic models.
+ **/
 typedef QList<AcousticModel*> AcousticModelList;
 
 }
 
 #endif // ACOUSTICMODEL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

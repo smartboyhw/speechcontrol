@@ -18,7 +18,10 @@ QT4_ADD_RESOURCES(SPCHCNTRL_APP_SCPP ${SPCHCNTRL_QRESC})
 QT4_WRAP_UI(SPCHCNTRL_APP_SCPP ${SPCHCNTRL_UI})
 QT4_AUTOMOC(${SPCHCNTRL_APP_SCPP})
 
-include_directories(${SPCHCNTRL_APP_INCLUDE_DIRS})
+QT4_CREATE_TRANSLATION("speechcontrol.qm" "${SPCHCNTRL_APP_SRCS};${SPCHCNTRL_UI}" "speechcontrol.ts")
+#QT4_ADD_TRANSLATION("speechcontrol.ts" "speechcontrol.qm")
+
+include_directories(${SPCHCNTRL_APP_BUILD_INCLUDE_DIRS})
 
 ## Define targets
 add_executable(speechcontrol-frontend ${SPCHCNTRL_APP_SCPP})

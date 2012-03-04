@@ -43,7 +43,7 @@ ContentWizard::ContentWizard ( QWidget *parent ) :
     setPixmap ( QWizard::LogoPixmap,l_icon.pixmap ( 32,32,QIcon::Active,QIcon::On ) );
     setWindowTitle ( tr ( "Book Addition Wizard - SpeechControl" ) );
     setPage ( ContentWizard::IntroductionPage,
-              ( new Wizards::Pages::IntroductionPage ( "This wizard allows you to add a new book into SpeechControl's collection." ) ) );
+              ( new Wizards::Pages::IntroductionPage ( tr ( "This wizard allows you to add a new book into SpeechControl's collection." ) ) ) );
     setPage ( ContentWizard::AdditionSelectionPage,
               ( new Wizards::Pages::AdditionSelectionPage ( this ) ) );
     setPage ( ContentWizard::UriSelectionPage,
@@ -53,7 +53,7 @@ ContentWizard::ContentWizard ( QWidget *parent ) :
     setPage ( ContentWizard::CustomSelectionPage,
               ( new Wizards::Pages::CustomSourcePage ( this ) ) );
     setPage ( ContentWizard::ConclusionPage,
-              ( new Wizards::Pages::ConclusionPage ( "You've successfully added a book into SpeechControl." ) ) );
+              ( new Wizards::Pages::ConclusionPage ( tr ( "You've successfully added a book into SpeechControl." ) ) ) );
 }
 
 void ContentWizard::setSource ( AbstractContentSource* p_src ) {
@@ -72,12 +72,13 @@ int ContentWizard::nextId() const {
 
     case AdditionSelectionPage: {
         m_src = 0;
-        if ( field ( "selection.wiki" ).toBool() )
+        if ( field ( "selection.wiki" ).toBool() ) {
             return WikiSourcePage;
-        else if ( field ( "selection.url" ).toBool() )
+        } else if ( field ( "selection.url" ).toBool() ) {
             return UriSelectionPage;
-        else if ( field ( "selection.custom" ).toBool() )
+        } else if ( field ( "selection.custom" ).toBool() ) {
             return CustomSelectionPage;
+        }
     }
     break;
 
@@ -91,9 +92,9 @@ int ContentWizard::nextId() const {
         Q_ASSERT ( m_src != 0 );
         Content* l_cntn = m_src->generate();
         if ( l_cntn == 0 ) {
-            QMessageBox::warning ( Core::mainWindow(),
-                                   "Failure Creating Content",
-                                   "There was an issue creating your content; thus resulting in a failure.",
+            QMessageBox::warning ( 0,
+                                   tr ( "Failure Creating Content" ),
+                                   tr ( "There was an issue creating your content; thus resulting in a failure." ),
                                    QMessageBox::Ok
                                  );
             return AdditionSelectionPage;

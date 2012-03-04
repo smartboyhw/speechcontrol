@@ -70,8 +70,11 @@ void UrlSelectionPage::on_toolButton_clicked() {
             l_wiz->setSource ( &l_txtSrc );
         }
     } else {
-        if ( QMessageBox::Ok == QMessageBox::warning ( this,"Unable to Load Content","The file you've chosen is either in the wrong format or isn't valid.\nPlease try another file.",QMessageBox::Ok,QMessageBox::Cancel ) )
+        if ( QMessageBox::Ok == QMessageBox::warning ( this,
+                tr ( "Unable to Load Content" ),
+                tr ( "The file you've chosen is either in the wrong format or isn't valid.\nPlease try another file." ),QMessageBox::Ok,QMessageBox::Cancel ) ) {
             on_toolButton_clicked();
+        }
     }
 }
 

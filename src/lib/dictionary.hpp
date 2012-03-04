@@ -31,11 +31,8 @@
 #include <export.hpp>
 
 class QUrl;
-
 class QFile;
-
 class QDomDocument;
-
 class QDomElement;
 
 namespace SpeechControl {
@@ -67,6 +64,7 @@ typedef QMap<QString, DictionaryEntry*> DictionaryEntryMap;
 
 /**
  * @brief Represents an entry in a Dictionary object.
+ *
  * Entries within a dictionary are typically used to provide the most
  * accurate pronunciation (phoneme) of words for Sphinx to use during
  * the act of building or adapting acoustic models.
@@ -105,13 +103,17 @@ public:
     QString phoneme() const;
 
 private:
-    Dictionary* m_dict;     /// < The Dictionary that owns this object.
-    QString m_word;         /// < The QString of the
-    QString m_phnm;
+    Dictionary* m_dict;     ///< The Dictionary that owns this object.
+    QString m_word;         ///< The word of this entry.
+    QString m_phnm;         ///< The phoneme of this entry.
 };
 
 /**
- * @brief ...
+ * @brief Represents a collection of words recognizable by SpeechControl.
+ *
+ * Dictionaries are used tightly with SpeechControl and its training facilities
+ * in order to provide the appropriate linkages with the word and their corresponding
+ * phonemes.
  **/
 class SPCH_EXPORT Dictionary : public QObject {
     Q_OBJECT
@@ -119,86 +121,93 @@ class SPCH_EXPORT Dictionary : public QObject {
     friend class Corpus;
 
 public:
+
     /**
-     * @brief ...
+     * @brief Null constructor.
      *
-     * @param  ...
+     * @param p_parent Defaults to 0.
      **/
-    Dictionary ( const QUuid& );
+    explicit Dictionary ( QObject* p_parent = 0 );
+
     /**
-     * @brief ...
-     *
+     * @brief Constructor.
+     * @param p_uuid The UUID to obtain this dictionary with.
+     **/
+    Dictionary ( const QUuid& p_uuid );
+
+    /**
+     * @brief Destructor.
      **/
     virtual ~Dictionary();
-    /**
-     * @brief ...
-     *
-     * @param  ...
-     * @return :Dictionary*
-     **/
-    static Dictionary* obtain ( const QUuid& );
-    /**
-     * @brief ...
-     *
-     * @return :DictionaryEntryList*
-     **/
-    DictionaryEntryList* entries() const;
-    /**
-     * @brief ...
-     *
-     * @param  ...
-     * @return void
-     **/
-    void addEntry ( DictionaryEntry* );
-    /**
-     * @brief ...
-     *
-     * @param  ...
-     * @return :DictionaryEntry*
-     **/
-    DictionaryEntry* removeEntry ( const QString& );
-    /**
-     * @brief ...
-     *
-     * @param  ...
-     * @return :Dictionary&
-     **/
-    Dictionary& operator<< ( DictionaryEntry* );
-    /**
-     * @brief ...
-     *
-     * @param  ...
-     * @return :Dictionary&
-     **/
-    Dictionary& operator<< ( DictionaryEntryList& );
-    /**
-     * @brief ...
-     *
-     * @param  ...
-     * @return :Dictionary*
-     **/
-    static Dictionary* fromDirectory ( const QDir& );
 
-public slots:
     /**
-     * @brief ...
-     *
-     * @param  ...
-     * @return void
+     * @brief Obtains a Dictionary by its UUID.
+     * @param p_uuid The UUID to obtain the dictionary with.
+     * @return A pointer to a Dictionary object if found, NULL otherwise.
      **/
-    void load ( const QUuid& );
+    static Dictionary* obtain ( const QUuid& p_uuid );
+
     /**
-     * @brief ...
+     * @brief Obtains a Dictionary from a path.
      *
-     * @return void
+     * @param p_path The path of which the dictionary resides.
+     * @return A pointer to a Dictionary object if found, NULL otherwise.
+     **/
+    static Dictionary* obtain ( const QString& p_path );
+
+    /**
+     * @brief Obtains the list of entries representing this Dictionary.
+     * @return A pointer to a DictionaryEntryList list, NULL otherwise if no entries exist.
+     **/
+    DictionaryEntryList entries() const;
+
+    /**
+     * @brief Adds an entry into this Dictionary.
+     * @param  p_entry The DictionaryEntry to add.
+     **/
+    void addEntry ( DictionaryEntry* p_entry );
+
+    /**
+     * @brief Removes an entry by the word specifying it.
+     *
+     * @param p_word The word to add into the entry.
+     * @return A DictionaryEntry from the formed action, or returns the existing entry.
+     **/
+    DictionaryEntry* removeEntry ( const QString& p_word );
+
+    /**
+     * @brief Adds a DictionaryEntry to the Dictionary.
+     *
+     * @param p_entry The DictionaryEntry to add.
+     **/
+    Dictionary& operator<< ( DictionaryEntry* p_entry );
+
+    /**
+     * @brief Adds a DictionaryEntryList into this Dictionary.
+     *
+     * @param p_list The DictionaryEntryList to add.
+     **/
+    Dictionary& operator<< ( DictionaryEntryList& p_list );
+
+    /**
+     * @brief Loads the Dictionary from the specified QIODevice p_device.
+     **/
+    void load ( QIODevice* p_device );
+
+    void load ( const QUuid& p_uuid );
+
+    /**
+     * @brief Saves the Dictionary.
+     * @note This method uses the QIODevice specified in the @c load() method.
      **/
     void save();
 
 private:
-    static const QString getPath ( const QUuid& );
+    static QString getPathFromUuid ( const QUuid& p_uuid );
     static DictionaryMap s_lst;
     DictionaryEntryMap m_words;
+    QIODevice* m_device;
 };
 }
 #endif // DICTIONARY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

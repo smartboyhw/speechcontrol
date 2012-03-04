@@ -13,7 +13,8 @@ if (WITH_PLUGINS)
         COMMENT "Built plug-ins.")
 
     ## directories
-    add_subdirectory(python)
+    #add_subdirectory(python)
+    add_subdirectory(transcriber)
     add_subdirectory(dsktpcntrl-applications)
 
 endif(WITH_PLUGINS)

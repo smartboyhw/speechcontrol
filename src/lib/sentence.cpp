@@ -37,8 +37,9 @@ Sentence::Sentence ( Corpus* p_corpus, QDomElement *p_elem ) : m_elem ( p_elem )
 
     // Build phrases.
     QDomNodeList l_nodes = m_elem->childNodes();
-    for ( uint i = 0; i < l_nodes.length(); i++ )
+    for ( uint i = 0; i < l_nodes.length(); i++ ) {
         m_phrsLst << new Phrase ( this,i );
+    }
 }
 
 Corpus * Sentence::parentSession() const {
@@ -86,7 +87,7 @@ Sentence* Sentence::create ( Corpus *p_corpus, const QString& p_text ) {
             qDebug() << "Appended" << l_wordSize << l_word;
         }
 
-        if ( l_wordSize == l_phraseSize || l_word == l_words.last() ) {
+        if ( ( l_wordSize == l_phraseSize || l_word == l_words.last() ) && !l_phrase.trimmed().isEmpty() ) {
             l_phrase = l_phrase.trimmed();
             qDebug() << "Phrase" << l_phrase << "formed. At end?" << ( l_word == l_words.last() );
 
@@ -107,8 +108,9 @@ Sentence* Sentence::create ( Corpus *p_corpus, const QString& p_text ) {
 
 bool Sentence::allPhrasesCompleted() const {
     Q_FOREACH ( const Phrase* l_phrs, phrases() ) {
-        if ( !l_phrs->isCompleted() )
+        if ( !l_phrs->isCompleted() ) {
             return false;
+        }
     }
 
     return true;
@@ -126,8 +128,9 @@ double Sentence::completedProgress() const {
     uint l_count = 0;
 
     for ( int i = 0; i < phrases().count(); i++ ) {
-        if ( isPhraseCompleted ( i ) )
+        if ( isPhraseCompleted ( i ) ) {
             l_count += 1;
+        }
     }
 
     return ( double ) ( l_count ) / ( double ) ( phrases().count() );
@@ -142,4 +145,4 @@ Sentence::~Sentence() {
 }
 
 #include "sentence.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

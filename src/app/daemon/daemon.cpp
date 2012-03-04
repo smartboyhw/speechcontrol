@@ -35,8 +35,9 @@ bool Daemon::isActive() const {
 
 /// @todo Activate SpeechControl's ASR and then return a value.
 QString Daemon::listen() {
-    if (!isActive())
+    if ( !isActive() ) {
         return QString::null;
+    }
 
     return QString::null;
 }
@@ -54,3 +55,4 @@ void Daemon::stop() {
 }
 
 #include "daemon.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

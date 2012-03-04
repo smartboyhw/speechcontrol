@@ -25,15 +25,16 @@
 #include <QVariant>
 #include <QApplication>
 
-#include <windows/main-window.hpp>
-
 class QSettings;
 
-namespace SpeechControl
-{
+namespace SpeechControl {
+namespace Windows {
+class Main;
+}
 
-/*!
- * \brief Represents the entire heart of SpeechControl.
+
+/**
+ * @brief Represents the entire heart of SpeechControl.
  *
  * The Core class is where most of the event handling for most utilities
  * lock into. It holds the @c Factory and all of the derived forms of @c AbstractPlugin
@@ -42,7 +43,7 @@ namespace SpeechControl
 class Core : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY (Core)
+    Q_DISABLE_COPY ( Core );
 
     friend class Windows::Main;
 
@@ -51,17 +52,22 @@ private:
     QApplication* m_app;    /// Holds the Application instance.
     Windows::Main* s_mw;    /// Holds the main window.
     QSettings* m_settings;  /// Holds the application's global configuration.
+    QTranslator* m_trnsltr; /// Holds the translating agent.
     static Core* s_inst;    /// Holds the instance.
     
 public:
     /**
-     * @brief Constructor
-     * @param argc The argument count from command-line.
-     * @param argv The arguments passed from command-line.
-     * @param app  The QApplication object pointer.
+     * @brief Constructor.
+     * @param p_argc The argument count from command-line.
+     * @param p_argv The arguments passed from command-line.
+     * @internal
      **/
-    Core (int argc, char** argv, QApplication* app);
+    Core ( int p_argc, char** p_argv );
 
+    /**
+     * @brief Destructor.
+     * @internal
+     **/
     virtual ~Core();
 
     /**
@@ -69,10 +75,10 @@ public:
      * This method allows for a centralized means of obtaining values about
      * SpeechControl's core configuration.
      * @param  p_attrName The path to the value to find.
-     * @param  p_attrDefVal The default value to return. Defaults to QVariant().
+     * @param  p_attrDefValue The default value to return. Defaults to QVariant().
      * @return QVariant
      **/
-    static QVariant configuration (const QString& path, const QVariant& alt = QVariant());
+    static QVariant configuration ( const QString& p_attrName, QVariant p_attrDefValue = QVariant() );
 
     /**
      * @brief Sets a core configuration option of SpeechControl.
@@ -81,9 +87,9 @@ public:
      * SpeechControl's core configuration.
      * @param  p_attrName The path to the value to find.
      * @param  p_attrValue The value to be set.
-     * @return void
+     *
      **/
-    static void setConfiguration (const QString& path, const QVariant& value);
+    static void setConfiguration ( const QString& p_attrName, const QVariant& p_attrValue );
 
     /**
      * @brief Obtains a pointer to the @c Core object, the singleton representing the application.
@@ -103,10 +109,17 @@ public:
     static int exec();
 
     /**
+     * @brief Loads the specified locale p_locale into SpeechControl for translation.
+     *
+     * @param p_locale The locale to load.
+     **/
+    static void loadTranslations ( const QLocale& p_locale );
+
+    /**
      * @brief Quits the application's main execution loop.
      * @param p_exitCode The exit code for the application to use.
      */
-    void quit (const int& = 0);
+    void quit ( const int& p_exitCode = 0 );
 
 signals:
     /**
@@ -114,29 +127,34 @@ signals:
      * @return void
      **/
     void started();
-    
+
     /**
      * @brief Emitted when SpeechControl has completed its shutdown process.
      * @return void
      **/
     void stopped();
-    
+
 public slots:
     /**
      * @brief Starts SpeechControl's main loop.
-     * @return void
+     *
      **/
     void start();
 
     /**
      * @brief Stops SpeechControl's main loop.
-     * @return void
+     *
      **/
     void stop();
 
+    /// Experimental
+    void asrFinished ( QString& text );
+
+private slots:
+    void invokeAutoStart();
 };
 
 }
 
 #endif // CORE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

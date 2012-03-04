@@ -24,7 +24,6 @@
  */
 
 #include "system.hpp"
-#include "dummysc.hpp"
 #include "microphone.hpp"
 
 #include <QDir>
@@ -42,6 +41,7 @@ System::System (int* argc, char** argv[])
         QGst::init (argc, argv);
     else
         QGst::init();
+    }
 
     Microphone::init();
 
@@ -62,12 +62,16 @@ void System::start (int* argc, char** argv[])
 {
     if (!s_inst)
         s_inst = new System (argc, argv);
+
+    l_dir.mkpath ( QDir::homePath() + "/.config/speechcontrol/corpus" );
+    l_dir.mkpath ( QDir::homePath() + "/.config/speechcontrol/dictionaries" );
 }
 
 void System::stop()
 {
     s_inst->deleteLater();
+    QGst::cleanup();
 }
 
 #include "system.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

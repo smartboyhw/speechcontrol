@@ -22,6 +22,7 @@
 
 using SpeechControl::Daemon::System;
 
-int main(int p_argc, char** p_argv){
-    return System::instance(p_argc,p_argv)->exec();
+int main ( int p_argc, char** p_argv ) {
+    return System::instance ( p_argc,p_argv )->exec();
 }
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

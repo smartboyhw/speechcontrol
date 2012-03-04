@@ -76,11 +76,13 @@ signals:
 public slots:
     /**
      * @brief Starts the Factory.
+     * @see started()
      **/
     void start();
 
     /**
      * @brief Stops the Factory.
+     * @see stopped()
      **/
     void stop();
 
@@ -97,7 +99,7 @@ public:
      * for integration with SpeechControl.
      *
      * @param p_uuid The UUID of the plug-in to load.
-     * @return const bool True if the plug-in loaded successfully, false otherwise.
+     * @return bool True if the plug-in loaded successfully, false otherwise.
      **/
     static bool loadPlugin ( const QUuid& );
 
@@ -108,7 +110,7 @@ public:
      * for removal from SpeechControl.
      *
      * @param p_uuid The UUID of the plug-in to unload.
-     * @return const bool True if the plug-in unloaded successfully, false otherwise.
+     * @return bool True if the plug-in unloaded successfully, false otherwise.
      **/
     void unloadPlugin ( const QUuid& p_uuid );
 
@@ -154,12 +156,16 @@ public:
     static QSettings* pluginSettings ( QUuid p_uuid );
 
 private:
+    /**
+     * @brief Constructor.
+     * @internal
+     **/
     explicit Factory();
-    static Factory* s_inst;
-    static PluginMap s_ldPlgns;
+    static Factory* s_inst;      ///< The instance of the Factory singleton.
+    static PluginMap s_ldPlgns;  ///< The loaded plug-ins.
 };
 }
 }
 
 #endif // FACTORY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

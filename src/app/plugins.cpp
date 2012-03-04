@@ -22,11 +22,14 @@
 #include "config.hpp"
 #include "plugins.hpp"
 #include "factory.hpp"
+#include "windows/main-window.hpp"
+#include "ui_main-window.h"
 
+#include <QDebug>
 #include <QSettings>
 #include <QPluginLoader>
 #include <QApplication>
-#include <QDebug>
+#include <QAction>
 
 using namespace SpeechControl;
 using SpeechControl::Plugins::Factory;
@@ -60,37 +63,40 @@ bool AbstractPlugin::isSupported() const {
 }
 
 const QString AbstractPlugin::name() const {
-    if ( hasLoaded() )
+    if ( hasLoaded() ) {
         return m_cfg->value ( "Plugin/Name" ).toString();
-
-    qDebug() << m_cfg->fileName();
+    }
     return QString::null;
 }
 
 const QUuid AbstractPlugin::uuid() const {
-    if ( hasLoaded() )
+    if ( hasLoaded() ) {
         return QUuid ( m_cfg->value ( "Plugin/UUID" ).toString() );
+    }
 
     return QUuid ( QString::null );
 }
 
 double AbstractPlugin::version() const {
-    if ( hasLoaded() )
+    if ( hasLoaded() ) {
         return m_cfg->value ( "Plugin/Version" ).toDouble();
+    }
 
     return -1.0;
 }
 
 const QString AbstractPlugin::description() const {
-    if ( hasLoaded() )
+    if ( hasLoaded() ) {
         return m_cfg->value ( "Plugin/Description" ).toString();
+    }
 
     return QString::null;
 }
 
 const QUrl AbstractPlugin::url() const {
-    if ( hasLoaded() )
+    if ( hasLoaded() ) {
         return m_cfg->value ( "Plugin/URL" ).toUrl();
+    }
 
     return QUrl ( QString::null );
 }
@@ -111,10 +117,11 @@ const PluginList AbstractPlugin::plugins() const {
 }
 
 bool AbstractPlugin::loadComponents() {
-    if ( loadPlugins() )
+    if ( loadPlugins() ) {
         return loadLibrary();
+    }
 
-    qDebug() << "Failed to load components for " << uuid();
+    qDebug() << "Failed to load components for " << name();
     return false;
 }
 
@@ -135,7 +142,7 @@ bool AbstractPlugin::loadLibrary() {
 bool AbstractPlugin::loadPlugins() {
     Q_FOREACH ( AbstractPlugin* l_plgn, plugins() ) {
         if ( ! ( l_plgn->isSupported() && Factory::isPluginLoaded ( l_plgn->uuid() ) ) ) {
-            qDebug() << "Plugin" << uuid() << "is missing a dependency:" << l_plgn->uuid();
+            qDebug() << "Plugin" << name() << "is missing a dependency:" << l_plgn->name();
             return false;
         }
     }
@@ -149,13 +156,19 @@ void AbstractPlugin::start() {
 }
 
 void AbstractPlugin::stop() {
+    Q_FOREACH ( QAction* l_action, actions() ) {
+        if ( !l_action )
+            continue;
+        Core::mainWindow()->m_ui->menuPlugins->removeAction ( l_action );
+    }
     deinitialize();
     emit stopped();
 }
 
 bool AbstractPlugin::load() {
-    if ( !isSupported() )
+    if ( !isSupported() ) {
         return false;
+    }
 
     return loadComponents();
 }
@@ -168,6 +181,20 @@ QSettings* AbstractPlugin::settings() const {
     return m_sttgs;
 }
 
+QList< QAction* > AbstractPlugin::actions() {
+    return m_acts;
+}
+
+void AbstractPlugin::addAction ( QAction* p_action ) {
+    p_action->setParent ( this );
+    Core::mainWindow()->m_ui->menuPlugins->insertAction ( 0,p_action );
+}
+
+void AbstractPlugin::addActions ( QList< QAction* > p_actions ) {
+    Q_FOREACH ( QAction* l_action, p_actions ) {
+        addAction ( l_action );
+    }
+}
 
 AbstractPlugin::~AbstractPlugin() {
 

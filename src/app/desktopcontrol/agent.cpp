@@ -35,6 +35,11 @@ Agent::Agent() : AbstractAgent ( AbstractCategory::global() ) {
     connect ( m_sphinx, SIGNAL ( finished ( QString ) ), this, SLOT ( invokeCommand ( QString ) ) );
 }
 
+Agent::~Agent()
+{
+
+}
+
 Agent* Agent::instance() {
     if ( s_instance == 0 ) {
         s_instance = new Agent;
@@ -80,18 +85,13 @@ bool Agent::isEnabled() {
 }
 
 /// @todo Since this returns more than one command, should we provide a UI that allows you to pick which command you might want?
-void Agent::invokeCommand ( const QString& p_cmd ) {
+void Agent::invokeCommand ( const QString& cmd ) {
     AbstractCategory* l_glbl = AbstractCategory::global();
     CommandList l_cmds = l_glbl->matchAllCommands ( p_cmd );
 
     Q_FOREACH ( AbstractCommand* l_cmd, l_cmds ) {
         qDebug() << l_cmd->id() << l_cmd->statements();
     }
-}
-
-void Agent::invokeCommand (QString& cmd)
-{
-
 }
 
 }

@@ -63,7 +63,7 @@ public:
      * @param p_app The QApplication instance.
      * @internal
      **/
-    Core ( int p_argc, char** p_argv, QApplication* p_app );
+    Core ( int p_argc, char** p_argv, QApplication* app );
 
     /**
      * @brief Destructor.

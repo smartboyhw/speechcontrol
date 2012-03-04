@@ -62,7 +62,7 @@ public:
      * @param p_argv The arguments passed from command-line.
      * @internal
      **/
-    Core ( int p_argc, char** p_argv );
+    Core ( int p_argc, char** p_argv, QApplication* app );
 
     /**
      * @brief Destructor.

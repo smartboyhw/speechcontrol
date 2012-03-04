@@ -30,13 +30,9 @@ namespace DesktopControl
 
 Agent* Agent::s_instance = 0;
 
-<<<<<<< HEAD
-Agent::Agent() : AbstractAgent (AbstractCategory::global())
-{
-    _asr = new DesktopASR (DesktopASR::getStandardDescription(), parent());
-    connect (this, SIGNAL (stopped()), _asr, SLOT (stop()));
-    connect (_asr, SIGNAL (finished (QString&)), this, SLOT (invokeCommand (QString&)));
-
+Agent::Agent() : AbstractAgent ( AbstractCategory::global() ) {
+    m_sphinx = new Sphinx ( Sphinx::standardDescription(), parent() );
+    connect ( m_sphinx, SIGNAL ( finished ( QString ) ), this, SLOT ( invokeCommand ( QString ) ) );
 }
 
 Agent::~Agent()
@@ -44,18 +40,8 @@ Agent::~Agent()
 
 }
 
-Agent* Agent::instance()
-{
-    if (s_instance == 0)
-=======
-Agent::Agent() : AbstractAgent ( AbstractCategory::global() ) {
-    m_sphinx = new Sphinx ( Sphinx::standardDescription(), parent() );
-    connect ( m_sphinx, SIGNAL ( finished ( QString ) ), this, SLOT ( invokeCommand ( QString ) ) );
-}
-
 Agent* Agent::instance() {
     if ( s_instance == 0 ) {
->>>>>>> 3be7f4875b010f24d8041104bb49f5b1c63e8548
         s_instance = new Agent;
     }
 
@@ -66,32 +52,21 @@ AbstractAgent::OperationState Agent::onStateChanged (const AbstractAgent::Operat
 {
     switch (p_state) {
     case Enabled: {
-<<<<<<< HEAD
-        if (!_asr->run())
-=======
         if ( !isEnabled() )
             return Disabled;
 
         if ( !m_sphinx->start() ) {
->>>>>>> 3be7f4875b010f24d8041104bb49f5b1c63e8548
             qWarning() << "[DesktopControl::Agent] Start unsuccessful.";
             return Disabled;
         }
 
     }
-<<<<<<< HEAD
-    break;
-
-    case Disabled:
-        _asr->stop();
-=======
     return Enabled;
     break;
 
     case Disabled:
         m_sphinx->stop();
         return Disabled;
->>>>>>> 3be7f4875b010f24d8041104bb49f5b1c63e8548
         break;
 
     case Undefined:
@@ -102,11 +77,6 @@ AbstractAgent::OperationState Agent::onStateChanged (const AbstractAgent::Operat
     return Undefined;
 }
 
-<<<<<<< HEAD
-bool Agent::isActive() const
-{
-    return _asr->isRunning();
-=======
 bool Agent::isActive() const {
     return m_sphinx->isRunning();
 }
@@ -123,19 +93,9 @@ void Agent::invokeCommand ( const QString& p_cmd ) {
     Q_FOREACH ( AbstractCommand* l_cmd, l_cmds ) {
         qDebug() << l_cmd->id() << l_cmd->statements();
     }
->>>>>>> 3be7f4875b010f24d8041104bb49f5b1c63e8548
-}
-
-void Agent::invokeCommand (QString& cmd)
-{
-
 }
 
 }
 }
-<<<<<<< HEAD
-#include "../desktopcontrol/agent.moc"
-=======
 #include "desktopcontrol/agent.moc"
->>>>>>> 3be7f4875b010f24d8041104bb49f5b1c63e8548
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

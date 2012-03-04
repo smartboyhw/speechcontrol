@@ -41,7 +41,6 @@ System::System (int* argc, char** argv[])
         QGst::init (argc, argv);
     else
         QGst::init();
-    }
 
     Microphone::init();
 
@@ -62,9 +61,6 @@ void System::start (int* argc, char** argv[])
 {
     if (!s_inst)
         s_inst = new System (argc, argv);
-
-    l_dir.mkpath ( QDir::homePath() + "/.config/speechcontrol/corpus" );
-    l_dir.mkpath ( QDir::homePath() + "/.config/speechcontrol/dictionaries" );
 }
 
 void System::stop()

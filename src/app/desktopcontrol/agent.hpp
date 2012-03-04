@@ -60,7 +60,6 @@ class Agent : public AbstractAgent
 private:
     virtual OperationState onStateChanged (const AbstractAgent::OperationState p_state);
     static Agent* s_instance;
-    DesktopASR* _asr;
     Sphinx* m_sphinx;
 
 public:

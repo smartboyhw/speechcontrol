@@ -47,27 +47,15 @@ class Core : public QObject
 
     friend class Windows::Main;
 
-signals:
-    /**
-     * @brief Emitted when SpeechControl has started.
-     * @see start()
-     **/
-    void started();
-
-    /**
-     * @brief Emitted when SpeechControl has completed its shutdown process.
-     * @see stop()
-     **/
-    void stopped();
-
 public:
     /**
      * @brief Constructor.
      * @param p_argc The argument count from command-line.
      * @param p_argv The arguments passed from command-line.
+     * @param p_app The QApplication instance.
      * @internal
      **/
-    Core ( int p_argc, char** p_argv );
+    Core ( int p_argc, char** p_argv, QApplication* p_app );
 
     /**
      * @brief Destructor.

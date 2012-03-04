@@ -33,6 +33,9 @@
  * make %SpeechControl a fantastic, open-source tool.
  */
 
+// speechcontrol lib includes
+#include <lib/config.hpp>
+
 // local includes
 #include "core.hpp"
 
@@ -40,8 +43,12 @@
 int main (int argc, char** argv)
 {
     QApplication* app = new QApplication (argc, argv);
+    app->setApplicationName ( "SpeechControl" );
+    app->setOrganizationDomain ( "thesii.org" );
+    app->setOrganizationName ( "Synthetic Intellect Institute" );
+    app->setApplicationVersion ( SPCHCNTRL_BUILD_VERSION );
     SpeechControl::Core appCore (argc, argv, app);
     appCore.start();
     return app->exec();
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

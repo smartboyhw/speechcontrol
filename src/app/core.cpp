@@ -48,20 +48,13 @@ using namespace SpeechControl::Wizards;
 Core* Core::s_inst = 0;
 
 /// @todo Add a check for the default microphone (if provided by the user).
-Core::Core ( int p_argc, char** p_argv ) :
-    QObject ( new QApplication ( p_argc, p_argv ) ) {
+Core::Core ( int p_argc, char** p_argv, QApplication* p_app ) {
+    m_app = p_app;
     if ( s_inst ) {
         qFatal ( "The Core instance of SpeechControl was being invoked again. This is a fatal and funny error." );
     }
 
     s_inst = this;
-
-    // start application.
-    m_app = qobject_cast< QApplication* > ( QApplication::instance() );
-    m_app->setApplicationName ( "SpeechControl" );
-    m_app->setOrganizationDomain ( "thesii.org" );
-    m_app->setOrganizationName ( "Synthetic Intellect Institute" );
-    m_app->setApplicationVersion ( SPCHCNTRL_BUILD_VERSION );
     m_trnsltr = new QTranslator ( this );
     m_app->installTranslator ( m_trnsltr );
 

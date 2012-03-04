@@ -41,7 +41,6 @@ System::System (int* argc, char** argv[])
         QGst::init (argc, argv);
     else
         QGst::init();
-    }
 
     Microphone::init();
 

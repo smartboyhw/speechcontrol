@@ -150,7 +150,6 @@ SessionList Session::allSessions()
 
         if (l_session && l_session->isValid())
             l_lst << l_session;
-        }
     }
 
     return l_lst;

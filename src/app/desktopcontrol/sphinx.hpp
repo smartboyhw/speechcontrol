@@ -24,8 +24,10 @@
 #include <lib/abstractsphinx.hpp>
 
 
-namespace SpeechControl {
-namespace DesktopControl {
+namespace SpeechControl
+{
+namespace DesktopControl
+{
 
 /**
  * @brief Represents the Sphinx instance for DesktopControl.
@@ -33,9 +35,10 @@ namespace DesktopControl {
  * @note This class is not meant for casual programming. It's solely used in DesktopControl::Agent.
  * @internal
  **/
-class Sphinx : public AbstractSphinx {
+class Sphinx : public AbstractSphinx
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( Sphinx )
+    Q_DISABLE_COPY (Sphinx)
     friend class Agent;
 
 protected:
@@ -44,7 +47,7 @@ protected:
      *
      * @param p_parent Defaults to NULL.
      **/
-    explicit Sphinx ( QObject* p_parent = 0 );
+    explicit Sphinx (QObject* p_parent = 0);
 
     /**
      * @brief Constructor.
@@ -52,21 +55,21 @@ protected:
      * @param p_description The description used to build the pipeline.
      * @param p_parent Defaults to 0.
      **/
-    Sphinx ( const QString& p_description, QObject* p_parent = 0 );
+    Sphinx (const QString& p_description, QObject* p_parent = 0);
     /**
      * @brief Constructor.
      *
      * @param p_pipeline The pipeline to be used.
      * @param p_parent Defaults to 0.
      **/
-    Sphinx ( QGst::PipelinePtr p_pipeline, QObject* p_parent );
+    Sphinx (QGst::PipelinePtr p_pipeline, QObject* p_parent = 0);
 
 private slots:
-    void applicationMessage ( const QGst::MessagePtr& message );
+    void applicationMessage (const QGst::MessagePtr& message);
 };
 
 }
 }
 
 #endif // DESKTOPASR_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

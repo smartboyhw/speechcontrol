@@ -69,6 +69,10 @@ public:
     Agent();
     virtual ~Agent();
 
+//     void start();
+//     
+//     void stop();
+    
     /**
      * @brief Determines the active status of desktop control.
      * @overload Determines the active status of desktop control.

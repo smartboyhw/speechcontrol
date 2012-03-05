@@ -61,84 +61,90 @@ using SpeechControl::DesktopControl::AbstractCategory;
 using SpeechControl::DesktopControl::CommandList;
 
 /// @todo Add icons to the QActions.
-Main::Main() : m_ui ( new Ui::MainWindow ), m_prgStatusbar ( 0 ) {
-    m_ui->setupUi ( this );
-    m_ui->retranslateUi ( this );
-    m_prgStatusbar = new QProgressBar ( this );
+Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0)
+{
+    m_ui->setupUi (this);
+    m_ui->retranslateUi (this);
+    m_prgStatusbar = new QProgressBar (this);
 
     // Do a bit of cleanup on the status bar.
-    m_ui->statusBar->addPermanentWidget ( m_prgStatusbar );
-    m_prgStatusbar->setMaximum ( 100 );
-    setProgress ( 0.0 );
+    m_ui->statusBar->addPermanentWidget (m_prgStatusbar);
+    m_prgStatusbar->setMaximum (100);
+    setProgress (0.0);
 
     // Update icons.
-    m_ui->actionQuit->setIcon ( QIcon::fromTheme ( "application-exit" ) );
-    m_ui->actionAboutSpeechControl->setIcon ( QIcon ( ":/logo/sc" ) );
-    m_ui->actionReportBug->setIcon ( QIcon::fromTheme ( "tools-report-bug" ) );
-    m_ui->actionOptions->setIcon ( QIcon::fromTheme ( "configure" ) );
-    m_ui->actionWizardMicrophone->setIcon ( QIcon::fromTheme ( "audio-input-microphone" ) );
-    m_ui->menuDictation->setIcon(QIcon::fromTheme ( "audio-input-microphone" ));
-    m_ui->menuDesktopControl->setIcon ( QIcon::fromTheme ( "audio-headset" ) );
-    m_ui->actionWizardBooks->setIcon ( QIcon::fromTheme ( "x-office-document" ) );
-    m_ui->actionWizardSessions->setIcon ( QIcon::fromTheme ( "application-x-tar" ) );
-    m_ui->actionDesktopControlCommands->setIcon ( QIcon::fromTheme ( "view-list-text" ) );
-    m_ui->actionStartTraining->setIcon ( QIcon::fromTheme ( "system-run" ) );
+    m_ui->actionQuit->setIcon (QIcon::fromTheme ("application-exit"));
+    m_ui->actionAboutSpeechControl->setIcon (QIcon (":/logo/sc"));
+    m_ui->actionReportBug->setIcon (QIcon::fromTheme ("tools-report-bug"));
+    m_ui->actionOptions->setIcon (QIcon::fromTheme ("configure"));
+    m_ui->actionWizardMicrophone->setIcon (QIcon::fromTheme ("audio-input-microphone"));
+    m_ui->menuDictation->setIcon (QIcon::fromTheme ("audio-input-microphone"));
+    m_ui->menuDesktopControl->setIcon (QIcon::fromTheme ("audio-headset"));
+    m_ui->actionWizardBooks->setIcon (QIcon::fromTheme ("x-office-document"));
+    m_ui->actionWizardSessions->setIcon (QIcon::fromTheme ("application-x-tar"));
+    m_ui->actionDesktopControlCommands->setIcon (QIcon::fromTheme ("view-list-text"));
+    m_ui->actionStartTraining->setIcon (QIcon::fromTheme ("system-run"));
 
     // Update the actions and buttons.
-    connect ( DesktopControl::Agent::instance(), SIGNAL ( stateChanged ( OperationState ) ),this,SLOT ( desktopControlStateChanged() ) );
-    connect ( Dictation::Agent::instance(),SIGNAL ( stateChanged ( OperationState ) ),this,SLOT ( dictationStateChanged() ) );
+    connect (DesktopControl::Agent::instance(), SIGNAL (stateChanged (OperationState)), this, SLOT (desktopControlStateChanged()));
+    connect (Dictation::Agent::instance(), SIGNAL (stateChanged (OperationState)), this, SLOT (dictationStateChanged()));
     desktopControlStateChanged();
     dictationStateChanged();
-    on_actionDesktopControlActive_triggered ( DesktopControl::Agent::instance()->isActive() );
-    on_actionDictationActive_triggered ( Dictation::Agent::instance()->isActive() );
+    on_actionDesktopControlActive_triggered (DesktopControl::Agent::instance()->isActive());
+    on_actionDictationActive_triggered (Dictation::Agent::instance()->isActive());
     Indicator::show();
 
     // Greet the user :)
-    setStatusMessage ( tr ( "Welcome to %1, speech recognition for Linux." ).arg ( QApplication::applicationName() ),4000 );
+    setStatusMessage (tr ("Welcome to %1, speech recognition for Linux.").arg (QApplication::applicationName()), 4000);
 }
 
-void Main::show() {
-    if ( Microphone::allMicrophones().empty() ) {
-        QErrorMessage* l_msg = new QErrorMessage ( this );
-        l_msg->setModal ( true );
-        l_msg->setWindowTitle ( tr ( "No Microphones Found" ) );
-        l_msg->showMessage ( tr ( "No microphones were found on your system. Please ensure that you have one installed and detectable by "
-                                  "the audio system and make sure that <b>%1</b> is installed on your system." ).arg ( "gstreamer-plugins-good" ),
-                                  "NoMicrophonesFoundOnStart" );
+void Main::show()
+{
+    if (Microphone::allMicrophones().empty()) {
+        QErrorMessage* l_msg = new QErrorMessage (this);
+        l_msg->setModal (true);
+        l_msg->setWindowTitle (tr ("No Microphones Found"));
+        l_msg->showMessage (tr ("No microphones were found on your system. Please ensure that you have one installed and detectable by "
+                                "the audio system and make sure that <b>%1</b> is installed on your system.").arg ("gstreamer-plugins-good"),
+                            "NoMicrophonesFoundOnStart");
     }
 
     updateContent();
     QMainWindow::show();
 }
 
-void Main::close() {
+void Main::close()
+{
     QMainWindow::close();
 }
 
-void Main::setStatusMessage ( const QString& p_message , const int p_timeout ) {
-    m_ui->statusBar->showMessage ( p_message, p_timeout );
+void Main::setStatusMessage (const QString& p_message , const int p_timeout)
+{
+    m_ui->statusBar->showMessage (p_message, p_timeout);
 }
 
-void Main::desktopControlStateChanged() {
-    switch ( DesktopControl::Agent::instance()->state() ) {
+void Main::desktopControlStateChanged()
+{
+    switch (DesktopControl::Agent::instance()->state()) {
     case AbstractAgent::OperationState::Enabled:
-        setStatusMessage ( tr ( "Desktop control enabled." ) );
+        setStatusMessage (tr ("Desktop control enabled."));
         break;
     case AbstractAgent::OperationState::Disabled:
-        setStatusMessage ( tr ( "Desktop control disabled." ) );
+        setStatusMessage (tr ("Desktop control disabled."));
         break;
     default:
         break;
     }
 }
 
-void Main::dictationStateChanged() {
-    switch ( Dictation::Agent::instance()->state() ) {
+void Main::dictationStateChanged()
+{
+    switch (Dictation::Agent::instance()->state()) {
     case AbstractAgent::OperationState::Enabled:
-        setStatusMessage ( tr ( "Dictation enabled." ) );
+        setStatusMessage (tr ("Dictation enabled."));
         break;
     case AbstractAgent::OperationState::Disabled:
-        setStatusMessage ( tr ( "Dictation disabled." ) );
+        setStatusMessage (tr ("Dictation disabled."));
         break;
     default:
         break;
@@ -146,104 +152,124 @@ void Main::dictationStateChanged() {
 }
 
 /// @todo Instead of this constant ticking, use signals to update this code.
-void Main::updateContent() {
-    m_ui->lblSessions->setText ( QString::number ( Session::allSessions().count() ) );
-    m_ui->lblBooks->setText ( QString::number ( Content::allContents().count() ) );
-    m_ui->lblAccuracy->setText ( "100.0%" );
-    m_ui->lblSpeechIndex->setText ( "10.0" );
+void Main::updateContent()
+{
+    m_ui->lblSessions->setText (QString::number (Session::allSessions().count()));
+    m_ui->lblBooks->setText (QString::number (Content::allContents().count()));
+    m_ui->lblAccuracy->setText ("100.0%");
+    m_ui->lblSpeechIndex->setText ("10.0");
 }
 
-void Main::setProgress ( const double p_progress ) {
-    const int l_val = ( int ) ( p_progress * 100 );
-    if ( l_val == 0 || l_val == 100 ) {
+void Main::setProgress (const double p_progress)
+{
+    const int l_val = (int) (p_progress * 100);
+
+    if (l_val == 0 || l_val == 100) {
         m_prgStatusbar->hide();
     } else {
         m_prgStatusbar->show();
-        m_prgStatusbar->setValue ( l_val );
+        m_prgStatusbar->setValue (l_val);
     }
 }
 
-void Main::on_actionDesktopControlOptions_triggered() {
-    Settings::switchToPanel ( "dsktpcntrl" );
+void Main::on_actionDesktopControlOptions_triggered()
+{
+    Settings::switchToPanel ("dsktpcntrl");
 }
 
-void Main::on_actionOptions_triggered() {
-    Settings::switchToPanel ( "gnrl" );
+void Main::on_actionOptions_triggered()
+{
+    Settings::switchToPanel ("gnrl");
 }
 
 /// @todo Invoke the process of adapting a model. If anything, have a special window for such a process.
-void Main::on_actionAdaptModels_triggered() {
+void Main::on_actionAdaptModels_triggered()
+{
 }
 
-void Main::on_actionStartTraining_triggered () {
+void Main::on_actionStartTraining_triggered ()
+{
     Session* l_session = SessionManager::pickSession();
-    if ( l_session ) {
-        TrainingDialog::startTraining ( l_session );
-        setStatusMessage ( tr ( "Training session \"%1\"" ).arg ( l_session->content()->title() ) , 3000 );
+
+    if (l_session) {
+        TrainingDialog::startTraining (l_session);
+        setStatusMessage (tr ("Training session \"%1\"").arg (l_session->content()->title()) , 3000);
     }
 }
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
-void Main::on_actionDesktopControlActive_triggered ( bool p_checked ) {
-    DesktopControl::Agent::instance()->setState ( ( p_checked ) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled );
-    setStatusMessage ( ( ( p_checked == true ) ? tr ( "Desktop control enabled." ) : tr ( "Desktop control disabled." ) ) , 3000 );
-    m_ui->btnDsktpCntrl->setIcon ( ( ( p_checked == true ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
-    m_ui->btnDsktpCntrl->setChecked ( p_checked );
+void Main::on_actionDesktopControlActive_triggered (bool p_checked)
+{
+    DesktopControl::Agent::instance()->setState (p_checked ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled);
+    setStatusMessage ( ( (p_checked == true) ? tr ("Desktop control enabled.") : tr ("Desktop control disabled.")) , 3000);
+    m_ui->btnDsktpCntrl->setIcon ( ( (p_checked == true) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
+    m_ui->btnDsktpCntrl->setChecked (p_checked);
 }
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
-void Main::on_actionDictationActive_triggered ( const bool p_checked ) {
-    Dictation::Agent::instance()->setState ( ( p_checked ) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled );
-    setStatusMessage ( ( ( p_checked ) ? tr ( "Dictation enabled." ) : tr ( "Dictation disabled." ) )  ,3000 );
-    m_ui->btnDctn->setIcon ( ( ( p_checked ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
-    m_ui->btnDctn->setChecked ( p_checked );
+void Main::on_actionDictationActive_triggered (const bool p_checked)
+{
+    Dictation::Agent::instance()->setState ( (p_checked) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled);
+    setStatusMessage ( ( (p_checked) ? tr ("Dictation enabled.") : tr ("Dictation disabled."))  , 3000);
+    m_ui->btnDctn->setIcon ( ( (p_checked) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
+    m_ui->btnDctn->setChecked (p_checked);
 }
 
-void Main::on_actionAboutQt_triggered() {
+void Main::on_actionAboutQt_triggered()
+{
     QApplication::aboutQt();
 }
 
-void Main::on_actionAboutSpeechControl_triggered() {
-    AboutDialog l_dlg ( this );
+void Main::on_actionAboutSpeechControl_triggered()
+{
+    AboutDialog l_dlg (this);
     l_dlg.exec();
 }
 
-void Main::on_actionPluginOptions_triggered() {
-    Settings::switchToPanel ( "dsktpcntrl" );
+void Main::on_actionPluginOptions_triggered()
+{
+    Settings::switchToPanel ("dsktpcntrl");
 }
 
-void Main::on_actionDictationOptions_triggered() {
-    Settings::switchToPanel ( "dctn" );
+void Main::on_actionDictationOptions_triggered()
+{
+    Settings::switchToPanel ("dctn");
 }
 
-void Main::on_actionWizardMicrophone_triggered() {
+void Main::on_actionWizardMicrophone_triggered()
+{
     MicrophoneSetup* l_wiz = new MicrophoneSetup;
     l_wiz->exec();
 }
 
-void Main::on_actionWizardBooks_triggered() {
+void Main::on_actionWizardBooks_triggered()
+{
     ContentWizard* l_wiz = new ContentWizard;
     l_wiz->exec();
 }
 
-void Main::on_actionWizardSessions_triggered() {
+void Main::on_actionWizardSessions_triggered()
+{
     SessionWizard* l_wiz = new SessionWizard;
     l_wiz->exec();
 }
 
 /// @todo Build the Voxforge Wizard.
-void Main::on_actionWizardVoxForge_triggered() {
+void Main::on_actionWizardVoxForge_triggered()
+{
 
 }
 
-void Main::on_actionReportBug_triggered() {
-    QProcess::startDetached("sensible-browser", (QStringList() << "http://dev.thesii.org/reporting-bugs"));
+void Main::on_actionReportBug_triggered()
+{
+    QProcess::startDetached ("sensible-browser", (QStringList() << "http://dev.thesii.org/reporting-bugs"));
 }
 
-Main::~Main() {
+Main::~Main()
+{
     delete m_ui;
 }
 
 #include "main-window.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
 

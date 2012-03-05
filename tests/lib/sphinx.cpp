@@ -43,9 +43,7 @@ void TestSphinx::cleanup() {
 }
 
 void TestSphinx::obtainSphinxInstance() {
-    QBENCHMARK {
-        TestAbstractSphinx* l_sphinx = new TestAbstractSphinx ( this );
-    }
+    TestAbstractSphinx* l_sphinx = new TestAbstractSphinx ( this );
 }
 
 void TestSphinx::recognizeTextFromSample() {

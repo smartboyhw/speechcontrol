@@ -83,7 +83,8 @@ QString AbstractSphinx::standardDescription() {
 
 /// @todo Determine how to pull the pointer of the held data from the QGlib::Value (or GValue) and use that as the ps_decoder_t.
 QGlib::Value AbstractSphinx::decoder() const {
-    return m_psphinx->property ( "decoder" );
+    QGlib::Value l_glibPs = m_psphinx->property ( "decoder" );
+    return l_glibPs;
 }
 
 LanguageModel* AbstractSphinx::languageModel() const {
@@ -160,7 +161,7 @@ void AbstractSphinx::setDictionary ( const QString& p_path ) {
 }
 
 void AbstractSphinx::setDictionary ( const Dictionary* p_dictionary ) {
-
+    return setDictionary(p_dictionary->path());
 }
 
 void AbstractSphinx::setAcousticModel ( const QString& p_path ) {
@@ -197,9 +198,11 @@ bool AbstractSphinx::start() {
     return isRunning();
 }
 
-void AbstractSphinx::stop() {
+bool AbstractSphinx::stop() {
     if ( m_pipeline->setState ( QGst::StateNull ) == QGst::StateChangeSuccess )
         m_running = NotPrepared;
+
+    return m_running == NotPrepared;
 }
 
 void AbstractSphinx::togglePause() {

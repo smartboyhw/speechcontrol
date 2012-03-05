@@ -21,14 +21,22 @@ set(TEST_BASE_SCPP "@TEST_SRC@")
 
 if (TEST_MODE STREQUAL "APP")
     file(GLOB TEST_APP_SRCS
-        "../../../src/app/*.cpp"
-        "../../../src/app/dictation/*.cpp"
-        "../../../src/app/voxforge/*.cpp"
-        "../../../src/app/sessions/*.cpp"
-        "../../../src/app/desktopcontrol/*.cpp")
-    file (GLOB_RECURSE TEST_APP_WINDOW_SRCS "../../../src/app/windows/*.cpp")
+        "${CMAKE_SOURCE_DIR}/src/app/*.cpp"
+        "${CMAKE_SOURCE_DIR}/src/app/dictation/*.cpp"
+        "${CMAKE_SOURCE_DIR}/src/app/voxforge/*.cpp"
+        "${CMAKE_SOURCE_DIR}/src/app/sessions/*.cpp"
+        "${CMAKE_SOURCE_DIR}/src/app/desktopcontrol/*.cpp")
+
+    file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/dictation")
+    file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/voxforge")
+    file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/sessions")
+    file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/desktopcontrol")
+    file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/windows")
+    file (GLOB_RECURSE TEST_APP_WINDOW_SRCS
+                       "${CMAKE_SOURCE_DIR}/src/app/windows/*.cpp")
+
     list(APPEND TEST_APP_SRCS ${TEST_APP_WINDOW_SRCS})
-    list(REMOVE_ITEM TEST_APP_SRCS "${PROJECT_SOURCE_DIR}/../../../src/app/main.cpp")
+    list(REMOVE_ITEM TEST_APP_SRCS "${CMAKE_SOURCE_DIR}/src/app/main.cpp")
 endif (TEST_MODE STREQUAL "APP")
 
 ## Variables
@@ -48,6 +56,8 @@ if (TEST_MODE STREQUAL "APP")
                                  "${CMAKE_BINARY_DIR}/src/app"
                                  "${CMAKE_SOURCE_DIR}/src/app")
     list(APPEND TEST_LIBRARIES ${SPCHCNTRL_APP_LIBRARIES})
+    list(APPEND TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_APP_COMPILE_DEFINITIONS})
+    list(APPEND TEST_COMPILE_FLAGS ${SPCHCNTRL_APP_COMPILE_FLAGS})
     list(APPEND TEST_BASE_SCPP ${TEST_APP_SRCS})
 else (TEST_MODE STREQUAL "APP")
     set(TEST_LIBRARIES ${SPCHCNTRL_LIBRARIES}

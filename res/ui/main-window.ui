@@ -434,6 +434,9 @@ padding-right: 4px;</string>
      <height>21</height>
     </rect>
    </property>
+   <property name="defaultUp">
+    <bool>true</bool>
+   </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
@@ -451,7 +454,7 @@ padding-right: 4px;</string>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
-     <string>Tools</string>
+     <string>&amp;Tools</string>
     </property>
     <widget class="QMenu" name="menuDesktopControl">
      <property name="title">
@@ -589,6 +592,12 @@ padding-right: 4px;</string>
    <property name="toolTip">
     <string>Toggles the state of the desktop control feature.</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+C</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
   </action>
   <action name="actionDesktopControlCommands">
    <property name="text">
@@ -604,6 +613,12 @@ padding-right: 4px;</string>
    </property>
    <property name="text">
     <string>Enabled</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+D</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
   <action name="actionDesktopControlOptions">

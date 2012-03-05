@@ -52,6 +52,7 @@ private:
     QApplication* m_app;    /// Holds the Application instance.
     Windows::Main* s_mw;    /// Holds the main window.
     QSettings* m_settings;  /// Holds the application's global configuration.
+    QTranslator* m_trnsltr; /// Holds the translating agent.
     static Core* s_inst;    /// Holds the instance.
     
 public:
@@ -147,18 +148,8 @@ public slots:
      **/
     void stop();
 
-    /// Experimental
-    void asrFinished ( QString& text );
-
 private slots:
     void invokeAutoStart();
-
-private:
-    QApplication* m_app;    /// Holds the Application instance.
-    Windows::Main* s_mw;    /// Holds the main window.
-    QSettings* m_settings;  /// Holds the application's global configuration.
-    QTranslator* m_trnsltr; /// Holds the translating agent.
-    static Core* s_inst;    /// Holds a instance.
 };
 
 }

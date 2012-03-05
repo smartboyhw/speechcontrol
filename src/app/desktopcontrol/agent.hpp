@@ -28,12 +28,14 @@
 
 // Local
 #include <app/abstractagent.hpp>
+#include "sphinx.hpp"
 
 namespace SpeechControl
 {
 /**
  * @brief Container namespace for all of the desktop control related clases.
  **/
+
 namespace DesktopControl
 {
 /**
@@ -91,7 +93,7 @@ public:
     static Agent* instance();
     
 public slots:
-    void invokeCommand(QString& cmd);
+    void invokeCommand(const QString& cmd);
 
 };
 }

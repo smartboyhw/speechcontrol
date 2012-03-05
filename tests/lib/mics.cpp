@@ -26,6 +26,9 @@
 using namespace SpeechControl;
 
 void TestMicrophone::init() {
+    if (Microphone::allMicrophones().length() != 0)
+        QSKIP("This test requires at least one input device operational on the test environment.", SkipAll);
+
     SpeechControl::System::start();
 }
 
@@ -56,6 +59,13 @@ void TestMicrophone::adjustVolume() {
     QCOMPARE ( l_defaultMic->volume() == 0.8,true );
 }
 
+void TestMicrophone::toggleMuteState() {
+    Microphone* l_defaultMic = Microphone::defaultMicrophone();
+    QCOMPARE ( l_defaultMic != 0 && !Microphone::allMicrophones().isEmpty(),true );
+    const bool l_muted = l_defaultMic->isMuted();
+    l_defaultMic->mute(!l_defaultMic->isMuted());
+    QCOMPARE ( l_defaultMic->isMuted(), !l_muted );
+}
 QTEST_MAIN ( TestMicrophone )
 
 #include "mics.moc"

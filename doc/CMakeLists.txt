@@ -23,7 +23,7 @@ if(WITH_DOCS)
             SOURCES "Doxyfile.lib.in"
             DEPENDS speechcontrol
             COMMENT "Built documentation for SpeechControl library (API).")
-        add_custom_target(docs ALL
+        add_custom_target(docs
             COMMENT "Built documentation.")
 
         add_dependencies(docs docs-lib docs-app)

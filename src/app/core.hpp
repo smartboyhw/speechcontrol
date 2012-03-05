@@ -148,12 +148,8 @@ public slots:
      **/
     void stop();
 
-    /// Experimental
-    void asrFinished ( QString& text );
-
 private slots:
     void invokeAutoStart();
-
 };
 
 }

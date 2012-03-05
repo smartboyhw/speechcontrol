@@ -86,7 +86,7 @@ bool Agent::isEnabled() {
 /// @todo Since this returns more than one command, should we provide a UI that allows you to pick which command you might want?
 void Agent::invokeCommand ( const QString& cmd ) {
     AbstractCategory* l_glbl = AbstractCategory::global();
-    CommandList l_cmds = l_glbl->matchAllCommands ( p_cmd );
+    CommandList l_cmds = l_glbl->matchAllCommands ( cmd );
 
     Q_FOREACH ( AbstractCommand* l_cmd, l_cmds ) {
         qDebug() << l_cmd->id() << l_cmd->statements();

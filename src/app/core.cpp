@@ -57,10 +57,6 @@ Core::Core ( int p_argc, char** p_argv, QApplication* app ) {
     s_inst = this;
 
     // start application.
-    m_app->setApplicationName ("SpeechControl");
-    m_app->setOrganizationDomain ("thesii.org");
-    m_app->setOrganizationName ("Synthetic Intellect Institute");
-    m_app->setApplicationVersion (SPCHCNTRL_BUILD_VERSION);
     m_trnsltr = new QTranslator (this);
     m_app->installTranslator (m_trnsltr);
 
@@ -115,12 +111,6 @@ Windows::Main* Core::mainWindow()
 void Core::stop()
 {
     emit instance()->stopped();
-}
-
-/// Experimental
-void Core::asrFinished (QString& text)
-{
-    qDebug() << "[ASR] Completed with " << text;
 }
 
 QVariant Core::configuration (const QString& p_attrName, QVariant p_attrDefValue)

@@ -22,7 +22,7 @@
 #define DESKTOPASR_HPP
 
 #include <lib/abstractsphinx.hpp>
-#include <desktopcontrol/agent.hpp>
+
 
 namespace SpeechControl {
 namespace DesktopControl {
@@ -42,7 +42,7 @@ protected:
     /**
      * @brief Null constructor.
      *
-     * @param p_parent Defaults to 0.
+     * @param p_parent Defaults to NULL.
      **/
     explicit Sphinx ( QObject* p_parent = 0 );
 

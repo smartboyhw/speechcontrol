@@ -254,6 +254,10 @@ SentenceList Session::incompletedSentences() const
 
         if (!l_sent->allPhrasesCompleted())
             l_lst << l_sent;
+<<<<<<< HEAD
+=======
+
+>>>>>>> Fix build issues.
         continue;
     }
 

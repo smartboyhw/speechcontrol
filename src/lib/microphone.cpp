@@ -134,7 +134,7 @@ void SpeechControl::Microphone::startRecording() {
 
     QGlib::connect ( m_pipeline->bus(), "message", this, &Microphone::onPipelineBusmessage );
     QGlib::connect ( m_sinkAudio, "eos", this, &Microphone::onSinkAudioEos );
-    QGlib::connect ( m_srcAudio, "new-buffer", this, &Microphone::onSinkAudioNewbuffer );
+    QGlib::connect ( m_sinkAudio, "new-buffer", this, &Microphone::onSinkAudioNewbuffer );
 
     // Get the party started :)
     m_sinkAudio->setState ( QGst::StatePlaying );
@@ -187,9 +187,9 @@ void SpeechControl::Microphone::mute ( const bool &p_mute ) {
 
 void SpeechControl::Microphone::obtain() {
     try {
-        m_binAudio = QGst::Bin::fromDescription ( "autoaudiosrc name=\"audiosrc\" ! audioconvert ! "
-                     "audioresample ! audiorate ! volume name=\"volume\" ! "
-                     "filesink name=\"filesink\"" );
+        m_binAudio = QGst::Bin::fromDescription ( "autoaudiosrc name=audiosrc ! audioconvert ! "
+                     "audioresample ! audiorate ! volume name=volume ! "
+                     "appsink name=appsink" );
     } catch ( const QGlib::Error & error ) {
         qCritical() << "Failed to create audio source bin:" << error;
         m_binAudio.clear();
@@ -199,7 +199,7 @@ void SpeechControl::Microphone::obtain() {
     p_micLst.insert ( m_id, const_cast<Microphone*> ( this ) );
 
     // Obtain tools for recording like the encoder and the source.
-    m_sinkAudio = m_binAudio->getElementByName ( "filesink" );
+    m_sinkAudio = m_binAudio->getElementByName ( "appsink" );
     m_srcAudio = m_binAudio->getElementByName ( "audiosrc" );
     m_srcVolume = m_binAudio->getElementByName ( "volume" );
 
@@ -237,25 +237,20 @@ bool Microphone::isValid() const {
 
 void Microphone::onPipelineBusmessage ( const QGst::MessagePtr & message ) {
     switch ( message->type() ) {
+    case QGst::MessageError: {
+        QGst::ErrorMessagePtr l_errMsg = message.staticCast<QGst::ErrorMessage>();
+        qWarning() << "Pipeline Error: " << l_errMsg->debugMessage();
+    }
+    break;
 
-    case QGst::MessageEos:
-        //got end-of-stream - stop the pipeline
-        //stop();
-        break;
-
-    case QGst::MessageError:
-        //check if the pipeline exists before destroying it,
-        //as we might get multiple error messages
-
-        if ( m_pipeline ) {
-            //stop();
-        }
-
-        qCritical() << tr ( "Pipeline Error" )
-                    << message.staticCast<QGst::ErrorMessage>()->error().message();
-        break;
+    case QGst::MessageStateChanged: {
+        QGst::StateChangedMessagePtr l_stateMsg = message.staticCast<QGst::StateChangedMessage>();
+        qDebug() << l_stateMsg->newState();
+    }
+    break;
 
     default:
+        qDebug() << message->typeName();
         break;
     }
 }

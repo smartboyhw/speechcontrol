@@ -215,7 +215,7 @@ Sentence* Session::firstIncompleteSentence() const
     for (int i = 0; i < l_lst.count(); i++) {
         Sentence* l_sent = l_lst.at (i);
 
-        if (!l_sent->allPhrasesCompleted())
+        if (!l_sent->allPhrasesCompleted()) {
             return l_sent;
         else {
             qDebug() << l_sent->text() << "already completed @" << l_sent->audioPath().absolutePath();
@@ -234,7 +234,7 @@ Sentence* Session::lastIncompleteSentence() const
     for (SentenceList::ConstIterator l_itr = l_lst.end(); l_itr != l_endItr; l_itr--) {
         const Sentence* l_sent = (*l_itr);
 
-        if (!l_sent->allPhrasesCompleted())
+        if (!l_sent->allPhrasesCompleted()) {
             return *l_itr;
         else {
             continue;

@@ -61,6 +61,10 @@ void System::start ( int *argc, char **argv[] ) {
     }
 }
 
+System* System::instance() {
+    return s_inst;
+}
+
 void System::stop() {
     s_inst->deleteLater();
 }

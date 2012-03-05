@@ -30,9 +30,10 @@ namespace DesktopControl
 
 Agent* Agent::s_instance = 0;
 
-Agent::Agent() : AbstractAgent ( AbstractCategory::global() ) {
-    m_sphinx = new Sphinx ( Sphinx::standardDescription(), parent() );
-    connect ( m_sphinx, SIGNAL ( finished ( QString ) ), this, SLOT ( invokeCommand ( QString ) ) );
+Agent::Agent() : AbstractAgent (AbstractCategory::global())
+{
+    m_sphinx = new Sphinx (Sphinx::standardDescription(), parent());
+    connect (m_sphinx, SIGNAL (finished (QString)), this, SLOT (invokeCommand (QString)));
 }
 
 Agent::~Agent()
@@ -40,8 +41,19 @@ Agent::~Agent()
 
 }
 
-Agent* Agent::instance() {
-    if ( s_instance == 0 ) {
+// void Agent::start()
+// {
+//     m_sphinx->start();
+// }
+// 
+// void Agent::stop()
+// {
+//     m_sphinx->stop();
+// }
+
+Agent* Agent::instance()
+{
+    if (s_instance == 0) {
         s_instance = new Agent;
     }
 
@@ -52,10 +64,10 @@ AbstractAgent::OperationState Agent::onStateChanged (const AbstractAgent::Operat
 {
     switch (p_state) {
     case Enabled: {
-        if ( !isEnabled() )
-            return Disabled;
+//         if (!isEnabled())
+//             return Disabled;
 
-        if ( !m_sphinx->start() ) {
+        if (!m_sphinx->start()) {
             qWarning() << "[DesktopControl::Agent] Start unsuccessful.";
             return Disabled;
         }
@@ -77,20 +89,23 @@ AbstractAgent::OperationState Agent::onStateChanged (const AbstractAgent::Operat
     return Undefined;
 }
 
-bool Agent::isActive() const {
+bool Agent::isActive() const
+{
     return m_sphinx->isRunning();
 }
 
-bool Agent::isEnabled() {
-    return Core::configuration ( "DesktopControl/Enabled" ).toBool();
+bool Agent::isEnabled()
+{
+    return Core::configuration ("DesktopControl/Enabled").toBool();
 }
 
 /// @todo Since this returns more than one command, should we provide a UI that allows you to pick which command you might want?
-void Agent::invokeCommand ( const QString& cmd ) {
+void Agent::invokeCommand (const QString& cmd)
+{
     AbstractCategory* l_glbl = AbstractCategory::global();
-    CommandList l_cmds = l_glbl->matchAllCommands ( cmd );
+    CommandList l_cmds = l_glbl->matchAllCommands (cmd);
 
-    Q_FOREACH ( AbstractCommand* l_cmd, l_cmds ) {
+    Q_FOREACH (AbstractCommand * l_cmd, l_cmds) {
         qDebug() << l_cmd->id() << l_cmd->statements();
     }
 }

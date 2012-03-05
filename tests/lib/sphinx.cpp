@@ -18,15 +18,22 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <QString>
 #include <QtTest/QTest>
 #include <QtGStreamer/QGlib/refpointer.h>
 #include <QtGStreamer/QGst/Element>
 #include <lib/system.hpp>
+
 #include "sphinx.h"
+#include "config_sphinx.hpp"
+#define SECONDS 18 + 2.5
+
+using namespace QTest;
+using namespace SpeechControl;
 
 TestAbstractSphinx::TestAbstractSphinx ( QObject* p_object ) : AbstractSphinx ( p_object ) {
     QString l_pipeline = standardDescription();
-    l_pipeline = l_pipeline.replace ( "autoaudiosrc name=audiosrc","filesrc name=audiosrc location=/home/jacky/Music/DanteVoiceOver.ogg ! decodebin" );
+    l_pipeline = l_pipeline.replace ( "autoaudiosrc name=audiosrc","filesrc name=audiosrc ! decodebin" );
     buildPipeline ( l_pipeline );
 }
 
@@ -47,30 +54,30 @@ void TestSphinx::obtainSphinxInstance() {
 }
 
 void TestSphinx::recognizeTextFromSample() {
-//QString l_audioPath ( "/home/jacky/Music/DanteVoiceOver.ogg" );
+    QString l_audioPath ( AUDIO );
     QString l_text, l_uttid;
 
     TestAbstractSphinx* l_sphinx = new TestAbstractSphinx ( this );
 
-//l_sphinx->audioSrcElement()->setProperty<const char*> ( "location",l_audioPath.toStdString().c_str() );
-    //qDebug() << "Audio training from" << l_audioPath;
-    QCOMPARE(l_sphinx->start(),true);
-    l_sphinx->formResult ( l_text,l_uttid );
-    qDebug() << l_text << l_uttid;
+    l_sphinx->audioSrcElement()->setProperty<const char*> ( "location",l_audioPath.toStdString().c_str() );
+    QBENCHMARK {
+        QCOMPARE ( l_sphinx->start(),true );
+        l_sphinx->formResult ( l_text,l_uttid );
+        QCOMPARE ( !l_text.isEmpty(), true );
+        QCOMPARE ( !l_uttid.isEmpty(), true );
+    }
 
-    QCOMPARE ( l_text.size() == 0, false );
-    QCOMPARE ( l_uttid.size() == 0, false );
 }
 
 void TestSphinx::benchSphinx() {
-    QString l_audioPath ( "/home/jacky/Development/Projects/SyntheticIntellectInstitute/SpeechControl/code/tests/data/dante.ogg" );
-//    QBENCHMARK {
-        TestAbstractSphinx* l_sphinx = new TestAbstractSphinx ( this );
-        l_sphinx->audioSrcElement()->setProperty<const char*> ( "location",l_audioPath.toStdString().c_str() );
-        QCOMPARE(l_sphinx->start(),true);
-//    }
+    TestAbstractSphinx* l_sphinx = new TestAbstractSphinx ( this );
+        QCOMPARE ( l_sphinx->start(),true );
+        qDebug() << "Waiting" << SECONDS << "secs to permit recognition process from mic.";
+        qWait ( ( int ) ( ( SECONDS ) * 1000 ) );
+        QCOMPARE ( l_sphinx->stop(), true );
 }
 
 QTEST_MAIN ( TestSphinx )
 #include "sphinx.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+

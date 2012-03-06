@@ -157,7 +157,7 @@ const QByteArray& Microphone::data() const {
 }
 
 double SpeechControl::Microphone::volume() const {
-    return m_srcVolume->property ( "volume" ).toInt();
+    return qVariantFromValue(m_srcVolume->property ( "volume" ).toString()).toDouble();
 }
 
 bool SpeechControl::Microphone::isMuted() const {

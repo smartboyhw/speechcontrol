@@ -161,7 +161,7 @@ double SpeechControl::Microphone::volume() const {
 }
 
 bool SpeechControl::Microphone::isMuted() const {
-    return m_srcVolume->property ( "mute" );
+    return m_srcVolume->property ( "mute" ).toBool();
 }
 
 bool Microphone::isRecording() const {
@@ -181,8 +181,8 @@ void SpeechControl::Microphone::setVolume ( const double &p_volume ) {
     m_srcVolume->setProperty ( "volume", p_volume );
 }
 
-void SpeechControl::Microphone::mute ( const bool &p_mute ) {
-    m_srcVolume->setProperty ( "mute", p_mute );
+void SpeechControl::Microphone::mute ( const bool &p_muted ) {
+    m_srcVolume->setProperty ( "mute", p_muted );
 }
 
 void SpeechControl::Microphone::obtain() {

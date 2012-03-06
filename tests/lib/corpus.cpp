@@ -68,8 +68,10 @@ void TestCorpus::countPhrases() {
 }
 
 void TestCorpus::cleanupTestCase() {
-    m_crps->erase();
-    m_crps->deleteLater();
+    if ( m_crps ) {
+        m_crps->erase();
+        m_crps->deleteLater();
+    }
 }
 
 

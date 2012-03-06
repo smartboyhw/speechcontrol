@@ -28,6 +28,7 @@
 #include "acousticmodel.hpp"
 
 using SpeechControl::AcousticModel;
+using SpeechControl::NoiseDictionary;
 
 AcousticModel::AcousticModel ( const AcousticModel &p_mdl ) :
     QObject ( p_mdl.parent() ), m_params ( p_mdl.m_params ), m_path ( p_mdl.m_path ) {
@@ -110,5 +111,5 @@ bool AcousticModel::isValid() const {
     return ( QDir ( m_path ) ).exists();
 }
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
 #include "acousticmodel.moc"

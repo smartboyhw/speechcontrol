@@ -40,7 +40,8 @@ if (TEST_MODE STREQUAL "APP")
 endif (TEST_MODE STREQUAL "APP")
 
 ## Variables
-set(TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS})
+set(TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS}
+                             BUILDING_TEST)
 set(TEST_COMPILE_FLAGS ${SPCHCNTRL_COMPILE_FLAGS})
 set(TEST_LIBRARIES ${QT_QTTEST_LIBRARY})
 set(TEST_INCLUDE_DIRS ${SPCHCNTRL_INCLUDE_DIRS}
@@ -85,15 +86,9 @@ set_target_properties(test@TEST_ID@ PROPERTIES
     EXCLUDE_FROM_ALL ON)
 target_link_libraries(test@TEST_ID@ ${TEST_LIBRARIES})
 
-## Set up dependencies.
-if (TEST_MODE STREQUAL "LIB")
-    add_dependencies(test@TEST_ID@ speechcontrol)
-else(TEST_MODE STREQUAL "LIB")
-    add_dependencies(test@TEST_ID@ speechcontrol-frontend)
-endif(TEST_MODE STREQUAL "LIB")
-
 ## Add test.
-add_test(NAME test@TEST_ID@ COMMAND $<TARGET_FILE:test@TEST_ID@>)
+add_test(NAME test@TEST_ID@
+         COMMAND $<TARGET_FILE:test@TEST_ID@>)
 add_dependencies(tests test@TEST_ID@)
 
 message(STATUS "Test '${TEST_ID}' configured; awaiting build [i.e.: 'make test${TEST_ID}']")

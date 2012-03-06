@@ -70,7 +70,6 @@ AbstractAgent::OperationState Agent::onStateChanged (const AbstractAgent::Operat
             qWarning() << "[DesktopControl::Agent] Start unsuccessful.";
             return Disabled;
         }
-
         return Enabled;
         break;
 

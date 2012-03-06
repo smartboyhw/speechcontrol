@@ -23,7 +23,8 @@
 
 #include <QObject>
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 /**
  * @brief Abstract class representing an executing module within SpeechControl.
  *
@@ -33,9 +34,10 @@ namespace SpeechControl {
  *
  * @author Jacky Alcine <jacky.alcine@thesii.org>
  **/
-class AbstractAgent : public QObject {
+class AbstractAgent : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( AbstractAgent )
+    Q_DISABLE_COPY (AbstractAgent)
 
 public:
     /**
@@ -46,12 +48,13 @@ public:
      * state. The Undefined state is provided for mediation purposes and may be
      * removed in a future release.
      **/
-    enum OperationState {
-        Disabled = -1,  /** Defines the state of the agent as disabled.
-                         *  All activity defined by the agent should be halted if active.
+    enum ActivityState {
+
+        Undefined = -1, /** Defines the state of the agent as undefined.
                          */
 
-        Undefined,      /** Defines the state of the agent as undefined.
+        Disabled,       /** Defines the state of the agent as disabled.
+                         *  All activity defined by the agent should be halted if active.
                          */
 
         Enabled         /** Defines the state of the agent as enabled.
@@ -61,9 +64,9 @@ public:
 
     /**
      * @brief Constructor.
-     * @param p_parent Defaults to 0.
+     * @param p_parent Defaults to NULL.
      **/
-    explicit AbstractAgent ( QObject* p_parent = 0 );
+    explicit AbstractAgent (QObject* p_parent = 0);
 
     /**
      * @brief Destructor.
@@ -81,51 +84,51 @@ public:
 
     /**
      * Obtains the current state of the Agent.
-     * @return OperationState
-     * @see OperationState
+     * @return ActivityState
+     * @see ActivityState
      **/
-    OperationState state() const;
+    ActivityState state() const;
 
 public slots:
     /**
      * Changes the state of this Agent to the specified state.
      * @return void
-     * @see OperationState
+     * @see ActivityState
      **/
-    void setState ( const OperationState p_state );
+    void setState (const ActivityState p_state);
 
 signals:
     /**
      * Emitted when the state of this Agent is set to the Enabled state.
      * @return void
-     * @see OperationState::Enabled
+     * @see ActivityState::Enabled
      **/
     void enabled();
 
     /**
      * Emitted when the state of this Agent is set to the Disabled state.
      * @return void
-     * @see OperationState::Disabled
+     * @see ActivityState::Disabled
      **/
     void disabled();
 
     /**
      * Emitted when the state of this Agent has changed to an arbitrary state.
      * @return void
-     * @see OperationState
+     * @see ActivityState
      **/
-    void stateChanged ( const OperationState& p_state );
+    void stateChanged (const ActivityState& p_state);
 
 protected:
     /**
      * Handles the actions depending on each of the states changing.
      * @return State The accepted state to render to, or Undefined if this state is invalid.
-     * @see OperationState
+     * @see ActivityState
      **/
-    virtual OperationState onStateChanged ( const OperationState p_state ) = 0;
+    virtual ActivityState onStateChanged (const ActivityState p_state) = 0;
 
 private:
-    OperationState m_state; ///< The state of the agent.
+    ActivityState m_state; ///< The state of the agent.
 };
 }
 

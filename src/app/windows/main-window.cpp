@@ -201,7 +201,7 @@ void Main::on_actionStartTraining_triggered ()
 void Main::on_actionDesktopControlActive_triggered (bool p_checked)
 {
     DesktopControl::Agent::instance()->setState (p_checked ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled);
-    setStatusMessage ( ( (p_checked == true) ? tr ("Desktop control enabled.") : tr ("Desktop control disabled.")) , 3000);
+    setStatusMessage ( (p_checked ? tr ("Desktop control enabled.") : tr ("Desktop control disabled.")) , 3000);
     m_ui->btnDsktpCntrl->setIcon ( ( (p_checked == true) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
     m_ui->btnDsktpCntrl->setChecked (p_checked);
 }

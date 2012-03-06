@@ -1,6 +1,16 @@
 Installing SpeechControl
 =================
 
+0. For the Impatient
+
+    # mkdir build && cd build
+    # cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug
+    # make
+
+You can run SpeechControl by invoking (while still in the build directory)
+
+    # src/app/speechcontrol-frontend
+
 1. Required Packages
 
 SpeechControl's core requires that you have the following packages installed:

@@ -27,6 +27,8 @@ if(WITH_DOCS)
             COMMENT "Built documentation.")
 
         add_dependencies(docs docs-lib docs-app)
+        add_dependencies(speechcontrol-frontend docs-app)
+        add_dependencies(speechcontrol docs-lib)
 
         ## Installs
         install(DIRECTORY ${SPCHCNTRL_LIB_DOC_BUILD_DIR}/html/

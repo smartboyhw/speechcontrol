@@ -16,12 +16,10 @@ if(WITH_DOCS)
         add_custom_target(docs-app
             COMMAND ${DOXYGEN_EXECUTABLE} ${PROJECT_BINARY_DIR}/Doxyfile.app
             SOURCES "Doxyfile.app.in"
-            DEPENDS speechcontrol-frontend
             COMMENT "Built documentation for SpeechControl application (API).")
         add_custom_target(docs-lib
             COMMAND ${DOXYGEN_EXECUTABLE} ${PROJECT_BINARY_DIR}/Doxyfile.lib
             SOURCES "Doxyfile.lib.in"
-            DEPENDS speechcontrol
             COMMENT "Built documentation for SpeechControl library (API).")
         add_custom_target(docs
             COMMENT "Built documentation.")

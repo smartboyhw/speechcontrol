@@ -63,18 +63,13 @@ Agent* Agent::instance()
 AbstractAgent::OperationState Agent::onStateChanged (const AbstractAgent::OperationState p_state)
 {
     switch (p_state) {
-    case Enabled: {
-//         if (!isEnabled())
-//             return Disabled;
-
+    case Enabled:
         if (!m_sphinx->start()) {
             qWarning() << "[DesktopControl::Agent] Start unsuccessful.";
             return Disabled;
         }
-
-    }
-    return Enabled;
-    break;
+        return Enabled;
+        break;
 
     case Disabled:
         m_sphinx->stop();

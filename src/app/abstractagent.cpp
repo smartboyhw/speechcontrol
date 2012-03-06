@@ -22,27 +22,32 @@
 
 using SpeechControl::AbstractAgent;
 
-AbstractAgent::AbstractAgent ( QObject* p_parent ) : QObject ( p_parent ) {
+AbstractAgent::AbstractAgent (QObject* p_parent) : QObject (p_parent)
+{
 }
 
-AbstractAgent::AbstractAgent ( const AbstractAgent&  p_agent ) : QObject ( p_agent.parent() ),
-    m_state ( p_agent.m_state ) {
+AbstractAgent::AbstractAgent (const AbstractAgent&  p_agent) : QObject (p_agent.parent()),
+    m_state (p_agent.m_state)
+{
 
 }
 
-void AbstractAgent::setState ( const AbstractAgent::OperationState p_state ) {
-    if ( p_state == m_state )
+void AbstractAgent::setState (const AbstractAgent::OperationState p_state)
+{
+    if (p_state == m_state)
         return;
 
-    m_state = onStateChanged ( p_state );
-    emit stateChanged ( m_state );
+    m_state = onStateChanged (p_state);
+    emit stateChanged (m_state);
 }
 
-AbstractAgent::OperationState AbstractAgent::state() const {
+AbstractAgent::OperationState AbstractAgent::state() const
+{
     return m_state;
 }
 
-AbstractAgent::~AbstractAgent() {
+AbstractAgent::~AbstractAgent()
+{
 }
 
 #include "abstractagent.moc"

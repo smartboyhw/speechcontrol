@@ -23,7 +23,6 @@
 
 #include <lib/abstractsphinx.hpp>
 
-
 namespace SpeechControl
 {
 namespace DesktopControl
@@ -39,7 +38,6 @@ class Sphinx : public AbstractSphinx
 {
     Q_OBJECT
     Q_DISABLE_COPY (Sphinx)
-    friend class Agent;
 
 protected:
     /**

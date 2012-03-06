@@ -23,6 +23,7 @@
 #include <QtGStreamer/QGlib/refpointer.h>
 #include <QtGStreamer/QGst/Element>
 #include <lib/system.hpp>
+#include <lib/microphone.hpp>
 
 #include "sphinx.h"
 #include "config_sphinx.hpp"
@@ -60,21 +61,23 @@ void TestSphinx::recognizeTextFromSample() {
     TestAbstractSphinx* l_sphinx = new TestAbstractSphinx ( this );
 
     l_sphinx->audioSrcElement()->setProperty<const char*> ( "location",l_audioPath.toStdString().c_str() );
-    QBENCHMARK {
-        QCOMPARE ( l_sphinx->start(),true );
-        l_sphinx->formResult ( l_text,l_uttid );
-        QCOMPARE ( !l_text.isEmpty(), true );
-        QCOMPARE ( !l_uttid.isEmpty(), true );
-    }
+    QCOMPARE ( l_sphinx->start(),true );
+    l_sphinx->formResult ( l_text,l_uttid );
+    QCOMPARE ( !l_text.isEmpty(), true );
+    QCOMPARE ( !l_uttid.isEmpty(), true );
+    QCOMPARE ( l_sphinx->stop(), true );
 
 }
 
 void TestSphinx::benchSphinx() {
+    if ( Microphone::allMicrophones().length() == 0 )
+        QSKIP ( "This test requires at least one input device operational on the test environment.", SkipSingle );
+
     TestAbstractSphinx* l_sphinx = new TestAbstractSphinx ( this );
-        QCOMPARE ( l_sphinx->start(),true );
-        qDebug() << "Waiting" << SECONDS << "secs to permit recognition process from mic.";
-        qWait ( ( int ) ( ( SECONDS ) * 1000 ) );
-        QCOMPARE ( l_sphinx->stop(), true );
+    QCOMPARE ( l_sphinx->start(),true );
+    qDebug() << "Waiting" << SECONDS << "secs to permit recognition process from mic.";
+    qWait ( ( int ) ( ( SECONDS ) * 1000 ) );
+    QCOMPARE ( l_sphinx->stop(), true );
 }
 
 QTEST_MAIN ( TestSphinx )

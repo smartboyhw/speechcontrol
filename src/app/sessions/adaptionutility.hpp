@@ -76,16 +76,11 @@ public:
     void adapt();
 
 private:
-    enum AdaptionMode {
-        MAP = 0,
-        MLLR
-    };
-
     void generateFeatures();
     void generateMixtureWeights();
     void convertModelDefinitions();
     void collectAcousticStatistics();
-    void performAdaption(const AdaptionMode& p_mode = AdaptionMode::MAP);
+    void performAdaption();
     void generateSendmap();
     void generateAccuracyReport();
 

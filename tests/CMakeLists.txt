@@ -1,4 +1,5 @@
 project(SpeechControlTests)
+
 include(SpeechControlDefaults)
 if(WITH_TESTS)
     message(STATUS "Building tests enabled.")

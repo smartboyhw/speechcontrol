@@ -34,12 +34,20 @@ Session* AdaptionUtility::session() {
     return m_session;
 }
 
+AcousticModel* AdaptionUtility::model() {
+    return m_model;
+}
+
 void AdaptionUtility::setSession ( Session* p_session ) {
     m_session = p_session;
 }
 
-void AdaptionUtility::adapt() {
-    if ( !m_session )
+void AdaptionUtility::setAcousticModel ( AcousticModel* p_model ) {
+    m_model = p_model;
+}
+
+AcousticModel* AdaptionUtility::adapt() {
+    if ( !m_session || !m_model )
         return;
 
     generateFeatures();
@@ -49,6 +57,8 @@ void AdaptionUtility::adapt() {
     performAdaption();
     generateSendmap();
     generateAccuracyReport();
+
+    return 0;
 }
 
 void AdaptionUtility::generateFeatures() {

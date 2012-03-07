@@ -26,14 +26,6 @@
 
 using namespace SpeechControl;
 
-Phrase * Sentence::phrase ( const int &p_indx ) const {
-    return m_phrsLst.at ( p_indx );
-}
-
-const PhraseList Sentence::phrases() const {
-    return m_phrsLst;
-}
-
 Phrase::Phrase ( const Sentence *p_sntnct, const int &p_index ) :
     m_sntnc ( p_sntnct ), m_indx ( p_index ) {
     //qDebug() << "Phrase" << this->text() << "rendered.";
@@ -58,9 +50,13 @@ int Phrase::index() const {
     return m_indx;
 }
 
+int Phrase::words() const {
+    return text().split(" ").length();
+}
+
 Phrase::~Phrase() {
 
 }
 
 #include "phrase.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

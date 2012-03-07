@@ -34,8 +34,12 @@ Session::Session (const QUuid& p_uuid) : m_corpus (0), m_content (0), m_elem (0)
     load (p_uuid);
 }
 
-Session::~Session()
-{
+Session::Session ( const Session& p_other ) : QObject(p_other.parent()),
+    m_corpus(p_other.m_corpus), m_content(p_other.m_content), m_elem(p_other.m_elem) {
+
+}
+
+Session::~Session() {
 }
 
 Corpus* Session::corpus() const
@@ -254,10 +258,6 @@ SentenceList Session::incompletedSentences() const
 
         if (!l_sent->allPhrasesCompleted())
             l_lst << l_sent;
-<<<<<<< HEAD
-=======
-
->>>>>>> Fix build issues.
         continue;
     }
 
@@ -380,4 +380,4 @@ Session::Backup* Session::Backup::generate (const Session& p_sssn)
 }
 
 #include "session.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

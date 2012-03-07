@@ -64,7 +64,6 @@ public:
 
 private:
     static System* s_inst;
-    Daemon* m_dmn;
     QCoreApplication m_app;
 };
 
@@ -72,4 +71,4 @@ private:
 }
 
 #endif // SPEECHCONTROL_DAEMON_SYSTEM_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

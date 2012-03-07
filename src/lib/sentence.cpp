@@ -27,8 +27,7 @@
 
 #define MAX_SIZE 4
 
-using SpeechControl::Corpus;
-using SpeechControl::Sentence;
+using namespace SpeechControl;
 
 /// @todo Drop the addition of the element and have it request it from the base Corpus.
 Sentence::Sentence ( Corpus* p_corpus, QDomElement *p_elem ) : m_elem ( p_elem ), m_corpus ( p_corpus ) {
@@ -140,9 +139,17 @@ QDomElement* Sentence::getPhraseElement ( const int &p_indx ) const {
     return new QDomElement ( m_elem->elementsByTagName ( "Phrase" ).at ( p_indx ).toElement() );
 }
 
+Phrase * Sentence::phrase ( const int &p_indx ) const {
+    return m_phrsLst.at ( p_indx );
+}
+
+const PhraseList Sentence::phrases() const {
+    return m_phrsLst;
+}
+
 Sentence::~Sentence() {
     // What to clean up? :P
 }
 
 #include "sentence.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

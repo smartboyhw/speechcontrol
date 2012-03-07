@@ -32,9 +32,10 @@ class TestMicrophone : public QObject {
 private slots:
     void init();
     void cleanup();
+    void defaultMicrophone();
     void listMicrophones();
     void adjustVolume();
-    SpeechControl::Microphone* defaultMicrophone();
+    void toggleMuteState();
 };
 
 #endif

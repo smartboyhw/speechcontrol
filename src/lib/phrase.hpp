@@ -61,6 +61,14 @@ public:
      * @return const QString
      **/
     const QString text() const;
+
+    /**
+     * @brief ...
+     *
+     * @return int
+     **/
+    int words() const;
+
     /**
      * @brief ...
      *
@@ -83,4 +91,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -194,6 +194,11 @@ public:
      **/
     void load ( QIODevice* p_device );
 
+    /**
+     * @brief Loads the Dictionary from a specified UUID.
+     *
+     * @param p_uuid The UUID of the Dictionary to load.
+     **/
     void load ( const QUuid& p_uuid );
 
     /**
@@ -201,6 +206,11 @@ public:
      * @note This method uses the QIODevice specified in the @c load() method.
      **/
     void save();
+
+    /**
+     * @brief Obtains the path to this Dictionary.
+     **/
+    QString path() const;
 
 private:
     static QString getPathFromUuid ( const QUuid& p_uuid );
@@ -210,4 +220,4 @@ private:
 };
 }
 #endif // DICTIONARY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

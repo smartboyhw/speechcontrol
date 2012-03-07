@@ -194,13 +194,12 @@ signals:
 
 public slots:
     /**
-     * @brief Starts the recording p
+     * @brief Starts the recording.
      **/
     void startRecording();
+
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Stops the recording.
      **/
     void stopRecording();
 

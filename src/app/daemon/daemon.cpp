@@ -18,13 +18,30 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <QApplication>
+#include <lib/system.hpp>
 #include "daemon.hpp"
 
 using namespace SpeechControl::Daemon;
 
-/// @todo Add the needed variables and initialization code for the Daemon's activities here.
-Daemon::Daemon() {
+Daemon* Daemon::s_inst = 0;
 
+DaemonSphinx::DaemonSphinx() : AbstractSphinx() {
+    buildPipeline(standardDescription());
+}
+
+void DaemonSphinx::applicationMessage ( const QGst::MessagePtr& p_message ) {
+    qDebug() << p_message->typeName();
+}
+
+
+/// @todo Add the needed variables and initialization code for the Daemon's activities here.
+Daemon::Daemon() : QObject(QApplication::instance()), m_sphnx(new DaemonSphinx){
+    connect(this,SIGNAL(started()),SpeechControl::System::instance(),SLOT(start()));
+    connect(this,SIGNAL(started()),m_sphnx,SLOT(start()));
+
+    connect(this,SIGNAL(stopped()),SpeechControl::System::instance(),SLOT(stop()));
+    connect(this,SIGNAL(stopped()),m_sphnx,SLOT(stop()));
 }
 
 /// @todo We need to provide a more concise means of determining if the daemon's active.
@@ -45,14 +62,21 @@ QString Daemon::listen() {
 /// @todo Implement a means of 'activating' the daemon.
 /// @todo This action should cause isActive() to return true.
 void Daemon::start() {
-
+    emit started();
 }
 
 /// @todo Implement a means of 'deactivating the daemon'.
 /// @todo This action should cause isActive() to return false.
 void Daemon::stop() {
+    emit stopped();
+}
 
+Daemon* Daemon::instance() {
+    if (s_inst == 0)
+        s_inst = new Daemon;
+
+    return s_inst;
 }
 
 #include "daemon.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

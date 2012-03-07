@@ -17,35 +17,31 @@
  *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#include <lib/system.hpp>
-#include "system.hpp"
 
-using namespace SpeechControl::Daemon;
+#ifndef TEST_LIB_CORPUS_HPP
+#define TEST_LIB_CORPUS_HPP
+#include <QObject>
+#include <QStringList>
 
-System* System::s_inst = 0;
-
-System::System ( int p_argc,char** p_argv ) : QObject ( qApp ),
-    m_app ( p_argc,p_argv ) {
-    SpeechControl::System::start(&p_argc,&p_argv);
-    connect ( &m_app,SIGNAL ( aboutToQuit() ),Daemon::instance(),SLOT ( stop() ) );
+namespace SpeechControl {
+    class Corpus;
 }
 
-System* System::instance ( int p_argc,char** p_argv ) {
-    if ( s_inst == 0 ) {
-        s_inst = new System ( p_argc,p_argv );
-    }
+class TestCorpus : public QObject {
+    Q_OBJECT
 
-    return s_inst;
-}
+private:
+    SpeechControl::Corpus* m_crps;
+    void generateCorpus();
+    static QStringList s_strlist;
 
-Daemon* System::daemon() {
-    return Daemon::instance();
-}
+private slots:
+    void initTestCase();
+    void cleanupTestCase();
+    void createCorpus();
+    void countSentences();
+    void countPhrases();
+};
 
-int System::exec() {
-    daemon()->start();
-    return m_app.exec();
-}
-
-#include "system.moc"
+#endif
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

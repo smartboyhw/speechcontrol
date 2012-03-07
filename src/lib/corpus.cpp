@@ -79,9 +79,10 @@ Corpus & Corpus::operator << ( SentenceList& p_sentenceList ) {
 /// @todo Find a way to keep the text in an ordinal fashion.
 Corpus * Corpus::create ( const QStringList& p_text ) {
     QUuid l_uuid = QUuid::createUuid();
-    QDir l_dir;
-    if ( !l_dir.mkpath ( getPath ( l_uuid ).toLocalFile() ) ) {
-        qWarning() << "Can't make corpus" << l_uuid;
+    QDir l_dir(getPath ( l_uuid ).toLocalFile());
+
+    if ( !l_dir.mkpath(l_dir.path()) ) {
+        qWarning() << "Can't make corpus" << l_uuid << "at" << l_dir.path();
         return 0;
     }
 
@@ -126,7 +127,8 @@ bool Corpus::exists ( const QUuid& p_uuid ) {
 }
 
 QUrl Corpus::getPath ( const QUuid& p_uuid ) {
-    return QDir::homePath() + "/.speechcontrol/corpus/" + p_uuid.toString();
+    const QString l_baseComp = QDir::homePath() + "/.speechcontrol/corpus/";
+    return QUrl::fromLocalFile(l_baseComp + p_uuid.toString());
 }
 
 QUrl Corpus::audioPath() const {
@@ -140,7 +142,7 @@ const QUuid Corpus::uuid() const {
 Corpus* Corpus::obtain ( const QUuid &p_uuid ) {
     Corpus* l_crps = 0;
     const QString l_path = getPath ( p_uuid ).toLocalFile() + "/corpus.xml";
-    //qDebug() << "Obtaining corpus" << p_uuid << l_path;
+    qDebug() << "Obtaining corpus" << p_uuid << l_path;
 
     if ( !QFile::exists ( l_path ) ) {
         qDebug() << "Corpus not found at" << l_path;

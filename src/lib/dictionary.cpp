@@ -24,6 +24,7 @@
 #include <QDir>
 #include <QFile>
 #include <QDebug>
+#include <QVariant>
 #include <QDomDocument>
 
 using namespace SpeechControl;
@@ -127,6 +128,10 @@ void Dictionary::save() {
     m_device->close();
 }
 
+QString Dictionary::path() const {
+    return m_device->property("fileName").toString();
+}
+
 Dictionary::~Dictionary() {
 }
 
@@ -152,4 +157,4 @@ DictionaryEntry::~DictionaryEntry() {
 }
 
 #include "dictionary.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

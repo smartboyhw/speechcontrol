@@ -19,6 +19,7 @@
  */
 
 #include "corpus.hpp"
+#include "phrase.hpp"
 #include "sentence.hpp"
 #include "dictionary.hpp"
 
@@ -28,11 +29,7 @@
 #include <QDateTime>
 #include <QDomDocument>
 
-using SpeechControl::Corpus;
-using SpeechControl::Sentence;
-using SpeechControl::Dictionary;
-using SpeechControl::CorpusList;
-using SpeechControl::SentenceList;
+using namespace SpeechControl;
 
 Corpus::Corpus ( const QUuid& p_uuid ) : QObject(), m_dom ( new QDomDocument ) {
     load ( p_uuid );
@@ -79,9 +76,9 @@ Corpus & Corpus::operator << ( SentenceList& p_sentenceList ) {
 /// @todo Find a way to keep the text in an ordinal fashion.
 Corpus * Corpus::create ( const QStringList& p_text ) {
     QUuid l_uuid = QUuid::createUuid();
-    QDir l_dir(getPath ( l_uuid ).toLocalFile());
+    QDir l_dir ( getPath ( l_uuid ).toLocalFile() );
 
-    if ( !l_dir.mkpath(l_dir.path()) ) {
+    if ( !l_dir.mkpath ( l_dir.path() ) ) {
         qWarning() << "Can't make corpus" << l_uuid << "at" << l_dir.path();
         return 0;
     }
@@ -128,7 +125,7 @@ bool Corpus::exists ( const QUuid& p_uuid ) {
 
 QUrl Corpus::getPath ( const QUuid& p_uuid ) {
     const QString l_baseComp = QDir::homePath() + "/.speechcontrol/corpus/";
-    return QUrl::fromLocalFile(l_baseComp + p_uuid.toString());
+    return QUrl::fromLocalFile ( l_baseComp + p_uuid.toString() );
 }
 
 QUrl Corpus::audioPath() const {
@@ -269,6 +266,37 @@ const QDateTime Corpus::timeLastModified() const {
 
 const QDateTime Corpus::timeCompleted() const {
     return QDateTime::fromString ( m_dom->elementsByTagName ( "Date" ).at ( 0 ).toElement().attribute ( "Completed" ) );
+}
+
+/// @todo Use the noise dictionary here.
+/// @todo Do a more cleaner obtaining method to get the file name.
+QString Corpus::fileIds() {
+    QString l_str;
+    QTextStream l_strm ( &l_str,QIODevice::WriteOnly | QIODevice::Text );
+
+    Q_FOREACH ( Sentence* l_sentence, sentences() ) {
+        Q_FOREACH ( Phrase* l_phrase, l_sentence->phrases() ) {
+            l_strm << l_phrase->audio()->fileName().split ( "/" ).last();
+        }
+    }
+
+    return l_str;
+}
+
+/// @todo Should we replace the text here with the corresponding text in the dictionary?
+QString Corpus::transcription() {
+    QString l_str;
+    const QString l_silenceStart = "<s>";
+    const QString l_silenceEnd = "</s>";
+    QTextStream l_strm ( &l_str,QIODevice::WriteOnly | QIODevice::Text );
+
+    Q_FOREACH ( Sentence* l_sentence, sentences() ) {
+        Q_FOREACH ( Phrase* l_phrase, l_sentence->phrases() ) {
+            l_strm << l_silenceStart << l_phrase->text() << l_silenceEnd << "\n";
+        }
+    }
+
+    return l_str;
 }
 
 /// @todo What to clean-up?

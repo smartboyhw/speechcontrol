@@ -3,9 +3,10 @@ Installing SpeechControl
 
 0. For the Impatient
 
-    # mkdir build && cd build
-    # cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug
-    # make
+    # apt-get install cmake libqt4-dev libqtgstreamer-dev libpocketsphinx-dev libsphinxbase-dev libxdo-dev python-dev libboost-python-dev
+    $ mkdir build && cd build
+    $ cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug
+    $ make
 
 You can run SpeechControl by invoking (while still in the build directory)
 

@@ -22,11 +22,11 @@
 
 using namespace SpeechControl;
 
-AdaptionUtility::AdaptionUtility() : QObject(), m_session ( 0 ) {
+AdaptionUtility::AdaptionUtility() : QObject(), m_session ( 0 ), m_model ( 0 ) {
 
 }
 
-AdaptionUtility::AdaptionUtility ( Session* p_session ) : QObject(), m_session ( p_session ) {
+AdaptionUtility::AdaptionUtility ( Session* p_session, AcousticModel* p_model ) : QObject(), m_session ( p_session ), m_model ( m_model ) {
 
 }
 
@@ -48,7 +48,7 @@ void AdaptionUtility::setAcousticModel ( AcousticModel* p_model ) {
 
 AcousticModel* AdaptionUtility::adapt() {
     if ( !m_session || !m_model )
-        return;
+        return 0;
 
     generateFeatures();
     generateMixtureWeights();

@@ -10,20 +10,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>433</width>
-    <height>257</height>
+    <width>486</width>
+    <height>285</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>433</width>
-    <height>257</height>
+    <width>486</width>
+    <height>285</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>433</width>
-    <height>257</height>
+    <width>486</width>
+    <height>285</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -43,25 +43,13 @@
    <bool>true</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <property name="minimumSize">
-    <size>
-     <width>433</width>
-     <height>216</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>433</width>
-     <height>216</height>
-    </size>
-   </property>
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
       <x>4</x>
       <y>4</y>
-      <width>425</width>
-      <height>205</height>
+      <width>481</width>
+      <height>233</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout">
@@ -83,9 +71,9 @@
         <property name="geometry">
          <rect>
           <x>8</x>
-          <y>24</y>
-          <width>209</width>
-          <height>173</height>
+          <y>28</y>
+          <width>241</width>
+          <height>201</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_3">
@@ -148,9 +136,12 @@
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Maximum</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>40</width>
+             <width>35</width>
              <height>20</height>
             </size>
            </property>
@@ -161,9 +152,12 @@
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Maximum</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>40</width>
+             <width>35</width>
              <height>20</height>
             </size>
            </property>
@@ -196,7 +190,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>195</width>
+         <width>220</width>
          <height>16777215</height>
         </size>
        </property>
@@ -214,8 +208,8 @@
          <rect>
           <x>4</x>
           <y>16</y>
-          <width>189</width>
-          <height>181</height>
+          <width>205</width>
+          <height>213</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
@@ -236,6 +230,18 @@
            </item>
            <item>
             <widget class="QPushButton" name="btnTrain">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Maximum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>35</height>
+              </size>
+             </property>
              <property name="text">
               <string>Train</string>
              </property>
@@ -243,6 +249,18 @@
            </item>
            <item>
             <widget class="QPushButton" name="btnAdapt">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Maximum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>35</height>
+              </size>
+             </property>
              <property name="text">
               <string>Adapt</string>
              </property>
@@ -260,7 +278,7 @@
          <item row="1" column="2">
           <widget class="QLabel" name="lblSessions">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -304,7 +322,7 @@ padding-right: 4px; border: 1px solid black;</string>
          <item row="2" column="2">
           <widget class="QLabel" name="lblBooks">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -348,7 +366,7 @@ padding-right: 4px; border: 1px solid black;</string>
          <item row="3" column="2">
           <widget class="QLabel" name="lblAccuracy">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -392,7 +410,7 @@ padding-right: 4px; border: 1px solid black;</string>
          <item row="4" column="2">
           <widget class="QLabel" name="lblSpeechIndex">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -478,7 +496,7 @@ padding-right: 4px;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>433</width>
+     <width>486</width>
      <height>21</height>
     </rect>
    </property>
@@ -552,6 +570,7 @@ padding-right: 4px;</string>
     <addaction name="separator"/>
     <addaction name="menuWizards"/>
     <addaction name="menuPlugins"/>
+    <addaction name="separator"/>
     <addaction name="actionOptions"/>
    </widget>
    <addaction name="menuFile"/>

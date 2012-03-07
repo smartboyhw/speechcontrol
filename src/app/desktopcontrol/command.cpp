@@ -30,7 +30,8 @@ using namespace std;
 using namespace SpeechControl;
 using namespace SpeechControl::DesktopControl;
 
-struct GlobalCategory : public AbstractCategory {
+struct GlobalCategory : public AbstractCategory
+{
     static GlobalCategory* s_inst;
 
     virtual const QString id() const {
@@ -42,116 +43,131 @@ struct GlobalCategory : public AbstractCategory {
     }
 
     static AbstractCategory* instance() {
-        if ( s_inst == 0 ) {
+        if (s_inst == 0) {
             s_inst = new GlobalCategory;
         }
 
         return s_inst;
     }
 
-    explicit GlobalCategory ( ) : AbstractCategory() {
+    explicit GlobalCategory () : AbstractCategory() {
     }
 };
 
 GlobalCategory* GlobalCategory::s_inst = 0;
-QMap<QString,AbstractCategory*> AbstractCategory::s_ctgrs;
+QMap<QString, AbstractCategory*> AbstractCategory::s_ctgrs;
 
-AbstractCommand::AbstractCommand ( AbstractCategory* p_parentCategory, QStringList p_commands ) : QObject ( p_parentCategory ),
-    m_commands ( p_commands ) {
+AbstractCommand::AbstractCommand (AbstractCategory* p_parentCategory, QStringList p_commands) : QObject (p_parentCategory),
+    m_commands (p_commands)
+{
     qDebug() << "New commands!" << p_commands;
 }
 
 /// @todo Instead of returning a boolean value, we should have a comparison value on a scale of 0.0 to 1.0, where 0.0 = not equal and 1.0 = fully equal.
-bool AbstractCommand::areStatementsEquivalent ( const QString p_command, const QString p_statement ) const {
-    return p_statement.contains ( p_command );
+bool AbstractCommand::areStatementsEquivalent (const QString p_command, const QString p_statement) const
+{
+    return p_statement.contains (p_command);
 }
 
 /// @todo When @c areStatementsEquivalent is updated, this should return an average.
-bool AbstractCommand::isValidStatement ( const QString& p_statement ) const {
-    Q_FOREACH ( const QString l_statement, m_commands ) {
-        if ( AbstractCommand::areStatementsEquivalent ( l_statement,p_statement ) ) {
+bool AbstractCommand::isValidStatement (const QString& p_statement) const
+{
+    Q_FOREACH (const QString l_statement, m_commands) {
+        if (AbstractCommand::areStatementsEquivalent (l_statement, p_statement)) {
             return true;
         }
     }
     return false;
 }
 
-QString AbstractCommand::santizeStatement ( const QString p_statement ) const {
-    Q_FOREACH ( const QString l_command, m_commands ) {
-        if ( p_statement.contains ( l_command ) ) {
-            return QString ( p_statement ).remove ( l_command );
+QString AbstractCommand::santizeStatement (const QString p_statement) const
+{
+    Q_FOREACH (const QString l_command, m_commands) {
+        if (p_statement.contains (l_command)) {
+            return QString (p_statement).remove (l_command);
         }
     }
 
     return p_statement;
 }
 
-const QStringList AbstractCommand::statements() const {
+const QStringList AbstractCommand::statements() const
+{
     return m_commands;
 }
 
-void AbstractCategory::addCommand ( AbstractCommand* p_command ) {
-    if ( !hasCommand ( p_command ) ) {
-        m_map.insert ( p_command->id(),p_command );
+void AbstractCategory::addCommand (AbstractCommand* p_command)
+{
+    if (!hasCommand (p_command)) {
+        m_map.insert (p_command->id(), p_command);
         qDebug() << "Added command" << p_command->id() << "to category" << id();
     }
 }
 
-bool AbstractCategory::hasCommand ( AbstractCommand* p_command ) {
-    return hasCommand ( p_command->id() );
+bool AbstractCategory::hasCommand (AbstractCommand* p_command)
+{
+    return hasCommand (p_command->id());
 }
 
-bool AbstractCategory::hasCommand ( const QString& p_id ) {
-    qDebug() << id() << "has" << p_id << "?" << m_map.contains ( p_id );
-    return m_map.contains ( p_id );
+bool AbstractCategory::hasCommand (const QString& p_id)
+{
+    qDebug() << id() << "has" << p_id << "?" << m_map.contains (p_id);
+    return m_map.contains (p_id);
 }
 
-void AbstractCategory::removeCommand ( AbstractCommand* p_command ) {
-    removeCommand ( p_command->id() );
+void AbstractCategory::removeCommand (AbstractCommand* p_command)
+{
+    removeCommand (p_command->id());
 }
 
-void AbstractCategory::removeCommand ( const QString& p_id ) {
-    if ( hasCommand ( p_id ) ) {
-        m_map.remove ( p_id );
+void AbstractCategory::removeCommand (const QString& p_id)
+{
+    if (hasCommand (p_id)) {
+        m_map.remove (p_id);
     }
 }
 
-AbstractCommand::~AbstractCommand() {
+AbstractCommand::~AbstractCommand()
+{
 
 }
 
-AbstractCategory::AbstractCategory ( AbstractCategory* p_parentCategory ) : QObject ( p_parentCategory ) {
-    s_ctgrs.insert ( QString::null,this );
+AbstractCategory::AbstractCategory (AbstractCategory* p_parentCategory) : QObject (p_parentCategory)
+{
+    s_ctgrs.insert (QString::null, this);
 }
 
-AbstractCategory::AbstractCategory() : QObject ( Core::instance() ) {
-    s_ctgrs.insert ( QString::null,this );
+AbstractCategory::AbstractCategory() : QObject (Core::instance())
+{
+    s_ctgrs.insert (QString::null, this);
 }
 
 /// @note The list of Commands represented here are only done within this AbstractCategory; it's not recursive.
 /// @bug There's a lack of a recursive nature to this method.
 /// @todo Implement a means of picking out child categories and have them return their commands upward.
-CommandList AbstractCategory::commands() {
+CommandList AbstractCategory::commands()
+{
     CommandList l_lst;
 
-    l_lst.append ( m_map.values() );
+    l_lst.append (m_map.values());
 
-    Q_FOREACH ( QObject* l_child, children() ) {
-        if ( l_child->metaObject()->superClass()->className() == AbstractCategory::staticMetaObject.className() ) {
-            AbstractCategory* l_category = qobject_cast<AbstractCategory*> ( l_child );
+    Q_FOREACH (QObject * l_child, children()) {
+        if (l_child->metaObject()->superClass()->className() == AbstractCategory::staticMetaObject.className()) {
+            AbstractCategory* l_category = qobject_cast<AbstractCategory*> (l_child);
             l_lst << l_category->commands();
         }
     }
 
-    unique ( l_lst.begin(),l_lst.end() );
+    unique (l_lst.begin(), l_lst.end());
     return l_lst;
 }
 
-CommandList AbstractCategory::matchCommands ( const QString& p_command ) {
+CommandList AbstractCategory::matchCommands (const QString& p_command)
+{
     CommandList l_lst;
 
-    Q_FOREACH ( AbstractCommand* l_cmd, commands() ) {
-        if ( l_cmd->isValidStatement ( p_command ) ) {
+    Q_FOREACH (AbstractCommand * l_cmd, commands()) {
+        if (l_cmd->isValidStatement (p_command)) {
             l_lst << l_cmd;
         }
     }
@@ -160,19 +176,23 @@ CommandList AbstractCategory::matchCommands ( const QString& p_command ) {
 }
 
 
-CategoryList AbstractCategory::categories() {
+CategoryList AbstractCategory::categories()
+{
     return s_ctgrs.values();
 }
 
-CommandList AbstractCategory::matchAllCommands ( const QString& p_command ) {
-    return AbstractCategory::global()->matchCommands ( p_command );
+CommandList AbstractCategory::matchAllCommands (const QString& p_command)
+{
+    return AbstractCategory::global()->matchCommands (p_command);
 }
 
-AbstractCategory* AbstractCategory::global() {
+AbstractCategory* AbstractCategory::global()
+{
     return GlobalCategory::instance();
 }
 
-AbstractCategory::~AbstractCategory() {
+AbstractCategory::~AbstractCategory()
+{
 }
 
 #include "command.moc"

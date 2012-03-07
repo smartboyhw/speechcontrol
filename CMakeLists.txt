@@ -10,7 +10,7 @@ option(WITH_DOCS               "Generate Doxygen-made documentation?"       ON)
 option(WITH_KDE_SUPPORT        "Build KDE specific features?"               ON)
 option(WITH_PYTHON_BINDINGS    "Generate Python support for SpeechControl?" ON)
 option(WITH_PLUGINS            "Build the included plug-ins?"               ON)
-option(WITH_TESTS              "Generate the test build system?"            ON)
+option(WITH_TESTS              "Generate the test build system?"            OFF)
 
 ## Required packages
 find_package(PkgConfig REQUIRED)
@@ -58,6 +58,13 @@ include("${QT_USE_FILE}")
 ## The subdirectories, order's vital here.
 add_subdirectory(res)
 add_subdirectory(src)
-add_subdirectory(tests)
-add_subdirectory(doc)
+
+if(WITH_TESTS)
+    add_subdirectory(tests)
+endif()
+
+if(WITH_DOCS)
+    add_subdirectory(doc)
+endif()
+
 add_subdirectory(cmake)

@@ -47,6 +47,14 @@ class Core : public QObject
 
     friend class Windows::Main;
 
+private:
+    /// @note It this pointer needed? Every piece of code can just use QApplication::instance() to get the instance...
+    QApplication* m_app;    /// Holds the Application instance.
+    Windows::Main* s_mw;    /// Holds the main window.
+    QSettings* m_settings;  /// Holds the application's global configuration.
+    QTranslator* m_trnsltr; /// Holds the translating agent.
+    static Core* s_inst;    /// Holds the instance.
+    
 public:
     /**
      * @brief Constructor.
@@ -55,7 +63,7 @@ public:
      * @param p_app The QApplication instance.
      * @internal
      **/
-    Core ( int p_argc, char** p_argv, QApplication* p_app );
+    Core ( int p_argc, char** p_argv, QApplication* app );
 
     /**
      * @brief Destructor.
@@ -140,18 +148,8 @@ public slots:
      **/
     void stop();
 
-    /// Experimental
-    void asrFinished ( QString& text );
-
 private slots:
     void invokeAutoStart();
-
-private:
-    QApplication* m_app;    /// Holds the Application instance.
-    Windows::Main* s_mw;    /// Holds the main window.
-    QSettings* m_settings;  /// Holds the application's global configuration.
-    QTranslator* m_trnsltr; /// Holds the translating agent.
-    static Core* s_inst;    /// Holds a instance.
 };
 
 }

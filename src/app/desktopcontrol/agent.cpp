@@ -33,65 +33,70 @@ Agent::Agent() : AbstractAgent ( AbstractCategory::global() ) {
     connect ( m_sphinx, SIGNAL ( finished ( QString ) ), this, SLOT ( invokeCommand ( QString ) ) );
 }
 
-Agent* Agent::instance() {
-    if ( s_instance == 0 ) {
-        s_instance = new Agent;
-    }
-
-    return s_instance;
-}
-
-AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::OperationState p_state ) {
-    switch ( p_state ) {
-    case Enabled: {
-        if ( !isEnabled() )
-            return Disabled;
-
-        if ( !m_sphinx->start() ) {
-            qWarning() << "[DesktopControl::Agent] Start unsuccessful.";
-            return Disabled;
-        }
-
-    }
-    return Enabled;
-    break;
-
-    case Disabled:
-        m_sphinx->stop();
-        return Disabled;
-        break;
-
-    case Undefined:
-    default:
-        break;
-    }
-
-    return Undefined;
-}
-
-bool Agent::isActive() const {
-    return m_sphinx->isRunning();
-}
-
-bool Agent::isEnabled() {
-    return Core::configuration ( "DesktopControl/Enabled" ).toBool();
-}
-
-/// @todo Since this returns more than one command, should we provide a UI that allows you to pick which command you might want?
-void Agent::invokeCommand ( const QString& p_cmd ) {
-    AbstractCategory* l_glbl = AbstractCategory::global();
-    CommandList l_cmds = l_glbl->matchAllCommands ( p_cmd );
-
-    Q_FOREACH ( AbstractCommand* l_cmd, l_cmds ) {
-        qDebug() << l_cmd->id() << l_cmd->statements();
-    }
-}
-
 Agent::~Agent() {
 
 }
 
+void Agent::start() {
+    m_sphinx->start();
+}
+
+void Agent::stop() {
+    m_sphinx->stop();
+}
+
+Agent* Agent::instance() {
+    if ( s_instance == 0 ) {
+        s_instance = new Agent;
+
+        return s_instance;
+    }
+
+    AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::OperationState p_state ) {
+        switch ( p_state ) {
+        case Enabled:
+            if ( !isEnabled() )
+                return Disabled;
+
+            if ( !m_sphinx->start() ) {
+                qWarning() << "[DesktopControl::Agent] Start unsuccessful.";
+                return Disabled;
+            }
+            return Enabled;
+            break;
+
+        case Disabled:
+            m_sphinx->stop();
+            return Disabled;
+            break;
+
+        case Undefined:
+        default:
+            break;
+        }
+
+        return Undefined;
+    }
+
+    bool Agent::isActive() const {
+        return m_sphinx->isRunning();
+    }
+
+    bool Agent::isEnabled() {
+        return Core::configuration ( "DesktopControl/Enabled" ).toBool();
+    }
+
+/// @todo Since this returns more than one command, should we provide a UI that allows you to pick which command you might want?
+    void Agent::invokeCommand ( const QString& cmd ) {
+        AbstractCategory* l_glbl = AbstractCategory::global();
+        CommandList l_cmds = l_glbl->matchAllCommands ( cmd );
+
+        Q_FOREACH ( AbstractCommand * l_cmd, l_cmds ) {
+            qDebug() << l_cmd->id() << l_cmd->statements();
+        }
+    }
+
 }
 }
 #include "desktopcontrol/agent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

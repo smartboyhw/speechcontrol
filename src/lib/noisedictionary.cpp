@@ -55,10 +55,6 @@ bool NoiseDictionary::hasEntry ( const QString& p_entry ) {
     return m_entries.contains ( p_entry );
 }
 
-bool NoiseDictionary::hasValue ( const QString& p_value ) {
-    return m_entries.values().contains ( p_value );
-}
-
 bool NoiseDictionary::load ( QIODevice* p_device ) {
     p_device->open ( QIODevice::ReadOnly | QIODevice::Text );
 
@@ -81,6 +77,7 @@ bool NoiseDictionary::load ( QIODevice* p_device ) {
     }
 
     m_device->close();
+    return true;
 }
 
 void NoiseDictionary::mergeEntries ( const QStringMap& p_entries ) {
@@ -121,4 +118,4 @@ void NoiseDictionary::save() {
 
 #include "noisedictionary.moc"
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

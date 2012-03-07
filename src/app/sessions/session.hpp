@@ -45,7 +45,7 @@ typedef QList<Session*> SessionList;
 typedef QMap<QUuid, Session*> SessionMap;
 
 /**
- * @brief ...
+ * @brief Represents data to be used for adaption.
  **/
 class Session : public QObject {
     Q_OBJECT
@@ -90,6 +90,11 @@ public:
      * @param  ...
      **/
     explicit Session ( const QUuid& );
+
+    /**
+     * @brief ...
+     *
+     **/
     virtual ~Session();
     /**
      * @brief ...
@@ -98,8 +103,13 @@ public:
      **/
     const QUuid uuid() const;
 
-
+    /**
+     * @brief ...
+     *
+     * @return const QString
+     **/
     const QString name() const;
+
     /**
      * @brief ...
      *
@@ -195,6 +205,14 @@ public:
      * @return :Session*
      **/
     static Session* create ( const Content* );
+
+    /**
+     * @brief ...
+     *
+     * @return void
+     **/
+    static void save();
+
     /**
      * @brief ...
      *
@@ -209,7 +227,7 @@ signals:
      * @param  ...
      * @return void
      **/
-    void progressChanged ( const double& );
+    void progressChanged ( const double& p_progress ) const;
 
 public slots:
     /**
@@ -241,7 +259,7 @@ public slots:
      *
      * @return void
      **/
-    void assessProgress();
+    double assessProgress() const;
 
 private:
     static QDomDocument* s_dom;
@@ -253,4 +271,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -3,9 +3,10 @@ Installing SpeechControl
 
 0. For the Impatient
 
-    # mkdir build && cd build
-    # cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug
-    # make
+    # apt-get install cmake libqt4-dev libqtgstreamer-dev libpocketsphinx-dev libsphinxbase-dev libxdo-dev python-dev libboost-python-dev libindicate-qt-dev
+    $ mkdir build && cd build
+    $ cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug
+    $ make
 
 You can run SpeechControl by invoking (while still in the build directory)
 
@@ -26,8 +27,11 @@ SpeechControl's core requires that you have the following packages installed:
       # apt-get install libqtgstreamer-dev
 
     * CMUSphinx's PocketSphinx speech recognition library and its development
-      files
-      # apt-get install libpocketsphinx-dev libsphinxbase-dev
+      files as well as the needed GStreamer elements
+      # apt-get install libpocketsphinx-dev libsphinxbase-dev gstreamer0.10-pocketsphinx
+
+    * Qt bindings for the AppIndicator library and development files
+      # apt-get install libindicate-qt-dev
 
     * XDO library and development files (for dictation functionality)
       # apt-get install libxdo-dev

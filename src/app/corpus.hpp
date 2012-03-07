@@ -197,6 +197,20 @@ public:
     bool isValid() const;
 
     /**
+     * @brief ...
+     *
+     * @return QString
+     **/
+    QString transcription();
+
+    /**
+     * @brief ...
+     *
+     * @return QString
+     **/
+    QString fileIds();
+
+    /**
      * @brief Stream operator to add sentences.
      * @param p_sentence The Sentence to add.
      * @return A reference to the Corpus object being streamed.
@@ -248,4 +262,4 @@ private:
 }
 
 #endif // CORPUS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

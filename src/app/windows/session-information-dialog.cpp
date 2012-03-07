@@ -32,15 +32,36 @@ using SpeechControl::Windows::ContentInformationDialog;
 
 SessionInformationDialog::SessionInformationDialog ( Session* p_session ) : QDialog ( 0 ),
     m_ui ( new Ui::SessionInformationDialog ), m_session ( p_session ) {
+    m_ui->setupUi ( this );
     connect ( m_session,SIGNAL ( progressChanged ( double ) ),this,SLOT ( updateProgress ( double ) ) );
+    updateUi();
 }
 
 void SessionInformationDialog::updateUi() {
-    const int l_sharedSessionCount = 4;
-    m_ui->lblContentInfo->setText ( tr ( "This session uses the text from %1. %2 use %1 for transcription as well." )
+    int l_sharedSessionCount = 0;
+
+    Q_FOREACH ( const Session* l_session, Session::allSessions() ) {
+        if ( l_session->content() == m_session->content() )
+            l_sharedSessionCount += 0;
+    }
+
+    const int l_progress = ( int ) ( m_session->assessProgress() * 100.0 );
+    m_ui->lblContentInfo->setText ( tr ( "This session uses the text from <b>%1</b>.<br />"
+                                         "%2 other sessions use <b>%1</b> for transcription as well." )
                                     .arg ( m_session->name() )
                                     .arg ( l_sharedSessionCount )
                                   );
+
+    if ( l_progress > 0 ) {
+        m_ui->progressBarCompletion->setFormat ( tr ( "%p% complete" ) );
+        m_ui->progressBarCompletion->setValue ( l_progress );
+    } else {
+        m_ui->progressBarCompletion->setFormat ( tr ( "no training progress" ) );
+        m_ui->progressBarCompletion->setValue ( 0 );
+    }
+
+    m_ui->lblTitle->setText ( m_session->name() );
+    m_ui->lineEditNickname->setText ( ( m_session->name().isEmpty() ) ? QString::null : m_session->name() );
 }
 
 void SessionInformationDialog::on_btnOpenContent_clicked() {
@@ -71,4 +92,4 @@ SessionInformationDialog::~SessionInformationDialog() {
 }
 
 #include "session-information-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

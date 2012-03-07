@@ -61,15 +61,15 @@ void AbstractSphinx::prepare() {
 
     QGlib::connect ( m_psphinx, "partial_result", this, &AbstractSphinx::formPartialResult );
     QGlib::connect ( m_psphinx, "result", this, &AbstractSphinx::formResult );
-    m_psphinx->setProperty ( "configured", true );
+    //m_psphinx->setProperty ( "configured", true );
 
     m_bus = m_pipeline->bus();
     m_bus->addSignalWatch();
     QGlib::connect ( m_bus, "message::application", this, &AbstractSphinx::applicationMessage );
 
     m_pipeline->setState ( QGst::StateReady );
-    m_psphinx->setState ( QGst::StateReady );
-    m_vader->setState ( QGst::StateReady );
+    //m_psphinx->setState ( QGst::StateReady );
+    //m_vader->setState ( QGst::StateReady );
     m_ready = Ready;
 }
 

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 cmake_policy(SET CMP0017 OLD)
 
 if(WITH_DOCS)
-    find_package(Doxygen)
+    find_package(Doxygen QUIET)
     if (DOXYGEN_FOUND)
         set(SPCHCNTRL_DOC_SOURCES_DIR "${PROJECT_SOURCE_DIR}/src")
         set(SPCHCNTRL_DOC_BUILD_DIR "${PROJECT_BINARY_DIR}/doc")

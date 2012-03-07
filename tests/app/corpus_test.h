@@ -18,8 +18,8 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef TEST_LIB_CORPUS_HPP
-#define TEST_LIB_CORPUS_HPP
+#ifndef TEST_APP_CORPUS_HPP
+#define TEST_APP_CORPUS_HPP
 #include <QObject>
 #include <QStringList>
 

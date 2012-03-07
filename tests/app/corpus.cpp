@@ -19,9 +19,9 @@
  */
 
 #include <QtTest/QtTest>
-#include "corpus.h"
-#include <lib/corpus.hpp>
-#include <lib/phrase.hpp>
+#include "corpus_test.h"
+#include <app/sessions/corpus.hpp>
+#include <app/sessions/phrase.hpp>
 
 using namespace SpeechControl;
 
@@ -77,5 +77,5 @@ void TestCorpus::cleanupTestCase() {
 
 QTEST_MAIN ( TestCorpus )
 
-#include "../tests/corpus.moc"
+#include "corpus_test.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -82,7 +82,7 @@
            <item>
             <widget class="QPushButton" name="btnDsktpCntrl">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -96,18 +96,12 @@
              <property name="checked">
               <bool>false</bool>
              </property>
-             <property name="default">
-              <bool>false</bool>
-             </property>
-             <property name="flat">
-              <bool>false</bool>
-             </property>
             </widget>
            </item>
            <item>
             <widget class="QPushButton" name="btnDctn">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -119,12 +113,6 @@
               <bool>true</bool>
              </property>
              <property name="checked">
-              <bool>false</bool>
-             </property>
-             <property name="default">
-              <bool>false</bool>
-             </property>
-             <property name="flat">
               <bool>false</bool>
              </property>
             </widget>
@@ -168,6 +156,9 @@
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::MinimumExpanding</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
              <width>20</width>
@@ -208,118 +199,12 @@
          <rect>
           <x>4</x>
           <y>16</y>
-          <width>205</width>
+          <width>213</width>
           <height>213</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
-         <item row="0" column="0" colspan="3">
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <item>
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnTrain">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Maximum">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>35</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Train</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btnAdapt">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Maximum">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>16777215</width>
-               <height>35</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Adapt</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="_">
-           <property name="text">
-            <string>Sessions</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="2">
-          <widget class="QLabel" name="lblSessions">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="minimumSize">
-            <size>
-             <width>0</width>
-             <height>30</height>
-            </size>
-           </property>
-           <property name="font">
-            <font>
-             <pointsize>14</pointsize>
-             <weight>75</weight>
-             <bold>true</bold>
-            </font>
-           </property>
-           <property name="styleSheet">
-            <string notr="true">background-color: rgba(255, 255, 255, 209);
-color: rgb(0, 0, 0);
-padding-right: 4px; border: 1px solid black;</string>
-           </property>
-           <property name="text">
-            <string>%s</string>
-           </property>
-           <property name="scaledContents">
-            <bool>true</bool>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="___">
-           <property name="text">
-            <string>Books</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="2">
+         <item row="3" column="2">
           <widget class="QLabel" name="lblBooks">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -356,14 +241,51 @@ padding-right: 4px; border: 1px solid black;</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="0">
+         <item row="2" column="2">
+          <widget class="QLabel" name="lblSessions">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>30</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: rgba(255, 255, 255, 209);
+color: rgb(0, 0, 0);
+padding-right: 4px; border: 1px solid black;</string>
+           </property>
+           <property name="text">
+            <string>%s</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item row="4" column="0">
           <widget class="QLabel" name="__">
            <property name="text">
             <string>Accuracy</string>
            </property>
           </widget>
          </item>
-         <item row="3" column="2">
+         <item row="4" column="2">
           <widget class="QLabel" name="lblAccuracy">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -400,14 +322,28 @@ padding-right: 4px; border: 1px solid black;</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="0">
+         <item row="5" column="0">
           <widget class="QLabel" name="__1">
            <property name="text">
             <string>Speech Index</string>
            </property>
           </widget>
          </item>
-         <item row="4" column="2">
+         <item row="2" column="0">
+          <widget class="QLabel" name="_">
+           <property name="text">
+            <string>Sessions</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QLabel" name="___">
+           <property name="text">
+            <string>Books</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="2">
           <widget class="QLabel" name="lblSpeechIndex">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
@@ -451,7 +387,7 @@ padding-right: 4px;</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="1" rowspan="4">
+         <item row="2" column="1" rowspan="4">
           <spacer name="horizontalSpacer_2">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -466,6 +402,49 @@ padding-right: 4px;</string>
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="1" column="0" colspan="3">
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnTrain">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Maximum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Train</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnAdapt">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="MinimumExpanding" vsizetype="Maximum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="text">
+              <string>Adapt</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
         </layout>
        </widget>
@@ -744,38 +723,6 @@ padding-right: 4px;</string>
    </hints>
   </connection>
   <connection>
-   <sender>btnDctn</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>actionDictationActive</receiver>
-   <slot>trigger()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>321</x>
-     <y>209</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btnDsktpCntrl</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>actionDesktopControlActive</receiver>
-   <slot>trigger()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>321</x>
-     <y>181</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>btnTrain</sender>
    <signal>clicked()</signal>
    <receiver>actionStartTraining</receiver>
@@ -800,6 +747,38 @@ padding-right: 4px;</string>
     <hint type="sourcelabel">
      <x>182</x>
      <y>55</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnDsktpCntrl</sender>
+   <signal>clicked()</signal>
+   <receiver>actionDesktopControlActive</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>357</x>
+     <y>212</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnDctn</sender>
+   <signal>clicked()</signal>
+   <receiver>actionDictationActive</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>357</x>
+     <y>240</y>
     </hint>
     <hint type="destinationlabel">
      <x>-1</x>

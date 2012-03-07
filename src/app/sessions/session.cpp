@@ -33,8 +33,8 @@ Session::Session ( const QUuid& p_uuid ) : m_corpus ( 0 ), m_content ( 0 ), m_el
     load ( p_uuid );
 }
 
-Session::Session ( const Session& p_other ) : QObject(p_other.parent()),
-    m_corpus(p_other.m_corpus), m_content(p_other.m_content), m_elem(p_other.m_elem) {
+Session::Session ( const Session& p_other ) : QObject ( p_other.parent() ),
+    m_corpus ( p_other.m_corpus ), m_content ( p_other.m_content ), m_elem ( p_other.m_elem ) {
 
 }
 
@@ -64,7 +64,7 @@ void Session::setContent ( Content* p_content ) {
     assessProgress();
 }
 
-void Session::assessProgress() {
+double Session::assessProgress() const {
     double l_progress = 0.0;
 
     Q_FOREACH ( const Sentence* l_snt, corpus()->sentences() ) {
@@ -72,6 +72,7 @@ void Session::assessProgress() {
     }
 
     emit progressChanged ( l_progress / ( double ) ( corpus()->sentences().count() ) );
+    return l_progress;
 }
 
 void Session::init() {
@@ -264,13 +265,17 @@ void Session::erase() const {
     m_corpus->erase();
     s_dom->documentElement().removeChild ( *m_elem );
 
+    Session::save();
+
+    qDebug() << "Session" << l_uuid << "removed.";
+}
+
+void Session::save() {
     QFile* l_file = new QFile ( QDir::homePath() + "/.speechcontrol/sessions.xml" );
     l_file->open ( QIODevice::WriteOnly | QIODevice::Truncate );
     QTextStream l_strm ( l_file );
 
     s_dom->save ( l_strm,4 );
-
-    qDebug() << "Session" << l_uuid << "removed.";
 }
 
 Session::Backup* Session::createBackup() const {

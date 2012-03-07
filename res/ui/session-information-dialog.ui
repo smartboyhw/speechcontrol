@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>328</width>
-    <height>374</height>
+    <width>348</width>
+    <height>399</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,8 +22,8 @@
     <rect>
      <x>4</x>
      <y>4</y>
-     <width>321</width>
-     <height>369</height>
+     <width>341</width>
+     <height>393</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -68,10 +68,10 @@
        <widget class="QWidget" name="gridLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>8</x>
+          <x>4</x>
           <y>0</y>
-          <width>297</width>
-          <height>266</height>
+          <width>321</width>
+          <height>297</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout">
@@ -88,8 +88,8 @@
              <rect>
               <x>8</x>
               <y>20</y>
-              <width>273</width>
-              <height>69</height>
+              <width>301</width>
+              <height>113</height>
              </rect>
             </property>
             <property name="text">
@@ -197,10 +197,10 @@
        <widget class="QWidget" name="formLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>23</x>
+          <x>7</x>
           <y>4</y>
-          <width>269</width>
-          <height>269</height>
+          <width>317</width>
+          <height>293</height>
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout">

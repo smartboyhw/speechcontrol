@@ -291,8 +291,9 @@
        <property name="styleSheet">
         <string notr="true">color: rgb(0, 0, 0);
 background-color: rgb(244, 244, 244);
-border-color: rgb(48, 48, 48);
-border-size: 5px;</string>
+border: 1px solid #fff;
+border-raidus: 10px;
+</string>
        </property>
        <property name="frameShape">
         <enum>QFrame::StyledPanel</enum>

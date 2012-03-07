@@ -59,7 +59,7 @@ void SessionManager::updateList() {
     Q_FOREACH ( const Session* l_sessionItr, l_lst ) {
         QListWidgetItem* l_item = new QListWidgetItem ( m_ui->listSession );
         l_item->setData ( Qt::UserRole,l_sessionItr->uuid().toString() );
-        l_item->setText ( tr ( "%1 - %2%" ).arg ( l_sessionItr->name() ).arg ( 30 ) );
+        l_item->setText ( tr ( "%1 - %2%" ).arg ( l_sessionItr->name() ).arg ( (int) l_sessionItr->assessProgress() * 100.0 ) );
         l_item->setIcon ( ( l_sessionItr->isCompleted() ) ? QIcon::fromTheme ( "task-complete" ) : QIcon::fromTheme ( "task-ongoing" ) );
         m_ui->listSession->addItem ( l_item );
 
@@ -125,15 +125,14 @@ void SessionManager::on_btnCreate_clicked() {
     updateList();
 }
 
-void SessionManager::on_listSession_itemDoubleClicked ( QListWidgetItem* p_itm ) {
-    const QListWidgetItem* l_item = m_ui->listSession->currentItem();
-
-    if ( l_item ) {
-        const Session* l_session = Session::obtain ( QUuid ( l_item->data ( Qt::UserRole ).toString() ) );
+void SessionManager::on_listSession_itemDoubleClicked ( QListWidgetItem* p_item ) {
+    if ( p_item ) {
+        Session* l_session = Session::obtain ( QUuid ( p_item->data ( Qt::UserRole ).toString() ) );
 
         if ( l_session ) {
             SessionInformationDialog* l_dialog = new SessionInformationDialog ( l_session );
             l_dialog->exec();
+            updateList();
         }
     }
 }
@@ -144,7 +143,7 @@ void SessionManager::on_listSession_itemSelectionChanged() {
     if ( l_item ) {
         m_session = Session::obtain ( QUuid ( l_item->data ( Qt::UserRole ).toString() ) );
         if (m_session){
-            m_ui->progressBar->setFormat(tr("%p complete"));
+            m_ui->progressBar->setFormat(tr("%p% complete"));
             m_ui->progressBar->setValue ( ( int ) ( m_session->assessProgress() * 100.0 ) );
         }
         else {

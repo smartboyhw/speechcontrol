@@ -55,21 +55,22 @@ TrainingDialog::TrainingDialog ( QWidget* p_parent ) :
     m_ui->pushButtonUndo->setIcon ( QIcon::fromTheme ( ICON_UNDO ) );
     m_ui->pushButtonNext->setIcon ( QIcon::fromTheme ( ICON_NEXT ) );
 
-    connect ( this,SLOT ( updateProgress ( double ) ),m_session,SIGNAL ( progressChanged ( double ) ) );
-    connect ( m_mic,SIGNAL ( startedListening() ),this,SLOT ( on_micStartedListening() ) );
-    connect ( m_mic,SIGNAL ( stoppedListening() ),this,SLOT ( on_micStoppedListening() ) );
-    on_micStoppedListening();
+    connect ( m_mic,SIGNAL ( startedListening() ),this,SLOT ( onMicStartedListening() ) );
+    connect ( m_mic,SIGNAL ( stoppedListening() ),this,SLOT ( onMicStoppedListening() ) );
+
+    onMicStoppedListening();
 }
 
 TrainingDialog::~TrainingDialog() {
     delete m_ui;
 }
 
-void TrainingDialog::on_micStartedListening() {
+void TrainingDialog::onMicStartedListening() {
     m_ui->lblRecording->setPixmap ( QIcon::fromTheme ( "audio-volume-high" ).pixmap ( 32,32 ) );
+    qDebug() << m_currentSentence->phrase ( m_currentPosition )->audio()->write ( "kick me in the face" );
 }
 
-void TrainingDialog::on_micStoppedListening() {
+void TrainingDialog::onMicStoppedListening() {
     m_ui->lblRecording->setPixmap ( QIcon::fromTheme ( "audio-volume-muted" ).pixmap ( 32,32 ) );
 }
 
@@ -108,7 +109,7 @@ void TrainingDialog::startCollecting() {
         m_ui->labelText->setEnabled ( true );
         m_ui->labelText->setText ( tr ( "<i>Rendering...</i>" ) );
 
-        navigateToPart ( l_start , m_currentSentence );
+        navigateToPart ( m_initialPosition , m_currentSentence );
     } else {
         reject();
         hide();
@@ -119,6 +120,7 @@ void TrainingDialog::startCollecting() {
 }
 
 void TrainingDialog::stopCollecting() {
+    m_mic->stopRecording();
     m_ui->pushButtonNext->setEnabled ( false );
     m_ui->pushButtonUndo->setEnabled ( false );
     m_ui->pushButtonReset->setEnabled ( false );
@@ -128,12 +130,13 @@ void TrainingDialog::stopCollecting() {
     m_ui->pushButtonProgress->setText ( tr ( "Start" ) );
 }
 
-/// @todo Connect the changing of progress of the session to this window.
 void TrainingDialog::setSession ( Session *p_session ) {
-    m_session = p_session;
-    this->setWindowTitle ( tr ( "Training (0%) - SpeechControl" ).arg ( m_session->name() ) );
-    updateProgress ( 0.0 );
-    connect ( m_session,SIGNAL ( progressChanged ( double ) ),this,SLOT ( updateProgress ( double ) ) );
+    if ( p_session ) {
+        m_session = p_session;
+        this->setWindowTitle ( tr ( "Training '%1' (0%) - SpeechControl" ).arg ( m_session->name() ) );
+        updateProgress ( 0.0 );
+        connect ( m_session,SIGNAL ( progressChanged ( double ) ),this,SLOT ( updateProgress ( double ) ) );
+    }
 }
 
 Session* TrainingDialog::session() const {
@@ -155,7 +158,7 @@ void TrainingDialog::on_pushButtonProgress_toggled ( const bool& checked ) {
 
 void TrainingDialog::updateProgress ( const double p_progress ) {
     const int l_progress = ( int ) ( p_progress * 100 );
-    this->setWindowTitle ( tr ( "Training (%1%) - SpeechControl" ).arg ( l_progress ) );
+    this->setWindowTitle ( tr ( "Training '%2' (%1%) - SpeechControl" ).arg ( l_progress ).arg ( m_session->content()->title() ) );
     m_ui->groupBoxTitle->setTitle ( QString ( "%1 - %2%" ).arg ( m_session->name() ).arg ( QString::number ( l_progress ) ) );
     m_ui->progressBar->setValue ( l_progress );
 }
@@ -175,47 +178,55 @@ void TrainingDialog::navigateToPart ( const uint &p_index, Sentence* p_sentence 
         const QString l_curWord = l_phrsLst.at ( i )->text();
 
         if ( p_index == i ) {
+            l_text += "<b>";
             Q_FOREACH ( const QChar l_chr, l_curWord ) {
-                if ( l_chr.isLetterOrNumber() ) {
-                    l_text += QString ( "<b>%1</b>" ).arg ( l_chr );
-                } else {
+                if ( !l_chr.isLetterOrNumber() && !l_chr.isSpace() ) {
+                    l_text += QString ( "<span style='font-weight: 100;'>%1</span>" ).arg ( l_chr );
+                } else
                     l_text += l_chr;
-                }
             }
-        } else {
-            l_text += QString ( "<font style='color: gray; font-size: small;'>%1</font>" ).arg ( l_curWord );
-        }
+
+            l_text += "</b>";
+        } else
+            l_text += QString ( "<font style='color: gray; font-size: small;'><i>%1</i></font>" ).arg ( l_curWord );
 
         if ( i != ( uint ) l_phrsLst.count() - 1 ) {
             l_text += " ";
         }
     }
 
-    qDebug() << l_text << p_sentence->phrases();
+    qDebug() << l_text;
 
     m_currentPosition = p_index;
     m_currentSentence = p_sentence;
     m_ui->labelText->setText ( l_text );
-    m_session->assessProgress();
     m_ui->pushButtonReset->setEnabled ( ! ( ( int ) m_initialPosition == m_currentPosition && m_initialSentence == m_currentSentence ) );
     m_ui->pushButtonUndo->setEnabled ( m_ui->pushButtonReset->isEnabled() );
+    m_session->assessProgress();
 }
 
 void TrainingDialog::navigateNextPart() {
-    if ( m_currentPosition + 1 < m_currentSentence->phrases().count() ) {
-        navigateToPart ( m_currentPosition + 1 );
-    } else {
-        navigateToPart ( m_currentSentence->phrases().count() - 1 );
+    if ( currentPhraseCompleted() ) {
+        if ( m_currentPosition + 1 < m_currentSentence->phrases().count() ) {
+            navigateToPart ( m_currentPosition + 1 );
+        } else {
+            navigateToPart ( m_currentSentence->phrases().count() - 1 );
+        }
     }
 }
 
-/// @todo When this hits -1, it should head back to the previous sentence.
 void TrainingDialog::navigatePreviousPart() {
-    if ( m_currentPosition - 1 >= 0 ) {
-        navigateToPart ( m_currentPosition - 1 );
-    } else {
-        navigateToPart ( 0 );
+    if ( currentPhraseCompleted() ) {
+        if ( m_currentPosition - 1 >= 0 ) {
+            navigateToPart ( m_currentPosition - 1 );
+        } else {
+            navigateToPart ( 0 );
+        }
     }
+}
+
+bool TrainingDialog::currentPhraseCompleted() {
+    return m_currentSentence->phrase ( m_currentPosition )->isCompleted();
 }
 
 /// @todo This should clear all of the progress made since the start of training WHEN this dialog opened.
@@ -227,7 +238,7 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonReset_clicked() {
         return;
     }
 
-    // Undo the work up to the initial point.
+    // Wipe out the work up to the initial point.
     for ( int i = m_currentSentence->index(); i >= m_initialSentence->index(); i-- ) {
         Sentence* l_sntc = m_session->corpus()->sentenceAt ( i );
         qDebug() << "Wiping sentence" << l_sntc->text();
@@ -308,4 +319,4 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonNext_clicked() {
 }
 
 #include "training-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

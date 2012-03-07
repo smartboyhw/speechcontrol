@@ -28,8 +28,7 @@
 #include <QDomDocument>
 
 // libspchcntrl includes
-#include <lib/corpus.hpp>
-
+#include <corpus.hpp>
 // speechcontrol includes
 #include <app/sessions/content.hpp>
 

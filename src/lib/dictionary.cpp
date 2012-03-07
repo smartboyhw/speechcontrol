@@ -19,7 +19,6 @@
  */
 
 #include "dictionary.hpp"
-#include "corpus.hpp"
 
 #include <QDir>
 #include <QFile>

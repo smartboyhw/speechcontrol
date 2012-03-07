@@ -64,6 +64,11 @@ const QString Sentence::text() const {
     return l_text.trimmed();
 }
 
+const QDomElement* Sentence::getElement() const
+{
+    return m_elem;
+}
+
 Sentence* Sentence::create ( Corpus *p_corpus, const QString& p_text ) {
     QDomElement* l_elem = new QDomElement ( p_corpus->m_dom->createElement ( "Sentence" ) );
     l_elem->setAttribute ( "file",QUuid::createUuid() );

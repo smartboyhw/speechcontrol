@@ -6,7 +6,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
 include(SpeechControlDefaults)
 
 ## Options to toggle components of SpeechControl.
-option(WITH_DOCS               "Generate Doxygen-made documentation?"       ON)
+option(WITH_DOCS               "Generate Doxygen-made documentation?"       OFF)
 option(WITH_KDE_SUPPORT        "Build KDE specific features?"               ON)
 option(WITH_PYTHON_BINDINGS    "Generate Python support for SpeechControl?" ON)
 option(WITH_PLUGINS            "Build the included plug-ins?"               ON)

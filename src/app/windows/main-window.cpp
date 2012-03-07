@@ -126,10 +126,10 @@ void Main::setStatusMessage (const QString& p_message , const int p_timeout)
 void Main::desktopControlStateChanged()
 {
     switch (DesktopControl::Agent::instance()->state()) {
-    case AbstractAgent::OperationState::Enabled:
+    case AbstractAgent::ActivityState::Enabled:
         setStatusMessage (tr ("Desktop control enabled."));
         break;
-    case AbstractAgent::OperationState::Disabled:
+    case AbstractAgent::ActivityState::Disabled:
         setStatusMessage (tr ("Desktop control disabled."));
         break;
     default:
@@ -140,10 +140,10 @@ void Main::desktopControlStateChanged()
 void Main::dictationStateChanged()
 {
     switch (Dictation::Agent::instance()->state()) {
-    case AbstractAgent::OperationState::Enabled:
+    case AbstractAgent::ActivityState::Enabled:
         setStatusMessage (tr ("Dictation enabled."));
         break;
-    case AbstractAgent::OperationState::Disabled:
+    case AbstractAgent::ActivityState::Disabled:
         setStatusMessage (tr ("Dictation disabled."));
         break;
     default:

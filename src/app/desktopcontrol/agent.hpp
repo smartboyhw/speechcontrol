@@ -58,7 +58,7 @@ class Agent : public AbstractAgent
     Q_OBJECT
 
 private:
-    virtual OperationState onStateChanged (const AbstractAgent::OperationState p_state);
+    virtual ActivityState onStateChanged (const AbstractAgent::ActivityState p_state);
     static Agent* s_instance;
     Sphinx* m_sphinx;
 
@@ -97,7 +97,6 @@ public:
     static Agent* instance();
     
 public slots:
-<<<<<<< HEAD
     /**
      * @brief Invokes a command for desktop control to parse.
      *
@@ -108,9 +107,6 @@ public slots:
      * @param p_cmd The command to be parsed.
      **/
     void invokeCommand ( const QString& cmd );
-=======
-    void invokeCommand(const QString& cmd);
->>>>>>> Fix build issues.
 
 };
 }

@@ -37,46 +37,38 @@ Agent::~Agent() {
 
 }
 
-void Agent::start() {
-    m_sphinx->start();
-}
-
-void Agent::stop() {
-    m_sphinx->stop();
-}
-
-Agent* Agent::instance() {
-    if ( s_instance == 0 ) {
+Agent* Agent::instance()
+{
+    if (s_instance == 0)
         s_instance = new Agent;
 
-        return s_instance;
-    }
+    return s_instance;
+}
 
-    AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::OperationState p_state ) {
-        switch ( p_state ) {
-        case Enabled:
-            if ( !isEnabled() )
-                return Disabled;
+AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::ActivityState p_state)
+{
+    switch (p_state) {
+    case Enabled:
+        //if ( !isEnabled() )
+            //return Disabled;
 
-            if ( !m_sphinx->start() ) {
-                qWarning() << "[DesktopControl::Agent] Start unsuccessful.";
-                return Disabled;
-            }
-            return Enabled;
-            break;
-
-        case Disabled:
-            m_sphinx->stop();
+        if ( !m_sphinx->start() ) {
+            qWarning() << "[DesktopControl::Agent] Start unsuccessful.";
             return Disabled;
-            break;
-
-        case Undefined:
-        default:
-            break;
         }
+        return Enabled;
+        break;
 
+    case Disabled:
+        m_sphinx->stop();
+        return Disabled;
+        break;
+
+    default:
         return Undefined;
     }
+
+}
 
     bool Agent::isActive() const {
         return m_sphinx->isRunning();

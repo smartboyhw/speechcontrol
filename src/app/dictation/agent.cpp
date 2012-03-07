@@ -41,7 +41,7 @@ Agent* Agent::instance() {
     return s_inst;
 }
 
-AbstractAgent::OperationState Agent::onStateChanged ( const AbstractAgent::OperationState p_stt ) {
+AbstractAgent::ActivityState Agent::onStateChanged ( const AbstractAgent::ActivityState p_stt ) {
     switch ( p_stt ) {
     case Enabled:
         break;

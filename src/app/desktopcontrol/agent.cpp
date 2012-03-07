@@ -53,13 +53,13 @@ Agent::~Agent()
 
 Agent* Agent::instance()
 {
-    if (s_instance == 0) {
+    if (s_instance == 0)
         s_instance = new Agent;
 
     return s_instance;
 }
 
-AbstractAgent::OperationState Agent::onStateChanged (const AbstractAgent::OperationState p_state)
+AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::ActivityState p_state)
 {
     switch (p_state) {
     case Enabled:

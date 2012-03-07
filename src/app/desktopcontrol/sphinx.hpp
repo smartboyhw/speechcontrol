@@ -39,7 +39,7 @@ class Sphinx : public AbstractSphinx
     Q_OBJECT
     Q_DISABLE_COPY (Sphinx)
 
-protected:
+public:
     /**
      * @brief Null constructor.
      *

@@ -49,10 +49,10 @@ typedef QList<Phrase*> PhraseList;
 class SPCH_EXPORT Sentence : public QObject {
     Q_OBJECT
     Q_DISABLE_COPY ( Sentence )
-    friend class Corpus;
     friend class Phrase;
 
 public:
+    explicit Sentence ( Corpus*, QDomElement* );
     /**
      * @brief ...
      *
@@ -84,6 +84,9 @@ public:
      * @return const QString
      **/
     const QString text() const;
+    
+    const QDomElement* getElement() const;
+    
     /**
      * @brief ...
      *
@@ -130,7 +133,6 @@ public:
     Phrase* phrase ( const int& ) const;
 
 private:
-    explicit Sentence ( Corpus*, QDomElement* );
     QDomElement* getPhraseElement ( const int& ) const;
     QDomElement* m_elem;
     Corpus* m_corpus;

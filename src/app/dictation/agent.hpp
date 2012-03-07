@@ -42,7 +42,7 @@ public slots:
     void handleText ( const QString& p_text );
 
 private:
-    virtual OperationState onStateChanged ( const OperationState );
+    virtual ActivityState onStateChanged ( const SpeechControl::AbstractAgent::ActivityState p_stt );
     static Agent* s_inst;
     Sphinx* m_sphinx;
 };

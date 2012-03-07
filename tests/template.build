@@ -39,6 +39,9 @@ if (TEST_MODE STREQUAL "APP")
     list(REMOVE_ITEM TEST_APP_SRCS "${CMAKE_SOURCE_DIR}/src/app/main.cpp")
 endif (TEST_MODE STREQUAL "APP")
 
+## Qt-specific actions.
+QT4_AUTOMOC(${TEST_BASE_SCPP})
+
 ## Variables
 set(TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS}
                              BUILDING_TEST)
@@ -67,9 +70,6 @@ else (TEST_MODE STREQUAL "APP")
 endif(TEST_MODE STREQUAL "APP")
 
 include_directories(${TEST_INCLUDE_DIRS})
-
-## Qt-specific actions.
-QT4_AUTOMOC(${TEST_BASE_SCPP})
 
 ## Begin included code.
 

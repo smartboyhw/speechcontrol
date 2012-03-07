@@ -2,10 +2,13 @@ project(SpeechControlTests)
 include(SpeechControlDefaults)
 if(WITH_TESTS)
     message(STATUS "Building tests enabled.")
-    if (EXISTS "${SPCHCNTRL_CMAKE_DIR}")
+    if (TARGET speechcontrol)
         set(SpeechControlLibrary_DIR "${CMAKE_BINARY_DIR}/src/lib/InstallFiles")
+    endif (TARGET speechcontrol)
+
+    if (TARGET speechcontrol-frontend)
         set(SpeechControlApplication_DIR "${CMAKE_BINARY_DIR}/src/app/InstallFiles")
-    endif (EXISTS "${SPCHCNTRL_CMAKE_DIR}")
+    endif (TARGET speechcontrol-frontend)
 
     add_custom_target(tests
         COMMAND "ctest"

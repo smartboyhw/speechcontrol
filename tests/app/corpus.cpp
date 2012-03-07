@@ -77,5 +77,5 @@ void TestCorpus::cleanupTestCase() {
 
 QTEST_MAIN ( TestCorpus )
 
-#include "corpus.moc"
+#include "../tests/corpus.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

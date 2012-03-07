@@ -38,43 +38,24 @@ Indicator* Indicator::s_inst = 0;
 
 /// @todo Check for a configuration value to determine whether or not the indicator should be shown on initialization.
 Indicator::Indicator ( QObject* parent ) : QObject ( parent ),
-    m_indctr ( 0 ), m_indctrSvr ( 0 ) {
+    m_icon(0) {
     s_inst = this;
 
-    m_indctrSvr = QIndicate::Server::defaultInstance();
-    m_indctrSvr->setType ( "speechcontrol" );
-    //m_indicateServer->setDesktopFile();
-    m_indctrSvr->show();
-
-    m_indctr = new QIndicate::Indicator ( m_indctrSvr );
-    m_indctr->setNameProperty ( "SpeechControl" );
-    m_indctr->setTimeProperty ( QDateTime::currentDateTime() );
-    m_indctr->setDrawAttentionProperty ( true );
-    m_indctr->show();
-
-    connect ( m_indctr, SIGNAL ( display ( QIndicate::Indicator* ) ), SLOT ( displayIndicator ( QIndicate::Indicator* ) ) );
-    connect ( m_indctrSvr, SIGNAL ( serverDisplay() ), SLOT ( showMainWindow() ) );
-
-    presentMessage ( "Test message!" );
+    m_icon = new QSystemTrayIcon(QIcon(":/logo/sc-large"),this);
 }
 
 /// @todo Implement the appropriate code using QtIndicate to hide the indicator.
 void Indicator::hide() {
-    instance()->m_indctr->hide();
+    instance()->m_icon->hide();
 }
 
 /// @todo Implement the appropriate code using QtIndicate to show the indicator.
 void Indicator::show() {
-    instance()->m_indctr->show();
-    instance()->m_indctr->emitDisplay();
+    instance()->m_icon->show();
 }
 
 void Indicator::showMainWindow() {
     Core::mainWindow()->show();
-}
-
-void Indicator::displayIndicator ( QIndicate::Indicator* p_indctr ) {
-    p_indctr->show();
 }
 
 Indicator* Indicator::instance() {
@@ -85,10 +66,9 @@ Indicator* Indicator::instance() {
     return s_inst;
 }
 
-/// @todo Implement the appropriate code using QtIndicate to present a non-blocking message to the user.
-void Indicator::presentMessage ( const QString& p_message ) {
-    qDebug() << "Indicator message:" << p_message;
-    instance()->m_indctr->emitDisplay();
+/// @todo Add an enumeration that allows the callee to specify the kind of message icon they'd  want to appear.
+void Indicator::presentMessage ( const QString& p_title, const QString& p_message, const int& p_timeout ) {
+    instance()->m_icon->showMessage(p_title,p_message,QSystemTrayIcon::Information,p_timeout);
 }
 
 Indicator::~Indicator() {

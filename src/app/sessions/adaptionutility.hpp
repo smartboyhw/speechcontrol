@@ -24,56 +24,75 @@
 #include <QObject>
 
 namespace SpeechControl {
+
+class AcousticModel;
 class Session;
 
 /**
- * @brief ...
+ * @brief Provides SpeechControl with the ability to adapt sessions into existing acoustic models.
+ *
+ * AdaptionUtility performs most of the actions required to perform an adaption as
+ * prescribed by <http://cmusphinx.sourceforge.net/wiki/tutorialadapt>. The process is
+ * typically as follows:
+ *
+ * @li Obtain the feature parameters of the acoustic model to be adapted. ( @c generateFeatures() )
+ * @li Convert the model definitions from its binary format into a text format. ( @c convertModelDefinitions() )
+ * @li Obtain statistical information about the acoustic model. ( @c collectAcousticStatistics() )
+ * @li Enacts the adaption process, MAP-style. ( @c performAdaption() )
+ * @li Re-generate the sendmap file (to save disk space) ( @c generateSendmap() )
+ * @li Generate statistical information about the accuracy and efficiency of the newly adopted model. ( @c generateAccuracyReport() )
+ *
+ * More information about adaption in SpeechControl can be found at <http://wiki.thesii.org/SpeechControl/AdaptingAcousticModels>.
  **/
 class AdaptionUtility : public QObject {
     Q_OBJECT
 
 public:
     /**
-     * @brief ...
-     *
-     * @param p_session ...
+     * @brief Default constructor.
+     * @param p_session The Session to be adapted with.
+     * @param p_model The AcousticModel to be adapted.
      **/
-    explicit AdaptionUtility ( Session* p_session );
+    explicit AdaptionUtility ( Session* p_session, AcousticModel* p_model );
 
     /**
-     * @brief ...
-     *
+     * @brief Null constructor.
      **/
     AdaptionUtility();
 
     /**
-     * @brief ...
-     *
+     * @brief Destructor.
      **/
 
     virtual ~AdaptionUtility();
 
     /**
-     * @brief ...
-     *
-     * @param p_session ...
-     * @return void
+     * @brief Changes the Session to be merged with the acoustic model.
+     * @param p_session The Session to use.
      **/
     void setSession(Session* p_session);
 
     /**
-     * @brief ...
-     *
-     * @return :Session*
+     * @brief Changes the AcousticModel to be adapted.
+     * @param p_model The new model to adapt.
+     **/
+    void setAcousticModel(AcousticModel* p_model);
+
+    /**
+     * @brief Returns the Session that'll be used for adaption.
      **/
     Session* session();
 
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Returns the AcousticModel that'll be adapted.
      **/
-    void adapt();
+    AcousticModel* model();
+
+    /**
+     * @brief Invokes the adaption process.
+     * @return A pointer to the new AcousticModel, or NULL if the operation failed.
+     **/
+    AcousticModel* adapt();
 
 private:
     void generateFeatures();
@@ -85,6 +104,7 @@ private:
     void generateAccuracyReport();
 
     Session* m_session;
+    AcousticModel* m_model;
 };
 
 }

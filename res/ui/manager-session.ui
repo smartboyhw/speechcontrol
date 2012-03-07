@@ -32,7 +32,7 @@
       <item>
        <widget class="QPushButton" name="btnCancel">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -64,7 +64,7 @@
       <item>
        <widget class="QPushButton" name="btnOk">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -80,7 +80,7 @@
       <item>
        <widget class="QPushButton" name="btnCreate">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -98,7 +98,10 @@
     <item row="1" column="0">
      <widget class="QProgressBar" name="progressBar">
       <property name="value">
-       <number>24</number>
+       <number>0</number>
+      </property>
+      <property name="format">
+       <string>%p% complete</string>
       </property>
      </widget>
     </item>

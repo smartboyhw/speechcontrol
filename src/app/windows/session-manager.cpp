@@ -31,10 +31,12 @@
 #include "windows/main-window.hpp"
 #include "books-manager.hpp"
 #include "session-manager.hpp"
+#include "session-information-dialog.hpp"
 #include "core.hpp"
 
 
 using namespace SpeechControl;
+using SpeechControl::Windows::SessionInformationDialog;
 using SpeechControl::Windows::Managers::SessionManager;
 using SpeechControl::Windows::Managers::BooksManager;
 
@@ -123,14 +125,34 @@ void SessionManager::on_btnCreate_clicked() {
     updateList();
 }
 
+void SessionManager::on_listSession_itemDoubleClicked ( QListWidgetItem* p_itm ) {
+    const QListWidgetItem* l_item = m_ui->listSession->currentItem();
+
+    if ( l_item ) {
+        const Session* l_session = Session::obtain ( QUuid ( l_item->data ( Qt::UserRole ).toString() ) );
+
+        if ( l_session ) {
+            SessionInformationDialog* l_dialog = new SessionInformationDialog ( l_session );
+            l_dialog->exec();
+        }
+    }
+}
+
 void SessionManager::on_listSession_itemSelectionChanged() {
-    m_session = 0;
     const QListWidgetItem* l_item = m_ui->listSession->currentItem();
 
     if ( l_item ) {
         m_session = Session::obtain ( QUuid ( l_item->data ( Qt::UserRole ).toString() ) );
+        if (m_session){
+            m_ui->progressBar->setFormat(tr("%p complete"));
+            m_ui->progressBar->setValue ( ( int ) ( m_session->assessProgress() * 100.0 ) );
+        }
+        else {
+            m_ui->progressBar->setFormat(tr("no session selected"));
+            m_ui->progressBar->setValue(0.0);
+        }
     }
 }
 
 #include "session-manager.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

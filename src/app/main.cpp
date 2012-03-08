@@ -38,6 +38,7 @@
 
 // local includes
 #include "core.hpp"
+#include <QIcon>
 
 // pretty simple, huh?
 int main (int argc, char** argv)
@@ -46,6 +47,8 @@ int main (int argc, char** argv)
     app->setApplicationName ( "SpeechControl" );
     app->setOrganizationDomain ( "thesii.org" );
     app->setOrganizationName ( "Synthetic Intellect Institute" );
+    app->setWindowIcon(QIcon(":/logo/sc-large"));
+    app->setQuitOnLastWindowClosed(false);
     app->setApplicationVersion ( SPCHCNTRL_BUILD_VERSION );
     SpeechControl::Core appCore (argc, argv, app);
     appCore.start();

@@ -29,6 +29,7 @@
 
 // Qt
 #include <QImage>
+#include <QMenu>
 #include <QDebug>
 
 using SpeechControl::Indicator;
@@ -42,6 +43,10 @@ Indicator::Indicator ( QObject* parent ) : QObject ( parent ),
     s_inst = this;
 
     m_icon = new QSystemTrayIcon(QIcon(":/logo/sc-large"),this);
+    QMenu* l_menu = new QMenu;
+    l_menu->addAction("Restore",Core::mainWindow(),SLOT(show()));
+    l_menu->addAction(QIcon::fromTheme("application-exit"),"Quit",QApplication::instance(),SLOT(quit()));
+    m_icon->setContextMenu(l_menu);
 }
 
 /// @todo Implement the appropriate code using QtIndicate to hide the indicator.

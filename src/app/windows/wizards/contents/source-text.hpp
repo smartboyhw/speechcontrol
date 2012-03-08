@@ -18,27 +18,32 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "customsource.hpp"
-#include "ui_contentwizard-customsource.h"
+#ifndef CONTENTWIZARD_SOURCE_TEXT_HPP
+#define CONTENTWIZARD_SOURCE_TEXT_HPP
 
-#include <QDebug>
-#include <QTextStream>
-#include <QDomDocument>
-#include <QFileDialog>
-#include <QMessageBox>
+#include <QWidget>
 
-using SpeechControl::Wizards::Pages::CustomSourcePage;
+namespace Ui {
+class TextContentSourceWidget;
+}
 
-CustomSourcePage::CustomSourcePage ( QWidget *parent ) :
-    QWizardPage ( parent ),
-    m_ui ( new Ui::CustomSourcePage ) {
-    m_ui->setupUi ( this );
+namespace SpeechControl {
+class TextContentSourceWidget : public QWidget {
+    Q_OBJECT
+    void updateView();
+
+public:
+    explicit TextContentSourceWidget ( QWidget *parent = 0 );
+    ~TextContentSourceWidget();
+
+private slots:
+    void on_btnOpen_clicked();
+
+private:
+    Ui::TextContentSourceWidget *m_ui;
+};
 
 }
 
-CustomSourcePage::~CustomSourcePage() {
-    delete m_ui;
-}
-
-#include "customsource.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#endif // CONTENTWIZARD_SOURCE_TEXT_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

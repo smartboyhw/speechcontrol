@@ -24,9 +24,6 @@
 #include "wizards/intro.hpp"
 #include "wizards/outro.hpp"
 #include "wizards/contents/selection.hpp"
-#include "wizards/contents/urlselect.hpp"
-#include "wizards/contents/wikiselect.hpp"
-#include "wizards/contents/customsource.hpp"
 #include "core.hpp"
 
 #include <QIcon>
@@ -41,50 +38,28 @@ ContentWizard::ContentWizard ( QWidget *parent ) :
     WizardBase ( parent ), m_src ( 0 ) {
     QIcon l_icon = QIcon::fromTheme ( "text-plain" );
     setPixmap ( QWizard::LogoPixmap,l_icon.pixmap ( 32,32,QIcon::Active,QIcon::On ) );
-    setWindowTitle ( tr ( "Book Addition Wizard - SpeechControl" ) );
+    setWindowTitle ( tr ( "Content Addition Wizard - SpeechControl" ) );
     setPage ( ContentWizard::IntroductionPage,
               ( new Wizards::Pages::IntroductionPage ( tr ( "This wizard allows you to add a new book into SpeechControl's collection." ) ) ) );
-    setPage ( ContentWizard::AdditionSelectionPage,
-              ( new Wizards::Pages::AdditionSelectionPage ( this ) ) );
-    setPage ( ContentWizard::UriSelectionPage,
-              ( new Wizards::Pages::UrlSelectionPage ( this ) ) );
-    setPage ( ContentWizard::WikiSourcePage,
-              ( new Wizards::Pages::WikiSourcePage ( this ) ) );
-    setPage ( ContentWizard::CustomSelectionPage,
-              ( new Wizards::Pages::CustomSourcePage ( this ) ) );
+    setPage ( ContentWizard::SourceSelectionPage,
+              ( new Wizards::Pages::SourceSelectionPage ) );
     setPage ( ContentWizard::ConclusionPage,
               ( new Wizards::Pages::ConclusionPage ( tr ( "You've successfully added a book into SpeechControl." ) ) ) );
 }
 
 void ContentWizard::setSource ( AbstractContentSource* p_src ) {
-    if ( p_src != 0 ) {
-        m_src = new AbstractContentSource ( *p_src );
-        qDebug() << "Got source" << m_src->id();
-    }
+    Q_ASSERT ( p_src != 0 );
+    m_src = new AbstractContentSource ( *p_src );
+    qDebug() << "Got source" << m_src->id();
 }
 
-/// @todo Add a page showing
 int ContentWizard::nextId() const {
     switch ( currentId() ) {
     case IntroductionPage:
-        return AdditionSelectionPage;
+        return SourceSelectionPage;
         break;
 
-    case AdditionSelectionPage: {
-        m_src = 0;
-        if ( field ( "selection.wiki" ).toBool() ) {
-            return WikiSourcePage;
-        } else if ( field ( "selection.url" ).toBool() ) {
-            return UriSelectionPage;
-        } else if ( field ( "selection.custom" ).toBool() ) {
-            return CustomSelectionPage;
-        }
-    }
-    break;
-
-    case WikiSourcePage:
-    case UriSelectionPage:
-    case CustomSelectionPage:
+    case SourceSelectionPage:
         return ConclusionPage;
         break;
 
@@ -97,10 +72,10 @@ int ContentWizard::nextId() const {
                                    tr ( "There was an issue creating your content; thus resulting in a failure." ),
                                    QMessageBox::Ok
                                  );
-            return AdditionSelectionPage;
-        } else {
-            return -1;
+            return SourceSelectionPage;
         }
+
+        return -1;
     }
     break;
     }
@@ -112,4 +87,4 @@ ContentWizard::~ContentWizard() {
 }
 
 #include "contents-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -68,8 +68,7 @@ protected:
     void changeEvent ( QEvent *e );
 
 private slots:
-    void on_checkBoxEnableDictation_toggled ( bool checked );
-    void on_checkBoxEnableDesktopControl_toggled ( bool p_checked );
+    void on_checkBoxIndicatorIcon_toggled ( bool p_checked );
 
 private:
     Ui::GeneralSettingsPane *ui;

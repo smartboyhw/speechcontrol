@@ -69,6 +69,7 @@ protected:
 
 private slots:
     void on_checkBoxEnable_toggled ( bool p_checked );
+    void on_checkBoxEnableStartup_toggled (bool p_checked);
     void updateContent();
 
 private:

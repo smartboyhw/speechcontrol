@@ -33,8 +33,7 @@ GeneralSettingsPane::GeneralSettingsPane ( QWidget *parent ) :
     ui->setupUi ( this );
     ui->lblSessionCount->setText ( QString::number ( Session::allSessions().count() ) );
     ui->lblAccuracyRating->setText ( "<i>n/a</i>" );
-    ui->checkBoxEnableDesktopControl->setChecked ( Core::configuration ( "DesktopControl/AutoStart" ).toBool() );
-    ui->checkBoxEnableDictation->setChecked ( Core::configuration ( "Dictation/AutoStart" ).toBool() );
+    ui->checkBoxIndicatorIcon->setChecked ( Core::configuration ( "DesktopControl/AutoStart" ).toBool() );
 }
 
 GeneralSettingsPane::~GeneralSettingsPane() {
@@ -60,13 +59,8 @@ const QString GeneralSettingsPane::id() const {
     return "gnrl";
 }
 
-void GeneralSettingsPane::on_checkBoxEnableDictation_toggled ( bool p_checked ) {
-    Core::setConfiguration ( "Dictation/AutoStart",p_checked );
+void GeneralSettingsPane::on_checkBoxIndicatorIcon_toggled ( bool p_checked ) {
+    Core::setConfiguration ( "Indicator/Show",p_checked );
 }
-
-void GeneralSettingsPane::on_checkBoxEnableDesktopControl_toggled ( bool p_checked ) {
-    Core::setConfiguration ( "DesktopControl/AutoStart",p_checked );
-}
-
 #include "general-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -66,5 +66,9 @@ void DictationSettingsPane::on_checkBoxEnable_toggled ( bool p_checked ) {
     Dictation::Agent::instance()->setState ( ( ( p_checked ) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled ) );
 }
 
+void DictationSettingsPane::on_checkBoxEnableStartup_toggled ( bool p_checked ) {
+    Core::setConfiguration ( "Dictation/AutoStart",p_checked );
+}
+
 #include "dictation-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

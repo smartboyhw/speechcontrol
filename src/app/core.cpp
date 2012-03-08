@@ -19,7 +19,6 @@
  */
 
 // Qt includes
-#include <QDir>
 #include <QFile>
 #include <QDebug>
 #include <QLibraryInfo>
@@ -52,6 +51,7 @@ Core* Core::s_inst = 0;
 Core::Core ( int p_argc, char** p_argv, QApplication* app ) : QObject ( app ),
     m_app ( app ), m_mw ( 0 ), m_settings ( 0 ), m_trnsltr ( 0 ) {
     m_app = app;
+
     if ( s_inst ) {
         qFatal ( "The Core instance of SpeechControl was being invoked again. This is a fatal and funny error." );
     }
@@ -143,6 +143,10 @@ void Core::invokeAutoStart() {
 void Core::loadTranslations ( const QLocale& p_locale ) {
     qDebug() << "Loading locale" << p_locale.name();
     instance()->m_trnsltr->load ( "speechcontrol_" + p_locale.name() );
+}
+
+QDir Core::configurationPath() {
+    return QDir(QDir::homePath().append("/.config/speechcontrol"));
 }
 
 Core::~Core () {

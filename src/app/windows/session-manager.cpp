@@ -28,7 +28,7 @@
 #include "sessions/session.hpp"
 #include "windows/about-dialog.hpp"
 #include "windows/main-window.hpp"
-#include "books-manager.hpp"
+#include "content-manager.hpp"
 #include "session-manager.hpp"
 #include "session-information-dialog.hpp"
 #include "core.hpp"
@@ -37,7 +37,7 @@
 using namespace SpeechControl;
 using SpeechControl::Windows::SessionInformationDialog;
 using SpeechControl::Windows::Managers::SessionManager;
-using SpeechControl::Windows::Managers::BooksManager;
+using SpeechControl::Windows::Managers::ContentManager;
 
 SessionManager::SessionManager ( QWidget *parent ) :
     QDialog ( parent ),
@@ -111,7 +111,7 @@ void SessionManager::on_btnOk_clicked() {
 }
 
 void SessionManager::on_btnCreate_clicked() {
-    Content* l_content = BooksManager::doSelectContent();
+    Content* l_content = ContentManager::doSelectContent();
 
     if ( l_content ) {
         Session* l_session = Session::create ( l_content );

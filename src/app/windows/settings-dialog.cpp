@@ -27,7 +27,7 @@
 #include "settings-dialog.hpp"
 #include "settings/general-pane.hpp"
 #include "settings/plugins-pane.hpp"
-#include "settings/books-pane.hpp"
+#include "settings/content-pane.hpp"
 #include "settings/session-pane.hpp"
 #include "settings/voxforge-pane.hpp"
 #include "settings/desktopcontrol-pane.hpp"
@@ -93,7 +93,7 @@ Settings* Settings::instance() {
         s_inst = new Settings;
         GeneralSettingsPane* l_generalPane = new GeneralSettingsPane;
         PluginsSettingsPane* l_pluginsPane = new PluginsSettingsPane;
-        BookSettingsPane* l_booksPane = new BookSettingsPane;
+        ContentSettingsPane* l_booksPane = new ContentSettingsPane;
         VoxforgeSettingsPane* l_voxforgePane = new VoxforgeSettingsPane;
         SessionSettingsPane* l_sessionPane = new SessionSettingsPane;
         DesktopControlSettingsPane* l_dsktpCntrlPane = new DesktopControlSettingsPane;

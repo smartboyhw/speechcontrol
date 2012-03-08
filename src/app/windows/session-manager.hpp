@@ -30,9 +30,6 @@ class SessionManager;
 
 namespace SpeechControl {
 class Session;
-namespace Widgets {
-class SessionWidget;
-}
 namespace Windows {
 namespace Managers {
 

@@ -54,8 +54,8 @@ const QString SpeechControl::Windows::VoxforgeSettingsPane::id() const {
 
 /// @todo Toggle the ability to upload content up to VoxForge.
 void SpeechControl::Windows::VoxforgeSettingsPane::on_checkBox_clicked() {
-    ui->tabWidget->setEnabled ( ui->checkBox->isChecked() );
+
 }
 
 #include "voxforge-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

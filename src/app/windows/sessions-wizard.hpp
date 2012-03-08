@@ -32,7 +32,7 @@ class SessionWizard : public WizardBase {
 
     enum Pages {
         IntroductionPage = 0,
-        BookSelectionPage,
+        ContentSelectionPage,
         // Adding unique info to the session?
         //MetadataInformationPage
         ConclusionPage
@@ -47,4 +47,4 @@ public:
 }
 
 #endif // WIZARD_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

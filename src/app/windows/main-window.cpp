@@ -72,19 +72,6 @@ Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0)
     m_prgStatusbar->setMaximum (100);
     setProgress (0.0);
 
-    // Update icons.
-    m_ui->actionQuit->setIcon (QIcon::fromTheme ("application-exit"));
-    m_ui->actionAboutSpeechControl->setIcon (QIcon (":/logo/sc"));
-    m_ui->actionReportBug->setIcon (QIcon::fromTheme ("tools-report-bug"));
-    m_ui->actionOptions->setIcon (QIcon::fromTheme ("configure"));
-    m_ui->actionWizardMicrophone->setIcon (QIcon::fromTheme ("audio-input-microphone"));
-    m_ui->menuDictation->setIcon (QIcon::fromTheme ("audio-input-microphone"));
-    m_ui->menuDesktopControl->setIcon (QIcon::fromTheme ("audio-headset"));
-    m_ui->actionWizardBooks->setIcon (QIcon::fromTheme ("x-office-document"));
-    m_ui->actionWizardSessions->setIcon (QIcon::fromTheme ("application-x-tar"));
-    m_ui->actionDesktopControlCommands->setIcon (QIcon::fromTheme ("view-list-text"));
-    m_ui->actionStartTraining->setIcon (QIcon::fromTheme ("system-run"));
-
     // Update the actions and buttons.
     connect (DesktopControl::Agent::instance(), SIGNAL (stateChanged (ActivityState)), this, SLOT (desktopControlStateChanged()));
     connect (Dictation::Agent::instance(), SIGNAL (stateChanged (ActivityState)), this, SLOT (dictationStateChanged()));
@@ -155,7 +142,7 @@ void Main::dictationStateChanged()
 void Main::updateContent()
 {
     m_ui->lblSessions->setText (QString::number (Session::allSessions().count()));
-    m_ui->lblBooks->setText (QString::number (Content::allContents().count()));
+    m_ui->lblContent->setText (QString::number (Content::allContents().count()));
     m_ui->lblAccuracy->setText ("100.0%");
     m_ui->lblSpeechIndex->setText ("10.0");
 }
@@ -242,7 +229,7 @@ void Main::on_actionWizardMicrophone_triggered()
     l_wiz->exec();
 }
 
-void Main::on_actionWizardBooks_triggered()
+void Main::on_actionWizardContent_triggered()
 {
     ContentWizard* l_wiz = new ContentWizard;
     l_wiz->exec();

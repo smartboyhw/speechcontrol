@@ -27,6 +27,7 @@ ConclusionPage::ConclusionPage ( const QString& summary ) :
     QWizardPage(),
     ui ( new Ui::Conclusion ) {
     ui->setupUi ( this );
+    this->setTitle("Wizard Complete");
     ui->labelSummary->setText ( summary );
 }
 
@@ -35,4 +36,4 @@ ConclusionPage::~ConclusionPage() {
 }
 
 #include "outro.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

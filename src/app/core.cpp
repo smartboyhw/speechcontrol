@@ -41,6 +41,7 @@
 #include "app/windows/quickstart-wizard.hpp"
 #include "desktopcontrol/agent.hpp"
 #include "dictation/agent.hpp"
+#include "sessions/wikipediacontentsource.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
@@ -101,6 +102,10 @@ void Core::start()
     emit instance()->started();
 
     instance()->s_mw->show();
+    
+    // Experiment
+    WikipediaContentSource wiki("test");
+    Content *test = wiki.generate();
 }
 
 Windows::Main* Core::mainWindow()

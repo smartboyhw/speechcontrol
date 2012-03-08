@@ -19,6 +19,7 @@
 
 #include "wikipediacontentsource.hpp"
 
+#include <QDebug>
 #include <QtWebKit/QWebPage>
 #include <QtWebKit/QWebFrame>
 #include <QtWebKit/QWebElement>
@@ -37,18 +38,22 @@ void WikipediaContentSource::_makeNewSample()
     portalUrls.append(society);
     portalUrls.append(history);
          
+    QList<QWebPage *> pages;
     QList<QWebFrame *> portals;
     Q_FOREACH (QUrl url, portalUrls) {
-        QWebPage page;
-        QWebFrame *fr = page.mainFrame();
+        QWebPage *page = new QWebPage;
+        QWebFrame *fr = page->mainFrame();
         fr->load(url);
         
+        pages.append(page);
         portals.append(fr);
     }
     
     Q_FOREACH (QWebFrame *portal, portals) {
         QWebElement document = portal->documentElement();
-        QWebElementCollection links = document.findAll("p b a");
+        QWebElementCollection links = document.findAll("p");
+        
+        qDebug() << "We have" << links.count() << "links.";
         
         QUrl featuredUrl;
         QWebElementCollection::const_iterator link = links.constBegin();
@@ -59,9 +64,6 @@ void WikipediaContentSource::_makeNewSample()
                 break;
             }
         }
-        
-//         QWebFrame *featured = QWebPage().mainFrame();
-//         featured->load(featuredUrl);
     }
 }
 
@@ -90,11 +92,18 @@ Content* WikipediaContentSource::generate()
     if (!ready())
         _makeNewSample();
     
+    qDebug() << "We have" << _urls.size() << "urls.";
+    
     QList<QWebFrame *> frames;
     Q_FOREACH (QUrl url, _urls) {
         QWebFrame *frame = QWebPage().mainFrame();
         frame->load(url);
         frames.append(frame);
+    }
+    
+    qDebug() << "We have" << frames.size() << "frames.";
+    Q_FOREACH (QWebFrame *frame, frames) {
+        qDebug() << "Text of the featured frame is:" << frame->toPlainText();
     }
     
     return Content::create("Unimplemented yet", "Unimplemented yet", "Unimplemented yet");

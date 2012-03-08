@@ -33,6 +33,7 @@ class WikipediaContentSource : public AbstractContentSource
 private:
     QList<QUrl> _urls;
     
+    /// @todo Make random samples.
     void _makeNewSample();
     
 public:

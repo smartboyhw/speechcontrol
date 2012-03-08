@@ -18,9 +18,10 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <sessions/corpus.hpp>
-#include <sessions/sentence.hpp>
-#include <dictionary.hpp>
+#include "corpus.hpp"
+#include "sentence.hpp"
+#include "dictionary.hpp"
+#include "app/core.hpp"
 
 #include <QDir>
 #include <QFileInfo>
@@ -28,6 +29,7 @@
 #include <QDateTime>
 #include <QDomDocument>
 
+using SpeechControl::Core;
 using SpeechControl::Corpus;
 using SpeechControl::Sentence;
 using SpeechControl::Dictionary;
@@ -137,7 +139,7 @@ bool Corpus::exists (const QUuid& p_uuid)
 
 QUrl Corpus::getPath (const QUuid& p_uuid)
 {
-    const QString l_baseComp = QDir::homePath() + "/.speechcontrol/corpus/";
+    const QString l_baseComp = Core::configurationPath().path() + "/corpus/";
     return QUrl::fromLocalFile (l_baseComp + p_uuid.toString());
 }
 
@@ -238,7 +240,7 @@ void Corpus::save()
 CorpusList Corpus::allCorpuses()
 {
     CorpusList l_lst;
-    QDir l_dir (QDir::homePath() + "/.speechcontrol/corpus/");
+    QDir l_dir(Core::configurationPath().path() + "/corpus");
     l_dir.setFilter (QDir::Dirs);
     QStringList l_results = l_dir.entryList (QStringList() << "*");
     Q_FOREACH (const QString & l_uuid, l_results) {
@@ -258,8 +260,8 @@ void Corpus::erase()
 Corpus* Corpus::clone() const
 {
     QUuid l_uuid = QUuid::createUuid();
-    QDir l_thisDir (QDir::homePath() + "./speechcontrol/corpus/" + m_uuid.toString());
-    QDir l_newDir (QDir::homePath() + "./speechcontrol/corpus/" + l_uuid.toString());
+    QDir l_thisDir (Core::configurationPath().path() + "/corpus/" + m_uuid.toString());
+    QDir l_newDir (Core::configurationPath().path() + "/corpus/" + l_uuid.toString());
     l_newDir.mkpath (l_newDir.absolutePath());
     QStringList l_lst = l_newDir.entryList ( (QStringList() << "*"), QDir::NoDotAndDotDot | QDir::Files, QDir::NoSort);
 

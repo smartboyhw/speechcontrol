@@ -20,6 +20,7 @@
 
 #include "config.hpp"
 #include "content.hpp"
+#include "core.hpp"
 
 #include <QDir>
 #include <QFile>
@@ -29,6 +30,7 @@
 
 #define CHUNK_SIZE 250
 
+using SpeechControl::Core;
 using SpeechControl::Content;
 using SpeechControl::ContentList;
 using SpeechControl::ContentMap;
@@ -176,7 +178,7 @@ uint Content::characters() const {
 }
 
 QString Content::getPath ( const QUuid &p_uuid ) {
-    return QDir::homePath() + "/.speechcontrol/contents/" + p_uuid.toString() + ".xml";
+    return Core::configurationPath().path() + "/contents/" + p_uuid.toString() + ".xml";
 }
 
 const QString Content::title() const {
@@ -200,7 +202,7 @@ const QUuid Content::uuid() const {
 
 ContentList Content::allContents() {
     ContentList l_lst;
-    QDir l_dir ( QDir::homePath() + "/.speechcontrol/contents/" );
+    QDir l_dir ( Core::configurationPath().path() + "/contents/" );
     l_dir.setFilter ( QDir::Files );
     QStringList l_results = l_dir.entryList ( QStringList() << "*" );
 
@@ -370,4 +372,4 @@ TextContentSource::~TextContentSource() {
 }
 
 #include "content.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

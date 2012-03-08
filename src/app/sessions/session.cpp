@@ -19,6 +19,7 @@
  */
 
 #include "session.hpp"
+#include <core.hpp>
 
 #include <QDebug>
 #include <QFile>
@@ -60,6 +61,7 @@ Content* Session::content() const {
 }
 
 void Session::setContent ( Content* p_content ) {
+    Q_ASSERT(p_content != 0);
     m_content = p_content;
     assessProgress();
 }
@@ -77,7 +79,7 @@ double Session::assessProgress() const {
 
 void Session::init() {
     qDebug() << "Loading sessions...";
-    QFile* configFile = new QFile ( QDir::homePath() + "/.config/speechcontrol/sessions.xml" );
+    QFile* configFile = new QFile ( Core::configurationPath().absolutePath() +"/sessions.xml" );
     s_elems.clear();
 
     if ( s_dom ) {
@@ -116,8 +118,10 @@ void Session::load ( const QUuid& p_uuid ) {
     m_elem = s_elems.value ( p_uuid );
 
     if ( m_elem && !m_elem->isNull() ) {
-        setCorpus ( Corpus::obtain ( m_elem->attribute ( "corpus" ) ) );
-        setContent ( Content::obtain ( m_elem->attribute ( "content" ) ) );
+        QUuid l_corpusUuid = m_elem->attribute ( "corpus" );
+        QUuid l_contentUuid = m_elem->attribute ( "content" );
+        setCorpus ( Corpus::obtain ( l_corpusUuid ) );
+        setContent ( Content::obtain ( l_contentUuid ) );
     } else {
         s_elems.remove ( p_uuid );
         m_content = 0;
@@ -270,7 +274,7 @@ void Session::erase() const {
 }
 
 void Session::save() {
-    QFile* l_file = new QFile ( QDir::homePath() + "/.speechcontrol/sessions.xml" );
+    QFile* l_file = new QFile ( Core::configurationPath().path() + "/sessions.xml" );
     l_file->open ( QIODevice::WriteOnly | QIODevice::Truncate );
     QTextStream l_strm ( l_file );
 
@@ -319,7 +323,7 @@ QDateTime Session::Backup::created() {
 }
 
 const QString Session::Backup::getPath ( const QString& p_id ) {
-    return QDir::homePath() + "/.speechcontrol/backups/" + p_id + ".bckp";
+    return Core::configurationPath().path() + "/backups/" + p_id + ".bckp";
 }
 
 /// @todo Implement a means of backing up a session's data to a compressed document.

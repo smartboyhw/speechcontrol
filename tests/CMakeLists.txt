@@ -25,6 +25,7 @@ if(WITH_TESTS)
     ## source files
     file(GLOB SPCHCNTRL_APP_TEST_SRCS "app/*.cpp")
     file(GLOB SPCHCNTRL_LIB_TEST_SRCS "lib/*.cpp")
+    file(GLOB SPCHCNTRL_PLUGINS_TEST_SRCS "plugins/*.cpp")
 
     macro(buildtest _test_mode _test_src)
         set(TEST_MODE "${_test_mode}")
@@ -53,6 +54,10 @@ if(WITH_TESTS)
 
     foreach(TEST_APP_SRC ${SPCHCNTRL_APP_TEST_SRCS})
         buildtest("APP" "${TEST_APP_SRC}")
+    endforeach()
+
+    foreach(TEST_PLUGINS_SRC ${SPCHCNTRL_PLUGINS_TEST_SRCS})
+        buildtest("PLUGIN" "${TEST_PLUGINS_SRC}")
     endforeach()
 else(WITH_TESTS)
     message(STATUS "Not generating tests.")

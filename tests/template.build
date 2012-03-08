@@ -19,7 +19,7 @@ endif (TEST_MODE STREQUAL "APP")
 
 set(TEST_BASE_SCPP "@TEST_SRC@")
 
-if (TEST_MODE STREQUAL "APP")
+if (TEST_MODE STREQUAL "APP" OR TEST_MODE STREQUAL "PLUGIN")
     file(GLOB TEST_APP_SRCS
         "${CMAKE_SOURCE_DIR}/src/app/*.cpp"
         "${CMAKE_SOURCE_DIR}/src/app/dictation/*.cpp"
@@ -37,7 +37,7 @@ if (TEST_MODE STREQUAL "APP")
 
     list(APPEND TEST_APP_SRCS ${TEST_APP_WINDOW_SRCS})
     list(REMOVE_ITEM TEST_APP_SRCS "${CMAKE_SOURCE_DIR}/src/app/main.cpp")
-endif (TEST_MODE STREQUAL "APP")
+endif (TEST_MODE STREQUAL "APP" OR TEST_MODE STREQUAL "PLUGIN")
 
 ## Qt-specific actions.
 QT4_AUTOMOC(${TEST_BASE_SCPP})
@@ -55,7 +55,7 @@ set(TEST_INCLUDE_DIRS ${SPCHCNTRL_INCLUDE_DIRS}
     "${CMAKE_SOURCE_DIR}/src"
     "${CMAKE_SOURCE_DIR}/src/lib")
 
-if (TEST_MODE STREQUAL "APP")
+if (TEST_MODE STREQUAL "APP" OR TEST_MODE STREQUAL "PLUGIN")
     list(APPEND TEST_INCLUDE_DIRS ${SPCHCNTRL_APP_INCLUDE_DIRS}
                                  "${CMAKE_BINARY_DIR}/src/app"
                                  "${CMAKE_SOURCE_DIR}/src/app")
@@ -63,11 +63,17 @@ if (TEST_MODE STREQUAL "APP")
     list(APPEND TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_APP_COMPILE_DEFINITIONS})
     list(APPEND TEST_COMPILE_FLAGS ${SPCHCNTRL_APP_COMPILE_FLAGS})
     list(APPEND TEST_BASE_SCPP ${TEST_APP_SRCS})
-else (TEST_MODE STREQUAL "APP")
+elseif (TEST_MODE STREQUAL "LIB")
     set(TEST_LIBRARIES ${SPCHCNTRL_LIBRARIES}
                         speechcontrol
                         ${QT_QTTEST_LIBRARY})
-endif(TEST_MODE STREQUAL "APP")
+endif()
+
+if (TEST_MODE STREQUAL "PLUGIN")
+    message(STATUS "Building plug-in tests are not yet fully supported.")
+    list(APPEND TEST_INCLUDE_DIRS "${CMAKE_BINARY_DIR}/src/plugins"
+                                 "${CMAKE_SOURCE_DIR}/src/plugins")
+endif (TEST_MODE STREQUAL "PLUGIN")
 
 include_directories(${TEST_INCLUDE_DIRS})
 

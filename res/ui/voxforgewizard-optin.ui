@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>398</width>
-    <height>298</height>
+    <width>313</width>
+    <height>210</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,58 @@
   <property name="subTitle">
    <string>Choose to submit your work to &lt;a href=&quot;http://voxforge.org&quot;&gt;VoxForge&lt;/a&gt;.</string>
   </property>
+  <widget class="QCheckBox" name="checkBoxVoxforge">
+   <property name="geometry">
+    <rect>
+     <x>100</x>
+     <y>212</y>
+     <width>158</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Enable Voxforge Services</string>
+   </property>
+  </widget>
+  <widget class="QTabWidget" name="tabWidget">
+   <property name="geometry">
+    <rect>
+     <x>124</x>
+     <y>84</y>
+     <width>131</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <widget class="QWidget" name="tab">
+    <attribute name="title">
+     <string>Tab 1</string>
+    </attribute>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>-132</x>
+       <y>-48</y>
+       <width>381</width>
+       <height>121</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;http://voxforge.org/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d76d0;&quot;&gt;VoxForge&lt;/span&gt;&lt;/a&gt; is an online collective and &amp;quot;was set up to collect transcribed speech for use in &lt;a href=&quot;http://en.wikipedia.org/wiki/Open_source&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d76d0;&quot;&gt;Open Source&lt;/span&gt;&lt;/a&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Speech_Recognition&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d76d0;&quot;&gt;Speech Recognition Engines&lt;/span&gt;&lt;/a&gt; (&amp;quot;SRE&amp;quot;s) such as such as &lt;a href=&quot;http://www.ece.msstate.edu/research/isip/projects/speech/index.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d76d0;&quot;&gt;ISIP&lt;/span&gt;&lt;/a&gt;, &lt;a href=&quot;http://htk.eng.cam.ac.uk/&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d76d0;&quot;&gt;HTK&lt;/span&gt;&lt;/a&gt;, &lt;a href=&quot;http://julius.sourceforge.jp/en_index.php?q=en/index.html&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d76d0;&quot;&gt;Julius&lt;/span&gt;&lt;/a&gt; and &lt;a href=&quot;http://cmusphinx.sourceforge.net/html/cmusphinx.php&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d76d0;&quot;&gt;Sphinx&lt;/span&gt;&lt;/a&gt;.  We (Voxforge) will categorize and make available all submitted audio files (also called a 'Speech Corpus&amp;quot;) and Acoustic Models in &lt;a href=&quot;http://voxforge.org/home/docs/faq/faq/what-is-gpl&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#2d76d0;&quot;&gt;GPL&lt;/span&gt;&lt;/a&gt; format&amp;quot;.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="tab_2">
+    <attribute name="title">
+     <string>Tab 2</string>
+    </attribute>
+   </widget>
+  </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../res.qrc"/>
+ </resources>
  <connections/>
 </ui>

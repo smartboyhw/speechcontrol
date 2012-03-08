@@ -42,7 +42,7 @@
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
      <item row="2" column="2">
-      <widget class="QLabel" name="lblBooks">
+      <widget class="QLabel" name="lblContent">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
          <horstretch>0</horstretch>
@@ -65,7 +65,9 @@
        <property name="styleSheet">
         <string notr="true">background-color: rgba(255, 255, 255, 209);
 color: rgb(0, 0, 0);
-padding-right: 4px; border: 1px solid black;</string>
+padding-right: 4px;
+border: 1px solid #fff;
+border-radius: 10px;</string>
        </property>
        <property name="text">
         <string>%s</string>
@@ -96,7 +98,7 @@ padding-right: 4px; border: 1px solid black;</string>
        <item>
         <widget class="QPushButton" name="btnTrain">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Maximum">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -109,7 +111,7 @@ padding-right: 4px; border: 1px solid black;</string>
        <item>
         <widget class="QPushButton" name="btnAdapt">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Maximum">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -145,7 +147,9 @@ padding-right: 4px; border: 1px solid black;</string>
        <property name="styleSheet">
         <string notr="true">background-color: rgba(255, 255, 255, 209);
 color: rgb(0, 0, 0);
-padding-right: 4px; border: 1px solid black;</string>
+padding-right: 4px;
+border: 1px solid #fff;
+border-radius: 10px;</string>
        </property>
        <property name="text">
         <string>%s</string>
@@ -189,7 +193,9 @@ padding-right: 4px; border: 1px solid black;</string>
        <property name="styleSheet">
         <string notr="true">background-color: rgba(255, 255, 255, 209);
 color: rgb(0, 0, 0);
-padding-right: 4px; border: 1px solid black;</string>
+padding-right: 4px;
+border: 1px solid #fff;
+border-radius: 10px;</string>
        </property>
        <property name="text">
         <string>%p</string>
@@ -219,7 +225,7 @@ padding-right: 4px; border: 1px solid black;</string>
      <item row="2" column="0">
       <widget class="QLabel" name="___">
        <property name="text">
-        <string>Books</string>
+        <string>Contents</string>
        </property>
       </widget>
      </item>
@@ -254,7 +260,9 @@ p, li { white-space: pre-wrap; }
        <property name="styleSheet">
         <string notr="true">background-color: rgb(85, 85, 85);
 color: rgb(221, 221, 221);
-padding-right: 4px;</string>
+padding-right: 4px;
+border: 1px solid rgb(85, 85, 85);
+border-radius: 10px;</string>
        </property>
        <property name="text">
         <string>%p</string>
@@ -290,10 +298,16 @@ padding-right: 4px;</string>
          <item>
           <widget class="QPushButton" name="btnDsktpCntrl">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+            <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>30</height>
+            </size>
            </property>
            <property name="text">
             <string>Desktop Control</string>
@@ -309,10 +323,16 @@ padding-right: 4px;</string>
          <item>
           <widget class="QPushButton" name="btnDctn">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+            <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>30</height>
+            </size>
            </property>
            <property name="text">
             <string>Dictation</string>
@@ -365,7 +385,7 @@ padding-right: 4px;</string>
           <enum>Qt::Vertical</enum>
          </property>
          <property name="sizeType">
-          <enum>QSizePolicy::MinimumExpanding</enum>
+          <enum>QSizePolicy::Expanding</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -432,6 +452,11 @@ padding-right: 4px;</string>
      <property name="title">
       <string>Desktop Control</string>
      </property>
+     <property name="icon">
+      <iconset theme="audio-headset">
+       <normaloff/>
+      </iconset>
+     </property>
      <addaction name="actionDesktopControlActive"/>
      <addaction name="actionDesktopControlCommands"/>
      <addaction name="separator"/>
@@ -440,6 +465,11 @@ padding-right: 4px;</string>
     <widget class="QMenu" name="menuDictation">
      <property name="title">
       <string>Dictation</string>
+     </property>
+     <property name="icon">
+      <iconset theme="audio-input-microphone">
+       <normaloff/>
+      </iconset>
      </property>
      <addaction name="actionDictationActive"/>
      <addaction name="separator"/>
@@ -458,8 +488,13 @@ padding-right: 4px;</string>
      <property name="title">
       <string>Wizards</string>
      </property>
+     <property name="icon">
+      <iconset theme="tools-wizard">
+       <normaloff/>
+      </iconset>
+     </property>
      <addaction name="actionWizardMicrophone"/>
-     <addaction name="actionWizardBooks"/>
+     <addaction name="actionWizardContent"/>
      <addaction name="actionWizardSessions"/>
      <addaction name="actionWizardVoxForge"/>
     </widget>
@@ -492,6 +527,10 @@ padding-right: 4px;</string>
    </property>
   </action>
   <action name="actionAboutSpeechControl">
+   <property name="icon">
+    <iconset theme="speechcontrol" resource="../res.qrc">
+     <normaloff>:/logo/sc</normaloff>:/logo/sc</iconset>
+   </property>
    <property name="text">
     <string>About &amp;SpeechControl..</string>
    </property>
@@ -503,6 +542,11 @@ padding-right: 4px;</string>
    </property>
   </action>
   <action name="actionQuit">
+   <property name="icon">
+    <iconset theme="application-exit">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>&amp;Quit</string>
    </property>
@@ -517,11 +561,21 @@ padding-right: 4px;</string>
    </property>
   </action>
   <action name="actionReportBug">
+   <property name="icon">
+    <iconset theme="tools-report-bug">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Report Bug</string>
    </property>
   </action>
   <action name="actionOptions">
+   <property name="icon">
+    <iconset theme="configure">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Options</string>
    </property>
@@ -533,16 +587,34 @@ padding-right: 4px;</string>
    </property>
   </action>
   <action name="actionWizardMicrophone">
+   <property name="icon">
+    <iconset theme="audio-input-microphone">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Microphone...</string>
    </property>
   </action>
-  <action name="actionWizardBooks">
+  <action name="actionWizardContent">
+   <property name="icon">
+    <iconset theme="x-office-document">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
-    <string>Books...</string>
+    <string>Content</string>
+   </property>
+   <property name="toolTip">
+    <string>Start the Content addition wizard.</string>
    </property>
   </action>
   <action name="actionWizardSessions">
+   <property name="icon">
+    <iconset theme="application-x-tar">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Sessions...</string>
    </property>
@@ -559,6 +631,11 @@ padding-right: 4px;</string>
    <property name="checkable">
     <bool>true</bool>
    </property>
+   <property name="icon">
+    <iconset theme="audio-headset">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Active</string>
    </property>
@@ -573,6 +650,11 @@ padding-right: 4px;</string>
    </property>
   </action>
   <action name="actionDesktopControlCommands">
+   <property name="icon">
+    <iconset theme="view-list-text">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Commands...</string>
    </property>
@@ -583,6 +665,11 @@ padding-right: 4px;</string>
   <action name="actionDictationActive">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset theme="audio-input-microphone">
+     <normaloff/>
+    </iconset>
    </property>
    <property name="text">
     <string>Enabled</string>
@@ -595,11 +682,21 @@ padding-right: 4px;</string>
    </property>
   </action>
   <action name="actionDesktopControlOptions">
+   <property name="icon">
+    <iconset theme="configure">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Options</string>
    </property>
   </action>
   <action name="actionStartTraining">
+   <property name="icon">
+    <iconset theme="system-run">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Start Training...</string>
    </property>
@@ -613,16 +710,31 @@ padding-right: 4px;</string>
    </property>
   </action>
   <action name="actionDictationOptions">
+   <property name="icon">
+    <iconset theme="configure">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Options</string>
    </property>
   </action>
   <action name="actionOptions_2">
+   <property name="icon">
+    <iconset theme="configure">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Options</string>
    </property>
   </action>
   <action name="actionPluginOptions">
+   <property name="icon">
+    <iconset theme="configure">
+     <normaloff/>
+    </iconset>
+   </property>
    <property name="text">
     <string>Options</string>
    </property>

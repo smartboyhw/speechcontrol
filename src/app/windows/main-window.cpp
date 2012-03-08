@@ -86,8 +86,8 @@ Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0)
     m_ui->actionStartTraining->setIcon (QIcon::fromTheme ("system-run"));
 
     // Update the actions and buttons.
-    connect (DesktopControl::Agent::instance(), SIGNAL (stateChanged (OperationState)), this, SLOT (desktopControlStateChanged()));
-    connect (Dictation::Agent::instance(), SIGNAL (stateChanged (OperationState)), this, SLOT (dictationStateChanged()));
+    connect (DesktopControl::Agent::instance(), SIGNAL (stateChanged (ActivityState)), this, SLOT (desktopControlStateChanged()));
+    connect (Dictation::Agent::instance(), SIGNAL (stateChanged (ActivityState)), this, SLOT (dictationStateChanged()));
     desktopControlStateChanged();
     dictationStateChanged();
     on_actionDesktopControlActive_triggered (DesktopControl::Agent::instance()->isActive());

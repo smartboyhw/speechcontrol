@@ -34,8 +34,6 @@ void DaemonSphinx::applicationMessage ( const QGst::MessagePtr& p_message ) {
     qDebug() << p_message->typeName();
 }
 
-
-/// @todo Add the needed variables and initialization code for the Daemon's activities here.
 Daemon::Daemon() : QObject(QApplication::instance()), m_sphnx(new DaemonSphinx){
     connect(this,SIGNAL(started()),SpeechControl::System::instance(),SLOT(start()));
     connect(this,SIGNAL(started()),m_sphnx,SLOT(start()));
@@ -44,13 +42,10 @@ Daemon::Daemon() : QObject(QApplication::instance()), m_sphnx(new DaemonSphinx){
     connect(this,SIGNAL(stopped()),m_sphnx,SLOT(stop()));
 }
 
-/// @todo We need to provide a more concise means of determining if the daemon's active.
-///       Or even perhaps a better definition of what would constitute as activity.
 bool Daemon::isActive() const {
-    return true;
+    return m_sphnx->isRunning();
 }
 
-/// @todo Activate SpeechControl's ASR and then return a value.
 QString Daemon::listen() {
     if ( !isActive() ) {
         return QString::null;
@@ -59,14 +54,10 @@ QString Daemon::listen() {
     return QString::null;
 }
 
-/// @todo Implement a means of 'activating' the daemon.
-/// @todo This action should cause isActive() to return true.
 void Daemon::start() {
     emit started();
 }
 
-/// @todo Implement a means of 'deactivating the daemon'.
-/// @todo This action should cause isActive() to return false.
 void Daemon::stop() {
     emit stopped();
 }

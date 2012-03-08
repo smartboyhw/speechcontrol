@@ -17,7 +17,10 @@
  *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+
 #include <lib/system.hpp>
+#include <lib/config.hpp>
+
 #include "system.hpp"
 
 using namespace SpeechControl::Daemon;
@@ -26,7 +29,12 @@ System* System::s_inst = 0;
 
 System::System ( int p_argc,char** p_argv ) : QObject ( qApp ),
     m_app ( p_argc,p_argv ) {
-    SpeechControl::System::start(&p_argc,&p_argv);
+    m_app.setApplicationName ( "SpeechControl" );
+    m_app.setApplicationVersion ( SPCHCNTRL_BUILD_VERSION );
+    m_app.setOrganizationDomain ( "thesii.org" );
+    m_app.setOrganizationName ( "Synthetic Intellect Institute" );
+
+    SpeechControl::System::start ( &p_argc,&p_argv );
     connect ( &m_app,SIGNAL ( aboutToQuit() ),Daemon::instance(),SLOT ( stop() ) );
 }
 

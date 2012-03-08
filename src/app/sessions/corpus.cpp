@@ -18,8 +18,8 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "corpus.hpp"
-#include <sentence.hpp>
+#include <sessions/corpus.hpp>
+#include <sessions/sentence.hpp>
 #include <dictionary.hpp>
 
 #include <QDir>
@@ -304,4 +304,4 @@ Corpus::~Corpus()
 }
 
 #include "corpus.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

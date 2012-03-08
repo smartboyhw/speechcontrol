@@ -31,7 +31,7 @@
 #include <QTableWidget>
 #include <QMenu>
 
-#include <corpus.hpp>
+#include <app/sessions/corpus.hpp>
 
 #include "core.hpp"
 #include "indicator.hpp"

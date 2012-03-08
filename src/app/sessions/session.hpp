@@ -27,9 +27,8 @@
 #include <QDateTime>
 #include <QDomDocument>
 
-// libspchcntrl includes
-#include <corpus.hpp>
 // speechcontrol includes
+#include <app/sessions/corpus.hpp>
 #include <app/sessions/content.hpp>
 
 namespace SpeechControl {

@@ -29,9 +29,9 @@
 #include "sessions/session.hpp"
 #include "training-dialog.hpp"
 
-#include <phrase.hpp>
-#include <sentence.hpp>
-#include <corpus.hpp>
+#include <sessions/phrase.hpp>
+#include <sessions/sentence.hpp>
+#include <sessions/corpus.hpp>
 
 #define ICON_RECORD "media-record"
 #define ICON_PAUSE "media-playback-pause"

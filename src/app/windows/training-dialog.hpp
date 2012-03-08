@@ -26,11 +26,11 @@
 #include <QDialog>
 
 // libspchcntrl includes
-#include <sentence.hpp>
 #include <microphone.hpp>
 
 // local includes
 #include <core.hpp>
+#include <sessions/sentence.hpp>
 #include <sessions/session.hpp>
 
 namespace Ui {

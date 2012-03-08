@@ -18,9 +18,8 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-
-#include <sentence.hpp>
-#include <corpus.hpp>
+#include <sessions/sentence.hpp>
+#include <sessions/corpus.hpp>
 #include <QMessageBox>
 #include <QListWidget>
 

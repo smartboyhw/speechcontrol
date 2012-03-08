@@ -27,7 +27,7 @@
 #include <QObject>
 #include <QStringList>
 
-#include <sentence.hpp>
+#include <app/sessions/sentence.hpp>
 
 class QDomDocument;
 

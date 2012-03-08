@@ -18,11 +18,11 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "books-pane.hpp"
+#include "content-pane.hpp"
 #include "sessions/session.hpp"
 #include "windows/content-information-dialog.hpp"
 #include "windows/contents-wizard.hpp"
-#include "ui_settingspane-books.h"
+#include "ui_settingspane-content.h"
 
 #include <QListWidget>
 #include <QMessageBox>
@@ -31,23 +31,23 @@
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 
-BookSettingsPane::BookSettingsPane ( QWidget *parent ) :
+ContentSettingsPane::ContentSettingsPane ( QWidget *parent ) :
     QFrame ( parent ),
-    ui ( new Ui::BookSettingsPane ) {
+    ui ( new Ui::ContentSettingsPane ) {
     ui->setupUi ( this );
     updateList();
 }
 
-BookSettingsPane::~BookSettingsPane() {
+ContentSettingsPane::~ContentSettingsPane() {
     delete ui;
 }
 
-void BookSettingsPane::show() {
+void ContentSettingsPane::show() {
     updateList();
     QFrame::show();
 }
 
-void BookSettingsPane::changeEvent ( QEvent *e ) {
+void ContentSettingsPane::changeEvent ( QEvent *e ) {
     QFrame::changeEvent ( e );
     switch ( e->type() ) {
     case QEvent::LanguageChange:
@@ -58,16 +58,16 @@ void BookSettingsPane::changeEvent ( QEvent *e ) {
     }
 }
 
-const QString SpeechControl::Windows::BookSettingsPane::title() const {
-    return "Books";
+const QString SpeechControl::Windows::ContentSettingsPane::title() const {
+    return "Content";
 }
 
-const QString SpeechControl::Windows::BookSettingsPane::id() const {
-    return "bks";
+const QString SpeechControl::Windows::ContentSettingsPane::id() const {
+    return "cntns";
 }
 
-void SpeechControl::Windows::BookSettingsPane::updateList() {
-    QListWidget* l_widget = ui->lstBooks;
+void SpeechControl::Windows::ContentSettingsPane::updateList() {
+    QListWidget* l_widget = ui->lstContent;
     ContentList l_lst = Content::allContents();
 
     l_widget->clear();
@@ -88,13 +88,13 @@ void SpeechControl::Windows::BookSettingsPane::updateList() {
     }
 }
 
-void SpeechControl::Windows::BookSettingsPane::on_btnDelete_clicked() {
-    QListWidget* l_widg = ui->lstBooks;
+void SpeechControl::Windows::ContentSettingsPane::on_btnDelete_clicked() {
+    QListWidget* l_widg = ui->lstContent;
     if ( !l_widg->selectedItems().empty() ) {
         Q_FOREACH ( QListWidgetItem* l_itm, l_widg->selectedItems() ) {
             Content* l_cntn = Content::obtain ( l_itm->data ( Qt::UserRole ).toString() );
             if ( QMessageBox::Yes == QMessageBox::question ( this,
-                    tr ( "Confirm Book Delete" ),
+                    tr ( "Confirm Content Delete" ),
                     tr ( "Are you sure you want to delete this book '%1' by '%2'?\nAny session connected to the book will become invalid and untrainable." ).arg ( l_cntn->title() ).arg ( l_cntn->author() ),
                     QMessageBox::Yes | QMessageBox::No,
                     QMessageBox::No ) ) {
@@ -106,15 +106,15 @@ void SpeechControl::Windows::BookSettingsPane::on_btnDelete_clicked() {
     }
 }
 
-void SpeechControl::Windows::BookSettingsPane::on_btnAdd_clicked() {
+void SpeechControl::Windows::ContentSettingsPane::on_btnAdd_clicked() {
     Wizards::ContentWizard* l_wiz = new Wizards::ContentWizard ( this );
     if ( l_wiz->exec() == QDialog::Accepted ) {
         updateList();
     }
 }
 
-void SpeechControl::Windows::BookSettingsPane::on_btnInfo_clicked() {
-    QListWidget* l_widg = ui->lstBooks;
+void SpeechControl::Windows::ContentSettingsPane::on_btnInfo_clicked() {
+    QListWidget* l_widg = ui->lstContent;
     if ( !l_widg->selectedItems().empty() ) {
         Q_FOREACH ( QListWidgetItem* l_itm, l_widg->selectedItems() ) {
             Content* l_cntn = Content::obtain ( l_itm->data ( Qt::UserRole ).toString() );
@@ -124,5 +124,5 @@ void SpeechControl::Windows::BookSettingsPane::on_btnInfo_clicked() {
     }
 }
 
-#include "books-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "content-pane.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

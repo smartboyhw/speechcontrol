@@ -18,44 +18,45 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#ifndef CONTENTSETTINGSPANE_HPP
+#define CONTENTSETTINGSPANE_HPP
 
-#ifndef BOOKMANAGER_HPP
-#define BOOKMANAGER_HPP
-
-#include <QDialog>
+#include <QFrame>
 
 namespace Ui {
-class BookManager;
+class ContentSettingsPane;
 }
 
 namespace SpeechControl {
-class Content;
 namespace Windows {
-namespace Managers {
 
-class BooksManager : public QDialog {
+class ContentSettingsPane : public QFrame {
     Q_OBJECT
+    Q_PROPERTY ( const QString Title READ title )
+    Q_PROPERTY ( const QString ID READ id )
 
 public:
-    explicit BooksManager ( QWidget *parent = 0 );
-    ~BooksManager();
-    static Content* doSelectContent();
+    explicit ContentSettingsPane ( QWidget *parent = 0 );
+    ~ContentSettingsPane();
+    const QString title() const;
+    const QString id() const;
+    virtual void show();
+
+protected:
+    void changeEvent ( QEvent *e );
+    void updateList();
 
 private slots:
-    void on_btnSelect_clicked();
+    void on_btnDelete_clicked();
     void on_btnAdd_clicked();
-    void on_btnCancel_clicked();
-    void on_lstBooks_itemSelectionChanged();
+    void on_btnInfo_clicked();
 
 private:
-    Ui::BookManager *ui;
-    Content* m_book;
-    void updateList();
+    Ui::ContentSettingsPane *ui;
 };
 
 }
 }
-}
 
-#endif // BOOKMANAGER_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#endif // CONTENTSETTINGSPANE_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

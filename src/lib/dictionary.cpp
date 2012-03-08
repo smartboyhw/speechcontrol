@@ -69,8 +69,9 @@ void Dictionary::load ( QIODevice* p_device ) {
     qDebug() << m_words.size() << "words found in this dictionary.";
 }
 
+/// @bug This location should be passed in as a macro.
 QString Dictionary::getPathFromUuid ( const QUuid& p_uuid ) {
-    return QDir::homePath() + "/.speechcontrol/dictionaries/" + p_uuid.toString() + ".dic";
+    return QDir::homePath() + "/.config/speechcontrol/dictionaries/" + p_uuid.toString() + ".dic";
 }
 
 Dictionary* Dictionary::obtain ( const QUuid &p_uuid ) {

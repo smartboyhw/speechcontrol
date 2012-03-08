@@ -55,7 +55,6 @@ void Settings::addPanel ( QWidget* p_panelWidget ) {
     instance()->m_panes.insert ( l_paneID,p_panelWidget );
     l_itm->setData ( Qt::UserRole,l_paneID );
     p_panelWidget->setParent ( instance()->m_ui->frmPageContainer );
-    p_panelWidget->setGeometry ( QRect ( 0,0,310,246 ) );
     p_panelWidget->hide();
 }
 
@@ -146,4 +145,4 @@ void SpeechControl::Windows::Settings::on_buttonBox_accepted() {
 }
 
 #include "settings-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

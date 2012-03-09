@@ -27,4 +27,4 @@ set_target_properties(speechcontrol-daemon PROPERTIES
 
 ## Installs
 install(TARGETS speechcontrol-daemon
-        DESTINATION ${SPCHCNTRL_BIN_DIR})
+        DESTINATION ${SPCHCNTRL_SBIN_DIR})

@@ -189,18 +189,19 @@ public:
     explicit AbstractContentSource (QObject* parent = 0);
     AbstractContentSource (QString const& p_id, QObject* p_parent = 0);
     AbstractContentSource (const AbstractContentSource& p_other);
-    virtual ~AbstractContentSource();
     
-    QString id() const;
-    virtual Content* generate();
+    virtual ~AbstractContentSource();
     
     void setAuthor (const QString& p_author);
     void setTitle (const QString& p_title);
     void setText (const QString& p_text);
     
+    QString id() const;
     QString author() const;
     QString title() const;
     QString text() const;
+    
+    Content* generate();
 
 private:
     QString m_id;

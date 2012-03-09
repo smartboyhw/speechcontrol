@@ -302,6 +302,11 @@ AbstractContentSource::AbstractContentSource (const AbstractContentSource& p_oth
 
 }
 
+AbstractContentSource::~AbstractContentSource()
+{
+    
+}
+
 QString AbstractContentSource::id() const
 {
     return m_id;
@@ -340,11 +345,6 @@ void AbstractContentSource::setTitle (const QString& p_title)
 Content* AbstractContentSource::generate()
 {
     return Content::create (m_author, m_title, m_text);
-}
-
-AbstractContentSource::~AbstractContentSource()
-{
-
 }
 
 TextContentSource::TextContentSource (QObject* p_parent) : AbstractContentSource ("text", p_parent)

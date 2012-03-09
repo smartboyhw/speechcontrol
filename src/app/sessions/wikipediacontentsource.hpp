@@ -21,6 +21,10 @@
 #define WIKIPEDIACONTENTSOURCE_HPP
 
 #include <QObject>
+#include <QString>
+#include <QList>
+#include <QtWebKit/QWebPage>
+#include <QtWebKit/QWebFrame>
 
 #include "content.hpp"
 
@@ -29,12 +33,7 @@ namespace SpeechControl
 
 class WikipediaContentSource : public AbstractContentSource
 {
-
-private:
-    QList<QUrl> _urls;
-    
-    /// @todo Make random samples.
-    void _makeNewSample();
+    Q_OBJECT
     
 public:
     explicit WikipediaContentSource (QObject* parent = 0);
@@ -43,7 +42,44 @@ public:
     virtual ~WikipediaContentSource();
     
     bool ready() const;
+    
+    /**
+     * @brief Order new sample of Wikipedia content.
+     * 
+     * This method enqueues fetch of new Wikipedia sample replacing the current one.
+     */
+    void order();
+    
+signals:
+    void generateReady();
+    
+public slots:
+    /**
+     * @brief Generate a new Content using Wikipedia articles.
+     * 
+     * Use this method only after checking whether the object is ready to generate.
+     * Usually you can connect @c generateReady() signal to this slot.
+     * 
+     * @todo Make random samples.
+     */
     Content* generate();
+    
+private:
+    QList<QWebPage *> portalPages;
+    QList<QWebFrame *> portalFrames;
+    int portalSuccess;
+    int portalFail;
+    
+    QList<QWebPage *> wikiPages;
+    QList<QWebFrame *> wikiFrames;
+    int wikiSuccess;
+    int wikiFail;
+    
+private slots:
+    void portalPhase();
+    void wikiPhase(bool ok);
+    void parsingPhase(bool ok);
+    
 };
 
 }

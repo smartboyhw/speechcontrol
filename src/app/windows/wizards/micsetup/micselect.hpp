@@ -46,6 +46,7 @@ public:
 
 private slots:
     void on_comboBoxMicrophones_activated ( int p_index );
+    void microphoneSelected();
 
 private:
     Ui::MicrophoneSelection *ui;
@@ -57,4 +58,4 @@ private:
 }
 }
 #endif // MICSELECT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

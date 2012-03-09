@@ -24,6 +24,10 @@ include_directories(${SPPY_PLUGIN_INCLUDE_DIRS}
 
 add_library(spchcntrl-python SHARED ${SPPY_SRCS})
 target_link_libraries(spchcntrl-python ${SPPY_PLUGIN_LIBRARIES})
+set_target_properties(spchcntrl-python PROPERTIES
+    DEFINE_SYMBOL "SPCH_EXPORT_SYMBOLS"
+    VERSION "${SPPY_PLUGIN_VERSION}"
+    SOVERSION "${SPPY_PLUGIN_VERSION}")
 speechcontrol_install_plugin(spchcntrl-python)
 add_dependencies(plugins spchcntrl-python)
 

@@ -82,7 +82,8 @@ Core::Core ( int p_argc, char** p_argv, QApplication* app ) : QObject ( app ),
         Indicator::show();
 }
 
-Core::Core ( const Core& p_other ) : QObject ( p_other.parent() ) {
+Core::Core ( const Core& p_other ) : QObject ( p_other.parent() ), m_app(p_other.m_app),
+    m_mw(p_other.m_mw), m_settings(p_other.m_settings), m_trnsltr(p_other.m_trnsltr) {
 
 }
 

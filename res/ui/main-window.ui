@@ -527,10 +527,6 @@ border-radius: 10px;</string>
    </property>
   </action>
   <action name="actionAboutSpeechControl">
-   <property name="icon">
-    <iconset theme="speechcontrol" resource="../res.qrc">
-     <normaloff>:/logo/sc</normaloff>:/logo/sc</iconset>
-   </property>
    <property name="text">
     <string>About &amp;SpeechControl..</string>
    </property>
@@ -542,11 +538,6 @@ border-radius: 10px;</string>
    </property>
   </action>
   <action name="actionQuit">
-   <property name="icon">
-    <iconset theme="application-exit">
-     <normaloff/>
-    </iconset>
-   </property>
    <property name="text">
     <string>&amp;Quit</string>
    </property>
@@ -561,21 +552,11 @@ border-radius: 10px;</string>
    </property>
   </action>
   <action name="actionReportBug">
-   <property name="icon">
-    <iconset theme="tools-report-bug">
-     <normaloff/>
-    </iconset>
-   </property>
    <property name="text">
     <string>Report Bug</string>
    </property>
   </action>
   <action name="actionOptions">
-   <property name="icon">
-    <iconset theme="configure">
-     <normaloff/>
-    </iconset>
-   </property>
    <property name="text">
     <string>Options</string>
    </property>
@@ -587,21 +568,11 @@ border-radius: 10px;</string>
    </property>
   </action>
   <action name="actionWizardMicrophone">
-   <property name="icon">
-    <iconset theme="audio-input-microphone">
-     <normaloff/>
-    </iconset>
-   </property>
    <property name="text">
     <string>Microphone...</string>
    </property>
   </action>
   <action name="actionWizardContent">
-   <property name="icon">
-    <iconset theme="x-office-document">
-     <normaloff/>
-    </iconset>
-   </property>
    <property name="text">
     <string>Content</string>
    </property>
@@ -610,11 +581,6 @@ border-radius: 10px;</string>
    </property>
   </action>
   <action name="actionWizardSessions">
-   <property name="icon">
-    <iconset theme="application-x-tar">
-     <normaloff/>
-    </iconset>
-   </property>
    <property name="text">
     <string>Sessions...</string>
    </property>
@@ -631,11 +597,6 @@ border-radius: 10px;</string>
    <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="icon">
-    <iconset theme="audio-headset">
-     <normaloff/>
-    </iconset>
-   </property>
    <property name="text">
     <string>Active</string>
    </property>
@@ -650,11 +611,6 @@ border-radius: 10px;</string>
    </property>
   </action>
   <action name="actionDesktopControlCommands">
-   <property name="icon">
-    <iconset theme="view-list-text">
-     <normaloff/>
-    </iconset>
-   </property>
    <property name="text">
     <string>Commands...</string>
    </property>
@@ -665,11 +621,6 @@ border-radius: 10px;</string>
   <action name="actionDictationActive">
    <property name="checkable">
     <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset theme="audio-input-microphone">
-     <normaloff/>
-    </iconset>
    </property>
    <property name="text">
     <string>Enabled</string>
@@ -682,21 +633,11 @@ border-radius: 10px;</string>
    </property>
   </action>
   <action name="actionDesktopControlOptions">
-   <property name="icon">
-    <iconset theme="configure">
-     <normaloff/>
-    </iconset>
-   </property>
    <property name="text">
     <string>Options</string>
    </property>
   </action>
   <action name="actionStartTraining">
-   <property name="icon">
-    <iconset theme="system-run">
-     <normaloff/>
-    </iconset>
-   </property>
    <property name="text">
     <string>Start Training...</string>
    </property>
@@ -710,31 +651,16 @@ border-radius: 10px;</string>
    </property>
   </action>
   <action name="actionDictationOptions">
-   <property name="icon">
-    <iconset theme="configure">
-     <normaloff/>
-    </iconset>
-   </property>
    <property name="text">
     <string>Options</string>
    </property>
   </action>
   <action name="actionOptions_2">
-   <property name="icon">
-    <iconset theme="configure">
-     <normaloff/>
-    </iconset>
-   </property>
    <property name="text">
     <string>Options</string>
    </property>
   </action>
   <action name="actionPluginOptions">
-   <property name="icon">
-    <iconset theme="configure">
-     <normaloff/>
-    </iconset>
-   </property>
    <property name="text">
     <string>Options</string>
    </property>

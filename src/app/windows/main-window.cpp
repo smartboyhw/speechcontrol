@@ -72,6 +72,19 @@ Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0)
     m_prgStatusbar->setMaximum (100);
     setProgress (0.0);
 
+    // Update icons.
+    m_ui->actionQuit->setIcon (QIcon::fromTheme ("application-exit"));
+    m_ui->actionAboutSpeechControl->setIcon (QIcon (":/logo/sc"));
+    m_ui->actionReportBug->setIcon (QIcon::fromTheme ("tools-report-bug"));
+    m_ui->actionOptions->setIcon (QIcon::fromTheme ("configure"));
+    m_ui->actionWizardMicrophone->setIcon (QIcon::fromTheme ("audio-input-microphone"));
+    m_ui->menuDictation->setIcon (QIcon::fromTheme ("audio-input-microphone"));
+    m_ui->menuDesktopControl->setIcon (QIcon::fromTheme ("audio-headset"));
+    m_ui->actionWizardContent->setIcon (QIcon::fromTheme ("x-office-document"));
+    m_ui->actionWizardSessions->setIcon (QIcon::fromTheme ("application-x-tar"));
+    m_ui->actionDesktopControlCommands->setIcon (QIcon::fromTheme ("view-list-text"));
+    m_ui->actionStartTraining->setIcon (QIcon::fromTheme ("system-run"));
+
     // Update the actions and buttons.
     connect (DesktopControl::Agent::instance(), SIGNAL (stateChanged (ActivityState)), this, SLOT (desktopControlStateChanged()));
     connect (Dictation::Agent::instance(), SIGNAL (stateChanged (ActivityState)), this, SLOT (dictationStateChanged()));

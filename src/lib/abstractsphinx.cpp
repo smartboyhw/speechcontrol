@@ -114,11 +114,9 @@ const QGst::ElementPtr AbstractSphinx::audioSrcElement() const {
     return m_pipeline->getElementByName ( "audiosrc" );
 }
 
-/// @todo Implement a means of using Microphone as audio sources with AbstractSphinx so that users can specify which microphone to be used.
 void AbstractSphinx::useMicrophone ( const Microphone* p_microphone ) {
-    qFatal ( "This method hasn't been implemented as of yet." );
+    audioSrcElement()->setProperty<const char*> ( "device",p_microphone->name().toStdString().c_str() );
 }
-
 
 const QGst::ElementPtr AbstractSphinx::pocketSphinxElement() const {
     return m_psphinx;
@@ -161,7 +159,7 @@ void AbstractSphinx::setDictionary ( const QString& p_path ) {
 }
 
 void AbstractSphinx::setDictionary ( const Dictionary* p_dictionary ) {
-    return setDictionary(p_dictionary->path());
+    return setDictionary ( p_dictionary->path() );
 }
 
 void AbstractSphinx::setAcousticModel ( const QString& p_path ) {

@@ -126,8 +126,8 @@ void SpeechControl::Microphone::startRecording() {
     m_sinkAudio->setProperty ( "buffer-size", 1024 );
 
     // Build the pipeline.
-    m_pipeline = QGst::Pipeline::create ( "pipeline" );
-    //m_pipeline->add(m_binAudio, m_sinkAudio);
+    m_pipeline = QGst::Pipeline::create ( );
+    m_pipeline->add(m_binAudio);
 
     // Connect the bus to this Microphone to detect changes in the pipeline.
     m_pipeline->bus()->addSignalWatch();
@@ -157,7 +157,7 @@ const QByteArray& Microphone::data() const {
 }
 
 double SpeechControl::Microphone::volume() const {
-    return qVariantFromValue(m_srcVolume->property ( "volume" ).toString()).toDouble();
+    return qVariantFromValue ( m_srcVolume->property ( "volume" ).toString() ).toDouble();
 }
 
 bool SpeechControl::Microphone::isMuted() const {
@@ -187,9 +187,9 @@ void SpeechControl::Microphone::mute ( const bool &p_muted ) {
 
 void SpeechControl::Microphone::obtain() {
     try {
-        m_binAudio = QGst::Bin::fromDescription ( "autoaudiosrc name=audiosrc ! audioconvert ! "
+        m_binAudio = QGst::Bin::fromDescription ( "autoaudiosrc name=src ! audioconvert ! "
                      "audioresample ! audiorate ! volume name=volume ! "
-                     "appsink name=appsink" );
+                     "appsink name=sink" );
     } catch ( const QGlib::Error & error ) {
         qCritical() << "Failed to create audio source bin:" << error;
         m_binAudio.clear();
@@ -199,22 +199,17 @@ void SpeechControl::Microphone::obtain() {
     p_micLst.insert ( m_id, const_cast<Microphone*> ( this ) );
 
     // Obtain tools for recording like the encoder and the source.
-    m_sinkAudio = m_binAudio->getElementByName ( "appsink" );
-    m_srcAudio = m_binAudio->getElementByName ( "audiosrc" );
+    m_sinkAudio = m_binAudio->getElementByName ( "sink" );
+    m_srcAudio = m_binAudio->getElementByName ( "src" );
     m_srcVolume = m_binAudio->getElementByName ( "volume" );
 
-    //autoaudiosrc creates the actual source in the READY state
-    m_srcAudio->setState ( QGst::StateReady );
-
     QGst::ChildProxyPtr childProxy = m_srcAudio.dynamicCast<QGst::ChildProxy>();
-
     if ( childProxy && childProxy->childrenCount() > 0 ) {
-        //the actual source is the first child
         QGst::ObjectPtr realSrc = childProxy->childByIndex ( 0 );
         realSrc->setProperty ( "device", m_device.toString() );
     }
 
-    m_srcAudio->setState ( QGst::StateNull );
+    m_binAudio->setState ( QGst::StatePaused );
 }
 
 void SpeechControl::Microphone::release() {
@@ -245,7 +240,7 @@ void Microphone::onPipelineBusmessage ( const QGst::MessagePtr & message ) {
 
     case QGst::MessageStateChanged: {
         QGst::StateChangedMessagePtr l_stateMsg = message.staticCast<QGst::StateChangedMessage>();
-        qDebug() << l_stateMsg->newState();
+        qDebug() << "State: " << l_stateMsg->newState();
     }
     break;
 

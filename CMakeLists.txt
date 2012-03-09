@@ -14,7 +14,6 @@ option(WITH_TESTS              "Generate the test build system?"            OFF)
 
 ## Required packages
 find_package(PkgConfig REQUIRED)
-find_package(Xdo REQUIRED)
 find_package(Qt4 4.7 COMPONENTS
   QtCore
   QtGui
@@ -37,13 +36,11 @@ set(SPCHCNTRL_SBIN_DIR "${CMAKE_INSTALL_PREFIX}/sbin")
 set(SPCHCNTRL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include/speechcontrol")
 set(SPCHCNTRL_INCLUDE_DIRS ${QT_INCLUDE_DIR}
     ${SPCHCNTRL_INCLUDE_DIR}
-    ${XDO_INCLUDE_DIRS}
     ${POCKETSPHINX_INCLUDE_DIRS}
     ${QTGSTREAMER_INCLUDE_DIR})
 set(SPCHCNTRL_LIBRARIES ${QT_QTCORE_LIBRARY}
     ${QT_QTXML_LIBRARY}
     ${QTGLIB_LIBRARIES}
-    ${XDO_LIBRARIES}
     ${QTGSTREAMER_LIBRARIES}
     ${QTGSTREAMER_UI_LIBRARIES}
     ${QTGSTREAMER_UTILS_LIBRARIES}

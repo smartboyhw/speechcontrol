@@ -129,9 +129,6 @@
         <property name="text">
          <string>&amp;Cancel</string>
         </property>
-        <property name="icon">
-         <iconset theme="dialog-cancel"/>
-        </property>
        </widget>
       </item>
       <item>
@@ -167,9 +164,6 @@
         <property name="text">
          <string>&amp;Select</string>
         </property>
-        <property name="icon">
-         <iconset theme="dialog-ok"/>
-        </property>
         <property name="autoDefault">
          <bool>false</bool>
         </property>
@@ -194,9 +188,6 @@
         </property>
         <property name="text">
          <string>&amp;Add...</string>
-        </property>
-        <property name="icon">
-         <iconset theme="tools-wizard"/>
         </property>
        </widget>
       </item>

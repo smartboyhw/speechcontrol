@@ -2,6 +2,9 @@ project(SpeechControlApplication)
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
+## Extra packages for the application
+find_package(Xdo REQUIRED)
+
 ## Required files
 file(GLOB SPCHCNTRL_APP_SRCS "*.cpp")
 file(GLOB SPCHCNTRL_APP_HDRS "*.hpp")
@@ -25,19 +28,20 @@ set(SPCHCNTRL_APP_INCLUDE_DIRS "${SPCHCNTRL_INCLUDE_DIR}"
     ${SPCHCNTRL_LIB_INCLUDE_DIR}
     ${SPCHCNTRL_APP_INCLUDE_DIR}
     ${SPCHCNTRL_INCLUDE_DIRS}
+    ${XDO_INCLUDE_DIR}
     ${SPCHCNTRL_LIB_INCLUDE_DIRS})
 set(SPCHCNTRL_APP_LIBRARIES ${SPCHCNTRL_LIBRARIES}
     ${SPCHCNTRL_LIB_LIBRARIES}
     ${QT_QTGUI_LIBRARY}
     ${QT_QTDBUS_LIBRARY}
     ${QT_QTNETWORK_LIBRARY}
+    ${XDO_LIBRARIES}
     speechcontrol)
 set(SPCHCNTRL_APP_BUILD_INCLUDE_DIRS ${SPCHCNTRL_APP_INCLUDE_DIRS}
     "${PROJECT_BINARY_DIR}"
     "${PROJECT_BINARY_DIR}/frontend"
     "${PROJECT_SOURCE_DIR}/../lib"
-    "${PROJECT_SOURCE_DIR}/../app"
-    "${PROJECT_SOURCE_DIR}/../app/windows"
+    "${PROJECT_SOURCE_DIR}/app/windows"
     "${PROJECT_SOURCE_DIR}/../")
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")

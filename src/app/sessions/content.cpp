@@ -305,7 +305,10 @@ void AbstractContentSource::setTitle ( const QString p_title ) {
 }
 
 Content* AbstractContentSource::generate() {
-    return Content::create ( m_author,m_title,m_text );
+    Content* l_content = Content::create ( m_author,m_title,m_text );
+    Q_ASSERT(l_content != 0);
+
+    return l_content;
 }
 
 AbstractContentSource::~AbstractContentSource() {

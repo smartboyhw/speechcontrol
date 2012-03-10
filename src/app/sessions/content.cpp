@@ -48,6 +48,7 @@ Content::Content ( const Content& p_other ) : QObject(),
 Content* Content::obtain ( const QUuid &p_uuid ) {
     qDebug() << p_uuid;
     Q_ASSERT ( !p_uuid.isNull() );
+
     if ( p_uuid.isNull() ) {
         qDebug() << "Null UUID passed.";
         return 0;
@@ -56,11 +57,10 @@ Content* Content::obtain ( const QUuid &p_uuid ) {
     if ( !s_lst.contains ( p_uuid ) ) {
         Content* l_content = new Content ( p_uuid );
         qDebug() << "Is content valid? " << l_content->isValid();
-        if ( !l_content->isValid() ) {
-            return 0;
-        }
+        Q_ASSERT( l_content->isValid() );
 
-        s_lst.insert ( p_uuid, ( l_content ) );
+        if ( !l_content->isValid() )
+            return 0;
     }
 
     return s_lst.value ( p_uuid );

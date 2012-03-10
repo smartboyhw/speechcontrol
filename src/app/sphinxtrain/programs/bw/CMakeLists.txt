@@ -5,7 +5,7 @@ file(GLOB BW_HDRS "*.h")
 
 set(BW_INCLUDE_DIRS ${SPHINXBASE_INCLUDE_DIRS})
 set(BW_LIBRARIES ${SPHINXBASE_LIBRARIES}
-                 common modinv io mllr s2io)
+                 common modinv io mllr s2io clust)
 
 include_directories(${BW_INCLUDE_DIRS})
 

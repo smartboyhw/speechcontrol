@@ -23,9 +23,7 @@
 
 #include <QObject>
 #include <QString>
-
-#include <qindicateindicator.h>
-#include <qindicateserver.h>
+#include <QSystemTrayIcon>
 
 class QImage;
 
@@ -61,7 +59,7 @@ public:
      * @brief Raises a new message to the system.
      * @param p_message The message to present to the user.
      **/
-    static void presentMessage ( const QString& p_message );
+    static void presentMessage ( const QString& p_title, const QString& p_message, const int& p_timeout );
 
     /**
      * @brief Obtains a pointer to the Indicator instance.
@@ -71,12 +69,10 @@ public:
 
 private slots:
     void showMainWindow();
-    void displayIndicator ( QIndicate::Indicator* p_indctr );
 
 private:
     explicit Indicator ( QObject* parent = 0 );
-    QIndicate::Indicator* m_indctr;     ///< Indicator instance.
-    QIndicate::Server* m_indctrSvr;
+    QSystemTrayIcon* m_icon;            ///< The tray icon.
     static Indicator* s_inst;           ///< Singleton instance.
 };
 }

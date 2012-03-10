@@ -20,6 +20,7 @@
 
 #ifndef XDO_HPP
 #define XDO_HPP
+
 #include <QObject>
 
 namespace SpeechControl {
@@ -78,4 +79,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>328</width>
-    <height>374</height>
+    <width>348</width>
+    <height>399</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,8 +22,8 @@
     <rect>
      <x>4</x>
      <y>4</y>
-     <width>321</width>
-     <height>369</height>
+     <width>341</width>
+     <height>393</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -56,7 +56,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="documentMode">
        <bool>false</bool>
@@ -68,10 +68,10 @@
        <widget class="QWidget" name="gridLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>8</x>
-          <y>0</y>
-          <width>297</width>
-          <height>266</height>
+          <x>4</x>
+          <y>8</y>
+          <width>321</width>
+          <height>277</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout">
@@ -88,8 +88,8 @@
              <rect>
               <x>8</x>
               <y>20</y>
-              <width>273</width>
-              <height>69</height>
+              <width>301</width>
+              <height>113</height>
              </rect>
             </property>
             <property name="text">
@@ -101,67 +101,14 @@
            </widget>
           </widget>
          </item>
-         <item row="5" column="0" colspan="2">
-          <widget class="QProgressBar" name="progressBarCompletion">
-           <property name="value">
-            <number>0</number>
-           </property>
-           <property name="textVisible">
-            <bool>true</bool>
-           </property>
-           <property name="format">
-            <string>%p% Complete</string>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <widget class="QPushButton" name="btnOpenContent">
-           <property name="text">
-            <string>Open Content</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="0">
-          <widget class="QPushButton" name="btnTrainSession">
-           <property name="text">
-            <string>Train Session</string>
-           </property>
-          </widget>
-         </item>
-         <item row="4" column="1">
-          <widget class="QProgressBar" name="progressBarAccuracy">
-           <property name="value">
-            <number>0</number>
-           </property>
-           <property name="format">
-            <string>%p% Accurate</string>
-           </property>
-          </widget>
-         </item>
          <item row="3" column="1">
-          <spacer name="verticalSpacer">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Minimum</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>20</width>
-             <height>10</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="2" column="1">
           <widget class="QLineEdit" name="lineEditNickname">
            <property name="placeholderText">
             <string>i.e: good text for studies.</string>
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
+         <item row="3" column="0">
           <widget class="QLabel" name="label_2">
            <property name="text">
             <string>Nickname:</string>
@@ -187,6 +134,47 @@
            </property>
           </spacer>
          </item>
+         <item row="6" column="0">
+          <widget class="QProgressBar" name="progressBarCompletion">
+           <property name="value">
+            <number>0</number>
+           </property>
+           <property name="textVisible">
+            <bool>true</bool>
+           </property>
+           <property name="format">
+            <string>%p% Complete</string>
+           </property>
+          </widget>
+         </item>
+         <item row="6" column="1">
+          <layout class="QHBoxLayout" name="horizontalLayout">
+           <item>
+            <widget class="QPushButton" name="btnOpenContent">
+             <property name="text">
+              <string>Open Content</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnTrainSession">
+             <property name="text">
+              <string>Train Session</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item row="7" column="0" colspan="2">
+          <widget class="QProgressBar" name="progressBarAccuracy">
+           <property name="value">
+            <number>0</number>
+           </property>
+           <property name="format">
+            <string>%p% Accurate</string>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
       </widget>
@@ -197,10 +185,10 @@
        <widget class="QWidget" name="formLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>23</x>
+          <x>3</x>
           <y>4</y>
-          <width>269</width>
-          <height>269</height>
+          <width>325</width>
+          <height>93</height>
          </rect>
         </property>
         <layout class="QFormLayout" name="formLayout">
@@ -214,7 +202,7 @@
          <item row="0" column="1">
           <widget class="QProgressBar" name="progressBar">
            <property name="value">
-            <number>24</number>
+            <number>0</number>
            </property>
           </widget>
          </item>
@@ -225,6 +213,18 @@
     </item>
     <item>
      <widget class="QDialogButtonBox" name="buttonBox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>26</height>
+       </size>
+      </property>
       <property name="standardButtons">
        <set>QDialogButtonBox::Help|QDialogButtonBox::Ok</set>
       </property>

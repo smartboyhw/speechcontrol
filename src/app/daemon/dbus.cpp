@@ -18,20 +18,39 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef CONNECTION_HPP
-#define CONNECTION_HPP
-#include <QObject>
+#include "dbus.hpp"
+#include "daemon.hpp"
+#include <QtCore/QMetaObject>
+#include <QtCore/QByteArray>
+#include <QtCore/QList>
+#include <QtCore/QMap>
+#include <QtCore/QString>
+#include <QtCore/QStringList>
+#include <QtCore/QVariant>
 
-namespace SpeechControl {
-namespace Voxforge {
-class Connection;
-
-class Connection : public QObject {
-    Q_OBJECT
-
-};
+DaemonAdaptor::DaemonAdaptor ( )
+    : QDBusAbstractAdaptor ( SpeechControl::Daemon::Daemon::instance() ) {
+    setAutoRelaySignals ( true );
 }
+
+DaemonAdaptor::~DaemonAdaptor() {
 }
 
-#endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+bool DaemonAdaptor::active() const {
+    return qvariant_cast< bool > ( parent()->property ( "Active" ) );
+}
+
+QString DaemonAdaptor::listen() {
+    return parent()->listen();
+}
+
+void DaemonAdaptor::start() {
+    parent()->start();
+}
+
+void DaemonAdaptor::stop() {
+    parent()->stop();
+}
+
+#include "dbus.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

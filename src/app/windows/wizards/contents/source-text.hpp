@@ -18,40 +18,32 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef URLSELECT_HPP
-#define URLSELECT_HPP
+#ifndef CONTENTWIZARD_SOURCE_TEXT_HPP
+#define CONTENTWIZARD_SOURCE_TEXT_HPP
 
-#include <QUrl>
-#include <QWizardPage>
+#include <QWidget>
 
 namespace Ui {
-class UrlSelectionPage;
+class TextContentSourceWidget;
 }
 
 namespace SpeechControl {
-namespace Wizards {
-namespace Pages {
-
-class UrlSelectionPage : public QWizardPage {
+class TextContentSourceWidget : public QWidget {
     Q_OBJECT
+    void updateView();
 
 public:
-    explicit UrlSelectionPage ( QWidget *parent = 0 );
-    ~UrlSelectionPage();
+    explicit TextContentSourceWidget ( QWidget *parent = 0 );
+    ~TextContentSourceWidget();
 
 private slots:
-    void on_toolButton_clicked();
-    void on_lineEdit_textChanged ( const QString p_path );
-    void updateContentData ( QUrl fromUserInput );
+    void on_btnOpen_clicked();
 
 private:
-    Ui::UrlSelectionPage *m_ui;
-    QString m_previousValue;
+    Ui::TextContentSourceWidget *m_ui;
 };
 
 }
-}
-}
 
-#endif // FILESELECT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#endif // CONTENTWIZARD_SOURCE_TEXT_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -1,7 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -14,31 +14,34 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "customsource.hpp"
-#include "ui_contentwizard-customsource.h"
+#ifndef TEST_APP_CORPUS_HPP
+#define TEST_APP_CORPUS_HPP
+#include <QObject>
+#include <QStringList>
 
-#include <QDebug>
-#include <QTextStream>
-#include <QDomDocument>
-#include <QFileDialog>
-#include <QMessageBox>
-
-using SpeechControl::Wizards::Pages::CustomSourcePage;
-
-CustomSourcePage::CustomSourcePage ( QWidget *parent ) :
-    QWizardPage ( parent ),
-    m_ui ( new Ui::CustomSourcePage ) {
-    m_ui->setupUi ( this );
-
+namespace SpeechControl {
+    class Corpus;
 }
 
-CustomSourcePage::~CustomSourcePage() {
-    delete m_ui;
-}
+class TestCorpus : public QObject {
+    Q_OBJECT
 
-#include "customsource.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+private:
+    SpeechControl::Corpus* m_crps;
+    void generateCorpus();
+    static QStringList s_strlist;
+
+private slots:
+    void initTestCase();
+    void cleanupTestCase();
+    void createCorpus();
+    void countSentences();
+    void countPhrases();
+};
+
+#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

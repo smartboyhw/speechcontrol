@@ -1,7 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -14,39 +14,26 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef FILESELECT_HPP
-#define FILESELECT_HPP
-
-#include <QWizardPage>
-#include <app/sessions/content.hpp>
-
-namespace Ui {
-class CustomSourcePage;
-}
+#ifndef UPLOADHANDLER_HPP
+#define UPLOADHANDLER_HPP
+#include <QObject>
 
 namespace SpeechControl {
-namespace Wizards {
-namespace Pages {
+namespace Voxforge {
 
-class CustomSourcePage : public QWizardPage {
+class UploadHandler : public QObject {
     Q_OBJECT
 
 public:
-    explicit CustomSourcePage ( QWidget *parent = 0 );
-    ~CustomSourcePage();
-
-private:
-    Ui::CustomSourcePage *m_ui;
-    AbstractContentSource* m_src;
+    virtual ~UploadHandler();
+    explicit UploadHandler ( QObject* parent = 0 );
 };
-
-}
 }
 }
 
-#endif // FILESELECT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

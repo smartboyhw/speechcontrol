@@ -27,6 +27,9 @@ using namespace SpeechControl;
 
 void TestMicrophone::init() {
     SpeechControl::System::start();
+
+    if (Microphone::allMicrophones().length() == 0)
+        QSKIP("This test requires at least one input device operational on the test environment.", SkipAll);
 }
 
 void TestMicrophone::cleanup() {
@@ -41,21 +44,30 @@ void TestMicrophone::listMicrophones() {
     }
 }
 
-Microphone* TestMicrophone::defaultMicrophone() {
+void TestMicrophone::defaultMicrophone() {
     Microphone* l_defaultMic = Microphone::defaultMicrophone();
     QCOMPARE ( l_defaultMic != 0 && !Microphone::allMicrophones().isEmpty(),true );
     QCOMPARE ( l_defaultMic->isValid() == true,true );
     qDebug() << "Default mic is:" << l_defaultMic->name();
-
-    return l_defaultMic;
 }
 
-void TestMicrophone::adjustMicrophone() {
-    Microphone* l_defaultMic = defaultMicrophone();
+void TestMicrophone::adjustVolume() {
+    Microphone* l_defaultMic = Microphone::defaultMicrophone();
+    QCOMPARE ( l_defaultMic != 0 && !Microphone::allMicrophones().isEmpty(),true );
+    QCOMPARE ( l_defaultMic->isValid() == true,true );
     l_defaultMic->setVolume ( 0.8 );
     QCOMPARE ( l_defaultMic->volume() == 0.8,true );
 }
 
+void TestMicrophone::toggleMuteState() {
+    Microphone* l_defaultMic = Microphone::defaultMicrophone();
+    QCOMPARE ( l_defaultMic != 0 && !Microphone::allMicrophones().isEmpty(),true );
+    const bool l_muted = l_defaultMic->isMuted();
+    l_defaultMic->mute(!l_muted);
+    QCOMPARE ( l_defaultMic->isMuted(), !l_muted );
+}
+
 QTEST_MAIN ( TestMicrophone )
+
 #include "mics.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

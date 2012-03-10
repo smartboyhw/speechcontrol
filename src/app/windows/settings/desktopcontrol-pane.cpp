@@ -94,5 +94,9 @@ void DesktopControlSettingsPane::on_checkBoxEnable_toggled ( bool p_checked ) {
     DesktopControl::Agent::instance()->setState ( ( ( p_checked ) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled ) );
 }
 
+void DesktopControlSettingsPane::on_checkBoxEnableStartup_toggled ( bool p_checked ) {
+    Core::setConfiguration ( "DesktopControl/AutoStart",p_checked );
+}
+
 #include "desktopcontrol-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

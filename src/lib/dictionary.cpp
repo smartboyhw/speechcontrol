@@ -19,11 +19,11 @@
  */
 
 #include "dictionary.hpp"
-#include "corpus.hpp"
 
 #include <QDir>
 #include <QFile>
 #include <QDebug>
+#include <QVariant>
 #include <QDomDocument>
 
 using namespace SpeechControl;
@@ -69,8 +69,9 @@ void Dictionary::load ( QIODevice* p_device ) {
     qDebug() << m_words.size() << "words found in this dictionary.";
 }
 
+/// @bug This location should be passed in as a macro.
 QString Dictionary::getPathFromUuid ( const QUuid& p_uuid ) {
-    return QDir::homePath() + "/.speechcontrol/dictionaries/" + p_uuid.toString() + ".dic";
+    return QDir::homePath() + "/.config/speechcontrol/dictionaries/" + p_uuid.toString() + ".dic";
 }
 
 Dictionary* Dictionary::obtain ( const QUuid &p_uuid ) {
@@ -127,6 +128,10 @@ void Dictionary::save() {
     m_device->close();
 }
 
+QString Dictionary::path() const {
+    return m_device->property("fileName").toString();
+}
+
 Dictionary::~Dictionary() {
 }
 
@@ -152,4 +157,4 @@ DictionaryEntry::~DictionaryEntry() {
 }
 
 #include "dictionary.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

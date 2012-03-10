@@ -31,7 +31,7 @@
 #include <QTableWidget>
 #include <QMenu>
 
-#include <corpus.hpp>
+#include <app/sessions/corpus.hpp>
 
 #include "core.hpp"
 #include "indicator.hpp"
@@ -42,7 +42,7 @@
 #include "main-window.hpp"
 #include "training-dialog.hpp"
 #include "settings-dialog.hpp"
-#include "books-manager.hpp"
+#include "content-manager.hpp"
 #include "session-manager.hpp"
 #include "quickstart-wizard.hpp"
 #include "about-dialog.hpp"

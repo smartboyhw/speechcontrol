@@ -18,41 +18,52 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QDebug>
-
 #include "selection.hpp"
-#include "ui_contentwizard-selectiontype.h"
+#include "source-text.hpp"
+#include "app/sessions/content.hpp"
+#include "ui_contentwizard-sourceselect.h"
 
-using SpeechControl::Wizards::Pages::AdditionSelectionPage;
+using namespace SpeechControl;
+using SpeechControl::Wizards::Pages::SourceSelectionPage;
 
-AdditionSelectionPage::AdditionSelectionPage ( QWidget *parent ) :
+QMap<QString,QWidget*> SourceSelectionPage::s_lst;
+
+SourceSelectionPage::SourceSelectionPage ( QWidget *parent ) :
     QWizardPage ( parent ),
-    m_ui ( new Ui::AdditionSelectionPage ) {
+    m_ui ( new Ui::SourceSelectionPage ) {
     m_ui->setupUi ( this );
-    registerField ( "selection.wiki",m_ui->radioButtonWiki );
-    registerField ( "selection.url",m_ui->radioButtonUrl );
-    registerField ( "selection.custom",m_ui->radioButtonCustom );
 
-    connect ( m_ui->radioButtonWiki,SIGNAL ( clicked ( bool ) ),this,SLOT ( updateDescription() ) );
-    connect ( m_ui->radioButtonUrl,SIGNAL ( clicked ( bool ) ),this,SLOT ( updateDescription() ) );
-    connect ( m_ui->radioButtonCustom,SIGNAL ( clicked ( bool ) ),this,SLOT ( updateDescription() ) );
-
-    updateDescription();
+    addDefaultSources();
+    updateUi();
 }
 
-void AdditionSelectionPage::updateDescription() {
-    if ( m_ui->radioButtonUrl->isChecked() ) {
-        m_ui->lblDescription->setText ( m_ui->radioButtonUrl->whatsThis() );
-    } else if ( m_ui->radioButtonWiki->isChecked() ) {
-        m_ui->lblDescription->setText ( m_ui->radioButtonWiki->whatsThis() );
-    } else if ( m_ui->radioButtonCustom->isChecked() ) {
-        m_ui->lblDescription->setText ( m_ui->radioButtonCustom->whatsThis() );
+void SourceSelectionPage::updateUi() {
+    Q_FOREACH ( QWidget* l_src, s_lst ) {
+        m_ui->comboBoxSource->addItem ( l_src->property ( "title" ).toString(), l_src->property ( "id" ) );
     }
 }
 
-AdditionSelectionPage::~AdditionSelectionPage() {
+void SourceSelectionPage::addDefaultSources() {
+    registerSourceWidget(new TextContentSourceWidget);
+}
+
+void SourceSelectionPage::on_comboBoxSource_currentIndexChanged ( const int& p_index ) {
+    QVariant l_vrnt = m_ui->comboBoxSource->itemData ( p_index );
+
+    if ( l_vrnt.isValid() ) {
+        QWidget* l_wid = s_lst.value ( l_vrnt.toString() );
+        l_wid->setParent ( m_ui->frameContainer );
+        l_wid->show();
+    }
+}
+
+void SourceSelectionPage::registerSourceWidget ( QWidget* p_widget ) {
+    s_lst.insert ( p_widget->property ( "id" ).toString(),p_widget );
+}
+
+SourceSelectionPage::~SourceSelectionPage() {
     delete m_ui;
 }
 
 #include "selection.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

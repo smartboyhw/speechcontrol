@@ -18,7 +18,21 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "connection.hpp"
+#ifndef TEST_PLUGIN_TRANSCRIBER_HPP
+#define TEST_PLUGIN_TRANSCRIBER_HPP
+#include <QObject>
 
-#include "connection.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+namespace SpeechControl {
+    class Microphone;
+}
+
+class TestTranscriber : public QObject {
+    Q_OBJECT
+
+private slots:
+    void init();
+    void cleanup();
+};
+
+#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

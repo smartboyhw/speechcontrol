@@ -33,18 +33,7 @@ class ContentWizard : public WizardBase {
 public:
     enum Pages {
         IntroductionPage = 0,
-        AdditionSelectionPage,
-
-        // from Wikipedia (not yet implemented)
-        WikiSourcePage,
-        PageSelectionPage,
-
-        // from a URL
-        UriSelectionPage,
-
-        // from a custom source defined by a plug-in.
-        CustomSelectionPage,
-
+        SourceSelectionPage,
         ConclusionPage
     };
 
@@ -62,4 +51,4 @@ private:
 }
 }
 #endif // WIZARD_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

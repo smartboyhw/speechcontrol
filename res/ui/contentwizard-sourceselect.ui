@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CustomSourcePage</class>
- <widget class="QWizardPage" name="CustomSourcePage">
+ <class>SourceSelectionPage</class>
+ <widget class="QWizardPage" name="SourceSelectionPage">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>408</width>
-    <height>245</height>
+    <width>410</width>
+    <height>244</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Utilizing Custom Source</string>
+   <string>Select Source</string>
   </property>
   <property name="title">
-   <string>Custom Source Import</string>
+   <string>Select Content Source</string>
   </property>
   <property name="subTitle">
-   <string>Using a third-party source to import content for training into SpeechControl.</string>
+   <string>Selecting the source that the Content is obtained from.</string>
   </property>
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
@@ -99,7 +99,6 @@
         <property name="frameShadow">
          <enum>QFrame::Plain</enum>
         </property>
-        <zorder>horizontalLayoutWidget</zorder>
        </widget>
       </item>
       <item row="0" column="0">
@@ -129,7 +128,7 @@
         <item>
          <widget class="QComboBox" name="comboBoxSource">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>

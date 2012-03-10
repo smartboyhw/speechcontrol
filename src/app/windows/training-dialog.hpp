@@ -26,11 +26,11 @@
 #include <QDialog>
 
 // libspchcntrl includes
-#include <sentence.hpp>
 #include <microphone.hpp>
 
 // local includes
 #include <core.hpp>
+#include <sessions/sentence.hpp>
 #include <sessions/session.hpp>
 
 namespace Ui {
@@ -112,8 +112,8 @@ public slots:
 
 private slots:
     void updateProgress ( const double p_progress );
-    void on_micStoppedListening();
-    void on_micStartedListening();
+    void onMicStoppedListening();
+    void onMicStartedListening();
     void on_pushButtonClose_clicked();
     void on_pushButtonProgress_toggled ( const bool& );
     void on_pushButtonReset_clicked();
@@ -144,6 +144,7 @@ private:
      * @return void
      **/
     void navigatePreviousPart();
+    bool currentPhraseCompleted();
 
     int m_currentPosition;           ///< The current position of the phrase in the current sentence being trained.
     uint m_initialPosition;          ///< The position that training began at in this dialog.

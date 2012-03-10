@@ -6,10 +6,10 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
 include(SpeechControlDefaults)
 
 ## Options to toggle components of SpeechControl.
-option(WITH_DOCS               "Generate Doxygen-made documentation?"       ON)
 option(WITH_KDE_SUPPORT        "Build KDE specific features?"               ON)
 option(WITH_PYTHON_BINDINGS    "Generate Python support for SpeechControl?" ON)
 option(WITH_PLUGINS            "Build the included plug-ins?"               ON)
+option(WITH_DOCS               "Generate Doxygen-made documentation?"       OFF)
 option(WITH_TESTS              "Generate the test build system?"            OFF)
 
 ## Required packages
@@ -19,6 +19,7 @@ find_package(Qt4 4.7 COMPONENTS
   QtCore
   QtGui
   QtDBus
+  QtNetwork
   QtXml
   REQUIRED)
 find_package(QtGStreamer REQUIRED)
@@ -26,11 +27,13 @@ find_package(PocketSphinx REQUIRED)
 
 ## variables
 set(PROJECT_VERSION "0.1")
+set(SPCHCNTRL_BUILDING ON)
 set(SPCHCNTRL_CMAKE_SDIR "${PROJECT_SOURCE_DIR}/cmake")
 set(SPCHCNTRL_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/share/cmake/SpeechControl")
 set(SPCHCNTRL_CMAKE_INSTALL_DIR "${CMAKE_MODULE_PATH}")
 set(SPCHCNTRL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 set(SPCHCNTRL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
+set(SPCHCNTRL_SBIN_DIR "${CMAKE_INSTALL_PREFIX}/sbin")
 set(SPCHCNTRL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include/speechcontrol")
 set(SPCHCNTRL_INCLUDE_DIRS ${QT_INCLUDE_DIR}
     ${SPCHCNTRL_INCLUDE_DIR}
@@ -45,7 +48,7 @@ set(SPCHCNTRL_LIBRARIES ${QT_QTCORE_LIBRARY}
     ${QTGSTREAMER_UI_LIBRARIES}
     ${QTGSTREAMER_UTILS_LIBRARIES}
     ${POCKETSPHINX_LIBRARIES})
-set(SPCHCNTRL_COMPILE_FLAGS "${QTGSTREAMER_FLAGS} -fexceptions -feliminate-unused-debug-symbols")
+set(SPCHCNTRL_COMPILE_FLAGS "${QTGSTREAMER_FLAGS} -feliminate-unused-debug-symbols")
 set(SPCHCNTRL_COMPILE_FLAGS_DEBUG "-Wall -Wextra -Wabi -Wctor-dtor-privacy -Wformat -Wunused")
 set(SPCHCNTRL_COMPILE_DEFINITIONS ${QT_DEFINITIONS})
 set(SPCHCNTRL_QRESC "${CMAKE_SOURCE_DIR}/res/res.qrc")

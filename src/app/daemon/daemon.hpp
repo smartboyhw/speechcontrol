@@ -23,61 +23,68 @@
 
 #include <QObject>
 #include <QDBusAbstractAdaptor>
+#include <lib/abstractsphinx.hpp>
 
 namespace SpeechControl {
-namespace Daemon {
 
-/**
- * @brief ...
- **/
+class System;
+namespace Daemon {
+class Daemon;
+
+class DaemonSphinx : public AbstractSphinx {
+    Q_OBJECT
+    friend class Daemon;
+    explicit DaemonSphinx ();
+    virtual void applicationMessage ( const QGst::MessagePtr& p_message );
+};
+
 class Daemon : public QObject {
     Q_OBJECT
     Q_PROPERTY ( bool Active READ isActive )
+    friend class System;
+
+private:
+    Daemon();
+    static Daemon* s_inst;
+    DaemonSphinx* m_sphnx;
 
 signals:
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Emitted when the daemon's started.
      **/
     void started();
+
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Emitted when the daemon's stopped.
      **/
     void stopped();
 
 public:
     /**
-     * @brief ...
-     *
-     **/
-    Daemon();
-    /**
-     * @brief ...
-     *
-     * @return bool
+     * @brief Determines if the daemon's active.
      **/
     bool isActive() const;
 
-public slots:
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Obtains a pointer to the Daemon instance.
+     **/
+    static Daemon* instance();
+
+public slots:
+
+    /**
+     * @brief Starts the daemon.
      **/
     Q_NOREPLY void start();
+
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Stops the daemon.
      **/
     Q_NOREPLY void stop();
+
     /**
-     * @brief ...
-     *
-     * @return QString
+     * @brief Begins the listening process for text from the user and returns that value.
+     * @return The text heard by the user.
      **/
     QString listen();
 };
@@ -87,4 +94,4 @@ public slots:
 }
 
 #endif // SPEECHCONTROL_DAEMON_DAEMON_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

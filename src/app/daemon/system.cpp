@@ -18,6 +18,9 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <lib/system.hpp>
+#include <lib/config.hpp>
+
 #include "system.hpp"
 
 using namespace SpeechControl::Daemon;
@@ -25,9 +28,14 @@ using namespace SpeechControl::Daemon;
 System* System::s_inst = 0;
 
 System::System ( int p_argc,char** p_argv ) : QObject ( qApp ),
-    m_dmn ( new Daemon ), m_app ( p_argc,p_argv ) {
+    m_app ( p_argc,p_argv ) {
+    m_app.setApplicationName ( "SpeechControl" );
+    m_app.setApplicationVersion ( SPCHCNTRL_BUILD_VERSION );
+    m_app.setOrganizationDomain ( "thesii.org" );
+    m_app.setOrganizationName ( "Synthetic Intellect Institute" );
 
-    connect ( &m_app,SIGNAL ( aboutToQuit() ),m_dmn,SLOT ( stop() ) );
+    SpeechControl::System::start ( &p_argc,&p_argv );
+    connect ( &m_app,SIGNAL ( aboutToQuit() ),Daemon::instance(),SLOT ( stop() ) );
 }
 
 System* System::instance ( int p_argc,char** p_argv ) {
@@ -39,7 +47,7 @@ System* System::instance ( int p_argc,char** p_argv ) {
 }
 
 Daemon* System::daemon() {
-    return m_dmn;
+    return Daemon::instance();
 }
 
 int System::exec() {
@@ -48,4 +56,4 @@ int System::exec() {
 }
 
 #include "system.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

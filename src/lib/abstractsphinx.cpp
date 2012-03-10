@@ -61,15 +61,15 @@ void AbstractSphinx::prepare() {
 
     QGlib::connect ( m_psphinx, "partial_result", this, &AbstractSphinx::formPartialResult );
     QGlib::connect ( m_psphinx, "result", this, &AbstractSphinx::formResult );
-    m_psphinx->setProperty ( "configured", true );
+    //m_psphinx->setProperty ( "configured", true );
 
     m_bus = m_pipeline->bus();
     m_bus->addSignalWatch();
     QGlib::connect ( m_bus, "message::application", this, &AbstractSphinx::applicationMessage );
 
     m_pipeline->setState ( QGst::StateReady );
-    m_psphinx->setState ( QGst::StateReady );
-    m_vader->setState ( QGst::StateReady );
+    //m_psphinx->setState ( QGst::StateReady );
+    //m_vader->setState ( QGst::StateReady );
     m_ready = Ready;
 }
 
@@ -83,7 +83,8 @@ QString AbstractSphinx::standardDescription() {
 
 /// @todo Determine how to pull the pointer of the held data from the QGlib::Value (or GValue) and use that as the ps_decoder_t.
 QGlib::Value AbstractSphinx::decoder() const {
-    return m_psphinx->property ( "decoder" );
+    QGlib::Value l_glibPs = m_psphinx->property ( "decoder" );
+    return l_glibPs;
 }
 
 LanguageModel* AbstractSphinx::languageModel() const {
@@ -113,11 +114,9 @@ const QGst::ElementPtr AbstractSphinx::audioSrcElement() const {
     return m_pipeline->getElementByName ( "audiosrc" );
 }
 
-/// @todo Implement a means of using Microphone as audio sources with AbstractSphinx so that users can specify which microphone to be used.
 void AbstractSphinx::useMicrophone ( const Microphone* p_microphone ) {
-    qFatal ( "This method hasn't been implemented as of yet." );
+    audioSrcElement()->setProperty<const char*> ( "device",p_microphone->name().toStdString().c_str() );
 }
-
 
 const QGst::ElementPtr AbstractSphinx::pocketSphinxElement() const {
     return m_psphinx;
@@ -160,7 +159,7 @@ void AbstractSphinx::setDictionary ( const QString& p_path ) {
 }
 
 void AbstractSphinx::setDictionary ( const Dictionary* p_dictionary ) {
-
+    return setDictionary ( p_dictionary->path() );
 }
 
 void AbstractSphinx::setAcousticModel ( const QString& p_path ) {
@@ -197,9 +196,11 @@ bool AbstractSphinx::start() {
     return isRunning();
 }
 
-void AbstractSphinx::stop() {
+bool AbstractSphinx::stop() {
     if ( m_pipeline->setState ( QGst::StateNull ) == QGst::StateChangeSuccess )
         m_running = NotPrepared;
+
+    return m_running == NotPrepared;
 }
 
 void AbstractSphinx::togglePause() {

@@ -32,77 +32,73 @@ class NoiseDictionary;
 typedef QMap<QString,QString> QStringMap;
 
 /**
- * @brief ...
+ * @brief Represents a dictionary of noises.
+ *
+ * Noise dictionaries allow acoustic models to define sounds that would
+ * be typically unused or unrepresented in speech (aside from the occasional whitespace).
+ * Sounds like laughter and silence would be considered noise and listed here.
  **/
 class NoiseDictionary : public QObject {
     Q_OBJECT
 
 public:
     /**
-     * @brief ...
-     *
-     * @param p_parent ... Defaults to 0.
+     * @brief Null constructor.
+     * @param p_parent Defaults to 0.
      **/
     explicit NoiseDictionary ( QObject* p_parent = 0 );
+
     /**
-     * @brief ...
-     *
-     * @param p_other ...
+     * @brief Copy constructor.
+     * @param p_other The other NoiseDictionary to be copied.
      **/
     NoiseDictionary ( const NoiseDictionary& p_other );
+
     /**
-     * @brief ...
-     *
-     * @param p_file ...
-     * @return :NoiseDictionary*
+     * @brief Obtains a NoiseDictionary from a QFile.
+     * @param p_file The QFile to use to load the NoiseDictionary.
+     * @return A pointer to a NoiseDictionary object, or NULL if there was a failure.
      **/
     static NoiseDictionary* fromFile ( QFile* p_file );
+
     /**
-     * @brief ...
-     *
-     * @return :QStringMap
+     * @brief Obtains a mapping of the entries in this noise dictionary.
      **/
     QStringMap entries();
+
     /**
-     * @brief ...
-     *
-     * @param p_entry ...
-     * @return bool
+     * @brief Determines whether or not a entry exists.
+     * @param p_entry The entry in question.
      **/
     bool hasEntry ( const QString& p_entry );
+
     /**
-     * @brief ...
-     *
-     * @param p_value ...
-     * @return bool
-     **/
-    bool hasValue ( const QString& p_value );
-    /**
-     * @brief ...
-     *
-     * @param p_device ...
-     * @return bool
+     * @brief Loads a QIODevice to use as the source of this NoiseDictionary.
+     * @param p_device The QIODevice to be used.
+     * @note This NoiseDictionary takes the pointer of the QIODevice so it can use it to save data.
+     * @see save()
      **/
     bool load ( QIODevice* p_device );
+
     /**
-     * @brief ...
-     *
-     * @param p_entries ...
-     * @return void
+     * @brief Merges a set of entries with the entries in this NoiseDictionary.
+     * @param p_entries The entries to merge.
      **/
     void mergeEntries ( const QStringMap& p_entries );
+
     /**
-     * @brief ...
+     * @brief Adds an entry to the NoiseDictionary.
      *
-     * @param p_entry ...
-     * @param p_value ...
-     * @return void
+     * @param p_entry The entry to add.
+     * @param p_value The value of the entry to add.
+     *
+     * @note If the entry already exists, it's updated with the new value.
      **/
     void addEntry ( const QString& p_entry, const QString& p_value );
+
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Saves the NoiseDictionary to the QIODevice used to load data.
+     * @see load();
      **/
     void save();
 
@@ -114,4 +110,4 @@ private:
 }
 
 #endif // SPEECHCONTROL_NOISEDICTIONARY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

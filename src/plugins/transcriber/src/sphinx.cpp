@@ -19,6 +19,7 @@
  */
 
 #include "sphinx.hpp"
+#include <stdio.h>
 #include <pocketsphinx.h>
 #include <QGst/Pad>
 #include <QGlib/Connect>
@@ -31,12 +32,25 @@ Sphinx::Sphinx() : AbstractSphinx ( 0 ) {
 
 void Sphinx::prepareForFile ( const QString& p_path ) {
     QString l_desc = standardDescription();
-    l_desc.replace ( "autoaudiosrc name=audiosrc","filesrc name=audiosrc ! decodebin name=decoder" );
+    l_desc.replace ( "autoaudiosrc name=audiosrc ! audioconvert"
+                        " ! audioresample ! audiorate ",
+                     "filesrc name=audiosrc ! decodebin name=decoder" );
     buildPipeline ( l_desc );
     audioSrcElement()->setProperty<const char*> ( "location",p_path.toStdString().c_str() );
     QGst::ElementPtr l_decodebin = m_pipeline->getElementByName ( "decoder" );
     QGlib::connect ( l_decodebin,"unknown-type",this,&Sphinx::onUnknownTypeEncountered );
-    qDebug() << audioSrcElement()->property ( "location" );
+
+    // The following code should be used when the ps_decoder_t object can be obtained.
+#if 0
+    QFile* l_file = new QFile(p_path);
+    ps_decoder_t* l_ps = 0;
+    const char* l_hyp = 0;
+    int32* l_score = 0;
+    FILE* l_handle = fdopen(l_file->handle(),"r");
+    qDebug() << ps_decode_raw(l_ps,l_handle,NULL,0);
+    qDebug() << "Hyp: " << ps_get_hyp(l_ps,l_score,&l_hyp);
+    emit finished(l_hyp);
+#endif
 }
 
 void Sphinx::applicationMessage ( const QGst::MessagePtr& p_message ) {

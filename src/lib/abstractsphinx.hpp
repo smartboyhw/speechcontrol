@@ -278,7 +278,7 @@ public slots:
      *
      * Stops the the AbstractSphinx instance by halting the pipeline's execution.
      */
-    void stop();
+    bool stop();
 
     /**
      * @brief Obtains a partial value from the specified text p_text and utterance p_uttid.

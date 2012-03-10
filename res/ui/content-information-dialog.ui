@@ -14,7 +14,7 @@
    <string>Content Information</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="../res.qrc">
     <normaloff>:/logo/sc</normaloff>:/logo/sc</iconset>
   </property>
   <widget class="QWidget" name="verticalLayoutWidget">
@@ -113,6 +113,12 @@ p, li { white-space: pre-wrap; }
       </item>
       <item>
        <widget class="QLabel" name="lblPageCounter">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Page %{page_index} of ${page_count}</string>
         </property>
@@ -145,6 +151,12 @@ p, li { white-space: pre-wrap; }
     </item>
     <item>
      <widget class="QDialogButtonBox" name="buttonBox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="MinimumExpanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="standardButtons">
        <set>QDialogButtonBox::Close|QDialogButtonBox::Help</set>
       </property>

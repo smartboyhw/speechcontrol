@@ -1,7 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -18,33 +18,27 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef WS_WIKIPAGE_HPP
-#define WS_WIKIPAGE_HPP
+#ifndef SPEECHCONTROL_VOXFORGE_PACKAGE_HPP
+#define SPEECHCONTROL_VOXFORGE_PACKAGE_HPP
 
-#include <QWizardPage>
+#include <qt4/QtCore/QObject>
 
-namespace Ui {
-class WikiSourcePage;
-}
 
 namespace SpeechControl {
-namespace Wizards {
-namespace Pages {
 
-class WikiSourcePage : public QWizardPage {
-    Q_OBJECT
+namespace Voxforge {
+
+class Package : public QObject {
 
 public:
-    explicit WikiSourcePage ( QWidget *parent = 0 );
-    ~WikiSourcePage();
-
-private:
-    Ui::WikiSourcePage *ui;
+    explicit Package ( QObject* parent = 0 );
+    Package();
+    Package ( const Package& other );
+    virtual ~Package();
 };
 
 }
-}
+
 }
 
-#endif // WIKIPAGE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#endif // SPEECHCONTROL_VOXFORGE_PACKAGE_HPP

@@ -34,7 +34,7 @@ class QuickStart : public WizardBase {
         IntroductionPage = 0,
         UserCreationPage,
         MicrophoneCreationPage,
-        BookAdditionPage,
+        ContentAdditionPage,
         ConclusionPage
     };
 
@@ -50,4 +50,4 @@ public slots:
 }
 
 #endif // WIZARD_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

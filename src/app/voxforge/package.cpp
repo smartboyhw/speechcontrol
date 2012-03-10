@@ -1,7 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -17,45 +17,25 @@
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+#include "package.hpp"
 
+using namespace SpeechControl::Voxforge;
 
-#ifndef BOOKMANAGER_HPP
-#define BOOKMANAGER_HPP
-
-#include <QDialog>
-
-namespace Ui {
-class BookManager;
-}
-
-namespace SpeechControl {
-class Content;
-namespace Windows {
-namespace Managers {
-
-class BooksManager : public QDialog {
-    Q_OBJECT
-
-public:
-    explicit BooksManager ( QWidget *parent = 0 );
-    ~BooksManager();
-    static Content* doSelectContent();
-
-private slots:
-    void on_btnSelect_clicked();
-    void on_btnAdd_clicked();
-    void on_btnCancel_clicked();
-    void on_lstBooks_itemSelectionChanged();
-
-private:
-    Ui::BookManager *ui;
-    Content* m_book;
-    void updateList();
-};
+Package::Package ( QObject* parent ) {
 
 }
-}
+
+Package::Package() {
+
 }
 
-#endif // BOOKMANAGER_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+Package::Package ( const Package& other ) {
+
+}
+
+Package::~Package() {
+
+}
+
+#include "package.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -21,6 +21,7 @@
 #ifndef CORE_HPP
 #define CORE_HPP
 
+#include <QDir>
 #include <QObject>
 #include <QVariant>
 #include <QApplication>
@@ -115,6 +116,13 @@ public:
      * @param p_locale The locale to load.
      **/
     static void loadTranslations ( const QLocale& p_locale );
+
+    /**
+     * @brief ...
+     *
+     * @return QDir
+     **/
+    static QDir configurationPath();
 
     /**
      * @brief Quits the application's main execution loop.

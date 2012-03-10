@@ -32,7 +32,7 @@ AbstractAgent::AbstractAgent (const AbstractAgent&  p_agent) : QObject (p_agent.
 
 }
 
-void AbstractAgent::setState (const AbstractAgent::OperationState p_state)
+void AbstractAgent::setState (const AbstractAgent::ActivityState p_state)
 {
     if (p_state == m_state)
         return;
@@ -41,7 +41,7 @@ void AbstractAgent::setState (const AbstractAgent::OperationState p_state)
     emit stateChanged (m_state);
 }
 
-AbstractAgent::OperationState AbstractAgent::state() const
+AbstractAgent::ActivityState AbstractAgent::state() const
 {
     return m_state;
 }

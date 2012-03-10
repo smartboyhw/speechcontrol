@@ -18,69 +18,45 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef PHRASE_HPP
-#define PHRASE_HPP
+#ifndef CONTENTSETTINGSPANE_HPP
+#define CONTENTSETTINGSPANE_HPP
 
-#include <QObject>
-#include <QFile>
+#include <QFrame>
 
-#include <export.hpp>
+namespace Ui {
+class ContentSettingsPane;
+}
 
 namespace SpeechControl {
-class Phrase;
-class Sentence;
+namespace Windows {
 
-/**
- * @brief ...
- **/
-typedef QList<Phrase*> PhraseList;
-
-/**
- * @brief ...
- **/
-class SPCH_EXPORT Phrase : public QObject {
+class ContentSettingsPane : public QFrame {
     Q_OBJECT
-    Q_DISABLE_COPY ( Phrase )
-    friend class Sentence;
+    Q_PROPERTY ( const QString Title READ title )
+    Q_PROPERTY ( const QString ID READ id )
 
 public:
-    /**
-     * @brief ...
-     *
-     **/
-    virtual ~Phrase();
-    /**
-     * @brief ...
-     *
-     * @return QFile*
-     **/
-    QFile* audio() const;
-    /**
-     * @brief ...
-     *
-     * @return const QString
-     **/
-    const QString text() const;
-    /**
-     * @brief ...
-     *
-     * @return int
-     **/
-    int index() const;
-    /**
-     * @brief ...
-     *
-     * @return bool
-     **/
-    bool isCompleted() const;
+    explicit ContentSettingsPane ( QWidget *parent = 0 );
+    ~ContentSettingsPane();
+    const QString title() const;
+    const QString id() const;
+    virtual void show();
+
+protected:
+    void changeEvent ( QEvent *e );
+    void updateList();
+
+private slots:
+    void on_btnDelete_clicked();
+    void on_btnAdd_clicked();
+    void on_btnInfo_clicked();
 
 private:
-    explicit Phrase ( const Sentence*, const int& );
-    const Sentence* m_sntnc;
-    const int m_indx;
+    Ui::ContentSettingsPane *ui;
 };
 
 }
+}
 
-#endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#endif // CONTENTSETTINGSPANE_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

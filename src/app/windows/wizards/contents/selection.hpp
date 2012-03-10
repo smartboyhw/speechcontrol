@@ -17,36 +17,63 @@
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#ifndef ADDSELECT_HPP
-#define ADDSELECT_HPP
 
+#ifndef CONTENTWIZARD_SOURCESELECTION_HPP
+#define CONTENTWIZARD_SOURCESELECTION_HPP
+
+#include <QMap>
+#include <QWidget>
 #include <QWizardPage>
 
 namespace Ui {
-class AdditionSelectionPage;
+class SourceSelectionPage;
 }
 
 namespace SpeechControl {
+class AbstractContentSource;
 namespace Wizards {
 namespace Pages {
 
-class AdditionSelectionPage : public QWizardPage {
+/**
+ * @brief ...
+ **/
+class SourceSelectionPage : public QWizardPage {
     Q_OBJECT
 
 public:
-    explicit AdditionSelectionPage ( QWidget *parent = 0 );
-    ~AdditionSelectionPage();
+    /**
+     * @brief ...
+     *
+     * @param parent ... Defaults to 0.
+     **/
+    explicit SourceSelectionPage ( QWidget *parent = 0 );
+    /**
+     * @brief ...
+     *
+     * @param p_dummy ... Defaults to 0.
+     * @return void
+     **/
+    static void registerSourceWidget ( QWidget* p_widget );
+    /**
+     * @brief ...
+     *
+     **/
+    ~SourceSelectionPage();
 
 private slots:
-    void updateDescription();
+    void on_comboBoxSource_currentIndexChanged ( const int& p_index );
 
 private:
-    Ui::AdditionSelectionPage *m_ui;
+    void updateUi();
+    void addDefaultSources();
+    Ui::SourceSelectionPage *m_ui;
+    AbstractContentSource* m_src;
+    static QMap<QString,QWidget*> s_lst;
 };
 
 }
 }
 }
 
-#endif // ADDSELECT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#endif // CONTENTWIZARD_SOURCESELECTION_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

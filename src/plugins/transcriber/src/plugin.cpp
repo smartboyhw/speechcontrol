@@ -34,6 +34,7 @@ Plugin::Plugin ( QObject* parent ) : AbstractPlugin ( QUuid ( PLUGIN_UUID ),pare
 
 void Plugin::initialize() {
     QAction* l_action = new QAction(QIcon::fromTheme("audio-headset"),"Transcribe",this);
+    l_action->setShortcut(QKeySequence::fromString("Ctrl+Shift+T"));
     connect(l_action,SIGNAL(triggered()),this,SLOT(showTranscriberDialog()));
     addAction(l_action);
 }

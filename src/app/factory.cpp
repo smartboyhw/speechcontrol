@@ -133,7 +133,7 @@ QSettings* Factory::pluginConfiguration (QUuid p_uuid)
 
 QSettings* Factory::pluginSettings (QUuid p_uuid)
 {
-    const QString l_pth (QDir::homePath() + QString ("/.speechcontrol/plugins/") + p_uuid.toString().replace ("{", "").replace ("}", "") + QString (".conf"));
+    const QString l_pth (QDir::homePath() + Core::configurationPath().absolutePath() + "/plugins/" + p_uuid.toString().replace ("{", "").replace ("}", "") + QString (".conf"));
     return new QSettings (l_pth , QSettings::IniFormat, Factory::instance());
 }
 

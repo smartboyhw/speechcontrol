@@ -27,7 +27,7 @@
 #include "settings-dialog.hpp"
 #include "settings/general-pane.hpp"
 #include "settings/plugins-pane.hpp"
-#include "settings/books-pane.hpp"
+#include "settings/content-pane.hpp"
 #include "settings/session-pane.hpp"
 #include "settings/voxforge-pane.hpp"
 #include "settings/desktopcontrol-pane.hpp"
@@ -55,7 +55,6 @@ void Settings::addPanel ( QWidget* p_panelWidget ) {
     instance()->m_panes.insert ( l_paneID,p_panelWidget );
     l_itm->setData ( Qt::UserRole,l_paneID );
     p_panelWidget->setParent ( instance()->m_ui->frmPageContainer );
-    p_panelWidget->setGeometry ( QRect ( 0,0,310,246 ) );
     p_panelWidget->hide();
 }
 
@@ -94,7 +93,7 @@ Settings* Settings::instance() {
         s_inst = new Settings;
         GeneralSettingsPane* l_generalPane = new GeneralSettingsPane;
         PluginsSettingsPane* l_pluginsPane = new PluginsSettingsPane;
-        BookSettingsPane* l_booksPane = new BookSettingsPane;
+        ContentSettingsPane* l_booksPane = new ContentSettingsPane;
         VoxforgeSettingsPane* l_voxforgePane = new VoxforgeSettingsPane;
         SessionSettingsPane* l_sessionPane = new SessionSettingsPane;
         DesktopControlSettingsPane* l_dsktpCntrlPane = new DesktopControlSettingsPane;
@@ -146,4 +145,4 @@ void SpeechControl::Windows::Settings::on_buttonBox_accepted() {
 }
 
 #include "settings-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

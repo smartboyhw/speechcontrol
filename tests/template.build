@@ -19,20 +19,32 @@ endif (TEST_MODE STREQUAL "APP")
 
 set(TEST_BASE_SCPP "@TEST_SRC@")
 
-if (TEST_MODE STREQUAL "APP")
+if (TEST_MODE STREQUAL "APP" OR TEST_MODE STREQUAL "PLUGIN")
     file(GLOB TEST_APP_SRCS
-        "../../../src/app/*.cpp"
-        "../../../src/app/dictation/*.cpp"
-        "../../../src/app/voxforge/*.cpp"
-        "../../../src/app/sessions/*.cpp"
-        "../../../src/app/desktopcontrol/*.cpp")
-    file (GLOB_RECURSE TEST_APP_WINDOW_SRCS "../../../src/app/windows/*.cpp")
+        "${CMAKE_SOURCE_DIR}/src/app/*.cpp"
+        "${CMAKE_SOURCE_DIR}/src/app/dictation/*.cpp"
+        "${CMAKE_SOURCE_DIR}/src/app/voxforge/*.cpp"
+        "${CMAKE_SOURCE_DIR}/src/app/sessions/*.cpp"
+        "${CMAKE_SOURCE_DIR}/src/app/desktopcontrol/*.cpp")
+
+    file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/dictation")
+    file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/voxforge")
+    file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/sessions")
+    file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/desktopcontrol")
+    file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/windows")
+    file (GLOB_RECURSE TEST_APP_WINDOW_SRCS
+                       "${CMAKE_SOURCE_DIR}/src/app/windows/*.cpp")
+
     list(APPEND TEST_APP_SRCS ${TEST_APP_WINDOW_SRCS})
-    list(REMOVE_ITEM TEST_APP_SRCS "${PROJECT_SOURCE_DIR}/../../../src/app/main.cpp")
-endif (TEST_MODE STREQUAL "APP")
+    list(REMOVE_ITEM TEST_APP_SRCS "${CMAKE_SOURCE_DIR}/src/app/main.cpp")
+endif (TEST_MODE STREQUAL "APP" OR TEST_MODE STREQUAL "PLUGIN")
+
+## Qt-specific actions.
+QT4_AUTOMOC(${TEST_BASE_SCPP})
 
 ## Variables
-set(TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS})
+set(TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS}
+                             BUILDING_TEST)
 set(TEST_COMPILE_FLAGS ${SPCHCNTRL_COMPILE_FLAGS})
 set(TEST_LIBRARIES ${QT_QTTEST_LIBRARY})
 set(TEST_INCLUDE_DIRS ${SPCHCNTRL_INCLUDE_DIRS}
@@ -43,22 +55,27 @@ set(TEST_INCLUDE_DIRS ${SPCHCNTRL_INCLUDE_DIRS}
     "${CMAKE_SOURCE_DIR}/src"
     "${CMAKE_SOURCE_DIR}/src/lib")
 
-if (TEST_MODE STREQUAL "APP")
+if (TEST_MODE STREQUAL "APP" OR TEST_MODE STREQUAL "PLUGIN")
     list(APPEND TEST_INCLUDE_DIRS ${SPCHCNTRL_APP_INCLUDE_DIRS}
                                  "${CMAKE_BINARY_DIR}/src/app"
                                  "${CMAKE_SOURCE_DIR}/src/app")
     list(APPEND TEST_LIBRARIES ${SPCHCNTRL_APP_LIBRARIES})
+    list(APPEND TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_APP_COMPILE_DEFINITIONS})
+    list(APPEND TEST_COMPILE_FLAGS ${SPCHCNTRL_APP_COMPILE_FLAGS})
     list(APPEND TEST_BASE_SCPP ${TEST_APP_SRCS})
-else (TEST_MODE STREQUAL "APP")
+elseif (TEST_MODE STREQUAL "LIB")
     set(TEST_LIBRARIES ${SPCHCNTRL_LIBRARIES}
                         speechcontrol
                         ${QT_QTTEST_LIBRARY})
-endif(TEST_MODE STREQUAL "APP")
+endif()
+
+if (TEST_MODE STREQUAL "PLUGIN")
+    message(STATUS "Building plug-in tests are not yet fully supported.")
+    list(APPEND TEST_INCLUDE_DIRS "${CMAKE_BINARY_DIR}/src/plugins"
+                                 "${CMAKE_SOURCE_DIR}/src/plugins")
+endif (TEST_MODE STREQUAL "PLUGIN")
 
 include_directories(${TEST_INCLUDE_DIRS})
-
-## Qt-specific actions.
-QT4_AUTOMOC(${TEST_BASE_SCPP})
 
 ## Begin included code.
 
@@ -70,20 +87,14 @@ QT4_AUTOMOC(${TEST_BASE_SCPP})
 add_executable(test@TEST_ID@ ${TEST_BASE_SCPP})
 set_target_properties(test@TEST_ID@ PROPERTIES
     COMPILE_DEFINITIONS "${TEST_COMPILE_DEFINITIONS}"
-    COMPILE_FLAGS "${TEST_COMPILE_FLAGS} -fnopermissive"
+    COMPILE_FLAGS "${TEST_COMPILE_FLAGS}"
     EchoString "Built test @TEST_ID@"
     EXCLUDE_FROM_ALL ON)
 target_link_libraries(test@TEST_ID@ ${TEST_LIBRARIES})
 
-## Set up dependencies.
-if (TEST_MODE STREQUAL "LIB")
-    add_dependencies(test@TEST_ID@ speechcontrol)
-else(TEST_MODE STREQUAL "LIB")
-    add_dependencies(test@TEST_ID@ speechcontrol-frontend)
-endif(TEST_MODE STREQUAL "LIB")
-
 ## Add test.
-add_test(NAME test@TEST_ID@ COMMAND $<TARGET_FILE:test@TEST_ID@>)
+add_test(NAME test@TEST_ID@
+         COMMAND $<TARGET_FILE:test@TEST_ID@>)
 add_dependencies(tests test@TEST_ID@)
 
 message(STATUS "Test '${TEST_ID}' configured; awaiting build [i.e.: 'make test${TEST_ID}']")

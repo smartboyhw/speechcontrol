@@ -3,6 +3,7 @@
 *** in the source code.
 ***
 *** Completed tasks have a (!), whereas incompleted tasks have a (*).
+*** Tasks in progress should have a (-) as its indicator.
 *** At the end of each task description, a bug number (bug #NNN) is typically provided.
 
 Library
@@ -25,7 +26,7 @@ Application (general)
 * Hook into speechcontrold and allow modifying of local user options for the daemon. (bug #000013)
 * Integrate the code for the training utilities of SphinxTrain to the SpeechControl application. (bug #000014)
 * Add support for multiple languages (i18n) into SpeechControl. (bug #000022)
-
+* Add more tests for the UI.
 
 Application (daemon)
 ----------------------------------------------------------

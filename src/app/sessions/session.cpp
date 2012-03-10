@@ -19,6 +19,7 @@
  */
 
 #include "session.hpp"
+#include <core.hpp>
 
 #include <QDebug>
 #include <QFile>
@@ -79,7 +80,7 @@ void Session::assessProgress()
 void Session::init()
 {
     qDebug() << "Loading sessions...";
-    QFile* configFile = new QFile (QDir::homePath() + "/.config/speechcontrol/sessions.xml");
+    QFile* configFile = new QFile ( Core::configurationPath().absolutePath() +"/sessions.xml" );
     s_elems.clear();
 
     if (s_dom) {
@@ -377,4 +378,4 @@ Session::Backup* Session::Backup::generate (const Session& p_sssn)
 }
 
 #include "session.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

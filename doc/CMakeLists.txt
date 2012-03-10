@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 cmake_policy(SET CMP0017 OLD)
 
 if(WITH_DOCS)
-    find_package(Doxygen)
+    find_package(Doxygen QUIET)
     if (DOXYGEN_FOUND)
         set(SPCHCNTRL_DOC_SOURCES_DIR "${PROJECT_SOURCE_DIR}/src")
         set(SPCHCNTRL_DOC_BUILD_DIR "${PROJECT_BINARY_DIR}/doc")
@@ -16,17 +16,17 @@ if(WITH_DOCS)
         add_custom_target(docs-app
             COMMAND ${DOXYGEN_EXECUTABLE} ${PROJECT_BINARY_DIR}/Doxyfile.app
             SOURCES "Doxyfile.app.in"
-            DEPENDS speechcontrol-frontend
             COMMENT "Built documentation for SpeechControl application (API).")
         add_custom_target(docs-lib
             COMMAND ${DOXYGEN_EXECUTABLE} ${PROJECT_BINARY_DIR}/Doxyfile.lib
             SOURCES "Doxyfile.lib.in"
-            DEPENDS speechcontrol
             COMMENT "Built documentation for SpeechControl library (API).")
-        add_custom_target(docs ALL
+        add_custom_target(docs
             COMMENT "Built documentation.")
 
         add_dependencies(docs docs-lib docs-app)
+        add_dependencies(speechcontrol-frontend docs-app)
+        add_dependencies(speechcontrol docs-lib)
 
         ## Installs
         install(DIRECTORY ${SPCHCNTRL_LIB_DOC_BUILD_DIR}/html/

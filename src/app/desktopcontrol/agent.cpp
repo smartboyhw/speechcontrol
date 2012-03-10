@@ -36,35 +36,26 @@ Agent::Agent() : AbstractAgent (AbstractCategory::global())
     connect (m_sphinx, SIGNAL (finished (QString)), this, SLOT (invokeCommand (QString)));
 }
 
-Agent::~Agent()
-{
+Agent::~Agent() {
 
 }
 
-// void Agent::start()
-// {
-//     m_sphinx->start();
-// }
-// 
-// void Agent::stop()
-// {
-//     m_sphinx->stop();
-// }
-
 Agent* Agent::instance()
 {
-    if (s_instance == 0) {
+    if (s_instance == 0)
         s_instance = new Agent;
-    }
 
     return s_instance;
 }
 
-AbstractAgent::OperationState Agent::onStateChanged (const AbstractAgent::OperationState p_state)
+AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::ActivityState p_state)
 {
     switch (p_state) {
     case Enabled:
-        if (!m_sphinx->start()) {
+        //if ( !isEnabled() )
+            //return Disabled;
+
+        if ( !m_sphinx->start() ) {
             qWarning() << "[DesktopControl::Agent] Start unsuccessful.";
             return Disabled;
         }
@@ -76,12 +67,10 @@ AbstractAgent::OperationState Agent::onStateChanged (const AbstractAgent::Operat
         return Disabled;
         break;
 
-    case Undefined:
     default:
-        break;
+        return Undefined;
     }
 
-    return Undefined;
 }
 
 bool Agent::isActive() const
@@ -108,4 +97,4 @@ void Agent::invokeCommand (const QString& cmd)
 }
 }
 #include "desktopcontrol/agent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

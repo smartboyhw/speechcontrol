@@ -1,7 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -14,24 +14,22 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "wikiselect.hpp"
-#include "ui_contentwizard-wikiselection.h"
+#include "upload.hpp"
 
-using SpeechControl::Wizards::Pages::WikiSourcePage;
+using namespace SpeechControl::Voxforge;
 
-WikiSourcePage::WikiSourcePage ( QWidget *parent ) :
-    QWizardPage ( parent ),
-    ui ( new Ui::WikiSourcePage ) {
-    ui->setupUi ( this );
+UploadHandler::UploadHandler ( QObject* parent ) {
+
 }
 
-WikiSourcePage::~WikiSourcePage() {
-    delete ui;
+UploadHandler::~UploadHandler() {
+
 }
 
-#include "wikiselect.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+
+#include "upload.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

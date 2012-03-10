@@ -76,7 +76,13 @@ bool SpeechControl::Wizards::Pages::MicrophoneSelection::isComplete() {
 void SpeechControl::Wizards::Pages::MicrophoneSelection::on_comboBoxMicrophones_activated ( int index ) {
     const QUuid l_uuid ( ui->comboBoxMicrophones->itemData ( index ).toString() );
     m_mic = Microphone::getMicrophone ( l_uuid );
+    m_mic->startRecording();
+    connect(m_mic,SIGNAL(startedListening()),this,SLOT(microphoneSelected()));
+}
+
+void MicrophoneSelection::microphoneSelected() {
+
 }
 
 #include "micselect.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>311</width>
-    <height>246</height>
+    <width>361</width>
+    <height>285</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,8 +24,8 @@
     <rect>
      <x>4</x>
      <y>3</y>
-     <width>305</width>
-     <height>241</height>
+     <width>353</width>
+     <height>277</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -46,6 +46,12 @@
       </item>
       <item>
        <widget class="QPushButton" name="btnInfo">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="maximumSize">
          <size>
           <width>50</width>
@@ -60,7 +66,14 @@
      </layout>
     </item>
     <item row="0" column="1">
-     <widget class="QListWidget" name="lstPlugins"/>
+     <widget class="QListWidget" name="lstPlugins">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>240</height>
+       </size>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

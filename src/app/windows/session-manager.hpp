@@ -30,9 +30,6 @@ class SessionManager;
 
 namespace SpeechControl {
 class Session;
-namespace Widgets {
-class SessionWidget;
-}
 namespace Windows {
 namespace Managers {
 
@@ -51,6 +48,7 @@ private slots:
     void on_btnCreate_clicked();
     void updateList();
     void on_listSession_itemSelectionChanged();
+    void on_listSession_itemDoubleClicked ( QListWidgetItem* p_item );
 
 private:
     Ui::SessionManager *m_ui;
@@ -62,4 +60,4 @@ private:
 }
 
 #endif // SESSIONMANAGER_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

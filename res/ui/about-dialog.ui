@@ -9,12 +9,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>488</width>
-    <height>494</height>
+    <width>370</width>
+    <height>442</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>About Quassel</string>
+   <string>About SpeechControl</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../res.qrc">
@@ -198,6 +198,12 @@ p, li { white-space: pre-wrap; }
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>

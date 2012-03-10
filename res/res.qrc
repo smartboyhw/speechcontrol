@@ -1,6 +1,6 @@
 <RCC>
-    <qresource prefix="/logo">
-        <file alias="sc">img/speechcontrol.png</file>
-        <file alias="sc-large">img/speechcontrol.svg</file>
-    </qresource>
+  <qresource prefix="/logo">
+    <file alias="sc">img/speechcontrol.png</file>
+    <file alias="sc-large">img/speechcontrol.svg</file>
+  </qresource>
 </RCC>

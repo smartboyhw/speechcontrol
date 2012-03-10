@@ -67,12 +67,13 @@ public:
      * @brief Constructor
      **/
     Agent();
+
+    /**
+     * @brief Destructor
+     *
+     **/
     virtual ~Agent();
 
-//     void start();
-//     
-//     void stop();
-    
     /**
      * @brief Determines the active status of desktop control.
      * @overload Determines the active status of desktop control.
@@ -95,7 +96,7 @@ public:
      * @return A pointer to the desktop control class's singleton instance.
      **/
     static Agent* instance();
-    
+
 public slots:
     /**
      * @brief Invokes a command for desktop control to parse.
@@ -113,4 +114,4 @@ public slots:
 }
 
 #endif // DESKTOPCONTROL_AGENT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

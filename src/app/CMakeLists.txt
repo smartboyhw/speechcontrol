@@ -2,9 +2,6 @@ project(SpeechControlApplication)
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-## Required application packages
-#pkg_search_module(XDO xdo >= 2 REQUIRED)
-
 ## Required files
 file(GLOB SPCHCNTRL_APP_SRCS "*.cpp")
 file(GLOB SPCHCNTRL_APP_HDRS "*.hpp")

@@ -80,14 +80,14 @@ Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0)
     m_ui->actionWizardMicrophone->setIcon (QIcon::fromTheme ("audio-input-microphone"));
     m_ui->menuDictation->setIcon (QIcon::fromTheme ("audio-input-microphone"));
     m_ui->menuDesktopControl->setIcon (QIcon::fromTheme ("audio-headset"));
-    m_ui->actionWizardBooks->setIcon (QIcon::fromTheme ("x-office-document"));
+//     m_ui->actionWizardBooks->setIcon (QIcon::fromTheme ("x-office-document"));
     m_ui->actionWizardSessions->setIcon (QIcon::fromTheme ("application-x-tar"));
     m_ui->actionDesktopControlCommands->setIcon (QIcon::fromTheme ("view-list-text"));
     m_ui->actionStartTraining->setIcon (QIcon::fromTheme ("system-run"));
 
     // Update the actions and buttons.
-    connect (DesktopControl::Agent::instance(), SIGNAL (stateChanged (OperationState)), this, SLOT (desktopControlStateChanged()));
-    connect (Dictation::Agent::instance(), SIGNAL (stateChanged (OperationState)), this, SLOT (dictationStateChanged()));
+    connect (DesktopControl::Agent::instance(), SIGNAL (stateChanged (ActivityState)), this, SLOT (desktopControlStateChanged()));
+    connect (Dictation::Agent::instance(), SIGNAL (stateChanged (ActivityState)), this, SLOT (dictationStateChanged()));
     desktopControlStateChanged();
     dictationStateChanged();
     on_actionDesktopControlActive_triggered (DesktopControl::Agent::instance()->isActive());
@@ -126,10 +126,10 @@ void Main::setStatusMessage (const QString& p_message , const int p_timeout)
 void Main::desktopControlStateChanged()
 {
     switch (DesktopControl::Agent::instance()->state()) {
-    case AbstractAgent::OperationState::Enabled:
+    case AbstractAgent::ActivityState::Enabled:
         setStatusMessage (tr ("Desktop control enabled."));
         break;
-    case AbstractAgent::OperationState::Disabled:
+    case AbstractAgent::ActivityState::Disabled:
         setStatusMessage (tr ("Desktop control disabled."));
         break;
     default:
@@ -140,10 +140,10 @@ void Main::desktopControlStateChanged()
 void Main::dictationStateChanged()
 {
     switch (Dictation::Agent::instance()->state()) {
-    case AbstractAgent::OperationState::Enabled:
+    case AbstractAgent::ActivityState::Enabled:
         setStatusMessage (tr ("Dictation enabled."));
         break;
-    case AbstractAgent::OperationState::Disabled:
+    case AbstractAgent::ActivityState::Disabled:
         setStatusMessage (tr ("Dictation disabled."));
         break;
     default:
@@ -155,7 +155,7 @@ void Main::dictationStateChanged()
 void Main::updateContent()
 {
     m_ui->lblSessions->setText (QString::number (Session::allSessions().count()));
-    m_ui->lblBooks->setText (QString::number (Content::allContents().count()));
+//     m_ui->lblBooks->setText (QString::number (Content::allContents().count()));
     m_ui->lblAccuracy->setText ("100.0%");
     m_ui->lblSpeechIndex->setText ("10.0");
 }
@@ -242,7 +242,7 @@ void Main::on_actionWizardMicrophone_triggered()
     l_wiz->exec();
 }
 
-void Main::on_actionWizardBooks_triggered()
+void Main::on_actionWizardContent_triggered()
 {
     ContentWizard* l_wiz = new ContentWizard;
     l_wiz->exec();

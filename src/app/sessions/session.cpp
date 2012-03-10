@@ -66,7 +66,7 @@ void Session::setContent (Content* p_content)
     assessProgress();
 }
 
-void Session::assessProgress()
+double Session::assessProgress() const
 {
     double l_progress = 0.0;
 
@@ -156,7 +156,7 @@ SessionList Session::allSessions()
     return l_lst;
 }
 
-const QUuid Session::uuid() const
+QUuid Session::uuid() const
 {
     return m_elem->attribute ("uuid");
 }
@@ -301,7 +301,7 @@ void Session::setName (const QString& p_name)
         m_elem->setAttribute ("Name", p_name);
 }
 
-const QString Session::name() const
+QString Session::name() const
 {
     if (m_elem->hasAttribute ("Name"))
         return m_elem->attribute ("Name");

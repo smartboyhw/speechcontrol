@@ -67,7 +67,7 @@ Core::Core ( int p_argc, char** p_argv, QApplication* app ) : QObject ( app ),
 
     // Create application's configuration directory.
     QDir configDir;
-    configDir.mkdir ( QDir::homePath() + "/.config/speechcontrol/contents" );
+    configDir.mkdir ( configurationPath() + "/contents" );
 
     // build settings
     m_settings = new QSettings ( QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", this );

@@ -188,7 +188,7 @@ Session* Session::create ( const Content* p_content ) {
     s_dom->documentElement().appendChild ( l_sessElem );
     s_dom->documentElement().appendChild ( l_dateElem );
 
-    QFile* l_file = new QFile ( QDir::homePath() + "/.config/speechcontrol/sessions.xml" );
+    QFile* l_file = new QFile ( Core::configurationPath() + "/sessions.xml" );
     l_file->open ( QIODevice::WriteOnly | QIODevice::Truncate );
     QTextStream l_str ( l_file );
     s_dom->save ( l_str, 4 );

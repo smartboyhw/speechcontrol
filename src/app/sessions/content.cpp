@@ -260,7 +260,10 @@ Content * Content::create ( const QString &p_author, const QString &p_title, con
     l_file.close();
 
     //qDebug() << "Content XML:" << l_dom->toString();
-    return Content::obtain ( l_uuid );
+    Content* l_nabbedContent = Content::obtain ( l_uuid );
+    Q_ASSERT(l_nabbedContent != 0);
+
+    return l_nabbedContent;
 }
 
 AbstractContentSource::AbstractContentSource ( QString p_id, QObject* p_parent ) : QObject ( p_parent ),

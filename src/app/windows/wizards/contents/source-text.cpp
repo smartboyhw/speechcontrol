@@ -61,6 +61,7 @@ void TextContentSourceWidget::updateView() {
     m_ui->lblInfo->setText ( tr ( "<h2>%1</h2>by <b>%2</b>" ).arg ( l_content->title() ).arg ( l_content->author() ) );
 
     ((SpeechControl::Wizards::ContentWizard*) this->window())->setSource(l_src);
+    l_content->erase();
 }
 
 TextContentSourceWidget::~TextContentSourceWidget() {

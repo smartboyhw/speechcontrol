@@ -60,6 +60,7 @@ add_subdirectory(dictation)
 add_subdirectory(sessions)
 add_subdirectory(voxforge)
 add_subdirectory(windows)
+add_subdirectory(sphinxtrain)
 
 configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
                "${PROJECT_SOURCE_DIR}/config.hpp" @ONLY)

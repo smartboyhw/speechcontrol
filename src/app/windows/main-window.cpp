@@ -80,7 +80,7 @@ Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0)
     m_ui->actionWizardMicrophone->setIcon (QIcon::fromTheme ("audio-input-microphone"));
     m_ui->menuDictation->setIcon (QIcon::fromTheme ("audio-input-microphone"));
     m_ui->menuDesktopControl->setIcon (QIcon::fromTheme ("audio-headset"));
-//     m_ui->actionWizardBooks->setIcon (QIcon::fromTheme ("x-office-document"));
+    m_ui->actionWizardContent->setIcon (QIcon::fromTheme ("x-office-document"));
     m_ui->actionWizardSessions->setIcon (QIcon::fromTheme ("application-x-tar"));
     m_ui->actionDesktopControlCommands->setIcon (QIcon::fromTheme ("view-list-text"));
     m_ui->actionStartTraining->setIcon (QIcon::fromTheme ("system-run"));
@@ -155,7 +155,7 @@ void Main::dictationStateChanged()
 void Main::updateContent()
 {
     m_ui->lblSessions->setText (QString::number (Session::allSessions().count()));
-//     m_ui->lblBooks->setText (QString::number (Content::allContents().count()));
+    m_ui->lblContent->setText (QString::number (Content::allContents().count()));
     m_ui->lblAccuracy->setText ("100.0%");
     m_ui->lblSpeechIndex->setText ("10.0");
 }

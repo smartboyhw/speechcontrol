@@ -97,6 +97,12 @@ typedef struct dtree_node_str {
 typedef struct dtree_s {
     dtree_node_t *node;
     uint32 n_node;
+    bt_t* tree;
+    int n_quest;
+    uint32 n_key;
+    comp_quest_t* quest;
+    uint32* k2q;
+    float32* q2ent;
 } dtree_t;
 
 uint32

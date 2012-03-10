@@ -31,9 +31,6 @@ UserInitialization::UserInitialization ( QWidget *parent ) :
     QWizardPage ( parent ),
     ui ( new Ui::UserInitialization ) {
     ui->setupUi ( this );
-    registerField ( "name-first",ui->lineEditNameFirst );
-    registerField ( "name-last",ui->lineEditNameLast );
-    registerField ( "name-middle",ui->lineEditNameFirst );
     registerField ( "age",ui->comboBoxAge );
     registerField ( "country",ui->comboBoxCountry );
     registerField ( "language-spoken",ui->comboBoxLanguageSpoken );
@@ -47,24 +44,8 @@ UserInitialization::~UserInitialization() {
 }
 
 bool SpeechControl::Wizards::Pages::UserInitialization::validatePage() {
-    if ( ui->lineEditNameFirst->text().isEmpty() ) {
-        this->setSubTitle ( tr ( "<b><font color='red'>Please enter your first name.</font></b>" ) );
-        return false;
-    }
-
-    if ( ui->lineEditNameLast->text().isEmpty() ) {
-        this->setSubTitle ( tr ( "<b><font color='red'>Please enter at least the first letter of your last name.</font></b>" ) );
-        return false;
-    }
-
-    if ( !ui->radioButtonFemale->isChecked() && !ui->radioButtonMale->isChecked() ) {
-        this->setSubTitle ( tr ( "<b><font color='red'>Please select your gender.</font></b>" ) );
-        return false;
-    }
-
     wizard()->setProperty ( "age",ui->comboBoxAge->currentText() );
     wizard()->setProperty ( "country",ui->comboBoxCountry->currentText() );
-
     return true;
 }
 
@@ -86,7 +67,11 @@ void SpeechControl::Wizards::Pages::UserInitialization::updateLanguages() {
 }
 
 void SpeechControl::Wizards::Pages::UserInitialization::clearPage() {
+    ui->comboBoxAge->clear();
+    ui->comboBoxCountry->clear();
+    ui->comboBoxLanguageNative->clear();
+    ui->comboBoxLanguageSpoken->clear();
 }
 
 #include "userinfo.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

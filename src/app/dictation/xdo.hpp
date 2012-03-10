@@ -23,6 +23,8 @@
 
 #include <QObject>
 
+struct xdo;
+
 namespace SpeechControl {
 namespace Dictation {
 /**
@@ -73,6 +75,7 @@ private:
      * @brief Constructor.
      **/
     explicit KeyboardEmulator ( );
+    xdo* m_xdo;
     static KeyboardEmulator* s_inst;        ///< Instance.
 };
 }

@@ -1,5 +1,5 @@
 /* ====================================================================
- * Copyright (c) 1994-2000 Carnegie Mellon University.  All rights 
+ * Copyright (c) 1994-2000 Carnegie Mellon University.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -7,27 +7,27 @@
  * are met:
  *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer. 
+ *    notice, this list of conditions and the following disclaimer.
  *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
  *    the documentation and/or other materials provided with the
  *    distribution.
  *
- * This work was supported in part by funding from the Defense Advanced 
- * Research Projects Agency and the National Science Foundation of the 
+ * This work was supported in part by funding from the Defense Advanced
+ * Research Projects Agency and the National Science Foundation of the
  * United States of America, and the CMU Sphinx Speech Consortium.
  *
- * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND 
- * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
  * NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * ====================================================================
@@ -36,10 +36,10 @@
 /*********************************************************************
  *
  * File: train_cmd_ln.c
- * 
- * Description: 
- * 
- * Author: 
+ *
+ * Description:
+ *
+ * Author:
  * 	Eric H. Thayer (eht@cs.cmu.edu)
  *********************************************************************/
 
@@ -59,39 +59,37 @@
 #include <assert.h>
 
 int
-validate_writeable_dir(char *switch_name, void *arg)
-{
+validate_writeable_dir ( char *switch_name, void *arg ) {
 #ifndef WIN32
     char *path = arg;
     struct stat s;
 
-    if (path == NULL) {
-	E_ERROR("%s is a necessary switch\n", switch_name);
+    if ( path == NULL ) {
+        E_ERROR ( "%s is a necessary switch\n", switch_name );
 
-	return FALSE;
+        return FALSE;
     }
 
-    if (stat(path, &s) < 0) {
-	E_ERROR("%s %s does not exist or is inaccessible\n", switch_name, path);
+    if ( stat ( path, &s ) < 0 ) {
+        E_ERROR ( "%s %s does not exist or is inaccessible\n", switch_name, path );
 
-	return FALSE;
+        return FALSE;
     }
 
-    if (!S_ISDIR(s.st_mode)) {
-	E_ERROR("%s %s is not a directory\n", switch_name, path);
+    if ( !S_ISDIR ( s.st_mode ) ) {
+        E_ERROR ( "%s %s is not a directory\n", switch_name, path );
 
-	return FALSE;
-    }	
-
-    if ((s.st_mode && S_IWOTH) ||
-	((s.st_uid == getuid()) && (s.st_mode && S_IWUSR)) ||
-	((s.st_gid == getgid()) && (s.st_mode && S_IWGRP))) {
-	return TRUE;
+        return FALSE;
     }
-    else {
-	E_ERROR("%s %s is not writeable\n", switch_name, path);
 
-	return FALSE;
+    if ( ( s.st_mode && S_IWOTH ) ||
+            ( ( s.st_uid == getuid() ) && ( s.st_mode && S_IWUSR ) ) ||
+            ( ( s.st_gid == getgid() ) && ( s.st_mode && S_IWGRP ) ) ) {
+        return TRUE;
+    } else {
+        E_ERROR ( "%s %s is not writeable\n", switch_name, path );
+
+        return FALSE;
     }
 #else
     /* WIN32 */
@@ -102,37 +100,35 @@ validate_writeable_dir(char *switch_name, void *arg)
 #endif
 }
 int
-validate_opt_writeable_dir(char *switch_name, void *arg)
-{
+validate_opt_writeable_dir ( char *switch_name, void *arg ) {
 #ifndef WIN32
     char *path = arg;
     struct stat s;
 
-    if (path == NULL) {
-	return TRUE;
+    if ( path == NULL ) {
+        return TRUE;
     }
 
-    if (stat(path, &s) < 0) {
-	E_ERROR("%s %s does not exist or is inaccessible\n", switch_name, path);
+    if ( stat ( path, &s ) < 0 ) {
+        E_ERROR ( "%s %s does not exist or is inaccessible\n", switch_name, path );
 
-	return FALSE;
+        return FALSE;
     }
 
-    if (!S_ISDIR(s.st_mode)) {
-	E_ERROR("%s %s is not a directory\n", switch_name, path);
+    if ( !S_ISDIR ( s.st_mode ) ) {
+        E_ERROR ( "%s %s is not a directory\n", switch_name, path );
 
-	return FALSE;
-    }	
-
-    if ((s.st_mode && S_IWOTH) ||
-	((s.st_uid == getuid()) && (s.st_mode && S_IWUSR)) ||
-	((s.st_gid == getgid()) && (s.st_mode && S_IWGRP))) {
-	return TRUE;
+        return FALSE;
     }
-    else {
-	E_ERROR("%s %s is not writeable\n", switch_name, path);
 
-	return FALSE;
+    if ( ( s.st_mode && S_IWOTH ) ||
+            ( ( s.st_uid == getuid() ) && ( s.st_mode && S_IWUSR ) ) ||
+            ( ( s.st_gid == getgid() ) && ( s.st_mode && S_IWGRP ) ) ) {
+        return TRUE;
+    } else {
+        E_ERROR ( "%s %s is not writeable\n", switch_name, path );
+
+        return FALSE;
     }
 #else
     /* WIN32 */
@@ -144,39 +140,37 @@ validate_opt_writeable_dir(char *switch_name, void *arg)
 }
 
 int
-validate_readable_dir(char *switch_name, void *arg)
-{
+validate_readable_dir ( char *switch_name, void *arg ) {
 #ifndef WIN32
     char *path = arg;
     struct stat s;
 
-    if (path == NULL) {
-	E_ERROR("%s is a necessary switch\n", switch_name);
+    if ( path == NULL ) {
+        E_ERROR ( "%s is a necessary switch\n", switch_name );
 
-	return FALSE;
+        return FALSE;
     }
 
-    if (stat(path, &s) < 0) {
-	E_ERROR("%s %s does not exist or is inaccessible\n", switch_name, path);
+    if ( stat ( path, &s ) < 0 ) {
+        E_ERROR ( "%s %s does not exist or is inaccessible\n", switch_name, path );
 
-	return FALSE;
+        return FALSE;
     }
 
-    if (!S_ISDIR(s.st_mode)) {
-	E_ERROR("%s %s is not a directory\n", switch_name, path);
+    if ( !S_ISDIR ( s.st_mode ) ) {
+        E_ERROR ( "%s %s is not a directory\n", switch_name, path );
 
-	return FALSE;
-    }	
-
-    if ((s.st_mode && S_IROTH) ||
-	((s.st_uid == getuid()) && (s.st_mode && S_IRUSR)) ||
-	((s.st_gid == getgid()) && (s.st_mode && S_IRGRP))) {
-	return TRUE;
+        return FALSE;
     }
-    else {
-	E_ERROR("%s %s is not readable\n", switch_name, path);
 
-	return FALSE;
+    if ( ( s.st_mode && S_IROTH ) ||
+            ( ( s.st_uid == getuid() ) && ( s.st_mode && S_IRUSR ) ) ||
+            ( ( s.st_gid == getgid() ) && ( s.st_mode && S_IRGRP ) ) ) {
+        return TRUE;
+    } else {
+        E_ERROR ( "%s %s is not readable\n", switch_name, path );
+
+        return FALSE;
     }
 #else
     /* WIN32 */
@@ -189,31 +183,27 @@ validate_readable_dir(char *switch_name, void *arg)
 }
 
 int
-validate_agc(char *switch_name, void *arg)
-{
-    if ((strcmp(arg, "max") == 0) || (strcmp(arg, "emax") == 0) || (strcmp(arg, "none") == 0)) {
-	return TRUE;
-    }
-    else {
-	E_ERROR("Unknown agc type %s %s\n", switch_name, arg);
+validate_agc ( char *switch_name, void *arg ) {
+    if ( ( strcmp ( arg, "max" ) == 0 ) || ( strcmp ( arg, "emax" ) == 0 ) || ( strcmp ( arg, "none" ) == 0 ) ) {
+        return TRUE;
+    } else {
+        E_ERROR ( "Unknown agc type %s %s\n", switch_name, arg );
 
-	return FALSE;
+        return FALSE;
     }
 
-    assert(FALSE);
+    assert ( FALSE );
 }
 
 int
-validate_cmn(char *switch_name, void *arg)
-{
+validate_cmn ( char *switch_name, void *arg ) {
 
-    if ((strcmp(arg, "current") == 0) ||
-	(strcmp(arg, "none") == 0) ||
-	(strcmp(arg, "prior") == 0)) {
-	return TRUE;
-    }
-    else {
-	E_ERROR("Unknown CMN type %s %s\n", switch_name, arg);
+    if ( ( strcmp ( arg, "current" ) == 0 ) ||
+            ( strcmp ( arg, "none" ) == 0 ) ||
+            ( strcmp ( arg, "prior" ) == 0 ) ) {
+        return TRUE;
+    } else {
+        E_ERROR ( "Unknown CMN type %s %s\n", switch_name, arg );
     }
     return TRUE;
 }
@@ -223,13 +213,12 @@ validate_cmn(char *switch_name, void *arg)
    given on the command line */
 
 int
-train_cmd_ln_parse(int argc, char *argv[])
-{
-  uint32      isHelp;
-  uint32      isExample;
+train_cmd_ln_parse ( int argc, char *argv[] ) {
+    uint32      isHelp;
+    uint32      isExample;
 
-  const char helpstr[] =
-"Description:\n\
+    const char helpstr[] =
+        "Description:\n\
 Strictly speaking,  bw only implements the first-part of the Baum-Welch \n\
 algorithm.  That is it go through forward and backward algortihm and\n\
 collect the necessary statistics for parameter estimation.\n\
@@ -260,8 +249,8 @@ though, the code is not always tested by CMU's researcher \n\
 \n\
 I also included the following paragraph from Rita's web page. ";
 
-  const char examplestr[]=
-"Example: \n\
+    const char examplestr[]=
+        "Example: \n\
 Command used to train continuous HMM \n\
 (Beware, this only illustrates how to use this command, for detail on \n\
 how to tune it, please consult the manual. ) \n\
@@ -287,308 +276,419 @@ If yo want to do parallel training for N machines. Run N trainers with \n\
 -part N -npart N ";
 
     static arg_t defn[] = {
-	{ "-help",
-	  ARG_BOOLEAN,
-	  "no",
-	  "Shows the usage of the tool"},
+        {
+            "-help",
+            ARG_BOOLEAN,
+            "no",
+            "Shows the usage of the tool"
+        },
 
-	{ "-example",
-	  ARG_BOOLEAN,
-	  "no",
-	  "Shows example of how to use the tool"},
+        {
+            "-example",
+            ARG_BOOLEAN,
+            "no",
+            "Shows example of how to use the tool"
+        },
 
-	{ "-hmmdir",
-	  ARG_STRING,
-	  NULL,
-	  "Default directory for acoustic model files (mdef, means, variances, transition_matrices, noisedict)" },
+        {
+            "-hmmdir",
+            ARG_STRING,
+            NULL,
+            "Default directory for acoustic model files (mdef, means, variances, transition_matrices, noisedict)"
+        },
 
-	{ "-moddeffn",
-	  ARG_STRING,
-	  NULL,
-	  "The model definition file for the model inventory to train" },
+        {
+            "-moddeffn",
+            ARG_STRING,
+            NULL,
+            "The model definition file for the model inventory to train"
+        },
 
-	{ "-tmatfn",
-	  ARG_STRING,
-	  NULL,
-	  "The transition matrix parameter file name"},
+        {
+            "-tmatfn",
+            ARG_STRING,
+            NULL,
+            "The transition matrix parameter file name"
+        },
 
-	{ "-mixwfn",
-	  ARG_STRING,
-	  NULL,
-	  "The mixture weight parameter file name"},
+        {
+            "-mixwfn",
+            ARG_STRING,
+            NULL,
+            "The mixture weight parameter file name"
+        },
 
-	{ "-meanfn",
-	  ARG_STRING,
-	  NULL,
-	  "The mean parameter file name"},
+        {
+            "-meanfn",
+            ARG_STRING,
+            NULL,
+            "The mean parameter file name"
+        },
 
-	{ "-varfn",
-	  ARG_STRING,
-	  NULL,
-	  "The var parameter file name"},
+        {
+            "-varfn",
+            ARG_STRING,
+            NULL,
+            "The var parameter file name"
+        },
 
-	{ "-fullvar",
-	  ARG_BOOLEAN,
-	  "no",
-	  "Variances are full covariance matrices"},
+        {
+            "-fullvar",
+            ARG_BOOLEAN,
+            "no",
+            "Variances are full covariance matrices"
+        },
 
-	{ "-diagfull",
-	  ARG_BOOLEAN,
-	  "no",
-	  "Evaluate Gaussian densities using diagonals only"},
+        {
+            "-diagfull",
+            ARG_BOOLEAN,
+            "no",
+            "Evaluate Gaussian densities using diagonals only"
+        },
 
-	{ "-mwfloor",
-	  ARG_FLOAT32,
-	  "0.00001",
-	  "Mixing weight smoothing floor" },
+        {
+            "-mwfloor",
+            ARG_FLOAT32,
+            "0.00001",
+            "Mixing weight smoothing floor"
+        },
 
-	{ "-tpfloor",
-	  ARG_FLOAT32,
-	  "0.0001",
-	  "Transition probability smoothing floor" },
+        {
+            "-tpfloor",
+            ARG_FLOAT32,
+            "0.0001",
+            "Transition probability smoothing floor"
+        },
 
-	{ "-varfloor",
-	  ARG_FLOAT32,
-	  "0.00001",
-	  "The minimum variance"},
-	
-	{ "-topn",
-	  ARG_INT32,
-	  "4",
-	  "Compute output probabilities based this number of top scoring densities."},
+        {
+            "-varfloor",
+            ARG_FLOAT32,
+            "0.00001",
+            "The minimum variance"
+        },
 
-	{ "-dictfn",
-	  ARG_STRING,
-	  NULL,
-	  "The content word dictionary" },
+        {
+            "-topn",
+            ARG_INT32,
+            "4",
+            "Compute output probabilities based this number of top scoring densities."
+        },
 
-	{ "-fdictfn",
-	  ARG_STRING,
-	  NULL,
-	  "The filler word dictionary (e.g. SIL, SILb, ++COUGH++)" },
+        {
+            "-dictfn",
+            ARG_STRING,
+            NULL,
+            "The content word dictionary"
+        },
 
-	{ "-ltsoov",
-	  ARG_BOOLEAN,
-	  "no",
-	  "Use CMUDict letter-to-sound rules to generate pronunciations for out-of-vocabulary words" },
+        {
+            "-fdictfn",
+            ARG_STRING,
+            NULL,
+            "The filler word dictionary (e.g. SIL, SILb, ++COUGH++)"
+        },
 
-	{ "-ctlfn",
-	  ARG_STRING,
-	  NULL,
-	  "The training corpus control file" },
+        {
+            "-ltsoov",
+            ARG_BOOLEAN,
+            "no",
+            "Use CMUDict letter-to-sound rules to generate pronunciations for out-of-vocabulary words"
+        },
 
-	{ "-nskip",
-	  ARG_INT32,
-	  NULL,
-	  "The number of utterances to skip at the beginning of a control file" },
+        {
+            "-ctlfn",
+            ARG_STRING,
+            NULL,
+            "The training corpus control file"
+        },
 
-	{ "-runlen",
-	  ARG_INT32,
-	  "-1",	/* until eof */
-	  "The number of utterances to process in the (skipped) control file" },
+        {
+            "-nskip",
+            ARG_INT32,
+            NULL,
+            "The number of utterances to skip at the beginning of a control file"
+        },
 
-	{ "-part",
-	  ARG_INT32,
-	  NULL,
-	  "Identifies the corpus part number (range 1..NPART)" },
+        {
+            "-runlen",
+            ARG_INT32,
+            "-1",	/* until eof */
+            "The number of utterances to process in the (skipped) control file"
+        },
 
-	{ "-npart",
-	  ARG_INT32,
-	  NULL,
-	  "Partition the corpus into this many equal sized subsets" },
+        {
+            "-part",
+            ARG_INT32,
+            NULL,
+            "Identifies the corpus part number (range 1..NPART)"
+        },
 
-	{ "-cepext",
-	  ARG_STRING,
-	  ".mfc",
-	  "The cepstrum file extension" },
+        {
+            "-npart",
+            ARG_INT32,
+            NULL,
+            "Partition the corpus into this many equal sized subsets"
+        },
 
-	{ "-cepdir",
-	  ARG_STRING,
-	  NULL,
-	  "The cepstrum data root directory" },
+        {
+            "-cepext",
+            ARG_STRING,
+            ".mfc",
+            "The cepstrum file extension"
+        },
 
-	{ "-phsegext",
-	  ARG_STRING,
-	  "phseg",
-	  "Phone segmentation file extension" },
+        {
+            "-cepdir",
+            ARG_STRING,
+            NULL,
+            "The cepstrum data root directory"
+        },
 
-	{ "-phsegdir",
-	  ARG_STRING,
-	  NULL,
-	  "Phone segmentation file root directory" },
+        {
+            "-phsegext",
+            ARG_STRING,
+            "phseg",
+            "Phone segmentation file extension"
+        },
 
-	{ "-outphsegdir",
-	  ARG_STRING,
-	  NULL,
-	  "Phone segmentation file output root directory" },
+        {
+            "-phsegdir",
+            ARG_STRING,
+            NULL,
+            "Phone segmentation file root directory"
+        },
 
-	{ "-sentdir",
-	  ARG_STRING,
-	  NULL,
-	  "The sentence transcript file directory"},
+        {
+            "-outphsegdir",
+            ARG_STRING,
+            NULL,
+            "Phone segmentation file output root directory"
+        },
 
-	{ "-sentext",
-	  ARG_STRING,
-	  "sent",
-	  "The sentence transcript file extension"},
+        {
+            "-sentdir",
+            ARG_STRING,
+            NULL,
+            "The sentence transcript file directory"
+        },
 
-	{ "-lsnfn",
-	  ARG_STRING,
-	  NULL,
-	  "The corpus word transcript file"},
+        {
+            "-sentext",
+            ARG_STRING,
+            "sent",
+            "The sentence transcript file extension"
+        },
 
-	{ "-accumdir",
-	  ARG_STRING,
-	  NULL,
-	  "A path where accumulated counts are to be written." },
+        {
+            "-lsnfn",
+            ARG_STRING,
+            NULL,
+            "The corpus word transcript file"
+        },
 
-	{ "-abeam",
-	  ARG_FLOAT64,
-	  "1e-100",
-	  "Evaluate alpha values subject to this beam"},
+        {
+            "-accumdir",
+            ARG_STRING,
+            NULL,
+            "A path where accumulated counts are to be written."
+        },
 
-	{ "-bbeam",
-	  ARG_FLOAT64,
-	  "1e-100",
-	  "Evaluate beta values (update reestimation sums) subject to this beam"},
+        {
+            "-abeam",
+            ARG_FLOAT64,
+            "1e-100",
+            "Evaluate alpha values subject to this beam"
+        },
 
-	{ "-varreest",
-	  ARG_BOOLEAN,
-	  "yes",
-	  "Reestimate variances"},
+        {
+            "-bbeam",
+            ARG_FLOAT64,
+            "1e-100",
+            "Evaluate beta values (update reestimation sums) subject to this beam"
+        },
 
-	{ "-meanreest",
-	  ARG_BOOLEAN,
-	  "yes",
-	  "Reestimate means"},
+        {
+            "-varreest",
+            ARG_BOOLEAN,
+            "yes",
+            "Reestimate variances"
+        },
 
-	{ "-mixwreest",
-	  ARG_BOOLEAN,
-	  "yes",
-	  "Reestimate mixing weights"},
+        {
+            "-meanreest",
+            ARG_BOOLEAN,
+            "yes",
+            "Reestimate means"
+        },
 
-	{ "-tmatreest",
-	  ARG_BOOLEAN,
-	  "yes",
-	  "Reestimate transition probability matrices"},
+        {
+            "-mixwreest",
+            ARG_BOOLEAN,
+            "yes",
+            "Reestimate mixing weights"
+        },
 
-	{ "-mllrmat",
-	  ARG_STRING,
-	  NULL,
-	  "An MLLR transformation file to apply to the means of the model"},
+        {
+            "-tmatreest",
+            ARG_BOOLEAN,
+            "yes",
+            "Reestimate transition probability matrices"
+        },
 
-	{ "-cb2mllrfn",
-	  ARG_STRING,
-	  ".1cls.",
-	  "Codebook-to-MLLR-class mapping file name" },
+        {
+            "-mllrmat",
+            ARG_STRING,
+            NULL,
+            "An MLLR transformation file to apply to the means of the model"
+        },
 
-	{ "-ts2cbfn",
-	  ARG_STRING,
-	  NULL,
-	  "Tied-state-to-codebook mapping file name" },
+        {
+            "-cb2mllrfn",
+            ARG_STRING,
+            ".1cls.",
+            "Codebook-to-MLLR-class mapping file name"
+        },
 
-	{ "-timing",
-	  ARG_BOOLEAN,
-	  "yes",
-	  "Controls whether profiling information is displayed"},
-	
-	{ "-viterbi",
-	  ARG_BOOLEAN,
-	  "no",
-	  "Controls whether Viterbi training is done"},
-	
-	{ "-2passvar",
-	  ARG_BOOLEAN,
-	  "no",
-	  "Reestimate variances based on prior means"},
+        {
+            "-ts2cbfn",
+            ARG_STRING,
+            NULL,
+            "Tied-state-to-codebook mapping file name"
+        },
 
-	{ "-spthresh",
-	  ARG_FLOAT32,
-	  "0.0",
-	  "State posterior probability floor for reestimation.  States below this are not counted"},
-	
-	{ "-maxuttlen",
-	  ARG_INT32,
-	  "0",
-	  "Maximum # of frames for an utt ( 0 => no fixed limit )"},
-	
-	{ "-ckptintv",
-	  ARG_INT32,
-	  NULL,
-	  "Checkpoint the reestimation sums every -chkptintv utts" },
-	
-	{ "-outputfullpath",
-	  ARG_BOOLEAN,
-	  "no",
-	  "Output full path of utterance to bw log output" },
-	
-	{ "-fullsuffixmatch",
-	  ARG_BOOLEAN,
-	  "no",
-	  "Expect utterance id in transcript to be a suffix of the partial path in the control file" },
+        {
+            "-timing",
+            ARG_BOOLEAN,
+            "yes",
+            "Controls whether profiling information is displayed"
+        },
 
-	{ "-ldaaccum",
-	  ARG_BOOLEAN,
-	  "no",
-	  "Apply LDA in accumulation of statistics only (NOTE: no dimensionality reduction will be done)."},
+        {
+            "-viterbi",
+            ARG_BOOLEAN,
+            "no",
+            "Controls whether Viterbi training is done"
+        },
 
-	{ "-pdumpdir",
-	  ARG_STRING,
-	  NULL,
-	  "Dump state/mixture posterior probabilities to files in this directory" },
+        {
+            "-2passvar",
+            ARG_BOOLEAN,
+            "no",
+            "Reestimate variances based on prior means"
+        },
 
-	{ "-latdir",
-	  ARG_STRING,
-	  NULL,
-	  "Directory that contains lattice files" },
+        {
+            "-spthresh",
+            ARG_FLOAT32,
+            "0.0",
+            "State posterior probability floor for reestimation.  States below this are not counted"
+        },
 
-	{ "-mmie",
-	  ARG_BOOLEAN,
-	  "no",
-	  "Whether to do MMIE training or not" },
+        {
+            "-maxuttlen",
+            ARG_INT32,
+            "0",
+            "Maximum # of frames for an utt ( 0 => no fixed limit )"
+        },
 
-	{ "-mmie_type",
-	  ARG_STRING,
-	  "rand",
-	  "how to get different context for Viterbi run on lattice, such as rand, best or ci. \n\
+        {
+            "-ckptintv",
+            ARG_INT32,
+            NULL,
+            "Checkpoint the reestimation sums every -chkptintv utts"
+        },
+
+        {
+            "-outputfullpath",
+            ARG_BOOLEAN,
+            "no",
+            "Output full path of utterance to bw log output"
+        },
+
+        {
+            "-fullsuffixmatch",
+            ARG_BOOLEAN,
+            "no",
+            "Expect utterance id in transcript to be a suffix of the partial path in the control file"
+        },
+
+        {
+            "-ldaaccum",
+            ARG_BOOLEAN,
+            "no",
+            "Apply LDA in accumulation of statistics only (NOTE: no dimensionality reduction will be done)."
+        },
+
+        {
+            "-pdumpdir",
+            ARG_STRING,
+            NULL,
+            "Dump state/mixture posterior probabilities to files in this directory"
+        },
+
+        {
+            "-latdir",
+            ARG_STRING,
+            NULL,
+            "Directory that contains lattice files"
+        },
+
+        {
+            "-mmie",
+            ARG_BOOLEAN,
+            "no",
+            "Whether to do MMIE training or not"
+        },
+
+        {
+            "-mmie_type",
+            ARG_STRING,
+            "rand",
+            "how to get different context for Viterbi run on lattice, such as rand, best or ci. \n\
            \t\t\trand: randomly take the left and right context \n\
            \t\t\tbest: take the left and right context with the best acoustic score \n\
-           \t\t\tci:   use context-independent hmm for word boundary models" },
+           \t\t\tci:   use context-independent hmm for word boundary models"
+        },
 
-	{ "-latext",
-	  ARG_STRING,
-	  NULL,
-	  "Denominator or Numerator lattice. Use denlat or numlat" },
+        {
+            "-latext",
+            ARG_STRING,
+            NULL,
+            "Denominator or Numerator lattice. Use denlat or numlat"
+        },
 
-	{ "-lw",
-	  ARG_FLOAT32,
-	  "11.5",
-	  "Language model weight" },
-	/* end */
-	
-	cepstral_to_feature_command_line_macro(),
-	{NULL, 0, NULL, NULL}
+        {
+            "-lw",
+            ARG_FLOAT32,
+            "11.5",
+            "Language model weight"
+        },
+        /* end */
+
+        cepstral_to_feature_command_line_macro(),
+        {NULL, 0, NULL, NULL}
     };
 
-    cmd_ln_parse(defn, argc, argv, 1);
+    cmd_ln_parse ( defn, argc, argv, 1 );
 
 
-    isHelp    = cmd_ln_int32("-help");
-    isExample    = cmd_ln_int32("-example");
+    isHelp    = cmd_ln_int32 ( "-help" );
+    isExample    = cmd_ln_int32 ( "-example" );
 
-    if(isHelp){
-      printf("%s\n\n",helpstr);
+    if ( isHelp ) {
+        printf ( "%s\n\n",helpstr );
     }
 
-    if(isExample){
-      printf("%s\n\n",examplestr);
+    if ( isExample ) {
+        printf ( "%s\n\n",examplestr );
     }
 
-    if(isHelp || isExample){
-      E_INFO("User asked for help or example.\n");
-      exit(0);
+    if ( isHelp || isExample ) {
+        E_INFO ( "User asked for help or example.\n" );
+        exit ( 0 );
     }
 
     return 0;
 }
 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

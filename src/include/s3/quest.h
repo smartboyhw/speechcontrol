@@ -1,5 +1,5 @@
 /* ====================================================================
- * Copyright (c) 1996-2000 Carnegie Mellon University.  All rights 
+ * Copyright (c) 1996-2000 Carnegie Mellon University.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -7,27 +7,27 @@
  * are met:
  *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer. 
+ *    notice, this list of conditions and the following disclaimer.
  *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
  *    the documentation and/or other materials provided with the
  *    distribution.
  *
- * This work was supported in part by funding from the Defense Advanced 
- * Research Projects Agency and the National Science Foundation of the 
+ * This work was supported in part by funding from the Defense Advanced
+ * Research Projects Agency and the National Science Foundation of the
  * United States of America, and the CMU Sphinx Speech Consortium.
  *
- * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND 
- * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
  * NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * ====================================================================
@@ -36,12 +36,12 @@
 /*********************************************************************
  *
  * File: quest.h
- * 
- * Description: 
+ *
+ * Description:
  * 	This file defines the data structures used to implement
  *	the state-tying decision tree questions.
  *
- * Author: 
+ * Author:
  * 	Eric Thayer (eht@cs.cmu.edu)
  *********************************************************************/
 
@@ -129,42 +129,42 @@ typedef struct comp_quest_s {
  */
 
 int
-s3parse_comp_quest(pset_t *pset,
-		   uint32 n_pset,
-		   comp_quest_t *q,
-		   char *q_str);
+s3parse_comp_quest ( pset_t *pset,
+                     uint32 n_pset,
+                     comp_quest_t *q,
+                     char *q_str );
 
 void
-parse_compound_q(comp_quest_t *q,
-		 char *q_str);
+parse_compound_q ( comp_quest_t *q,
+                   char *q_str );
 
 char *
-parse_conj(quest_t **term,
-	   uint32 *n_simple_q,
-	   char *q_str);
+parse_conj ( quest_t **term,
+             uint32 *n_simple_q,
+             char *q_str );
 
 void
-print_comp_quest(FILE *fp,
-		 pset_t *pset,
-		 comp_quest_t *q);
+print_comp_quest ( FILE *fp,
+                   pset_t *pset,
+                   comp_quest_t *q );
 
 void
-print_quest(FILE *fp,
-	    pset_t *pset,
-	    quest_t *q);
+print_quest ( FILE *fp,
+              pset_t *pset,
+              quest_t *q );
 
 uint32
-cnt_q_term(char *q_str);
+cnt_q_term ( char *q_str );
 
 int
-eval_comp_quest(comp_quest_t *q,
-		uint32 *feat,
-		uint32 n_feat);
+eval_comp_quest ( comp_quest_t *q,
+                  uint32 *feat,
+                  uint32 n_feat );
 
 int
-eval_quest(quest_t *q,
-	   uint32 *feat,
-	   uint32 n_feat);
+eval_quest ( quest_t *q,
+             uint32 *feat,
+             uint32 n_feat );
 
 /* simplify the conjunctions of
  * a composite question by removing
@@ -173,8 +173,8 @@ eval_quest(quest_t *q,
  */
 
 int
-simplify_comp_quest(comp_quest_t *q,
-		    uint32 n_phone);
+simplify_comp_quest ( comp_quest_t *q,
+                      uint32 n_phone );
 
 /*
  * Private Fns
@@ -182,14 +182,14 @@ simplify_comp_quest(comp_quest_t *q,
 
 #if 0
 static void
-parse_simple_q(quest_t *q,
-	       char *q_str);
+parse_simple_q ( quest_t *q,
+                 char *q_str );
 #endif
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* QUEST_H */ 
+#endif /* QUEST_H */
 
 
 /*
@@ -198,7 +198,7 @@ parse_simple_q(quest_t *q,
  * $Log$
  * Revision 1.4  2004/07/21  17:46:09  egouvea
  * Changed the license terms to make it the same as sphinx2 and sphinx3.
- * 
+ *
  * Revision 1.3  2001/04/05 20:02:30  awb
  * *** empty log message ***
  *
@@ -210,9 +210,10 @@ parse_simple_q(quest_t *q,
  *
  * Revision 1.2  97/07/16  11:39:10  eht
  * *** empty log message ***
- * 
+ *
  * Revision 1.1  96/03/25  15:50:59  eht
  * Initial revision
- * 
+ *
  *
  */
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

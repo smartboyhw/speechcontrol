@@ -1,5 +1,5 @@
 /* ====================================================================
- * Copyright (c) 2006 Carnegie Mellon University.  All rights 
+ * Copyright (c) 2006 Carnegie Mellon University.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -7,27 +7,27 @@
  * are met:
  *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer. 
+ *    notice, this list of conditions and the following disclaimer.
  *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
  *    the documentation and/or other materials provided with the
  *    distribution.
  *
- * This work was supported in part by funding from the Defense Advanced 
- * Research Projects Agency and the National Science Foundation of the 
+ * This work was supported in part by funding from the Defense Advanced
+ * Research Projects Agency and the National Science Foundation of the
  * United States of America, and the CMU Sphinx Speech Consortium.
  *
- * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND 
- * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
  * NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * ====================================================================
@@ -36,11 +36,11 @@
 /*********************************************************************
  *
  * File: s3phseg_io.h
- * 
- * Description: 
+ *
+ * Description:
  *     SPHINX-III phone segmentation file I/O functions
  *
- * Author: 
+ * Author:
  *     David Huggins-Daines (dhuggins@cs.cmu.edu)
  *********************************************************************/
 
@@ -67,43 +67,44 @@ typedef struct s3phseg_s {
 /* the following structs are used for MMIE training
    lqin 2010-03 */
 typedef struct s3lattice_s {
-  uint32 n_arcs;                /* total number of arcs in lattice */
-  uint32 n_true_arcs;           /* the number of arcs from the numerator lattice */
-  float64 prob;                 /* total log likelihood of lattice=alpha(Q)=beta(1) */
-  float64 postprob;             /* the log posterior probability of the true path */
-  struct s3arc_s *arc;          /* word arcs */
+    uint32 n_arcs;                /* total number of arcs in lattice */
+    uint32 n_true_arcs;           /* the number of arcs from the numerator lattice */
+    float64 prob;                 /* total log likelihood of lattice=alpha(Q)=beta(1) */
+    float64 postprob;             /* the log posterior probability of the true path */
+    struct s3arc_s *arc;          /* word arcs */
 } s3lattice_t;
 
 typedef struct s3arc_s {
-  char word[128];                   /* current word */
-  uint32 sf, ef;                    /* start and end frame for this word occurrence */
-  uint32 n_prev_arcs, n_next_arcs;  /* number of preceding and succeeding arcs */
-  float64 lm_score, ac_score;       /* language model score and acoustic score */
-  float64 alpha, beta, gamma;       /* lattice level statistics accumulator */
-  uint32 best_prev_arc, best_next_arc;        /* the prev and next arc id with the best ac score */
-  uint32 *prev_arcs;                /* previous acrs */
-  uint32 *next_arcs;                /* next arcs */
-  uint32 good_arc;
+    char word[128];                   /* current word */
+    uint32 sf, ef;                    /* start and end frame for this word occurrence */
+    uint32 n_prev_arcs, n_next_arcs;  /* number of preceding and succeeding arcs */
+    float64 lm_score, ac_score;       /* language model score and acoustic score */
+    float64 alpha, beta, gamma;       /* lattice level statistics accumulator */
+    uint32 best_prev_arc, best_next_arc;        /* the prev and next arc id with the best ac score */
+    uint32 *prev_arcs;                /* previous acrs */
+    uint32 *next_arcs;                /* next arcs */
+    uint32 good_arc;
 } s3arc_t;
 /* end */
 
-int s3phseg_read(const char *fn,
-		 acmod_set_t *acmod_set,
-		 s3phseg_t **out_phseg);
+int s3phseg_read ( const char *fn,
+                   acmod_set_t *acmod_set,
+                   s3phseg_t **out_phseg );
 
-int s3phseg_write(const char *fn,
-		  acmod_set_t *acmod_set,
-		  s3phseg_t *phseg);
+int s3phseg_write ( const char *fn,
+                    acmod_set_t *acmod_set,
+                    s3phseg_t *phseg );
 
-void s3phseg_free(s3phseg_t *phseg);
+void s3phseg_free ( s3phseg_t *phseg );
 
 /* the following function is used for MMIE training
    lqin 2010-03 */
-int s3lattice_read(const char *fn,
-		   s3lattice_t **lattice);
+int s3lattice_read ( const char *fn,
+                     s3lattice_t **lattice );
 /* end */
 
 #ifdef __cplusplus
 }
 #endif
 #endif /* S3PHSEG_IO_H */
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

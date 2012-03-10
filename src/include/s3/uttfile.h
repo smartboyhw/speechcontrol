@@ -1,5 +1,5 @@
 /* ====================================================================
- * Copyright (c) 1997-2000 Carnegie Mellon University.  All rights 
+ * Copyright (c) 1997-2000 Carnegie Mellon University.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -7,27 +7,27 @@
  * are met:
  *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer. 
+ *    notice, this list of conditions and the following disclaimer.
  *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
  *    the documentation and/or other materials provided with the
  *    distribution.
  *
- * This work was supported in part by funding from the Defense Advanced 
- * Research Projects Agency and the National Science Foundation of the 
+ * This work was supported in part by funding from the Defense Advanced
+ * Research Projects Agency and the National Science Foundation of the
  * United States of America, and the CMU Sphinx Speech Consortium.
  *
- * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND 
- * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
  * NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * ====================================================================
@@ -36,11 +36,11 @@
 /*********************************************************************
  *
  * File: uttfile.h
- * 
- * Description: 
- * 
- * Author: 
- * 
+ *
+ * Description:
+ *
+ * Author:
+ *
  *********************************************************************/
 
 #ifndef UTTFILE_H
@@ -63,24 +63,24 @@ typedef struct uttfile_s {
 } uttfile_t;
 
 uttfile_t *
-uttfile_open(const char *fn);
+uttfile_open ( const char *fn );
 
 void
-uttfile_close(uttfile_t *uf);
+uttfile_close ( uttfile_t *uf );
 
 int
-uttfile_data_at(uttfile_t *uf, uint32 off, char *buf, uint32 sz);
+uttfile_data_at ( uttfile_t *uf, uint32 off, char *buf, uint32 sz );
 
 int
-uttfile_data_next(uttfile_t *uf, char *buf, uint32 sz);
+uttfile_data_next ( uttfile_t *uf, char *buf, uint32 sz );
 
 int
-uttfile_data_for(uttfile_t *uf, const char *id, char *buf, uint32 sz);
+uttfile_data_for ( uttfile_t *uf, const char *id, char *buf, uint32 sz );
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* UTTFILE_H */ 
+#endif /* UTTFILE_H */
 
 
 /*
@@ -89,7 +89,7 @@ uttfile_data_for(uttfile_t *uf, const char *id, char *buf, uint32 sz);
  * $Log$
  * Revision 1.4  2004/07/21  17:46:10  egouvea
  * Changed the license terms to make it the same as sphinx2 and sphinx3.
- * 
+ *
  * Revision 1.3  2001/04/05 20:02:30  awb
  * *** empty log message ***
  *
@@ -101,3 +101,4 @@ uttfile_data_for(uttfile_t *uf, const char *id, char *buf, uint32 sz);
  *
  *
  */
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

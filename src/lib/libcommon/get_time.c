@@ -1,5 +1,5 @@
 /* ====================================================================
- * Copyright (c) 1994-2000 Carnegie Mellon University.  All rights 
+ * Copyright (c) 1994-2000 Carnegie Mellon University.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -7,27 +7,27 @@
  * are met:
  *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer. 
+ *    notice, this list of conditions and the following disclaimer.
  *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
  *    the documentation and/or other materials provided with the
  *    distribution.
  *
- * This work was supported in part by funding from the Defense Advanced 
- * Research Projects Agency and the National Science Foundation of the 
+ * This work was supported in part by funding from the Defense Advanced
+ * Research Projects Agency and the National Science Foundation of the
  * United States of America, and the CMU Sphinx Speech Consortium.
  *
- * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND 
- * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
  * NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * ====================================================================
@@ -36,16 +36,16 @@
 /*********************************************************************
  *
  * File: get_time.c
- * 
- * Description: 
+ *
+ * Description:
  *	A machine independent way to get a time for the purposes of
  *	computing elapsed time.
  *
  *	Currently, only known to work on OSF/1 and HPUX.
- * 
- * Author: 
+ *
+ * Author:
  *	Eric H. Thayer (eht@cs.cmu.edu)
- * 
+ *
  *********************************************************************/
 
 #include <s3/get_time.h>
@@ -59,46 +59,45 @@
 /*********************************************************************
  *
  * Function: get_time()
- * 
- * Description: 
+ *
+ * Description:
  *	Return some value (in units of seconds) which increases
  *	at a constant rate with	time.  The purpose of this routine
  *	is to provide a way to compute elapsed times for events.
  *	Since the method for getting the current system time has
  *	varied quite a lot over the years, it is wrapped up in
  *	this routine.
- * 
- * Function Inputs: 
+ *
+ * Function Inputs:
  *	None
- * 
- * Global Inputs: 
+ *
+ * Global Inputs:
  *	None
- * 
- * Return Values: 
+ *
+ * Return Values:
  *	The current value of elapsed time
- * 
- * Global Outputs: 
+ *
+ * Global Outputs:
  *	None
- * 
- * Errors: 
- * 
- * Pre-Conditions: 
- * 
- * Post-Conditions: 
- * 
+ *
+ * Errors:
+ *
+ * Pre-Conditions:
+ *
+ * Post-Conditions:
+ *
  *********************************************************************/
 
 int
-get_time(uint32 *sec, float32 *frac_sec)
-{
+get_time ( uint32 *sec, float32 *frac_sec ) {
 #ifndef WIN32
     struct timeval t;
 
     /* Use the BSD call */
-    if (gettimeofday(&t, NULL) < 0) {
-	E_WARN_SYSTEM("Unable to get time\n");
+    if ( gettimeofday ( &t, NULL ) < 0 ) {
+        E_WARN_SYSTEM ( "Unable to get time\n" );
 
-	return S3_ERROR;
+        return S3_ERROR;
     }
 
     /* On the Alpha, the header file sys/timers.h says
@@ -117,7 +116,7 @@ get_time(uint32 *sec, float32 *frac_sec)
     *frac_sec = 0;
 
     return S3_SUCCESS;
-#endif    
+#endif
 }
 
 /*
@@ -126,7 +125,7 @@ get_time(uint32 *sec, float32 *frac_sec)
  * $Log$
  * Revision 1.4  2004/07/21  18:05:39  egouvea
  * Changed the license terms to make it the same as sphinx2 and sphinx3.
- * 
+ *
  * Revision 1.3  2001/04/05 20:02:30  awb
  * *** empty log message ***
  *
@@ -157,3 +156,4 @@ get_time(uint32 *sec, float32 *frac_sec)
  *
  *
  */
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

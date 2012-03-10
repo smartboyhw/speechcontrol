@@ -1,5 +1,5 @@
 /* ====================================================================
- * Copyright (c) 1995-2000 Carnegie Mellon University.  All rights 
+ * Copyright (c) 1995-2000 Carnegie Mellon University.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -7,27 +7,27 @@
  * are met:
  *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer. 
+ *    notice, this list of conditions and the following disclaimer.
  *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
  *    the documentation and/or other materials provided with the
  *    distribution.
  *
- * This work was supported in part by funding from the Defense Advanced 
- * Research Projects Agency and the National Science Foundation of the 
+ * This work was supported in part by funding from the Defense Advanced
+ * Research Projects Agency and the National Science Foundation of the
  * United States of America, and the CMU Sphinx Speech Consortium.
  *
- * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND 
- * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
  * NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * ====================================================================
@@ -36,10 +36,10 @@
 /*********************************************************************
  *
  * File: state_seq.h
- * 
- * Description: 
- * 
- * Author: 
+ *
+ * Description:
+ *
+ * Author:
  * 	Eric H. Thayer (eht@cs.cmu.edu)
  *********************************************************************/
 
@@ -57,26 +57,26 @@ extern "C" {
 #include <s3/model_def_io.h>
 
 int
-state_seq_free(state_t *s,
-	       unsigned int n);
+state_seq_free ( state_t *s,
+                 unsigned int n );
 
 state_t *
-state_seq_make(uint32 *n_state,
-	       acmod_id_t *phone,
-	       uint32 n_phone,
-	       model_inventory_t *inv,
-	       model_def_t *mdef);
+state_seq_make ( uint32 *n_state,
+                 acmod_id_t *phone,
+                 uint32 n_phone,
+                 model_inventory_t *inv,
+                 model_def_t *mdef );
 
 
 void
-state_seq_print(state_t *state,
-		uint32 n_state,
-		model_def_t *mdef);
+state_seq_print ( state_t *state,
+                  uint32 n_state,
+                  model_def_t *mdef );
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* STATE_SEQ_H */ 
+#endif /* STATE_SEQ_H */
 
 /*
  * Log record.  Maintained by RCS.
@@ -84,7 +84,7 @@ state_seq_print(state_t *state,
  * $Log$
  * Revision 1.7  2004/07/21  17:46:10  egouvea
  * Changed the license terms to make it the same as sphinx2 and sphinx3.
- * 
+ *
  * Revision 1.6  2004/07/17 08:00:22  arthchan2003
  * deeply regretted about one function prototype, now revert to the state where multiple pronounciations code doesn't exist
  *
@@ -105,3 +105,4 @@ state_seq_print(state_t *state,
  *
  *
  */
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -1,5 +1,5 @@
 /* ====================================================================
- * Copyright (c) 1997-2000 Carnegie Mellon University.  All rights 
+ * Copyright (c) 1997-2000 Carnegie Mellon University.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -7,27 +7,27 @@
  * are met:
  *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer. 
+ *    notice, this list of conditions and the following disclaimer.
  *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
  *    the documentation and/or other materials provided with the
  *    distribution.
  *
- * This work was supported in part by funding from the Defense Advanced 
- * Research Projects Agency and the National Science Foundation of the 
+ * This work was supported in part by funding from the Defense Advanced
+ * Research Projects Agency and the National Science Foundation of the
  * United States of America, and the CMU Sphinx Speech Consortium.
  *
- * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND 
- * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
  * NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * ====================================================================
@@ -36,11 +36,11 @@
 /*********************************************************************
  *
  * File: dtree.h
- * 
- * Description: 
- * 
- * Author: 
- * 
+ *
+ * Description:
+ *
+ * Author:
+ *
  *********************************************************************/
 
 #ifndef DTREE_H
@@ -75,10 +75,10 @@ typedef struct dtree_node_str {
     uint32 n_id;                /* # of triphones represented */
 
     float32 ***mixw_occ;
-/* ADDITION FOR CONTINUOUS_TREES, 19 May 98 */
+    /* ADDITION FOR CONTINUOUS_TREES, 19 May 98 */
     float32 ***means;
     float32 ***vars;
-/* END ADDITION FOR CONTINUOUS_TREES */
+    /* END ADDITION FOR CONTINUOUS_TREES */
     float32 occ;                /* # of time state is observed */
     float64 wt_ent;             /* weighted entropy of this node */
 
@@ -106,327 +106,327 @@ typedef struct dtree_s {
 } dtree_t;
 
 uint32
-cnt_node(dtree_node_t *node);
+cnt_node ( dtree_node_t *node );
 
 uint32
-reindex(dtree_node_t *node,
-	uint32 *next_id);
+reindex ( dtree_node_t *node,
+          uint32 *next_id );
 
 uint32
-cnt_leaf(dtree_node_t *node);
+cnt_leaf ( dtree_node_t *node );
 
 uint32
-label_leaves(dtree_node_t *node, uint32 *id);
+label_leaves ( dtree_node_t *node, uint32 *id );
 
 dtree_node_t *
-get_node(dtree_node_t *node,
-	 uint32 id);
+get_node ( dtree_node_t *node,
+           uint32 id );
 
 uint32
-tied_state(dtree_node_t *node,
-	   acmod_id_t b,
-	   acmod_id_t l,
-	   acmod_id_t r,
-	   word_posn_t wp,
-	   pset_t *pset);
+tied_state ( dtree_node_t *node,
+             acmod_id_t b,
+             acmod_id_t l,
+             acmod_id_t r,
+             word_posn_t wp,
+             pset_t *pset );
 
 uint32
-cnt_twig(dtree_node_t *node);
+cnt_twig ( dtree_node_t *node );
 
 void
-print_node(FILE *fp,
-	   dtree_node_t *node,
-	   pset_t *pset);
+print_node ( FILE *fp,
+             dtree_node_t *node,
+             pset_t *pset );
 
 void
-print_node_comp(FILE *fp,
-		dtree_node_t *node,
-		pset_t *pset);
+print_node_comp ( FILE *fp,
+                  dtree_node_t *node,
+                  pset_t *pset );
 
-			
-void
-print_final_tree(FILE *fp,
-		 dtree_node_t *node,
-		 pset_t *pset);
 
 void
-print_final_tree_davinci(FILE *fp,
-			 dtree_node_t *node,
-			 pset_t *pset);
+print_final_tree ( FILE *fp,
+                   dtree_node_t *node,
+                   pset_t *pset );
+
+void
+print_final_tree_davinci ( FILE *fp,
+                           dtree_node_t *node,
+                           pset_t *pset );
 
 dtree_t *
-read_final_tree(FILE *fp,
-		pset_t *pset,
-		uint32 n_pset);
+read_final_tree ( FILE *fp,
+                  pset_t *pset,
+                  uint32 n_pset );
 
 void
-free_tree(dtree_t *tr);
+free_tree ( dtree_t *tr );
 
 void
-print_tree(FILE *fp,
-	   char *label,
-	   dtree_node_t *node,
-	   pset_t *pset,
-	   uint32 lvl);
+print_tree ( FILE *fp,
+             char *label,
+             dtree_node_t *node,
+             pset_t *pset,
+             uint32 lvl );
 
 void
-print_tree_comp(FILE *fp,
-		char *label,
-		dtree_node_t *node,
-		pset_t *pset,
-		uint32 lvl);
+print_tree_comp ( FILE *fp,
+                  char *label,
+                  dtree_node_t *node,
+                  pset_t *pset,
+                  uint32 lvl );
 
 int
-mk_node(dtree_node_t *node,
-	uint32 node_id,
+mk_node ( dtree_node_t *node,
+          uint32 node_id,
 
-	uint32 *id,
-	uint32 n_id,
+          uint32 *id,
+          uint32 n_id,
 
-	float32 ****mixw,
-/* ADDITION FOR CONTINUOUS_TREES, 18 May 98 */
-        float32 ****means,
-        float32 ****vars,
-        uint32  *veclen,
-/* END ADDITION FOR CONTINUOUS_TREES */
-        uint32 n_model,
-	uint32 n_state,
-	uint32 n_stream,
-	uint32 n_density,
-	float32 *stwt,
-	
-	float32 mwfloor);
+          float32 ****mixw,
+          /* ADDITION FOR CONTINUOUS_TREES, 18 May 98 */
+          float32 ****means,
+          float32 ****vars,
+          uint32  *veclen,
+          /* END ADDITION FOR CONTINUOUS_TREES */
+          uint32 n_model,
+          uint32 n_state,
+          uint32 n_stream,
+          uint32 n_density,
+          float32 *stwt,
+
+          float32 mwfloor );
 
 float64
-set_best_quest(dtree_node_t *node,
+set_best_quest ( dtree_node_t *node,
 
-	       float32 ****mixw,
-/* ADDITION FOR CONTINUOUS_TREES, 20 May 98 */
+                 float32 ****mixw,
+                 /* ADDITION FOR CONTINUOUS_TREES, 20 May 98 */
+                 float32 ****means,
+                 float32 ****vars,
+                 uint32  *veclen,
+                 /* END ADDITION FOR CONTINUOUS TREES */
+                 uint32 n_model,
+                 uint32 n_state,
+                 uint32 n_stream,
+                 uint32 n_density,
+                 float32 *stwt,
+
+                 quest_t *all_q,
+                 uint32 n_all_q,
+                 pset_t *pset,
+
+                 uint32 **dfeat,
+                 uint32 n_dfeat,
+
+                 float32 mwfloor );
+
+dtree_t *
+mk_tree ( float32 ****mixw,
+          /* ADDITION FOR CONTINUOUS_TREES, 20 May 98 */
+          float32 ****means,
+          float32 ****vars,
+          uint32  *veclen,
+          /* END ADDITION FOR CONTINUOUS_TREES */
+          uint32 n_model,
+          uint32 n_state,
+          uint32 n_stream,
+          uint32 n_density,
+          float32 *stwt,
+
+          uint32 *id,
+          uint32 n_id,
+
+          quest_t *all_q,
+          uint32 n_all_q,
+          pset_t *pset,
+
+          uint32 **dfeat,
+          uint32 n_dfeat,
+
+          uint32 max_split,
+          uint32 min_split,
+          float32 split_thr,
+
+          float32 mwfloor );
+
+dtree_t *
+mk_tree_comp ( float32 ****mixw,
+               /* ADDITION FOR CONTINUOUS_TREES, 18 May 98 */
                float32 ****means,
                float32 ****vars,
                uint32  *veclen,
-/* END ADDITION FOR CONTINUOUS TREES */
-	       uint32 n_model,
-	       uint32 n_state,
-	       uint32 n_stream,
-	       uint32 n_density,
-	       float32 *stwt,
+               /* END ADDITIONS FOR CONTINUOUS_TREES */
+               uint32 n_model,
+               uint32 n_state,
+               uint32 n_stream,
+               uint32 n_density,
+               float32 *stwt,
 
-	       quest_t *all_q,
-	       uint32 n_all_q,
-	       pset_t *pset,
+               uint32 *id,
+               uint32 n_id,
 
-	       uint32 **dfeat,
-	       uint32 n_dfeat,
+               quest_t *all_q,
+               uint32 n_all_q,
+               pset_t *pset,
+               uint32 n_base_phone,
 
-	       float32 mwfloor);
+               uint32 **dfeat,
+               uint32 n_dfeat,
 
-dtree_t *
-mk_tree(float32 ****mixw,
-/* ADDITION FOR CONTINUOUS_TREES, 20 May 98 */
-        float32 ****means,
-        float32 ****vars,
-        uint32  *veclen,
-/* END ADDITION FOR CONTINUOUS_TREES */
-	uint32 n_model,
-	uint32 n_state,
-	uint32 n_stream,
-	uint32 n_density,
-	float32 *stwt,
-	
-	uint32 *id,
-	uint32 n_id,
+               uint32  split_min,
+               uint32  split_max,
+               float32 split_thr,
 
-	quest_t *all_q,
-	uint32 n_all_q,
-	pset_t *pset,
+               uint32  split_min_comp,
+               uint32  split_max_comp,
+               float32 split_thr_comp,
 
-	uint32 **dfeat,
-	uint32 n_dfeat,
+               float32 mwfloor );
 
-	uint32 max_split,
-	uint32 min_split,
-	float32 split_thr,
+void
+cluster_leaves ( dtree_t *tr,
+                 /* ADDITION FOR CONTINUOUS_TREES */
+                 uint32 *veclen,
+                 /* END ADDITION FOR CONTINUOUS_TREES */
+                 float64 *wt_ent_dec,
+                 uint32 *out_n_a,
+                 uint32 *out_n_b,
+                 pset_t *pset,
+                 uint32 n_state,
+                 uint32 n_stream,
+                 uint32 n_density,
+                 float32 *stwt,
+                 float32 mwfloor );
 
-	float32 mwfloor);
+void
+split_node_comp ( dtree_t *tr,
+                  uint32 node_id,
+                  float32 ****mixw,
+                  /* ADDITION FOR CONTINUOUS_TREES */
+                  float32 ****means,
+                  float32 ****vars,
+                  uint32  *veclen,
+                  /* END ADDITION FOR CONTINUOUS_TREES */
+                  uint32 n_model,
+                  uint32 n_state,
+                  uint32 n_stream,
+                  uint32 n_density,
+                  float32 *stwt,
+                  quest_t *all_q,
+                  uint32 n_all_q,
+                  pset_t *pset,
+                  uint32 n_base_phone,
+                  uint32 **dfeat,
+                  uint32 n_dfeat,
+                  uint32  split_min,
+                  uint32  split_max,
+                  float32 split_thr,
+                  float32 mwfloor );
 
-dtree_t *
-mk_tree_comp(float32 ****mixw,
-/* ADDITION FOR CONTINUOUS_TREES, 18 May 98 */
+void
+split_node ( dtree_t *tr,
+             uint32 node_id,
+             float32 ****mixw,
+             /* ADDITION FOR CONTINUOUS_TREES */
              float32 ****means,
              float32 ****vars,
-             uint32  *veclen,
-/* END ADDITIONS FOR CONTINUOUS_TREES */
-	     uint32 n_model,
-	     uint32 n_state,
-	     uint32 n_stream,
-	     uint32 n_density,
-	     float32 *stwt,
-	
-	     uint32 *id,
-	     uint32 n_id,
+             uint32 *veclen,
+             /* END ADDITION FOR CONTINUOUS_TREES */
+             uint32 n_model,
+             uint32 n_state,
+             uint32 n_stream,
+             uint32 n_density,
+             float32 *stwt,
 
-	     quest_t *all_q,
-	     uint32 n_all_q,
-	     pset_t *pset,
-	     uint32 n_base_phone,
-	     
-	     uint32 **dfeat,
-	     uint32 n_dfeat,
+             quest_t *all_q,
+             uint32 n_all_q,
+             pset_t *pset,
 
-	     uint32  split_min,
-	     uint32  split_max,
-	     float32 split_thr,
+             uint32 **dfeat,
+             uint32 n_dfeat,
 
-	     uint32  split_min_comp,
-	     uint32  split_max_comp,
-	     float32 split_thr_comp,
+             float32 mwfloor );
 
-	     float32 mwfloor);
+int
+split_node_nobest ( dtree_t *tr,
+                    uint32 node_id,
 
-void
-cluster_leaves(dtree_t *tr,
-/* ADDITION FOR CONTINUOUS_TREES */
-               uint32 *veclen,
-/* END ADDITION FOR CONTINUOUS_TREES */
-	       float64 *wt_ent_dec,
-	       uint32 *out_n_a,
-	       uint32 *out_n_b,
-	       pset_t *pset,
-	       uint32 n_state,
-	       uint32 n_stream,
-	       uint32 n_density,
-	       float32 *stwt,
-	       float32 mwfloor);
+                    float32 ****mixw,
+                    uint32 n_model,
+                    uint32 n_state,
+                    uint32 n_stream,
+                    uint32 n_density,
+                    float32 *stwt,
 
-void
-split_node_comp(dtree_t *tr,
-                uint32 node_id,
+                    uint32 **dfeat,
+                    uint32 n_dfeat );
+
+comp_quest_t *
+mk_comp_quest ( float64 *wt_ent_dec,
                 float32 ****mixw,
-/* ADDITION FOR CONTINUOUS_TREES */
+                /* ADDITIONS FOR CONTINUOUS_TREES, 19 May 98 */
                 float32 ****means,
                 float32 ****vars,
                 uint32  *veclen,
-/* END ADDITION FOR CONTINUOUS_TREES */
+                /* END ADDITIONS FOR CONTINUOUS_TREES */
                 uint32 n_model,
                 uint32 n_state,
                 uint32 n_stream,
                 uint32 n_density,
                 float32 *stwt,
+
+                uint32 *id,
+                uint32 n_id,
+
                 quest_t *all_q,
                 uint32 n_all_q,
                 pset_t *pset,
                 uint32 n_base_phone,
+
                 uint32 **dfeat,
                 uint32 n_dfeat,
-                uint32  split_min,
-                uint32  split_max,
+
+                uint32 split_min,
+                uint32 split_max,
                 float32 split_thr,
-                float32 mwfloor);
 
-void
-split_node(dtree_t *tr,
-	   uint32 node_id,
-	   float32 ****mixw,
-/* ADDITION FOR CONTINUOUS_TREES */
-           float32 ****means,
-           float32 ****vars,
-           uint32 *veclen,
-/* END ADDITION FOR CONTINUOUS_TREES */
-	   uint32 n_model,
-	   uint32 n_state,
-	   uint32 n_stream,
-	   uint32 n_density,
-	   float32 *stwt,
-
-	   quest_t *all_q,
-	   uint32 n_all_q,
-	   pset_t *pset,
-	   
-	   uint32 **dfeat,
-	   uint32 n_dfeat,
-
-	   float32 mwfloor);
+                float32 mwfloor );
 
 int
-split_node_nobest(dtree_t *tr,
-		  uint32 node_id,
-	   
-		  float32 ****mixw,
-		  uint32 n_model,
-		  uint32 n_state,
-		  uint32 n_stream,
-		  uint32 n_density,
-		  float32 *stwt,
-
-		  uint32 **dfeat,
-		  uint32 n_dfeat);
-
-comp_quest_t *
-mk_comp_quest(float64 *wt_ent_dec,
-	      float32 ****mixw,
-/* ADDITIONS FOR CONTINUOUS_TREES, 19 May 98 */
-              float32 ****means,
-              float32 ****vars,
-              uint32  *veclen,
- /* END ADDITIONS FOR CONTINUOUS_TREES */
-	      uint32 n_model,
-	      uint32 n_state,
-	      uint32 n_stream,
-	      uint32 n_density,
-	      float32 *stwt,
-	
-	      uint32 *id,
-	      uint32 n_id,
-
-	      quest_t *all_q,
-	      uint32 n_all_q,
-	      pset_t *pset,
-	      uint32 n_base_phone,
-
-	      uint32 **dfeat,
-	      uint32 n_dfeat,
-	      
-	      uint32 split_min,
-	      uint32 split_max,
-	      float32 split_thr,
-
-	      float32 mwfloor);
-
-int
-ins_twigs(dtree_node_t *node,
-	  uint32 phnid,
-	  uint32 state,
-	  float32 *twig_heap,
-	  uint32 *twig_hkey,
-	  uint32 *phnidlst,
-	  uint32 *statelst,
-	  uint32 *nidlst,
-	  uint32 *free_key);
+ins_twigs ( dtree_node_t *node,
+            uint32 phnid,
+            uint32 state,
+            float32 *twig_heap,
+            uint32 *twig_hkey,
+            uint32 *phnidlst,
+            uint32 *statelst,
+            uint32 *nidlst,
+            uint32 *free_key );
 
 uint32
-prune_subtrees(dtree_node_t *node);
+prune_subtrees ( dtree_node_t *node );
 
 uint32
-prune_lowcnt(dtree_node_t *node, float32 cnt_thr);
+prune_lowcnt ( dtree_node_t *node, float32 cnt_thr );
 
 /* ADDITION FOR CONTINUOUS_TREES */
 uint32
-leaf_mean_vars(dtree_node_t *node,
-               pset_t *pset,
-               float32 ****means,
-               float32 ****vars,
-               uint32 *node_id,
-               uint32 n_state,
-               uint32 n_stream,
-               uint32 *veclen,
-               uint32 off);
+leaf_mean_vars ( dtree_node_t *node,
+                 pset_t *pset,
+                 float32 ****means,
+                 float32 ****vars,
+                 uint32 *node_id,
+                 uint32 n_state,
+                 uint32 n_stream,
+                 uint32 *veclen,
+                 uint32 off );
 /* END ADDITION FOR CONTINUOUS_TREES */
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* DTREE_H */ 
+#endif /* DTREE_H */
 
 
 /*
@@ -435,7 +435,7 @@ leaf_mean_vars(dtree_node_t *node,
  * $Log$
  * Revision 1.4  2004/07/21  17:46:09  egouvea
  * Changed the license terms to make it the same as sphinx2 and sphinx3.
- * 
+ *
  * Revision 1.3  2001/04/05 20:02:30  awb
  * *** empty log message ***
  *
@@ -447,15 +447,16 @@ leaf_mean_vars(dtree_node_t *node,
  *
  * Revision 1.4  97/07/23  10:48:42  eht
  * Added get_node() function
- * 
+ *
  * Revision 1.3  97/07/17  14:29:02  eht
  * Added prune_lowcnt() function for pruning low occupancy count tree nodes.
- * 
+ *
  * Revision 1.2  97/07/16  11:39:10  eht
  * *** empty log message ***
- * 
+ *
  * Revision 1.1  97/07/07  10:53:27  eht
  * Initial revision
- * 
+ *
  *
  */
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

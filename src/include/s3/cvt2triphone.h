@@ -1,5 +1,5 @@
 /* ====================================================================
- * Copyright (c) 1994-2000 Carnegie Mellon University.  All rights 
+ * Copyright (c) 1994-2000 Carnegie Mellon University.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -7,27 +7,27 @@
  * are met:
  *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer. 
+ *    notice, this list of conditions and the following disclaimer.
  *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
  *    the documentation and/or other materials provided with the
  *    distribution.
  *
- * This work was supported in part by funding from the Defense Advanced 
- * Research Projects Agency and the National Science Foundation of the 
+ * This work was supported in part by funding from the Defense Advanced
+ * Research Projects Agency and the National Science Foundation of the
  * United States of America, and the CMU Sphinx Speech Consortium.
  *
- * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND 
- * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
  * NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * ====================================================================
@@ -36,10 +36,10 @@
 /*********************************************************************
  *
  * File: cvt2triphone.h
- * 
- * Description: 
- * 
- * Author: 
+ *
+ * Description:
+ *
+ * Author:
  * 	Eric H. Thayer (eht@cs.cmu.edu)
  *********************************************************************/
 
@@ -58,26 +58,26 @@ extern "C" {
 #include <sphinxbase/prim_type.h>
 
 int
-cvt2triphone(acmod_set_t *acmod_set,
-	     acmod_id_t *phone,
-	     char *btw_mark,
-	     uint32 n_phone);
+cvt2triphone ( acmod_set_t *acmod_set,
+               acmod_id_t *phone,
+               char *btw_mark,
+               uint32 n_phone );
 
 /* the following function is used for MMIE training
    lqin 2010-03 */
 int
-cvt2triphone_mmie(acmod_set_t *acmod_set,
-		  acmod_id_t *phone,
-		  acmod_id_t *l_phone,
-		  acmod_id_t *r_phone,
-		  char *btw_mark,
-		  uint32 n_phone);
+cvt2triphone_mmie ( acmod_set_t *acmod_set,
+                    acmod_id_t *phone,
+                    acmod_id_t *l_phone,
+                    acmod_id_t *r_phone,
+                    char *btw_mark,
+                    uint32 n_phone );
 /* end */
 
 #ifdef __cplusplus
 }
 #endif
-#endif /* CVT2TRIPHONE_H */ 
+#endif /* CVT2TRIPHONE_H */
 
 
 /*
@@ -86,7 +86,7 @@ cvt2triphone_mmie(acmod_set_t *acmod_set,
  * $Log$
  * Revision 1.7  2004/07/21  17:46:09  egouvea
  * Changed the license terms to make it the same as sphinx2 and sphinx3.
- * 
+ *
  * Revision 1.6  2004/07/17 08:00:22  arthchan2003
  * deeply regretted about one function prototype, now revert to the state where multiple pronounciations code doesn't exist
  *
@@ -110,3 +110,4 @@ cvt2triphone_mmie(acmod_set_t *acmod_set,
  *
  *
  */
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -1,5 +1,5 @@
 /* ====================================================================
- * Copyright (c) 1997-2000 Carnegie Mellon University.  All rights 
+ * Copyright (c) 1997-2000 Carnegie Mellon University.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -7,27 +7,27 @@
  * are met:
  *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer. 
+ *    notice, this list of conditions and the following disclaimer.
  *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
  *    the documentation and/or other materials provided with the
  *    distribution.
  *
- * This work was supported in part by funding from the Defense Advanced 
- * Research Projects Agency and the National Science Foundation of the 
+ * This work was supported in part by funding from the Defense Advanced
+ * Research Projects Agency and the National Science Foundation of the
  * United States of America, and the CMU Sphinx Speech Consortium.
  *
- * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND 
- * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
  * NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * ====================================================================
@@ -36,8 +36,8 @@
 /*********************************************************************
  *
  * File: div.c
- * 
- * Description: 
+ *
+ * Description:
  *    This file contains a collection of entropy and divergence
  *    measures of discrete
  *    distributions.
@@ -46,7 +46,7 @@
  *    log() package.  See individual pre-condition sections for the
  *    details for a given function.
  *
- * Author: 
+ * Author:
  * 	Eric Thayer (eht@cs.cmu.edu)
  *********************************************************************/
 
@@ -76,16 +76,15 @@ static float64 ln2lg2 = 1.442695041;	/* conversion factor for bits-of-info */
  *	p[i] must be a valid arg to log() for all i in 0..(n-1)
  */
 float64
-ent_d(float32 *p, uint32 n)
-{
+ent_d ( float32 *p, uint32 n ) {
     uint32 k;
     float64 y;
 
-    for (k = 0, y = 0; k < n; k++) {
-	assert(p[k] != 0);
-	
-	if (p[k] > 1e-8)
-	    y -= p[k] * log(p[k]);
+    for ( k = 0, y = 0; k < n; k++ ) {
+        assert ( p[k] != 0 );
+
+        if ( p[k] > 1e-8 )
+            y -= p[k] * log ( p[k] );
     }
 
     return y * ln2lg2;
@@ -113,13 +112,12 @@ ent_d(float32 *p, uint32 n)
  */
 
 float64
-ent_d_state(float32 **p, uint32 f, uint32 n)
-{
+ent_d_state ( float32 **p, uint32 f, uint32 n ) {
     uint32 j;
     float64 y;
 
-    for (j = 0, y = 0; j < f; j++) {
-	y += ent_d(p[j], n);
+    for ( j = 0, y = 0; j < f; j++ ) {
+        y += ent_d ( p[j], n );
     }
 
     return y;
@@ -145,16 +143,15 @@ ent_d_state(float32 **p, uint32 f, uint32 n)
  *	p[i]/q[i] must be a valid arg to log() for all i in 0..(n-1)
  */
 float64
-ddiv_d(float32 *p, float32 *q, uint32 n)
-{
+ddiv_d ( float32 *p, float32 *q, uint32 n ) {
     uint32 k;
     float64 y;
 
-    for (k = 0, y = 0; k < n; k++) {
-	assert(q[k] != 0);
+    for ( k = 0, y = 0; k < n; k++ ) {
+        assert ( q[k] != 0 );
 
-	if (p[k] > 0)
-	    y += p[k] * log(p[k] / q[k]);
+        if ( p[k] > 0 )
+            y += p[k] * log ( p[k] / q[k] );
     }
 
     return y * ln2lg2;
@@ -180,9 +177,8 @@ ddiv_d(float32 *p, float32 *q, uint32 n)
  *	p[i]/q[i] must be a valid arg to log() for all i in 0..(n-1)
  */
 float64
-div_d(float32 *p, float32 *q, uint32 n)
-{
-    return ddiv_d(p, q, n) + ddiv_d(q, p, n);
+div_d ( float32 *p, float32 *q, uint32 n ) {
+    return ddiv_d ( p, q, n ) + ddiv_d ( q, p, n );
 }
 
 /*
@@ -208,13 +204,12 @@ div_d(float32 *p, float32 *q, uint32 n)
  *		and k in 0..(n-1),
  */
 float64
-div_d_state(float32 **p, float32 **q, uint32 f, uint32 n)
-{
+div_d_state ( float32 **p, float32 **q, uint32 f, uint32 n ) {
     uint32 j;
     float64 y;
 
-    for (j = 0, y = 0; j < f; j++) {
-	y += div_d(p[j], q[j], n);
+    for ( j = 0, y = 0; j < f; j++ ) {
+        y += div_d ( p[j], q[j], n );
     }
 
     return y;
@@ -243,19 +238,18 @@ div_d_state(float32 **p, float32 **q, uint32 f, uint32 n)
  *		and k in 0..(n-1),
  */
 float64
-ddiv_d_state(float32 **p, float32 **q, uint32 f, uint32 n)
-{
+ddiv_d_state ( float32 **p, float32 **q, uint32 f, uint32 n ) {
     uint32 j;
     float64 y;
 
-    for (j = 0, y = 0; j < f; j++) {
-	y += ddiv_d(p[j], q[j], n);
+    for ( j = 0, y = 0; j < f; j++ ) {
+        y += ddiv_d ( p[j], q[j], n );
     }
 
     return y;
 }
 
-/* ADDITION FOR CONTINUOUS_TREE HMM 19 May 98 - 
+/* ADDITION FOR CONTINUOUS_TREE HMM 19 May 98 -
    Entropy/likelihood function for continuous gaussians PDFs */
 
 /*
@@ -279,19 +273,18 @@ ddiv_d_state(float32 **p, float32 **q, uint32 f, uint32 n)
 #define HAFLN2PI  0.9189385332
 
 float64
-ent_cont(float32 *mean, float32 *var, uint32 n)
-{
+ent_cont ( float32 *mean, float32 *var, uint32 n ) {
     uint32 k;
     float64 y;
 
-    for (k = 0, y = 0; k < n; k++) {
-        assert(var[k] != 0);
-        y += log(var[k]);
+    for ( k = 0, y = 0; k < n; k++ ) {
+        assert ( var[k] != 0 );
+        y += log ( var[k] );
     }
     y *= 0.5;
-    y += (float64)n*(HAFLN2PI + 0.5);
+    y += ( float64 ) n* ( HAFLN2PI + 0.5 );
 
-    return(-y * ln2lg2); /* Convert to log base 2 */
+    return ( -y * ln2lg2 ); /* Convert to log base 2 */
 }
 
 /* END ADDITION FOR CONTINUOUS_TREE */
@@ -302,7 +295,7 @@ ent_cont(float32 *mean, float32 *var, uint32 n)
  * $Log$
  * Revision 1.5  2004/07/21  18:05:39  egouvea
  * Changed the license terms to make it the same as sphinx2 and sphinx3.
- * 
+ *
  * Revision 1.4  2001/04/05 20:02:30  awb
  * *** empty log message ***
  *
@@ -317,6 +310,7 @@ ent_cont(float32 *mean, float32 *var, uint32 n)
  *
  * Revision 1.1  97/07/16  11:36:22  eht
  * Initial revision
- * 
+ *
  *
  */
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -1,5 +1,5 @@
 /* ====================================================================
- * Copyright (c) 1995-2000 Carnegie Mellon University.  All rights 
+ * Copyright (c) 1995-2000 Carnegie Mellon University.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -7,27 +7,27 @@
  * are met:
  *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer. 
+ *    notice, this list of conditions and the following disclaimer.
  *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
  *    the documentation and/or other materials provided with the
  *    distribution.
  *
- * This work was supported in part by funding from the Defense Advanced 
- * Research Projects Agency and the National Science Foundation of the 
+ * This work was supported in part by funding from the Defense Advanced
+ * Research Projects Agency and the National Science Foundation of the
  * United States of America, and the CMU Sphinx Speech Consortium.
  *
- * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND 
- * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
  * NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * ====================================================================
@@ -37,7 +37,7 @@
  * profile.h -- For timing and event counting.
  *
  * HISTORY
- * 
+ *
  * 27-Nov-95	M K Ravishankar (rkm@cs.cmu.edu) at Carnegie Mellon University
  * 		Created from Sphinx-II version.
  */
@@ -59,11 +59,11 @@ extern "C" {
 
 
 /* Event counter functions */
-int32 counter_new (char *name);
+int32 counter_new ( char *name );
 
-void counter_increment (int32 id, int32 count);	/* Increment counter by count */
+void counter_increment ( int32 id, int32 count );	/* Increment counter by count */
 
-void counter_print_all (FILE *fp);
+void counter_print_all ( FILE *fp );
 void counter_reset_all ( void );
 
 
@@ -84,20 +84,20 @@ typedef struct timing_s {
 timing_t *timing_new ( void );	/* Obtain and initialize a new timing module */
 
 /* Start timing */
-void timing_start (timing_t *tm);
+void timing_start ( timing_t *tm );
 
 /* Stop timing and accumulate t_cpu, t_elapsed, t_tot_cpu, t_tot_elapsed */
-void timing_stop (timing_t *tm);
+void timing_stop ( timing_t *tm );
 
 /* Reset t_cpu, t_elapsed to 0.0 */
-void timing_reset (timing_t *tm);
+void timing_reset ( timing_t *tm );
 
 /* Register a timing_t structure under a name */
-void timing_bind_name(const char *name, timing_t *tmr);
+void timing_bind_name ( const char *name, timing_t *tmr );
 
 /* Given a name, return the timing_t structure
    associated with it.  Returns NULL if no such structure */
-timing_t *timing_get(const char *name);
+timing_t *timing_get ( const char *name );
 
 #ifdef __cplusplus
 }
@@ -105,3 +105,4 @@ timing_t *timing_get(const char *name);
 
 
 #endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

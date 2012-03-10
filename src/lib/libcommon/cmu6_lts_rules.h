@@ -38,7 +38,7 @@
 /*  CMU(6) lettter to sound rules (decision graphs)                      */
 /*                                                                       */
 /*************************************************************************/
-   /** letter a **/
+/** letter a **/
 #define LTS_STATE_a_0 0x00,0x00
 #define LTS_STATE_a_1 0x01,0x00
 #define LTS_STATE_a_2 0x02,0x00
@@ -2934,7 +2934,7 @@
 #define LTS_STATE_a_2892 0x4b,0x0b
 #define LTS_STATE_a_2893 0x4c,0x0b
 #define LTS_STATE_a_2894 0x4d,0x0b
-   /** letter b **/
+/** letter b **/
 #define LTS_STATE_b_0 0x4e,0x0b
 #define LTS_STATE_b_1 0x4f,0x0b
 #define LTS_STATE_b_2 0x50,0x0b
@@ -2957,7 +2957,7 @@
 #define LTS_STATE_b_19 0x60,0x0b
 #define LTS_STATE_b_20 0x61,0x0b
 #define LTS_STATE_b_21 0x62,0x0b
-   /** letter c **/
+/** letter c **/
 #define LTS_STATE_c_0 0x63,0x0b
 #define LTS_STATE_c_1 0x64,0x0b
 #define LTS_STATE_c_2 0x65,0x0b
@@ -3304,7 +3304,7 @@
 #define LTS_STATE_c_343 0xb9,0x0c
 #define LTS_STATE_c_344 0xba,0x0c
 #define LTS_STATE_c_345 0xbb,0x0c
-   /** letter d **/
+/** letter d **/
 #define LTS_STATE_d_0 0xbc,0x0c
 #define LTS_STATE_d_1 0xbd,0x0c
 #define LTS_STATE_d_2 0xbe,0x0c
@@ -3409,7 +3409,7 @@
 #define LTS_STATE_d_101 0x20,0x0d
 #define LTS_STATE_d_102 0x21,0x0d
 #define LTS_STATE_d_103 0x22,0x0d
-   /** letter e **/
+/** letter e **/
 #define LTS_STATE_e_0 0x23,0x0d
 #define LTS_STATE_e_1 0x24,0x0d
 #define LTS_STATE_e_2 0x25,0x0d
@@ -5695,12 +5695,12 @@
 #define LTS_STATE_e_2282 0x0c,0x16
 #define LTS_STATE_e_2283 0x0d,0x16
 #define LTS_STATE_e_2284 0x0e,0x16
-   /** letter f **/
+/** letter f **/
 #define LTS_STATE_f_0 0x0f,0x16
 #define LTS_STATE_f_1 0x10,0x16
 #define LTS_STATE_f_2 0x11,0x16
 #define LTS_STATE_f_3 0x12,0x16
-   /** letter g **/
+/** letter g **/
 #define LTS_STATE_g_0 0x12,0x16
 #define LTS_STATE_g_1 0x13,0x16
 #define LTS_STATE_g_2 0x14,0x16
@@ -5991,7 +5991,7 @@
 #define LTS_STATE_g_287 0x30,0x17
 #define LTS_STATE_g_288 0x31,0x17
 #define LTS_STATE_g_289 0x32,0x17
-   /** letter h **/
+/** letter h **/
 #define LTS_STATE_h_0 0x33,0x17
 #define LTS_STATE_h_1 0x34,0x17
 #define LTS_STATE_h_2 0x35,0x17
@@ -6104,7 +6104,7 @@
 #define LTS_STATE_h_109 0x9f,0x17
 #define LTS_STATE_h_110 0xa0,0x17
 #define LTS_STATE_h_111 0xa1,0x17
-   /** letter i **/
+/** letter i **/
 #define LTS_STATE_i_0 0xa2,0x17
 #define LTS_STATE_i_1 0xa3,0x17
 #define LTS_STATE_i_2 0xa4,0x17
@@ -7797,7 +7797,7 @@
 #define LTS_STATE_i_1689 0x3a,0x1e
 #define LTS_STATE_i_1690 0x3b,0x1e
 #define LTS_STATE_i_1691 0x3c,0x1e
-   /** letter j **/
+/** letter j **/
 #define LTS_STATE_j_0 0x3d,0x1e
 #define LTS_STATE_j_1 0x3e,0x1e
 #define LTS_STATE_j_2 0x3f,0x1e
@@ -7820,7 +7820,7 @@
 #define LTS_STATE_j_19 0x4f,0x1e
 #define LTS_STATE_j_20 0x50,0x1e
 #define LTS_STATE_j_21 0x51,0x1e
-   /** letter k **/
+/** letter k **/
 #define LTS_STATE_k_0 0x52,0x1e
 #define LTS_STATE_k_1 0x53,0x1e
 #define LTS_STATE_k_2 0x54,0x1e
@@ -7828,7 +7828,7 @@
 #define LTS_STATE_k_4 0x56,0x1e
 #define LTS_STATE_k_5 0x57,0x1e
 #define LTS_STATE_k_6 0x58,0x1e
-   /** letter l **/
+/** letter l **/
 #define LTS_STATE_l_0 0x58,0x1e
 #define LTS_STATE_l_1 0x59,0x1e
 #define LTS_STATE_l_2 0x5a,0x1e
@@ -8015,7 +8015,7 @@
 #define LTS_STATE_l_183 0x0e,0x1f
 #define LTS_STATE_l_184 0x0f,0x1f
 #define LTS_STATE_l_185 0x10,0x1f
-   /** letter m **/
+/** letter m **/
 #define LTS_STATE_m_0 0x11,0x1f
 #define LTS_STATE_m_1 0x12,0x1f
 #define LTS_STATE_m_2 0x13,0x1f
@@ -8039,7 +8039,7 @@
 #define LTS_STATE_m_20 0x24,0x1f
 #define LTS_STATE_m_21 0x25,0x1f
 #define LTS_STATE_m_22 0x26,0x1f
-   /** letter n **/
+/** letter n **/
 #define LTS_STATE_n_0 0x27,0x1f
 #define LTS_STATE_n_1 0x28,0x1f
 #define LTS_STATE_n_2 0x29,0x1f
@@ -8127,7 +8127,7 @@
 #define LTS_STATE_n_84 0x7a,0x1f
 #define LTS_STATE_n_85 0x7b,0x1f
 #define LTS_STATE_n_86 0x7c,0x1f
-   /** letter o **/
+/** letter o **/
 #define LTS_STATE_o_0 0x7d,0x1f
 #define LTS_STATE_o_1 0x7e,0x1f
 #define LTS_STATE_o_2 0x7f,0x1f
@@ -10066,7 +10066,7 @@
 #define LTS_STATE_o_1935 0x0b,0x27
 #define LTS_STATE_o_1936 0x0c,0x27
 #define LTS_STATE_o_1937 0x0d,0x27
-   /** letter p **/
+/** letter p **/
 #define LTS_STATE_p_0 0x0e,0x27
 #define LTS_STATE_p_1 0x0f,0x27
 #define LTS_STATE_p_2 0x10,0x27
@@ -10088,10 +10088,10 @@
 #define LTS_STATE_p_18 0x1f,0x27
 #define LTS_STATE_p_19 0x20,0x27
 #define LTS_STATE_p_20 0x21,0x27
-   /** letter q **/
+/** letter q **/
 #define LTS_STATE_q_0 0x22,0x27
 #define LTS_STATE_q_1 0x23,0x27
-   /** letter r **/
+/** letter r **/
 #define LTS_STATE_r_0 0x23,0x27
 #define LTS_STATE_r_1 0x24,0x27
 #define LTS_STATE_r_2 0x25,0x27
@@ -11092,7 +11092,7 @@
 #define LTS_STATE_r_997 0x07,0x2b
 #define LTS_STATE_r_998 0x08,0x2b
 #define LTS_STATE_r_999 0x09,0x2b
-   /** letter s **/
+/** letter s **/
 #define LTS_STATE_s_0 0x0a,0x2b
 #define LTS_STATE_s_1 0x0b,0x2b
 #define LTS_STATE_s_2 0x0c,0x2b
@@ -11771,7 +11771,7 @@
 #define LTS_STATE_s_675 0xac,0x2d
 #define LTS_STATE_s_676 0xad,0x2d
 #define LTS_STATE_s_677 0xae,0x2d
-   /** letter t **/
+/** letter t **/
 #define LTS_STATE_t_0 0xaf,0x2d
 #define LTS_STATE_t_1 0xb0,0x2d
 #define LTS_STATE_t_2 0xb1,0x2d
@@ -11994,7 +11994,7 @@
 #define LTS_STATE_t_219 0x89,0x2e
 #define LTS_STATE_t_220 0x8a,0x2e
 #define LTS_STATE_t_221 0x8b,0x2e
-   /** letter u **/
+/** letter u **/
 #define LTS_STATE_u_0 0x8c,0x2e
 #define LTS_STATE_u_1 0x8d,0x2e
 #define LTS_STATE_u_2 0x8e,0x2e
@@ -12823,12 +12823,12 @@
 #define LTS_STATE_u_825 0xc4,0x31
 #define LTS_STATE_u_826 0xc5,0x31
 #define LTS_STATE_u_827 0xc6,0x31
-   /** letter v **/
+/** letter v **/
 #define LTS_STATE_v_0 0xc7,0x31
 #define LTS_STATE_v_1 0xc8,0x31
 #define LTS_STATE_v_2 0xc9,0x31
 #define LTS_STATE_v_3 0xca,0x31
-   /** letter w **/
+/** letter w **/
 #define LTS_STATE_w_0 0xca,0x31
 #define LTS_STATE_w_1 0xcb,0x31
 #define LTS_STATE_w_2 0xcc,0x31
@@ -12909,7 +12909,7 @@
 #define LTS_STATE_w_77 0x16,0x32
 #define LTS_STATE_w_78 0x17,0x32
 #define LTS_STATE_w_79 0x18,0x32
-   /** letter x **/
+/** letter x **/
 #define LTS_STATE_x_0 0x19,0x32
 #define LTS_STATE_x_1 0x1a,0x32
 #define LTS_STATE_x_2 0x1b,0x32
@@ -12933,7 +12933,7 @@
 #define LTS_STATE_x_20 0x2c,0x32
 #define LTS_STATE_x_21 0x2d,0x32
 #define LTS_STATE_x_22 0x2e,0x32
-   /** letter y **/
+/** letter y **/
 #define LTS_STATE_y_0 0x2f,0x32
 #define LTS_STATE_y_1 0x30,0x32
 #define LTS_STATE_y_2 0x31,0x32
@@ -13158,7 +13158,7 @@
 #define LTS_STATE_y_221 0x0b,0x33
 #define LTS_STATE_y_222 0x0c,0x33
 #define LTS_STATE_y_223 0x0d,0x33
-   /** letter z **/
+/** letter z **/
 #define LTS_STATE_z_0 0x0e,0x33
 #define LTS_STATE_z_1 0x0f,0x33
 #define LTS_STATE_z_2 0x10,0x33
@@ -13190,3 +13190,4 @@
 #define LTS_STATE_z_28 0x29,0x33
 #define LTS_STATE_z_29 0x2a,0x33
 #define LTS_STATE_z_30 0x2b,0x33
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

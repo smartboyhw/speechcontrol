@@ -1,5 +1,5 @@
 /* ====================================================================
- * Copyright (c) 1995-2000 Carnegie Mellon University.  All rights 
+ * Copyright (c) 1995-2000 Carnegie Mellon University.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -7,27 +7,27 @@
  * are met:
  *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer. 
+ *    notice, this list of conditions and the following disclaimer.
  *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
  *    the documentation and/or other materials provided with the
  *    distribution.
  *
- * This work was supported in part by funding from the Defense Advanced 
- * Research Projects Agency and the National Science Foundation of the 
+ * This work was supported in part by funding from the Defense Advanced
+ * Research Projects Agency and the National Science Foundation of the
  * United States of America, and the CMU Sphinx Speech Consortium.
  *
- * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND 
- * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
  * NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * ====================================================================
@@ -36,10 +36,10 @@
 /*********************************************************************
  *
  * File: lexicon.c
- * 
- * Description: 
- * 
- * Author: 
+ *
+ * Description:
+ *
+ * Author:
  * 	Eric H. Thayer (eht@cs.cmu.edu)
  *********************************************************************/
 
@@ -56,89 +56,84 @@
 #include <string.h>
 
 static int
-add_word(char *ortho,
-	 uint32 wid,
-	 lexicon_t *l,
-	 lex_entry_t *e)
-{
+add_word ( char *ortho,
+           uint32 wid,
+           lexicon_t *l,
+           lex_entry_t *e ) {
     e->ortho = ortho;
     e->word_id = wid;
 
-    if (hash_enter(l->ht,
-		   e->ortho,
-		   (void *)e) != 0) {
-	E_FATAL("hash add failed\n");
+    if ( hash_enter ( l->ht,
+                      e->ortho,
+                      ( void * ) e ) != 0 ) {
+        E_FATAL ( "hash add failed\n" );
     }
-    
+
     return S3_SUCCESS;
 }
 
 static int
-add_phones(uint32 n_phone,
-	   lex_entry_t *e,
-	   acmod_set_t *acmod_set)
-{
+add_phones ( uint32 n_phone,
+             lex_entry_t *e,
+             acmod_set_t *acmod_set ) {
     uint32 i;
     char *nxt_phone;
 
-    e->phone = ckd_calloc(n_phone, sizeof(char *));
+    e->phone = ckd_calloc ( n_phone, sizeof ( char * ) );
 
-    e->ci_acmod_id = ckd_calloc(n_phone, sizeof(uint32));
+    e->ci_acmod_id = ckd_calloc ( n_phone, sizeof ( uint32 ) );
 
     e->phone_cnt = n_phone;
 
-    for (i = 0; (nxt_phone = strtok(NULL, " \t")); i++) {
-	e->phone[i] = nxt_phone;
-	e->ci_acmod_id[i] =
-	    acmod_set_name2id(acmod_set, nxt_phone);
+    for ( i = 0; ( nxt_phone = strtok ( NULL, " \t" ) ); i++ ) {
+        e->phone[i] = nxt_phone;
+        e->ci_acmod_id[i] =
+            acmod_set_name2id ( acmod_set, nxt_phone );
 
-	if (e->ci_acmod_id[i] == NO_ACMOD) {
-	    E_ERROR("Unknown phone %s\n", nxt_phone);
-	    ckd_free(e->phone);
-	    e->phone = NULL;
+        if ( e->ci_acmod_id[i] == NO_ACMOD ) {
+            E_ERROR ( "Unknown phone %s\n", nxt_phone );
+            ckd_free ( e->phone );
+            e->phone = NULL;
 
-	    ckd_free(e->ci_acmod_id);
-	    e->ci_acmod_id = NULL;
+            ckd_free ( e->ci_acmod_id );
+            e->ci_acmod_id = NULL;
 
-	    e->phone_cnt = 0;
+            e->phone_cnt = 0;
 
-	    return S3_ERROR;
-	}
+            return S3_ERROR;
+        }
     }
-    
-    assert(i == n_phone);
+
+    assert ( i == n_phone );
 
     return S3_SUCCESS;
 }
 
-lexicon_t *lexicon_new()
-{
+lexicon_t *lexicon_new() {
     lexicon_t *new;
-    
-    new = ckd_calloc(1, sizeof(lexicon_t));
+
+    new = ckd_calloc ( 1, sizeof ( lexicon_t ) );
 
     new->head = new->tail = NULL;
 
     new->entry_cnt = 0;
 
-    new->ht = hash_new("lex", 64000);
+    new->ht = hash_new ( "lex", 64000 );
 
     return new;
 }
 
-lex_entry_t *lexicon_append_entry(lexicon_t *lex)
-{
+lex_entry_t *lexicon_append_entry ( lexicon_t *lex ) {
     lex_entry_t *new;
 
-    new = ckd_calloc(1, sizeof(lex_entry_t));
+    new = ckd_calloc ( 1, sizeof ( lex_entry_t ) );
 
-    if (lex->head == NULL) {
-	lex->head = lex->tail = new;
-    }
-    else {
-	lex->tail->next = new;
+    if ( lex->head == NULL ) {
+        lex->head = lex->tail = new;
+    } else {
+        lex->tail->next = new;
 
-	lex->tail = new;
+        lex->tail = new;
     }
 
     lex->entry_cnt++;
@@ -146,10 +141,9 @@ lex_entry_t *lexicon_append_entry(lexicon_t *lex)
     return new;
 }
 
-lexicon_t *lexicon_read(lexicon_t *prior_lex,
-			const char *filename,
-			acmod_set_t *acmod_set)
-{
+lexicon_t *lexicon_read ( lexicon_t *prior_lex,
+                          const char *filename,
+                          acmod_set_t *acmod_set ) {
     FILE *lex_fp;
     char line[1024];
     char *lex_line;
@@ -161,125 +155,121 @@ lexicon_t *lexicon_read(lexicon_t *prior_lex,
     int       reuse_entry = FALSE;
     char      *word;
 
-    lex_fp = fopen(filename, "r");
-    if (lex_fp == NULL) {
-	E_FATAL_SYSTEM("Unable to open lexicon %s for reading\n",
-		       filename);
+    lex_fp = fopen ( filename, "r" );
+    if ( lex_fp == NULL ) {
+        E_FATAL_SYSTEM ( "Unable to open lexicon %s for reading\n",
+                         filename );
     }
 
-    if (prior_lex)
-	lex = prior_lex;
+    if ( prior_lex )
+        lex = prior_lex;
     else
-	lex = lexicon_new();
-    if (lex->phone_set == NULL)
-	lex->phone_set = acmod_set;
-    
-    for (start_wid = wid = lex->entry_cnt;
-	 read_line(line, 1023, &lineno, lex_fp) != NULL;
-	 /* wid incremented in body of loop */ ) {
-	if (line[0] == 0) {
-	    E_WARN("Lexicon %s has a blank line at line %d\n",
-		   filename, lineno);
-	    continue;
-	}
-	
-	if (!reuse_entry) {
-	    next_entry = lexicon_append_entry(lex);
-	}
-	else {
-	    reuse_entry = FALSE; /* reset to standard case */
-	}
+        lex = lexicon_new();
+    if ( lex->phone_set == NULL )
+        lex->phone_set = acmod_set;
 
-	/* allocate space for string.  It will be parsed
-	 * by strtok() */
-	lex_line = strdup(line);
+    for ( start_wid = wid = lex->entry_cnt;
+            read_line ( line, 1023, &lineno, lex_fp ) != NULL;
+            /* wid incremented in body of loop */ ) {
+        if ( line[0] == 0 ) {
+            E_WARN ( "Lexicon %s has a blank line at line %d\n",
+                     filename, lineno );
+            continue;
+        }
 
-	/* get the word and make a hash table entry for
-	   this lexicon entry */
+        if ( !reuse_entry ) {
+            next_entry = lexicon_append_entry ( lex );
+        } else {
+            reuse_entry = FALSE; /* reset to standard case */
+        }
 
-	word = strtok(lex_line, " \t");	
+        /* allocate space for string.  It will be parsed
+         * by strtok() */
+        lex_line = strdup ( line );
 
-	if (add_word(word,
-		     wid,
-		     lex,
-		     next_entry) != S3_SUCCESS) {
-	    E_ERROR("%s duplicate entry?\n", word);
+        /* get the word and make a hash table entry for
+           this lexicon entry */
 
-	    reuse_entry = TRUE;	/* Since this line is skipped, reuse
+        word = strtok ( lex_line, " \t" );
+
+        if ( add_word ( word,
+                        wid,
+                        lex,
+                        next_entry ) != S3_SUCCESS ) {
+            E_ERROR ( "%s duplicate entry?\n", word );
+
+            reuse_entry = TRUE;	/* Since this line is skipped, reuse
 				 * the lex entry for the next line */
-	    continue;
-	}
+            continue;
+        }
 
-	/* n_words() counts the # of space separated "words" on a line */
-	n_phone = n_words(line)-1;
+        /* n_words() counts the # of space separated "words" on a line */
+        n_phone = n_words ( line )-1;
 
 #ifdef LEXICON_VERBOSE
-	E_INFO("%s %d phones\n", line, n_phone);
+        E_INFO ( "%s %d phones\n", line, n_phone );
 #endif
 
-	/* read the phones, convert to ids and add them
-	   to the phone list for this entry */
-	if (add_phones(n_phone, next_entry, acmod_set) != S3_SUCCESS) {
-	    E_ERROR("pronunciation for %s has undefined phones; skipping.\n", word);
-	    
-	    reuse_entry = TRUE;
+        /* read the phones, convert to ids and add them
+           to the phone list for this entry */
+        if ( add_phones ( n_phone, next_entry, acmod_set ) != S3_SUCCESS ) {
+            E_ERROR ( "pronunciation for %s has undefined phones; skipping.\n", word );
 
-	    continue;
-	}
+            reuse_entry = TRUE;
 
-	++wid;	/* only happens should everything be successful */
+            continue;
+        }
+
+        ++wid;	/* only happens should everything be successful */
     }
 
-    E_INFO("%d entries added from %s\n",
-	   wid - start_wid, filename);
-			  
-    fclose(lex_fp);
-    
+    E_INFO ( "%d entries added from %s\n",
+             wid - start_wid, filename );
+
+    fclose ( lex_fp );
+
     return lex;
 }
 
-lex_entry_t *lexicon_lookup(lexicon_t *lex, char *ortho)
-{
+lex_entry_t *lexicon_lookup ( lexicon_t *lex, char *ortho ) {
     lex_entry_t *cur;
-    
-    if (hash_lookup(lex->ht, ortho, (void **)&cur) == 0) {
-	return cur;
-    }
-    else if (lex->lts_rules) {
-        int i, wid;
-	char *word;
 
-	E_INFO("No defined pronunciation for %s, using LTS prediction: ", ortho);
-	wid = lex->entry_cnt;
-	cur = lexicon_append_entry(lex);
-	lts_apply(ortho, "", lex->lts_rules, cur);
-	/* Check that all the phones are in the mdef (we have real
-	 * problems if not!) */
-	for (i = 0; i < cur->phone_cnt; ++i) {
-	    E_INFOCONT("%s ", cur->phone[i]);
-	    cur->ci_acmod_id[i] =
-		acmod_set_name2id(lex->phone_set, cur->phone[i]);
-	    if (cur->ci_acmod_id[i] == NO_ACMOD) {
-		E_INFOCONT("\n");
-		E_ERROR("Unknown phone %s\n", cur->phone[i]);
-		ckd_free(cur->phone);
-		cur->phone = NULL;
-		ckd_free(cur->ci_acmod_id);
-		cur->ci_acmod_id = NULL;
-		cur->phone_cnt = 0;
-		return NULL;
-	    }
-	}
-	E_INFOCONT("\n");
-	word = ckd_salloc(ortho);
-	if (add_word(word, wid, lex, cur) != S3_SUCCESS) {
-	    E_ERROR("Failed to add LTS pronunciation to lexicon!\n");
-	    return NULL;
-	}
-	return cur;
-   }
-    else
-	return NULL;
+    if ( hash_lookup ( lex->ht, ortho, ( void ** ) &cur ) == 0 ) {
+        return cur;
+    } else if ( lex->lts_rules ) {
+        int i, wid;
+        char *word;
+
+        E_INFO ( "No defined pronunciation for %s, using LTS prediction: ", ortho );
+        wid = lex->entry_cnt;
+        cur = lexicon_append_entry ( lex );
+        lts_apply ( ortho, "", lex->lts_rules, cur );
+        /* Check that all the phones are in the mdef (we have real
+         * problems if not!) */
+        for ( i = 0; i < cur->phone_cnt; ++i ) {
+            E_INFOCONT ( "%s ", cur->phone[i] );
+            cur->ci_acmod_id[i] =
+                acmod_set_name2id ( lex->phone_set, cur->phone[i] );
+            if ( cur->ci_acmod_id[i] == NO_ACMOD ) {
+                E_INFOCONT ( "\n" );
+                E_ERROR ( "Unknown phone %s\n", cur->phone[i] );
+                ckd_free ( cur->phone );
+                cur->phone = NULL;
+                ckd_free ( cur->ci_acmod_id );
+                cur->ci_acmod_id = NULL;
+                cur->phone_cnt = 0;
+                return NULL;
+            }
+        }
+        E_INFOCONT ( "\n" );
+        word = ckd_salloc ( ortho );
+        if ( add_word ( word, wid, lex, cur ) != S3_SUCCESS ) {
+            E_ERROR ( "Failed to add LTS pronunciation to lexicon!\n" );
+            return NULL;
+        }
+        return cur;
+    } else
+        return NULL;
 }
 
 /*
@@ -288,7 +278,7 @@ lex_entry_t *lexicon_lookup(lexicon_t *lex, char *ortho)
  * $Log$
  * Revision 1.8  2005/09/16  20:08:40  dhdfu
  * fix a memory problem - hash_enter does not copy keys
- * 
+ *
  * Revision 1.7  2005/09/15 20:05:55  dhdfu
  * fix handling of wids, add a FIXME because for some reason the hashing is not working (though otherwise things are fine)
  *
@@ -315,7 +305,7 @@ lex_entry_t *lexicon_lookup(lexicon_t *lex, char *ortho)
  *
  * Revision 1.11  97/07/16  11:36:22  eht
  * *** empty log message ***
- * 
+ *
  * Revision 1.10  1996/07/29  16:36:56  eht
  * Incorporate Ravi's new hashing module
  *
@@ -346,3 +336,4 @@ lex_entry_t *lexicon_lookup(lexicon_t *lex, char *ortho)
  *
  *
  */
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

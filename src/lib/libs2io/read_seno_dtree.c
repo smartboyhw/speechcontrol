@@ -53,50 +53,46 @@ static char rcsid[] = "@(#)$Id: read_seno_dtree.c 10590 2010-11-02 16:15:37Z nsh
 #include <assert.h>
 
 static int
-read_header_line(uint32 *n_base,
-		 char *id,
-		 uint32 *n_cd,
-		 FILE *fp)
-{
-    if (fscanf(fp, "%u:%s %u",
-	       n_base, id, n_cd) == 3) {
-	return S3_SUCCESS;
-    }
-    else {
-	return S3_ERROR;
+read_header_line ( uint32 *n_base,
+                   char *id,
+                   uint32 *n_cd,
+                   FILE *fp ) {
+    if ( fscanf ( fp, "%u:%s %u",
+                  n_base, id, n_cd ) == 3 ) {
+        return S3_SUCCESS;
+    } else {
+        return S3_ERROR;
     }
 }
 
 static int
-read_node_line(float32 *out_entropy,
-	       uint32 *out_key,
-	       uint32 *out_left_key,
-	       uint32 *out_right_key,
-	       char *q_str,
-	       FILE *fp)
-{
+read_node_line ( float32 *out_entropy,
+                 uint32 *out_key,
+                 uint32 *out_left_key,
+                 uint32 *out_right_key,
+                 char *q_str,
+                 FILE *fp ) {
     int ret;
 
-    ret = fscanf(fp, "%f %u %u %u",
-		 out_entropy, out_key, out_left_key, out_right_key);
+    ret = fscanf ( fp, "%f %u %u %u",
+                   out_entropy, out_key, out_left_key, out_right_key );
 
-    if (ret != 4) {
-	if (ret < 0)
-	    return -1;
-	else
-	    return 0;
+    if ( ret != 4 ) {
+        if ( ret < 0 )
+            return -1;
+        else
+            return 0;
     }
 
-    fgets(q_str, 1024, fp);
-    q_str[strlen(q_str)-1] = '\0';
+    fgets ( q_str, 1024, fp );
+    q_str[strlen ( q_str )-1] = '\0';
 
     return 1;
 }
 
 int
-read_seno_dtree_file(dtree_t **out_dt,
-		     const char *file_name)
-{
+read_seno_dtree_file ( dtree_t **out_dt,
+                       const char *file_name ) {
     uint32 n_base;
     uint32 n_cd;
     char tree_id[64];
@@ -111,78 +107,76 @@ read_seno_dtree_file(dtree_t **out_dt,
     comp_quest_t *q;
     float32 *q2ent;
 
-    *out_dt = dt = (dtree_t *)ckd_calloc(1, sizeof(dtree_t));
+    *out_dt = dt = ( dtree_t * ) ckd_calloc ( 1, sizeof ( dtree_t ) );
 
     dt->tree = tree = bt_new();
 
-    fp = fopen(file_name, "r");
-    if (fp == NULL) {
-	E_WARN_SYSTEM("Unable to open %s for reading", file_name);
+    fp = fopen ( file_name, "r" );
+    if ( fp == NULL ) {
+        E_WARN_SYSTEM ( "Unable to open %s for reading", file_name );
 
-	return S3_ERROR;
+        return S3_ERROR;
     }
 
-    for (n_quest = 0; fgets(q_str, 1024, fp) != NULL; n_quest++);
+    for ( n_quest = 0; fgets ( q_str, 1024, fp ) != NULL; n_quest++ );
 
     --n_quest;	/* account for header line */
 
     dt->n_quest = n_quest;
 
-    rewind(fp);
+    rewind ( fp );
 
-    read_header_line(&n_base, tree_id, &n_cd, fp);
-    for (i = 0; read_node_line(&ent, &key, &l_key, &r_key, q_str, fp) > 0; i++) {
-	if (n_key < l_key)
-	    n_key = l_key;
-	if (n_key < r_key)
-	    n_key = r_key;
+    read_header_line ( &n_base, tree_id, &n_cd, fp );
+    for ( i = 0; read_node_line ( &ent, &key, &l_key, &r_key, q_str, fp ) > 0; i++ ) {
+        if ( n_key < l_key )
+            n_key = l_key;
+        if ( n_key < r_key )
+            n_key = r_key;
     }
     ++n_key;
     dt->n_key = n_key;
 
-    rewind(fp);
+    rewind ( fp );
 
-    read_header_line(&n_base, tree_id, &n_cd, fp);
+    read_header_line ( &n_base, tree_id, &n_cd, fp );
 
-    E_INFO("Reading tree %s (%u base phones, %u CD phones, %u quest)\n",
-	   tree_id, n_base, n_cd, n_quest);
+    E_INFO ( "Reading tree %s (%u base phones, %u CD phones, %u quest)\n",
+             tree_id, n_base, n_cd, n_quest );
 
-    dt->quest = q = (comp_quest_t *)ckd_calloc(n_quest,
-						    sizeof(comp_quest_t));
-    dt->k2q   = k2q   = (uint32 *)ckd_calloc(n_key, sizeof(uint32));
-    dt->q2ent = q2ent = (float32 *)ckd_calloc(n_quest, sizeof(float32));
+    dt->quest = q = ( comp_quest_t * ) ckd_calloc ( n_quest,
+                    sizeof ( comp_quest_t ) );
+    dt->k2q   = k2q   = ( uint32 * ) ckd_calloc ( n_key, sizeof ( uint32 ) );
+    dt->q2ent = q2ent = ( float32 * ) ckd_calloc ( n_quest, sizeof ( float32 ) );
 
-    for (i = 0; i < n_key; i++) {
-	k2q[i] = NO_MAP;
+    for ( i = 0; i < n_key; i++ ) {
+        k2q[i] = NO_MAP;
     }
 
-    for (i = 0; read_node_line(&ent, &key, &l_key, &r_key, q_str, fp) > 0; i++) {
-	if (tree->root) {
-	    E_INFO("%u\n", key);
+    for ( i = 0; read_node_line ( &ent, &key, &l_key, &r_key, q_str, fp ) > 0; i++ ) {
+        if ( tree->root ) {
+            E_INFO ( "%u\n", key );
 
-	    node = bt_find_node(tree, key);
-	    if (node) {
-		/* grow left and right children */
-		bt_add_left(node, l_key);
-		bt_add_right(node, r_key);
-	    }
-	    else {
-		E_FATAL("Find node w/ key %u failed\n", key);
-	    }
-	}
-	else {
-	    E_INFO("root %u\n", key);
-	    tree->root = bt_new_node(key);
-	    bt_add_left(tree->root, l_key);
-	    bt_add_right(tree->root, r_key);
-	}
+            node = bt_find_node ( tree, key );
+            if ( node ) {
+                /* grow left and right children */
+                bt_add_left ( node, l_key );
+                bt_add_right ( node, r_key );
+            } else {
+                E_FATAL ( "Find node w/ key %u failed\n", key );
+            }
+        } else {
+            E_INFO ( "root %u\n", key );
+            tree->root = bt_new_node ( key );
+            bt_add_left ( tree->root, l_key );
+            bt_add_right ( tree->root, r_key );
+        }
 
-	k2q[key] = i;
-	q2ent[i] = ent;
-	parse_compound_q(&q[i], q_str);
+        k2q[key] = i;
+        q2ent[i] = ent;
+        parse_compound_q ( &q[i], q_str );
     }
 
-    assert(i == n_quest);
+    assert ( i == n_quest );
 
     return S3_SUCCESS;
 }
@@ -210,3 +204,4 @@ read_seno_dtree_file(dtree_t **out_dt,
  *
  *
  */
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

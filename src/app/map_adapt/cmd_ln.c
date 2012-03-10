@@ -10,10 +10,10 @@
  *********************************************************************
  *
  * File: parse_cmd_ln.c
- * 
- * Description: 
- * 
- * Author: 
+ *
+ * Description:
+ *
+ * Author:
  * 	Sam-Joo Doh <sjdoh@cs.cmu.edu>
  *	David Huggins-Daines <dhuggins@cs.cmu.edu>
  *********************************************************************/
@@ -37,22 +37,22 @@
    given on the command line */
 
 int
-parse_cmd_ln(int argc, char *argv[])
-{
+parse_cmd_ln ( int argc, char *argv[] ) {
 #include "cmd_ln_defn.h"
 
-    cmd_ln_parse(defn, argc, argv, 1);
+    cmd_ln_parse ( defn, argc, argv, 1 );
 
-    if(cmd_ln_int32("-help")){
-      printf("%s\n\n",helpstr);
-      exit(0);
+    if ( cmd_ln_int32 ( "-help" ) ) {
+        printf ( "%s\n\n",helpstr );
+        exit ( 0 );
     }
 
-    if(cmd_ln_int32("-example")){
-      printf("%s\n\n",examplestr);
-      exit(0);
+    if ( cmd_ln_int32 ( "-example" ) ) {
+        printf ( "%s\n\n",examplestr );
+        exit ( 0 );
     }
 
     return 0;
 }
 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

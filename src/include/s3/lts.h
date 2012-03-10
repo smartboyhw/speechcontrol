@@ -77,8 +77,8 @@ typedef struct cst_lts_rule_struct lts_rule_t;
 
 struct lex_entry_str; /* This is actually lex_entry_t */
 cst_lts_rules *new_lts_rules();
-int lts_apply(const char *word,const char *feats,
-	      const cst_lts_rules *r, struct lex_entry_str *out_phones);
+int lts_apply ( const char *word,const char *feats,
+                const cst_lts_rules *r, struct lex_entry_str *out_phones );
 
 extern const cst_lts_rules cmu6_lts_rules;
 
@@ -87,3 +87,4 @@ extern const cst_lts_rules cmu6_lts_rules;
 #endif
 #endif
 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

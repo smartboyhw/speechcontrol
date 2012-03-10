@@ -62,8 +62,6 @@ add_definitions(${SPCHCNTRL_APP_COMPILE_DEFINITIONS})
 
 ## Add sub-directories.
 add_subdirectory(cmake)
-add_subdirectory(bw)
-add_subdirectory(map_adapt)
 add_subdirectory(desktopcontrol)
 add_subdirectory(dictation)
 add_subdirectory(sessions)

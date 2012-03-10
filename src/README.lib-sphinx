@@ -1,9 +1,5 @@
-LIBRARIES
+SphinxTrain librarie
 ----------
-libcep_feat : Feature manipulation library.  Includes
-	      stuff like cepstral mean normalization, automatic gain control,
-	      silence deletion and derived feature extraction routines.
-
 libcommon   : Common routines.  Stuff like:
 	      Cphone set object
 	      lexicon object
@@ -22,4 +18,3 @@ libs2io     : Sphinx-II I/O library
 
 libclust    : Routines for clustering (for VQ etc.)
 	      Routines for merging PDFs (for decision trees)
-

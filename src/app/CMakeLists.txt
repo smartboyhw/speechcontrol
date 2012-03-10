@@ -19,7 +19,7 @@ file(GLOB SPCHCNTRL_DESKTOPCONTROL_SRCS "desktopcontrol/*.cpp")
 file(GLOB_RECURSE SPCHCNTRL_WINDOWS_HDRS "windows/*.hpp")
 file(GLOB_RECURSE SPCHCNTRL_WINDOWS_SRCS "windows/*.cpp")
 
-## Needed variables
+## Needed variables for the SpeechControl application.
 set(SPCHCNTRL_APP_COMPILE_FLAGS ${SPCHCNTRL_COMPILE_FLAGS})
 set(SPCHCNTRL_APP_COMPILE_FLAGS_DEBUG ${SPCHCNTRL_COMPILE_FLAGS_DEBUG})
 set(SPCHCNTRL_APP_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS})
@@ -44,23 +44,31 @@ set(SPCHCNTRL_APP_BUILD_INCLUDE_DIRS ${SPCHCNTRL_APP_INCLUDE_DIRS}
     "${PROJECT_SOURCE_DIR}/app/windows"
     "${PROJECT_SOURCE_DIR}/../")
 
+## Needed flags for SphinxTrain apps.
+set(SPHINXTRAIN_INCLUDE_DIRS "${SPHINXBASE_INCLUDE_DIRS}"
+        "${SPHINXTRAIN_INCLUDE_DIR}")
+set(SPHINXTRAIN_BUILD_INCLUDE_DIRS "${SPHINXTRAIN_INCLUDE_DIRS}"
+    "${PROJECT_SOURCE_DIR}/../include")
+
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(SPCHCNTRL_APP_COMPILE_FLAGS "${SPCHCNTRL_APP_COMPILE_FLAGS} ${SPCHCNTRL_APP_COMPILE_FLAGS_DEBUG}")
 endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
 
-include_directories(${SPCHCNTRL_APP_BUILD_INCLUDE_DIRS})
+include_directories(${SPCHCNTRL_APP_BUILD_INCLUDE_DIRS}
+    ${SPHINXTRAIN_BUILD_INCLUDE_DIRS})
 
 # Some important definitions.
 add_definitions(${SPCHCNTRL_APP_COMPILE_DEFINITIONS})
 
 ## Add sub-directories.
 add_subdirectory(cmake)
+add_subdirectory(bw)
+add_subdirectory(map_adapt)
 add_subdirectory(desktopcontrol)
 add_subdirectory(dictation)
 add_subdirectory(sessions)
 add_subdirectory(voxforge)
 add_subdirectory(windows)
-add_subdirectory(sphinxtrain)
 
 configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
                "${PROJECT_SOURCE_DIR}/config.hpp" @ONLY)

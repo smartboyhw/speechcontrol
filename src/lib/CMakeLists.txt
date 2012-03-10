@@ -70,6 +70,15 @@ install(FILES ${SPCHCNTRL_LIB_HEADERS}
     COMPONENT "dev")
 
 include_directories(${SPCHCNTRL_LIB_INCLUDE_DIRS}
-    "${PROJECT_SOURCE_DIR}")
+    "${PROJECT_SOURCE_DIR}"
+    "${PROJECT_SOURCE_DIR}/../include")
 
 add_subdirectory(cmake)
+
+## Add the SphinxTrain libraries.
+add_subdirectory(libclust)
+add_subdirectory(libcommon)
+add_subdirectory(libio)
+add_subdirectory(libmllr)
+add_subdirectory(libmodinv)
+add_subdirectory(libs2io)

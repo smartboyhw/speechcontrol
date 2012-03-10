@@ -1,3 +1,4 @@
+project(SphinxTrainApp-Bw)
 cmake_minimum_required(VERSION 2.8)
 
 file(GLOB BW_SRCS "*.c")

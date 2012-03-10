@@ -6,12 +6,12 @@ file(GLOB BW_HDRS "*.h")
 
 set(BW_INCLUDE_DIRS ${SPHINXBASE_INCLUDE_DIRS})
 set(BW_LIBRARIES ${SPHINXBASE_LIBRARIES}
-                 common modinv io mllr s2io clust)
+                 st_common st_modinv st_io st_mllr st_s2io st_clust)
 
 include_directories(${BW_INCLUDE_DIRS})
 
-add_executable(bw ${BW_SRCS})
-target_link_libraries(bw ${BW_LIBRARIES})
+add_executable(st_bw ${BW_SRCS})
+target_link_libraries(st_bw ${BW_LIBRARIES})
 
-install(TARGETS bw
+install(TARGETS st_bw
         DESTINATION ${SPHINXTRAIN_BIN_DIR})

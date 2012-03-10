@@ -12,3 +12,6 @@ include_directories(${BW_INCLUDE_DIRS})
 
 add_executable(bw ${BW_SRCS})
 target_link_libraries(bw ${BW_LIBRARIES})
+
+install(TARGETS bw
+        DESTINATION ${SPHINXTRAIN_BIN_DIR})

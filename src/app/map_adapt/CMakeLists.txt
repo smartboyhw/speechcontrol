@@ -12,3 +12,5 @@ include_directories(${MAPADAPT_INCLUDE_DIRS})
 add_executable(map_adapt ${MAPADAPT_SRCS})
 target_link_libraries(map_adapt ${MAPADAPT_LIBRARIES})
 
+install(TARGETS map_adapt
+        DESTINATION ${SPHINXTRAIN_BIN_DIR})

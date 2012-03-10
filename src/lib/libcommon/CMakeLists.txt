@@ -7,3 +7,9 @@ set(LIBCOMMON_LIBRARIES clust)
 
 add_library(common SHARED ${libcommon_SRCS})
 target_link_libraries(common ${LIBCOMMON_LIBRARIES})
+
+install(TARGETS common
+        DESTINATION ${SPHINXTRAIN_LIB_DIR})
+
+install(FILES ${libcommon_HDRS}
+        DESTINATION "${SPHINXTRAIN_INCLUDE_DIR}/libcommon")

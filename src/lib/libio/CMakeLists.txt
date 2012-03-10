@@ -7,3 +7,9 @@ set(LIBIO_LIBRARIES common)
 
 add_library(io SHARED ${libio_SRCS})
 target_link_libraries(io ${LIBIO_LIBRARIES})
+
+install(TARGETS io
+        DESTINATION ${SPHINXTRAIN_LIB_DIR})
+
+install(FILES ${libio_HDRS}
+        DESTINATION "${SPHINXTRAIN_INCLUDE_DIR}/libio")

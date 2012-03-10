@@ -44,9 +44,15 @@ Agent* Agent::instance() {
 AbstractAgent::ActivityState Agent::onStateChanged ( const AbstractAgent::ActivityState p_stt ) {
     switch ( p_stt ) {
     case Enabled:
+        if ( !m_sphinx->start() ) {
+            qWarning() << "[Dictation::Agent] Start unsuccessful.";
+            return Disabled;
+        }
+        return Enabled;
         break;
 
     case Disabled:
+        m_sphinx->stop();
         break;
 
     case Undefined:
@@ -66,7 +72,8 @@ bool Agent::isEnabled() const {
 }
 
 void Agent::handleText ( const QString& p_text ) {
-
+    qDebug() << "Got text" << p_text;
+    KeyboardEmulator::instance()->sendKeys(p_text);
 }
 
 Agent::~Agent() {
@@ -76,4 +83,4 @@ Agent::~Agent() {
 }
 
 #include "dictation/agent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

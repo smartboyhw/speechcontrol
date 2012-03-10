@@ -25,8 +25,8 @@ endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
 ## Test if we're going to make Python bindings.
 if(WITH_PYTHON_BINDINGS)
     message(STATUS "Python bindings for libspeechcontrol enabled.")
-    find_package(PythonLibs 2.7)
-    find_package(Boost 1.46 COMPONENTS python)
+    find_package(PythonLibs 2.7 REQUIRED)
+    find_package(Boost 1.46 COMPONENTS python REQUIRED)
 
     if (Boost_FOUND AND PYTHONLIBS_FOUND)
         list(APPEND SPCHCNTRL_LIB_INCLUDE_DIRS ${Boost_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS})

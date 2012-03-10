@@ -1,5 +1,5 @@
 /* ====================================================================
- * Copyright (c) 1994-2000 Carnegie Mellon University.  All rights 
+ * Copyright (c) 1994-2000 Carnegie Mellon University.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -7,27 +7,27 @@
  * are met:
  *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer. 
+ *    notice, this list of conditions and the following disclaimer.
  *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
  *    the documentation and/or other materials provided with the
  *    distribution.
  *
- * This work was supported in part by funding from the Defense Advanced 
- * Research Projects Agency and the National Science Foundation of the 
+ * This work was supported in part by funding from the Defense Advanced
+ * Research Projects Agency and the National Science Foundation of the
  * United States of America, and the CMU Sphinx Speech Consortium.
  *
- * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND 
- * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
  * NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * ====================================================================
@@ -36,10 +36,10 @@
 /*********************************************************************
  *
  * File: s3_open.c
- * 
- * Description: 
- * 
- * Author: 
+ *
+ * Description:
+ *
+ * Author:
  * 	Eric H. Thayer (eht@cs.cmu.edu)
  *********************************************************************/
 
@@ -50,7 +50,7 @@
 #include <s3/s3.h>
 
 #include <string.h>
-
+
 FILE *
 s3_open_bin_read(const char *file_name,
 		 const char *in_version,
@@ -72,7 +72,7 @@ s3_open_bin_read(const char *file_name,
 
 	goto error;
     }
-    
+
     if (strcmp(version, in_version) != 0) {
 	E_ERROR("version mismatch.  %s != %s (expected)\n",
 		__FILE__, __LINE__,
@@ -80,11 +80,11 @@ s3_open_bin_read(const char *file_name,
 
 	goto error;
     }
-    
-    if (bcomment_read(out_comment, fp) != S3_SUCCESS) {
+
+    /*if (bcomment_read(out_comment, fp) != S3_SUCCESS) {
 	goto error;
-    }
-    
+    }*/
+
     if (swap_check(fp) != S3_SUCCESS) {
 	goto error;
     }
@@ -96,7 +96,7 @@ s3_open_bin_read(const char *file_name,
     fclose(fp);
     return NULL;
 }
-
+
 FILE *
 s3_open_bin_write(const char *file_name,
 		  const char *version,
@@ -115,33 +115,33 @@ s3_open_bin_write(const char *file_name,
 	strlen(version)+1) {
 	E_ERROR("unable to write version id in %s",
 		file_name);
-    
+
 	goto error;
     }
 
-    if (bcomment_write(fp, comment) != S3_SUCCESS) {
+    /*if (bcomment_write(fp, comment) != S3_SUCCESS) {
 	goto error;
-    }
-    
+    }*/
+
     if (swap_stamp(fp) != S3_SUCCESS) {
 	goto error;
     }
-	
+
     return fp;
-    
+
     error:
-    
+
     fclose(fp);
     return NULL;
 }
-
+
 /*
  * Log record.  Maintained by RCS.
  *
  * $Log$
  * Revision 1.4  2004/07/21  18:05:40  egouvea
  * Changed the license terms to make it the same as sphinx2 and sphinx3.
- * 
+ *
  * Revision 1.3  2001/04/05 20:02:31  awb
  * *** empty log message ***
  *
@@ -153,6 +153,6 @@ s3_open_bin_write(const char *file_name,
  *
  * Revision 1.1  97/03/17  15:01:49  eht
  * Initial revision
- * 
+ *
  *
  */

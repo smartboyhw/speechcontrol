@@ -1,5 +1,5 @@
 /* ====================================================================
- * Copyright (c) 1996-2000 Carnegie Mellon University.  All rights 
+ * Copyright (c) 1996-2000 Carnegie Mellon University.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -7,27 +7,27 @@
  * are met:
  *
  * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer. 
+ *    notice, this list of conditions and the following disclaimer.
  *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in
  *    the documentation and/or other materials provided with the
  *    distribution.
  *
- * This work was supported in part by funding from the Defense Advanced 
- * Research Projects Agency and the National Science Foundation of the 
+ * This work was supported in part by funding from the Defense Advanced
+ * Research Projects Agency and the National Science Foundation of the
  * United States of America, and the CMU Sphinx Speech Consortium.
  *
- * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND 
- * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
  * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
  * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
  * NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  * ====================================================================
@@ -36,13 +36,13 @@
 /*********************************************************************
  *
  * File: read_seno_dtree.c
- * 
- * Description: 
- * 
- * Author: 
- * 
+ *
+ * Description:
+ *
+ * Author:
+ *
  *********************************************************************/
-
+
 static char rcsid[] = "@(#)$Id: read_seno_dtree.c 10590 2010-11-02 16:15:37Z nshmyrev $";
 
 #include <s3/read_seno_dtree.h>
@@ -51,7 +51,7 @@ static char rcsid[] = "@(#)$Id: read_seno_dtree.c 10590 2010-11-02 16:15:37Z nsh
 
 #include <string.h>
 #include <assert.h>
-
+
 static int
 read_header_line(uint32 *n_base,
 		 char *id,
@@ -66,7 +66,7 @@ read_header_line(uint32 *n_base,
 	return S3_ERROR;
     }
 }
-
+
 static int
 read_node_line(float32 *out_entropy,
 	       uint32 *out_key,
@@ -92,7 +92,7 @@ read_node_line(float32 *out_entropy,
 
     return 1;
 }
-
+
 int
 read_seno_dtree_file(dtree_t **out_dt,
 		     const char *file_name)
@@ -192,7 +192,7 @@ read_seno_dtree_file(dtree_t **out_dt,
  * $Log$
  * Revision 1.4  2004/07/21  18:30:31  egouvea
  * Changed the license terms to make it the same as sphinx2 and sphinx3.
- * 
+ *
  * Revision 1.3  2001/04/05 20:02:31  awb
  * *** empty log message ***
  *
@@ -204,7 +204,7 @@ read_seno_dtree_file(dtree_t **out_dt,
  *
  * Revision 1.2  97/07/16  11:36:22  eht
  * *** empty log message ***
- * 
+ *
  * Revision 1.1  1996/03/26  15:16:26  eht
  * Initial revision
  *

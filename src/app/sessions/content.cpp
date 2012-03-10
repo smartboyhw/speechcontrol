@@ -117,6 +117,7 @@ void Content::load ( const QUuid &p_uuid ) {
 
     m_dom = l_dom;
     l_file->close();
+    s_lst.insert ( m_uuid, this );
 }
 
 /// @todo Implement a proper means of segmenting text into chunks.

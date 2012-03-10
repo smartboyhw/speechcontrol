@@ -12,9 +12,6 @@ option(WITH_PLUGINS            "Build the included plug-ins?"               ON)
 option(WITH_DOCS               "Generate Doxygen-made documentation?"       OFF)
 option(WITH_TESTS              "Generate the test build system?"            OFF)
 
-## Now we'll add in the Qt stuff
-include("${QT_USE_FILE}")
-
 ## Required packages
 find_package(PkgConfig REQUIRED)
 find_package(Qt4 4.7 COMPONENTS
@@ -26,6 +23,9 @@ find_package(Qt4 4.7 COMPONENTS
   REQUIRED)
 find_package(QtGStreamer REQUIRED)
 find_package(PocketSphinx REQUIRED)
+
+## Now we'll add in the Qt stuff
+include("${QT_USE_FILE}")
 
 ## variables
 set(PROJECT_VERSION "0.1")

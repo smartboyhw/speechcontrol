@@ -75,7 +75,8 @@ private:
      * @brief Constructor.
      **/
     explicit KeyboardEmulator ( );
-    xdo* m_xdo;
+    xdo* m_xdo;                             ///< the XDO handle.
+    long unsigned int m_win;                ///< the X11 window ID.
     static KeyboardEmulator* s_inst;        ///< Instance.
 };
 }

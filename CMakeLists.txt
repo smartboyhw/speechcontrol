@@ -12,6 +12,9 @@ option(WITH_PLUGINS            "Build the included plug-ins?"               ON)
 option(WITH_DOCS               "Generate Doxygen-made documentation?"       OFF)
 option(WITH_TESTS              "Generate the test build system?"            OFF)
 
+## Now we'll add in the Qt stuff
+include("${QT_USE_FILE}")
+
 ## Required packages
 find_package(PkgConfig REQUIRED)
 find_package(Qt4 4.7 COMPONENTS
@@ -50,9 +53,6 @@ set(SPCHCNTRL_COMPILE_FLAGS_DEBUG "-Wall -Wextra -Wabi -Wctor-dtor-privacy -Wfor
 set(SPCHCNTRL_COMPILE_DEFINITIONS ${QT_DEFINITIONS})
 set(SPCHCNTRL_QRESC "${CMAKE_SOURCE_DIR}/res/res.qrc")
 file(GLOB SPCHCNTRL_UI "res/ui/*.ui")
-
-## Now we'll add in the Qt stuff
-include("${QT_USE_FILE}")
 
 ## The subdirectories, order's vital here.
 add_subdirectory(res)

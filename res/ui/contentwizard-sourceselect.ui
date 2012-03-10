@@ -22,23 +22,32 @@
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>2</x>
-     <y>1</y>
-     <width>405</width>
+     <x>0</x>
+     <y>0</y>
+     <width>409</width>
      <height>241</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0" colspan="3">
      <widget class="QLabel" name="labelDescription">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>50</height>
+       </size>
+      </property>
       <property name="maximumSize">
        <size>
         <width>16777215</width>
-        <height>40</height>
+        <height>50</height>
        </size>
       </property>
       <property name="text">
        <string>Select the source type and then fill in the required information to obtain the content you desire to use with SpeechControl.</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
@@ -90,7 +99,13 @@
         <property name="minimumSize">
          <size>
           <width>353</width>
-          <height>174</height>
+          <height>154</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>353</width>
+          <height>154</height>
          </size>
         </property>
         <property name="frameShape">
@@ -128,7 +143,7 @@
         <item>
          <widget class="QComboBox" name="comboBoxSource">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>

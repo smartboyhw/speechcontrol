@@ -53,7 +53,7 @@
       <item>
        <widget class="QPushButton" name="btnModify">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -66,7 +66,7 @@
       <item>
        <widget class="QPushButton" name="btnArchive">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -92,7 +92,7 @@
       <item>
        <widget class="QPushButton" name="btnInfo">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>

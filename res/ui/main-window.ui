@@ -433,11 +433,6 @@ p, li { white-space: pre-wrap; }
      <property name="title">
       <string>Desktop Control</string>
      </property>
-     <property name="icon">
-      <iconset theme="audio-headset">
-       <normaloff/>
-      </iconset>
-     </property>
      <addaction name="actionDesktopControlActive"/>
      <addaction name="actionDesktopControlCommands"/>
      <addaction name="separator"/>
@@ -446,11 +441,6 @@ p, li { white-space: pre-wrap; }
     <widget class="QMenu" name="menuDictation">
      <property name="title">
       <string>Dictation</string>
-     </property>
-     <property name="icon">
-      <iconset theme="audio-input-microphone">
-       <normaloff/>
-      </iconset>
      </property>
      <addaction name="actionDictationActive"/>
      <addaction name="separator"/>
@@ -468,11 +458,6 @@ p, li { white-space: pre-wrap; }
     <widget class="QMenu" name="menuWizards">
      <property name="title">
       <string>Wizards</string>
-     </property>
-     <property name="icon">
-      <iconset theme="tools-wizard">
-       <normaloff/>
-      </iconset>
      </property>
      <addaction name="actionWizardMicrophone"/>
      <addaction name="actionWizardContent"/>

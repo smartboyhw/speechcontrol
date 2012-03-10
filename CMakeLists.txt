@@ -54,8 +54,8 @@ set(SPCHCNTRL_COMPILE_DEFINITIONS ${QT_DEFINITIONS})
 set(SPCHCNTRL_QRESC "${CMAKE_SOURCE_DIR}/res/res.qrc")
 
 set(SPHINXTRAIN_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include/sphinxtrain")
-set(SPHINXTRAIN_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib/sphinxtrain")
-set(SPHINXTRAIN_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin/sphinxtrain")
+set(SPHINXTRAIN_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+set(SPHINXTRAIN_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
 file(GLOB SPCHCNTRL_UI "res/ui/*.ui")
 
 ## The subdirectories, order's vital here.

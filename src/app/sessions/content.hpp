@@ -187,8 +187,6 @@ class AbstractContentSource : public QObject
     Q_OBJECT
 
 public:
-    explicit AbstractContentSource (QObject* parent = 0);
-    AbstractContentSource (QString p_id, QObject* p_parent = 0);
     AbstractContentSource (const AbstractContentSource& p_other);
 
     virtual ~AbstractContentSource();
@@ -203,9 +201,11 @@ public:
     const QString text() const;
     bool isValid();
 
-protected:
-    explicit AbstractContentSource ( QString p_id, QObject* p_parent = 0 );
     Content* generate();
+
+protected:
+    explicit AbstractContentSource (QObject* p_parent = 0);
+    explicit AbstractContentSource ( QString p_id, QObject* p_parent = 0 );
 
 private:
     QString m_id;

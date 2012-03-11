@@ -21,6 +21,13 @@ if(WITH_TESTS)
     include(CTest)
     enable_testing()
 
+    ## Make test targets for application and daemon.
+    add_test(NAME testapp
+         COMMAND $<TARGET_FILE:speechcontrol-frontend>)
+    add_test(NAME testdaemon
+         COMMAND $<TARGET_FILE:speechcontrol-daemon>)
+
+
     file(READ "template.build" TEST_BUILD_TEMPLATE)
 
     ## source files

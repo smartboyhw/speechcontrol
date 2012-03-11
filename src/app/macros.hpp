@@ -24,7 +24,7 @@
 #define SC_SINGLETON(Type) \
     private:\
         static Type* s_inst;\
-        Core();\
+        Type();\
     public:\
         static Type* instance ( )\
         {\

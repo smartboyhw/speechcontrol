@@ -171,6 +171,7 @@ private:
 
 /**
  * @brief An abstract outline for content sources to base themselves upon.
+ *
  * Content for model training can arise from anywhere. Thus, a base for
  * manipulating and obtaining such sources need to be made. AbstractContentSource
  * allows developers to implement a new source of content for the user to use within
@@ -192,6 +193,7 @@ public:
     const QString author() const;
     const QString title() const;
     const QString text() const;
+    bool isValid();
 
 protected:
     explicit AbstractContentSource ( QString p_id, QObject* p_parent = 0 );

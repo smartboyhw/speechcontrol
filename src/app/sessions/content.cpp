@@ -316,8 +316,14 @@ Content* AbstractContentSource::generate() {
     return l_content;
 }
 
-AbstractContentSource::~AbstractContentSource() {
+bool AbstractContentSource::isValid() {
+    return (!m_author.isNull() && !m_author.isEmpty()) &&
+            (!m_text.isNull() && !m_text.isEmpty()) &&
+            (!m_title.isNull() && !m_title.isEmpty());
+}
 
+AbstractContentSource::~AbstractContentSource() {
+    void setSource ( AbstractContentSource* p_src );
 }
 
 TextContentSource::TextContentSource ( QObject* p_parent ) : AbstractContentSource ( "text", p_parent ) {

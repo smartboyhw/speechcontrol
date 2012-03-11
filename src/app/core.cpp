@@ -110,9 +110,6 @@ Windows::Main* Core::mainWindow() {
     return instance()->m_mw;
 }
 
-void Core::stop()
-{
-void Core::stop() {
 void Core::stop() {
     emit instance()->stopped();
 }

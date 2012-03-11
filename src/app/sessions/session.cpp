@@ -74,7 +74,9 @@ double Session::assessProgress() const
         l_progress += l_snt->completedProgress();
     }
 
-    emit progressChanged (l_progress / (double) (corpus()->sentences().count()));
+    double progressDelta = l_progress / (double) (corpus()->sentences().count());
+    emit progressChanged (progressDelta);
+    return progressDelta;
 }
 
 void Session::init()

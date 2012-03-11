@@ -34,7 +34,6 @@ Application (daemon)
 * Implement a configuration file (per-user and system) for default devices and options. (bug #000018)
     - Dump possible values for each configuration on command-line when queried.
     - Warn about invalid/incompatible values and revert to default.
-* Implement a logging system (NONE, MININAL, WARNING, INFORMATIVE, DEBUG, VERBOSE, FULL) (bug #000019)
 
 Miscellaneous
 ----------------------------------------------------------

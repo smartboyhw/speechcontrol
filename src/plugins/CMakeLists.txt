@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 if (WITH_PLUGINS)
     set(SpeechControlApplication_DIR "${PROJECT_BINARY_DIR}/src/app/InstallFiles")
     set(SpeechControlLibrary_DIR "${PROJECT_BINARY_DIR}/src/lib/InstallFiles")
+    set(SPCHCNTRL_PLUGIN_BUILD_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/src")
 
     find_package(SpeechControlApplication QUIET)
     find_package(SpeechControlLibrary QUIET)
@@ -14,7 +15,8 @@ if (WITH_PLUGINS)
 
     ## directories
     #add_subdirectory(python)
+    add_subdirectory(unity-hud)
     add_subdirectory(transcriber)
-    add_subdirectory(dsktpcntrl-applications)
+    add_subdirectory(dsktpcntrl)
 
 endif(WITH_PLUGINS)

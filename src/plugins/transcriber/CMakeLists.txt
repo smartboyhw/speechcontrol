@@ -25,8 +25,8 @@ configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
                "${PROJECT_SOURCE_DIR}/src/config.hpp" @ONLY)
 
 include_directories(${SPTRSB_PLUGIN_INCLUDE_DIRS}
-    "${PROJECT_SOURCE_DIR}/../../"
-    "${PROJECT_BINARY_DIR}")
+    "${PROJECT_SOURCE_DIR}/src"
+    "${SPCHCNTRL_PLUGIN_BUILD_INCLUDE_DIRS}")
 
 add_library(spchcntrl-transcriber SHARED ${SPTRSB_SRCS})
 

@@ -22,6 +22,7 @@
 #define FACTORY_HPP
 
 #include <QObject>
+#include "macros.hpp"
 #include "plugins.hpp"
 
 namespace SpeechControl {
@@ -49,6 +50,8 @@ class Factory;
  **/
 class Factory : public QObject {
     Q_OBJECT
+    Q_DISABLE_COPY ( Factory )
+    SC_SINGLETON ( Factory )
 
 signals:
     /**
@@ -134,12 +137,6 @@ public:
     static PluginMap availablePlugins();
 
     /**
-     * @brief Obtains a pointer to the Factory's instance.
-     * @return Factory.
-     **/
-    static Factory* instance();
-
-    /**
      * @brief Obtains the configuration of a plug-in by its specified UUID.
      * @param p_uuid The UUID of the plug-in whose configuration is requested.
      * @return A pointer to a QSettings* object. NULL if the UUID points to an invalid plug-in.
@@ -156,16 +153,10 @@ public:
     static QSettings* pluginSettings ( QUuid p_uuid );
 
 private:
-    /**
-     * @brief Constructor.
-     * @internal
-     **/
-    explicit Factory();
-    static Factory* s_inst;      ///< The instance of the Factory singleton.
     static PluginMap s_ldPlgns;  ///< The loaded plug-ins.
 };
 }
 }
 
 #endif // FACTORY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

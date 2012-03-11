@@ -82,6 +82,10 @@ Core::Core ( int p_argc, char** p_argv, QApplication* app ) : QObject ( app ),
         Indicator::show();
 }
 
+Core::Core() : QObject() {
+    qFatal("This constructor shouldn't ever be called.");
+}
+
 Core::Core ( const Core& p_other ) : QObject ( p_other.parent() ), m_app(p_other.m_app),
     m_mw(p_other.m_mw), m_settings(p_other.m_settings), m_trnsltr(p_other.m_trnsltr) {
 
@@ -120,10 +124,6 @@ QVariant Core::configuration ( const QString& p_attrName, QVariant p_attrDefValu
 
 void Core::setConfiguration ( const QString& p_attrName, const QVariant& p_attrValue ) {
     instance()->m_settings->setValue ( p_attrName, p_attrValue );
-}
-
-Core* SpeechControl::Core::instance() {
-    return Core::s_inst;
 }
 
 int Core::exec() {

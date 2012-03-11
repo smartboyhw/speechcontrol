@@ -28,6 +28,7 @@
 
 // Local
 #include <app/abstractagent.hpp>
+#include <app/macros.hpp>
 #include "sphinx.hpp"
 
 namespace SpeechControl
@@ -56,18 +57,13 @@ namespace DesktopControl
 class Agent : public AbstractAgent
 {
     Q_OBJECT
+    SC_SINGLETON ( Agent )
 
 private:
     virtual ActivityState onStateChanged (const AbstractAgent::ActivityState p_state);
-    static Agent* s_instance;
     Sphinx* m_sphinx;
 
 public:
-    /**
-     * @brief Constructor
-     **/
-    Agent();
-
     /**
      * @brief Destructor
      *
@@ -86,16 +82,6 @@ public:
      * @return TRUE if it has been enabled, FALSE if it's disabled.
      **/
     bool isEnabled();
-
-    /**
-     * @brief Pointer to agent instance.
-     *
-     * A means of obtaining a pointer to the desktop control class.
-     * If it doesn't exist, it's created.
-     *
-     * @return A pointer to the desktop control class's singleton instance.
-     **/
-    static Agent* instance();
 
 public slots:
     /**

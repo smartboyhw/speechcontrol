@@ -26,6 +26,8 @@
 #include <QVariant>
 #include <QApplication>
 
+#include "macros.hpp"
+
 class QSettings;
 
 namespace SpeechControl {
@@ -44,7 +46,8 @@ class Main;
 class Core : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY ( Core );
+    Q_DISABLE_COPY ( Core )
+    SC_SINGLETON ( Core )
 
     friend class Windows::Main;
 
@@ -54,7 +57,6 @@ private:
     Windows::Main* m_mw;    /// Holds the main window.
     QSettings* m_settings;  /// Holds the application's global configuration.
     QTranslator* m_trnsltr; /// Holds the translating agent.
-    static Core* s_inst;    /// Holds the instance.
 
 public:
     /**
@@ -92,12 +94,6 @@ public:
      *
      **/
     static void setConfiguration ( const QString& p_attrName, const QVariant& p_attrValue );
-
-    /**
-     * @brief Obtains a pointer to the @c Core object, the singleton representing the application.
-     * @return A pointer to the @c Core object.
-     **/
-    static Core* instance();
 
     /**
      * @brief Provides a pointer to the Main Window instance.

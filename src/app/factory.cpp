@@ -117,14 +117,6 @@ void Factory::unloadPlugin ( const QUuid& p_uuid ) {
     }
 }
 
-Factory* Factory::instance() {
-    if ( s_inst == 0 ) {
-        s_inst = new Factory;
-    }
-
-    return s_inst;
-}
-
 QSettings* Factory::pluginConfiguration (QUuid p_uuid)
 {
     const QString l_pth (QString (SPCHCNTRL_PLUGINS_SPEC_DIR) + QString ("/") + p_uuid.toString().replace ("{", "").replace ("}", "") + QString (".spec"));

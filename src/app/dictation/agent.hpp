@@ -25,25 +25,24 @@
 #include <QObject>
 
 #include "abstractagent.hpp"
+#include <app/macros.hpp>
 
 namespace SpeechControl {
 namespace Dictation {
 class Sphinx;
 class Agent : public AbstractAgent {
     Q_OBJECT
+    SC_SINGLETON(Agent)
 public:
-    Agent();
     virtual ~Agent();
     virtual bool isActive() const;
     bool isEnabled() const;
-    static Agent* instance();
 
 public slots:
     void handleText ( const QString& p_text );
 
 private:
     virtual ActivityState onStateChanged ( const SpeechControl::AbstractAgent::ActivityState p_stt );
-    static Agent* s_inst;
     Sphinx* m_sphinx;
 };
 }

@@ -33,14 +33,6 @@ Agent::Agent() : AbstractAgent ( KeyboardEmulator::instance() ) {
     connect ( m_sphinx, SIGNAL ( finished ( QString ) ), this, SLOT ( handleText ( QString ) ) );
 }
 
-Agent* Agent::instance() {
-    if ( s_inst == 0 ) {
-        s_inst = new Agent;
-    }
-
-    return s_inst;
-}
-
 AbstractAgent::ActivityState Agent::onStateChanged ( const AbstractAgent::ActivityState p_stt ) {
     switch ( p_stt ) {
     case Enabled:

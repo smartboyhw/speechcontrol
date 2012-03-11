@@ -26,7 +26,7 @@
 namespace SpeechControl {
 namespace DesktopControl {
 
-Agent* Agent::s_instance = 0;
+Agent* Agent::s_inst = 0;
 
 Agent::Agent() : AbstractAgent ( AbstractCategory::global() ) {
     m_sphinx = new Sphinx ( Sphinx::standardDescription(), parent() );
@@ -35,13 +35,6 @@ Agent::Agent() : AbstractAgent ( AbstractCategory::global() ) {
 
 Agent::~Agent() {
 
-}
-
-Agent* Agent::instance() {
-    if ( s_instance == 0 )
-        s_instance = new Agent;
-
-    return s_instance;
 }
 
 AbstractAgent::ActivityState Agent::onStateChanged ( const AbstractAgent::ActivityState p_state ) {

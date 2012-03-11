@@ -59,10 +59,10 @@ Core::Core ( int p_argc, char** p_argv, QApplication* app ) : QObject ( app ),
     s_inst = this;
 
     // start application.
-    m_trnsltr = new QTranslator ( this );
-    m_app->installTranslator ( m_trnsltr );
+    m_trnsltr = new QTranslator (this);
+    m_app->installTranslator (m_trnsltr);
 
-    System::start ( &p_argc, &p_argv );
+    System::start (&p_argc, &p_argv);
     Session::init();
 
     // Create application's configuration directory.
@@ -118,32 +118,37 @@ void Core::stop() {
     emit instance()->stopped();
 }
 
-QVariant Core::configuration ( const QString& p_attrName, QVariant p_attrDefValue ) {
-    return instance()->m_settings->value ( p_attrName, p_attrDefValue );
+QVariant Core::configuration (const QString& p_attrName, QVariant p_attrDefValue)
+{
+    return instance()->m_settings->value (p_attrName, p_attrDefValue);
 }
 
-void Core::setConfiguration ( const QString& p_attrName, const QVariant& p_attrValue ) {
-    instance()->m_settings->setValue ( p_attrName, p_attrValue );
+void Core::setConfiguration (const QString& p_attrName, const QVariant& p_attrValue)
+{
+    instance()->m_settings->setValue (p_attrName, p_attrValue);
 }
 
 int Core::exec() {
     return instance()->m_app->exec();
 }
 
-void Core::quit ( const int& p_exitCode ) {
-    instance()->m_app->exit ( p_exitCode );
+void Core::quit (const int& p_exitCode)
+{
+    instance()->m_app->exit (p_exitCode);
 }
 
-void Core::invokeAutoStart() {
-    const bool l_dsktpCntrlState = configuration ( "DesktopControl/AutoStart" ).toBool();
-    const bool l_dctnState = configuration ( "Dictation/AutoStart" ).toBool();
-    DesktopControl::Agent::instance()->setState ( ( l_dsktpCntrlState ) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled );
-    Dictation::Agent::instance()->setState ( ( l_dctnState ) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled );
+void Core::invokeAutoStart()
+{
+    const bool l_dsktpCntrlState = configuration ("DesktopControl/AutoStart").toBool();
+    const bool l_dctnState = configuration ("Dictation/AutoStart").toBool();
+    DesktopControl::Agent::instance()->setState ( (l_dsktpCntrlState) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled);
+    Dictation::Agent::instance()->setState ( (l_dctnState) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled);
 }
 
-void Core::loadTranslations ( const QLocale& p_locale ) {
+void Core::loadTranslations (const QLocale& p_locale)
+{
     qDebug() << "Loading locale" << p_locale.name();
-    instance()->m_trnsltr->load ( "speechcontrol_" + p_locale.name() );
+    instance()->m_trnsltr->load ("speechcontrol_" + p_locale.name());
 }
 
 QDir Core::configurationPath() {

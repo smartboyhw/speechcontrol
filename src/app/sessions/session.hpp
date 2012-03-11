@@ -31,8 +31,10 @@
 #include <app/sessions/corpus.hpp>
 #include <app/sessions/content.hpp>
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 class Session;
+
 /**
  * @brief Represents a @c QList of @c Session objects.
  **/
@@ -46,24 +48,29 @@ typedef QMap<QUuid, Session*> SessionMap;
 /**
  * @brief Represents data to be used for adaption.
  **/
-class Session : public QObject {
+class Session : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( Session )
+    Q_DISABLE_COPY (Session)
 
 public:
     /**
-     * @brief ...
+     * @brief Backup class
      **/
-    class Backup {
+    class Backup
+    {
         friend class Session;
+        
     public:
         virtual ~Backup();
+        
         /**
          * @brief ...
          *
          * @return :Session*
          **/
         Session* session();
+        
         /**
          * @brief ...
          *
@@ -72,55 +79,58 @@ public:
         QDateTime created();
 
     private:
-        static const QString getPath ( const QString& );
-        static Backup* generate ( const Session& );
         explicit Backup();
+        
+        static const QString getPath (const QString&);
+        static Backup* generate (const Session&);
         QDomDocument* m_dom;
     };
 
     /**
-     * @brief ...
+     * @brief List of pointers to Backup objects.
      **/
     typedef QList<Backup*> BackupList;
 
     /**
-     * @brief ...
+     * @brief New Session with UUID
      *
-     * @param  ...
+     * @param  QUuid UUID of the Session
      **/
-    explicit Session ( const QUuid& );
+    explicit Session (const QUuid&);
 
     /**
-     * @brief ...
-     *
+     * @brief Destructor
      **/
     virtual ~Session();
+    
     /**
-     * @brief ...
+     * @brief UUID of the Session
      *
-     * @return const QUuid
+     * @return UUID of the Session
      **/
-    const QUuid uuid() const;
+    QUuid uuid() const;
 
     /**
      * @brief ...
      *
-     * @return const QString
+     * @return Name of the Session
      **/
-    const QString name() const;
+     QString name() const;
 
     /**
-     * @brief ...
+     * @brief Check if the Session is completed.
      *
-     * @return const bool
+     * @return Boolean of completion
      **/
     bool isCompleted() const;
+    
     /**
-     * @brief ...
+     * @brief Check if the Session is valid.
      *
-     * @return const bool
+     * @return Boolean of validity
      **/
     bool isValid() const;
+    
     /**
      * @brief ...
      *
@@ -131,9 +141,8 @@ public:
     /**
      * @brief Sets the name of this @c Session.
      * @param  p_name The new name of the @c Session.
-     * @return void
      **/
-    void setName ( const QString& p_name );
+    void setName (const QString& p_name);
 
     /**
      * @brief ...
@@ -141,42 +150,49 @@ public:
      * @return :Session*
      **/
     Session* clone() const;
+    
     /**
      * @brief ...
      *
      * @return :Session::Backup*
      **/
     Backup* createBackup() const;
+    
     /**
      * @brief ...
      *
      * @return :Session::BackupList*
      **/
     BackupList* backups() const;
+    
     /**
      * @brief ...
      *
      * @return Corpus*
      **/
     Corpus* corpus() const;
+    
     /**
      * @brief ...
      *
      * @return Content*
      **/
     Content* content() const;
+    
     /**
      * @brief ...
      *
      * @return :Sentence*
      **/
     Sentence* firstIncompleteSentence() const;
+    
     /**
      * @brief ...
      *
      * @return :Sentence*
      **/
     Sentence* lastIncompleteSentence() const;
+    
     /**
      * @brief ...
      *
@@ -190,20 +206,22 @@ public:
      * @return void
      **/
     static void init();
+    
     /**
      * @brief ...
      *
      * @param  ...
      * @return :Session*
      **/
-    static Session* obtain ( const QUuid& p_uuid );
+    static Session* obtain (const QUuid& p_uuid);
+    
     /**
      * @brief ...
      *
      * @param  ...
      * @return :Session*
      **/
-    static Session* create ( const Content* );
+    static Session* create (const Content*);
 
     /**
      * @brief ...
@@ -221,21 +239,19 @@ public:
 
 signals:
     /**
-     * @brief ...
+     * @brief Signal emitted when the Session progress changes.
      *
-     * @param  ...
-     * @return void
+     * @param  progress Amount of progress changed
      **/
-    void progressChanged ( const double& p_progress ) const;
+    void progressChanged (const double& p_progress) const;
 
 public slots:
     /**
-     * @brief ...
+     * @brief Set Corpus for this Session.
      *
-     * @param  ...
-     * @return void
+     * @param  p_corpus Corpus for this Session
      **/
-    void setCorpus ( Corpus* p_corpus );
+    void setCorpus (Corpus* p_corpus);
 
     /**
      * @brief ...
@@ -243,7 +259,7 @@ public slots:
      * @param  ...
      * @return void
      **/
-    void setContent ( Content* p_content );
+    void setContent (Content* p_content);
 
     /**
      * @brief ...
@@ -251,7 +267,7 @@ public slots:
      * @param  ...
      * @return void
      **/
-    void load ( const QUuid& p_uuid );
+    void load (const QUuid& p_uuid);
 
     /**
      * @brief ...
@@ -270,4 +286,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

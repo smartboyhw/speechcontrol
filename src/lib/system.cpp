@@ -66,7 +66,8 @@ System* System::instance() {
     return s_inst;
 }
 
-void System::stop() {
+void System::stop()
+{
     s_inst->deleteLater();
 }
 

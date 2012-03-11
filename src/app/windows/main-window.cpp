@@ -111,15 +111,16 @@ void Main::show() {
 }
 
 void Main::hide() {
-    if ( !Indicator::instance()->isVisible() ) {
+    if ( Indicator::instance()->isVisible() ){
         QErrorMessage* l_msg = new QErrorMessage ( this );
         l_msg->setModal ( true );
         l_msg->setWindowTitle ( tr ( "Hidden From View" ) );
         l_msg->showMessage ( tr ( "SpeechControl has been hidden into the system's tray."
-                                  "You can restore it by clicking the menu and selecting 'Restore'." ),"HiddenToTray" );
-        QApplication::quit();
-    } else
+        "You can restore it by clicking the menu and selecting 'Restore'." ),"HiddenToTray" );
         QMainWindow::hide();
+    } else {
+        QApplication::quit();
+    }
 }
 
 void Main::setStatusMessage ( const QString& p_message , const int p_timeout ) {

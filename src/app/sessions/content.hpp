@@ -31,7 +31,8 @@
 #include <QStringList>
 #include <QDomElement>
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 class Content;
 class AbstractContentSource;
 class TextContentSource;
@@ -53,16 +54,17 @@ typedef QMap<QUuid, Content*> ContentMap;
  * goes out to provide more specific data about the text being trained.
  *
  **/
-class Content : public QObject {
+class Content : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( Content )
+    Q_DISABLE_COPY (Content)
 
 public:
     /**
      * @brief Default constructor.
      * @param p_uuid The uuid of the @c Content.
      **/
-    explicit Content ( const QUuid& p_uuid );
+    explicit Content (const QUuid& p_uuid);
 
     virtual ~Content();
 
@@ -71,7 +73,7 @@ public:
      * @param p_uuid The uuid of the Content to load.
      * @note After loading, you should check to see if isValid() returns true. It's possible for the loading operation to fail.
      **/
-    void load ( const QUuid& p_uuid );
+    void load (const QUuid& p_uuid);
 
     /**
      * @brief Erases the Content, wiping all of its information.
@@ -131,7 +133,7 @@ public:
      * @param p_indx The index at which the page is to be found.
      * @return A string with the page's text, or QString::null if not found.
      **/
-    const QString pageAt ( const int& p_indx ) const;
+    const QString pageAt (const int& p_indx) const;
 
     /**
      * @brief Determines if this @c Session is valid.
@@ -146,23 +148,24 @@ public:
      * @param p_text The text that's represented by this @c Content.
      * @return A pointer to the new @c Content object created.
      **/
-    static Content* create ( const QString& p_author, const QString& p_title , const QString& p_text );
+    static Content* create (const QString& p_author, const QString& p_title , const QString& p_text);
 
     /**
      * @brief Obtains a specific @Content by its identifying @c QUuid.
      * @param p_uuid The UUID to pick out the @c Content by.
      * @return
      **/
-    static Content* obtain ( const QUuid& p_uuid );
+    static Content* obtain (const QUuid& p_uuid);
 
     /**
      * @brief
      * @return
      **/
     static ContentList allContents();
+
 private:
-    static QString getPath ( const QUuid& );
-    void parseText ( const QString& p_text );
+    static QString getPath (const QUuid&);
+    void parseText (const QString& p_text);
     static ContentMap s_lst;
     QStringList m_pages;
     QDomDocument* m_dom;
@@ -179,17 +182,22 @@ private:
  * the content creation wizard. In order to do this, one must implement an interface
  * for that and register it with SpeechControl's wizard system.
  **/
-class AbstractContentSource : public QObject {
+class AbstractContentSource : public QObject
+{
     Q_OBJECT
 
 public:
+    explicit AbstractContentSource (QObject* parent = 0);
+    AbstractContentSource (QString p_id, QObject* p_parent = 0);
+    AbstractContentSource (const AbstractContentSource& p_other);
+
     virtual ~AbstractContentSource();
-    AbstractContentSource ( const AbstractContentSource& p_other );
-    Content* generate();
+
+    void setAuthor (const QString p_author);
+    void setTitle (const QString p_title);
+    void setText (const QString p_text);
+
     QString id() const;
-    void setAuthor ( const QString p_author );
-    void setTitle ( const QString p_title );
-    void setText ( const QString p_text );
     const QString author() const;
     const QString title() const;
     const QString text() const;
@@ -197,6 +205,7 @@ public:
 
 protected:
     explicit AbstractContentSource ( QString p_id, QObject* p_parent = 0 );
+    Content* generate();
 
 private:
     QString m_id;
@@ -213,14 +222,15 @@ private:
  *
  * @see TextContentSource
  **/
-class TextContentSource : public AbstractContentSource {
+class TextContentSource : public AbstractContentSource
+{
     Q_OBJECT
 
 public:
-    explicit TextContentSource ( QObject* p_parent = 0 );
+    explicit TextContentSource (QObject* p_parent = 0);
     virtual ~TextContentSource();
-    bool setFile ( QFile& p_file );
-    bool setUrl ( const QUrl& p_url );
+    bool setFile (QFile& p_file);
+    bool setUrl (const QUrl& p_url);
 };
 
 }

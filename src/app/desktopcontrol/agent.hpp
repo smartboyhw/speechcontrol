@@ -39,6 +39,7 @@ namespace SpeechControl
 
 namespace DesktopControl
 {
+
 /**
  * @brief Agent managing desktop control.
  *
@@ -96,6 +97,7 @@ public slots:
     void invokeCommand ( const QString& cmd );
 
 };
+
 }
 }
 

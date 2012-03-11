@@ -3,7 +3,7 @@ Installing SpeechControl
 
 0. For the Impatient
 
-    # apt-get install cmake libqt4-dev libqtgstreamer-dev libpocketsphinx-dev libsphinxbase-dev libxdo-dev python-dev libboost-python-dev libindicate-qt-dev
+    # apt-get install cmake libqt4-dev libqtgstreamer-dev libpocketsphinx-dev libsphinxbase-dev libxdo-dev python-dev libboost-python-dev gstreamer0.10-pocketsphinx
     $ mkdir build && cd build
     $ cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug
     $ make
@@ -30,9 +30,6 @@ SpeechControl's core requires that you have the following packages installed:
       files as well as the needed GStreamer elements
       # apt-get install libpocketsphinx-dev libsphinxbase-dev gstreamer0.10-pocketsphinx
 
-    * Qt bindings for the AppIndicator library and development files
-      # apt-get install libindicate-qt-dev
-
     * XDO library and development files (for dictation functionality)
       # apt-get install libxdo-dev
 
@@ -58,10 +55,10 @@ By default, SpeechControl builds with the following configuration values:
 
     Configuration Value     :   Value
     ---------------------------------------------------------------------------
-    WITH_PYTHON_BINDINGS        ON  (bindings for libspeechcontrol)
-    WITH_TESTS                  ON  (initializes the test build system)
-    WITH_API_DOCS               ON  (generates documentation about API)
     WITH_DBUS_SUPPORT           ON  (adds D-Bus support)
+    WITH_PYTHON_BINDINGS        OFF (bindings for libspeechcontrol)
+    WITH_TESTS                  OFF (initializes the test build system)
+    WITH_API_DOCS               OFF (generates documentation about API)
     WITH_KDE_SUPPORT            OFF (builds another KApplication-based binary)
 
 These values only recognize the values 'ON' and 'OFF'. You can change these

@@ -38,7 +38,7 @@ using SpeechControl::Core;
 Indicator* Indicator::s_inst = 0;
 
 /// @todo Check for a configuration value to determine whether or not the indicator should be shown on initialization.
-Indicator::Indicator ( QObject* parent ) : QObject ( parent ),
+Indicator::Indicator ( ) : QObject ( Core::instance() ),
     m_icon(0) {
     s_inst = this;
 
@@ -61,14 +61,6 @@ void Indicator::show() {
 
 void Indicator::showMainWindow() {
     Core::mainWindow()->show();
-}
-
-Indicator* Indicator::instance() {
-    if ( s_inst == 0 ) {
-        s_inst = new Indicator ( Core::instance() );
-    }
-
-    return s_inst;
 }
 
 /// @todo Add an enumeration that allows the callee to specify the kind of message icon they'd  want to appear.

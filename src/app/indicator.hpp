@@ -24,6 +24,7 @@
 #include <QObject>
 #include <QString>
 #include <QSystemTrayIcon>
+#include "macros.hpp"
 
 class QImage;
 
@@ -38,6 +39,7 @@ class Indicator;
  **/
 class Indicator : public QObject {
     Q_OBJECT
+    SC_SINGLETON ( Indicator )
 
 public:
     /**
@@ -62,15 +64,7 @@ public:
     static void presentMessage ( const QString& p_title, const QString& p_message, const int& p_timeout );
 
     /**
-     * @brief Obtains a pointer to the Indicator instance.
-     * @return Indicator* The instance of the class.
-     **/
-    static Indicator* instance();
-
-    /**
-     * @brief ...
-     *
-     * @return bool
+     * @brief Determines whether or not the Indicator's icon is visible.
      **/
     bool isVisible();
 
@@ -78,9 +72,7 @@ private slots:
     void showMainWindow();
 
 private:
-    explicit Indicator ( QObject* parent = 0 );
     QSystemTrayIcon* m_icon;            ///< The tray icon.
-    static Indicator* s_inst;           ///< Singleton instance.
 };
 }
 

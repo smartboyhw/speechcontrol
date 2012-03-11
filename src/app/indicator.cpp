@@ -76,6 +76,10 @@ void Indicator::presentMessage ( const QString& p_title, const QString& p_messag
     instance()->m_icon->showMessage(p_title,p_message,QSystemTrayIcon::Information,p_timeout);
 }
 
+bool Indicator::isVisible() {
+    return m_icon->isVisible();
+}
+
 Indicator::~Indicator() {
 
 }

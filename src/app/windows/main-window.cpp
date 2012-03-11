@@ -114,7 +114,8 @@ void Main::show()
 
 void Main::close()
 {
-    QMainWindow::close();
+    if (!Indicator::instance()->isVisible())
+        QMainWindow::close();
 }
 
 void Main::setStatusMessage (const QString& p_message , const int p_timeout)

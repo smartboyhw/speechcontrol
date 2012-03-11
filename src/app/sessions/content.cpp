@@ -194,7 +194,7 @@ uint Content::characters() const
 
 QString Content::getPath (const QUuid& p_uuid)
 {
-    return Core::configurationPath().path() + "/contents/" + p_uuid.toString() + ".xml";
+    return Core::configurationPath().path() + "/contents/" + p_uuid.toString().remove(QRegExp("[{}]")) + ".xml";
 }
 
 const QString Content::title() const

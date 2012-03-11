@@ -140,7 +140,7 @@ bool Corpus::exists (const QUuid& p_uuid)
 QUrl Corpus::getPath (const QUuid& p_uuid)
 {
     const QString l_baseComp = Core::configurationPath().path() + "/corpus/";
-    return QUrl::fromLocalFile (l_baseComp + p_uuid.toString());
+    return QUrl::fromLocalFile (l_baseComp + p_uuid.toString().remove(QRegExp("[{}]")));
 }
 
 QUrl Corpus::audioPath() const

@@ -20,8 +20,6 @@ Application (general)
 * Permit serialization to tarballs of segmented audio recording. (bug #000009)
 * Correct the CMake build system to use sub-directories for each layer of code and UI. (bug #000010)
 * Implement D-Bus integration of application. (bug #000011)
-* Implement an abstract means of displaying notifications (includes QSystemTrayIcon, indicators, etc). [Going to use QIndicate for this.] (bug #000012)
-    - Build functionality for Ayanta notifications.
 * Hook into speechcontrold and allow modifying of local user options for the daemon. (bug #000013)
 * Integrate the code for the training utilities of SphinxTrain to the SpeechControl application. (bug #000014)
 * Add support for multiple languages (i18n) into SpeechControl. (bug #000022)

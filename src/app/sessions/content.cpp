@@ -46,7 +46,7 @@ Content::Content ( const Content& p_other ) : QObject(),
 }
 
 Content* Content::obtain ( const QUuid &p_uuid ) {
-    qDebug() << p_uuid;
+    qDebug() << "Potential Content UUID:" << p_uuid;
     Q_ASSERT ( !p_uuid.isNull() );
 
     if ( p_uuid.isNull() ) {
@@ -208,7 +208,11 @@ ContentList Content::allContents() {
     QStringList l_results = l_dir.entryList ( QStringList() << "*" );
 
     Q_FOREACH ( const QString l_uuid, l_results ) {
-        Content* l_content = Content::obtain ( QUuid ( l_uuid ) );
+        QUuid l_uuid( l_uuid );
+        if (!l_uuid.isNull())
+            continue;
+
+        Content* l_content = Content::obtain ( l_uuid );
         qDebug () << "Is content null?" << ( l_content == 0 );
         qDebug () << "Is content" << l_uuid << "valid?" << l_content->isValid();
 

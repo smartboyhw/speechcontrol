@@ -75,7 +75,7 @@ public slots:
     /**
      * @brief Closes the window.
      **/
-    virtual void close();
+    virtual void hide();
     /**
      * @brief Updates the window's data.
      **/

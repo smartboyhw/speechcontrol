@@ -115,7 +115,7 @@ void Main::show()
 void Main::hide()
 {
     if (!Indicator::instance()->isVisible())
-        QMainWindow::close();
+        QApplication::quit();
     else
         QMainWindow::hide();
 }

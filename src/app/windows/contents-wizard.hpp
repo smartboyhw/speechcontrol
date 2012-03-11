@@ -39,10 +39,11 @@ public:
 
     explicit ContentWizard ( QWidget *parent = 0 );
     virtual ~ContentWizard();
+    AbstractContentSource* source();
+    void setSource ( AbstractContentSource* p_src );
 
 public slots:
     virtual int nextId() const;
-    void setSource ( AbstractContentSource* p_src );
 
 private:
     mutable AbstractContentSource* m_src;

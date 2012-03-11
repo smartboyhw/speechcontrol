@@ -47,6 +47,10 @@ ContentWizard::ContentWizard ( QWidget *parent ) :
               ( new Wizards::Pages::ConclusionPage ( tr ( "You've successfully added a book into SpeechControl." ) ) ) );
 }
 
+AbstractContentSource* ContentWizard::source() {
+    return m_src;
+}
+
 void ContentWizard::setSource ( AbstractContentSource* p_src ) {
     Q_ASSERT ( p_src != 0 );
     m_src = new AbstractContentSource ( *p_src );

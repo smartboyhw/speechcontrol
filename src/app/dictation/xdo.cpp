@@ -38,14 +38,6 @@ KeyboardEmulator::KeyboardEmulator() : QObject ( Core::instance() ), m_xdo(0),
     qDebug() << xdo_mouselocation ( m_xdo,&l_x,&l_y,0 );
 }
 
-KeyboardEmulator* KeyboardEmulator::instance() {
-    if ( s_inst == 0 ) {
-        s_inst = new KeyboardEmulator;
-    }
-
-    return s_inst;
-}
-
 /// @todo Allow the value of the delay to be adjustable.
 bool KeyboardEmulator::sendKey ( const QChar& p_character ) {
     qDebug() << "[Dictation::KeyboardEmulator] Echoing character " << p_character;

@@ -22,6 +22,7 @@
 #define XDO_HPP
 
 #include <QObject>
+#include <app/macros.hpp>
 
 struct xdo;
 
@@ -35,6 +36,7 @@ namespace Dictation {
  **/
 class KeyboardEmulator : public QObject {
     Q_OBJECT
+    SC_SINGLETON(KeyboardEmulator)
 
 public:
     /**
@@ -64,20 +66,9 @@ public:
      **/
     bool sendKeys ( const QString& p_characters );
 
-    /**
-     * @brief Obtains a pointer to the KeyboardEmulator instance.
-     * @return :Dictation::KeyboardEmulator*
-     **/
-    static KeyboardEmulator* instance();
-
 private:
-    /**
-     * @brief Constructor.
-     **/
-    explicit KeyboardEmulator ( );
     xdo* m_xdo;                             ///< the XDO handle.
     long unsigned int m_win;                ///< the X11 window ID.
-    static KeyboardEmulator* s_inst;        ///< Instance.
 };
 }
 }

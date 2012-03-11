@@ -14,7 +14,6 @@ option(WITH_TESTS              "Generate the test build system?"            OFF)
 
 ## Required packages
 find_package(PkgConfig REQUIRED)
-find_package(Xdo REQUIRED)
 find_package(Qt4 4.7 COMPONENTS
   QtCore
   QtGui
@@ -24,6 +23,9 @@ find_package(Qt4 4.7 COMPONENTS
   REQUIRED)
 find_package(QtGStreamer REQUIRED)
 find_package(PocketSphinx REQUIRED)
+
+## Now we'll add in the Qt stuff
+include("${QT_USE_FILE}")
 
 ## variables
 set(PROJECT_VERSION "0.1")
@@ -37,13 +39,11 @@ set(SPCHCNTRL_SBIN_DIR "${CMAKE_INSTALL_PREFIX}/sbin")
 set(SPCHCNTRL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include/speechcontrol")
 set(SPCHCNTRL_INCLUDE_DIRS ${QT_INCLUDE_DIR}
     ${SPCHCNTRL_INCLUDE_DIR}
-    ${XDO_INCLUDE_DIRS}
     ${POCKETSPHINX_INCLUDE_DIRS}
     ${QTGSTREAMER_INCLUDE_DIR})
 set(SPCHCNTRL_LIBRARIES ${QT_QTCORE_LIBRARY}
     ${QT_QTXML_LIBRARY}
     ${QTGLIB_LIBRARIES}
-    ${XDO_LIBRARIES}
     ${QTGSTREAMER_LIBRARIES}
     ${QTGSTREAMER_UI_LIBRARIES}
     ${QTGSTREAMER_UTILS_LIBRARIES}
@@ -52,10 +52,11 @@ set(SPCHCNTRL_COMPILE_FLAGS "${QTGSTREAMER_FLAGS} -feliminate-unused-debug-symbo
 set(SPCHCNTRL_COMPILE_FLAGS_DEBUG "-Wall -Wextra -Wabi -Wctor-dtor-privacy -Wformat -Wunused")
 set(SPCHCNTRL_COMPILE_DEFINITIONS ${QT_DEFINITIONS})
 set(SPCHCNTRL_QRESC "${CMAKE_SOURCE_DIR}/res/res.qrc")
-file(GLOB SPCHCNTRL_UI "res/ui/*.ui")
 
-## Now we'll add in the Qt stuff
-include("${QT_USE_FILE}")
+set(SPHINXTRAIN_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include/sphinxtrain")
+set(SPHINXTRAIN_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
+set(SPHINXTRAIN_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
+file(GLOB SPCHCNTRL_UI "res/ui/*.ui")
 
 ## The subdirectories, order's vital here.
 add_subdirectory(res)

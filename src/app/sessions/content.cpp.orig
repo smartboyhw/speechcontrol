@@ -47,12 +47,20 @@ Content::Content (const Content& p_other) : QObject(),
 {
 }
 
+<<<<<<< HEAD
 Content* Content::obtain (const QUuid& p_uuid)
 {
-    qDebug() << "Potential Content UUID:" << p_uuid;
+    qDebug() << p_uuid;
     Q_ASSERT (!p_uuid.isNull());
 
     if (p_uuid.isNull()) {
+=======
+Content* Content::obtain ( const QUuid &p_uuid ) {
+    qDebug() << "Potential Content UUID:" << p_uuid;
+    Q_ASSERT ( !p_uuid.isNull() );
+
+    if ( p_uuid.isNull() ) {
+>>>>>>> ccfe90a9a093f83523d00f7ee5a3d3fc8e49c2f1
         qDebug() << "Null UUID passed.";
         return 0;
     }
@@ -60,10 +68,19 @@ Content* Content::obtain (const QUuid& p_uuid)
     if (!s_lst.contains (p_uuid)) {
         Content* l_content = new Content (p_uuid);
         qDebug() << "Is content valid? " << l_content->isValid();
-        Q_ASSERT( l_content->isValid() );
+<<<<<<< HEAD
+
+        if (!l_content->isValid()) {
+            return 0;
+        }
 
         s_lst.insert (p_uuid, (l_content));
+=======
+        Q_ASSERT( l_content->isValid() );
+
+        if ( !l_content->isValid() )
             return 0;
+>>>>>>> ccfe90a9a093f83523d00f7ee5a3d3fc8e49c2f1
     }
 
     return s_lst.value (p_uuid);
@@ -226,13 +243,19 @@ ContentList Content::allContents()
     l_dir.setFilter (QDir::Files);
     QStringList l_results = l_dir.entryList (QStringList() << "*");
 
+<<<<<<< HEAD
     Q_FOREACH (const QString l_uuid, l_results) {
+        Content* l_content = Content::obtain (QUuid (l_uuid));
+        qDebug () << "Is content null?" << (l_content == 0);
+=======
+    Q_FOREACH ( const QString l_uuid, l_results ) {
         QUuid l_uuid( l_uuid );
         if (!l_uuid.isNull())
             continue;
 
         Content* l_content = Content::obtain ( l_uuid );
-        qDebug () << "Is content null?" << (l_content == 0);
+        qDebug () << "Is content null?" << ( l_content == 0 );
+>>>>>>> ccfe90a9a093f83523d00f7ee5a3d3fc8e49c2f1
         qDebug () << "Is content" << l_uuid << "valid?" << l_content->isValid();
 
         if (l_content && l_content->isValid()) {
@@ -287,10 +310,14 @@ Content* Content::create (const QString& p_author, const QString& p_title, const
     l_file.close();
 
     //qDebug() << "Content XML:" << l_dom->toString();
+<<<<<<< HEAD
+    return Content::obtain (l_uuid);
+=======
     Content* l_nabbedContent = Content::obtain ( l_uuid );
     Q_ASSERT(l_nabbedContent != 0);
 
     return l_nabbedContent;
+>>>>>>> ccfe90a9a093f83523d00f7ee5a3d3fc8e49c2f1
 }
 
 AbstractContentSource::AbstractContentSource (QString p_id, QObject* p_parent) : QObject (p_parent),
@@ -340,12 +367,17 @@ void AbstractContentSource::setTitle (const QString p_title)
     m_title = p_title;
 }
 
+<<<<<<< HEAD
 Content* AbstractContentSource::generate()
 {
+    return Content::create (m_author, m_title, m_text);
+=======
+Content* AbstractContentSource::generate() {
     Content* l_content = Content::create ( m_author,m_title,m_text );
     Q_ASSERT(l_content != 0);
 
     return l_content;
+>>>>>>> ccfe90a9a093f83523d00f7ee5a3d3fc8e49c2f1
 }
 
 AbstractContentSource::~AbstractContentSource()

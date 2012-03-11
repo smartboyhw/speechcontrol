@@ -92,7 +92,6 @@ Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0)
     dictationStateChanged();
     on_actionDesktopControlActive_triggered (DesktopControl::Agent::instance()->isActive());
     on_actionDictationActive_triggered (Dictation::Agent::instance()->isActive());
-    Indicator::show();
 
     // Greet the user :)
     setStatusMessage (tr ("Welcome to %1, speech recognition for Linux.").arg (QApplication::applicationName()), 4000);
@@ -115,7 +114,8 @@ void Main::show()
 
 void Main::close()
 {
-    QMainWindow::close();
+    if (!Indicator::instance()->isVisible())
+        QMainWindow::close();
 }
 
 void Main::setStatusMessage (const QString& p_message , const int p_timeout)
@@ -135,6 +135,9 @@ void Main::desktopControlStateChanged()
     default:
         break;
     }
+
+    m_ui->btnDctn->setEnabled(DesktopControl::Agent::instance()->state() == AbstractAgent::ActivityState::Disabled);
+    m_ui->btnDsktpCntrl->setEnabled(Dictation::Agent::instance()->state() == AbstractAgent::ActivityState::Enabled);
 }
 
 void Main::dictationStateChanged()
@@ -149,6 +152,9 @@ void Main::dictationStateChanged()
     default:
         break;
     }
+
+    m_ui->btnDctn->setEnabled(Dictation::Agent::instance()->state() == AbstractAgent::ActivityState::Enabled);
+    m_ui->btnDsktpCntrl->setEnabled(Dictation::Agent::instance()->state() == AbstractAgent::ActivityState::Disabled);
 }
 
 /// @todo Instead of this constant ticking, use signals to update this code.
@@ -200,6 +206,9 @@ void Main::on_actionStartTraining_triggered ()
 /// @todo Allow configuration option to show specific notifications to prevent noise.
 void Main::on_actionDesktopControlActive_triggered (bool p_checked)
 {
+    if (p_checked && Dictation::Agent::instance()->isActive())
+        return;
+
     DesktopControl::Agent::instance()->setState (p_checked ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled);
     setStatusMessage ( (p_checked ? tr ("Desktop control enabled.") : tr ("Desktop control disabled.")) , 3000);
     m_ui->btnDsktpCntrl->setIcon ( ( (p_checked == true) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
@@ -209,6 +218,9 @@ void Main::on_actionDesktopControlActive_triggered (bool p_checked)
 /// @todo Allow configuration option to show specific notifications to prevent noise.
 void Main::on_actionDictationActive_triggered (const bool p_checked)
 {
+    if (p_checked && DesktopControl::Agent::instance()->isActive())
+        return;
+
     Dictation::Agent::instance()->setState ( (p_checked) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled);
     setStatusMessage ( ( (p_checked) ? tr ("Dictation enabled.") : tr ("Dictation disabled."))  , 3000);
     m_ui->btnDctn->setIcon ( ( (p_checked) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));

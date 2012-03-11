@@ -41,6 +41,14 @@ void AbstractAgent::setState (const AbstractAgent::ActivityState p_state)
     emit stateChanged (m_state);
 }
 
+void AbstractAgent::start() {
+    setState(Enabled);
+}
+
+void AbstractAgent::stop() {
+    setState(Disabled);
+}
+
 AbstractAgent::ActivityState AbstractAgent::state() const
 {
     return m_state;
@@ -51,4 +59,4 @@ AbstractAgent::~AbstractAgent()
 }
 
 #include "abstractagent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

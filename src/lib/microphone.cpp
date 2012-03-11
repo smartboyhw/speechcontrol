@@ -127,7 +127,7 @@ void SpeechControl::Microphone::startRecording() {
 
     // Build the pipeline.
     m_pipeline = QGst::Pipeline::create ( );
-    m_pipeline->add(m_binAudio);
+    m_pipeline->add ( m_binAudio );
 
     // Connect the bus to this Microphone to detect changes in the pipeline.
     m_pipeline->bus()->addSignalWatch();
@@ -244,6 +244,14 @@ void Microphone::onPipelineBusmessage ( const QGst::MessagePtr & message ) {
     }
     break;
 
+    case QGst::MessageAsyncDone: {
+        stopRecording();
+    } break;
+
+    case QGst::MessageAsyncStart: {
+        QGst::AsyncDoneMessagePtr l_asyncDoneMsg = message.staticCast<QGst::AsyncDoneMessage>();
+        qDebug() << l_asyncDoneMsg->sequenceNumber() << l_asyncDoneMsg->internalStructure()->numberOfFields();
+    } break;
     default:
         qDebug() << message->typeName();
         break;

@@ -1,25 +1,18 @@
-# Searches for the XDO library.
-# If found, provides the following:
-#
-# - XDO_INCLUDE_DIRS : The include directories (typically just one) to find the headers for XDO.
-# - XDO_LIBRARIES : The libraries needed to link to XDO.
+# Set up xdo
 
-find_path(XDO_INCLUDE_DIRS "xdo.h")
+find_path(XDO_INCLUDES "xdo.h")
 
-if(XDO_INCLUDE_DIRS STREQUAL "XDO_INCLUDE_DIRS-NOTFOUND")
-    set(XDO_INCLUDE_DIRS "")
-else(XDO_INCLUDE_DIRS STREQUAL "XDO_INCLUDE_DIRS-NOTFOUND")
+if(XDO_INCLUDES STREQUAL "XDO_INCLUDES-NOTFOUND")
+  set(XDO_INCLUDES "")
+else(XDO_INCLUDES STREQUAL "XDO_INCLUDES-NOTFOUND")
 
-    find_library(XDO_LIBRARIES "xdo")
-    if(XDO_LIBRARIES STREQUAL "XDO_LIBRARIES-NOTFOUND")
-        set(XDO_LIBRARIES "")
-        message(WARNING "XDO library not found.")
-    else(XDO_LIBRARIES STREQUAL "XDO_LIBRARIES-NOTFOUND")
-        message(STATUS "Found XDO: ${XDO_LIBRARIES}")
-    endif(XDO_LIBRARIES STREQUAL "XDO_LIBRARIES-NOTFOUND")
-endif(XDO_INCLUDE_DIRS STREQUAL "XDO_INCLUDE_DIRS-NOTFOUND")
+find_library(XDO_LIBRARIES "xdo")
+  if(XDO_LIBRARIES STREQUAL "XDO_LIBRARIES-NOTFOUND")
+    set(XDO_LIBRARIES "")
+    message(WARNING "XDO not found.")
+  else(XDO_LIBRARIES STREQUAL "XDO_LIBRARIES-NOTFOUND")
+    message(STATUS "Found XDO: ${XDO_LIBRARIES}")
+  endif(XDO_LIBRARIES STREQUAL "XDO_LIBRARIES-NOTFOUND")
+  set(XDO_FOUND true)
+endif(XDO_INCLUDES STREQUAL "XDO_INCLUDES-NOTFOUND")
 
-if (NOT XDO-NOTFOUND)
-    set(XDO_LIBRARIES ${XDO})
-    set(XDO_INCLUDE_DIRS "${CMAKE_INSTALL_PREFIX}/include")
-endif(NOT XDO-NOTFOUND)

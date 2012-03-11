@@ -67,6 +67,13 @@ public:
      **/
     static Indicator* instance();
 
+    /**
+     * @brief ...
+     *
+     * @return bool
+     **/
+    bool isVisible();
+
 private slots:
     void showMainWindow();
 

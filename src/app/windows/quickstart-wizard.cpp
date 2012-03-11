@@ -51,13 +51,8 @@ QuickStart::QuickStart ( QWidget *parent ) :
 /// @todo The user's country could be automatically detected by QLocale.
 void QuickStart::accept() {
     Core* l_core = Core::instance();
-    QVariantMap l_name;
     QVariantMap l_language;
     QString l_gender;
-
-    l_name["First"] = field ( "name-first" );
-    l_name["Middle"] = field ( "name-middle" );
-    l_name["Last"] = field ( "name-last" );
 
     l_language["Spoken"] = field ( "language-spoken" );
     l_language["Native"] = field ( "language-native" );
@@ -68,7 +63,6 @@ void QuickStart::accept() {
         l_gender = "Female";
     }
 
-    l_core->setConfiguration ( "User/Name",l_name );
     l_core->setConfiguration ( "User/Gender",l_gender );
     l_core->setConfiguration ( "User/Language",l_language );
     l_core->setConfiguration ( "User/Age",property ( "age" ) );
@@ -83,4 +77,4 @@ QuickStart::~QuickStart() {
 }
 
 #include "quickstart-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

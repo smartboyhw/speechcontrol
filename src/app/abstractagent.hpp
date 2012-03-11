@@ -97,6 +97,16 @@ public slots:
      **/
     void setState (const ActivityState p_state);
 
+    /**
+     * @brief Sets the state of this Agent to Enabled.
+     **/
+    void start();
+
+    /**
+     * @brief Sets the state of this Agent to Disabled.
+     **/
+    void stop();
+
 signals:
     /**
      * Emitted when the state of this Agent is set to the Enabled state.
@@ -133,4 +143,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -68,6 +68,7 @@ AbstractAgent::ActivityState Agent::onStateChanged ( const AbstractAgent::Activi
 
 }
 
+<<<<<<< HEAD
 bool Agent::isActive() const
 {
     return m_sphinx->isRunning();
@@ -81,11 +82,27 @@ bool Agent::isEnabled()
 /// @todo Since this returns more than one command, should we provide a UI that allows you to pick which command you might want?
 void Agent::invokeCommand (const QString& cmd)
 {
-    qDebug() << "[DesktopControl::Agent] I heard " << cmd;
     AbstractCategory* l_glbl = AbstractCategory::global();
     CommandList l_cmds = l_glbl->matchAllCommands (cmd);
 
     Q_FOREACH (AbstractCommand * l_cmd, l_cmds) {
+=======
+bool Agent::isActive() const {
+    return m_sphinx->isRunning();
+}
+
+bool Agent::isEnabled() {
+    return Core::configuration ( "DesktopControl/Enabled" ).toBool();
+}
+
+/// @todo Since this returns more than one command, should we provide a UI that allows you to pick which command you might want?
+void Agent::invokeCommand ( const QString& cmd ) {
+    qDebug() << "[DesktopControl::Agent] I heard " << cmd;
+    AbstractCategory* l_glbl = AbstractCategory::global();
+    CommandList l_cmds = l_glbl->matchAllCommands ( cmd );
+
+    Q_FOREACH ( AbstractCommand * l_cmd, l_cmds ) {
+>>>>>>> ccfe90a9a093f83523d00f7ee5a3d3fc8e49c2f1
         qDebug() << l_cmd->id() << l_cmd->statements();
     }
 }

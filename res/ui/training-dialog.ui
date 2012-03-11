@@ -11,7 +11,7 @@
     <x>0</x>
     <y>0</y>
     <width>478</width>
-    <height>214</height>
+    <height>221</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,7 +26,7 @@
      <x>4</x>
      <y>4</y>
      <width>469</width>
-     <height>205</height>
+     <height>214</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -116,6 +116,12 @@
         <property name="enabled">
          <bool>false</bool>
         </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -144,6 +150,12 @@
         <property name="enabled">
          <bool>false</bool>
         </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -169,6 +181,12 @@
       </item>
       <item>
        <widget class="QPushButton" name="pushButtonClose">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>0</width>
@@ -206,6 +224,12 @@
     </item>
     <item row="1" column="5">
      <widget class="QPushButton" name="pushButtonProgress">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
@@ -231,6 +255,12 @@
     </item>
     <item row="1" column="4">
      <widget class="QPushButton" name="pushButtonNext">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
@@ -253,7 +283,7 @@
       <property name="minimumSize">
        <size>
         <width>438</width>
-        <height>122</height>
+        <height>142</height>
        </size>
       </property>
       <property name="title">
@@ -271,7 +301,7 @@
          <x>4</x>
          <y>20</y>
          <width>461</width>
-         <height>101</height>
+         <height>121</height>
         </rect>
        </property>
        <property name="minimumSize">

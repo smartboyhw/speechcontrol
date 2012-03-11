@@ -181,6 +181,7 @@ Session* Session::create (const Content* p_content)
     }
 
     // create element data
+<<<<<<< HEAD
     QDomElement l_sessElem = s_dom->createElement ("Session");
     QDomElement l_dateElem = s_dom->createElement ("Date");
 
@@ -193,10 +194,28 @@ Session* Session::create (const Content* p_content)
     s_dom->documentElement().appendChild (l_sessElem);
     s_dom->documentElement().appendChild (l_dateElem);
 
-    QFile* l_file = new QFile ( Core::configurationPath().path() + "/sessions.xml" );
+    QFile* l_file = new QFile (QDir::homePath() + "/.config/speechcontrol/sessions.xml");
     l_file->open (QIODevice::WriteOnly | QIODevice::Truncate);
     QTextStream l_str (l_file);
     s_dom->save (l_str, 4);
+=======
+    QDomElement l_sessElem = s_dom->createElement ( "Session" );
+    QDomElement l_dateElem = s_dom->createElement ( "Date" );
+
+    l_dateElem.setAttribute ( "created", QDateTime::currentDateTimeUtc().toString ( Qt::SystemLocaleDate ) );
+    l_dateElem.setAttribute ( "completed", "-1" );
+    l_sessElem.setAttribute ( "uuid", l_uuid.toString() );
+    l_sessElem.setAttribute ( "content", p_content->uuid().toString() );
+    l_sessElem.setAttribute ( "corpus", l_corpus->uuid() );
+
+    s_dom->documentElement().appendChild ( l_sessElem );
+    s_dom->documentElement().appendChild ( l_dateElem );
+
+    QFile* l_file = new QFile ( Core::configurationPath().path() + "/sessions.xml" );
+    l_file->open ( QIODevice::WriteOnly | QIODevice::Truncate );
+    QTextStream l_str ( l_file );
+    s_dom->save ( l_str, 4 );
+>>>>>>> ccfe90a9a093f83523d00f7ee5a3d3fc8e49c2f1
     l_file->close();
 
     init();

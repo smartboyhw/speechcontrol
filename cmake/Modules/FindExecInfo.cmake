@@ -9,6 +9,7 @@ find_path(EXECINFO_INCLUDES "execinfo.h")
 
 if(EXECINFO_INCLUDES STREQUAL "EXECINFO_INCLUDES-NOTFOUND")
   set(EXECINFO_INCLUDES "")
+  message(WARNING "execinfo.h not found.")
 else(EXECINFO_INCLUDES STREQUAL "EXECINFO_INCLUDES-NOTFOUND")
   # We found the header file's include dir.
 

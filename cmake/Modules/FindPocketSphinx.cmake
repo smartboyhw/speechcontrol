@@ -24,7 +24,7 @@ include(FindPackageHandleStandardArgs)
 # handle the QUIETLY and REQUIRED arguments and set POCKETSPHINX_FOUND to TRUE
 # if all listed variables are TRUE
 find_package_handle_standard_args(PocketSphinx DEFAULT_MSG
-    POCKETSPHINX_LIBRARY POCKETSPHINX_INCLUDE_DIR)
+    POCKETSPHINX_LIBRARY POCKETSPHINX_INCLUDE_DIRS)
 
 mark_as_advanced(POCKETSPHINX_INCLUDE_DIR POCKETSPHINX_LIBRARY)
 

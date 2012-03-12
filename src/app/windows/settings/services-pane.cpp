@@ -18,67 +18,61 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "voxforge-pane.hpp"
-#include "ui_settingspane-voxforge.h"
+#include "services-pane.hpp"
+#include "ui_settingspane-services.h"
 
 using namespace SpeechControl::Windows;
 
-VoxforgeSettingsPane::VoxforgeSettingsPane():
-ui ( new Ui::VoxforgeSettingsPane ) {
-    qDebug() << "[VoxforgeSettingsPane::{constructor}] Building voxforge settings pane...";
+ServicesSettingsPane::ServicesSettingsPane() :
+    ui ( new Ui::ServicesSettingsPane ) {
+    qDebug() << "[ServicesSettingsPane::{constructor}] Building services settings pane...";
     ui->setupUi ( this );
     updateUi();
-    qDebug() << "[VoxforgeSettingsPane::{constructor}] Built voxforge settings pane.";
+    qDebug() << "[ServicesSettingsPane::{constructor}] Built services settings pane.";
 }
 
-VoxforgeSettingsPane::~VoxforgeSettingsPane() {
+ServicesSettingsPane::~ServicesSettingsPane() {
     delete ui;
 }
 
-void VoxforgeSettingsPane::changeEvent ( QEvent *e ) {
+void ServicesSettingsPane::changeEvent ( QEvent *e ) {
     QFrame::changeEvent ( e );
     switch ( e->type() ) {
-        case QEvent::LanguageChange:
-            ui->retranslateUi ( this );
-            break;
-        default:
-            break;
+    case QEvent::LanguageChange:
+        ui->retranslateUi ( this );
+        break;
+    default:
+        break;
     }
 }
 
-QString SpeechControl::Windows::VoxforgeSettingsPane::title() const {
-    return "VoxForge";
+QString SpeechControl::Windows::ServicesSettingsPane::title() const {
+    return "Services";
 }
 
-QString SpeechControl::Windows::VoxforgeSettingsPane::id() const {
-    return "vxfrg";
+QString SpeechControl::Windows::ServicesSettingsPane::id() const {
+    return "srvcs";
 }
 
-bool VoxforgeSettingsPane::containsText ( const QString& p_query ) const {
+bool ServicesSettingsPane::containsText ( const QString& p_query ) const {
 
 }
 
-QPixmap VoxforgeSettingsPane::pixmap() const {
+QPixmap ServicesSettingsPane::pixmap() const {
     return QIcon::fromTheme ( "configure" ).pixmap ( 32,32 );
 }
 
-void VoxforgeSettingsPane::resetPanel() {
+void ServicesSettingsPane::resetPanel() {
 
 }
 
-void VoxforgeSettingsPane::restoreDefaults() {
+void ServicesSettingsPane::restoreDefaults() {
 
 }
 
-void VoxforgeSettingsPane::updateUi() {
+void ServicesSettingsPane::updateUi() {
 
 }
 
-
-/// @todo Toggle the ability to upload content up to VoxForge.
-void SpeechControl::Windows::VoxforgeSettingsPane::on_checkBox_clicked() {
-
-}
-
-#include "voxforge-pane.moc"
+#include "services-pane.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

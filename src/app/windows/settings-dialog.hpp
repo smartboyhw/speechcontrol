@@ -25,7 +25,7 @@
 #include <QMap>
 #include <QDialog>
 #include <QPixmap>
-#include <QListWidgetItem>
+#include <QTreeWidgetItem>
 #include <QAbstractButton>
 #include <app/macros.hpp>
 
@@ -55,11 +55,11 @@ public:
     virtual ~Settings();
 
 private slots:
-    void on_lstNavigation_itemSelectionChanged();
+    void on_treeNavigation_itemSelectionChanged();
     void on_buttonBox_clicked(QAbstractButton* p_button);
 
 private:
-    QListWidgetItem* findPaneItem ( const QString& p_panelID );
+    QTreeWidgetItem* findPaneItem ( const QString& p_panelID );
     void buildWindow();
     Ui::SettingsDialog *m_ui;
     QMap<QString, AbstractSettingsPane*> m_panes;
@@ -70,6 +70,7 @@ class AbstractSettingsPane : public QFrame {
     Q_PROPERTY(QString ID READ id)
     Q_PROPERTY(QString Title READ title)
     Q_PROPERTY(QPixmap Pixmap READ pixmap)
+    friend class Settings;
 
 public:
     explicit AbstractSettingsPane();
@@ -79,8 +80,8 @@ public:
     virtual QString title() const = 0;
     virtual QString id() const = 0;
     virtual QPixmap pixmap() const = 0;
-    virtual bool hasPane(const QString& p_paneID) const;
     virtual bool containsText(const QString& p_query) const = 0;
+    bool hasPane(const QString& p_paneID) const;
 
 protected:
     void addPane(AbstractSettingsPane* p_subPane);

@@ -22,6 +22,7 @@
 #include <sessions/corpus.hpp>
 #include <QMessageBox>
 #include <QListWidget>
+#include <QListWidgetItem>
 
 #include "ui_manager-session.h"
 

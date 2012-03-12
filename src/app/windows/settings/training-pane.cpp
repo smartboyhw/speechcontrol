@@ -18,67 +18,62 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "voxforge-pane.hpp"
-#include "ui_settingspane-voxforge.h"
+#include "training-pane.hpp"
+#include "ui_settingspane-training.h"
 
 using namespace SpeechControl::Windows;
 
-VoxforgeSettingsPane::VoxforgeSettingsPane():
-ui ( new Ui::VoxforgeSettingsPane ) {
-    qDebug() << "[VoxforgeSettingsPane::{constructor}] Building voxforge settings pane...";
-    ui->setupUi ( this );
-    updateUi();
-    qDebug() << "[VoxforgeSettingsPane::{constructor}] Built voxforge settings pane.";
-}
+TrainingSettingsPane::TrainingSettingsPane():
+    ui ( new Ui::TrainingSettingsPane ) {
+        qDebug() << "[TrainingSettingsPane::{constructor}] Building training settings pane...";
+        ui->setupUi ( this );
+        updateUi();
+        qDebug() << "[TrainingSettingsPane::{constructor}] Built training settings pane.";
+    }
 
-VoxforgeSettingsPane::~VoxforgeSettingsPane() {
+TrainingSettingsPane::~TrainingSettingsPane() {
     delete ui;
 }
 
-void VoxforgeSettingsPane::changeEvent ( QEvent *e ) {
+void TrainingSettingsPane::changeEvent ( QEvent *e ) {
     QFrame::changeEvent ( e );
     switch ( e->type() ) {
-        case QEvent::LanguageChange:
-            ui->retranslateUi ( this );
-            break;
-        default:
-            break;
+    case QEvent::LanguageChange:
+        ui->retranslateUi ( this );
+        break;
+    default:
+        break;
     }
 }
 
-QString SpeechControl::Windows::VoxforgeSettingsPane::title() const {
+QString SpeechControl::Windows::TrainingSettingsPane::title() const {
     return "VoxForge";
 }
 
-QString SpeechControl::Windows::VoxforgeSettingsPane::id() const {
+QString SpeechControl::Windows::TrainingSettingsPane::id() const {
     return "vxfrg";
 }
 
-bool VoxforgeSettingsPane::containsText ( const QString& p_query ) const {
+bool TrainingSettingsPane::containsText ( const QString& p_query ) const {
 
 }
 
-QPixmap VoxforgeSettingsPane::pixmap() const {
+QPixmap TrainingSettingsPane::pixmap() const {
     return QIcon::fromTheme ( "configure" ).pixmap ( 32,32 );
 }
 
-void VoxforgeSettingsPane::resetPanel() {
+void TrainingSettingsPane::resetPanel() {
 
 }
 
-void VoxforgeSettingsPane::restoreDefaults() {
+void TrainingSettingsPane::restoreDefaults() {
 
 }
 
-void VoxforgeSettingsPane::updateUi() {
+void TrainingSettingsPane::updateUi() {
 
 }
 
 
-/// @todo Toggle the ability to upload content up to VoxForge.
-void SpeechControl::Windows::VoxforgeSettingsPane::on_checkBox_clicked() {
-
-}
-
-#include "voxforge-pane.moc"
+#include "training-pane.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

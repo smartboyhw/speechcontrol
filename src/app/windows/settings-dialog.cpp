@@ -20,18 +20,16 @@
 
 #include <QDebug>
 #include <QMessageBox>
-#include <QListWidgetItem>
+#include <QTreeWidget>
 
 #include "core.hpp"
 #include "windows/main-window.hpp"
 #include "settings-dialog.hpp"
 #include "settings/general-pane.hpp"
 #include "settings/plugins-pane.hpp"
-#include "settings/content-pane.hpp"
-#include "settings/session-pane.hpp"
 #include "settings/voxforge-pane.hpp"
-#include "settings/desktopcontrol-pane.hpp"
-#include "settings/dictation-pane.hpp"
+#include "settings/training-pane.hpp"
+#include "settings/services-pane.hpp"
 #include "ui_settings-dialog.h"
 
 using namespace SpeechControl;
@@ -56,11 +54,9 @@ void Settings::buildWindow() {
     m_ui->setupUi ( this );
 
     addPane ( new GeneralSettingsPane );
+    addPane ( new TrainingSettingsPane );
+    addPane ( new ServicesSettingsPane );
     addPane ( new PluginsSettingsPane );
-    addPane ( new DesktopControlSettingsPane );
-    addPane ( new DictationSettingsPane );
-    addPane ( new ContentSettingsPane );
-    addPane ( new SessionSettingsPane );
     addPane ( new VoxforgeSettingsPane );
     qDebug() << "[Settings::buildWindow()] Built settings window.";
 }
@@ -72,26 +68,37 @@ Settings::Settings ( const Settings& p_other ) : QDialog() {
 
 /// @todo Add it to the list of options.
 void Settings::addPane ( AbstractSettingsPane* p_pane ) {
-    QListWidget* listWidget = instance()->m_ui->lstNavigation;
-    QListWidgetItem* l_itm = new QListWidgetItem ( p_pane->title(), listWidget );
+    AbstractSettingsPane* parentPane = 0;
+    if (p_pane->parent())
+        parentPane = instance()->m_panes.value ( p_pane->parent()->property ( "id" ).toString() );
+
+    QTreeWidget* treeWidget = instance()->m_ui->treeNavigation;
+    QTreeWidgetItem* l_itm = new QTreeWidgetItem ( treeWidget,QStringList() << p_pane->title() );
+
     instance()->m_panes.insert ( p_pane->id(), p_pane );
-    l_itm->setData ( Qt::UserRole,p_pane->id() );
-    l_itm->setIcon ( p_pane->pixmap() );
+    l_itm->setData ( 0,Qt::UserRole,p_pane->id() );
+    l_itm->setIcon ( 0,p_pane->pixmap() );
+
+    if ( parentPane ) {
+        instance()->findPaneItem ( parentPane->id() )->addChild ( l_itm );
+    } else {
+        treeWidget->addTopLevelItem ( l_itm );
+    }
     p_pane->setParent ( instance()->m_ui->frmPageContainer );
     p_pane->hide();
 }
 
-void Settings::displayPane ( const QString& p_panelID ) {
-    QWidget* l_currentPane = instance()->m_panes.value ( p_panelID );
-    QListWidget* l_lstNavi = instance()->m_ui->lstNavigation;
+void Settings::displayPane ( const QString& p_paneID ) {
+    AbstractSettingsPane* l_currentPane = instance()->m_panes.value ( p_paneID );
+    QTreeWidget* l_treeNavi = instance()->m_ui->treeNavigation;
 
     if ( l_currentPane != 0 ) {
         l_currentPane->show();
-        l_lstNavi->setCurrentItem ( instance()->findPaneItem ( p_panelID ) );
+        l_currentPane->updateUi();
+        l_treeNavi->setCurrentItem ( instance()->findPaneItem ( p_paneID ) );
     } else {
-        Core::mainWindow()->setStatusMessage ( tr ( "Invalid settings panel ID '%1'" ).arg ( p_panelID ) );
-        instance()->m_panes.value ( "gnrl" )->show();
-        l_lstNavi->setCurrentItem ( instance()->findPaneItem ( "gnrl" ) );
+        Core::mainWindow()->setStatusMessage ( tr ( "Invalid settings pane ID '%1'" ).arg ( p_paneID ) );
+        displayPane ( "gnrl" );
     }
 
     if ( !instance()->isVisible() ) {
@@ -99,16 +106,15 @@ void Settings::displayPane ( const QString& p_panelID ) {
     }
 }
 
-QListWidgetItem* Settings::findPaneItem ( const QString& p_panelID ) {
-    QListWidget* l_lstNavi = instance()->m_ui->lstNavigation;
-    for ( uint i = 0; i < ( uint ) l_lstNavi->children().length(); i++ ) {
-        QListWidgetItem* l_itm = l_lstNavi->item ( i );
-        if ( l_itm->data ( Qt::UserRole ).toString() == p_panelID ) {
-            return l_itm;
-        }
-    }
+QTreeWidgetItem* Settings::findPaneItem ( const QString& p_panelID ) {
+    QTreeWidget* l_treeNavi = instance()->m_ui->treeNavigation;
+    AbstractSettingsPane* l_pane = m_panes.value ( p_panelID );
+    QList<QTreeWidgetItem*> l_items = l_treeNavi->findItems ( l_pane->title(), Qt::MatchExactly, 0 );
 
-    return 0;
+    if ( l_items.isEmpty() )
+        return 0;
+
+    return l_items.first();
 }
 
 /// @todo Remove this from the list of options.
@@ -116,13 +122,13 @@ void Settings::removePane ( const QString& p_panelID ) {
     instance()->m_panes.remove ( p_panelID );
 }
 
-void Settings::on_lstNavigation_itemSelectionChanged() {
+void Settings::on_treeNavigation_itemSelectionChanged() {
     QWidget* l_container = instance()->m_ui->frmPageContainer;
-    QListWidget* l_lstNavi = instance()->m_ui->lstNavigation;
+    QTreeWidget* l_treeNavi = instance()->m_ui->treeNavigation;
 
-    if ( !l_lstNavi->selectedItems().empty() ) {
-        QListWidgetItem* l_itm = l_lstNavi->selectedItems().first();
-        const QString l_id = l_itm->data ( Qt::UserRole ).toString();
+    if ( !l_treeNavi->selectedItems().empty() ) {
+        QTreeWidgetItem* l_itm = l_treeNavi->selectedItems().first();
+        const QString l_id = l_itm->data ( 0,Qt::UserRole ).toString();
 
         QWidget* l_pane = m_panes[l_id];
         Q_FOREACH ( QObject* l_subPane, l_container->children() ) {
@@ -162,6 +168,7 @@ AbstractSettingsPane::AbstractSettingsPane ( ) {
 
 void AbstractSettingsPane::addPane ( AbstractSettingsPane* p_subPane ) {
     m_panes.insert ( p_subPane->id(),p_subPane );
+    p_subPane->setParent ( this );
 }
 
 bool AbstractSettingsPane::hasPane ( const QString& p_paneID ) const {

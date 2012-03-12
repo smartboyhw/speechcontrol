@@ -17,49 +17,42 @@
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+#ifndef TRAININGSETTINGSPANE_HPP
+#define TRAININGSETTINGSPANE_HPP
 
-
-#ifndef SESSIONMANAGER_HPP
-#define SESSIONMANAGER_HPP
-
-#include <QDialog>
-
-class QListWidgetItem;
+#include <QFrame>
+#include <windows/settings-dialog.hpp>
 
 namespace Ui {
-class SessionManager;
+class TrainingSettingsPane;
 }
 
 namespace SpeechControl {
-class Session;
 namespace Windows {
-namespace Managers {
 
-class SessionManager : public QDialog {
+class TrainingSettingsPane : public AbstractSettingsPane {
     Q_OBJECT
 
 public:
-    explicit SessionManager ( QWidget *parent = 0 );
-    ~SessionManager();
-    static Session* pickSession();
-    Session* session() const;
+    explicit TrainingSettingsPane (  );
+    ~TrainingSettingsPane();
+    QString title() const;
+    QString id() const;
+    virtual bool containsText ( const QString& p_query ) const;
+    virtual QPixmap pixmap() const;
+    virtual void resetPanel();
+    virtual void restoreDefaults();
+    virtual void updateUi();
 
-private slots:
-    void on_btnCancel_clicked();
-    void on_btnOk_clicked();
-    void on_btnCreate_clicked();
-    void updateList();
-    void on_listSession_itemSelectionChanged();
-    void on_listSession_itemDoubleClicked ( QListWidgetItem* p_item );
+protected:
+    void changeEvent ( QEvent *e );
 
 private:
-    Ui::SessionManager *m_ui;
-    Session* m_session;
+    Ui::TrainingSettingsPane *ui;
 };
 
 }
 }
-}
 
-#endif // SESSIONMANAGER_HPP
+#endif // TRAININGSETTINGSPANE_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

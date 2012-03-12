@@ -110,15 +110,18 @@ void Main::closeEvent ( QCloseEvent* p_closeEvent ) {
     } else {
         if ( QMessageBox::Yes == QMessageBox::question ( this,"Confirm Quit","Are you sure you want to quit SpeechControl?",QMessageBox::Yes|QMessageBox::No ) ) {
             p_closeEvent->accept();
-            QWidget::closeEvent ( p_closeEvent );
         } else {
             p_closeEvent->ignore();
         }
     }
-    QWidget::closeEvent ( p_closeEvent );
+
+    Core::setConfiguration ( "MainWindow/Geometry", saveGeometry() );
+    Core::setConfiguration ( "MainWindow/State", saveState() );
 }
 
 void Main::open() {
+    restoreGeometry ( Core::configuration ( "MainWindow/Geometry" ).toByteArray() );
+    restoreGeometry ( Core::configuration ( "MainWindow/State" ).toByteArray() );
     if ( Microphone::allMicrophones().empty() ) {
         QErrorMessage* l_msg = new QErrorMessage ( this );
         l_msg->setModal ( true );

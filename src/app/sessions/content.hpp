@@ -196,9 +196,9 @@ public:
     void setText (const QString p_text);
 
     QString id() const;
-    const QString author() const;
-    const QString title() const;
-    const QString text() const;
+    QString author() const;
+    QString title() const;
+    QString text() const;
     bool isValid();
 
     Content* generate();

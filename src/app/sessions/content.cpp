@@ -312,17 +312,17 @@ QString AbstractContentSource::id() const
     return m_id;
 }
 
-const QString AbstractContentSource::author() const
+QString AbstractContentSource::author() const
 {
     return m_author;
 }
 
-const QString AbstractContentSource::text() const
+QString AbstractContentSource::text() const
 {
     return m_text;
 }
 
-const QString AbstractContentSource::title() const
+QString AbstractContentSource::title() const
 {
     return m_title;
 }

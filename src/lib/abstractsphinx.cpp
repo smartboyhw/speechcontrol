@@ -22,7 +22,7 @@
 #include "abstractsphinx.hpp"
 #include "acousticmodel.hpp"
 #include "dictionary.hpp"
-#include "microphone.hpp"
+#include "abstractaudiosource.hpp"
 #include "languagemodel.hpp"
 
 #include <QGlib/Connect>
@@ -115,8 +115,8 @@ const QGst::ElementPtr AbstractSphinx::audioSrcElement() const {
     return m_pipeline->getElementByName ( "audiosrc" );
 }
 
-void AbstractSphinx::useMicrophone ( const Microphone* p_microphone ) {
-    audioSrcElement()->setProperty<const char*> ( "device",p_microphone->name().toStdString().c_str() );
+/// @todo Implement support for using AbstractAudioSource to provide input for devices.
+void AbstractSphinx::useMicrophone ( const AbstractAudioSource* p_microphone ) {
 }
 
 const QGst::ElementPtr AbstractSphinx::pocketSphinxElement() const {

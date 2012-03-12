@@ -48,7 +48,7 @@ namespace SpeechControl {
 
 class LanguageModel;
 
-class Microphone;
+class AbstractAudioSource;
 class AcousticModel;
 class Dictionary;
 /**
@@ -188,7 +188,7 @@ public:
      *
      * @param p_microphone The microphone to use.
      **/
-    void useMicrophone ( const Microphone* p_microphone );
+    void useMicrophone ( const AbstractAudioSource* p_microphone );
 
     /**
      * @brief Set PocketSphinx element property

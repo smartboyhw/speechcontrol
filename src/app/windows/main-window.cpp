@@ -50,6 +50,7 @@
 #include "micsetup-wizard.hpp"
 #include "contents-wizard.hpp"
 #include "sessions-wizard.hpp"
+#include <abstractaudiosource.hpp>
 #include "ui_main-window.h"
 
 using namespace SpeechControl;
@@ -124,7 +125,7 @@ void Main::closeEvent ( QCloseEvent* p_closeEvent ) {
 void Main::open() {
     restoreGeometry ( Core::configuration ( "MainWindow/Geometry" ).toByteArray() );
     restoreGeometry ( Core::configuration ( "MainWindow/State" ).toByteArray() );
-    if ( Microphone::allMicrophones().empty() ) {
+    if ( DeviceAudioSource::allDevices().empty() ) {
         QErrorMessage* l_msg = new QErrorMessage ( this );
         l_msg->setModal ( true );
         l_msg->setWindowTitle ( tr ( "No Microphones Found" ) );

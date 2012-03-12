@@ -30,7 +30,6 @@
 // libspchcntrl includes
 #include <lib/config.hpp>
 #include <lib/system.hpp>
-#include <lib/microphone.hpp>
 
 // local includes
 #include "app/core.hpp"

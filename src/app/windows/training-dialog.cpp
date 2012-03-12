@@ -24,8 +24,10 @@
 #include <QProgressBar>
 #include <QMessageBox>
 
-#include "ui_training-dialog.h"
+#include <lib/abstractaudiosource.hpp>
+
 #include "core.hpp"
+#include "ui_training-dialog.h"
 #include "sessions/session.hpp"
 #include "training-dialog.hpp"
 
@@ -47,7 +49,7 @@ TrainingDialog::TrainingDialog ( QWidget* p_parent ) :
     QDialog ( p_parent ),
     m_currentPosition ( 0 ), m_initialPosition ( 0 ),
     m_ui ( new Ui::Training ),
-    m_mic ( Microphone::defaultMicrophone() ),
+    m_mic ( DeviceAudioSource::defaultDevice() ),
     m_session ( 0 ), m_currentSentence ( 0 ), m_initialSentence ( 0 ) {
     m_ui->setupUi ( this );
     m_ui->pushButtonProgress->setIcon ( QIcon::fromTheme ( ICON_RECORD ) );
@@ -290,7 +292,7 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonNext_clicked() {
         m_mic->stopRecording();
         QFile* l_file = m_currentSentence->phrase ( m_currentPosition )->audio();
         l_file->open ( QIODevice::WriteOnly | QIODevice::Truncate );
-        l_file->write ( m_mic->data() );
+        //l_file->write ( m_mic->data() );
         l_file->close();
     }
 

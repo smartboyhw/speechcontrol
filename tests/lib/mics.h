@@ -23,7 +23,7 @@
 #include <QObject>
 
 namespace SpeechControl {
-    class Microphone;
+    class AbstractAudioSource;
 }
 
 class TestMicrophone : public QObject {

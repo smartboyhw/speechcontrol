@@ -19,7 +19,7 @@
  */
 
 // libspchcntrl includes
-#include <lib/microphone.hpp>
+#include <lib/abstractaudiosource.hpp>
 
 #include "micselect.hpp"
 #include "app/windows/micsetup-wizard.hpp"
@@ -32,7 +32,7 @@ using SpeechControl::Wizards::Pages::MicrophoneSelection;
 /// @todo The loudness of the content spoken should begin detection here.
 MicrophoneSelection::MicrophoneSelection ( QWidget *parent ) :
     QWizardPage ( parent ), ui ( new Ui::MicrophoneSelection ),
-    m_mic ( Microphone::defaultMicrophone() ) {
+    m_mic ( DeviceAudioSource::defaultDevice() ) {
     ui->setupUi ( this );
     this->registerField ( "mic",ui->comboBoxMicrophones,"currentIndex",SIGNAL ( currentIndexChanged ( QString ) ) );
 }
@@ -43,19 +43,18 @@ MicrophoneSelection::~MicrophoneSelection() {
 
 /// @todo Fill the combo box with all of the mics.
 void SpeechControl::Wizards::Pages::MicrophoneSelection::initializePage() {
-    MicrophoneList l_allMics = Microphone::allMicrophones();
-    if ( l_allMics.empty() ) {
-        /// @todo Add error saying no mics found.
-    } else {
-        Q_FOREACH ( const Microphone* l_mic, l_allMics ) {
-            ui->comboBoxMicrophones->addItem ( l_mic->name(),l_mic->id() );
+    AbstractAudioSourceList l_allMics = DeviceAudioSource::allDevices();
+
+    if ( !l_allMics.empty() ) {
+        Q_FOREACH ( AbstractAudioSource* l_mic, l_allMics ) {
+            //ui->comboBoxMicrophones->addItem ( l_mic->deviceName() ,l_mic->deviceName() );
         }
     }
 }
 
 bool SpeechControl::Wizards::Pages::MicrophoneSelection::validatePage() {
     if ( m_mic ) {
-        wizard()->setProperty ( "mic-id",m_mic->id() );
+        wizard()->setProperty ( "mic-id",m_mic->deviceName() );
     }
 
     return ui->progressBarFeedback->isEnabled();
@@ -74,10 +73,10 @@ bool SpeechControl::Wizards::Pages::MicrophoneSelection::isComplete() {
 /// @todo Set the device to be detected for volume detection here.
 /// @todo Set this page's value to this field.
 void SpeechControl::Wizards::Pages::MicrophoneSelection::on_comboBoxMicrophones_activated ( int index ) {
-    const QUuid l_uuid ( ui->comboBoxMicrophones->itemData ( index ).toString() );
-    m_mic = Microphone::getMicrophone ( l_uuid );
+    const QString deviceName = ui->comboBoxMicrophones->itemData ( index ).toString();
+    m_mic = new DeviceAudioSource(deviceName);
     m_mic->startRecording();
-    connect(m_mic,SIGNAL(startedListening()),this,SLOT(microphoneSelected()));
+    connect(m_mic,SIGNAL(recordingBegun()),this,SLOT(microphoneSelected()));
 }
 
 void MicrophoneSelection::microphoneSelected() {

@@ -28,8 +28,7 @@ class MicrophoneSelection;
 }
 
 namespace SpeechControl {
-
-class Microphone;
+class DeviceAudioSource;
 namespace Wizards {
 namespace Pages {
 
@@ -51,7 +50,7 @@ private slots:
 private:
     Ui::MicrophoneSelection *ui;
     bool m_complete;
-    Microphone* m_mic;
+    DeviceAudioSource* m_mic;
 };
 
 }

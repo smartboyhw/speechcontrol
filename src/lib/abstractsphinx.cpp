@@ -51,7 +51,7 @@ void AbstractSphinx::buildPipeline ( QString p_description ) {
     m_pipeline = QGst::Pipeline::create();
     QGst::BinPtr bin = QGst::Bin::fromDescription ( p_description );
     m_pipeline->add ( bin );
-    qDebug() << "Built pipeline for AbstractSphinx (" << p_description << ").";
+    qDebug() << "[AbstractSphinx::buildPipeline()] Built pipeline for AbstractSphinx (" << p_description << ").";
     prepare();
 }
 
@@ -70,6 +70,7 @@ void AbstractSphinx::prepare() {
     m_pipeline->setState ( QGst::StateReady );
     //m_psphinx->setState ( QGst::StateReady );
     //m_vader->setState ( QGst::StateReady );
+    qDebug() << "[AbstractSphinx::prepare()] Prepared pipeline.";
     m_ready = Ready;
 }
 
@@ -184,13 +185,14 @@ bool AbstractSphinx::isRunning() const {
 }
 
 bool AbstractSphinx::start() {
-    qDebug() << "[ASR start]";
+    qDebug() << "[AbstractSphinx::start()] Starting...";
 
     if ( isReady() ) {
         m_pipeline->setState ( QGst::StatePlaying );
         m_running = Running;
+        qDebug() << "[AbstractSphinx::start()] PocketSphinx started.";
     } else {
-        qWarning() << "[ASR] Object is not ready to run.";
+        qWarning() << "[AbstractSphinx::start()] Object is not ready to run.";
     }
 
     return isRunning();
@@ -200,6 +202,7 @@ bool AbstractSphinx::stop() {
     if ( m_pipeline->setState ( QGst::StateNull ) == QGst::StateChangeSuccess )
         m_running = NotPrepared;
 
+    qDebug() << "[AbstractSphinx::stop()] Has PocketSphinx halted?" << (m_running == NotPrepared);
     return m_running == NotPrepared;
 }
 

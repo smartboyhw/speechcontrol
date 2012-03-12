@@ -41,16 +41,15 @@
 #include <QIcon>
 
 // pretty simple, huh?
-int main (int argc, char** argv)
-{
-    QApplication* app = new QApplication (argc, argv);
+int main ( int argc, char** argv ) {
+    QApplication* app = new QApplication ( argc, argv );
     app->setApplicationName ( "SpeechControl" );
     app->setOrganizationDomain ( "thesii.org" );
     app->setOrganizationName ( "Synthetic Intellect Institute" );
-    app->setWindowIcon(QIcon(":/logo/sc-large"));
-    app->setQuitOnLastWindowClosed(false);
+    app->setWindowIcon ( QIcon ( ":/logo/sc-large" ) );
     app->setApplicationVersion ( SPCHCNTRL_BUILD_VERSION );
-    SpeechControl::Core appCore (argc, argv, app);
+
+    SpeechControl::Core appCore ( argc, argv, app );
     appCore.start();
     return app->exec();
 }

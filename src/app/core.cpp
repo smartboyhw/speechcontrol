@@ -104,7 +104,7 @@ void Core::start() {
 
     emit instance()->started();
 
-    mainWindow()->show();
+    mainWindow()->open();
 }
 
 Windows::Main* Core::mainWindow() {

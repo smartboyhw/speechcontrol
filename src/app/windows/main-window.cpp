@@ -30,6 +30,7 @@
 #include <QPushButton>
 #include <QTableWidget>
 #include <QMenu>
+#include <qevent.h>
 
 #include <app/sessions/corpus.hpp>
 
@@ -96,7 +97,28 @@ Main::Main() : m_ui ( new Ui::MainWindow ), m_prgStatusbar ( 0 ) {
     setStatusMessage ( tr ( "Welcome to %1, speech recognition for Linux." ).arg ( QApplication::applicationName() ), 4000 );
 }
 
-void Main::show() {
+void Main::closeEvent ( QCloseEvent* p_closeEvent ) {
+    qDebug() << "[Windows::Main::hide()] Is indicator visible?" << Indicator::instance()->isVisible();
+    if ( Indicator::instance()->isVisible() ) {
+        QErrorMessage* l_msg = new QErrorMessage ( this );
+        l_msg->setModal ( true );
+        l_msg->setWindowTitle ( tr ( "Hidden From View" ) );
+        l_msg->showMessage ( tr ( "SpeechControl has been hidden into the system's tray."
+                                  "You can restore it by clicking the menu and selecting 'Restore'." ),"HiddenToTray" );
+        p_closeEvent->ignore();
+        this->hide();
+    } else {
+        if ( QMessageBox::Yes == QMessageBox::question ( this,"Confirm Quit","Are you sure you want to quit SpeechControl?",QMessageBox::Yes|QMessageBox::No ) ) {
+            p_closeEvent->accept();
+            QWidget::closeEvent ( p_closeEvent );
+        } else {
+            p_closeEvent->ignore();
+        }
+    }
+    QWidget::closeEvent ( p_closeEvent );
+}
+
+void Main::open() {
     if ( Microphone::allMicrophones().empty() ) {
         QErrorMessage* l_msg = new QErrorMessage ( this );
         l_msg->setModal ( true );
@@ -108,19 +130,6 @@ void Main::show() {
 
     updateContent();
     QMainWindow::show();
-}
-
-void Main::hide() {
-    if ( Indicator::instance()->isVisible() ){
-        QErrorMessage* l_msg = new QErrorMessage ( this );
-        l_msg->setModal ( true );
-        l_msg->setWindowTitle ( tr ( "Hidden From View" ) );
-        l_msg->showMessage ( tr ( "SpeechControl has been hidden into the system's tray."
-        "You can restore it by clicking the menu and selecting 'Restore'." ),"HiddenToTray" );
-        QMainWindow::hide();
-    } else {
-        QApplication::quit();
-    }
 }
 
 void Main::setStatusMessage ( const QString& p_message , const int p_timeout ) {

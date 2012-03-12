@@ -70,12 +70,8 @@ public slots:
     /**
      * @brief Shows the window.
      **/
-    virtual void show();
+    virtual void open();
 
-    /**
-     * @brief Closes the window.
-     **/
-    virtual void hide();
     /**
      * @brief Updates the window's data.
      **/
@@ -126,6 +122,7 @@ private slots:
     void on_actionAboutSpeechControl_triggered();
 
 private:
+    virtual void closeEvent ( QCloseEvent* p_closeEvent );
     Ui::MainWindow* m_ui;
     QProgressBar* m_prgStatusbar;
     QTimer* m_tckr;

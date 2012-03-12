@@ -44,7 +44,7 @@ Indicator::Indicator ( ) : QObject ( Core::instance() ),
 
     m_icon = new QSystemTrayIcon(QIcon(":/logo/sc-large"),this);
     QMenu* l_menu = new QMenu;
-    l_menu->addAction("Restore",Core::mainWindow(),SLOT(show()));
+    l_menu->addAction("Restore",Core::mainWindow(),SLOT(open()));
     l_menu->addAction(QIcon::fromTheme("application-exit"),"Quit",QApplication::instance(),SLOT(quit()));
     m_icon->setContextMenu(l_menu);
 }
@@ -60,7 +60,7 @@ void Indicator::show() {
 }
 
 void Indicator::showMainWindow() {
-    Core::mainWindow()->show();
+    Core::mainWindow()->open();
 }
 
 /// @todo Add an enumeration that allows the callee to specify the kind of message icon they'd  want to appear.

@@ -21,7 +21,7 @@ set(POCKETSPHINX_INCLUDE_DIRS ${POCKETSPHINX_INCLUDE_DIR}
 set(POCKETSPHINX_LIBRARIES ${POCKETSPHINX_LIBRARY} ${SPHINXBASE_LIBRARIES})
 
 include(FindPackageHandleStandardArgs)
-# handle the QUIETLY and REQUIRED arguments and set LIBXML2_FOUND to TRUE
+# handle the QUIETLY and REQUIRED arguments and set POCKETSPHINX_FOUND to TRUE
 # if all listed variables are TRUE
 find_package_handle_standard_args(PocketSphinx DEFAULT_MSG
     POCKETSPHINX_LIBRARY POCKETSPHINX_INCLUDE_DIR)

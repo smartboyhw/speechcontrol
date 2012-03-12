@@ -253,16 +253,12 @@ void Main::refreshUi()
     const bool dictationEnabled = Dictation::Agent::instance()->isEnabled();
     const bool desktopControlActive = DesktopControl::Agent::instance()->isActive();
     const bool desktopControlEnabled = DesktopControl::Agent::instance()->isEnabled();
-    const bool desktopControlPossible = !dictationEnabled && desktopControlEnabled;
-    const bool dictationPossible = !desktopControlEnabled && dictationEnabled;
 
     m_ui->btnDsktpCntrl->setChecked (desktopControlActive);
     m_ui->btnDsktpCntrl->setIcon ( ( (desktopControlActive) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
-    m_ui->btnDsktpCntrl->setEnabled (desktopControlPossible);
 
     m_ui->btnDctn->setChecked (dictationActive);
     m_ui->btnDctn->setIcon ( ( (dictationActive) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
-    m_ui->btnDctn->setEnabled (dictationPossible);
 }
 
 void Main::on_actionAboutQt_triggered()
@@ -321,5 +317,5 @@ Main::~Main()
 }
 
 #include "main-window.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
 

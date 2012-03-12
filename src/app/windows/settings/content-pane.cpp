@@ -68,7 +68,7 @@ QString ContentSettingsPane::id() const {
 }
 
 bool ContentSettingsPane::containsText ( const QString& p_query ) const {
-
+    return !p_query.isEmpty();
 }
 
 QPixmap ContentSettingsPane::pixmap() const {

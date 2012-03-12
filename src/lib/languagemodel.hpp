@@ -34,6 +34,9 @@ class LanguageModel : public QObject {
     Q_OBJECT
     Q_PROPERTY ( QString Path READ path )   ///< The path to the language mode, be it a directory or file.
 
+private:
+    QUuid m_uuid;
+    
 public:
     /**
      * @brief Null constructor.

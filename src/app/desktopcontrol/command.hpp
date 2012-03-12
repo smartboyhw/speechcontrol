@@ -36,6 +36,7 @@ class AbstractCategory;
  * @brief ...
  **/
 typedef QList<AbstractCommand*> CommandList;
+
 /**
  * @brief ...
  **/

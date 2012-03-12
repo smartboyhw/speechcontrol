@@ -27,7 +27,8 @@ LanguageModel::LanguageModel ( QObject* p_parent ) : QObject ( p_parent ) {
 
 }
 
-LanguageModel::LanguageModel ( const QUuid& p_uuid ) : QObject() {
+LanguageModel::LanguageModel ( const QUuid& p_uuid ) : QObject(), m_uuid(p_uuid)
+{
 
 }
 
@@ -35,15 +36,18 @@ LanguageModel::LanguageModel() {
 
 }
 
-LanguageModel* LanguageModel::fromCompressedFile ( const QFile* p_archiveFile ) {
+LanguageModel* LanguageModel::fromCompressedFile ( const QFile* p_archiveFile )
+{
     return 0;
 }
 
-LanguageModel* LanguageModel::fromDirectory ( const QDir& p_directory ) {
+LanguageModel* LanguageModel::fromDirectory ( const QDir& p_directory )
+{
     return 0;
 }
 
-LanguageModel* LanguageModel::fromPath ( const QString& p_path ) {
+LanguageModel* LanguageModel::fromPath ( const QString& p_path )
+{
     return 0;
 }
 

@@ -26,7 +26,7 @@ AdaptionUtility::AdaptionUtility() : QObject(), m_session ( 0 ), m_model ( 0 ) {
 
 }
 
-AdaptionUtility::AdaptionUtility ( Session* p_session, AcousticModel* p_model ) : QObject(), m_session ( p_session ), m_model ( m_model ) {
+AdaptionUtility::AdaptionUtility ( Session* p_session, AcousticModel* p_model ) : QObject(), m_session ( p_session ), m_model ( p_model ) {
 
 }
 

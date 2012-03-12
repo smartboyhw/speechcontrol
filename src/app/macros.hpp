@@ -21,6 +21,8 @@
 #ifndef SC_MACROS_HPP
 #define SC_MACROS_HPP
 
+#include <QDebug>
+
 #define SC_SINGLETON(Type) \
     private:\
         static Type* s_inst;\
@@ -31,6 +33,7 @@
             if (s_inst == 0)\
             {\
                 s_inst = new Type;\
+                qDebug() << "[SC_SINGLETON()] Created singleton instance of " #Type << ".";\
             }\
             return s_inst;\
         }\

@@ -28,5 +28,8 @@
 #define SPCH_EXPORT Q_DECL_IMPORT
 #endif
 
+// This define fixes a nasty compile bug. Don't believe me? Comment it out and see what happens.
+#define QTGSTREAMERUTILS_EXPORT Q_DECL_IMPORT
+
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

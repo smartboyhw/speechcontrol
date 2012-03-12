@@ -37,7 +37,7 @@
             }\
             return s_inst;\
         }\
-
+ 
 #ifndef QT_NO_DEBUG
 # define SC_ASSERT(condition,message) ((!(#condition)) ? qt_assert("condition##message",__FILE__,__LINE__) : qt_noop())
 #else
@@ -45,3 +45,4 @@
 #endif
 
 #endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

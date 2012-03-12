@@ -24,13 +24,15 @@
 
 using namespace SpeechControl::Wizards;
 
-Backup::Backup ( QWidget *parent ) :
-    WizardBase ( parent ) {
-    setPage ( Backup::IntroductionPage,
-              NULL );
+Backup::Backup (QWidget* parent) :
+    WizardBase (parent)
+{
+    setPage (Backup::IntroductionPage,
+             NULL);
 }
 
-Backup::~Backup() {
+Backup::~Backup()
+{
 }
 
 #include "backup-wizard.moc"

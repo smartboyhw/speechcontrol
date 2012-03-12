@@ -35,7 +35,8 @@ class QFile;
 class QDomDocument;
 class QDomElement;
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 class Corpus;
 class Phrase;
 class Sentence;
@@ -71,11 +72,12 @@ typedef QMap<QString, DictionaryEntry*> DictionaryEntryMap;
  *
  * @see Dictionary
  **/
-class SPCH_EXPORT DictionaryEntry : public QObject {
+class SPCH_EXPORT DictionaryEntry : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( DictionaryEntry )
-    Q_PROPERTY ( QString Word READ word )
-    Q_PROPERTY ( QString Phoneme READ phoneme )
+    Q_DISABLE_COPY (DictionaryEntry)
+    Q_PROPERTY (QString Word READ word)
+    Q_PROPERTY (QString Phoneme READ phoneme)
     friend class Dictionary;
 
 public:
@@ -87,7 +89,7 @@ public:
      * @param p_word QString
      * @param p_phoneme QString
      **/
-    DictionaryEntry ( Dictionary* p_dictionary , const QString& p_word, const QString& p_phoneme );
+    DictionaryEntry (Dictionary* p_dictionary , const QString& p_word, const QString& p_phoneme);
     virtual ~DictionaryEntry();
 
     /**
@@ -115,9 +117,10 @@ private:
  * in order to provide the appropriate linkages with the word and their corresponding
  * phonemes.
  **/
-class SPCH_EXPORT Dictionary : public QObject {
+class SPCH_EXPORT Dictionary : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( Dictionary )
+    Q_DISABLE_COPY (Dictionary)
     friend class Corpus;
 
 public:
@@ -127,13 +130,13 @@ public:
      *
      * @param p_parent Defaults to 0.
      **/
-    explicit Dictionary ( QObject* p_parent = 0 );
+    explicit Dictionary (QObject* p_parent = 0);
 
     /**
      * @brief Constructor.
      * @param p_uuid The UUID to obtain this dictionary with.
      **/
-    Dictionary ( const QUuid& p_uuid );
+    Dictionary (const QUuid& p_uuid);
 
     /**
      * @brief Destructor.
@@ -145,7 +148,7 @@ public:
      * @param p_uuid The UUID to obtain the dictionary with.
      * @return A pointer to a Dictionary object if found, NULL otherwise.
      **/
-    static Dictionary* obtain ( const QUuid& p_uuid );
+    static Dictionary* obtain (const QUuid& p_uuid);
 
     /**
      * @brief Obtains a Dictionary from a path.
@@ -153,7 +156,7 @@ public:
      * @param p_path The path of which the dictionary resides.
      * @return A pointer to a Dictionary object if found, NULL otherwise.
      **/
-    static Dictionary* obtain ( const QString& p_path );
+    static Dictionary* obtain (const QString& p_path);
 
     /**
      * @brief Obtains the list of entries representing this Dictionary.
@@ -165,7 +168,7 @@ public:
      * @brief Adds an entry into this Dictionary.
      * @param  p_entry The DictionaryEntry to add.
      **/
-    void addEntry ( DictionaryEntry* p_entry );
+    void addEntry (DictionaryEntry* p_entry);
 
     /**
      * @brief Removes an entry by the word specifying it.
@@ -173,33 +176,33 @@ public:
      * @param p_word The word to add into the entry.
      * @return A DictionaryEntry from the formed action, or returns the existing entry.
      **/
-    DictionaryEntry* removeEntry ( const QString& p_word );
+    DictionaryEntry* removeEntry (const QString& p_word);
 
     /**
      * @brief Adds a DictionaryEntry to the Dictionary.
      *
      * @param p_entry The DictionaryEntry to add.
      **/
-    Dictionary& operator<< ( DictionaryEntry* p_entry );
+    Dictionary& operator<< (DictionaryEntry* p_entry);
 
     /**
      * @brief Adds a DictionaryEntryList into this Dictionary.
      *
      * @param p_list The DictionaryEntryList to add.
      **/
-    Dictionary& operator<< ( DictionaryEntryList& p_list );
+    Dictionary& operator<< (DictionaryEntryList& p_list);
 
     /**
      * @brief Loads the Dictionary from the specified QIODevice p_device.
      **/
-    void load ( QIODevice* p_device );
+    void load (QIODevice* p_device);
 
     /**
      * @brief Loads the Dictionary from a specified UUID.
      *
      * @param p_uuid The UUID of the Dictionary to load.
      **/
-    void load ( const QUuid& p_uuid );
+    void load (const QUuid& p_uuid);
 
     /**
      * @brief Saves the Dictionary.
@@ -213,11 +216,11 @@ public:
     QString path() const;
 
 private:
-    static QString getPathFromUuid ( const QUuid& p_uuid );
+    static QString getPathFromUuid (const QUuid& p_uuid);
     static DictionaryMap s_lst;
     DictionaryEntryMap m_words;
     QIODevice* m_device;
 };
 }
 #endif // DICTIONARY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -43,7 +43,8 @@
 #include <QGst/Utils/ApplicationSource>
 #include <QGst/Utils/ApplicationSink>
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 class GenericSink;
 class AbstractAudioSource;
 class DeviceAudioSource;
@@ -59,18 +60,19 @@ typedef QList<AbstractAudioSource*> AbstractAudioSourceList;
  **/
 typedef QMap<QUuid, AbstractAudioSource*> AbstractAudioSourceMap;
 
-class SPCH_EXPORT GenericSink : public QGst::Utils::ApplicationSink {
+class SPCH_EXPORT GenericSink : public QGst::Utils::ApplicationSink
+{
 public:
     explicit GenericSink();
     QGst::Utils::ApplicationSource* source();
-    void setSource ( QGst::Utils::ApplicationSource* p_source );
+    void setSource (QGst::Utils::ApplicationSource* p_source);
 
 protected:
     virtual void eos();
     virtual QGst::FlowReturn newBuffer();
 
 private:
-    QGst::Utils::ApplicationSource *m_src;
+    QGst::Utils::ApplicationSource* m_src;
 };
 
 /**
@@ -81,7 +83,8 @@ private:
  * input devices in the system and allows this to be attached to other classes
  * that'd require the use of an audio input device like AbstractSphinx.
  **/
-class SPCH_EXPORT AbstractAudioSource : public QObject {
+class SPCH_EXPORT AbstractAudioSource : public QObject
+{
     Q_OBJECT
     QGst::PipelinePtr m_pipeline;
 
@@ -98,9 +101,9 @@ public slots:
     void stopRecording();
 
 protected:
-    explicit AbstractAudioSource ( QObject* parent = 0 );
-    AbstractAudioSource ( const QObject& p_other );
-    Q_DISABLE_COPY ( AbstractAudioSource )
+    explicit AbstractAudioSource (QObject* parent = 0);
+    AbstractAudioSource (const QObject& p_other);
+    Q_DISABLE_COPY (AbstractAudioSource)
     virtual QString pipelineDescription() = 0;
     QString caps() const;
     virtual void buildPipeline();
@@ -112,17 +115,18 @@ protected:
     QGst::ElementPtr m_srcVolume;
 
 private:
-    void onPipelineBusmessage ( const QGst::MessagePtr & message );
+    void onPipelineBusmessage (const QGst::MessagePtr& message);
 };
 
-class SPCH_EXPORT DeviceAudioSource : public AbstractAudioSource {
+class SPCH_EXPORT DeviceAudioSource : public AbstractAudioSource
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( DeviceAudioSource )
+    Q_DISABLE_COPY (DeviceAudioSource)
 
 public:
     explicit DeviceAudioSource();
-    DeviceAudioSource ( const QString& p_deviceName );
-    DeviceAudioSource ( const AbstractAudioSource& p_other );
+    DeviceAudioSource (const QString& p_deviceName);
+    DeviceAudioSource (const AbstractAudioSource& p_other);
     virtual ~DeviceAudioSource();
     QString deviceName() const;
     static AbstractAudioSourceList allDevices();
@@ -133,11 +137,12 @@ protected:
     virtual void buildPipeline();
 
 private:
-    void obtainDevice ( const QString& p_deviceName );
+    void obtainDevice (const QString& p_deviceName);
     QGst::ElementPtr m_devicePtr;
 };
 
-class SPCH_EXPORT StreamAudioSource : public AbstractAudioSource {
+class SPCH_EXPORT StreamAudioSource : public AbstractAudioSource
+{
 
 
 };
@@ -147,4 +152,4 @@ class SPCH_EXPORT StreamAudioSource : public AbstractAudioSource {
 #endif // ABSTRACTAUDIOSOURCE_HPP
 
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

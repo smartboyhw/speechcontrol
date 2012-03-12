@@ -27,26 +27,29 @@
 #include "abstractagent.hpp"
 #include <app/macros.hpp>
 
-namespace SpeechControl {
-namespace Dictation {
+namespace SpeechControl
+{
+namespace Dictation
+{
 class Sphinx;
-class Agent : public AbstractAgent {
+class Agent : public AbstractAgent
+{
     Q_OBJECT
-    SC_SINGLETON(Agent)
+    SC_SINGLETON (Agent)
 public:
     virtual ~Agent();
     virtual bool isActive() const;
     bool isEnabled() const;
 
 public slots:
-    void handleText ( const QString& p_text );
+    void handleText (const QString& p_text);
 
 private:
-    virtual ActivityState onStateChanged ( const SpeechControl::AbstractAgent::ActivityState p_stt );
+    virtual ActivityState onStateChanged (const SpeechControl::AbstractAgent::ActivityState p_stt);
     Sphinx* m_sphinx;
 };
 }
 }
 
 #endif // DICTATION_AGENT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

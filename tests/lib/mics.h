@@ -22,11 +22,13 @@
 #define TEST_LIB_MICS_HPP
 #include <QObject>
 
-namespace SpeechControl {
-    class AbstractAudioSource;
+namespace SpeechControl
+{
+class AbstractAudioSource;
 }
 
-class TestMicrophone : public QObject {
+class TestMicrophone : public QObject
+{
     Q_OBJECT
 
 private slots:
@@ -39,4 +41,4 @@ private slots:
 };
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

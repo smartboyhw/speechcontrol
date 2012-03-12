@@ -140,7 +140,7 @@ bool Corpus::exists (const QUuid& p_uuid)
 QUrl Corpus::getPath (const QUuid& p_uuid)
 {
     const QString l_baseComp = Core::configurationPath().path() + "/corpus/";
-    return QUrl::fromLocalFile (l_baseComp + p_uuid.toString().remove(QRegExp("[{}]")));
+    return QUrl::fromLocalFile (l_baseComp + p_uuid.toString().remove (QRegExp ("[{}]")));
 }
 
 QUrl Corpus::audioPath() const
@@ -205,7 +205,8 @@ void Corpus::load (const QUuid& p_uuid)
         }
 
         m_uuid = p_uuid;
-    } else {
+    }
+    else {
         m_dom = 0;
         m_dict = 0;
         m_sntncLst = SentenceList();
@@ -219,7 +220,7 @@ void Corpus::load (const QUuid& p_uuid)
 bool Corpus::isValid() const
 {
     const bool l_valid = m_dom && !m_uuid.isNull();
-    SC_ASSERT(l_valid == true,"Invalid Corpus.");
+    SC_ASSERT (l_valid == true, "Invalid Corpus.");
     qDebug() << "Is corpus valid?" << l_valid;
     return l_valid;
 }
@@ -232,7 +233,8 @@ void Corpus::save()
     if (l_file->open (QIODevice::WriteOnly | QIODevice::Truncate)) {
         QTextStream l_strm (l_file);
         m_dom->save (l_strm, 4);
-    } else {
+    }
+    else {
         qWarning() << "Can't write to" << l_file->fileName() << ":" << l_file->errorString();
     }
 }
@@ -240,7 +242,7 @@ void Corpus::save()
 CorpusList Corpus::allCorpuses()
 {
     CorpusList l_lst;
-    QDir l_dir(Core::configurationPath().path() + "/corpus");
+    QDir l_dir (Core::configurationPath().path() + "/corpus");
     l_dir.setFilter (QDir::Dirs);
     QStringList l_results = l_dir.entryList (QStringList() << "*");
     Q_FOREACH (const QString & l_uuid, l_results) {
@@ -306,4 +308,4 @@ Corpus::~Corpus()
 }
 
 #include "corpus.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

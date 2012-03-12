@@ -24,16 +24,19 @@
 #include <qt4/QtCore/QObject>
 
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 
-namespace Voxforge {
+namespace Voxforge
+{
 
-class Package : public QObject {
+class Package : public QObject
+{
 
 public:
-    explicit Package ( QObject* parent = 0 );
+    explicit Package (QObject* parent = 0);
     Package();
-    Package ( const Package& other );
+    Package (const Package& other);
     virtual ~Package();
 };
 
@@ -42,3 +45,4 @@ public:
 }
 
 #endif // SPEECHCONTROL_VOXFORGE_PACKAGE_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

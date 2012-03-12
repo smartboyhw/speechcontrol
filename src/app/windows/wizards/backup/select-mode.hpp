@@ -22,23 +22,28 @@
 
 #include <QWizardPage>
 
-namespace Ui {
+namespace Ui
+{
 class BackupSelection;
 }
 
-namespace SpeechControl {
-namespace Wizards {
-namespace Pages {
+namespace SpeechControl
+{
+namespace Wizards
+{
+namespace Pages
+{
 
-class BackupSelection : public QWizardPage {
+class BackupSelection : public QWizardPage
+{
     Q_OBJECT
 
 public:
-    explicit BackupSelection ( QWidget *parent = 0 );
+    explicit BackupSelection (QWidget* parent = 0);
     ~BackupSelection();
 
 private:
-    Ui::BackupSelection *ui;
+    Ui::BackupSelection* ui;
 };
 
 }

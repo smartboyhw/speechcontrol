@@ -24,20 +24,25 @@
 
 #include <QDialog>
 
-namespace Ui {
+namespace Ui
+{
 class ContentManager;
 }
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 class Content;
-namespace Windows {
-namespace Managers {
+namespace Windows
+{
+namespace Managers
+{
 
-class ContentManager : public QDialog {
+class ContentManager : public QDialog
+{
     Q_OBJECT
 
 public:
-    explicit ContentManager ( QWidget *parent = 0 );
+    explicit ContentManager (QWidget* parent = 0);
     ~ContentManager();
     static Content* doSelectContent();
 
@@ -48,7 +53,7 @@ private slots:
     void on_lstContent_itemSelectionChanged();
 
 private:
-    Ui::ContentManager *ui;
+    Ui::ContentManager* ui;
     Content* m_content;
     void updateList();
 };
@@ -58,4 +63,4 @@ private:
 }
 
 #endif // CONTENTMANAGER_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

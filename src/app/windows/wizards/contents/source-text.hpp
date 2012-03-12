@@ -23,27 +23,30 @@
 
 #include <QWidget>
 
-namespace Ui {
+namespace Ui
+{
 class TextContentSourceWidget;
 }
 
-namespace SpeechControl {
-class TextContentSourceWidget : public QWidget {
+namespace SpeechControl
+{
+class TextContentSourceWidget : public QWidget
+{
     Q_OBJECT
     void updateView();
 
 public:
-    explicit TextContentSourceWidget ( QWidget *parent = 0 );
+    explicit TextContentSourceWidget (QWidget* parent = 0);
     ~TextContentSourceWidget();
 
 private slots:
     void on_btnOpen_clicked();
 
 private:
-    Ui::TextContentSourceWidget *m_ui;
+    Ui::TextContentSourceWidget* m_ui;
 };
 
 }
 
 #endif // CONTENTWIZARD_SOURCE_TEXT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

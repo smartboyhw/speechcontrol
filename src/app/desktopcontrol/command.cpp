@@ -30,8 +30,7 @@ using namespace std;
 using namespace SpeechControl;
 using namespace SpeechControl::DesktopControl;
 
-struct GlobalCategory : public AbstractCategory
-{
+struct GlobalCategory : public AbstractCategory {
     static GlobalCategory* s_inst;
 
     virtual const QString id() const {

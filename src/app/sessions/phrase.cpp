@@ -26,37 +26,44 @@
 
 using namespace SpeechControl;
 
-Phrase::Phrase ( const Sentence *p_sntnct, const int &p_index ) :
-    m_sntnc ( p_sntnct ), m_indx ( p_index ) {
+Phrase::Phrase (const Sentence* p_sntnct, const int& p_index) :
+    m_sntnc (p_sntnct), m_indx (p_index)
+{
     //qDebug() << "Phrase" << this->text() << "rendered.";
 }
 
-bool Phrase::isCompleted() const {
+bool Phrase::isCompleted() const
+{
     return audio()->exists();
 }
 
-const QString Phrase::text() const {
-    QDomElement* l_elem = m_sntnc->getPhraseElement ( m_indx );
-    return QByteArray::fromBase64 ( l_elem->text().toAscii() );
+const QString Phrase::text() const
+{
+    QDomElement* l_elem = m_sntnc->getPhraseElement (m_indx);
+    return QByteArray::fromBase64 (l_elem->text().toAscii());
 }
 
-QFile* Phrase::audio() const {
-    const QString l_fileName = m_sntnc->getPhraseElement ( m_indx )->attribute ( "uuid" ) + ".wav";
+QFile* Phrase::audio() const
+{
+    const QString l_fileName = m_sntnc->getPhraseElement (m_indx)->attribute ("uuid") + ".wav";
     const QString l_pth = m_sntnc->audioPath().path();
-    return new QFile ( l_pth + "/" + l_fileName );
+    return new QFile (l_pth + "/" + l_fileName);
 }
 
-int Phrase::index() const {
+int Phrase::index() const
+{
     return m_indx;
 }
 
-int Phrase::words() const {
-    return text().split(" ").length();
+int Phrase::words() const
+{
+    return text().split (" ").length();
 }
 
-Phrase::~Phrase() {
+Phrase::~Phrase()
+{
 
 }
 
 #include "phrase.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

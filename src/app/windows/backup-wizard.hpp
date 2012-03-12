@@ -23,11 +23,14 @@
 
 #include "wizards/base.hpp"
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 
-namespace Wizards {
+namespace Wizards
+{
 
-class Backup : public WizardBase {
+class Backup : public WizardBase
+{
     Q_OBJECT
     enum Pages {
         IntroductionPage = 0,
@@ -47,7 +50,7 @@ class Backup : public WizardBase {
     };
 
 public:
-    explicit Backup ( QWidget *parent = 0 );
+    explicit Backup (QWidget* parent = 0);
     ~Backup();
 
 };

@@ -23,23 +23,27 @@
 
 #include <QWizard>
 
-namespace Ui {
+namespace Ui
+{
 class WizardBase;
 }
 
-namespace SpeechControl {
-namespace Wizards {
+namespace SpeechControl
+{
+namespace Wizards
+{
 
 /// @todo Allow automatic insertion of introduction page.
-class WizardBase : public QWizard {
+class WizardBase : public QWizard
+{
     Q_OBJECT
 
 public:
-    explicit WizardBase ( QWidget *parent = 0 );
+    explicit WizardBase (QWidget* parent = 0);
     virtual ~WizardBase();
 
 private:
-    Ui::WizardBase *ui;
+    Ui::WizardBase* ui;
 };
 
 }

@@ -21,36 +21,40 @@
 #define SERVICESSETTINGSPANE_HPP
 #include <windows/settings-dialog.hpp>
 
-namespace Ui {
+namespace Ui
+{
 class ServicesSettingsPane;
 }
 
-namespace SpeechControl {
-namespace Windows {
+namespace SpeechControl
+{
+namespace Windows
+{
 
-class ServicesSettingsPane : public AbstractSettingsPane {
+class ServicesSettingsPane : public AbstractSettingsPane
+{
     Q_OBJECT
 
 public:
-    explicit ServicesSettingsPane (  );
+    explicit ServicesSettingsPane ();
     ~ServicesSettingsPane();
     QString title() const;
     QString id() const;
-    virtual bool containsText ( const QString& p_query ) const;
+    virtual bool containsText (const QString& p_query) const;
     virtual QPixmap pixmap() const;
     virtual void resetPanel();
     virtual void restoreDefaults();
     virtual void updateUi();
 
 protected:
-    void changeEvent ( QEvent *e );
+    void changeEvent (QEvent* e);
 
 private:
-    Ui::ServicesSettingsPane *ui;
+    Ui::ServicesSettingsPane* ui;
 };
 
 }
 }
 
 #endif // SERVICESSETTINGSPANE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -24,31 +24,35 @@
 
 #include <QDialog>
 
-namespace Ui {
+namespace Ui
+{
 class SessionInformationDialog;
 }
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 class Session;
-namespace Windows {
+namespace Windows
+{
 
-class SessionInformationDialog : public QDialog {
+class SessionInformationDialog : public QDialog
+{
     Q_OBJECT
 
 public:
-    explicit SessionInformationDialog ( QWidget *parent = 0 );
-    SessionInformationDialog ( Session* p_session );
+    explicit SessionInformationDialog (QWidget* parent = 0);
+    SessionInformationDialog (Session* p_session);
     ~SessionInformationDialog();
 
 private slots:
     void updateUi();
     void on_btnTrainSession_clicked();
     void on_btnOpenContent_clicked();
-    void on_lineEditNickname_textChanged ( const QString& p_newNickname );
-    void updateProgress ( const double p_progress );
+    void on_lineEditNickname_textChanged (const QString& p_newNickname);
+    void updateProgress (const double p_progress);
 
 private:
-    Ui::SessionInformationDialog *m_ui;
+    Ui::SessionInformationDialog* m_ui;
     Session* m_session;
 };
 
@@ -56,4 +60,4 @@ private:
 }
 
 #endif // SESSIONINFORMATIONDIALOG_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

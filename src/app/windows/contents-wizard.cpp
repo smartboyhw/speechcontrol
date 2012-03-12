@@ -34,31 +34,35 @@
 using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
 
-ContentWizard::ContentWizard ( QWidget *parent ) :
-    WizardBase ( parent ), m_src ( 0 ) {
-    QIcon l_icon = QIcon::fromTheme ( "text-plain" );
-    setPixmap ( QWizard::LogoPixmap,l_icon.pixmap ( 32,32,QIcon::Active,QIcon::On ) );
-    setWindowTitle ( tr ( "Content Addition Wizard - SpeechControl" ) );
-    setPage ( ContentWizard::IntroductionPage,
-              ( new Wizards::Pages::IntroductionPage ( tr ( "This wizard allows you to add a new book into SpeechControl's collection." ) ) ) );
-    setPage ( ContentWizard::SourceSelectionPage,
-              ( new Wizards::Pages::SourceSelectionPage ) );
-    setPage ( ContentWizard::ConclusionPage,
-              ( new Wizards::Pages::ConclusionPage ( tr ( "You've successfully added a book into SpeechControl." ) ) ) );
+ContentWizard::ContentWizard (QWidget* parent) :
+    WizardBase (parent), m_src (0)
+{
+    QIcon l_icon = QIcon::fromTheme ("text-plain");
+    setPixmap (QWizard::LogoPixmap, l_icon.pixmap (32, 32, QIcon::Active, QIcon::On));
+    setWindowTitle (tr ("Content Addition Wizard - SpeechControl"));
+    setPage (ContentWizard::IntroductionPage,
+             (new Wizards::Pages::IntroductionPage (tr ("This wizard allows you to add a new book into SpeechControl's collection."))));
+    setPage (ContentWizard::SourceSelectionPage,
+             (new Wizards::Pages::SourceSelectionPage));
+    setPage (ContentWizard::ConclusionPage,
+             (new Wizards::Pages::ConclusionPage (tr ("You've successfully added a book into SpeechControl."))));
 }
 
-AbstractContentSource* ContentWizard::source() {
+AbstractContentSource* ContentWizard::source()
+{
     return m_src;
 }
 
-void ContentWizard::setSource ( AbstractContentSource* p_src ) {
-    SC_ASSERT ( p_src != 0, "Invalid AbstractContentSource passed to the ContentWizard." );
-    m_src = new AbstractContentSource ( *p_src );
-    qDebug() << "Got source" << m_src->id();
+void ContentWizard::setSource (AbstractContentSource* p_src)
+{
+    SC_ASSERT (p_src != 0, "Invalid AbstractContentSource passed to the ContentWizard.");
+    m_src = new AbstractContentSource (*p_src);
+    qDebug() << "[ContentWizard::setSource()] Got source type" << m_src->id();
 }
 
-int ContentWizard::nextId() const {
-    switch ( currentId() ) {
+int ContentWizard::nextId() const
+{
+    switch (currentId()) {
     case IntroductionPage:
         return SourceSelectionPage;
         break;
@@ -68,13 +72,14 @@ int ContentWizard::nextId() const {
         break;
 
     case ConclusionPage: {
-        SC_ASSERT( m_src != 0, "No AbstractContentSource was chosen to be used with the ContentWizard. This is a logical error with the Source defined in the wizard.");
+        SC_ASSERT (m_src != 0, "No AbstractContentSource was chosen to be used with the ContentWizard. This is a logical error with the Source defined in the wizard.");
         Content* l_cntn = m_src->generate();
-        if ( l_cntn == 0 ) {
-            QMessageBox::warning ( 0,
-                                   tr ( "Failure Creating Content" ),
-                                   tr ( "There was an issue creating your content; thus resulting in a failure." ),
-                                   QMessageBox::Ok
+
+        if (l_cntn == 0) {
+            QMessageBox::warning (0,
+                                  tr ("Failure Creating Content"),
+                                  tr ("There was an issue creating your content; thus resulting in a failure."),
+                                  QMessageBox::Ok
                                  );
             return SourceSelectionPage;
         }
@@ -87,8 +92,9 @@ int ContentWizard::nextId() const {
     return QWizard::nextId();
 }
 
-ContentWizard::~ContentWizard() {
+ContentWizard::~ContentWizard()
+{
 }
 
 #include "contents-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

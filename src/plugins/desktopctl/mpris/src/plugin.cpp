@@ -27,20 +27,24 @@
 
 MPRIS_NAMESPACE_BEGIN
 
-Plugin::Plugin ( QObject* parent ) : AbstractPlugin ( QUuid ( PLUGIN_UUID ),parent ) {
+Plugin::Plugin (QObject* parent) : AbstractPlugin (QUuid (PLUGIN_UUID), parent)
+{
 }
 
-void Plugin::initialize() {
+void Plugin::initialize()
+{
     qDebug() << "Plug-in loaded! (mpris)";
-    MprisCategory::instance()->addCommand ( ( new PlayCommand ) );
+    MprisCategory::instance()->addCommand ( (new PlayCommand));
 }
 
-void Plugin::deinitialize() {
+void Plugin::deinitialize()
+{
     qDebug() << "Plug-in unloaded! (mprislist)";
     MprisCategory::instance()->deleteLater();
 }
 
-Plugin::~Plugin() {
+Plugin::~Plugin()
+{
 
 }
 
@@ -48,6 +52,6 @@ Plugin::~Plugin() {
 
 MPRIS_NAMESPACE_END
 
-Q_EXPORT_PLUGIN2 ( spchcntrl-mpris, SpeechControl::Plugins::DesktopControl::MPRIS::Plugin )
+Q_EXPORT_PLUGIN2 (spchcntrl - mpris, SpeechControl::Plugins::DesktopControl::MPRIS::Plugin)
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

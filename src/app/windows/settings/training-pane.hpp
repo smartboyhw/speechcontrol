@@ -23,36 +23,40 @@
 #include <QFrame>
 #include <windows/settings-dialog.hpp>
 
-namespace Ui {
+namespace Ui
+{
 class TrainingSettingsPane;
 }
 
-namespace SpeechControl {
-namespace Windows {
+namespace SpeechControl
+{
+namespace Windows
+{
 
-class TrainingSettingsPane : public AbstractSettingsPane {
+class TrainingSettingsPane : public AbstractSettingsPane
+{
     Q_OBJECT
 
 public:
-    explicit TrainingSettingsPane (  );
+    explicit TrainingSettingsPane ();
     ~TrainingSettingsPane();
     QString title() const;
     QString id() const;
-    virtual bool containsText ( const QString& p_query ) const;
+    virtual bool containsText (const QString& p_query) const;
     virtual QPixmap pixmap() const;
     virtual void resetPanel();
     virtual void restoreDefaults();
     virtual void updateUi();
 
 protected:
-    void changeEvent ( QEvent *e );
+    void changeEvent (QEvent* e);
 
 private:
-    Ui::TrainingSettingsPane *ui;
+    Ui::TrainingSettingsPane* ui;
 };
 
 }
 }
 
 #endif // TRAININGSETTINGSPANE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

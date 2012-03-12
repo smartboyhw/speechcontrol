@@ -29,63 +29,75 @@ using namespace SpeechControl;
 using namespace SpeechControl::Plugins;
 using namespace SpeechControl::Windows;
 
-PluginsSettingsPane::PluginsSettingsPane ( ) :
-    ui ( new Ui::PluginsSettingsPane ) {
-        qDebug() << "[PluginsSettingsPane::{constructor}] Building plugins settings pane...";
-        ui->setupUi ( this );
-        updateUi();
-        qDebug() << "[PluginsSettingsPane::{constructor}] Built plugins settings pane.";
-    }
+PluginsSettingsPane::PluginsSettingsPane () :
+    ui (new Ui::PluginsSettingsPane)
+{
+    qDebug() << "[PluginsSettingsPane::{constructor}] Building plugins settings pane...";
+    ui->setupUi (this);
+    updateUi();
+    qDebug() << "[PluginsSettingsPane::{constructor}] Built plugins settings pane.";
+}
 
-PluginsSettingsPane::~PluginsSettingsPane() {
+PluginsSettingsPane::~PluginsSettingsPane()
+{
     delete ui;
 }
 
-void PluginsSettingsPane::updateUi() {
+void PluginsSettingsPane::updateUi()
+{
     QListWidget* l_lstWidg = ui->lstPlugins;
     l_lstWidg->clear();
 
     PluginList l_plgnLst = Factory::availablePlugins().values();
 
-    Q_FOREACH ( AbstractPlugin* l_plgn, l_plgnLst ) {
-        QListWidgetItem* l_itm = new QListWidgetItem ( l_plgn->name(),l_lstWidg );
-        l_lstWidg->addItem ( l_itm );
+    Q_FOREACH (AbstractPlugin * l_plgn, l_plgnLst) {
+        QListWidgetItem* l_itm = new QListWidgetItem (l_plgn->name(), l_lstWidg);
+        l_lstWidg->addItem (l_itm);
     }
 }
 
-QString PluginsSettingsPane::title() const {
+QString PluginsSettingsPane::title() const
+{
     return "Plugins";
 }
 
-QString PluginsSettingsPane::id() const {
+QString PluginsSettingsPane::id() const
+{
     return "plgn";
 }
 
-bool PluginsSettingsPane::containsText ( const QString& p_query ) const {
+bool PluginsSettingsPane::containsText (const QString& p_query) const
+{
 
 }
 
-QPixmap PluginsSettingsPane::pixmap() const {
-    return QIcon::fromTheme ( "configure" ).pixmap ( 32,32 );
+QPixmap PluginsSettingsPane::pixmap() const
+{
+    return QIcon::fromTheme ("configure").pixmap (32, 32);
 }
 
-void PluginsSettingsPane::resetPanel() {
-
-}
-
-void PluginsSettingsPane::restoreDefaults() {
-
-}
-
-void PluginsSettingsPane::on_btnInfo_clicked() {
+void PluginsSettingsPane::resetPanel()
+{
 
 }
 
-void PluginsSettingsPane::changeEvent ( QEvent *e ) {
-    QFrame::changeEvent ( e );
-    switch ( e->type() ) {
+void PluginsSettingsPane::restoreDefaults()
+{
+
+}
+
+void PluginsSettingsPane::on_btnInfo_clicked()
+{
+
+}
+
+void PluginsSettingsPane::changeEvent (QEvent* e)
+{
+    QFrame::changeEvent (e);
+
+    switch (e->type()) {
     case QEvent::LanguageChange:
-        ui->retranslateUi ( this );
+        ui->retranslateUi (this);
         break;
     default:
         break;
@@ -93,4 +105,4 @@ void PluginsSettingsPane::changeEvent ( QEvent *e ) {
 }
 
 #include "plugins-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

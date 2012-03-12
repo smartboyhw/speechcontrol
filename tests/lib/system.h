@@ -22,7 +22,8 @@
 #define TEST_LIB_SYSTEM_HPP
 #include <QObject>
 
-class TestSystem : public QObject {
+class TestSystem : public QObject
+{
     Q_OBJECT
 
 private slots:
@@ -31,4 +32,4 @@ private slots:
 };
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

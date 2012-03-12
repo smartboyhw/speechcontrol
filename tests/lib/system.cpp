@@ -25,14 +25,16 @@
 
 using namespace SpeechControl;
 
-void TestSystem::init() {
+void TestSystem::init()
+{
     SpeechControl::System::start();
 }
 
-void TestSystem::cleanup() {
+void TestSystem::cleanup()
+{
     QGst::cleanup();
 }
 
-QTEST_MAIN ( TestSystem )
+QTEST_MAIN (TestSystem)
 #include "system.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

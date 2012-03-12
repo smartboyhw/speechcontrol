@@ -28,11 +28,12 @@
 
 using namespace SpeechControl::Windows;
 
-AboutDialog::AboutDialog ( QWidget *parent ) : QDialog ( parent ), ui(new Ui::AboutDialog) {
-    ui->setupUi ( this );
-    ui->lblHeader->setText ( ui->lblHeader->text().arg ( SPCHCNTRL_BUILD_VERSION )
-                            .arg ( SPCHCNTRL_BUILD_DATE ) );
+AboutDialog::AboutDialog (QWidget* parent) : QDialog (parent), ui (new Ui::AboutDialog)
+{
+    ui->setupUi (this);
+    ui->lblHeader->setText (ui->lblHeader->text().arg (SPCHCNTRL_BUILD_VERSION)
+                            .arg (SPCHCNTRL_BUILD_DATE));
 }
 
 #include "about-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

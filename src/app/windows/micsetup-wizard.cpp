@@ -30,26 +30,29 @@
 using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
 
-MicrophoneSetup::MicrophoneSetup ( QWidget *parent ) :
-    WizardBase ( parent ) {
-    QIcon l_icon = QIcon::fromTheme ( "audio-headset" );
-    setPixmap ( QWizard::LogoPixmap,l_icon.pixmap ( 32,32,QIcon::Active,QIcon::On ) );
-    setWindowTitle ( tr ( "Microphone Setup Wizard - SpeechControl" ) );
-    setPage ( MicrophoneSetup::IntroductionPage,
-              new Pages::IntroductionPage ( tr ( "This wizard will help you configure your microphone " ) +
-                                            tr ( "for optimal performance in SpeechControl." ) ) );
-    setPage ( MicrophoneSetup::SelectionPage, new Pages::MicrophoneSelection );
-    setPage ( MicrophoneSetup::ConclusionPage,
-              new Pages::ConclusionPage ( tr ( "You've configured your microphone to work optimally with SpeechControl. "
-                                          "Click <b>Finish</b> to finialize your results and commit them to SpeechControl." ) ) );
+MicrophoneSetup::MicrophoneSetup (QWidget* parent) :
+    WizardBase (parent)
+{
+    QIcon l_icon = QIcon::fromTheme ("audio-headset");
+    setPixmap (QWizard::LogoPixmap, l_icon.pixmap (32, 32, QIcon::Active, QIcon::On));
+    setWindowTitle (tr ("Microphone Setup Wizard - SpeechControl"));
+    setPage (MicrophoneSetup::IntroductionPage,
+             new Pages::IntroductionPage (tr ("This wizard will help you configure your microphone ") +
+                                          tr ("for optimal performance in SpeechControl.")));
+    setPage (MicrophoneSetup::SelectionPage, new Pages::MicrophoneSelection);
+    setPage (MicrophoneSetup::ConclusionPage,
+             new Pages::ConclusionPage (tr ("You've configured your microphone to work optimally with SpeechControl. "
+                                            "Click <b>Finish</b> to finialize your results and commit them to SpeechControl.")));
 }
 
-void MicrophoneSetup::accept() {
-    Core::instance()->setConfiguration ( "Microphone/Default",property ( "mic-id" ) );
+void MicrophoneSetup::accept()
+{
+    Core::instance()->setConfiguration ("Microphone/Default", property ("mic-id"));
     this->QDialog::accept();
 }
 
-MicrophoneSetup::~MicrophoneSetup() {
+MicrophoneSetup::~MicrophoneSetup()
+{
 
 }
 

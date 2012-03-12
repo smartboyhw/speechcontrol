@@ -23,35 +23,44 @@
 #include "command.hpp"
 #include "sphinx.hpp"
 
-namespace SpeechControl {
-namespace DesktopControl {
+namespace SpeechControl
+{
+namespace DesktopControl
+{
 
 Agent* Agent::s_inst = 0;
 
-Agent::Agent() : AbstractAgent ( AbstractCategory::global() ) {
-    m_sphinx = new Sphinx ( Sphinx::standardDescription(), parent() );
-    connect ( m_sphinx, SIGNAL ( finished ( QString ) ), this, SLOT ( invokeCommand ( QString ) ) );
+Agent::Agent() : AbstractAgent (AbstractCategory::global())
+{
+    m_sphinx = new Sphinx (Sphinx::standardDescription(), parent());
+    connect (m_sphinx, SIGNAL (finished (QString)), this, SLOT (invokeCommand (QString)));
 }
 
-Agent::~Agent() {
+Agent::~Agent()
+{
 
 }
 
-AbstractAgent::ActivityState Agent::onStateChanged ( const AbstractAgent::ActivityState p_state ) {
-    switch ( p_state ) {
+AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::ActivityState p_state)
+{
+    switch (p_state) {
     case Enabled:
-        if ( !m_sphinx->start() ) {
+
+        if (!m_sphinx->start()) {
             qWarning() << "[DesktopControl::Agent::onStateChanged()] Start unsuccessful.";
             return Disabled;
         }
+
         return Enabled;
         break;
 
     case Disabled:
-        if ( !m_sphinx->stop() ) {
+
+        if (!m_sphinx->stop()) {
             qWarning() << "[DesktopControl::Agent::onStateChanged()] Stop unsuccessful.";
             return Enabled;
         }
+
         qDebug() << "[DesktopControl::Agent::onStateChanged()] Stopped desktop control agent.";
         return Disabled;
         break;
@@ -62,25 +71,29 @@ AbstractAgent::ActivityState Agent::onStateChanged ( const AbstractAgent::Activi
 
 }
 
-bool Agent::isActive() const {
+bool Agent::isActive() const
+{
     return m_sphinx->isRunning();
 }
 
-bool Agent::isEnabled() {
-    return Core::configuration ( "DesktopControl/Enabled" ).toBool();
+bool Agent::isEnabled()
+{
+    return Core::configuration ("DesktopControl/Enabled").toBool();
 }
 
 /// @todo Since this returns more than one command, should we provide a UI that allows you to pick which command you might want?
-void Agent::invokeCommand ( const QString& cmd ) {
+void Agent::invokeCommand (const QString& cmd)
+{
     qDebug() << "[DesktopControl::Agent::invokeCommand()] I heard " << cmd << "from the user.";
     AbstractCategory* l_glbl = AbstractCategory::global();
-    CommandList l_cmds = l_glbl->matchAllCommands ( cmd );
+    CommandList l_cmds = l_glbl->matchAllCommands (cmd);
 
-    if ( !l_cmds.isEmpty() ) {
-        Q_FOREACH ( AbstractCommand * l_cmd, l_cmds ) {
+    if (!l_cmds.isEmpty()) {
+        Q_FOREACH (AbstractCommand * l_cmd, l_cmds) {
             qDebug() << "[DesktopControl::Agent::invokeCommand()] " << l_cmd->id() << l_cmd->statements();
         }
-    } else {
+    }
+    else {
         qDebug() << "[DesktopControl::Agent::invokeCommand()] I heard mumble-gumble, nothing useful. Tell me something I want to hear!";
     }
 }
@@ -88,4 +101,4 @@ void Agent::invokeCommand ( const QString& cmd ) {
 }
 }
 #include "desktopcontrol/agent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -26,20 +26,25 @@
 
 class QListWidgetItem;
 
-namespace Ui {
+namespace Ui
+{
 class SessionManager;
 }
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 class Session;
-namespace Windows {
-namespace Managers {
+namespace Windows
+{
+namespace Managers
+{
 
-class SessionManager : public QDialog {
+class SessionManager : public QDialog
+{
     Q_OBJECT
 
 public:
-    explicit SessionManager ( QWidget *parent = 0 );
+    explicit SessionManager (QWidget* parent = 0);
     ~SessionManager();
     static Session* pickSession();
     Session* session() const;
@@ -50,10 +55,10 @@ private slots:
     void on_btnCreate_clicked();
     void updateList();
     void on_listSession_itemSelectionChanged();
-    void on_listSession_itemDoubleClicked ( QListWidgetItem* p_item );
+    void on_listSession_itemDoubleClicked (QListWidgetItem* p_item);
 
 private:
-    Ui::SessionManager *m_ui;
+    Ui::SessionManager* m_ui;
     Session* m_session;
 };
 
@@ -62,4 +67,4 @@ private:
 }
 
 #endif // SESSIONMANAGER_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

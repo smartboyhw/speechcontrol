@@ -32,49 +32,53 @@
 using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
 
-QuickStart::QuickStart ( QWidget *parent ) :
-    WizardBase ( parent ) {
-    this->setWindowTitle ( tr ( "Quick Start :: SpeechControl" ) );
-    QIcon l_icon = QIcon::fromTheme ( "preferences-desktop-personal" );
-    setWindowTitle ( tr ( "Quick Start - SpeechControl" ) );
-    setPixmap ( QWizard::LogoPixmap,l_icon.pixmap ( 32,32,QIcon::Active,QIcon::On ) );
-    setPage ( QuickStart::IntroductionPage,
-              ( new Wizards::Pages::IntroductionPage ( tr ( "This wizard allows you to tweak SpeechControl to your personal configuration." ) ) ) );
-    setPage ( QuickStart::UserCreationPage,
-              ( new Wizards::Pages::UserInitialization ) );
-    setPage ( QuickStart::MicrophoneCreationPage,
-              ( new Wizards::Pages::MicrophoneSelection ) );
-    setPage ( QuickStart::ConclusionPage,
-              NULL );
+QuickStart::QuickStart (QWidget* parent) :
+    WizardBase (parent)
+{
+    this->setWindowTitle (tr ("Quick Start :: SpeechControl"));
+    QIcon l_icon = QIcon::fromTheme ("preferences-desktop-personal");
+    setWindowTitle (tr ("Quick Start - SpeechControl"));
+    setPixmap (QWizard::LogoPixmap, l_icon.pixmap (32, 32, QIcon::Active, QIcon::On));
+    setPage (QuickStart::IntroductionPage,
+             (new Wizards::Pages::IntroductionPage (tr ("This wizard allows you to tweak SpeechControl to your personal configuration."))));
+    setPage (QuickStart::UserCreationPage,
+             (new Wizards::Pages::UserInitialization));
+    setPage (QuickStart::MicrophoneCreationPage,
+             (new Wizards::Pages::MicrophoneSelection));
+    setPage (QuickStart::ConclusionPage,
+             NULL);
 }
 
 /// @todo The user's country could be automatically detected by QLocale.
-void QuickStart::accept() {
+void QuickStart::accept()
+{
     Core* l_core = Core::instance();
     QVariantMap l_language;
     QString l_gender;
 
-    l_language["Spoken"] = field ( "language-spoken" );
-    l_language["Native"] = field ( "language-native" );
+    l_language["Spoken"] = field ("language-spoken");
+    l_language["Native"] = field ("language-native");
 
-    if ( field ( "is-gender-male" ).toBool() ) {
+    if (field ("is-gender-male").toBool()) {
         l_gender = "Male";
-    } else {
+    }
+    else {
         l_gender = "Female";
     }
 
-    l_core->setConfiguration ( "User/Gender",l_gender );
-    l_core->setConfiguration ( "User/Language",l_language );
-    l_core->setConfiguration ( "User/Age",property ( "age" ) );
-    l_core->setConfiguration ( "User/Country",property ( "country" ) );
+    l_core->setConfiguration ("User/Gender", l_gender);
+    l_core->setConfiguration ("User/Language", l_language);
+    l_core->setConfiguration ("User/Age", property ("age"));
+    l_core->setConfiguration ("User/Country", property ("country"));
 
-    l_core->setConfiguration ( "Microphone/Default",property ( "mic-id" ) );
+    l_core->setConfiguration ("Microphone/Default", property ("mic-id"));
 
     this->QDialog::accept();
 }
 
-QuickStart::~QuickStart() {
+QuickStart::~QuickStart()
+{
 }
 
 #include "quickstart-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

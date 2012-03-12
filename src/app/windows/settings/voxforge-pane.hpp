@@ -23,39 +23,43 @@
 #include <QFrame>
 #include <windows/settings-dialog.hpp>
 
-namespace Ui {
+namespace Ui
+{
 class VoxforgeSettingsPane;
 }
 
-namespace SpeechControl {
-namespace Windows {
+namespace SpeechControl
+{
+namespace Windows
+{
 
-class VoxforgeSettingsPane : public AbstractSettingsPane {
+class VoxforgeSettingsPane : public AbstractSettingsPane
+{
     Q_OBJECT
 
 public:
-    explicit VoxforgeSettingsPane (  );
+    explicit VoxforgeSettingsPane ();
     ~VoxforgeSettingsPane();
     QString title() const;
     QString id() const;
-    virtual bool containsText ( const QString& p_query ) const;
+    virtual bool containsText (const QString& p_query) const;
     virtual QPixmap pixmap() const;
     virtual void resetPanel();
     virtual void restoreDefaults();
     virtual void updateUi();
 
 protected:
-    void changeEvent ( QEvent *e );
+    void changeEvent (QEvent* e);
 
 private slots:
     void on_checkBox_clicked();
 
 private:
-    Ui::VoxforgeSettingsPane *ui;
+    Ui::VoxforgeSettingsPane* ui;
 };
 
 }
 }
 
 #endif // VOXFORGESETTINGSPANE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

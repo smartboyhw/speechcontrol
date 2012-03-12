@@ -24,19 +24,23 @@
 
 #include <QDialog>
 
-namespace Ui {
+namespace Ui
+{
 class ContentInformationDialog;
 }
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 class Content;
-namespace Windows {
+namespace Windows
+{
 
-class ContentInformationDialog : public QDialog {
+class ContentInformationDialog : public QDialog
+{
     Q_OBJECT
 
 public:
-    explicit ContentInformationDialog ( Content* p_content );
+    explicit ContentInformationDialog (Content* p_content);
     ~ContentInformationDialog();
 
 private slots:
@@ -45,8 +49,8 @@ private slots:
     void goToPreviousPage();
 
 private:
-    void goToPage ( const int p_index );
-    Ui::ContentInformationDialog *m_ui;
+    void goToPage (const int p_index);
+    Ui::ContentInformationDialog* m_ui;
     Content* m_content;
     uint m_indx;
 };

@@ -27,33 +27,37 @@ using namespace SpeechControl::Daemon;
 
 System* System::s_inst = 0;
 
-System::System ( int p_argc,char** p_argv ) : QObject ( qApp ),
-    m_app ( p_argc,p_argv ) {
-    m_app.setApplicationName ( "SpeechControl" );
-    m_app.setApplicationVersion ( SPCHCNTRL_BUILD_VERSION );
-    m_app.setOrganizationDomain ( "thesii.org" );
-    m_app.setOrganizationName ( "Synthetic Intellect Institute" );
+System::System (int p_argc, char** p_argv) : QObject (qApp),
+    m_app (p_argc, p_argv)
+{
+    m_app.setApplicationName ("SpeechControl");
+    m_app.setApplicationVersion (SPCHCNTRL_BUILD_VERSION);
+    m_app.setOrganizationDomain ("thesii.org");
+    m_app.setOrganizationName ("Synthetic Intellect Institute");
 
-    SpeechControl::System::start ( &p_argc,&p_argv );
-    connect ( &m_app,SIGNAL ( aboutToQuit() ),Daemon::instance(),SLOT ( stop() ) );
+    SpeechControl::System::start (&p_argc, &p_argv);
+    connect (&m_app, SIGNAL (aboutToQuit()), Daemon::instance(), SLOT (stop()));
 }
 
-System* System::instance ( int p_argc,char** p_argv ) {
-    if ( s_inst == 0 ) {
-        s_inst = new System ( p_argc,p_argv );
+System* System::instance (int p_argc, char** p_argv)
+{
+    if (s_inst == 0) {
+        s_inst = new System (p_argc, p_argv);
     }
 
     return s_inst;
 }
 
-Daemon* System::daemon() {
+Daemon* System::daemon()
+{
     return Daemon::instance();
 }
 
-int System::exec() {
+int System::exec()
+{
     daemon()->start();
     return m_app.exec();
 }
 
 #include "system.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

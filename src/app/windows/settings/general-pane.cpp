@@ -31,63 +31,75 @@
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 
-GeneralSettingsPane::GeneralSettingsPane ():
-    ui ( new Ui::GeneralSettingsPane ) {
+GeneralSettingsPane::GeneralSettingsPane () :
+    ui (new Ui::GeneralSettingsPane)
+{
     qDebug() << "[GeneralSettingsPane::{constructor}] Building general settings pane...";
-    ui->setupUi ( this );
+    ui->setupUi (this);
     updateUi();
     qDebug() << "[GeneralSettingsPane::{constructor}] Built general settings pane.";
 }
 
-GeneralSettingsPane::~GeneralSettingsPane() {
+GeneralSettingsPane::~GeneralSettingsPane()
+{
     delete ui;
 }
 
-void GeneralSettingsPane::changeEvent ( QEvent *e ) {
-    QWidget::changeEvent ( e );
-    switch ( e->type() ) {
+void GeneralSettingsPane::changeEvent (QEvent* e)
+{
+    QWidget::changeEvent (e);
+
+    switch (e->type()) {
     case QEvent::LanguageChange:
-        ui->retranslateUi ( this );
+        ui->retranslateUi (this);
         break;
     default:
         break;
     }
 }
 
-QString GeneralSettingsPane::title() const {
+QString GeneralSettingsPane::title() const
+{
     return "General";
 }
 
-QString GeneralSettingsPane::id() const {
+QString GeneralSettingsPane::id() const
+{
     return "gnrl";
 }
 
-bool GeneralSettingsPane::containsText ( const QString& p_query ) const {
+bool GeneralSettingsPane::containsText (const QString& p_query) const
+{
 
 }
 
-QPixmap GeneralSettingsPane::pixmap() const {
-    return QIcon::fromTheme ( "configure" ).pixmap ( 32,32 );
+QPixmap GeneralSettingsPane::pixmap() const
+{
+    return QIcon::fromTheme ("configure").pixmap (32, 32);
 }
 
 /// @todo Add code here to reset the panel to the values they had initially.
-void GeneralSettingsPane::resetPanel() {
+void GeneralSettingsPane::resetPanel()
+{
 }
 
-void GeneralSettingsPane::restoreDefaults() {
-    Core::setConfiguration ( "Indicator/Show",false );
+void GeneralSettingsPane::restoreDefaults()
+{
+    Core::setConfiguration ("Indicator/Show", false);
     updateUi();
 }
 
-void GeneralSettingsPane::updateUi() {
-    ui->lblSessionCount->setText ( QString::number ( Session::allSessions().count() ) );
-    ui->lblAccuracyRating->setText ( "<i>n/a</i>" );
-    ui->checkBoxIndicatorIcon->setChecked ( Core::configuration ( "DesktopControl/AutoStart" ).toBool() );
+void GeneralSettingsPane::updateUi()
+{
+    ui->lblSessionCount->setText (QString::number (Session::allSessions().count()));
+    ui->lblAccuracyRating->setText ("<i>n/a</i>");
+    ui->checkBoxIndicatorIcon->setChecked (Core::configuration ("DesktopControl/AutoStart").toBool());
 }
 
-void GeneralSettingsPane::on_checkBoxIndicatorIcon_toggled ( bool p_checked ) {
-    Core::setConfiguration ( "Indicator/Show",p_checked );
-    ( p_checked ) ? Indicator::show() : Indicator::hide();
+void GeneralSettingsPane::on_checkBoxIndicatorIcon_toggled (bool p_checked)
+{
+    Core::setConfiguration ("Indicator/Show", p_checked);
+    (p_checked) ? Indicator::show() : Indicator::hide();
 }
 #include "general-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

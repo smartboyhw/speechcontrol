@@ -26,23 +26,26 @@
 
 struct xdo;
 
-namespace SpeechControl {
-namespace Dictation {
+namespace SpeechControl
+{
+namespace Dictation
+{
 /**
  * @brief Allows the emulating of keyboard events to the X Windowing system.
  *
  * In order to properly implement the dictation feature of SpeechControl, the ability
  * to send keyboard signals to the X Windowing system.
  **/
-class KeyboardEmulator : public QObject {
+class KeyboardEmulator : public QObject
+{
     Q_OBJECT
-    SC_SINGLETON(KeyboardEmulator)
+    SC_SINGLETON (KeyboardEmulator)
 
 public:
     /**
      * @brief Destructor.
      **/
-    virtual ~KeyboardEmulator ( );
+    virtual ~KeyboardEmulator ();
 
     /**
      * @brief Sends a key to the X system.
@@ -53,7 +56,7 @@ public:
      * @param p_character The character to be passed into X.
      * @return bool True if it was passed successfully, false otherwise.
      **/
-    bool sendKey ( const QChar& p_character );
+    bool sendKey (const QChar& p_character);
 
     /**
      * @brief Sends a set of keys to the X system.
@@ -64,7 +67,7 @@ public:
      * @param p_characters The characters to be passed into X.
      * @return bool True if all of the characters passed in successfully, false if one fails.
      **/
-    bool sendKeys ( const QString& p_characters );
+    bool sendKeys (const QString& p_characters);
 
 private:
     xdo* m_xdo;                             ///< the XDO handle.
@@ -74,4 +77,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

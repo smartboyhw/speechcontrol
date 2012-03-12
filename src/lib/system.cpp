@@ -62,7 +62,8 @@ void System::start (int* argc, char** argv[])
         s_inst = new System (argc, argv);
 }
 
-System* System::instance() {
+System* System::instance()
+{
     return s_inst;
 }
 
@@ -72,4 +73,4 @@ void System::stop()
 }
 
 #include "system.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

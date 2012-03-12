@@ -32,89 +32,105 @@ using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 
 ContentSettingsPane::ContentSettingsPane () :
-    ui ( new Ui::ContentSettingsPane ) {
-        qDebug() << "[ContentSettingsPane::{constructor}] Building content settings pane...";
-        ui->setupUi ( this );
-        updateUi();
-        qDebug() << "[ContentSettingsPane::{constructor}] Built content settings pane.";
-    }
+    ui (new Ui::ContentSettingsPane)
+{
+    qDebug() << "[ContentSettingsPane::{constructor}] Building content settings pane...";
+    ui->setupUi (this);
+    updateUi();
+    qDebug() << "[ContentSettingsPane::{constructor}] Built content settings pane.";
+}
 
-ContentSettingsPane::~ContentSettingsPane() {
+ContentSettingsPane::~ContentSettingsPane()
+{
     delete ui;
 }
 
-void ContentSettingsPane::show() {
+void ContentSettingsPane::show()
+{
     updateUi();
     QFrame::show();
 }
 
-void ContentSettingsPane::changeEvent ( QEvent *e ) {
-    QFrame::changeEvent ( e );
-    switch ( e->type() ) {
+void ContentSettingsPane::changeEvent (QEvent* e)
+{
+    QFrame::changeEvent (e);
+
+    switch (e->type()) {
     case QEvent::LanguageChange:
-        ui->retranslateUi ( this );
+        ui->retranslateUi (this);
         break;
     default:
         break;
     }
 }
 
-QString ContentSettingsPane::title() const {
+QString ContentSettingsPane::title() const
+{
     return "Content";
 }
 
-QString ContentSettingsPane::id() const {
+QString ContentSettingsPane::id() const
+{
     return "cntns";
 }
 
-bool ContentSettingsPane::containsText ( const QString& p_query ) const {
+bool ContentSettingsPane::containsText (const QString& p_query) const
+{
     return !p_query.isEmpty();
 }
 
-QPixmap ContentSettingsPane::pixmap() const {
-    return QIcon::fromTheme ( "configure" ).pixmap ( 32,32 );
+QPixmap ContentSettingsPane::pixmap() const
+{
+    return QIcon::fromTheme ("configure").pixmap (32, 32);
 }
 
-void ContentSettingsPane::resetPanel() {
+void ContentSettingsPane::resetPanel()
+{
 
 }
 
-void ContentSettingsPane::restoreDefaults() {
+void ContentSettingsPane::restoreDefaults()
+{
 
 }
 
-void ContentSettingsPane::updateUi() {
+void ContentSettingsPane::updateUi()
+{
     QListWidget* l_widget = ui->lstContent;
     ContentList l_lst = Content::allContents();
 
     l_widget->clear();
 
-    if ( !l_lst.empty() ) {
-        Q_FOREACH ( const Content* l_cnt, l_lst ) {
+    if (!l_lst.empty()) {
+        Q_FOREACH (const Content * l_cnt, l_lst) {
             const QString l_lbl = l_cnt->title();
-            QListWidgetItem* l_item = new QListWidgetItem ( l_widget );
-            l_item->setData ( Qt::UserRole,l_cnt->uuid().toString() );
-            l_widget->addItem ( l_item );
+            QListWidgetItem* l_item = new QListWidgetItem (l_widget);
+            l_item->setData (Qt::UserRole, l_cnt->uuid().toString());
+            l_widget->addItem (l_item);
 
-            if ( l_lbl.isEmpty() ) {
-                l_item->setText ( tr ( "Unnamed" ) );
-            } else {
-                l_item->setText ( l_lbl );
+            if (l_lbl.isEmpty()) {
+                l_item->setText (tr ("Unnamed"));
+            }
+            else {
+                l_item->setText (l_lbl);
             }
         }
     }
 }
 
-void ContentSettingsPane::on_btnDelete_clicked() {
+void ContentSettingsPane::on_btnDelete_clicked()
+{
     QListWidget* l_widg = ui->lstContent;
-    if ( !l_widg->selectedItems().empty() ) {
-        Q_FOREACH ( QListWidgetItem* l_itm, l_widg->selectedItems() ) {
-            Content* l_cntn = Content::obtain ( l_itm->data ( Qt::UserRole ).toString() );
-            if ( QMessageBox::Yes == QMessageBox::question ( this,
-                    tr ( "Confirm Content Delete" ),
-                    tr ( "Are you sure you want to delete this book '%1' by '%2'?\nAny session connected to the book will become invalid and untrainable." ).arg ( l_cntn->title() ).arg ( l_cntn->author() ),
+
+    if (!l_widg->selectedItems().empty()) {
+        Q_FOREACH (QListWidgetItem * l_itm, l_widg->selectedItems()) {
+            Content* l_cntn = Content::obtain (l_itm->data (Qt::UserRole).toString());
+
+            if (QMessageBox::Yes == QMessageBox::question (this,
+                    tr ("Confirm Content Delete"),
+                    tr ("Are you sure you want to delete this book '%1' by '%2'?\nAny session connected to the book will become invalid and untrainable.").arg (l_cntn->title()).arg (l_cntn->author()),
                     QMessageBox::Yes | QMessageBox::No,
-                    QMessageBox::No ) ) {
+                    QMessageBox::No)) {
                 l_cntn->erase();
             }
         }
@@ -123,23 +139,27 @@ void ContentSettingsPane::on_btnDelete_clicked() {
     }
 }
 
-void ContentSettingsPane::on_btnAdd_clicked() {
-    Wizards::ContentWizard* l_wiz = new Wizards::ContentWizard ( this );
-    if ( l_wiz->exec() == QDialog::Accepted ) {
+void ContentSettingsPane::on_btnAdd_clicked()
+{
+    Wizards::ContentWizard* l_wiz = new Wizards::ContentWizard (this);
+
+    if (l_wiz->exec() == QDialog::Accepted) {
         updateUi();
     }
 }
 
-void ContentSettingsPane::on_btnInfo_clicked() {
+void ContentSettingsPane::on_btnInfo_clicked()
+{
     QListWidget* l_widg = ui->lstContent;
-    if ( !l_widg->selectedItems().empty() ) {
-        Q_FOREACH ( QListWidgetItem* l_itm, l_widg->selectedItems() ) {
-            Content* l_cntn = Content::obtain ( l_itm->data ( Qt::UserRole ).toString() );
-            ContentInformationDialog l_dialog ( l_cntn );
+
+    if (!l_widg->selectedItems().empty()) {
+        Q_FOREACH (QListWidgetItem * l_itm, l_widg->selectedItems()) {
+            Content* l_cntn = Content::obtain (l_itm->data (Qt::UserRole).toString());
+            ContentInformationDialog l_dialog (l_cntn);
             l_dialog.exec();
         }
     }
 }
 
 #include "content-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -24,8 +24,10 @@
 
 #include <lib/abstractsphinx.hpp>
 
-namespace SpeechControl {
-namespace Dictation {
+namespace SpeechControl
+{
+namespace Dictation
+{
 
 /**
  * @brief Represents the AbstractSphinx object for Dictation.
@@ -36,9 +38,10 @@ namespace Dictation {
  * @note This class is not meant to be used for typical programming. It's used exclusively by Dictation::Agent.
  * @see Dictation::Agent
  **/
-class Sphinx : public AbstractSphinx {
+class Sphinx : public AbstractSphinx
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( Sphinx )
+    Q_DISABLE_COPY (Sphinx)
     friend class Agent;
 
 protected:
@@ -47,7 +50,7 @@ protected:
      *
      * @param p_parent ... Defaults to 0.
      **/
-    explicit Sphinx ( QObject* p_parent = 0 );
+    explicit Sphinx (QObject* p_parent = 0);
 
     /**
      * @brief Constructor.
@@ -55,7 +58,7 @@ protected:
      * @param p_description The description for the pipeline to build.
      * @param p_parent Defaults to 0.
      **/
-    Sphinx ( const QString& p_description, QObject* p_parent = 0 );
+    Sphinx (const QString& p_description, QObject* p_parent = 0);
 
     /**
      * @brief Constructor.
@@ -63,14 +66,14 @@ protected:
      * @param p_pipeline The pipeline to use.
      * @param p_parent Defaults to 0.
      **/
-    Sphinx ( QGst::PipelinePtr p_pipeline, QObject* p_parent = 0 );
+    Sphinx (QGst::PipelinePtr p_pipeline, QObject* p_parent = 0);
 
 public slots:
-    void applicationMessage ( const QGst::MessagePtr& p_message );
+    void applicationMessage (const QGst::MessagePtr& p_message);
 };
 
 }
 }
 
 #endif // DESKTOPASR_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

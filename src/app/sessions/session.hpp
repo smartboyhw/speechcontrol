@@ -60,17 +60,17 @@ public:
     class Backup
     {
         friend class Session;
-        
+
     public:
         virtual ~Backup();
-        
+
         /**
          * @brief ...
          *
          * @return :Session*
          **/
         Session* session();
-        
+
         /**
          * @brief ...
          *
@@ -80,7 +80,7 @@ public:
 
     private:
         explicit Backup();
-        
+
         static const QString getPath (const QString&);
         static Backup* generate (const Session&);
         QDomDocument* m_dom;
@@ -102,7 +102,7 @@ public:
      * @brief Destructor
      **/
     virtual ~Session();
-    
+
     /**
      * @brief UUID of the Session
      *
@@ -115,7 +115,7 @@ public:
      *
      * @return Name of the Session
      **/
-     QString name() const;
+    QString name() const;
 
     /**
      * @brief Check if the Session is completed.
@@ -123,14 +123,14 @@ public:
      * @return Boolean of completion
      **/
     bool isCompleted() const;
-    
+
     /**
      * @brief Check if the Session is valid.
      *
      * @return Boolean of validity
      **/
     bool isValid() const;
-    
+
     /**
      * @brief ...
      *
@@ -150,49 +150,49 @@ public:
      * @return :Session*
      **/
     Session* clone() const;
-    
+
     /**
      * @brief ...
      *
      * @return :Session::Backup*
      **/
     Backup* createBackup() const;
-    
+
     /**
      * @brief ...
      *
      * @return :Session::BackupList*
      **/
     BackupList* backups() const;
-    
+
     /**
      * @brief ...
      *
      * @return Corpus*
      **/
     Corpus* corpus() const;
-    
+
     /**
      * @brief ...
      *
      * @return Content*
      **/
     Content* content() const;
-    
+
     /**
      * @brief ...
      *
      * @return :Sentence*
      **/
     Sentence* firstIncompleteSentence() const;
-    
+
     /**
      * @brief ...
      *
      * @return :Sentence*
      **/
     Sentence* lastIncompleteSentence() const;
-    
+
     /**
      * @brief ...
      *
@@ -206,7 +206,7 @@ public:
      * @return void
      **/
     static void init();
-    
+
     /**
      * @brief ...
      *
@@ -214,7 +214,7 @@ public:
      * @return :Session*
      **/
     static Session* obtain (const QUuid& p_uuid);
-    
+
     /**
      * @brief ...
      *

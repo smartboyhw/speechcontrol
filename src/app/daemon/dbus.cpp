@@ -28,29 +28,35 @@
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
 
-DaemonAdaptor::DaemonAdaptor ( )
-    : QDBusAbstractAdaptor ( SpeechControl::Daemon::Daemon::instance() ) {
-    setAutoRelaySignals ( true );
+DaemonAdaptor::DaemonAdaptor ()
+    : QDBusAbstractAdaptor (SpeechControl::Daemon::Daemon::instance())
+{
+    setAutoRelaySignals (true);
 }
 
-DaemonAdaptor::~DaemonAdaptor() {
+DaemonAdaptor::~DaemonAdaptor()
+{
 }
 
-bool DaemonAdaptor::active() const {
-    return qvariant_cast< bool > ( parent()->property ( "Active" ) );
+bool DaemonAdaptor::active() const
+{
+    return qvariant_cast< bool > (parent()->property ("Active"));
 }
 
-QString DaemonAdaptor::listen() {
+QString DaemonAdaptor::listen()
+{
     return parent()->listen();
 }
 
-void DaemonAdaptor::start() {
+void DaemonAdaptor::start()
+{
     parent()->start();
 }
 
-void DaemonAdaptor::stop() {
+void DaemonAdaptor::stop()
+{
     parent()->stop();
 }
 
 #include "dbus.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

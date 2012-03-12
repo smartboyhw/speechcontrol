@@ -23,23 +23,29 @@
 #include "xdo.hpp"
 #include "sphinx.hpp"
 
-namespace SpeechControl {
-namespace Dictation {
+namespace SpeechControl
+{
+namespace Dictation
+{
 
 Agent* Agent::s_inst = 0;
 
-Agent::Agent() : AbstractAgent ( KeyboardEmulator::instance() ) {
-    m_sphinx = new Sphinx ( Sphinx::standardDescription(), parent() );
-    connect ( m_sphinx, SIGNAL ( finished ( QString ) ), this, SLOT ( handleText ( QString ) ) );
+Agent::Agent() : AbstractAgent (KeyboardEmulator::instance())
+{
+    m_sphinx = new Sphinx (Sphinx::standardDescription(), parent());
+    connect (m_sphinx, SIGNAL (finished (QString)), this, SLOT (handleText (QString)));
 }
 
-AbstractAgent::ActivityState Agent::onStateChanged ( const AbstractAgent::ActivityState p_stt ) {
-    switch ( p_stt ) {
+AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::ActivityState p_stt)
+{
+    switch (p_stt) {
     case Enabled:
-        if ( !m_sphinx->start() ) {
+
+        if (!m_sphinx->start()) {
             qWarning() << "[Dictation::Agent] Start unsuccessful.";
             return Disabled;
         }
+
         return Enabled;
         break;
 
@@ -55,24 +61,28 @@ AbstractAgent::ActivityState Agent::onStateChanged ( const AbstractAgent::Activi
     return Undefined;
 }
 
-bool Agent::isActive() const {
+bool Agent::isActive() const
+{
     return state() == Enabled;
 }
 
-bool Agent::isEnabled() const {
-    return Core::configuration ( "Dictation/Enabled" ).toBool() == true;
+bool Agent::isEnabled() const
+{
+    return Core::configuration ("Dictation/Enabled").toBool() == true;
 }
 
-void Agent::handleText ( const QString& p_text ) {
+void Agent::handleText (const QString& p_text)
+{
     qDebug() << "Got text" << p_text;
-    KeyboardEmulator::instance()->sendKeys(p_text);
+    KeyboardEmulator::instance()->sendKeys (p_text);
 }
 
-Agent::~Agent() {
+Agent::~Agent()
+{
 }
 
 }
 }
 
 #include "dictation/agent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

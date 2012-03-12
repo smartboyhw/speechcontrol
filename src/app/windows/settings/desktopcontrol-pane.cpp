@@ -32,91 +32,104 @@ using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 using namespace SpeechControl::DesktopControl;
 
-DesktopControlSettingsPane::DesktopControlSettingsPane ( ) :
-    m_ui ( new Ui::DesktopControlSettingsPane ) {
-        qDebug() << "[DesktopControlSettingsPane::{constructor}] Building desktop control settings pane...";
-        m_ui->setupUi ( this );
-        updateUi();
-        qDebug() << "[DesktopControlSettingsPane::{constructor}] Built desktop control settings pane.";
-    }
+DesktopControlSettingsPane::DesktopControlSettingsPane () :
+    m_ui (new Ui::DesktopControlSettingsPane)
+{
+    qDebug() << "[DesktopControlSettingsPane::{constructor}] Building desktop control settings pane...";
+    m_ui->setupUi (this);
+    updateUi();
+    qDebug() << "[DesktopControlSettingsPane::{constructor}] Built desktop control settings pane.";
+}
 
-DesktopControlSettingsPane::~DesktopControlSettingsPane() {
+DesktopControlSettingsPane::~DesktopControlSettingsPane()
+{
     delete m_ui;
 }
 
-void DesktopControlSettingsPane::changeEvent ( QEvent *e ) {
-    QFrame::changeEvent ( e );
-    switch ( e->type() ) {
+void DesktopControlSettingsPane::changeEvent (QEvent* e)
+{
+    QFrame::changeEvent (e);
+
+    switch (e->type()) {
     case QEvent::LanguageChange:
-        m_ui->retranslateUi ( this );
+        m_ui->retranslateUi (this);
         break;
     default:
         break;
     }
 }
 
-QString DesktopControlSettingsPane::title() const {
+QString DesktopControlSettingsPane::title() const
+{
     return "Desktop Control";
 }
 
-QString DesktopControlSettingsPane::id() const {
+QString DesktopControlSettingsPane::id() const
+{
     return "dsktpcntrl";
 }
 
-bool DesktopControlSettingsPane::containsText ( const QString& p_query ) const {
+bool DesktopControlSettingsPane::containsText (const QString& p_query) const
+{
 
 }
 
-QPixmap DesktopControlSettingsPane::pixmap() const {
-    return QIcon::fromTheme ( "audio-headset" ).pixmap ( 32,32 );
+QPixmap DesktopControlSettingsPane::pixmap() const
+{
+    return QIcon::fromTheme ("audio-headset").pixmap (32, 32);
 }
 
-void DesktopControlSettingsPane::resetPanel() {
+void DesktopControlSettingsPane::resetPanel()
+{
 
 }
 
-void DesktopControlSettingsPane::restoreDefaults() {
+void DesktopControlSettingsPane::restoreDefaults()
+{
 
 }
 
-void DesktopControlSettingsPane::updateUi() {
-    m_ui->checkBoxEnable->setChecked ( !Dictation::Agent::instance()->isEnabled() && DesktopControl::Agent::instance()->isEnabled() );
-    m_ui->checkBoxEnable->setEnabled ( !Dictation::Agent::instance()->isEnabled() );
+void DesktopControlSettingsPane::updateUi()
+{
+    m_ui->checkBoxEnable->setChecked (!Dictation::Agent::instance()->isEnabled() && DesktopControl::Agent::instance()->isEnabled());
+    m_ui->checkBoxEnable->setEnabled (!Dictation::Agent::instance()->isEnabled());
 
     AbstractCategory* l_glbl = DesktopControl::AbstractCategory::global();
     CommandList l_cmds = l_glbl->commands();
     QTableWidget* l_widg = m_ui->tableWidget;
     l_widg->clear();
-    l_widg->setHorizontalHeaderLabels ( QStringList() << tr ( "Statement" ) << tr ( "Command" ) );
-    l_widg->setRowCount ( 0 );
-    l_widg->setColumnCount ( 2 );
+    l_widg->setHorizontalHeaderLabels (QStringList() << tr ("Statement") << tr ("Command"));
+    l_widg->setRowCount (0);
+    l_widg->setColumnCount (2);
 
-    Q_FOREACH ( AbstractCommand* l_cmd, l_cmds ) {
-        l_widg->setRowCount ( l_cmd->statements().count() + l_widg->rowCount() );
+    Q_FOREACH (AbstractCommand * l_cmd, l_cmds) {
+        l_widg->setRowCount (l_cmd->statements().count() + l_widg->rowCount());
         int l_count = 0;
-        Q_FOREACH ( const QString l_statement, l_cmd->statements() ) {
+        Q_FOREACH (const QString l_statement, l_cmd->statements()) {
             const int l_row = l_widg->rowCount() - l_cmd->statements().count() - l_count;
             QTableWidgetItem* l_itemStatement = new QTableWidgetItem;
             QTableWidgetItem* l_commandStatement = new QTableWidgetItem;
 
-            l_itemStatement->setText ( l_statement );
-            l_commandStatement->setText ( l_cmd->id() );
+            l_itemStatement->setText (l_statement);
+            l_commandStatement->setText (l_cmd->id());
 
-            l_widg->setItem ( l_row, 0, l_itemStatement );
-            l_widg->setItem ( l_row, 1, l_commandStatement );
+            l_widg->setItem (l_row, 0, l_itemStatement);
+            l_widg->setItem (l_row, 1, l_commandStatement);
             l_count--;
         }
     }
 }
 
-void DesktopControlSettingsPane::on_checkBoxEnable_toggled ( bool p_checked ) {
-    Core::setConfiguration ( "DesktopControl/Enabled",p_checked );
-    DesktopControl::Agent::instance()->setState ( ( ( p_checked ) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled ) );
+void DesktopControlSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
+{
+    Core::setConfiguration ("DesktopControl/Enabled", p_checked);
+    DesktopControl::Agent::instance()->setState ( ( (p_checked) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled));
 }
 
-void DesktopControlSettingsPane::on_checkBoxEnableStartup_toggled ( bool p_checked ) {
-    Core::setConfiguration ( "DesktopControl/AutoStart",p_checked );
+void DesktopControlSettingsPane::on_checkBoxEnableStartup_toggled (bool p_checked)
+{
+    Core::setConfiguration ("DesktopControl/AutoStart", p_checked);
 }
 
 #include "desktopcontrol-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

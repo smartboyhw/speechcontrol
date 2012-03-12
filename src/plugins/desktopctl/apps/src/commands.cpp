@@ -26,43 +26,50 @@ APPLIST_NAMESPACE_BEGIN
 
 ApplicationListCategory* ApplicationListCategory::s_inst = 0;
 
-ApplicationListCategory::ApplicationListCategory ( ) : AbstractCategory ( global() ) {
+ApplicationListCategory::ApplicationListCategory () : AbstractCategory (global())
+{
     //addCommand((new ListCommand));
 }
 
-const QString ApplicationListCategory::id() const {
+const QString ApplicationListCategory::id() const
+{
     return "applicationlist";
 }
 
-ApplicationListCategory* ApplicationListCategory::instance() {
-    if ( s_inst == 0 ) {
+ApplicationListCategory* ApplicationListCategory::instance()
+{
+    if (s_inst == 0) {
         s_inst = new ApplicationListCategory;
     }
 
     return s_inst;
 }
 
-const QString ApplicationListCategory::title() {
+const QString ApplicationListCategory::title()
+{
     return "Application List";
 }
 
-QString StartCommand::id() {
+QString StartCommand::id()
+{
     return "start-applist";
 }
 
-StartCommand::StartCommand ( ) : AbstractCommand ( ApplicationListCategory::instance() ,
-            ( QStringList() << "Start application"
-              << "Run application"
-              << "Open application" ) ) {
+StartCommand::StartCommand () : AbstractCommand (ApplicationListCategory::instance() ,
+            (QStringList() << "Start application"
+             << "Run application"
+             << "Open application"))
+{
 }
 
 /// @todo Detect the application name and invoke it.
-bool StartCommand::invoke ( const QString& p_statement ) const {
-    if ( !isValidStatement ( p_statement ) ) {
+bool StartCommand::invoke (const QString& p_statement) const
+{
+    if (!isValidStatement (p_statement)) {
         return false;
     }
 
-    const QString l_tokenArgument = AbstractCommand::santizeStatement ( p_statement );
+    const QString l_tokenArgument = AbstractCommand::santizeStatement (p_statement);
 
     return true;
 }

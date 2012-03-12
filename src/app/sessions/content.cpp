@@ -50,7 +50,7 @@ Content::Content (const Content& p_other) : QObject(),
 Content* Content::obtain (const QUuid& p_uuid)
 {
     qDebug() << "[Content::obtain()] Potential Content UUID:" << p_uuid;
-    SC_ASSERT (!p_uuid.isNull(),"Invalid UUID sent to Corpus instance for obtaining.");
+    SC_ASSERT (!p_uuid.isNull(), "Invalid UUID sent to Corpus instance for obtaining.");
 
     if (p_uuid.isNull()) {
         qDebug() << "[Content::obtain()] Null UUID passed.";
@@ -60,7 +60,7 @@ Content* Content::obtain (const QUuid& p_uuid)
     if (!s_lst.contains (p_uuid)) {
         Content* l_content = new Content (p_uuid);
         qDebug() << "[Content::obtain()] Is content valid? " << l_content->isValid();
-        SC_ASSERT( l_content->isValid() , "Invalid Corpus was obtained.");
+        SC_ASSERT (l_content->isValid() , "Invalid Corpus was obtained.");
 
         s_lst.insert (p_uuid, (l_content));
         return l_content;
@@ -76,6 +76,8 @@ void Content::erase()
     if (l_file->remove()) {
         this->deleteLater();
     }
+
+    qDebug() << "[Content::erase()] Erased content" << m_uuid;
 }
 
 void Content::load (const QUuid& p_uuid)
@@ -124,7 +126,7 @@ void Content::load (const QUuid& p_uuid)
 
     m_dom = l_dom;
     l_file->close();
-    s_lst.insert ( m_uuid, this );
+    s_lst.insert (m_uuid, this);
 }
 
 /// @todo Implement a proper means of segmenting text into chunks.
@@ -137,7 +139,8 @@ void Content::parseText (const QString& p_text)
         if (l_count == CHUNK_SIZE) {
             if (l_chr.isLetterOrNumber()) {
                 l_count -= 1;
-            } else {
+            }
+            else {
                 m_pages << l_tmpText;
                 l_tmpText.clear();
                 l_count = -1;
@@ -191,7 +194,7 @@ uint Content::characters() const
 
 QString Content::getPath (const QUuid& p_uuid)
 {
-    return Core::configurationPath().path() + "/contents/" + p_uuid.toString().remove(QRegExp("[{}]")) + ".xml";
+    return Core::configurationPath().path() + "/contents/" + p_uuid.toString().remove (QRegExp ("[{}]")) + ".xml";
 }
 
 QString Content::title() const
@@ -225,17 +228,19 @@ ContentList Content::allContents()
     QStringList l_results = l_dir.entryList (QStringList() << "*");
 
     Q_FOREACH (const QString l_uuid, l_results) {
-        QUuid l_uuid( l_uuid );
+        QUuid l_uuid (l_uuid);
+
         if (!l_uuid.isNull())
             continue;
 
-        Content* l_content = Content::obtain ( l_uuid );
+        Content* l_content = Content::obtain (l_uuid);
         qDebug () << "Is content null?" << (l_content == 0);
         qDebug () << "Is content" << l_uuid << "valid?" << l_content->isValid();
 
         if (l_content && l_content->isValid()) {
             l_lst << l_content;
-        } else {
+        }
+        else {
             QFile::remove (l_dir.absoluteFilePath (l_uuid));
         }
     }
@@ -278,7 +283,8 @@ Content* Content::create (const QString& p_author, const QString& p_title, const
     l_domElem.appendChild (l_textElem);
 
     QFile l_file (Content::getPath (l_uuid));
-    if (!l_file.open (QIODevice::WriteOnly | QIODevice::Truncate)){
+
+    if (!l_file.open (QIODevice::WriteOnly | QIODevice::Truncate)) {
         qDebug() << "[Content::create()] Failed to open file for new Content creation.";
         return 0;
     }
@@ -289,8 +295,8 @@ Content* Content::create (const QString& p_author, const QString& p_title, const
     l_file.close();
 
     qDebug() << "[Content::create()] Content XML:" << l_dom.toString();
-    Content* l_nabbedContent = Content::obtain ( l_uuid );
-    SC_ASSERT(l_nabbedContent != 0,"The generated Content doesn't exist!");
+    Content* l_nabbedContent = Content::obtain (l_uuid);
+    SC_ASSERT (l_nabbedContent != 0, "The generated Content doesn't exist!");
 
     return l_nabbedContent;
 }
@@ -344,16 +350,17 @@ void AbstractContentSource::setTitle (const QString p_title)
 
 Content* AbstractContentSource::generate()
 {
-    Content* l_content = Content::create ( m_author,m_title,m_text );
-    SC_ASSERT(l_content != 0,"Failed to generate Content from AbstractContentSource.");
+    Content* l_content = Content::create (m_author, m_title, m_text);
+    SC_ASSERT (l_content != 0, "Failed to generate Content from AbstractContentSource.");
 
     return l_content;
 }
 
-bool AbstractContentSource::isValid() {
+bool AbstractContentSource::isValid()
+{
     return (!m_author.isNull() && !m_author.isEmpty()) &&
-            (!m_text.isNull() && !m_text.isEmpty()) &&
-            (!m_title.isNull() && !m_title.isEmpty());
+           (!m_text.isNull() && !m_text.isEmpty()) &&
+           (!m_title.isNull() && !m_title.isEmpty());
 }
 AbstractContentSource::~AbstractContentSource()
 {
@@ -389,12 +396,17 @@ bool TextContentSource::setFile (QFile& p_file)
     }
 
     const QDomElement l_book = l_dom.documentElement().namedItem ("Book").toElement();
+
     const QString l_author = l_book.attribute ("author");
+
     const QString l_title = l_book.attribute ("title");
+
     const QString l_text = l_dom.documentElement().namedItem ("Text").toElement().text();
 
     setText (l_text);
+
     setTitle (l_title);
+
     setAuthor (l_author);
 
     return true;
@@ -412,7 +424,8 @@ bool TextContentSource::setUrl (const QUrl& p_url)
     if (p_url.scheme() == "http" || p_url.scheme() == "https") {
         qDebug() << "[TextContentSource::setUrl()] HTTP(S) addresses not yet supported." << p_url;
         return false;
-    } else {
+    }
+    else {
         QFile l_file (p_url.toLocalFile());
         return setFile (l_file);
     }

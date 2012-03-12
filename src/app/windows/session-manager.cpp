@@ -40,52 +40,58 @@ using SpeechControl::Windows::SessionInformationDialog;
 using SpeechControl::Windows::Managers::SessionManager;
 using SpeechControl::Windows::Managers::ContentManager;
 
-SessionManager::SessionManager ( QWidget *parent ) :
-    QDialog ( parent ),
-    m_ui ( new Ui::SessionManager ),
-    m_session ( 0 ) {
-    m_ui->setupUi ( this );
+SessionManager::SessionManager (QWidget* parent) :
+    QDialog (parent),
+    m_ui (new Ui::SessionManager),
+    m_session (0)
+{
+    m_ui->setupUi (this);
     updateList();
 }
 
-SessionManager::~SessionManager() {
+SessionManager::~SessionManager()
+{
     delete m_ui;
 }
 
-void SessionManager::updateList() {
+void SessionManager::updateList()
+{
     m_ui->listSession->clear();
 
     SessionList l_lst = Session::allSessions();
-    Q_FOREACH ( const Session* l_sessionItr, l_lst ) {
-        QListWidgetItem* l_item = new QListWidgetItem ( m_ui->listSession );
-        l_item->setData ( Qt::UserRole,l_sessionItr->uuid().toString() );
-        l_item->setText ( tr ( "%1 - %2%" ).arg ( l_sessionItr->name() ).arg ( (int) l_sessionItr->assessProgress() * 100.0 ) );
-        l_item->setIcon ( ( l_sessionItr->isCompleted() ) ? QIcon::fromTheme ( "task-complete" ) : QIcon::fromTheme ( "task-ongoing" ) );
-        m_ui->listSession->addItem ( l_item );
+    Q_FOREACH (const Session * l_sessionItr, l_lst) {
+        QListWidgetItem* l_item = new QListWidgetItem (m_ui->listSession);
+        l_item->setData (Qt::UserRole, l_sessionItr->uuid().toString());
+        l_item->setText (tr ("%1 - %2%").arg (l_sessionItr->name()).arg ( (int) l_sessionItr->assessProgress() * 100.0));
+        l_item->setIcon ( (l_sessionItr->isCompleted()) ? QIcon::fromTheme ("task-complete") : QIcon::fromTheme ("task-ongoing"));
+        m_ui->listSession->addItem (l_item);
 
-        if ( m_session && m_session->uuid() == l_sessionItr->uuid() ) {
-            l_item->setSelected ( true );
+        if (m_session && m_session->uuid() == l_sessionItr->uuid()) {
+            l_item->setSelected (true);
         }
     }
 
-    if ( !m_session ) {
-        m_ui->listSession->setCurrentRow ( 0 );
+    if (!m_session) {
+        m_ui->listSession->setCurrentRow (0);
     }
 }
 
-Session* SessionManager::session() const {
+Session* SessionManager::session() const
+{
     return m_session;
 }
 
 /// @todo Implement a means of selecting @see Session objects from the manager.
-Session* SessionManager::pickSession() {
+Session* SessionManager::pickSession()
+{
     SessionManager* l_win = new SessionManager;
 
-    if ( Session::allSessions().empty() ) {
+    if (Session::allSessions().empty()) {
         l_win->on_btnCreate_clicked();
         return l_win->session();
-    } else {
-        if ( l_win->exec() == QDialog::Accepted ) {
+    }
+    else {
+        if (l_win->exec() == QDialog::Accepted) {
             return l_win->session();
         }
     }
@@ -93,30 +99,35 @@ Session* SessionManager::pickSession() {
     return 0;
 }
 
-void SessionManager::on_btnCancel_clicked() {
+void SessionManager::on_btnCancel_clicked()
+{
     this->reject();
 }
 
-void SessionManager::on_btnOk_clicked() {
-    if ( m_session->isCompleted() ) {
-        if ( QMessageBox::Yes == QMessageBox::question ( this,
-                tr ( "Continue Training?" ),
-                tr ( "This session has already been completed, do you want to create a new session based on the content of this session?" ),
-                QMessageBox::Yes,QMessageBox::No ) ) {
-            m_session = Session::create ( m_session->content() );
+void SessionManager::on_btnOk_clicked()
+{
+    if (m_session->isCompleted()) {
+        if (QMessageBox::Yes == QMessageBox::question (this,
+                tr ("Continue Training?"),
+                tr ("This session has already been completed, do you want to create a new session based on the content of this session?"),
+                QMessageBox::Yes, QMessageBox::No)) {
+            m_session = Session::create (m_session->content());
             this->accept();
         }
-    } else {
+    }
+    else {
         this->accept();
     }
 }
 
-void SessionManager::on_btnCreate_clicked() {
+void SessionManager::on_btnCreate_clicked()
+{
     Content* l_content = ContentManager::doSelectContent();
 
-    if ( l_content ) {
-        Session* l_session = Session::create ( l_content );
-        if ( l_session ) {
+    if (l_content) {
+        Session* l_session = Session::create (l_content);
+
+        if (l_session) {
             m_session = l_session;
             Core::mainWindow()->updateContent();
         }
@@ -125,33 +136,36 @@ void SessionManager::on_btnCreate_clicked() {
     updateList();
 }
 
-void SessionManager::on_listSession_itemDoubleClicked ( QListWidgetItem* p_item ) {
-    if ( p_item ) {
-        Session* l_session = Session::obtain ( QUuid ( p_item->data ( Qt::UserRole ).toString() ) );
+void SessionManager::on_listSession_itemDoubleClicked (QListWidgetItem* p_item)
+{
+    if (p_item) {
+        Session* l_session = Session::obtain (QUuid (p_item->data (Qt::UserRole).toString()));
 
-        if ( l_session ) {
-            SessionInformationDialog* l_dialog = new SessionInformationDialog ( l_session );
+        if (l_session) {
+            SessionInformationDialog* l_dialog = new SessionInformationDialog (l_session);
             l_dialog->exec();
             updateList();
         }
     }
 }
 
-void SessionManager::on_listSession_itemSelectionChanged() {
+void SessionManager::on_listSession_itemSelectionChanged()
+{
     const QListWidgetItem* l_item = m_ui->listSession->currentItem();
 
-    if ( l_item ) {
-        m_session = Session::obtain ( QUuid ( l_item->data ( Qt::UserRole ).toString() ) );
-        if (m_session){
-            m_ui->progressBar->setFormat(tr("%p% complete"));
-            m_ui->progressBar->setValue ( ( int ) ( m_session->assessProgress() * 100.0 ) );
+    if (l_item) {
+        m_session = Session::obtain (QUuid (l_item->data (Qt::UserRole).toString()));
+
+        if (m_session) {
+            m_ui->progressBar->setFormat (tr ("%p% complete"));
+            m_ui->progressBar->setValue ( (int) (m_session->assessProgress() * 100.0));
         }
         else {
-            m_ui->progressBar->setFormat(tr("no session selected"));
-            m_ui->progressBar->setValue(0.0);
+            m_ui->progressBar->setFormat (tr ("no session selected"));
+            m_ui->progressBar->setValue (0.0);
         }
     }
 }
 
 #include "session-manager.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

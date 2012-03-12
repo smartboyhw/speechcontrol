@@ -22,17 +22,21 @@
 #define ABOUTDIALOG_HPP
 
 #include <QDialog>
-namespace Ui {
-    class AboutDialog;
+namespace Ui
+{
+class AboutDialog;
 }
 
-namespace SpeechControl {
-namespace Windows {
-class AboutDialog : public QDialog {
+namespace SpeechControl
+{
+namespace Windows
+{
+class AboutDialog : public QDialog
+{
     Q_OBJECT
 
 public:
-    AboutDialog ( QWidget *parent = 0 );
+    AboutDialog (QWidget* parent = 0);
 
 private:
     Ui::AboutDialog* ui;
@@ -42,4 +46,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -38,43 +38,50 @@ using SpeechControl::Core;
 Indicator* Indicator::s_inst = 0;
 
 /// @todo Check for a configuration value to determine whether or not the indicator should be shown on initialization.
-Indicator::Indicator ( ) : QObject ( Core::instance() ),
-    m_icon(0) {
+Indicator::Indicator () : QObject (Core::instance()),
+    m_icon (0)
+{
     s_inst = this;
 
-    m_icon = new QSystemTrayIcon(QIcon(":/logo/sc-large"),this);
+    m_icon = new QSystemTrayIcon (QIcon (":/logo/sc-large"), this);
     QMenu* l_menu = new QMenu;
-    l_menu->addAction("Restore",Core::mainWindow(),SLOT(open()));
-    l_menu->addAction(QIcon::fromTheme("application-exit"),"Quit",QApplication::instance(),SLOT(quit()));
-    m_icon->setContextMenu(l_menu);
+    l_menu->addAction ("Restore", Core::mainWindow(), SLOT (open()));
+    l_menu->addAction (QIcon::fromTheme ("application-exit"), "Quit", QApplication::instance(), SLOT (quit()));
+    m_icon->setContextMenu (l_menu);
 }
 
 /// @todo Implement the appropriate code using QtIndicate to hide the indicator.
-void Indicator::hide() {
+void Indicator::hide()
+{
     instance()->m_icon->hide();
 }
 
 /// @todo Implement the appropriate code using QtIndicate to show the indicator.
-void Indicator::show() {
+void Indicator::show()
+{
     instance()->m_icon->show();
 }
 
-void Indicator::showMainWindow() {
+void Indicator::showMainWindow()
+{
     Core::mainWindow()->open();
 }
 
 /// @todo Add an enumeration that allows the callee to specify the kind of message icon they'd  want to appear.
-void Indicator::presentMessage ( const QString& p_title, const QString& p_message, const int& p_timeout ) {
-    instance()->m_icon->showMessage(p_title,p_message,QSystemTrayIcon::Information,p_timeout);
+void Indicator::presentMessage (const QString& p_title, const QString& p_message, const int& p_timeout)
+{
+    instance()->m_icon->showMessage (p_title, p_message, QSystemTrayIcon::Information, p_timeout);
 }
 
-bool Indicator::isVisible() {
+bool Indicator::isVisible()
+{
     return m_icon->isVisible();
 }
 
-Indicator::~Indicator() {
+Indicator::~Indicator()
+{
 
 }
 
 #include "indicator.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

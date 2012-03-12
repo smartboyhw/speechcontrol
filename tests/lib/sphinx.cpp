@@ -32,55 +32,62 @@
 using namespace QTest;
 using namespace SpeechControl;
 
-TestAbstractSphinx::TestAbstractSphinx ( QObject* p_object ) : AbstractSphinx ( p_object ) {
+TestAbstractSphinx::TestAbstractSphinx (QObject* p_object) : AbstractSphinx (p_object)
+{
     QString l_pipeline = standardDescription();
-    l_pipeline = l_pipeline.replace ( "autoaudiosrc name=audiosrc","filesrc name=audiosrc ! decodebin" );
-    buildPipeline ( l_pipeline );
+    l_pipeline = l_pipeline.replace ("autoaudiosrc name=audiosrc", "filesrc name=audiosrc ! decodebin");
+    buildPipeline (l_pipeline);
 }
 
-void TestAbstractSphinx::applicationMessage ( const QGst::MessagePtr& p_message ) {
+void TestAbstractSphinx::applicationMessage (const QGst::MessagePtr& p_message)
+{
 
 }
 
-void TestSphinx::init() {
+void TestSphinx::init()
+{
     SpeechControl::System::start();
 }
 
-void TestSphinx::cleanup() {
+void TestSphinx::cleanup()
+{
     SpeechControl::System::stop();
 }
 
-void TestSphinx::obtainSphinxInstance() {
-    TestAbstractSphinx* l_sphinx = new TestAbstractSphinx ( this );
+void TestSphinx::obtainSphinxInstance()
+{
+    TestAbstractSphinx* l_sphinx = new TestAbstractSphinx (this);
 }
 
-void TestSphinx::recognizeTextFromSample() {
-    QString l_audioPath ( AUDIO );
+void TestSphinx::recognizeTextFromSample()
+{
+    QString l_audioPath (AUDIO);
     QString l_text, l_uttid;
 
-    TestAbstractSphinx* l_sphinx = new TestAbstractSphinx ( this );
+    TestAbstractSphinx* l_sphinx = new TestAbstractSphinx (this);
 
-    l_sphinx->audioSrcElement()->setProperty<const char*> ( "location",l_audioPath.toStdString().c_str() );
-    QCOMPARE ( l_sphinx->start(),true );
-    l_sphinx->formResult ( l_text,l_uttid );
-    QCOMPARE ( !l_text.isEmpty(), true );
-    QCOMPARE ( !l_uttid.isEmpty(), true );
-    QCOMPARE ( l_sphinx->stop(), true );
+    l_sphinx->audioSrcElement()->setProperty<const char*> ("location", l_audioPath.toStdString().c_str());
+    QCOMPARE (l_sphinx->start(), true);
+    l_sphinx->formResult (l_text, l_uttid);
+    QCOMPARE (!l_text.isEmpty(), true);
+    QCOMPARE (!l_uttid.isEmpty(), true);
+    QCOMPARE (l_sphinx->stop(), true);
 
 }
 
-void TestSphinx::benchSphinx() {
-    if ( Microphone::allMicrophones().length() == 0 )
-        QSKIP ( "This test requires at least one input device operational on the test environment.", SkipSingle );
+void TestSphinx::benchSphinx()
+{
+    if (Microphone::allMicrophones().length() == 0)
+        QSKIP ("This test requires at least one input device operational on the test environment.", SkipSingle);
 
-    TestAbstractSphinx* l_sphinx = new TestAbstractSphinx ( this );
-    QCOMPARE ( l_sphinx->start(),true );
+    TestAbstractSphinx* l_sphinx = new TestAbstractSphinx (this);
+    QCOMPARE (l_sphinx->start(), true);
     qDebug() << "Waiting" << SECONDS << "secs to permit recognition process from mic.";
-    qWait ( ( int ) ( ( SECONDS ) * 1000 ) );
-    QCOMPARE ( l_sphinx->stop(), true );
+    qWait ( (int) ( (SECONDS) * 1000));
+    QCOMPARE (l_sphinx->stop(), true);
 }
 
-QTEST_MAIN ( TestSphinx )
+QTEST_MAIN (TestSphinx)
 #include "sphinx.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
 

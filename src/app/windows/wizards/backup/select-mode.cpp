@@ -23,13 +23,15 @@
 
 using SpeechControl::Wizards::Pages::BackupSelection;
 
-BackupSelection::BackupSelection ( QWidget *parent ) :
-    QWizardPage ( parent ),
-    ui ( new Ui::BackupSelection ) {
-    ui->setupUi ( this );
+BackupSelection::BackupSelection (QWidget* parent) :
+    QWizardPage (parent),
+    ui (new Ui::BackupSelection)
+{
+    ui->setupUi (this);
 }
 
-BackupSelection::~BackupSelection() {
+BackupSelection::~BackupSelection()
+{
     delete ui;
 }
 

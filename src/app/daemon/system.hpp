@@ -25,13 +25,16 @@
 #include <QCoreApplication>
 #include "daemon.hpp"
 
-namespace SpeechControl {
-namespace Daemon {
+namespace SpeechControl
+{
+namespace Daemon
+{
 
 /**
  * @brief ...
  **/
-class System : public QObject {
+class System : public QObject
+{
     Q_OBJECT
 public:
     /**
@@ -40,7 +43,7 @@ public:
      * @param p_argc ...
      * @param p_argv ...
      **/
-    explicit System ( int p_argc, char** p_argv );
+    explicit System (int p_argc, char** p_argv);
     /**
      * @brief ...
      *
@@ -48,7 +51,7 @@ public:
      * @param p_argv ...
      * @return :Daemon::System*
      **/
-    static System* instance ( int p_argc,char** p_argv );
+    static System* instance (int p_argc, char** p_argv);
     /**
      * @brief ...
      *
@@ -71,4 +74,4 @@ private:
 }
 
 #endif // SPEECHCONTROL_DAEMON_SYSTEM_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

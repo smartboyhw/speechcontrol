@@ -23,23 +23,28 @@
 
 #include <QWizardPage>
 
-namespace Ui {
+namespace Ui
+{
 class Conclusion;
 }
 
-namespace SpeechControl {
-namespace Wizards {
-namespace Pages {
+namespace SpeechControl
+{
+namespace Wizards
+{
+namespace Pages
+{
 
-class ConclusionPage : public QWizardPage {
+class ConclusionPage : public QWizardPage
+{
     Q_OBJECT
 
 public:
-    explicit ConclusionPage ( const QString& );
+    explicit ConclusionPage (const QString&);
     ~ConclusionPage();
 
 private:
-    Ui::Conclusion *ui;
+    Ui::Conclusion* ui;
 };
 
 }

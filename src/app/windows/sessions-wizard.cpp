@@ -23,11 +23,13 @@
 
 using namespace SpeechControl::Wizards;
 
-SessionWizard::SessionWizard ( QWidget *parent ) :
-    WizardBase ( parent ) {
+SessionWizard::SessionWizard (QWidget* parent) :
+    WizardBase (parent)
+{
 }
 
-SessionWizard::~SessionWizard() {
+SessionWizard::~SessionWizard()
+{
 }
 
 #include "sessions-wizard.moc"

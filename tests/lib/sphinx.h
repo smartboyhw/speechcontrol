@@ -24,13 +24,15 @@
 
 #include <lib/abstractsphinx.hpp>
 
-class TestAbstractSphinx : public SpeechControl::AbstractSphinx {
+class TestAbstractSphinx : public SpeechControl::AbstractSphinx
+{
 public:
-    explicit TestAbstractSphinx ( QObject* = 0 );
-    virtual void applicationMessage ( const QGst::MessagePtr& p_message );
+    explicit TestAbstractSphinx (QObject* = 0);
+    virtual void applicationMessage (const QGst::MessagePtr& p_message);
 };
 
-class TestSphinx : public QObject {
+class TestSphinx : public QObject
+{
     Q_OBJECT
 
 private slots:
@@ -42,3 +44,4 @@ private slots:
 };
 
 #endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

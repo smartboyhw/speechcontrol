@@ -25,31 +25,33 @@
 #include <QDir>
 #include <QUuid>
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 
 /**
  * @brief Represents a language model in its programmatic format.
  **/
-class LanguageModel : public QObject {
+class LanguageModel : public QObject
+{
     Q_OBJECT
-    Q_PROPERTY ( QString Path READ path )   ///< The path to the language mode, be it a directory or file.
+    Q_PROPERTY (QString Path READ path)     ///< The path to the language mode, be it a directory or file.
 
 private:
     QUuid m_uuid;
-    
+
 public:
     /**
      * @brief Null constructor.
      * @param p_parent Defaults to 0.
      **/
-    explicit LanguageModel ( QObject* p_parent = 0 );
+    explicit LanguageModel (QObject* p_parent = 0);
 
     /**
      * @brief ...
      *
      * @param p_uuid ...
      **/
-    LanguageModel ( const QUuid& p_uuid );
+    LanguageModel (const QUuid& p_uuid);
     /**
      * @brief ...
      *
@@ -62,7 +64,7 @@ public:
      * @param p_directory ...
      * @return LanguageModel*
      **/
-    static LanguageModel* fromDirectory ( const QDir& p_directory );
+    static LanguageModel* fromDirectory (const QDir& p_directory);
 
     /**
      * @brief ...
@@ -70,7 +72,7 @@ public:
      * @param p_archiveFile ...
      * @return LanguageModel*
      **/
-    static LanguageModel* fromCompressedFile ( const QFile* p_archiveFile );
+    static LanguageModel* fromCompressedFile (const QFile* p_archiveFile);
 
     /**
      * @brief ...
@@ -78,7 +80,7 @@ public:
      * @param p_path ...
      * @return LanguageModel*
      **/
-    static LanguageModel* fromPath ( const QString& p_path );
+    static LanguageModel* fromPath (const QString& p_path);
     /**
      * @brief ...
      *

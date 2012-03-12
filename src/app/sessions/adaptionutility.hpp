@@ -23,7 +23,8 @@
 
 #include <QObject>
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 
 class AcousticModel;
 class Session;
@@ -44,7 +45,8 @@ class Session;
  *
  * More information about adaption in SpeechControl can be found at <http://wiki.thesii.org/SpeechControl/AdaptingAcousticModels>.
  **/
-class AdaptionUtility : public QObject {
+class AdaptionUtility : public QObject
+{
     Q_OBJECT
 
 public:
@@ -53,7 +55,7 @@ public:
      * @param p_session The Session to be adapted with.
      * @param p_model The AcousticModel to be adapted.
      **/
-    explicit AdaptionUtility ( Session* p_session, AcousticModel* p_model );
+    explicit AdaptionUtility (Session* p_session, AcousticModel* p_model);
 
     /**
      * @brief Null constructor.
@@ -70,13 +72,13 @@ public:
      * @brief Changes the Session to be merged with the acoustic model.
      * @param p_session The Session to use.
      **/
-    void setSession(Session* p_session);
+    void setSession (Session* p_session);
 
     /**
      * @brief Changes the AcousticModel to be adapted.
      * @param p_model The new model to adapt.
      **/
-    void setAcousticModel(AcousticModel* p_model);
+    void setAcousticModel (AcousticModel* p_model);
 
     /**
      * @brief Returns the Session that'll be used for adaption.
@@ -110,4 +112,4 @@ private:
 }
 
 #endif // SPEECHCONTROL_ADAPTIONUTILITY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

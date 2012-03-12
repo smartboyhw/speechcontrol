@@ -26,57 +26,68 @@
 using namespace SpeechControl::Windows;
 
 ServicesSettingsPane::ServicesSettingsPane() :
-    ui ( new Ui::ServicesSettingsPane ) {
+    ui (new Ui::ServicesSettingsPane)
+{
     qDebug() << "[ServicesSettingsPane::{constructor}] Building services settings pane...";
-    ui->setupUi ( this );
-    addPane ( new DesktopControlSettingsPane );
-    addPane ( new DictationSettingsPane );
+    ui->setupUi (this);
+    addPane (new DesktopControlSettingsPane);
+    addPane (new DictationSettingsPane);
     updateUi();
     qDebug() << "[ServicesSettingsPane::{constructor}] Built services settings pane.";
 }
 
-ServicesSettingsPane::~ServicesSettingsPane() {
+ServicesSettingsPane::~ServicesSettingsPane()
+{
     delete ui;
 }
 
-void ServicesSettingsPane::changeEvent ( QEvent *e ) {
-    QFrame::changeEvent ( e );
-    switch ( e->type() ) {
+void ServicesSettingsPane::changeEvent (QEvent* e)
+{
+    QFrame::changeEvent (e);
+
+    switch (e->type()) {
     case QEvent::LanguageChange:
-        ui->retranslateUi ( this );
+        ui->retranslateUi (this);
         break;
     default:
         break;
     }
 }
 
-QString SpeechControl::Windows::ServicesSettingsPane::title() const {
+QString SpeechControl::Windows::ServicesSettingsPane::title() const
+{
     return "Services";
 }
 
-QString SpeechControl::Windows::ServicesSettingsPane::id() const {
+QString SpeechControl::Windows::ServicesSettingsPane::id() const
+{
     return "srvcs";
 }
 
-bool ServicesSettingsPane::containsText ( const QString& p_query ) const {
+bool ServicesSettingsPane::containsText (const QString& p_query) const
+{
 
 }
 
-QPixmap ServicesSettingsPane::pixmap() const {
-    return QIcon::fromTheme ( "configure" ).pixmap ( 32,32 );
+QPixmap ServicesSettingsPane::pixmap() const
+{
+    return QIcon::fromTheme ("configure").pixmap (32, 32);
 }
 
-void ServicesSettingsPane::resetPanel() {
+void ServicesSettingsPane::resetPanel()
+{
 
 }
 
-void ServicesSettingsPane::restoreDefaults() {
+void ServicesSettingsPane::restoreDefaults()
+{
 
 }
 
-void ServicesSettingsPane::updateUi() {
+void ServicesSettingsPane::updateUi()
+{
 
 }
 
 #include "services-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

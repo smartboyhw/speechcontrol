@@ -23,30 +23,34 @@
 
 #include <app/windows/settings-dialog.hpp>
 
-namespace Ui {
+namespace Ui
+{
 class ContentSettingsPane;
 }
 
-namespace SpeechControl {
-namespace Windows {
+namespace SpeechControl
+{
+namespace Windows
+{
 
-class ContentSettingsPane : public AbstractSettingsPane {
+class ContentSettingsPane : public AbstractSettingsPane
+{
     Q_OBJECT
 
 public:
-    explicit ContentSettingsPane (  );
+    explicit ContentSettingsPane ();
     ~ContentSettingsPane();
     QString title() const;
     QString id() const;
     virtual void show();
     void updateUi();
-    virtual bool containsText ( const QString& p_query ) const;
+    virtual bool containsText (const QString& p_query) const;
     virtual QPixmap pixmap() const;
     virtual void resetPanel();
     virtual void restoreDefaults();
 
 protected:
-    void changeEvent ( QEvent *e );
+    void changeEvent (QEvent* e);
 
 private slots:
     void on_btnDelete_clicked();
@@ -54,11 +58,11 @@ private slots:
     void on_btnInfo_clicked();
 
 private:
-    Ui::ContentSettingsPane *ui;
+    Ui::ContentSettingsPane* ui;
 };
 
 }
 }
 
 #endif // CONTENTSETTINGSPANE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

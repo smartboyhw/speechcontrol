@@ -22,32 +22,39 @@
 
 using namespace SpeechControl;
 
-AdaptionUtility::AdaptionUtility() : QObject(), m_session ( 0 ), m_model ( 0 ) {
+AdaptionUtility::AdaptionUtility() : QObject(), m_session (0), m_model (0)
+{
 
 }
 
-AdaptionUtility::AdaptionUtility ( Session* p_session, AcousticModel* p_model ) : QObject(), m_session ( p_session ), m_model ( p_model ) {
+AdaptionUtility::AdaptionUtility (Session* p_session, AcousticModel* p_model) : QObject(), m_session (p_session), m_model (p_model)
+{
 
 }
 
-Session* AdaptionUtility::session() {
+Session* AdaptionUtility::session()
+{
     return m_session;
 }
 
-AcousticModel* AdaptionUtility::model() {
+AcousticModel* AdaptionUtility::model()
+{
     return m_model;
 }
 
-void AdaptionUtility::setSession ( Session* p_session ) {
+void AdaptionUtility::setSession (Session* p_session)
+{
     m_session = p_session;
 }
 
-void AdaptionUtility::setAcousticModel ( AcousticModel* p_model ) {
+void AdaptionUtility::setAcousticModel (AcousticModel* p_model)
+{
     m_model = p_model;
 }
 
-AcousticModel* AdaptionUtility::adapt() {
-    if ( !m_session || !m_model )
+AcousticModel* AdaptionUtility::adapt()
+{
+    if (!m_session || !m_model)
         return 0;
 
     generateFeatures();
@@ -61,37 +68,45 @@ AcousticModel* AdaptionUtility::adapt() {
     return 0;
 }
 
-void AdaptionUtility::generateFeatures() {
+void AdaptionUtility::generateFeatures()
+{
 
 }
 
-void AdaptionUtility::generateMixtureWeights() {
+void AdaptionUtility::generateMixtureWeights()
+{
 
 }
 
-void AdaptionUtility::convertModelDefinitions() {
+void AdaptionUtility::convertModelDefinitions()
+{
 
 }
 
-void AdaptionUtility::collectAcousticStatistics() {
+void AdaptionUtility::collectAcousticStatistics()
+{
 
 }
 
-void AdaptionUtility::performAdaption ( ) {
+void AdaptionUtility::performAdaption ()
+{
 
 }
 
-void AdaptionUtility::generateSendmap() {
+void AdaptionUtility::generateSendmap()
+{
 
 }
 
-void AdaptionUtility::generateAccuracyReport() {
+void AdaptionUtility::generateAccuracyReport()
+{
 
 }
 
-AdaptionUtility::~AdaptionUtility() {
+AdaptionUtility::~AdaptionUtility()
+{
 
 }
 
 #include "adaptionutility.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

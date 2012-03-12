@@ -30,23 +30,29 @@
 using SpeechControl::AcousticModel;
 using SpeechControl::NoiseDictionary;
 
-AcousticModel::AcousticModel ( const AcousticModel &p_mdl ) :
-    QObject ( p_mdl.parent() ), m_params ( p_mdl.m_params ), m_path ( p_mdl.m_path ) {
+AcousticModel::AcousticModel (const AcousticModel& p_mdl) :
+    QObject (p_mdl.parent()), m_params (p_mdl.m_params), m_path (p_mdl.m_path)
+{
 }
-AcousticModel::AcousticModel ( const QString& p_path, QObject* p_parent ) : QObject ( p_parent ) {
-    load ( p_path );
-}
-
-AcousticModel::AcousticModel ( QObject* p_parent ) : QObject ( p_parent ) {
-
+AcousticModel::AcousticModel (const QString& p_path, QObject* p_parent) : QObject (p_parent)
+{
+    load (p_path);
 }
 
-AcousticModel::~AcousticModel() {
+AcousticModel::AcousticModel (QObject* p_parent) : QObject (p_parent)
+{
+
 }
 
-void AcousticModel::load ( QString p_path ) {
-    QDir l_dir ( p_path );
-    if ( !l_dir.exists() )
+AcousticModel::~AcousticModel()
+{
+}
+
+void AcousticModel::load (QString p_path)
+{
+    QDir l_dir (p_path);
+
+    if (!l_dir.exists())
         return;
 
     m_path = p_path;
@@ -55,61 +61,71 @@ void AcousticModel::load ( QString p_path ) {
     loadNoiseDictionary();
 }
 
-void AcousticModel::loadFeatureParameters() {
-    QFile* l_file = new QFile ( m_path + "/feat.params" );
-    l_file->open ( QIODevice::ReadOnly | QIODevice::Text );
+void AcousticModel::loadFeatureParameters()
+{
+    QFile* l_file = new QFile (m_path + "/feat.params");
+    l_file->open (QIODevice::ReadOnly | QIODevice::Text);
 
-    QTextStream l_strm ( l_file );
+    QTextStream l_strm (l_file);
 
-    while ( !l_strm.atEnd() ) {
-        const QStringList l_tokens = l_strm.readLine().split ( " " );
+    while (!l_strm.atEnd()) {
+        const QStringList l_tokens = l_strm.readLine().split (" ");
         qDebug() << "Parsing parameter" << l_tokens[0] << "=" << l_tokens[1];
-        setParameter ( l_tokens[0],l_tokens[1] );
+        setParameter (l_tokens[0], l_tokens[1]);
     }
 
     l_file->close();
 }
 
-void AcousticModel::loadNoiseDictionary() {
-    QFile* l_noiseDictFile = new QFile ( m_path +  "/noisedict" );
-    m_noisedict = NoiseDictionary::fromFile ( l_noiseDictFile );
+void AcousticModel::loadNoiseDictionary()
+{
+    QFile* l_noiseDictFile = new QFile (m_path +  "/noisedict");
+    m_noisedict = NoiseDictionary::fromFile (l_noiseDictFile);
 }
 
-void AcousticModel::setParameter ( const QString &p_key, const QVariant &p_value ) {
-    m_params.insert ( p_key, p_value );
+void AcousticModel::setParameter (const QString& p_key, const QVariant& p_value)
+{
+    m_params.insert (p_key, p_value);
 }
 
-void AcousticModel::setParameters ( QVariantMap const& p_params ) {
+void AcousticModel::setParameters (QVariantMap const& p_params)
+{
     m_params = p_params;
 }
 
-void AcousticModel::mergeParameters ( QVariantMap const& p_params ) {
-    for ( QMap< QString, QVariant >::const_iterator it = p_params.constBegin();
-            it != p_params.constEnd(); ++it ) {
+void AcousticModel::mergeParameters (QVariantMap const& p_params)
+{
+    for (QMap< QString, QVariant >::const_iterator it = p_params.constBegin();
+            it != p_params.constEnd(); ++it) {
 
-        m_params.insert ( it.key(), it.value() );
+        m_params.insert (it.key(), it.value());
     }
 }
 
-QVariant AcousticModel::parameter ( const QString &p_key ) const {
-    return m_params.value ( p_key );
+QVariant AcousticModel::parameter (const QString& p_key) const
+{
+    return m_params.value (p_key);
 }
 
-QVariantMap AcousticModel::parameters() const {
+QVariantMap AcousticModel::parameters() const
+{
     return m_params;
 }
 
-quint16 AcousticModel::sampleRate() const {
+quint16 AcousticModel::sampleRate() const
+{
     return 16000;
 }
 
-QString AcousticModel::path() const {
+QString AcousticModel::path() const
+{
     return m_path;
 }
 
-bool AcousticModel::isValid() const {
-    return ( QDir ( m_path ) ).exists();
+bool AcousticModel::isValid() const
+{
+    return (QDir (m_path)).exists();
 }
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
 #include "acousticmodel.moc"

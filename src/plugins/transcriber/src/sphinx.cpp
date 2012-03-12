@@ -26,59 +26,65 @@
 
 using namespace SpeechControl::Plugins::Transcriber;
 
-Sphinx::Sphinx() : AbstractSphinx ( 0 ) {
+Sphinx::Sphinx() : AbstractSphinx (0)
+{
 
 }
 
-void Sphinx::prepareForFile ( const QString& p_path ) {
+void Sphinx::prepareForFile (const QString& p_path)
+{
     QString l_desc = standardDescription();
-    l_desc.replace ( "autoaudiosrc name=audiosrc ! audioconvert"
-                        " ! audioresample ! audiorate ",
-                     "filesrc name=audiosrc ! decodebin name=decoder" );
-    buildPipeline ( l_desc );
-    audioSrcElement()->setProperty<const char*> ( "location",p_path.toStdString().c_str() );
-    QGst::ElementPtr l_decodebin = m_pipeline->getElementByName ( "decoder" );
-    QGlib::connect ( l_decodebin,"unknown-type",this,&Sphinx::onUnknownTypeEncountered );
+    l_desc.replace ("autoaudiosrc name=audiosrc ! audioconvert"
+                    " ! audioresample ! audiorate ",
+                    "filesrc name=audiosrc ! decodebin name=decoder");
+    buildPipeline (l_desc);
+    audioSrcElement()->setProperty<const char*> ("location", p_path.toStdString().c_str());
+    QGst::ElementPtr l_decodebin = m_pipeline->getElementByName ("decoder");
+    QGlib::connect (l_decodebin, "unknown-type", this, &Sphinx::onUnknownTypeEncountered);
 
     // The following code should be used when the ps_decoder_t object can be obtained.
 #if 0
-    QFile* l_file = new QFile(p_path);
+    QFile* l_file = new QFile (p_path);
     ps_decoder_t* l_ps = 0;
     const char* l_hyp = 0;
     int32* l_score = 0;
-    FILE* l_handle = fdopen(l_file->handle(),"r");
-    qDebug() << ps_decode_raw(l_ps,l_handle,NULL,0);
-    qDebug() << "Hyp: " << ps_get_hyp(l_ps,l_score,&l_hyp);
-    emit finished(l_hyp);
+    FILE* l_handle = fdopen (l_file->handle(), "r");
+    qDebug() << ps_decode_raw (l_ps, l_handle, NULL, 0);
+    qDebug() << "Hyp: " << ps_get_hyp (l_ps, l_score, &l_hyp);
+    emit finished (l_hyp);
 #endif
 }
 
-void Sphinx::applicationMessage ( const QGst::MessagePtr& p_message ) {
+void Sphinx::applicationMessage (const QGst::MessagePtr& p_message)
+{
     QString l_msgType    = p_message->internalStructure()->name();
-    QString l_hypothesis = p_message->internalStructure()->value ( "hyp" ).toString();
-    QString l_uttid      = p_message->internalStructure()->value ( "uttid" ).toString();
-    if ( l_msgType == "result" ) {
+    QString l_hypothesis = p_message->internalStructure()->value ("hyp").toString();
+    QString l_uttid      = p_message->internalStructure()->value ("uttid").toString();
+
+    if (l_msgType == "result") {
         qDebug() << "ASR result:" << l_hypothesis << l_uttid;
-        emit finished ( l_hypothesis );
+        emit finished (l_hypothesis);
     }
 }
 
-void Sphinx::onUnknownTypeEncountered ( QGst::PadPtr p_pad, QGst::CapsPtr p_caps ) {
+void Sphinx::onUnknownTypeEncountered (QGst::PadPtr p_pad, QGst::CapsPtr p_caps)
+{
     qDebug() << "Unknown type encountered." << p_caps->toString()
              << p_pad->pathString();
 
-    Q_FOREACH ( QGlib::ParamSpecPtr l_prop, p_pad->listProperties() ) {
-        qDebug() << l_prop->name() << l_prop->description() << l_prop->nick() << p_pad->property ( l_prop->name().toStdString().c_str() );
+    Q_FOREACH (QGlib::ParamSpecPtr l_prop, p_pad->listProperties()) {
+        qDebug() << l_prop->name() << l_prop->description() << l_prop->nick() << p_pad->property (l_prop->name().toStdString().c_str());
     }
 
-    Q_FOREACH ( QGlib::ParamSpecPtr l_prop, m_psphinx->listProperties() ) {
-        qDebug() << l_prop->name() << l_prop->description() << l_prop->nick() << m_psphinx->property ( l_prop->name().toStdString().c_str() );
+    Q_FOREACH (QGlib::ParamSpecPtr l_prop, m_psphinx->listProperties()) {
+        qDebug() << l_prop->name() << l_prop->description() << l_prop->nick() << m_psphinx->property (l_prop->name().toStdString().c_str());
     }
 }
 
-Sphinx::~Sphinx() {
+Sphinx::~Sphinx()
+{
 
 }
 
 #include "sphinx.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

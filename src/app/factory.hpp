@@ -25,8 +25,10 @@
 #include "macros.hpp"
 #include "plugins.hpp"
 
-namespace SpeechControl {
-namespace Plugins {
+namespace SpeechControl
+{
+namespace Plugins
+{
 class Factory;
 
 /**
@@ -48,10 +50,11 @@ class Factory;
  * <b>Settings</b> refer to the options and values that the plug-in will use within SpeechControl to extend its functionality.
  *
  **/
-class Factory : public QObject {
+class Factory : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( Factory )
-    SC_SINGLETON ( Factory )
+    Q_DISABLE_COPY (Factory)
+    SC_SINGLETON (Factory)
 
 signals:
     /**
@@ -68,13 +71,13 @@ signals:
      * @brief Emitted when a plug-in is loaded.
      * @param p_uuid The UUID of the plug-in loaded.
      **/
-    void pluginLoaded ( const QUuid& p_uuid );
+    void pluginLoaded (const QUuid& p_uuid);
 
     /**
      * @brief Emitted when a plug-in is unloaded.
      * @param p_uuid The UUID of the plug-in unloaded.
      **/
-    void pluginUnloaded ( const QUuid& );
+    void pluginUnloaded (const QUuid&);
 
 public slots:
     /**
@@ -104,7 +107,7 @@ public:
      * @param p_uuid The UUID of the plug-in to load.
      * @return bool True if the plug-in loaded successfully, false otherwise.
      **/
-    static bool loadPlugin ( const QUuid& );
+    static bool loadPlugin (const QUuid&);
 
     /**
      * @brief Unloads a plug-in.
@@ -115,14 +118,14 @@ public:
      * @param p_uuid The UUID of the plug-in to unload.
      * @return bool True if the plug-in unloaded successfully, false otherwise.
      **/
-    void unloadPlugin ( const QUuid& p_uuid );
+    void unloadPlugin (const QUuid& p_uuid);
 
     /**
      * @brief Determines if a plug-in has been loaded.
      * @param p_uuid The plug-in's UUID to verify.
      * @return bool True if the plug-in is loaded, false otherwise.
      **/
-    static bool isPluginLoaded ( const QUuid& );
+    static bool isPluginLoaded (const QUuid&);
 
     /**
      * @brief Obtains a list of loaded plug-ins.
@@ -142,7 +145,7 @@ public:
      * @return A pointer to a QSettings* object. NULL if the UUID points to an invalid plug-in.
      * @see pluginSettings()
      **/
-    static QSettings* pluginConfiguration ( QUuid p_uuid );
+    static QSettings* pluginConfiguration (QUuid p_uuid);
 
     /**
      * @brief Obtains the settings of a plug-in by its specified UUID.
@@ -150,7 +153,7 @@ public:
      * @return A pointer to a QSettings* object. NULL if the UUID points to an invalid plug-in.
      * @see pluginConfiguration()
      **/
-    static QSettings* pluginSettings ( QUuid p_uuid );
+    static QSettings* pluginSettings (QUuid p_uuid);
 
 private:
     static PluginMap s_ldPlgns;  ///< The loaded plug-ins.
@@ -159,4 +162,4 @@ private:
 }
 
 #endif // FACTORY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

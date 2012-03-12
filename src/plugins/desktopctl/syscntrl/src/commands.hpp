@@ -37,7 +37,8 @@ APPLIST_NAMESPACE_BEGIN
 /**
  * @brief ...
  **/
-class ApplicationListCategory : public AbstractCategory {
+class ApplicationListCategory : public AbstractCategory
+{
     Q_OBJECT
     friend class Plugin;
 
@@ -73,7 +74,8 @@ private:
 /**
  * @brief ...
  **/
-class StartCommand : public AbstractCommand {
+class StartCommand : public AbstractCommand
+{
     Q_OBJECT
     friend class Plugin;
 
@@ -90,14 +92,14 @@ public:
      * @param p_statement ... Defaults to QString::null.
      * @return bool
      **/
-    virtual bool invoke ( const QString& p_statement = QString::null ) const;
+    virtual bool invoke (const QString& p_statement = QString::null) const;
 
 private:
     /**
      * @brief ...
      *
      **/
-    explicit StartCommand ( );
+    explicit StartCommand ();
     QStringList m_cmds;
 };
 

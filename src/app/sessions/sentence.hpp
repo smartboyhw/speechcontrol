@@ -30,7 +30,8 @@
 
 class QDomElement;
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 class Phrase;
 class Corpus;
 class Sentence;
@@ -46,13 +47,14 @@ typedef QList<Sentence*> SentenceList;
 typedef QList<Phrase*> PhraseList;
 
 
-class SPCH_EXPORT Sentence : public QObject {
+class SPCH_EXPORT Sentence : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( Sentence )
+    Q_DISABLE_COPY (Sentence)
     friend class Phrase;
 
 public:
-    explicit Sentence ( Corpus*, QDomElement* );
+    explicit Sentence (Corpus*, QDomElement*);
     /**
      * @brief ...
      *
@@ -65,7 +67,7 @@ public:
      * @param p_text ...
      * @return :Sentence*
      **/
-    static Sentence* create ( SpeechControl::Corpus* p_corpus, const QString& p_text );
+    static Sentence* create (SpeechControl::Corpus* p_corpus, const QString& p_text);
     /**
      * @brief ...
      *
@@ -84,9 +86,9 @@ public:
      * @return const QString
      **/
     const QString text() const;
-    
+
     const QDomElement* getElement() const;
-    
+
     /**
      * @brief ...
      *
@@ -111,7 +113,7 @@ public:
      * @param  ...
      * @return bool
      **/
-    bool isPhraseCompleted ( const int& ) const;
+    bool isPhraseCompleted (const int&) const;
     /**
      * @brief ...
      *
@@ -130,10 +132,10 @@ public:
      * @param  ...
      * @return :Phrase*
      **/
-    Phrase* phrase ( const int& ) const;
+    Phrase* phrase (const int&) const;
 
 private:
-    QDomElement* getPhraseElement ( const int& ) const;
+    QDomElement* getPhraseElement (const int&) const;
     QDomElement* m_elem;
     Corpus* m_corpus;
     PhraseList m_phrsLst;

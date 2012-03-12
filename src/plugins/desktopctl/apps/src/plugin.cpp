@@ -27,20 +27,24 @@
 
 APPLIST_NAMESPACE_BEGIN
 
-Plugin::Plugin ( QObject* parent ) : AbstractPlugin ( QUuid ( PLUGIN_UUID ),parent ) {
+Plugin::Plugin (QObject* parent) : AbstractPlugin (QUuid (PLUGIN_UUID), parent)
+{
 }
 
-void Plugin::initialize() {
+void Plugin::initialize()
+{
     qDebug() << "Plug-in loaded! (applist)";
-    ApplicationListCategory::instance()->addCommand ( ( new StartCommand ) );
+    ApplicationListCategory::instance()->addCommand ( (new StartCommand));
 }
 
-void Plugin::deinitialize() {
+void Plugin::deinitialize()
+{
     qDebug() << "Plug-in unloaded! (applist)";
     ApplicationListCategory::instance()->deleteLater();
 }
 
-Plugin::~Plugin() {
+Plugin::~Plugin()
+{
 
 }
 
@@ -48,6 +52,6 @@ Plugin::~Plugin() {
 
 APPLIST_NAMESPACE_END
 
-Q_EXPORT_PLUGIN2 ( spchcntrl-applist, SpeechControl::Plugins::DesktopControl::ApplicationListing::Plugin )
+Q_EXPORT_PLUGIN2 (spchcntrl - applist, SpeechControl::Plugins::DesktopControl::ApplicationListing::Plugin)
 
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

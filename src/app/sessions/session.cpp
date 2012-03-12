@@ -50,7 +50,8 @@ void Session::setCorpus (Corpus* l_corpus)
     if (l_corpus) {
         m_corpus = l_corpus;
         assessProgress();
-    } else {
+    }
+    else {
         qDebug() << "Null corpus not added.";
     }
 }
@@ -82,7 +83,7 @@ double Session::assessProgress() const
 void Session::init()
 {
     qDebug() << "Loading sessions...";
-    QFile* configFile = new QFile ( Core::configurationPath().absolutePath() +"/sessions.xml" );
+    QFile* configFile = new QFile (Core::configurationPath().absolutePath() + "/sessions.xml");
     s_elems.clear();
 
     if (s_dom) {
@@ -100,13 +101,14 @@ void Session::init()
         const QDomNodeList l_domList = documentElem.elementsByTagName ("Session");
 
         for (int i = 0; i < l_domList.count(); i++) {
-            QDomElement l_node = l_domList.at(i).toElement();
+            QDomElement l_node = l_domList.at (i).toElement();
             const QUuid l_uuid (l_node.attribute ("uuid"));
             s_elems.insert (l_uuid, new QDomElement (l_domList.at (i).toElement()));
         }
 
         qDebug() << l_domList.count() << "sessions loaded.";
-    } else {
+    }
+    else {
         configFile->open (QIODevice::WriteOnly | QIODevice::Truncate);
         QDomElement l_elem = s_dom->createElement ("Sessions");
         s_dom->appendChild (l_elem);
@@ -124,7 +126,8 @@ void Session::load (const QUuid& p_uuid)
     if (m_elem && !m_elem->isNull()) {
         setCorpus (Corpus::obtain (m_elem->attribute ("corpus")));
         setContent (Content::obtain (m_elem->attribute ("content")));
-    } else {
+    }
+    else {
         s_elems.remove (p_uuid);
         m_content = 0;
         m_corpus = 0;
@@ -194,7 +197,7 @@ Session* Session::create (const Content* p_content)
     s_dom->documentElement().appendChild (l_sessElem);
     s_dom->documentElement().appendChild (l_dateElem);
 
-    QFile* l_file = new QFile ( Core::configurationPath().path() + "/sessions.xml" );
+    QFile* l_file = new QFile (Core::configurationPath().path() + "/sessions.xml");
     l_file->open (QIODevice::WriteOnly | QIODevice::Truncate);
     QTextStream l_str (l_file);
     s_dom->save (l_str, 4);
@@ -379,4 +382,4 @@ Session::Backup* Session::Backup::generate (const Session& p_sssn)
 }
 
 #include "session.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

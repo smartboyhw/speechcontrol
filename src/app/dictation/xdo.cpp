@@ -29,26 +29,29 @@ using SpeechControl::Dictation::KeyboardEmulator;
 
 KeyboardEmulator* KeyboardEmulator::s_inst = 0;
 
-KeyboardEmulator::KeyboardEmulator() : QObject ( Core::instance() ), m_xdo(0),
-    m_win(0) {
-    m_xdo = xdo_new(0);
-    SC_ASSERT ( m_xdo != 0, "Failed to create 'xdo' instance.");
+KeyboardEmulator::KeyboardEmulator() : QObject (Core::instance()), m_xdo (0),
+    m_win (0)
+{
+    m_xdo = xdo_new (0);
+    SC_ASSERT (m_xdo != 0, "Failed to create 'xdo' instance.");
 
     int l_x, l_y;
-    qDebug() << "[KeyboardEmulator::{constructor}] " << xdo_mouselocation ( m_xdo,&l_x,&l_y,0 );
+    qDebug() << "[KeyboardEmulator::{constructor}] " << xdo_mouselocation (m_xdo, &l_x, &l_y, 0);
 }
 
 /// @todo Allow the value of the delay to be adjustable.
-bool KeyboardEmulator::sendKey ( const QChar& p_character ) {
+bool KeyboardEmulator::sendKey (const QChar& p_character)
+{
     qDebug() << "[Dictation::KeyboardEmulator] Echoing character " << p_character;
     const char l_char = p_character.toAscii();
-    xdo_type(m_xdo,m_win,&l_char,1);
+    xdo_type (m_xdo, m_win, &l_char, 1);
     return false;
 }
 
-bool KeyboardEmulator::sendKeys ( const QString& p_characters ) {
-    Q_FOREACH ( const QChar l_char, p_characters ) {
-        if ( !sendKey ( l_char ) ) {
+bool KeyboardEmulator::sendKeys (const QString& p_characters)
+{
+    Q_FOREACH (const QChar l_char, p_characters) {
+        if (!sendKey (l_char)) {
             return false;
         }
     }
@@ -56,9 +59,10 @@ bool KeyboardEmulator::sendKeys ( const QString& p_characters ) {
     return false;
 }
 
-KeyboardEmulator::~KeyboardEmulator() {
+KeyboardEmulator::~KeyboardEmulator()
+{
 
 }
 
 #include "xdo.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -30,34 +30,40 @@
 using namespace SpeechControl;
 
 /// @todo Drop the addition of the element and have it request it from the base Corpus.
-Sentence::Sentence ( Corpus* p_corpus, QDomElement *p_elem ) : m_elem ( p_elem ), m_corpus ( p_corpus ) {
+Sentence::Sentence (Corpus* p_corpus, QDomElement* p_elem) : m_elem (p_elem), m_corpus (p_corpus)
+{
     QDir l_dir;
-    l_dir.mkpath ( audioPath().path() );
+    l_dir.mkpath (audioPath().path());
 
     // Build phrases.
     QDomNodeList l_nodes = m_elem->childNodes();
-    for ( uint i = 0; i < l_nodes.length(); i++ ) {
-        m_phrsLst << new Phrase ( this,i );
+
+    for (uint i = 0; i < l_nodes.length(); i++) {
+        m_phrsLst << new Phrase (this, i);
     }
 }
 
-Corpus * Sentence::parentSession() const {
+Corpus* Sentence::parentSession() const
+{
     return m_corpus;
 }
 
-const QUuid Sentence::uuid() const {
-    return QUuid ( m_elem->attribute ( "uuid" ) );
+const QUuid Sentence::uuid() const
+{
+    return QUuid (m_elem->attribute ("uuid"));
 }
 
-const QDir Sentence::audioPath() const {
-    return QDir ( m_corpus->audioPath().toLocalFile() + "/" + m_elem->attribute ( "file" ) );
+const QDir Sentence::audioPath() const
+{
+    return QDir (m_corpus->audioPath().toLocalFile() + "/" + m_elem->attribute ("file"));
 }
 
 /// @todo Merge all of the phrases together.
-const QString Sentence::text() const {
+const QString Sentence::text() const
+{
     QString l_text;
 
-    Q_FOREACH ( const Phrase* l_phrs, m_phrsLst ) {
+    Q_FOREACH (const Phrase * l_phrs, m_phrsLst) {
         l_text += l_phrs->text() + " ";
     }
 
@@ -69,13 +75,14 @@ const QDomElement* Sentence::getElement() const
     return m_elem;
 }
 
-Sentence* Sentence::create ( Corpus *p_corpus, const QString& p_text ) {
-    QDomElement* l_elem = new QDomElement ( p_corpus->m_dom->createElement ( "Sentence" ) );
-    l_elem->setAttribute ( "file",QUuid::createUuid() );
-    l_elem->setAttribute ( "index",p_corpus->sentences().count() );
-    p_corpus->m_dom->documentElement().namedItem ( "Sentences" ).appendChild ( *l_elem );
+Sentence* Sentence::create (Corpus* p_corpus, const QString& p_text)
+{
+    QDomElement* l_elem = new QDomElement (p_corpus->m_dom->createElement ("Sentence"));
+    l_elem->setAttribute ("file", QUuid::createUuid());
+    l_elem->setAttribute ("index", p_corpus->sentences().count());
+    p_corpus->m_dom->documentElement().namedItem ("Sentences").appendChild (*l_elem);
 
-    QStringList l_words = p_text.split ( " ",QString::SkipEmptyParts );
+    QStringList l_words = p_text.split (" ", QString::SkipEmptyParts);
     int l_phraseSize = l_words.count() / 4;
     int l_wordSize = 0;
 
@@ -85,20 +92,20 @@ Sentence* Sentence::create ( Corpus *p_corpus, const QString& p_text ) {
     qDebug() << "Words:" << l_words;
     qDebug() << "If segmented into about 4 parts each, we get about" << l_words.count() / 4 << "words per phrase.";
 
-    Q_FOREACH ( const QString l_word, l_words ) {
-        if ( l_wordSize <= l_phraseSize ) {
+    Q_FOREACH (const QString l_word, l_words) {
+        if (l_wordSize <= l_phraseSize) {
             l_phrase += l_word + " ";
             qDebug() << "Appended" << l_wordSize << l_word;
         }
 
-        if ( ( l_wordSize == l_phraseSize || l_word == l_words.last() ) && !l_phrase.trimmed().isEmpty() ) {
+        if ( (l_wordSize == l_phraseSize || l_word == l_words.last()) && !l_phrase.trimmed().isEmpty()) {
             l_phrase = l_phrase.trimmed();
-            qDebug() << "Phrase" << l_phrase << "formed. At end?" << ( l_word == l_words.last() );
+            qDebug() << "Phrase" << l_phrase << "formed. At end?" << (l_word == l_words.last());
 
-            QDomElement* l_phrsElem = new QDomElement ( p_corpus->m_dom->createElement ( "Phrase" ) );
-            l_phrsElem->setAttribute ( "uuid",QUuid::createUuid() );
-            l_phrsElem->appendChild ( p_corpus->m_dom->createTextNode ( l_phrase.toAscii().toBase64() ) );
-            l_elem->appendChild ( *l_phrsElem );
+            QDomElement* l_phrsElem = new QDomElement (p_corpus->m_dom->createElement ("Phrase"));
+            l_phrsElem->setAttribute ("uuid", QUuid::createUuid());
+            l_phrsElem->appendChild (p_corpus->m_dom->createTextNode (l_phrase.toAscii().toBase64()));
+            l_elem->appendChild (*l_phrsElem);
 
             l_wordSize = -1;
             l_phrase.clear();
@@ -107,12 +114,13 @@ Sentence* Sentence::create ( Corpus *p_corpus, const QString& p_text ) {
         ++l_wordSize;
     }
 
-    return p_corpus->addSentence ( new Sentence ( p_corpus,l_elem ) );
+    return p_corpus->addSentence (new Sentence (p_corpus, l_elem));
 }
 
-bool Sentence::allPhrasesCompleted() const {
-    Q_FOREACH ( const Phrase* l_phrs, phrases() ) {
-        if ( !l_phrs->isCompleted() ) {
+bool Sentence::allPhrasesCompleted() const
+{
+    Q_FOREACH (const Phrase * l_phrs, phrases()) {
+        if (!l_phrs->isCompleted()) {
             return false;
         }
     }
@@ -120,41 +128,48 @@ bool Sentence::allPhrasesCompleted() const {
     return true;
 }
 
-bool Sentence::isPhraseCompleted ( const int &p_indx ) const {
-    return phrases().at ( p_indx )->isCompleted();
+bool Sentence::isPhraseCompleted (const int& p_indx) const
+{
+    return phrases().at (p_indx)->isCompleted();
 }
 
-int Sentence::index() const {
-    return m_elem->attribute ( "index" ).toInt();
+int Sentence::index() const
+{
+    return m_elem->attribute ("index").toInt();
 }
 
-double Sentence::completedProgress() const {
+double Sentence::completedProgress() const
+{
     uint l_count = 0;
 
-    for ( int i = 0; i < phrases().count(); i++ ) {
-        if ( isPhraseCompleted ( i ) ) {
+    for (int i = 0; i < phrases().count(); i++) {
+        if (isPhraseCompleted (i)) {
             l_count += 1;
         }
     }
 
-    return ( double ) ( l_count ) / ( double ) ( phrases().count() );
+    return (double) (l_count) / (double) (phrases().count());
 }
 
-QDomElement* Sentence::getPhraseElement ( const int &p_indx ) const {
-    return new QDomElement ( m_elem->elementsByTagName ( "Phrase" ).at ( p_indx ).toElement() );
+QDomElement* Sentence::getPhraseElement (const int& p_indx) const
+{
+    return new QDomElement (m_elem->elementsByTagName ("Phrase").at (p_indx).toElement());
 }
 
-Phrase * Sentence::phrase ( const int &p_indx ) const {
-    return m_phrsLst.at ( p_indx );
+Phrase* Sentence::phrase (const int& p_indx) const
+{
+    return m_phrsLst.at (p_indx);
 }
 
-const PhraseList Sentence::phrases() const {
+const PhraseList Sentence::phrases() const
+{
     return m_phrsLst;
 }
 
-Sentence::~Sentence() {
+Sentence::~Sentence()
+{
     // What to clean up? :P
 }
 
 #include "sentence.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

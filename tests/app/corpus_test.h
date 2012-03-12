@@ -23,11 +23,13 @@
 #include <QObject>
 #include <QStringList>
 
-namespace SpeechControl {
-    class Corpus;
+namespace SpeechControl
+{
+class Corpus;
 }
 
-class TestCorpus : public QObject {
+class TestCorpus : public QObject
+{
     Q_OBJECT
 
 private:
@@ -44,4 +46,4 @@ private slots:
 };
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -38,9 +38,10 @@ MPRIS_NAMESPACE_BEGIN
 /**
  * @brief ...
  **/
-class MprisCategory : public AbstractCategory {
+class MprisCategory : public AbstractCategory
+{
     Q_OBJECT
-    SC_SINGLETON(MprisCategory)
+    SC_SINGLETON (MprisCategory)
     friend class Plugin;
 
 public:
@@ -51,7 +52,8 @@ public:
 /**
  * @brief ...
  **/
-class PlayCommand : public AbstractCommand {
+class PlayCommand : public AbstractCommand
+{
     Q_OBJECT
     friend class Plugin;
 
@@ -68,18 +70,18 @@ public:
      * @param p_statement ... Defaults to QString::null.
      * @return bool
      **/
-    virtual bool invoke ( const QString& p_statement = QString::null ) const;
+    virtual bool invoke (const QString& p_statement = QString::null) const;
 
 private:
     /**
      * @brief ...
      *
      **/
-    explicit PlayCommand ( );
+    explicit PlayCommand ();
     QStringList m_cmds;
 };
 
 MPRIS_NAMESPACE_END
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -34,8 +34,10 @@ class QAction;
 class QPluginLoader;
 class QSettings;
 
-namespace SpeechControl {
-namespace Plugins {
+namespace SpeechControl
+{
+namespace Plugins
+{
 class Factory;
 class AbstractHandle;
 class AbstractPlugin;
@@ -63,9 +65,10 @@ typedef QMap<QUuid, AbstractPlugin*> PluginMap;
  *
  * @see Factory
  **/
-class AbstractPlugin : public QObject {
+class AbstractPlugin : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( AbstractPlugin )
+    Q_DISABLE_COPY (AbstractPlugin)
     friend class Factory;
     friend class GenericPlugin;
 
@@ -85,7 +88,7 @@ public:
      * @brief Default constructor.
      * @param p_parent The parent of this QObject.
      **/
-    explicit AbstractPlugin ( QObject* p_parent = 0 );
+    explicit AbstractPlugin (QObject* p_parent = 0);
 
     /**
      * @brief Initializing constructor.
@@ -95,7 +98,7 @@ public:
      * @param p_uuid The UUID of the plug-in to build.
      * @param p_parent The parent of this QObject.
      **/
-    AbstractPlugin ( const QUuid& p_uuid, QObject* p_parent = 0 );
+    AbstractPlugin (const QUuid& p_uuid, QObject* p_parent = 0);
 
     /**
      * @brief Destructor.
@@ -196,8 +199,8 @@ protected:
 
     QList<QAction*> actions();
 
-    void addAction(QAction* p_action);
-    void addActions(QList<QAction*> p_actions);
+    void addAction (QAction* p_action);
+    void addActions (QList<QAction*> p_actions);
 
 private slots:
 
@@ -237,9 +240,10 @@ private:
 /**
  * @brief ...
  **/
-class GenericPlugin : public AbstractPlugin {
+class GenericPlugin : public AbstractPlugin
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( GenericPlugin )
+    Q_DISABLE_COPY (GenericPlugin)
 
 public:
     /**
@@ -247,7 +251,7 @@ public:
      *
      * @param  ...
      **/
-    GenericPlugin ( const QUuid& );
+    GenericPlugin (const QUuid&);
 
 protected:
     /**
@@ -268,4 +272,4 @@ protected:
 }
 
 #endif // PLUGINS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

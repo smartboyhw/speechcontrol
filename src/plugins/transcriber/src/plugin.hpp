@@ -24,14 +24,18 @@
 
 #include <app/plugins.hpp>
 
-namespace SpeechControl {
-namespace Plugins {
-namespace Transcriber {
-class Plugin : public AbstractPlugin {
+namespace SpeechControl
+{
+namespace Plugins
+{
+namespace Transcriber
+{
+class Plugin : public AbstractPlugin
+{
     Q_OBJECT
 
 public:
-    explicit Plugin ( QObject* parent = 0 );
+    explicit Plugin (QObject* parent = 0);
     virtual ~Plugin();
 
 protected:
@@ -45,4 +49,4 @@ public slots:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

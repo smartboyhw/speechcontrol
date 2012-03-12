@@ -28,40 +28,45 @@
 
 using namespace SpeechControl;
 
-Dictionary::Dictionary ( QObject* p_parent ) : QObject ( p_parent ) {
+Dictionary::Dictionary (QObject* p_parent) : QObject (p_parent)
+{
 
 }
 
-Dictionary::Dictionary ( const Dictionary& p_other ) : QObject ( p_other.parent() ), m_words ( p_other.m_words ),
-    m_device ( p_other.m_device ) {
+Dictionary::Dictionary (const Dictionary& p_other) : QObject (p_other.parent()), m_words (p_other.m_words),
+    m_device (p_other.m_device)
+{
 
 }
 
-Dictionary::Dictionary ( const QUuid &p_uuid ) {
-    load ( new QFile ( getPathFromUuid ( p_uuid ) ) );
+Dictionary::Dictionary (const QUuid& p_uuid)
+{
+    load (new QFile (getPathFromUuid (p_uuid)));
 }
 
-void Dictionary::load ( const QUuid& p_uuid ) {
-    load ( getPathFromUuid ( p_uuid ) );
+void Dictionary::load (const QUuid& p_uuid)
+{
+    load (getPathFromUuid (p_uuid));
 }
 
-void Dictionary::load ( QIODevice* p_device ) {
-    Q_ASSERT ( m_device != 0 || p_device != 0 );
+void Dictionary::load (QIODevice* p_device)
+{
+    Q_ASSERT (m_device != 0 || p_device != 0);
 
-    if ( p_device )
+    if (p_device)
         m_device = p_device;
 
-    if ( !m_device->open ( QIODevice::ReadOnly | QIODevice::Text ) ) {
+    if (!m_device->open (QIODevice::ReadOnly | QIODevice::Text)) {
         qWarning() << "Failed to open dictionary" << m_device->errorString();
         return;
     }
 
-    QTextStream l_strm ( m_device );
+    QTextStream l_strm (m_device);
 
-    while ( !l_strm.atEnd() ) {
+    while (!l_strm.atEnd()) {
         const QString l_line = l_strm.readLine();
-        const QStringList l_tokens = l_line.split ( "\t",QString::SkipEmptyParts );
-        addEntry ( new DictionaryEntry ( this,l_tokens[0],l_tokens[1] ) );
+        const QStringList l_tokens = l_line.split ("\t", QString::SkipEmptyParts);
+        addEntry (new DictionaryEntry (this, l_tokens[0], l_tokens[1]));
     }
 
     m_device->close();
@@ -70,91 +75,108 @@ void Dictionary::load ( QIODevice* p_device ) {
 }
 
 /// @bug This location should be passed in as a macro.
-QString Dictionary::getPathFromUuid ( const QUuid& p_uuid ) {
+QString Dictionary::getPathFromUuid (const QUuid& p_uuid)
+{
     return QDir::homePath() + "/.config/speechcontrol/dictionaries/" + p_uuid.toString() + ".dic";
 }
 
-Dictionary* Dictionary::obtain ( const QUuid &p_uuid ) {
-    if ( !QFile::exists ( getPathFromUuid ( p_uuid ) ) )
+Dictionary* Dictionary::obtain (const QUuid& p_uuid)
+{
+    if (!QFile::exists (getPathFromUuid (p_uuid)))
         return 0;
 
-    Dictionary* l_dict = new Dictionary ( p_uuid );
+    Dictionary* l_dict = new Dictionary (p_uuid);
     return l_dict;
 }
 
-Dictionary* Dictionary::obtain ( const QString& p_path ) {
-    QFile* l_file = new QFile ( p_path );
+Dictionary* Dictionary::obtain (const QString& p_path)
+{
+    QFile* l_file = new QFile (p_path);
     Dictionary* l_dict = new Dictionary;
-    if ( !l_file->exists() )
+
+    if (!l_file->exists())
         return 0;
 
-    l_dict->load ( l_file );
+    l_dict->load (l_file);
     return l_dict;
 }
 
-DictionaryEntryList Dictionary::entries() const {
+DictionaryEntryList Dictionary::entries() const
+{
     return m_words.values();
 }
 
-void Dictionary::addEntry ( DictionaryEntry *p_entry ) {
-    m_words.insert ( p_entry->word(),p_entry );
+void Dictionary::addEntry (DictionaryEntry* p_entry)
+{
+    m_words.insert (p_entry->word(), p_entry);
 }
 
-DictionaryEntry * Dictionary::removeEntry ( const QString& p_word ) {
-    return m_words.take ( p_word );
+DictionaryEntry* Dictionary::removeEntry (const QString& p_word)
+{
+    return m_words.take (p_word);
 }
 
-Dictionary& Dictionary::operator << ( DictionaryEntry *p_entry ) {
-    addEntry ( p_entry );
+Dictionary& Dictionary::operator << (DictionaryEntry* p_entry)
+{
+    addEntry (p_entry);
     return *this;
 }
 
-Dictionary& Dictionary::operator << ( DictionaryEntryList& p_list ) {
-    Q_FOREACH ( DictionaryEntry* l_entry, p_list )
-    addEntry ( l_entry );
+Dictionary& Dictionary::operator << (DictionaryEntryList& p_list)
+{
+    Q_FOREACH (DictionaryEntry * l_entry, p_list)
+    addEntry (l_entry);
 
     return *this;
 }
 
 /// @todo Implement the saving ability.
-void Dictionary::save() {
-    m_device->open ( QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text );
-    QTextStream l_strm ( m_device );
+void Dictionary::save()
+{
+    m_device->open (QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
+    QTextStream l_strm (m_device);
 
-    Q_FOREACH ( const DictionaryEntry* l_entry, entries() ) {
+    Q_FOREACH (const DictionaryEntry * l_entry, entries()) {
         l_strm << l_entry->word() << "\t" << l_entry->phoneme();
     }
 
     m_device->close();
 }
 
-QString Dictionary::path() const {
-    return m_device->property("fileName").toString();
+QString Dictionary::path() const
+{
+    return m_device->property ("fileName").toString();
 }
 
-Dictionary::~Dictionary() {
+Dictionary::~Dictionary()
+{
 }
 
-DictionaryEntry::DictionaryEntry ( Dictionary* p_dictionary, const QString& p_word, const QString& p_phoneme ) :
-    QObject ( p_dictionary ), m_dict ( p_dictionary ), m_word ( p_word ), m_phnm ( p_phoneme ) {
+DictionaryEntry::DictionaryEntry (Dictionary* p_dictionary, const QString& p_word, const QString& p_phoneme) :
+    QObject (p_dictionary), m_dict (p_dictionary), m_word (p_word), m_phnm (p_phoneme)
+{
 }
 
-DictionaryEntry::DictionaryEntry ( const DictionaryEntry& p_other ) : QObject(),
-    m_dict ( p_other.m_dict ), m_word ( p_other.m_word ), m_phnm ( p_other.m_phnm ) {
+DictionaryEntry::DictionaryEntry (const DictionaryEntry& p_other) : QObject(),
+    m_dict (p_other.m_dict), m_word (p_other.m_word), m_phnm (p_other.m_phnm)
+{
 
 }
 
-QString DictionaryEntry::word() const {
+QString DictionaryEntry::word() const
+{
     return m_word;
 }
 
-QString DictionaryEntry::phoneme() const {
+QString DictionaryEntry::phoneme() const
+{
     return m_phnm;
 }
 
-DictionaryEntry::~DictionaryEntry() {
+DictionaryEntry::~DictionaryEntry()
+{
 
 }
 
 #include "dictionary.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

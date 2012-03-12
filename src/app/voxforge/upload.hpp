@@ -22,18 +22,21 @@
 #define UPLOADHANDLER_HPP
 #include <QObject>
 
-namespace SpeechControl {
-namespace Voxforge {
+namespace SpeechControl
+{
+namespace Voxforge
+{
 
-class UploadHandler : public QObject {
+class UploadHandler : public QObject
+{
     Q_OBJECT
 
 public:
     virtual ~UploadHandler();
-    explicit UploadHandler ( QObject* parent = 0 );
+    explicit UploadHandler (QObject* parent = 0);
 };
 }
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

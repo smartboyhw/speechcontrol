@@ -24,10 +24,13 @@
 
 #include <windows/wizards/base.hpp>
 
-namespace SpeechControl {
-namespace Wizards {
+namespace SpeechControl
+{
+namespace Wizards
+{
 
-class QuickStart : public WizardBase {
+class QuickStart : public WizardBase
+{
     Q_OBJECT
 
     enum Pages {
@@ -39,7 +42,7 @@ class QuickStart : public WizardBase {
     };
 
 public:
-    explicit QuickStart ( QWidget *parent = 0 );
+    explicit QuickStart (QWidget* parent = 0);
     ~QuickStart();
 
 public slots:
@@ -50,4 +53,4 @@ public slots:
 }
 
 #endif // WIZARD_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

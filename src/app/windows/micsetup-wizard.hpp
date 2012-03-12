@@ -24,10 +24,13 @@
 
 #include "wizards/base.hpp"
 
-namespace SpeechControl {
-namespace Wizards {
+namespace SpeechControl
+{
+namespace Wizards
+{
 
-class MicrophoneSetup : public WizardBase {
+class MicrophoneSetup : public WizardBase
+{
     Q_OBJECT
     enum {
         IntroductionPage = 0,
@@ -37,7 +40,7 @@ class MicrophoneSetup : public WizardBase {
     };
 
 public:
-    explicit MicrophoneSetup ( QWidget *parent = 0 );
+    explicit MicrophoneSetup (QWidget* parent = 0);
     ~MicrophoneSetup();
 
 public slots:

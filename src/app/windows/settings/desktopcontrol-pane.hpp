@@ -24,14 +24,18 @@
 #include <QFrame>
 #include <app/windows/settings-dialog.hpp>
 
-namespace Ui {
+namespace Ui
+{
 class DesktopControlSettingsPane;
 }
 
-namespace SpeechControl {
-namespace Windows {
+namespace SpeechControl
+{
+namespace Windows
+{
 
-class DesktopControlSettingsPane : public AbstractSettingsPane {
+class DesktopControlSettingsPane : public AbstractSettingsPane
+{
     Q_OBJECT
 
 public:
@@ -39,7 +43,7 @@ public:
      * @brief Constructor.
      * @param parent Defaults to 0.
      **/
-    explicit DesktopControlSettingsPane (  );
+    explicit DesktopControlSettingsPane ();
 
     /**
      * @brief Destructor.
@@ -59,7 +63,7 @@ public:
 
     virtual void updateUi();
 
-    virtual bool containsText ( const QString& p_query ) const;
+    virtual bool containsText (const QString& p_query) const;
 
     virtual QPixmap pixmap() const;
 
@@ -67,18 +71,18 @@ public:
 
     virtual void restoreDefaults();
 protected:
-    void changeEvent ( QEvent *e );
+    void changeEvent (QEvent* e);
 
 private slots:
-    void on_checkBoxEnable_toggled ( bool p_checked );
+    void on_checkBoxEnable_toggled (bool p_checked);
     void on_checkBoxEnableStartup_toggled (bool p_checked);
 
 private:
-    Ui::DesktopControlSettingsPane *m_ui;
+    Ui::DesktopControlSettingsPane* m_ui;
 };
 
 }
 }
 
 #endif // GENERAL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

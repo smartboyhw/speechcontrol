@@ -35,38 +35,41 @@ using SpeechControl::AbstractContentSource;
 using SpeechControl::TextContentSourceWidget;
 
 
-TextContentSourceWidget::TextContentSourceWidget ( QWidget *parent ) :
-    QWidget ( parent ),
-    m_ui ( new Ui::TextContentSourceWidget ) {
-    m_ui->setupUi ( this );
-    setProperty("id","txt");
-    setProperty("title","Text-Based");
+TextContentSourceWidget::TextContentSourceWidget (QWidget* parent) :
+    QWidget (parent),
+    m_ui (new Ui::TextContentSourceWidget)
+{
+    m_ui->setupUi (this);
+    setProperty ("id", "txt");
+    setProperty ("title", "Text-Based");
 }
 
-void TextContentSourceWidget::on_btnOpen_clicked() {
-    QString l_path = QFileDialog::getOpenFileName ( this,"Select SpeechControl Content",
-                     QDir::homePath() );
+void TextContentSourceWidget::on_btnOpen_clicked()
+{
+    QString l_path = QFileDialog::getOpenFileName (this, "Select SpeechControl Content",
+                     QDir::homePath());
 
-    Q_ASSERT(QFile::exists(l_path) != false);
+    Q_ASSERT (QFile::exists (l_path) != false);
 
-    m_ui->lineEditPath->setText(l_path);
+    m_ui->lineEditPath->setText (l_path);
     updateView();
 }
 
-void TextContentSourceWidget::updateView() {
+void TextContentSourceWidget::updateView()
+{
     TextContentSource* l_src = new TextContentSource;
-    l_src->setUrl(QUrl::fromUserInput(m_ui->lineEditPath->text()));
+    l_src->setUrl (QUrl::fromUserInput (m_ui->lineEditPath->text()));
     Content* l_content = l_src->generate();
-    Q_ASSERT(l_content != 0);
-    m_ui->lblInfo->setText ( tr ( "<h2>%1</h2>by <b>%2</b>" ).arg ( l_content->title() ).arg ( l_content->author() ) );
+    Q_ASSERT (l_content != 0);
+    m_ui->lblInfo->setText (tr ("<h2>%1</h2>by <b>%2</b>").arg (l_content->title()).arg (l_content->author()));
 
-    ((SpeechControl::Wizards::ContentWizard*) this->window())->setSource(l_src);
-    l_content->erase();
+    ( (SpeechControl::Wizards::ContentWizard*) this->window())->setSource (l_src);
 }
 
-TextContentSourceWidget::~TextContentSourceWidget() {
+TextContentSourceWidget::~TextContentSourceWidget()
+{
     delete m_ui;
 }
 
 #include "source-text.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

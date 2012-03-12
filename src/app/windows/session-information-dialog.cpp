@@ -30,66 +30,74 @@ using SpeechControl::Windows::TrainingDialog;
 using SpeechControl::Windows::SessionInformationDialog;
 using SpeechControl::Windows::ContentInformationDialog;
 
-SessionInformationDialog::SessionInformationDialog ( Session* p_session ) : QDialog ( 0 ),
-    m_ui ( new Ui::SessionInformationDialog ), m_session ( p_session ) {
-    m_ui->setupUi ( this );
-    connect ( m_session,SIGNAL ( progressChanged ( double ) ),this,SLOT ( updateProgress ( double ) ) );
+SessionInformationDialog::SessionInformationDialog (Session* p_session) : QDialog (0),
+    m_ui (new Ui::SessionInformationDialog), m_session (p_session)
+{
+    m_ui->setupUi (this);
+    connect (m_session, SIGNAL (progressChanged (double)), this, SLOT (updateProgress (double)));
     updateUi();
 }
 
-void SessionInformationDialog::updateUi() {
+void SessionInformationDialog::updateUi()
+{
     int l_sharedSessionCount = 0;
 
-    Q_FOREACH ( const Session* l_session, Session::allSessions() ) {
-        if ( l_session->content() == m_session->content() )
+    Q_FOREACH (const Session * l_session, Session::allSessions()) {
+        if (l_session->content() == m_session->content())
             l_sharedSessionCount += 0;
     }
 
-    const int l_progress = ( int ) ( m_session->assessProgress() * 100.0 );
-    m_ui->lblContentInfo->setText ( tr ( "This session uses the text from <b>%1</b>.<br />"
-                                         "%2 other sessions use <b>%1</b> for transcription as well." )
-                                    .arg ( m_session->name() )
-                                    .arg ( l_sharedSessionCount )
+    const int l_progress = (int) (m_session->assessProgress() * 100.0);
+    m_ui->lblContentInfo->setText (tr ("This session uses the text from <b>%1</b>.<br />"
+                                       "%2 other sessions use <b>%1</b> for transcription as well.")
+                                   .arg (m_session->name())
+                                   .arg (l_sharedSessionCount)
                                   );
 
-    if ( l_progress > 0 ) {
-        m_ui->progressBarCompletion->setFormat ( tr ( "%p% complete" ) );
-        m_ui->progressBarCompletion->setValue ( l_progress );
-    } else {
-        m_ui->progressBarCompletion->setFormat ( tr ( "no training progress" ) );
-        m_ui->progressBarCompletion->setValue ( 0 );
+    if (l_progress > 0) {
+        m_ui->progressBarCompletion->setFormat (tr ("%p% complete"));
+        m_ui->progressBarCompletion->setValue (l_progress);
+    }
+    else {
+        m_ui->progressBarCompletion->setFormat (tr ("no training progress"));
+        m_ui->progressBarCompletion->setValue (0);
     }
 
-    m_ui->lblTitle->setText ( m_session->name() );
-    m_ui->lineEditNickname->setText ( ( m_session->name().isEmpty() ) ? QString::null : m_session->name() );
+    m_ui->lblTitle->setText (m_session->name());
+    m_ui->lineEditNickname->setText ( (m_session->name().isEmpty()) ? QString::null : m_session->name());
 }
 
-void SessionInformationDialog::on_btnOpenContent_clicked() {
-    ContentInformationDialog l_dialog ( m_session->content() );
-    l_dialog.setParent ( this );
+void SessionInformationDialog::on_btnOpenContent_clicked()
+{
+    ContentInformationDialog l_dialog (m_session->content());
+    l_dialog.setParent (this);
     l_dialog.show();
 }
 
-void SessionInformationDialog::on_btnTrainSession_clicked() {
-    TrainingDialog::startTraining ( m_session );
+void SessionInformationDialog::on_btnTrainSession_clicked()
+{
+    TrainingDialog::startTraining (m_session);
 }
 
-void SessionInformationDialog::on_lineEditNickname_textChanged ( const QString& p_newNickname ) {
-    if ( p_newNickname.isEmpty() || p_newNickname.isNull() ) {
+void SessionInformationDialog::on_lineEditNickname_textChanged (const QString& p_newNickname)
+{
+    if (p_newNickname.isEmpty() || p_newNickname.isNull()) {
         return;
     }
 
-    m_session->setName ( p_newNickname );
+    m_session->setName (p_newNickname);
     updateUi();
 }
 
-void SessionInformationDialog::updateProgress ( const double p_progress ) {
-    m_ui->progressBarCompletion->setValue ( ( int ) p_progress * 100 );
+void SessionInformationDialog::updateProgress (const double p_progress)
+{
+    m_ui->progressBarCompletion->setValue ( (int) p_progress * 100);
 }
 
-SessionInformationDialog::~SessionInformationDialog() {
+SessionInformationDialog::~SessionInformationDialog()
+{
     delete m_ui;
 }
 
 #include "session-information-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

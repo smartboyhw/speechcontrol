@@ -30,8 +30,10 @@
 
 class QSettings;
 
-namespace SpeechControl {
-namespace Windows {
+namespace SpeechControl
+{
+namespace Windows
+{
 class Main;
 }
 
@@ -46,8 +48,8 @@ class Main;
 class Core : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY ( Core )
-    SC_SINGLETON ( Core )
+    Q_DISABLE_COPY (Core)
+    SC_SINGLETON (Core)
 
     friend class Windows::Main;
 
@@ -66,7 +68,7 @@ public:
      * @param p_app The QApplication instance.
      * @internal
      **/
-    Core ( int p_argc, char** p_argv, QApplication* app );
+    Core (int p_argc, char** p_argv, QApplication* app);
 
     /**
      * @brief Destructor.
@@ -82,7 +84,7 @@ public:
      * @param  p_attrDefValue The default value to return. Defaults to QVariant().
      * @return QVariant
      **/
-    static QVariant configuration ( const QString& p_attrName, QVariant p_attrDefValue = QVariant() );
+    static QVariant configuration (const QString& p_attrName, QVariant p_attrDefValue = QVariant());
 
     /**
      * @brief Sets a core configuration option of SpeechControl.
@@ -93,7 +95,7 @@ public:
      * @param  p_attrValue The value to be set.
      *
      **/
-    static void setConfiguration ( const QString& p_attrName, const QVariant& p_attrValue );
+    static void setConfiguration (const QString& p_attrName, const QVariant& p_attrValue);
 
     /**
      * @brief Provides a pointer to the Main Window instance.
@@ -111,7 +113,7 @@ public:
      *
      * @param p_locale The locale to load.
      **/
-    static void loadTranslations ( const QLocale& p_locale );
+    static void loadTranslations (const QLocale& p_locale);
 
     /**
      * @brief ...
@@ -124,7 +126,7 @@ public:
      * @brief Quits the application's main execution loop.
      * @param p_exitCode The exit code for the application to use.
      */
-    void quit ( const int& p_exitCode = 0 );
+    void quit (const int& p_exitCode = 0);
 
 signals:
     /**
@@ -159,4 +161,4 @@ private slots:
 }
 
 #endif // CORE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -22,11 +22,13 @@
 #define TEST_PLUGIN_TRANSCRIBER_HPP
 #include <QObject>
 
-namespace SpeechControl {
-    class AbstractAudioSource;
+namespace SpeechControl
+{
+class AbstractAudioSource;
 }
 
-class TestTranscriber : public QObject {
+class TestTranscriber : public QObject
+{
     Q_OBJECT
 
 private slots:
@@ -35,4 +37,4 @@ private slots:
 };
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

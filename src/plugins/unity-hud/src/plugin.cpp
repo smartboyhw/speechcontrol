@@ -25,24 +25,28 @@
 
 using namespace SpeechControl::Plugins::UnityHud;
 
-Plugin::Plugin ( QObject* parent ) : AbstractPlugin ( QUuid ( PLUGIN_UUID ),parent ) {
+Plugin::Plugin (QObject* parent) : AbstractPlugin (QUuid (PLUGIN_UUID), parent)
+{
 
 }
 
-void Plugin::initialize() {
+void Plugin::initialize()
+{
 
 }
 
-void Plugin::deinitialize() {
+void Plugin::deinitialize()
+{
 
 }
 
-Plugin::~Plugin() {
+Plugin::~Plugin()
+{
 
 }
 
 
-Q_EXPORT_PLUGIN2 ( spchcntrl-python, SpeechControl::Plugins::UnityHud::Plugin )
+Q_EXPORT_PLUGIN2 (spchcntrl - python, SpeechControl::Plugins::UnityHud::Plugin)
 #include "plugin.moc"
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

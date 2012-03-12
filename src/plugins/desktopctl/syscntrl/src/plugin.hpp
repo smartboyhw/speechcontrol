@@ -27,11 +27,12 @@
 
 APPLIST_NAMESPACE_BEGIN
 
-class Plugin : public AbstractPlugin {
+class Plugin : public AbstractPlugin
+{
     Q_OBJECT
 
 public:
-    explicit Plugin ( QObject* parent = 0 );
+    explicit Plugin (QObject* parent = 0);
     virtual ~Plugin();
 
 protected:

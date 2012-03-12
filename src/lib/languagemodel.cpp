@@ -23,39 +23,43 @@
 
 using namespace SpeechControl;
 
-LanguageModel::LanguageModel ( QObject* p_parent ) : QObject ( p_parent ) {
-
-}
-
-LanguageModel::LanguageModel ( const QUuid& p_uuid ) : QObject(), m_uuid(p_uuid)
+LanguageModel::LanguageModel (QObject* p_parent) : QObject (p_parent)
 {
 
 }
 
-LanguageModel::LanguageModel() {
-
-}
-
-LanguageModel* LanguageModel::fromCompressedFile ( const QFile* p_archiveFile )
+LanguageModel::LanguageModel (const QUuid& p_uuid) : QObject(), m_uuid (p_uuid)
 {
-    return 0;
+
 }
 
-LanguageModel* LanguageModel::fromDirectory ( const QDir& p_directory )
+LanguageModel::LanguageModel()
+{
+
+}
+
+LanguageModel* LanguageModel::fromCompressedFile (const QFile* p_archiveFile)
 {
     return 0;
 }
 
-LanguageModel* LanguageModel::fromPath ( const QString& p_path )
+LanguageModel* LanguageModel::fromDirectory (const QDir& p_directory)
 {
     return 0;
 }
 
-QString LanguageModel::path() const {
+LanguageModel* LanguageModel::fromPath (const QString& p_path)
+{
+    return 0;
+}
+
+QString LanguageModel::path() const
+{
     return QString::null;
 }
 
-LanguageModel::~LanguageModel() {
+LanguageModel::~LanguageModel()
+{
 
 }
 

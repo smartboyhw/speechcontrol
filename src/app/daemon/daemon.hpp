@@ -25,22 +25,26 @@
 #include <QDBusAbstractAdaptor>
 #include <lib/abstractsphinx.hpp>
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 
 class System;
-namespace Daemon {
+namespace Daemon
+{
 class Daemon;
 
-class DaemonSphinx : public AbstractSphinx {
+class DaemonSphinx : public AbstractSphinx
+{
     Q_OBJECT
     friend class Daemon;
     explicit DaemonSphinx ();
-    virtual void applicationMessage ( const QGst::MessagePtr& p_message );
+    virtual void applicationMessage (const QGst::MessagePtr& p_message);
 };
 
-class Daemon : public QObject {
+class Daemon : public QObject
+{
     Q_OBJECT
-    Q_PROPERTY ( bool Active READ isActive )
+    Q_PROPERTY (bool Active READ isActive)
     friend class System;
 
 private:
@@ -94,4 +98,4 @@ public slots:
 }
 
 #endif // SPEECHCONTROL_DAEMON_DAEMON_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

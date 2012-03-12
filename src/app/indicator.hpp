@@ -28,7 +28,8 @@
 
 class QImage;
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 class Indicator;
 
 /**
@@ -37,9 +38,10 @@ class Indicator;
  * In an attempt to ensure ABI support with any plug-in or future linkages of SpeechControl's code;
  * the Indicator singleton class is provided to permit the raising and using of indicators.
  **/
-class Indicator : public QObject {
+class Indicator : public QObject
+{
     Q_OBJECT
-    SC_SINGLETON ( Indicator )
+    SC_SINGLETON (Indicator)
 
 public:
     /**
@@ -61,7 +63,7 @@ public:
      * @brief Raises a new message to the system.
      * @param p_message The message to present to the user.
      **/
-    static void presentMessage ( const QString& p_title, const QString& p_message, const int& p_timeout );
+    static void presentMessage (const QString& p_title, const QString& p_message, const int& p_timeout);
 
     /**
      * @brief Determines whether or not the Indicator's icon is visible.
@@ -77,4 +79,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

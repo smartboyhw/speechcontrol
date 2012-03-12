@@ -24,12 +24,15 @@
 #include <QFrame>
 #include <app/windows/settings-dialog.hpp>
 
-namespace Ui {
+namespace Ui
+{
 class GeneralSettingsPane;
 }
 
-namespace SpeechControl {
-namespace Windows {
+namespace SpeechControl
+{
+namespace Windows
+{
 
 /**
  * @brief General settings of SpeechControl.
@@ -37,7 +40,8 @@ namespace Windows {
  * This window presents the user in the Settings dialog with general, overlying
  * options that can manipulate SpeechControl's operation.
  **/
-class GeneralSettingsPane : public AbstractSettingsPane {
+class GeneralSettingsPane : public AbstractSettingsPane
+{
     Q_OBJECT
 
 public:
@@ -62,7 +66,7 @@ public:
      **/
     QString id() const;
 
-    virtual bool containsText ( const QString& p_query ) const;
+    virtual bool containsText (const QString& p_query) const;
 
     QPixmap pixmap() const;
 
@@ -71,18 +75,18 @@ public:
     virtual void restoreDefaults();
 
 protected:
-    void changeEvent ( QEvent *e );
+    void changeEvent (QEvent* e);
 
 private slots:
-    void on_checkBoxIndicatorIcon_toggled ( bool p_checked );
+    void on_checkBoxIndicatorIcon_toggled (bool p_checked);
     virtual void updateUi();
 
 private:
-    Ui::GeneralSettingsPane *ui;
+    Ui::GeneralSettingsPane* ui;
 };
 
 }
 }
 
 #endif // GENERAL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

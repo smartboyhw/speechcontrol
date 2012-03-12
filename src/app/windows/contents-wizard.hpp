@@ -25,10 +25,13 @@
 #include <windows/wizards/base.hpp>
 #include <sessions/content.hpp>
 
-namespace SpeechControl {
-namespace Wizards {
+namespace SpeechControl
+{
+namespace Wizards
+{
 
-class ContentWizard : public WizardBase {
+class ContentWizard : public WizardBase
+{
     Q_OBJECT
 public:
     enum Pages {
@@ -37,10 +40,10 @@ public:
         ConclusionPage
     };
 
-    explicit ContentWizard ( QWidget *parent = 0 );
+    explicit ContentWizard (QWidget* parent = 0);
     virtual ~ContentWizard();
     AbstractContentSource* source();
-    void setSource ( AbstractContentSource* p_src );
+    void setSource (AbstractContentSource* p_src);
 
 public slots:
     virtual int nextId() const;
@@ -52,4 +55,4 @@ private:
 }
 }
 #endif // WIZARD_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -22,25 +22,30 @@
 
 using namespace SpeechControl::Dictation;
 
-Sphinx::Sphinx ( QObject* p_parent ) : AbstractSphinx ( p_parent ) {
+Sphinx::Sphinx (QObject* p_parent) : AbstractSphinx (p_parent)
+{
 
 }
 
-Sphinx::Sphinx ( const QString& p_description, QObject* p_parent ) : AbstractSphinx ( p_description, p_parent ) {
+Sphinx::Sphinx (const QString& p_description, QObject* p_parent) : AbstractSphinx (p_description, p_parent)
+{
 
 }
 
-Sphinx::Sphinx ( QGst::PipelinePtr p_pipeline, QObject* p_parent ) : AbstractSphinx ( p_pipeline, p_parent ) {
+Sphinx::Sphinx (QGst::PipelinePtr p_pipeline, QObject* p_parent) : AbstractSphinx (p_pipeline, p_parent)
+{
 
 }
 
-void Sphinx::applicationMessage ( const QGst::MessagePtr& p_message ) {
+void Sphinx::applicationMessage (const QGst::MessagePtr& p_message)
+{
     QString l_msgType    = p_message->internalStructure()->name();
-    QString l_hypothesis = p_message->internalStructure()->value ( "hyp" ).toString();
-    QString l_uttid      = p_message->internalStructure()->value ( "uttid" ).toString();
-    if ( l_msgType == "result" ) {
+    QString l_hypothesis = p_message->internalStructure()->value ("hyp").toString();
+    QString l_uttid      = p_message->internalStructure()->value ("uttid").toString();
+
+    if (l_msgType == "result") {
         qDebug() << "AbstractSphinx result:" << l_hypothesis;
-        emit finished ( l_hypothesis );
+        emit finished (l_hypothesis);
     }
 }
 

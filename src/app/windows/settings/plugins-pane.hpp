@@ -24,20 +24,24 @@
 #include <QFrame>
 #include <app/windows/settings-dialog.hpp>
 
-namespace Ui {
+namespace Ui
+{
 class PluginsSettingsPane;
 }
 
-namespace SpeechControl {
-namespace Windows {
+namespace SpeechControl
+{
+namespace Windows
+{
 
-class PluginsSettingsPane : public AbstractSettingsPane {
+class PluginsSettingsPane : public AbstractSettingsPane
+{
     Q_OBJECT
 
 public:
-    explicit PluginsSettingsPane ( );
+    explicit PluginsSettingsPane ();
     virtual ~PluginsSettingsPane();
-    virtual bool containsText ( const QString& p_query ) const;
+    virtual bool containsText (const QString& p_query) const;
     virtual QString id() const;
     virtual QPixmap pixmap() const;
     virtual void resetPanel();
@@ -45,17 +49,17 @@ public:
     virtual QString title() const;
     virtual void updateUi();
 protected:
-    void changeEvent ( QEvent *e );
+    void changeEvent (QEvent* e);
 
 private slots:
     void on_btnInfo_clicked();
 
 private:
-    Ui::PluginsSettingsPane *ui;
+    Ui::PluginsSettingsPane* ui;
 };
 
 }
 }
 
 #endif // PLUGINS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

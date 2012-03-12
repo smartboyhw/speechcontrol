@@ -26,7 +26,8 @@
 
 #include <export.hpp>
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 class Phrase;
 class Sentence;
 
@@ -38,9 +39,10 @@ typedef QList<Phrase*> PhraseList;
 /**
  * @brief ...
  **/
-class SPCH_EXPORT Phrase : public QObject {
+class SPCH_EXPORT Phrase : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( Phrase )
+    Q_DISABLE_COPY (Phrase)
     friend class Sentence;
 
 public:
@@ -83,7 +85,7 @@ public:
     bool isCompleted() const;
 
 private:
-    explicit Phrase ( const Sentence*, const int& );
+    explicit Phrase (const Sentence*, const int&);
     const Sentence* m_sntnc;
     const int m_indx;
 };
@@ -91,4 +93,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

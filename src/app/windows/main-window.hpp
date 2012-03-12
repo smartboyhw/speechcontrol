@@ -27,12 +27,15 @@
 #include <QProgressBar>
 #include <QMainWindow>
 
-namespace Ui {
+namespace Ui
+{
 class MainWindow;
 }
 
-namespace SpeechControl {
-namespace Plugins {
+namespace SpeechControl
+{
+namespace Plugins
+{
 
 class AbstractPlugin;
 }
@@ -41,14 +44,16 @@ class Core;
 /**
  * @brief A namespace containing all of the classes dedicated to the user interface.
  **/
-namespace Windows {
+namespace Windows
+{
 /**
  * @brief Represents the Main window of SpeechControl.
  *
  * Being the first thing (and perhaps the last thing) that users see when
  * they start SpeechControl,
  **/
-class Main : public QMainWindow {
+class Main : public QMainWindow
+{
     Q_OBJECT
     friend class SpeechControl::Core;
     friend class Plugins::AbstractPlugin;
@@ -82,7 +87,7 @@ public slots:
      * @note At 1.0, the progress bar is hidden.
      * @param p_value The value of the progress on a scale of 0.0 to 1.0
      **/
-    void setProgress ( const double p_value );
+    void setProgress (const double p_value);
 
     /**
      * @brief Shows a brief message in the status bar of the main window.
@@ -90,17 +95,17 @@ public slots:
      * @param p_message The message to display.
      * @param p_timeout How long it should be displayed without disturbance (in milliseconds) .Defaults to 8000.
      **/
-    void setStatusMessage ( const QString& p_message, const int p_timeout = 8000 );
+    void setStatusMessage (const QString& p_message, const int p_timeout = 8000);
 
 private slots:
     // desktop control
     void on_actionDesktopControlOptions_triggered();
-    void on_actionDesktopControlActive_triggered ( bool p_checked );
+    void on_actionDesktopControlActive_triggered (bool p_checked);
     void desktopControlStateChanged();
 
     // dictation
     void on_actionDictationOptions_triggered();
-    void on_actionDictationActive_triggered ( const bool p_checked );
+    void on_actionDictationActive_triggered (const bool p_checked);
     void dictationStateChanged();
 
     // training
@@ -121,7 +126,7 @@ private slots:
     void on_actionAboutSpeechControl_triggered();
 
 private:
-    virtual void closeEvent ( QCloseEvent* p_closeEvent );
+    virtual void closeEvent (QCloseEvent* p_closeEvent);
     void refreshUi();
     Ui::MainWindow* m_ui;
     QProgressBar* m_prgStatusbar;
@@ -131,4 +136,4 @@ private:
 }
 
 #endif // MAIN_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -27,8 +27,10 @@
 #include <QObject>
 #include <QStringList>
 
-namespace SpeechControl {
-namespace DesktopControl {
+namespace SpeechControl
+{
+namespace DesktopControl
+{
 class AbstractCommand;
 class AbstractCategory;
 
@@ -51,7 +53,8 @@ typedef QList<AbstractCategory*> CategoryList;
  * input string fits closely to what is expected to be, and an invocation slot
  * that takes one argument optionally to solidify the action's potential.
  **/
-class AbstractCommand : public QObject {
+class AbstractCommand : public QObject
+{
     Q_OBJECT
     friend class AbstractCategory;
 
@@ -79,7 +82,7 @@ public:
      * @param  ...
      * @return bool
      **/
-    bool isValidStatement ( const QString& ) const;
+    bool isValidStatement (const QString&) const;
 
 public slots:
     /**
@@ -88,7 +91,7 @@ public slots:
      * @param p_statement ... Defaults to QString::null.
      * @return bool
      **/
-    virtual bool invoke ( const QString& p_statement = QString::null ) const = 0;
+    virtual bool invoke (const QString& p_statement = QString::null) const = 0;
 
 protected:
     /**
@@ -97,14 +100,14 @@ protected:
      * @param p_parent ...
      * @param p_commands ...
      **/
-    explicit AbstractCommand ( AbstractCategory* p_parentCategory , QStringList p_commands );
+    explicit AbstractCommand (AbstractCategory* p_parentCategory , QStringList p_commands);
     /**
      * @brief ...
      *
      * @param p_statement ...
      * @return QString
      **/
-    QString santizeStatement ( const QString p_statement ) const;
+    QString santizeStatement (const QString p_statement) const;
     /**
      * @brief ...
      *
@@ -112,7 +115,7 @@ protected:
      * @param p_statement ...
      * @return bool
      **/
-    bool areStatementsEquivalent ( const QString p_command, const QString p_statement ) const;
+    bool areStatementsEquivalent (const QString p_command, const QString p_statement) const;
 
 private:
     QStringList m_commands;     ///< The commands.
@@ -130,9 +133,10 @@ private:
  * @see AbstractCommand
  * @see SpeechControl::DesktopControl::Agent
  */
-class AbstractCategory : public QObject {
+class AbstractCategory : public QObject
+{
     Q_OBJECT
-    Q_PROPERTY ( CommandList Commands READ commands ) ///< A property representing all of the immediate commands held by this category.
+    Q_PROPERTY (CommandList Commands READ commands)   ///< A property representing all of the immediate commands held by this category.
     friend class AbstractCommand;
 
 public:
@@ -163,7 +167,7 @@ public:
      * @param p_command The command to match up.
      * @return CommandList
      **/
-    CommandList matchCommands ( const QString& p_command );
+    CommandList matchCommands (const QString& p_command);
 
     /**
      * @brief Returns a list of Command objects held by this AbstractCategory.
@@ -177,7 +181,7 @@ public:
      * @param p_command ...
      * @return CommandList
      **/
-    static CommandList matchAllCommands ( const QString& p_command );
+    static CommandList matchAllCommands (const QString& p_command);
     /**
      * @brief ...
      *
@@ -191,8 +195,8 @@ public:
      **/
     static CategoryList categories();
 
-    bool hasCommand ( AbstractCommand* p_command );
-    bool hasCommand ( const QString& p_id );
+    bool hasCommand (AbstractCommand* p_command);
+    bool hasCommand (const QString& p_id);
 
 protected:
     /**
@@ -200,19 +204,19 @@ protected:
      *
      * @param parent ... Defaults to AbstractCategory::global().
      **/
-    explicit AbstractCategory ( AbstractCategory* p_parentCategory );
+    explicit AbstractCategory (AbstractCategory* p_parentCategory);
     AbstractCategory();
 
-    void addCommand ( AbstractCommand* p_command );
-    void removeCommand ( AbstractCommand* p_command );
-    void removeCommand ( const QString& p_id );
+    void addCommand (AbstractCommand* p_command);
+    void removeCommand (AbstractCommand* p_command);
+    void removeCommand (const QString& p_id);
 
 private:
-    static QMap<QString,AbstractCategory*> s_ctgrs;     ///< A global listing of all categories.
-    QMap<QString,AbstractCommand*> m_map;                                  ///< The commands held by the category.
+    static QMap<QString, AbstractCategory*> s_ctgrs;    ///< A global listing of all categories.
+    QMap<QString, AbstractCommand*> m_map;                                 ///< The commands held by the category.
 };
 }
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

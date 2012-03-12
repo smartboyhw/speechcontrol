@@ -32,35 +32,36 @@ class QString;
 class QStringList;
 class QVariant;
 
-class DaemonAdaptor: public QDBusAbstractAdaptor {
+class DaemonAdaptor: public QDBusAbstractAdaptor
+{
     Q_OBJECT
-    Q_CLASSINFO ( "D-Bus Interface", "org.thesii.SpeechControl.Daemon" )
-    Q_CLASSINFO ( "D-Bus Introspection", ""
-                  "  <interface name=\"org.thesii.SpeechControl.Daemon\">\n"
-                  "    <property access=\"read\" type=\"b\" name=\"Active\"/>\n"
-                  "    <signal name=\"started\"/>\n"
-                  "    <signal name=\"stopped\"/>\n"
-                  "    <method name=\"start\">\n"
-                  "      <annotation value=\"true\" name=\"org.freedesktop.DBus.Method.NoReply\"/>\n"
-                  "    </method>\n"
-                  "    <method name=\"stop\">\n"
-                  "      <annotation value=\"true\" name=\"org.freedesktop.DBus.Method.NoReply\"/>\n"
-                  "    </method>\n"
-                  "    <method name=\"listen\">\n"
-                  "      <arg direction=\"out\" type=\"s\"/>\n"
-                  "    </method>\n"
-                  "  </interface>\n"
-                  "" )
+    Q_CLASSINFO ("D-Bus Interface", "org.thesii.SpeechControl.Daemon")
+    Q_CLASSINFO ("D-Bus Introspection", ""
+                 "  <interface name=\"org.thesii.SpeechControl.Daemon\">\n"
+                 "    <property access=\"read\" type=\"b\" name=\"Active\"/>\n"
+                 "    <signal name=\"started\"/>\n"
+                 "    <signal name=\"stopped\"/>\n"
+                 "    <method name=\"start\">\n"
+                 "      <annotation value=\"true\" name=\"org.freedesktop.DBus.Method.NoReply\"/>\n"
+                 "    </method>\n"
+                 "    <method name=\"stop\">\n"
+                 "      <annotation value=\"true\" name=\"org.freedesktop.DBus.Method.NoReply\"/>\n"
+                 "    </method>\n"
+                 "    <method name=\"listen\">\n"
+                 "      <arg direction=\"out\" type=\"s\"/>\n"
+                 "    </method>\n"
+                 "  </interface>\n"
+                 "")
 public:
     DaemonAdaptor ();
     virtual ~DaemonAdaptor();
 
-    inline SpeechControl::Daemon::Daemon *parent() const {
-        return static_cast<SpeechControl::Daemon::Daemon *> ( QObject::parent() );
+    inline SpeechControl::Daemon::Daemon* parent() const {
+        return static_cast<SpeechControl::Daemon::Daemon*> (QObject::parent());
     }
 
 public: // PROPERTIES
-    Q_PROPERTY ( bool Active READ active )
+    Q_PROPERTY (bool Active READ active)
     bool active() const;
 
 public Q_SLOTS: // METHODS
@@ -73,4 +74,4 @@ Q_SIGNALS: // SIGNALS
 };
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -24,14 +24,18 @@
 
 #include <app/plugins.hpp>
 
-namespace SpeechControl {
-namespace Plugins {
-namespace Python {
-class Plugin : public AbstractPlugin {
+namespace SpeechControl
+{
+namespace Plugins
+{
+namespace Python
+{
+class Plugin : public AbstractPlugin
+{
     Q_OBJECT
 
 public:
-    explicit Plugin ( QObject* parent = 0 );
+    explicit Plugin (QObject* parent = 0);
     virtual ~Plugin();
 
 protected:

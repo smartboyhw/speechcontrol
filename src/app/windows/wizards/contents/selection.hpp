@@ -25,19 +25,24 @@
 #include <QWidget>
 #include <QWizardPage>
 
-namespace Ui {
+namespace Ui
+{
 class SourceSelectionPage;
 }
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 class AbstractContentSource;
-namespace Wizards {
-namespace Pages {
+namespace Wizards
+{
+namespace Pages
+{
 
 /**
  * @brief ...
  **/
-class SourceSelectionPage : public QWizardPage {
+class SourceSelectionPage : public QWizardPage
+{
     Q_OBJECT
 
 public:
@@ -46,29 +51,31 @@ public:
      *
      * @param parent ... Defaults to 0.
      **/
-    explicit SourceSelectionPage ( QWidget *parent = 0 );
+    explicit SourceSelectionPage (QWidget* parent = 0);
     /**
      * @brief ...
      *
      * @param p_dummy ... Defaults to 0.
      * @return void
      **/
-    static void registerSourceWidget ( QWidget* p_widget );
+    static void registerSourceWidget (QWidget* p_widget);
     /**
      * @brief ...
      *
      **/
     ~SourceSelectionPage();
 
+    virtual bool validatePage();
+
 private slots:
-    void on_comboBoxSource_currentIndexChanged ( const int& p_index );
+    void on_comboBoxSource_currentIndexChanged (const int& p_index);
 
 private:
     void updateUi();
     void addDefaultSources();
-    Ui::SourceSelectionPage *m_ui;
+    Ui::SourceSelectionPage* m_ui;
     AbstractContentSource* m_src;
-    static QMap<QString,QWidget*> s_lst;
+    static QMap<QString, QWidget*> s_lst;
 };
 
 }
@@ -76,4 +83,4 @@ private:
 }
 
 #endif // CONTENTWIZARD_SOURCESELECTION_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

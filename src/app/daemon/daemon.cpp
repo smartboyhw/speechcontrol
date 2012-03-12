@@ -26,43 +26,51 @@ using namespace SpeechControl::Daemon;
 
 Daemon* Daemon::s_inst = 0;
 
-DaemonSphinx::DaemonSphinx() : AbstractSphinx() {
-    buildPipeline(standardDescription());
+DaemonSphinx::DaemonSphinx() : AbstractSphinx()
+{
+    buildPipeline (standardDescription());
 }
 
-void DaemonSphinx::applicationMessage ( const QGst::MessagePtr& p_message ) {
+void DaemonSphinx::applicationMessage (const QGst::MessagePtr& p_message)
+{
     qDebug() << p_message->typeName();
 }
 
-Daemon::Daemon() : QObject(QApplication::instance()), m_sphnx(new DaemonSphinx){
-    connect(this,SIGNAL(started()),SpeechControl::System::instance(),SLOT(start()));
-    connect(this,SIGNAL(started()),m_sphnx,SLOT(start()));
+Daemon::Daemon() : QObject (QApplication::instance()), m_sphnx (new DaemonSphinx)
+{
+    connect (this, SIGNAL (started()), SpeechControl::System::instance(), SLOT (start()));
+    connect (this, SIGNAL (started()), m_sphnx, SLOT (start()));
 
-    connect(this,SIGNAL(stopped()),SpeechControl::System::instance(),SLOT(stop()));
-    connect(this,SIGNAL(stopped()),m_sphnx,SLOT(stop()));
+    connect (this, SIGNAL (stopped()), SpeechControl::System::instance(), SLOT (stop()));
+    connect (this, SIGNAL (stopped()), m_sphnx, SLOT (stop()));
 }
 
-bool Daemon::isActive() const {
+bool Daemon::isActive() const
+{
     return m_sphnx->isRunning();
 }
 
-QString Daemon::listen() {
-    if ( !isActive() ) {
+QString Daemon::listen()
+{
+    if (!isActive()) {
         return QString::null;
     }
 
     return QString::null;
 }
 
-void Daemon::start() {
+void Daemon::start()
+{
     emit started();
 }
 
-void Daemon::stop() {
+void Daemon::stop()
+{
     emit stopped();
 }
 
-Daemon* Daemon::instance() {
+Daemon* Daemon::instance()
+{
     if (s_inst == 0)
         s_inst = new Daemon;
 
@@ -70,4 +78,4 @@ Daemon* Daemon::instance() {
 }
 
 #include "daemon.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

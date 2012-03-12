@@ -23,12 +23,15 @@
 
 #include <app/windows/settings-dialog.hpp>
 
-namespace Ui {
+namespace Ui
+{
 class DictationSettingsPane;
 }
 
-namespace SpeechControl {
-namespace Windows {
+namespace SpeechControl
+{
+namespace Windows
+{
 
 /**
  * @brief General settings of SpeechControl.
@@ -36,7 +39,8 @@ namespace Windows {
  * This window presents the user in the Settings dialog with general, overlying
  * options that can manipulate SpeechControl's operation.
  **/
-class DictationSettingsPane : public AbstractSettingsPane {
+class DictationSettingsPane : public AbstractSettingsPane
+{
     Q_OBJECT
 
 public:
@@ -44,29 +48,29 @@ public:
      * @brief Constructor.
      * @param parent Defaults to 0.
      **/
-    explicit DictationSettingsPane (  );
+    explicit DictationSettingsPane ();
     ~DictationSettingsPane();
     QString title() const;
     QString id() const;
     void updateUi();
-    virtual bool containsText ( const QString& p_query ) const;
+    virtual bool containsText (const QString& p_query) const;
     virtual QPixmap pixmap() const;
     virtual void resetPanel();
     virtual void restoreDefaults();
 
 protected:
-    void changeEvent ( QEvent *e );
+    void changeEvent (QEvent* e);
 
 private slots:
-    void on_checkBoxEnable_toggled ( bool p_checked );
+    void on_checkBoxEnable_toggled (bool p_checked);
     void on_checkBoxEnableStartup_toggled (bool p_checked);
 
 private:
-    Ui::DictationSettingsPane *m_ui;
+    Ui::DictationSettingsPane* m_ui;
 };
 
 }
 }
 
 #endif // GENERAL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -25,18 +25,22 @@
 #include <QDialog>
 #include "sphinx.hpp"
 
-namespace Ui {
+namespace Ui
+{
 class TranscriberDialog;
 }
 
-namespace SpeechControl {
-namespace Windows {
+namespace SpeechControl
+{
+namespace Windows
+{
 
-class TranscriberDialog : public QDialog {
+class TranscriberDialog : public QDialog
+{
     Q_OBJECT
 
 public:
-    explicit TranscriberDialog ( QWidget *parent = 0 );
+    explicit TranscriberDialog (QWidget* parent = 0);
     ~TranscriberDialog();
 
 private slots:
@@ -44,14 +48,14 @@ private slots:
     void on_btnTranscribe_clicked();
 
 private:
-    Ui::TranscriberDialog *m_ui;
+    Ui::TranscriberDialog* m_ui;
     SpeechControl::Plugins::Transcriber::Sphinx* m_sphnx;
 public slots:
-    void outputValue ( const QString& p_value );
+    void outputValue (const QString& p_value);
 };
 
 }
 }
 
 #endif // TRANSCRIBERDIALOG_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

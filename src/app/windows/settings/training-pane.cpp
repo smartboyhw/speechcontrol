@@ -25,59 +25,70 @@
 
 using namespace SpeechControl::Windows;
 
-TrainingSettingsPane::TrainingSettingsPane():
-    ui ( new Ui::TrainingSettingsPane ) {
-        qDebug() << "[TrainingSettingsPane::{constructor}] Building training settings pane...";
-        ui->setupUi ( this );
-        addPane(new SessionSettingsPane);
-        addPane(new ContentSettingsPane);
-        updateUi();
-        qDebug() << "[TrainingSettingsPane::{constructor}] Built training settings pane.";
-    }
+TrainingSettingsPane::TrainingSettingsPane() :
+    ui (new Ui::TrainingSettingsPane)
+{
+    qDebug() << "[TrainingSettingsPane::{constructor}] Building training settings pane...";
+    ui->setupUi (this);
+    addPane (new SessionSettingsPane);
+    addPane (new ContentSettingsPane);
+    updateUi();
+    qDebug() << "[TrainingSettingsPane::{constructor}] Built training settings pane.";
+}
 
-TrainingSettingsPane::~TrainingSettingsPane() {
+TrainingSettingsPane::~TrainingSettingsPane()
+{
     delete ui;
 }
 
-void TrainingSettingsPane::changeEvent ( QEvent *e ) {
-    QFrame::changeEvent ( e );
-    switch ( e->type() ) {
+void TrainingSettingsPane::changeEvent (QEvent* e)
+{
+    QFrame::changeEvent (e);
+
+    switch (e->type()) {
     case QEvent::LanguageChange:
-        ui->retranslateUi ( this );
+        ui->retranslateUi (this);
         break;
     default:
         break;
     }
 }
 
-QString SpeechControl::Windows::TrainingSettingsPane::title() const {
+QString SpeechControl::Windows::TrainingSettingsPane::title() const
+{
     return "Training";
 }
 
-QString SpeechControl::Windows::TrainingSettingsPane::id() const {
+QString SpeechControl::Windows::TrainingSettingsPane::id() const
+{
     return "trnng";
 }
 
-bool TrainingSettingsPane::containsText ( const QString& p_query ) const {
+bool TrainingSettingsPane::containsText (const QString& p_query) const
+{
 
 }
 
-QPixmap TrainingSettingsPane::pixmap() const {
-    return QIcon::fromTheme ( "configure" ).pixmap ( 32,32 );
+QPixmap TrainingSettingsPane::pixmap() const
+{
+    return QIcon::fromTheme ("configure").pixmap (32, 32);
 }
 
-void TrainingSettingsPane::resetPanel() {
+void TrainingSettingsPane::resetPanel()
+{
 
 }
 
-void TrainingSettingsPane::restoreDefaults() {
+void TrainingSettingsPane::restoreDefaults()
+{
 
 }
 
-void TrainingSettingsPane::updateUi() {
+void TrainingSettingsPane::updateUi()
+{
 
 }
 
 
 #include "training-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

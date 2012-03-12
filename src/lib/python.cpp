@@ -36,13 +36,14 @@ public:
     }
 };
 
-BOOST_PYTHON_MODULE ( spchcntrl ) {
+BOOST_PYTHON_MODULE (spchcntrl)
+{
     using namespace boost::python;
     using namespace SpeechControl;
 
-    class_<SystemStruct> ( "System", no_init )
-    .def ( "stop" , &SystemStruct::stop )
-    .def ( "start", &SystemStruct::start )
+    class_<SystemStruct> ("System", no_init)
+    .def ("stop" , &SystemStruct::stop)
+    .def ("start", &SystemStruct::start)
     ;
 }
 

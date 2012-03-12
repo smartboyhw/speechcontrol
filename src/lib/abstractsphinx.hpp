@@ -44,7 +44,8 @@
 #include "export.hpp"
 
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 
 class LanguageModel;
 
@@ -59,10 +60,11 @@ class Dictionary;
  * of dictionaries, language and acoustic models. It also performs
  * acoustic training and adjusts models to its needs.
  */
-class SPCH_EXPORT AbstractSphinx : public QObject {
+class SPCH_EXPORT AbstractSphinx : public QObject
+{
 
     Q_OBJECT
-    Q_DISABLE_COPY ( AbstractSphinx )
+    Q_DISABLE_COPY (AbstractSphinx)
 
 protected:
     /**
@@ -95,7 +97,7 @@ public:
      * @brief Null constructor.
      * @param p_parent Defaults to 0.
      **/
-    explicit AbstractSphinx ( QObject* p_parent = 0 );
+    explicit AbstractSphinx (QObject* p_parent = 0);
 
     /**
      * @brief Renders a new the AbstractSphinx instance with a pipeline.
@@ -103,7 +105,7 @@ public:
      * @param p_pipeline The pipeline to use for the AbstractSphinx.
      * @param p_parent Defaults to 0.
      **/
-    AbstractSphinx ( QGst::PipelinePtr p_pipeline, QObject* p_parent = 0 );
+    AbstractSphinx (QGst::PipelinePtr p_pipeline, QObject* p_parent = 0);
 
     /**
      * @brief Renders a new the AbstractSphinx instance from a GStreamer-compatible description.
@@ -113,7 +115,7 @@ public:
      * @param p_description The description to use to build with this the AbstractSphinx instance.
      * @param p_parent Defaults to 0.
      **/
-    AbstractSphinx ( const QString& p_description, QObject* p_parent = 0 );
+    AbstractSphinx (const QString& p_description, QObject* p_parent = 0);
 
     /**
      * @brief Destructor.
@@ -188,59 +190,59 @@ public:
      *
      * @param p_microphone The microphone to use.
      **/
-    void useMicrophone ( const AbstractAudioSource* p_microphone );
+    void useMicrophone (const AbstractAudioSource* p_microphone);
 
     /**
      * @brief Set PocketSphinx element property
      * @param p_property Name of the property.
      * @param p_value Value for the property.
      */
-    void setPsProperty ( const QString& p_property, const QVariant& p_value );
+    void setPsProperty (const QString& p_property, const QVariant& p_value);
 
     /**
      * @brief Set VADER element property
      * @param p_property Name of the property.
      * @param p_value Value for the propery.
      */
-    void setVaderProperty ( const QString& p_property, const QVariant& p_value );
+    void setVaderProperty (const QString& p_property, const QVariant& p_value);
 
     /**
      * @brief Sets the language model to use.
      * @param path The path to the language to be used.
      */
-    void setLanguageModel ( const QString& p_path );
+    void setLanguageModel (const QString& p_path);
 
     /**
      * @brief Sets the language model to use.
      * @param p_languageModel The LanguageModel to be used.
      **/
-    void setLanguageModel ( const LanguageModel* p_languageModel );
+    void setLanguageModel (const LanguageModel* p_languageModel);
 
     /**
      * @brief Sets the dictionary to be used.
      * @param p_path The path to the dictionary.
      */
-    void setDictionary ( const QString& p_path );
+    void setDictionary (const QString& p_path);
 
     /**
      * @brief Sets the dictionary to be used.
      *
      * @param p_dictionary The Dictionary object to use.
      **/
-    void setDictionary ( const Dictionary* p_dictionary );
+    void setDictionary (const Dictionary* p_dictionary);
 
     /**
      * @brief Sets the acoustic model to be used.
      * @param p_path The path to the acoustic model.
      */
-    void setAcousticModel ( const QString& p_path );
+    void setAcousticModel (const QString& p_path);
 
     /**
      * @brief Sets the acoustic model to be used.
      *
      * @param p_acousticModel The AcousticModel to use.
      **/
-    void setAcousticModel ( const AcousticModel* p_acousticModel );
+    void setAcousticModel (const AcousticModel* p_acousticModel);
 
     /**
      * @brief Check whether the AbstractSphinx is ready to use
@@ -263,7 +265,7 @@ signals:
     /**
      * Emitted by the AbstractSphinx instance when recognition has produced a result.
      */
-    void finished ( const QString& p_result );
+    void finished (const QString& p_result);
 
 public slots:
     /**
@@ -286,7 +288,7 @@ public slots:
      * @param p_text The text to be passed.
      * @param p_uttid The utterance to be passed.
      **/
-    void formPartialResult ( QString& p_text, QString& p_uttid );
+    void formPartialResult (QString& p_text, QString& p_uttid);
 
     /**
      * @brief Obtains a value from the specified text p_text and utterance p_uttid.
@@ -294,7 +296,7 @@ public slots:
      * @param p_text The text to be passed.
      * @param p_uttid The utterance to be passed.
      **/
-    void formResult ( QString& p_text, QString& p_uttid );
+    void formResult (QString& p_text, QString& p_uttid);
 
 protected slots:
 
@@ -303,7 +305,7 @@ protected slots:
      *
      * @param p_message The message to be passed.
      **/
-    virtual void applicationMessage ( const QGst::MessagePtr& p_message ) = 0;
+    virtual void applicationMessage (const QGst::MessagePtr& p_message) = 0;
 
 protected:
     /**
@@ -311,10 +313,10 @@ protected:
      *
      * @param p_description The description to be used to build a pipeline.
      **/
-    void buildPipeline ( QString p_description );
+    void buildPipeline (QString p_description);
 };
 
 }
 
 #endif // ABSTRACTSPHINX_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

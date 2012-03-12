@@ -24,10 +24,13 @@
 
 #include "wizards/base.hpp"
 
-namespace SpeechControl {
-namespace Wizards {
+namespace SpeechControl
+{
+namespace Wizards
+{
 
-class SessionWizard : public WizardBase {
+class SessionWizard : public WizardBase
+{
     Q_OBJECT
 
     enum Pages {
@@ -39,7 +42,7 @@ class SessionWizard : public WizardBase {
     };
 
 public:
-    explicit SessionWizard ( QWidget *parent = 0 );
+    explicit SessionWizard (QWidget* parent = 0);
     ~SessionWizard();
 };
 
@@ -47,4 +50,4 @@ public:
 }
 
 #endif // WIZARD_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

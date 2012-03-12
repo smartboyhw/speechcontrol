@@ -26,35 +26,41 @@ MPRIS_NAMESPACE_BEGIN
 
 MprisCategory* MprisCategory::s_inst = 0;
 
-MprisCategory::MprisCategory ( ) : AbstractCategory ( global() ) {
+MprisCategory::MprisCategory () : AbstractCategory (global())
+{
     //addCommand((new ListCommand));
 }
 
-const QString MprisCategory::id() const {
+const QString MprisCategory::id() const
+{
     return "applicationlist";
 }
 
-const QString MprisCategory::title() {
+const QString MprisCategory::title()
+{
     return "Application List";
 }
 
-QString PlayCommand::id() {
+QString PlayCommand::id()
+{
     return "start-applist";
 }
 
-PlayCommand::PlayCommand ( ) : AbstractCommand ( MprisCategory::instance() ,
-            ( QStringList() << "Play application"
-              << "Run application"
-              << "Open application" ) ) {
+PlayCommand::PlayCommand () : AbstractCommand (MprisCategory::instance() ,
+            (QStringList() << "Play application"
+             << "Run application"
+             << "Open application"))
+{
 }
 
 /// @todo Detect the application name and invoke it.
-bool PlayCommand::invoke ( const QString& p_statement ) const {
-    if ( !isValidStatement ( p_statement ) ) {
+bool PlayCommand::invoke (const QString& p_statement) const
+{
+    if (!isValidStatement (p_statement)) {
         return false;
     }
 
-    const QString l_tokenArgument = AbstractCommand::santizeStatement ( p_statement );
+    const QString l_tokenArgument = AbstractCommand::santizeStatement (p_statement);
 
     return true;
 }
@@ -63,4 +69,4 @@ bool PlayCommand::invoke ( const QString& p_statement ) const {
 
 MPRIS_NAMESPACE_END
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

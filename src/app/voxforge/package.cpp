@@ -21,21 +21,25 @@
 
 using namespace SpeechControl::Voxforge;
 
-Package::Package ( QObject* parent ) {
+Package::Package (QObject* parent)
+{
 
 }
 
-Package::Package() {
+Package::Package()
+{
 
 }
 
-Package::Package ( const Package& other ) {
+Package::Package (const Package& other)
+{
 
 }
 
-Package::~Package() {
+Package::~Package()
+{
 
 }
 
 #include "package.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

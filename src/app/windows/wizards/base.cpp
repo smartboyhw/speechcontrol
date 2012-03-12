@@ -25,13 +25,15 @@
 
 using SpeechControl::Wizards::WizardBase;
 
-WizardBase::WizardBase ( QWidget *parent ) :
-    QWizard ( parent ),
-    ui ( new Ui::WizardBase ) {
-    ui->setupUi ( this );
+WizardBase::WizardBase (QWidget* parent) :
+    QWizard (parent),
+    ui (new Ui::WizardBase)
+{
+    ui->setupUi (this);
 }
 
-WizardBase::~WizardBase() {
+WizardBase::~WizardBase()
+{
     delete ui;
 }
 

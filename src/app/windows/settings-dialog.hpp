@@ -30,46 +30,51 @@
 #include <app/macros.hpp>
 
 
-namespace Ui {
+namespace Ui
+{
 class SettingsDialog;
 }
 
-namespace SpeechControl {
-namespace Windows {
+namespace SpeechControl
+{
+namespace Windows
+{
 class Settings;
 class AbstractSettingsPane;
 
 /**
  * @brief ...
  **/
-class Settings : public QDialog {
+class Settings : public QDialog
+{
     Q_OBJECT
-    Q_DISABLE_COPY(Settings)
-    SC_SINGLETON(Settings)
+    Q_DISABLE_COPY (Settings)
+    SC_SINGLETON (Settings)
 
 public:
-    explicit Settings ( QWidget *m_prnt );
-    static void addPane ( AbstractSettingsPane* p_pane );
-    static void removePane ( const QString& p_paneID );
-    static void displayPane ( const QString& p_paneID );
+    explicit Settings (QWidget* m_prnt);
+    static void addPane (AbstractSettingsPane* p_pane);
+    static void removePane (const QString& p_paneID);
+    static void displayPane (const QString& p_paneID);
     virtual ~Settings();
 
 private slots:
     void on_treeNavigation_itemSelectionChanged();
-    void on_buttonBox_clicked(QAbstractButton* p_button);
+    void on_buttonBox_clicked (QAbstractButton* p_button);
 
 private:
-    QTreeWidgetItem* findPaneItem ( const QString& p_panelID );
+    QTreeWidgetItem* findPaneItem (const QString& p_panelID);
     void buildWindow();
-    Ui::SettingsDialog *m_ui;
+    Ui::SettingsDialog* m_ui;
     QMap<QString, AbstractSettingsPane*> m_panes;
 };
 
-class AbstractSettingsPane : public QFrame {
+class AbstractSettingsPane : public QFrame
+{
     Q_OBJECT
-    Q_PROPERTY(QString ID READ id)
-    Q_PROPERTY(QString Title READ title)
-    Q_PROPERTY(QPixmap Pixmap READ pixmap)
+    Q_PROPERTY (QString ID READ id)
+    Q_PROPERTY (QString Title READ title)
+    Q_PROPERTY (QPixmap Pixmap READ pixmap)
     friend class Settings;
 
 public:
@@ -80,13 +85,13 @@ public:
     virtual QString title() const = 0;
     virtual QString id() const = 0;
     virtual QPixmap pixmap() const = 0;
-    virtual bool containsText(const QString& p_query) const = 0;
-    bool hasPane(const QString& p_paneID) const;
+    virtual bool containsText (const QString& p_query) const = 0;
+    bool hasPane (const QString& p_paneID) const;
 
 protected:
-    void addPane(AbstractSettingsPane* p_subPane);
-    void removePane(AbstractSettingsPane* p_subPane);
-    void removePane(const QString& p_subPaneID);
+    void addPane (AbstractSettingsPane* p_subPane);
+    void removePane (AbstractSettingsPane* p_subPane);
+    void removePane (const QString& p_subPaneID);
     virtual void updateUi() = 0;
 
 private:
@@ -95,4 +100,4 @@ private:
 }
 }
 #endif // SETTINGS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

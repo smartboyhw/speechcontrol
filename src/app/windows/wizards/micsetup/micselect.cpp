@@ -30,58 +30,66 @@ using namespace SpeechControl::Wizards::Pages;
 using SpeechControl::Wizards::Pages::MicrophoneSelection;
 
 /// @todo The loudness of the content spoken should begin detection here.
-MicrophoneSelection::MicrophoneSelection ( QWidget *parent ) :
-    QWizardPage ( parent ), ui ( new Ui::MicrophoneSelection ),
-    m_mic ( DeviceAudioSource::defaultDevice() ) {
-    ui->setupUi ( this );
-    this->registerField ( "mic",ui->comboBoxMicrophones,"currentIndex",SIGNAL ( currentIndexChanged ( QString ) ) );
+MicrophoneSelection::MicrophoneSelection (QWidget* parent) :
+    QWizardPage (parent), ui (new Ui::MicrophoneSelection),
+    m_mic (DeviceAudioSource::defaultDevice())
+{
+    ui->setupUi (this);
+    this->registerField ("mic", ui->comboBoxMicrophones, "currentIndex", SIGNAL (currentIndexChanged (QString)));
 }
 
-MicrophoneSelection::~MicrophoneSelection() {
+MicrophoneSelection::~MicrophoneSelection()
+{
     delete ui;
 }
 
 /// @todo Fill the combo box with all of the mics.
-void SpeechControl::Wizards::Pages::MicrophoneSelection::initializePage() {
+void SpeechControl::Wizards::Pages::MicrophoneSelection::initializePage()
+{
     AbstractAudioSourceList l_allMics = DeviceAudioSource::allDevices();
 
-    if ( !l_allMics.empty() ) {
-        Q_FOREACH ( AbstractAudioSource* l_mic, l_allMics ) {
+    if (!l_allMics.empty()) {
+        Q_FOREACH (AbstractAudioSource * l_mic, l_allMics) {
             //ui->comboBoxMicrophones->addItem ( l_mic->deviceName() ,l_mic->deviceName() );
         }
     }
 }
 
-bool SpeechControl::Wizards::Pages::MicrophoneSelection::validatePage() {
-    if ( m_mic ) {
-        wizard()->setProperty ( "mic-id",m_mic->deviceName() );
+bool SpeechControl::Wizards::Pages::MicrophoneSelection::validatePage()
+{
+    if (m_mic) {
+        wizard()->setProperty ("mic-id", m_mic->deviceName());
     }
 
     return ui->progressBarFeedback->isEnabled();
 }
 
-void SpeechControl::Wizards::Pages::MicrophoneSelection::cleanupPage() {
+void SpeechControl::Wizards::Pages::MicrophoneSelection::cleanupPage()
+{
     ui->comboBoxMicrophones->clear();
-    ui->progressBarFeedback->setValue ( 0 );
-    ui->progressBarFeedback->setFormat ( "inactive" );
+    ui->progressBarFeedback->setValue (0);
+    ui->progressBarFeedback->setFormat ("inactive");
 }
 
-bool SpeechControl::Wizards::Pages::MicrophoneSelection::isComplete() {
+bool SpeechControl::Wizards::Pages::MicrophoneSelection::isComplete()
+{
     return m_complete;
 }
 
 /// @todo Set the device to be detected for volume detection here.
 /// @todo Set this page's value to this field.
-void SpeechControl::Wizards::Pages::MicrophoneSelection::on_comboBoxMicrophones_activated ( int index ) {
-    const QString deviceName = ui->comboBoxMicrophones->itemData ( index ).toString();
-    m_mic = new DeviceAudioSource(deviceName);
+void SpeechControl::Wizards::Pages::MicrophoneSelection::on_comboBoxMicrophones_activated (int index)
+{
+    const QString deviceName = ui->comboBoxMicrophones->itemData (index).toString();
+    m_mic = new DeviceAudioSource (deviceName);
     m_mic->startRecording();
-    connect(m_mic,SIGNAL(recordingBegun()),this,SLOT(microphoneSelected()));
+    connect (m_mic, SIGNAL (recordingBegun()), this, SLOT (microphoneSelected()));
 }
 
-void MicrophoneSelection::microphoneSelected() {
+void MicrophoneSelection::microphoneSelected()
+{
 
 }
 
 #include "micselect.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

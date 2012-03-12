@@ -23,14 +23,16 @@
 
 using namespace SpeechControl::Wizards::Pages;
 
-IntroductionPage::IntroductionPage ( const QString& summary ) :
+IntroductionPage::IntroductionPage (const QString& summary) :
     QWizardPage(),
-    ui ( new Ui::Introduction ) {
-    ui->setupUi ( this );
-    ui->labelSummary->setText ( summary );
+    ui (new Ui::Introduction)
+{
+    ui->setupUi (this);
+    ui->labelSummary->setText (summary);
 }
 
-IntroductionPage::~IntroductionPage() {
+IntroductionPage::~IntroductionPage()
+{
     delete ui;
 }
 

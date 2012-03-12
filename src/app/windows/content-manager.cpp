@@ -31,64 +31,73 @@ using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
 using namespace SpeechControl::Windows::Managers;
 
-ContentManager::ContentManager ( QWidget *parent ) :
-    QDialog ( parent ),
-    ui ( new Ui::ContentManager ),
-    m_content ( 0 ) {
-    ui->setupUi ( this );
+ContentManager::ContentManager (QWidget* parent) :
+    QDialog (parent),
+    ui (new Ui::ContentManager),
+    m_content (0)
+{
+    ui->setupUi (this);
     updateList();
 }
 
-ContentManager::~ContentManager() {
+ContentManager::~ContentManager()
+{
     delete ui;
 }
 
-void ContentManager::updateList() {
+void ContentManager::updateList()
+{
     ContentList l_lst = Content::allContents();
     ui->lstContent->clear();
 
-    if ( l_lst.empty() ) {
-        ui->lblTitle->setText ( tr ( "No Content" ) );
-    } else {
-        ui->lblTitle->setText ( tr ( "No Selection" ) );
+    if (l_lst.empty()) {
+        ui->lblTitle->setText (tr ("No Content"));
+    }
+    else {
+        ui->lblTitle->setText (tr ("No Selection"));
     }
 
-    if ( !l_lst.empty() ) {
-        Q_FOREACH ( const Content* l_cnt, l_lst ) {
-            QListWidgetItem* l_item = new QListWidgetItem ( l_cnt->title(),ui->lstContent );
-            l_item->setData ( Qt::UserRole,l_cnt->uuid().toString() );
-            ui->lstContent->addItem ( l_item );
+    if (!l_lst.empty()) {
+        Q_FOREACH (const Content * l_cnt, l_lst) {
+            QListWidgetItem* l_item = new QListWidgetItem (l_cnt->title(), ui->lstContent);
+            l_item->setData (Qt::UserRole, l_cnt->uuid().toString());
+            ui->lstContent->addItem (l_item);
 
-            if ( m_content && m_content->uuid() == l_cnt->uuid() ) {
-                l_item->setSelected ( true );
+            if (m_content && m_content->uuid() == l_cnt->uuid()) {
+                l_item->setSelected (true);
             }
         }
 
-        if ( !m_content ) {
-            ui->lstContent->setCurrentRow ( 0 );
+        if (!m_content) {
+            ui->lstContent->setCurrentRow (0);
         }
     }
 }
 
-void ContentManager::on_btnSelect_clicked() {
+void ContentManager::on_btnSelect_clicked()
+{
     QListWidgetItem* l_item = ui->lstContent->currentItem();
-    if ( l_item ) {
-        m_content = Content::obtain ( QUuid ( l_item->data ( Qt::UserRole ).toString() ) );
+
+    if (l_item) {
+        m_content = Content::obtain (QUuid (l_item->data (Qt::UserRole).toString()));
         accept();
-    } else {
+    }
+    else {
         m_content = 0;
         reject();
     }
 }
 
-Content* ContentManager::doSelectContent() {
+Content* ContentManager::doSelectContent()
+{
     ContentManager* l_wiz = new ContentManager;
 
-    if ( Content::allContents().empty() ) {
+    if (Content::allContents().empty()) {
         l_wiz->on_btnAdd_clicked();
         return l_wiz->m_content;
-    } else {
-        if ( l_wiz->exec() == QDialog::Accepted ) {
+    }
+    else {
+        if (l_wiz->exec() == QDialog::Accepted) {
             return l_wiz->m_content;
         }
     }
@@ -97,34 +106,39 @@ Content* ContentManager::doSelectContent() {
 }
 
 /// @todo Invoke the Content addition wizard here.
-void ContentManager::on_btnAdd_clicked() {
+void ContentManager::on_btnAdd_clicked()
+{
     ContentWizard* l_wiz = new ContentWizard;
 
-    if ( l_wiz->exec() == QDialog::Accepted ) {
+    if (l_wiz->exec() == QDialog::Accepted) {
         Core::mainWindow()->updateContent();
         updateList();
     }
 }
 
-void ContentManager::on_btnCancel_clicked() {
+void ContentManager::on_btnCancel_clicked()
+{
     m_content = 0;
     reject();
 }
 
-void ContentManager::on_lstContent_itemSelectionChanged() {
+void ContentManager::on_lstContent_itemSelectionChanged()
+{
     const QListWidgetItem* l_item = ui->lstContent->currentItem();
-    if ( l_item ) {
-        const QUuid l_uuid ( l_item->data ( Qt::UserRole ).toString() );
-        const Content* l_cnt = Content::obtain ( l_uuid );
-        ui->lblTitle->setText ( l_cnt->title() );
-        ui->lblWordCount->setText ( QString::number ( l_cnt->words() ) );
-        ui->btnSelect->setEnabled ( true );
-    } else {
-        ui->lblTitle->setText ( tr ( "No Selection" ) );
-        ui->lblWordCount->setText ( 0 );
-        ui->btnSelect->setEnabled ( false );
+
+    if (l_item) {
+        const QUuid l_uuid (l_item->data (Qt::UserRole).toString());
+        const Content* l_cnt = Content::obtain (l_uuid);
+        ui->lblTitle->setText (l_cnt->title());
+        ui->lblWordCount->setText (QString::number (l_cnt->words()));
+        ui->btnSelect->setEnabled (true);
+    }
+    else {
+        ui->lblTitle->setText (tr ("No Selection"));
+        ui->lblWordCount->setText (0);
+        ui->btnSelect->setEnabled (false);
     }
 }
 
 #include "content-manager.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

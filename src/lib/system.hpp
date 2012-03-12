@@ -25,14 +25,16 @@
 
 #include <export.hpp>
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 
 /**
  * @brief ...
  **/
-class SPCH_EXPORT System : public QObject {
+class SPCH_EXPORT System : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( System )
+    Q_DISABLE_COPY (System)
 
 public:
     /**
@@ -41,7 +43,7 @@ public:
      * @param argc ...
      * @param  ...
      **/
-    explicit System ( int* argc, char**[] );
+    explicit System (int* argc, char** []);
     /**
      * @brief ...
      *
@@ -71,7 +73,7 @@ public slots:
      * @param  ...
      * @return void
      **/
-    static void start ( int*, char**[] );
+    static void start (int*, char** []);
     /**
      * @brief ...
      *

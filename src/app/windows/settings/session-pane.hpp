@@ -23,30 +23,34 @@
 
 #include <app/windows/settings-dialog.hpp>
 
-namespace Ui {
+namespace Ui
+{
 class SessionSettingsPane;
 }
 
-namespace SpeechControl {
-namespace Windows {
+namespace SpeechControl
+{
+namespace Windows
+{
 
-class SessionSettingsPane : public AbstractSettingsPane {
+class SessionSettingsPane : public AbstractSettingsPane
+{
     Q_OBJECT
 
 public:
-    explicit SessionSettingsPane (  );
+    explicit SessionSettingsPane ();
     ~SessionSettingsPane();
     virtual QString title() const;
     virtual QString id() const;
     virtual void updateUi();
-    virtual bool containsText ( const QString& p_query ) const;
+    virtual bool containsText (const QString& p_query) const;
     virtual QPixmap pixmap() const;
     virtual void resetPanel();
     virtual void restoreDefaults();
     virtual void show();
 
 protected:
-    void changeEvent ( QEvent *e );
+    void changeEvent (QEvent* e);
 
 private slots:
     void on_btnInfo_clicked();
@@ -56,11 +60,11 @@ private slots:
     void on_actionRestoreBackup_triggered();
 
 private:
-    Ui::SessionSettingsPane *m_ui;
+    Ui::SessionSettingsPane* m_ui;
 };
 
 }
 }
 
 #endif // SESSIONSETTINGSPANE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

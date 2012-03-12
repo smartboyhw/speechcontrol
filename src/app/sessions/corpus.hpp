@@ -31,7 +31,8 @@
 
 class QDomDocument;
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 class Corpus;
 class Sentence;
 class Dictionary;
@@ -65,12 +66,13 @@ typedef QMap<QUuid, Corpus*> CorpusMap;
  * @see Sentence
  * @see Dictionary
  */
-class SPCH_EXPORT Corpus : public QObject {
+class SPCH_EXPORT Corpus : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( Corpus )
-    Q_PROPERTY ( SentenceList Sentences READ sentences )    ///< Represents the Sentence objects of this Corpus.
-    Q_PROPERTY ( Dictionary* Dictionary READ dictionary )   ///< Represents the Dictionary used by this Corpus.
-    Q_PROPERTY ( const QUuid Uuid READ uuid )               ///< The identifying UUID of this Corpus.
+    Q_DISABLE_COPY (Corpus)
+    Q_PROPERTY (SentenceList Sentences READ sentences)      ///< Represents the Sentence objects of this Corpus.
+    Q_PROPERTY (Dictionary* Dictionary READ dictionary)     ///< Represents the Dictionary used by this Corpus.
+    Q_PROPERTY (const QUuid Uuid READ uuid)                 ///< The identifying UUID of this Corpus.
     friend class Sentence;
     friend class Dictionary;
 
@@ -83,7 +85,7 @@ public:
      * @note You can check if the load process was successful by evaluating @c isValid() == true.
      * @param p_uuid The UUID to load this Corpus with.
      **/
-    explicit Corpus ( const QUuid& p_uuid );
+    explicit Corpus (const QUuid& p_uuid);
 
     /**
      * @brief Destructor.
@@ -96,14 +98,14 @@ public:
      * @param p_uuid The UUID of the corpus to be found.
      * @return A pointer to a @c Corpus object if found, else NULL.
      */
-    static Corpus* obtain ( const QUuid& p_uuid );
+    static Corpus* obtain (const QUuid& p_uuid);
 
     /**
      * @brief Generates a new, generic corpus from a list of strings.
      * @param p_list The list of strings ( as a @c QStringList ) to be used.
      * @return A pointer to the generated @c Corpus .
      */
-    static Corpus* create ( const QStringList& p_list );
+    static Corpus* create (const QStringList& p_list);
 
     /**
      * @brief Obtains a listing of all of the corpuses.
@@ -118,14 +120,14 @@ public:
      * @return True, if the @c Corpus exists; otherwise, returns false.
      * @note This method does a bit of nitty-gritty searching, just checks for a folder.
      */
-    static bool exists ( const QUuid& p_uuid );
+    static bool exists (const QUuid& p_uuid);
 
     /**
      * @brief Adds a sentence to this @c Corpus .
      * @param p_sentence The @c Sentence to be added.
      * @return The @c Sentence that was added.
      */
-    Sentence* addSentence ( Sentence* p_sentence );
+    Sentence* addSentence (Sentence* p_sentence);
 
     /**
      * @brief Adds a sentence to this @c Corpus , in its more raw format.
@@ -133,7 +135,7 @@ public:
      * @param p_audio The @c QFile that represents the transcribed audio of the @c Sentence.
      * @return The @c Sentence that was formed and then added.
      */
-    Sentence* addSentence ( const QString& p_text, const QFile* p_audio );
+    Sentence* addSentence (const QString& p_text, const QFile* p_audio);
 
     /**
      * @brief Determines the time when training of this @c Corpus began.
@@ -170,7 +172,7 @@ public:
      * @param p_index The index that of which the sentence should be picked at.
      * @return A pointer to the @c Sentence object at that index, or NULL.
      */
-    Sentence* sentenceAt ( const int& p_index ) const;
+    Sentence* sentenceAt (const int& p_index) const;
 
     /**
      * @brief Obtains the @c QUuid identifying this @c Corpus
@@ -215,7 +217,7 @@ public:
      * @param p_sentence The Sentence to add.
      * @return A reference to the Corpus object being streamed.
      **/
-    Corpus& operator<< ( Sentence* p_sentence );
+    Corpus& operator<< (Sentence* p_sentence);
 
     /**
      * @brief Stream operator to add a list of sentences.
@@ -223,14 +225,14 @@ public:
      * @param p_sentenceList The list of Sentence objects to add.
      * @return A reference to the Corpus object being streamed.
      **/
-    Corpus& operator<< ( SentenceList& p_sentenceList );
+    Corpus& operator<< (SentenceList& p_sentenceList);
 
 public slots:
     /**
      * @brief Loads the @c Corpus data using its identifying @c QUuid.
      * @param p_uuid The @c QUuid identifying this @c Corpus.
      */
-    void load ( const QUuid& p_uuid );
+    void load (const QUuid& p_uuid);
 
     /**
      * @brief Saves this @c Corpus's information.
@@ -243,7 +245,7 @@ public slots:
      * @param p_uuid The UUID of the Corpus.
      * @return A QUrl to the Corpus data or an invalid one if the UUID doesn't point to a valid Corpus.
      **/
-    static QUrl getPath ( const QUuid& p_uuid );
+    static QUrl getPath (const QUuid& p_uuid);
 
 private:
     /**
@@ -262,4 +264,4 @@ private:
 }
 
 #endif // CORPUS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

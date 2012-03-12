@@ -23,62 +23,74 @@
 
 using namespace SpeechControl::Windows;
 
-VoxforgeSettingsPane::VoxforgeSettingsPane():
-ui ( new Ui::VoxforgeSettingsPane ) {
+VoxforgeSettingsPane::VoxforgeSettingsPane() :
+    ui (new Ui::VoxforgeSettingsPane)
+{
     qDebug() << "[VoxforgeSettingsPane::{constructor}] Building voxforge settings pane...";
-    ui->setupUi ( this );
+    ui->setupUi (this);
     updateUi();
     qDebug() << "[VoxforgeSettingsPane::{constructor}] Built voxforge settings pane.";
 }
 
-VoxforgeSettingsPane::~VoxforgeSettingsPane() {
+VoxforgeSettingsPane::~VoxforgeSettingsPane()
+{
     delete ui;
 }
 
-void VoxforgeSettingsPane::changeEvent ( QEvent *e ) {
-    QFrame::changeEvent ( e );
-    switch ( e->type() ) {
-        case QEvent::LanguageChange:
-            ui->retranslateUi ( this );
-            break;
-        default:
-            break;
+void VoxforgeSettingsPane::changeEvent (QEvent* e)
+{
+    QFrame::changeEvent (e);
+
+    switch (e->type()) {
+    case QEvent::LanguageChange:
+        ui->retranslateUi (this);
+        break;
+    default:
+        break;
     }
 }
 
-QString SpeechControl::Windows::VoxforgeSettingsPane::title() const {
+QString SpeechControl::Windows::VoxforgeSettingsPane::title() const
+{
     return "VoxForge";
 }
 
-QString SpeechControl::Windows::VoxforgeSettingsPane::id() const {
+QString SpeechControl::Windows::VoxforgeSettingsPane::id() const
+{
     return "vxfrg";
 }
 
-bool VoxforgeSettingsPane::containsText ( const QString& p_query ) const {
+bool VoxforgeSettingsPane::containsText (const QString& p_query) const
+{
 
 }
 
-QPixmap VoxforgeSettingsPane::pixmap() const {
-    return QIcon::fromTheme ( "configure" ).pixmap ( 32,32 );
+QPixmap VoxforgeSettingsPane::pixmap() const
+{
+    return QIcon::fromTheme ("configure").pixmap (32, 32);
 }
 
-void VoxforgeSettingsPane::resetPanel() {
+void VoxforgeSettingsPane::resetPanel()
+{
 
 }
 
-void VoxforgeSettingsPane::restoreDefaults() {
+void VoxforgeSettingsPane::restoreDefaults()
+{
 
 }
 
-void VoxforgeSettingsPane::updateUi() {
+void VoxforgeSettingsPane::updateUi()
+{
 
 }
 
 
 /// @todo Toggle the ability to upload content up to VoxForge.
-void SpeechControl::Windows::VoxforgeSettingsPane::on_checkBox_clicked() {
+void SpeechControl::Windows::VoxforgeSettingsPane::on_checkBox_clicked()
+{
 
 }
 
 #include "voxforge-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

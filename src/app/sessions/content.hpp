@@ -205,7 +205,7 @@ public:
 
 protected:
     explicit AbstractContentSource (QObject* p_parent = 0);
-    explicit AbstractContentSource ( QString p_id, QObject* p_parent = 0 );
+    explicit AbstractContentSource (QString p_id, QObject* p_parent = 0);
 
 private:
     QString m_id;
@@ -236,4 +236,4 @@ public:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

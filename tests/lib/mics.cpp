@@ -25,49 +25,55 @@
 
 using namespace SpeechControl;
 
-void TestMicrophone::init() {
+void TestMicrophone::init()
+{
     SpeechControl::System::start();
 
-    if ( AbstractAudioSource::allMicrophones().length() == 0)
-        QSKIP("This test requires at least one input device operational on the test environment.", SkipAll);
+    if (AbstractAudioSource::allMicrophones().length() == 0)
+        QSKIP ("This test requires at least one input device operational on the test environment.", SkipAll);
 }
 
-void TestMicrophone::cleanup() {
+void TestMicrophone::cleanup()
+{
     SpeechControl::System::stop();
 }
 
-void TestMicrophone::listMicrophones() {
+void TestMicrophone::listMicrophones()
+{
     MicrophoneList l_mics = AbstractAudioSource::allMicrophones();
 
-    Q_FOREACH ( const AbstractAudioSource* l_mic, l_mics ) {
+    Q_FOREACH (const AbstractAudioSource * l_mic, l_mics) {
         qDebug() << "(mic)" << l_mic->name();
     }
 }
 
-void TestMicrophone::defaultMicrophone() {
+void TestMicrophone::defaultMicrophone()
+{
     AbstractAudioSource* l_defaultMic = AbstractAudioSource::defaultMicrophone();
-    QCOMPARE ( l_defaultMic != 0 && !AbstractAudioSource::allMicrophones().isEmpty(),true );
-    QCOMPARE ( l_defaultMic->isValid() == true,true );
+    QCOMPARE (l_defaultMic != 0 && !AbstractAudioSource::allMicrophones().isEmpty(), true);
+    QCOMPARE (l_defaultMic->isValid() == true, true);
     qDebug() << "Default mic is:" << l_defaultMic->name();
 }
 
-void TestMicrophone::adjustVolume() {
+void TestMicrophone::adjustVolume()
+{
     AbstractAudioSource* l_defaultMic = AbstractAudioSource::defaultMicrophone();
-    QCOMPARE ( l_defaultMic != 0 && !AbstractAudioSource::allMicrophones().isEmpty(),true );
-    QCOMPARE ( l_defaultMic->isValid() == true,true );
-    l_defaultMic->setVolume ( 0.8 );
-    QCOMPARE ( l_defaultMic->volume() == 0.8,true );
+    QCOMPARE (l_defaultMic != 0 && !AbstractAudioSource::allMicrophones().isEmpty(), true);
+    QCOMPARE (l_defaultMic->isValid() == true, true);
+    l_defaultMic->setVolume (0.8);
+    QCOMPARE (l_defaultMic->volume() == 0.8, true);
 }
 
-void TestMicrophone::toggleMuteState() {
+void TestMicrophone::toggleMuteState()
+{
     AbstractAudioSource* l_defaultMic = AbstractAudioSource::defaultMicrophone();
-    QCOMPARE ( l_defaultMic != 0 && !AbstractAudioSource::allMicrophones().isEmpty(),true );
+    QCOMPARE (l_defaultMic != 0 && !AbstractAudioSource::allMicrophones().isEmpty(), true);
     const bool l_muted = l_defaultMic->isMuted();
-    l_defaultMic->mute(!l_muted);
-    QCOMPARE ( l_defaultMic->isMuted(), !l_muted );
+    l_defaultMic->mute (!l_muted);
+    QCOMPARE (l_defaultMic->isMuted(), !l_muted);
 }
 
-QTEST_MAIN ( TestMicrophone )
+QTEST_MAIN (TestMicrophone)
 
 #include "mics.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

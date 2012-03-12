@@ -30,16 +30,19 @@
 #include <sessions/sentence.hpp>
 #include <sessions/session.hpp>
 
-namespace Ui {
+namespace Ui
+{
 /**
  * @brief Generated class used for SpeechControl::Windows::TrainingDialog.
  */
 class Training;
 }
 
-namespace SpeechControl {
-    class AbstractAudioSource;
-namespace Windows {
+namespace SpeechControl
+{
+class AbstractAudioSource;
+namespace Windows
+{
 
 /**
  * @brief Represents a dialog that manages the graphical processing of acoustic data collection.
@@ -49,7 +52,8 @@ namespace Windows {
  * needed for training. With this dialog, it's possible to adequately collect volumes of text for
  * training needed to adapt and perfect a model.
  **/
-class TrainingDialog : public QDialog {
+class TrainingDialog : public QDialog
+{
     Q_OBJECT
 
 public:
@@ -58,7 +62,7 @@ public:
      * Initializes a new Training dialog.
      * @param p_parent The parent QWidget this dialog will latch onto.
      **/
-    explicit TrainingDialog ( QWidget *p_parent = 0 );
+    explicit TrainingDialog (QWidget* p_parent = 0);
 
     /**
      * @brief Destructor.
@@ -70,7 +74,7 @@ public:
      * @param  p_session The @c Session to train.
      * @return void
      **/
-    static void startTraining ( Session* p_session );
+    static void startTraining (Session* p_session);
 
     /**
      * @brief Changes the Session object used by this Training dialog.
@@ -78,7 +82,7 @@ public:
      * @param p_session The @c Session to use in place of the currently used @c Session.
      * @return void
      **/
-    void setSession ( Session* p_session );
+    void setSession (Session* p_session);
 
     /**
      * @brief Obtains the Session currently being trained.
@@ -109,11 +113,11 @@ public slots:
     virtual void open();
 
 private slots:
-    void updateProgress ( const double p_progress );
+    void updateProgress (const double p_progress);
     void onMicStoppedListening();
     void onMicStartedListening();
     void on_pushButtonClose_clicked();
-    void on_pushButtonProgress_toggled ( const bool& );
+    void on_pushButtonProgress_toggled (const bool&);
     void on_pushButtonReset_clicked();
     void on_pushButtonUndo_clicked();
     void on_pushButtonNext_clicked();
@@ -127,7 +131,7 @@ private:
      * @param p_sentence Sentence* Defaults to 0 (which changes to the current sentence, m_curSntct)
      * @return void
      **/
-    void navigateToPart ( const uint& p_index, Sentence* p_sentence = 0 );
+    void navigateToPart (const uint& p_index, Sentence* p_sentence = 0);
 
     /**
      * @brief Moves the focused text to a spot ahead.
@@ -146,7 +150,7 @@ private:
 
     int m_currentPosition;           ///< The current position of the phrase in the current sentence being trained.
     uint m_initialPosition;          ///< The position that training began at in this dialog.
-    Ui::Training *m_ui;              ///< The object used to manage the dialog's widgets.
+    Ui::Training* m_ui;              ///< The object used to manage the dialog's widgets.
     AbstractAudioSource* m_mic;      ///< The Microphone used by this dialog.
     Session* m_session;              ///< The current Session being trained.
     Sentence* m_currentSentence;     ///< The current sentence being focused on.
@@ -157,4 +161,4 @@ private:
 }
 
 #endif // TRAINING_WINDOW_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -22,7 +22,8 @@
 #define TEST_APP_SESSIONS_HPP
 #include <QObject>
 
-class TestSessions : public QObject {
+class TestSessions : public QObject
+{
     Q_OBJECT
 
 private slots:

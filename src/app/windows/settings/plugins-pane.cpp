@@ -20,6 +20,7 @@
 
 #include <QMessageBox>
 #include <QListWidget>
+#include <QTableWidget>
 
 #include "factory.hpp"
 #include "plugins-pane.hpp"
@@ -45,20 +46,38 @@ PluginsSettingsPane::~PluginsSettingsPane()
 
 void PluginsSettingsPane::updateUi()
 {
-    QListWidget* l_lstWidg = ui->lstPlugins;
-    l_lstWidg->clear();
+    QTableWidget* l_view = ui->lstPlugins;
+    l_view->clear();
 
     PluginList l_plgnLst = Factory::availablePlugins().values();
+    qDebug() << "[PluginsSettingsPane::updateUi()" << l_plgnLst.length() << "plug-ins installed.";
+    l_view->setHorizontalHeaderLabels(QStringList() << "Enabled" << "Name" << "Version");
+    l_view->setRowCount(l_plgnLst.count());
+    l_view->setColumnWidth(0,30);
+    l_view->setColumnCount(3);
+    int index = 0;
 
     Q_FOREACH (AbstractPlugin * l_plgn, l_plgnLst) {
-        QListWidgetItem* l_itm = new QListWidgetItem (l_plgn->name(), l_lstWidg);
-        l_lstWidg->addItem (l_itm);
+        QTableWidgetItem* l_autoStart = new QTableWidgetItem;
+        QTableWidgetItem* l_pluginTitle = new QTableWidgetItem;
+        QTableWidgetItem* l_pluginVersion = new QTableWidgetItem;
+
+        l_autoStart->setFlags (Qt::ItemIsUserCheckable);
+        l_autoStart->setCheckState (l_plgn->isEnabled() ? Qt::Checked : Qt::Unchecked);
+        l_pluginTitle->setText(l_plgn->name());
+        l_pluginTitle->setToolTip(l_plgn->description());
+        l_pluginVersion->setText(QString::number(l_plgn->version()));
+
+        l_view->setItem(index,0,l_autoStart);
+        l_view->setItem(index,1,l_pluginTitle);
+        l_view->setItem(index,2,l_pluginVersion);
+        index++;
     }
 }
 
 QString PluginsSettingsPane::title() const
 {
-    return "Plugins";
+    return tr("Plug-ins");
 }
 
 QString PluginsSettingsPane::id() const
@@ -73,7 +92,7 @@ bool PluginsSettingsPane::containsText (const QString& p_query) const
 
 QPixmap PluginsSettingsPane::pixmap() const
 {
-    return QIcon::fromTheme ("configure").pixmap (32, 32);
+    return QIcon::fromTheme ("list-add").pixmap (32, 32);
 }
 
 void PluginsSettingsPane::resetPanel()
@@ -105,4 +124,4 @@ void PluginsSettingsPane::changeEvent (QEvent* e)
 }
 
 #include "plugins-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

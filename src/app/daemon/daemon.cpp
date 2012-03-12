@@ -33,7 +33,7 @@ DaemonSphinx::DaemonSphinx() : AbstractSphinx()
 
 void DaemonSphinx::applicationMessage (const QGst::MessagePtr& p_message)
 {
-    qDebug() << p_message->typeName();
+    qDebug() << "[(dameon) SpeechControl::Daemon::start()] Caught application message:" <<  p_message->typeName();
 }
 
 Daemon::Daemon() : QObject (QApplication::instance()), m_sphnx (new DaemonSphinx)
@@ -61,11 +61,13 @@ QString Daemon::listen()
 
 void Daemon::start()
 {
+    qDebug() << "[(dameon) SpeechControl::Daemon::start()] Started.";
     emit started();
 }
 
 void Daemon::stop()
 {
+    qDebug() << "[(dameon) SpeechControl::Daemon::stop()] Stopped.";
     emit stopped();
 }
 
@@ -78,4 +80,4 @@ Daemon* Daemon::instance()
 }
 
 #include "daemon.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

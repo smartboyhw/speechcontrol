@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 2.8)
 ## Let's use our own modules to find some softwares not packed with the system.
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
 include(SpeechControlDefaults)
+include(SpeechControlMacros)
 
 ## Options to toggle components of SpeechControl.
 option(WITH_KDE_SUPPORT        "Build KDE specific features?"               ON)

@@ -63,7 +63,7 @@ Content* Content::obtain (const QUuid& p_uuid)
         SC_ASSERT( l_content->isValid() , "Invalid Corpus was obtained.");
 
         s_lst.insert (p_uuid, (l_content));
-            return 0;
+        return l_content;
     }
 
     return s_lst.value (p_uuid);
@@ -278,7 +278,11 @@ Content* Content::create (const QString& p_author, const QString& p_title, const
     l_domElem.appendChild (l_textElem);
 
     QFile l_file (Content::getPath (l_uuid));
-    l_file.open (QIODevice::WriteOnly | QIODevice::Truncate);
+    if (!l_file.open (QIODevice::WriteOnly | QIODevice::Truncate)){
+        qDebug() << "[Content::create()] Failed to open file for new Content creation.";
+        return 0;
+    }
+
     QTextStream l_strm (&l_file);
     l_strm.setCodec ("UTF-8");
     l_dom.save (l_strm, 4);
@@ -286,7 +290,7 @@ Content* Content::create (const QString& p_author, const QString& p_title, const
 
     qDebug() << "[Content::create()] Content XML:" << l_dom.toString();
     Content* l_nabbedContent = Content::obtain ( l_uuid );
-    Q_ASSERT(l_nabbedContent != 0);
+    SC_ASSERT(l_nabbedContent != 0,"The generated Content doesn't exist!");
 
     return l_nabbedContent;
 }

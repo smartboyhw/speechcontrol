@@ -256,9 +256,15 @@ void Main::refreshUi()
 
     m_ui->btnDsktpCntrl->setChecked (desktopControlActive);
     m_ui->btnDsktpCntrl->setIcon ( ( (desktopControlActive) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
+    
+    if (!desktopControlActive)
+        m_ui->btnDsktpCntrl->setEnabled(desktopControlEnabled);
 
     m_ui->btnDctn->setChecked (dictationActive);
     m_ui->btnDctn->setIcon ( ( (dictationActive) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
+    
+    if (!dictationActive)
+        m_ui->btnDctn->setEnabled(dictationEnabled);
 }
 
 void Main::on_actionAboutQt_triggered()

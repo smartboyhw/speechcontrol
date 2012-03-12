@@ -151,7 +151,7 @@ double Sentence::completedProgress() const
     return (double) (l_count) / (double) (phrases().count());
 }
 
-QDomElement* Sentence::getPhraseElement (const int& p_indx) const
+QDomElement* Sentence::getPhraseElement (const int p_indx) const
 {
     return new QDomElement (m_elem->elementsByTagName ("Phrase").at (p_indx).toElement());
 }

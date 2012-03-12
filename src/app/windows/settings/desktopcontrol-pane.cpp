@@ -123,7 +123,6 @@ void DesktopControlSettingsPane::updateUi()
 void DesktopControlSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
 {
     Core::setConfiguration ("DesktopControl/Enabled", p_checked);
-    DesktopControl::Agent::instance()->setState ( ( (p_checked) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled));
 }
 
 void DesktopControlSettingsPane::on_checkBoxEnableStartup_toggled (bool p_checked)

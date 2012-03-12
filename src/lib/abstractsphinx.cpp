@@ -190,7 +190,6 @@ void AbstractSphinx::setDictionary (const Dictionary* p_dictionary)
 
 void AbstractSphinx::setAcousticModel (const QString& p_path)
 {
-
     if (QDir (p_path).exists()) {
         setPsProperty ("hmm", p_path);
     }
@@ -270,4 +269,4 @@ AbstractSphinx::~AbstractSphinx()
     m_pipeline->setState (QGst::StateNull);
 }
 #include "abstractsphinx.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

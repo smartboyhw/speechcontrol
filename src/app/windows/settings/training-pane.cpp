@@ -19,6 +19,8 @@
  */
 
 #include "training-pane.hpp"
+#include "session-pane.hpp"
+#include "content-pane.hpp"
 #include "ui_settingspane-training.h"
 
 using namespace SpeechControl::Windows;
@@ -27,6 +29,8 @@ TrainingSettingsPane::TrainingSettingsPane():
     ui ( new Ui::TrainingSettingsPane ) {
         qDebug() << "[TrainingSettingsPane::{constructor}] Building training settings pane...";
         ui->setupUi ( this );
+        addPane(new SessionSettingsPane);
+        addPane(new ContentSettingsPane);
         updateUi();
         qDebug() << "[TrainingSettingsPane::{constructor}] Built training settings pane.";
     }
@@ -47,11 +51,11 @@ void TrainingSettingsPane::changeEvent ( QEvent *e ) {
 }
 
 QString SpeechControl::Windows::TrainingSettingsPane::title() const {
-    return "VoxForge";
+    return "Training";
 }
 
 QString SpeechControl::Windows::TrainingSettingsPane::id() const {
-    return "vxfrg";
+    return "trnng";
 }
 
 bool TrainingSettingsPane::containsText ( const QString& p_query ) const {

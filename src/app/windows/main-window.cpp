@@ -111,6 +111,7 @@ void Main::closeEvent ( QCloseEvent* p_closeEvent ) {
     } else {
         if ( QMessageBox::Yes == QMessageBox::question ( this,"Confirm Quit","Are you sure you want to quit SpeechControl?",QMessageBox::Yes|QMessageBox::No ) ) {
             p_closeEvent->accept();
+            QApplication::quit();
         } else {
             p_closeEvent->ignore();
         }

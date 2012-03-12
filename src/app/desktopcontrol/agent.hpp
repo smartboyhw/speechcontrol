@@ -47,7 +47,7 @@ namespace DesktopControl
  * agent; if it's not active, no desktop control can occur.
  * The agent provides an API for enabling our desktop control facilities.
  *
- * @section about-dsktpcntrl About DesktopControl
+ * @section about-desktopctl About DesktopControl
  * Desktop Control is a technology of management using user's voice, it is one of the
  * main SpeechControl's features. User has basically control over every aspect of work
  * with his computer. Will it be creating/removing files, opening programs and files, starting new

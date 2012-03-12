@@ -54,6 +54,7 @@ public:
      * @param p_parent Defaults to 0.
      **/
     Sphinx (const QString& p_description, QObject* p_parent = 0);
+    
     /**
      * @brief Constructor.
      *

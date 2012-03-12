@@ -108,32 +108,32 @@ public:
      * @brief Obtains the UUID of this @c Content.
      * @return The UUID of this @c Content.
      **/
-    const QUuid uuid() const;
+    QUuid uuid() const;
 
     /**
      * @brief Obtains the title of this @c Content, or if provided, the nickname of the Session.
      * @return A string holding the title of this @c Content, or the nickname if provided.
      **/
-    const QString title() const;
+    QString title() const;
 
     /**
      * @brief Obtains the author of this @c Content.
      * @return A string holding the name of the author of this @c Content.
      **/
-    const QString author() const;
+    QString author() const;
 
     /**
      * @brief Obtains a list representing all of the pages contained by this @c Content.
      * @return A @c QStringList of all of the pages.
      **/
-    const QStringList pages() const;
+    QStringList pages() const;
 
     /**
      * @brief Obtains a specified page at index p_indx.
      * @param p_indx The index at which the page is to be found.
      * @return A string with the page's text, or QString::null if not found.
      **/
-    const QString pageAt (const int& p_indx) const;
+    QString pageAt (const int& p_index) const;
 
     /**
      * @brief Determines if this @c Session is valid.

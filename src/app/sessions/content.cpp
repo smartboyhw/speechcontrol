@@ -194,14 +194,14 @@ QString Content::getPath (const QUuid& p_uuid)
     return Core::configurationPath().path() + "/contents/" + p_uuid.toString().remove(QRegExp("[{}]")) + ".xml";
 }
 
-const QString Content::title() const
+QString Content::title() const
 {
     QDomElement l_domElem = m_dom->documentElement();
     QDomElement l_bilboElem = l_domElem.namedItem ("Bibliography").toElement();
     return l_bilboElem.attribute ("Title");
 }
 
-const QString Content::author() const
+QString Content::author() const
 {
     QDomElement l_domElem = m_dom->documentElement();
     QDomElement l_bilboElem = l_domElem.namedItem ("Bibliography").toElement();
@@ -212,7 +212,7 @@ Content::~Content()
 {
 }
 
-const QUuid Content::uuid() const
+QUuid Content::uuid() const
 {
     return m_uuid;
 }
@@ -243,15 +243,15 @@ ContentList Content::allContents()
     return l_lst;
 }
 
-const QStringList Content::pages() const
+QStringList Content::pages() const
 {
     return m_pages;
 }
 
-const QString Content::pageAt (const int& l_index) const
+QString Content::pageAt (const int& p_index) const
 {
-    if (l_index < m_pages.count()) {
-        return m_pages.at (l_index).trimmed();
+    if (p_index < m_pages.count()) {
+        return m_pages.at (p_index).trimmed();
     }
 
     return QString::null;

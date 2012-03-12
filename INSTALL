@@ -56,17 +56,17 @@ By default, SpeechControl builds with the following configuration values:
     Configuration Value     :   Value
     ---------------------------------------------------------------------------
     WITH_DBUS_SUPPORT           ON  (adds D-Bus support)
-    WITH_PYTHON_BINDINGS        OFF (bindings for libspeechcontrol)
+    WITH_PYTHON_BINDINGS        OFF (bindings for libspeechcontrol to Python)
     WITH_TESTS                  OFF (initializes the test build system)
     WITH_API_DOCS               OFF (generates documentation about API)
-    WITH_KDE_SUPPORT            OFF (builds another KApplication-based binary)
+    WITH_KDE_SUPPORT            OFF (builds KDE-specific bindings)
 
 These values only recognize the values 'ON' and 'OFF'. You can change these
 values by doing the following:
 
-    $ cmake -DWITH_TESTS=OFF        # disable tests
-    $ cmake -DWITH_KDE_SUPPORT=ON   # enable KDE support and generates another
-                                    # target
+    $ cmake .. -DWITH_TESTS=OFF        # disable tests
+    $ cmake .. -DWITH_KDE_SUPPORT=ON   # enable KDE support and generates another
+                                       # target
 
 It's possible to produce more specific information about your configuration
 process and provide more direct information for troubleshooting. See the
@@ -98,7 +98,14 @@ From the build directory, you can invoke SpeechControl by:
         $ src/app/speechcontrol-frontend
 
 It's possible to produce more verbose information during execution.
-See the "Testing" section for more information.
+See the "Testing" section for more information. You can install SpeechControl
+into your system by invoking:
+
+    # make install
+
+and un-installing by invoking:
+
+    # make uninstall
 
 5. Testing
 

@@ -647,7 +647,7 @@ p, li { white-space: pre-wrap; }
    <sender>actionQuit</sender>
    <signal>activated()</signal>
    <receiver>MainWindow</receiver>
-   <slot>hide()</slot>
+   <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>

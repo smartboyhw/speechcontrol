@@ -150,9 +150,6 @@ void Main::desktopControlStateChanged() {
     default:
         break;
     }
-
-    m_ui->btnDctn->setEnabled ( DesktopControl::Agent::instance()->state() == AbstractAgent::ActivityState::Disabled );
-    m_ui->btnDsktpCntrl->setEnabled ( Dictation::Agent::instance()->state() == AbstractAgent::ActivityState::Enabled );
 }
 
 void Main::dictationStateChanged() {
@@ -166,9 +163,6 @@ void Main::dictationStateChanged() {
     default:
         break;
     }
-
-    m_ui->btnDctn->setEnabled ( Dictation::Agent::instance()->state() == AbstractAgent::ActivityState::Enabled );
-    m_ui->btnDsktpCntrl->setEnabled ( Dictation::Agent::instance()->state() == AbstractAgent::ActivityState::Disabled );
 }
 
 /// @todo Instead of this constant ticking, use signals to update this code.
@@ -218,8 +212,7 @@ void Main::on_actionDesktopControlActive_triggered ( bool p_checked ) {
 
     DesktopControl::Agent::instance()->setState ( p_checked ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled );
     setStatusMessage ( ( p_checked ? tr ( "Desktop control enabled." ) : tr ( "Desktop control disabled." ) ) , 3000 );
-    m_ui->btnDsktpCntrl->setIcon ( ( ( p_checked == true ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
-    m_ui->btnDsktpCntrl->setChecked ( p_checked );
+    refreshUi();
 }
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
@@ -229,8 +222,22 @@ void Main::on_actionDictationActive_triggered ( const bool p_checked ) {
 
     Dictation::Agent::instance()->setState ( ( p_checked ) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled );
     setStatusMessage ( ( ( p_checked ) ? tr ( "Dictation enabled." ) : tr ( "Dictation disabled." ) )  , 3000 );
-    m_ui->btnDctn->setIcon ( ( ( p_checked ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
-    m_ui->btnDctn->setChecked ( p_checked );
+    refreshUi();
+}
+
+void Main::refreshUi() {
+    const bool dictationActive = Dictation::Agent::instance()->isActive() && Dictation::Agent::instance()->isEnabled();
+    const bool desktopControlActive = DesktopControl::Agent::instance()->isActive() && DesktopControl::Agent::instance()->isEnabled();
+    const bool desktopControlPossible = !dictationActive && desktopControlActive;
+    const bool dictationPossible = !desktopControlActive && dictationActive;
+
+    m_ui->btnDsktpCntrl->setChecked ( desktopControlActive );
+    m_ui->btnDsktpCntrl->setIcon ( ( ( desktopControlActive ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
+    m_ui->btnDsktpCntrl->setEnabled ( desktopControlPossible );
+
+    m_ui->btnDctn->setChecked ( dictationActive );
+    m_ui->btnDctn->setIcon ( ( ( dictationActive ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
+    m_ui->btnDctn->setEnabled ( dictationPossible );
 }
 
 void Main::on_actionAboutQt_triggered() {

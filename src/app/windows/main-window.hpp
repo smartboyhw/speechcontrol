@@ -123,6 +123,7 @@ private slots:
 
 private:
     virtual void closeEvent ( QCloseEvent* p_closeEvent );
+    void refreshUi();
     Ui::MainWindow* m_ui;
     QProgressBar* m_prgStatusbar;
     QTimer* m_tckr;

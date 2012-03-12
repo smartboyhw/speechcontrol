@@ -148,8 +148,13 @@ public:
      **/
     bool isValid() const;
 
+    /**
+     * @brief ...
+     *
+     * @param p_path ...
+     * @return void
+     **/
     void load ( QString p_path );
-
 };
 
 /**
@@ -160,4 +165,4 @@ typedef QList<AcousticModel*> AcousticModelList;
 }
 
 #endif // ACOUSTICMODEL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

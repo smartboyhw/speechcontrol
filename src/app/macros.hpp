@@ -35,4 +35,10 @@
             return s_inst;\
         }\
 
+#ifndef QT_NO_DEBUG
+# define SC_ASSERT(condition,message) ((!(#condition)) ? qt_assert("condition##message",__FILE__,__LINE__) : qt_noop())
+#else
+# define SC_ASSERT(condition,message) qt_noop()
+#endif
+
 #endif

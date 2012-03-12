@@ -99,7 +99,7 @@ Dictionary* AbstractSphinx::dictionary() const {
 
 AcousticModel* AbstractSphinx::acousticModel() const {
     const QString l_hmm = m_psphinx->property ( "hmm" ).toString();
-    return new AcousticModel ( l_hmm );
+    return new AcousticModel ( l_hmm , parent());
 }
 
 const QGst::PipelinePtr AbstractSphinx::pipeline() const {
@@ -172,7 +172,7 @@ void AbstractSphinx::setAcousticModel ( const QString& p_path ) {
 }
 
 void AbstractSphinx::setAcousticModel ( const AcousticModel* p_acousticModel ) {
-
+    setAcousticModel(p_acousticModel->path());
 }
 
 bool AbstractSphinx::isReady() const {

@@ -52,7 +52,7 @@ AbstractContentSource* ContentWizard::source() {
 }
 
 void ContentWizard::setSource ( AbstractContentSource* p_src ) {
-    Q_ASSERT ( p_src != 0 );
+    SC_ASSERT ( p_src != 0, "Invalid AbstractContentSource passed to the ContentWizard." );
     m_src = new AbstractContentSource ( *p_src );
     qDebug() << "Got source" << m_src->id();
 }
@@ -68,7 +68,7 @@ int ContentWizard::nextId() const {
         break;
 
     case ConclusionPage: {
-        Q_ASSERT ( m_src != 0 );
+        SC_ASSERT( m_src != 0, "No AbstractContentSource was chosen to be used with the ContentWizard. This is a logical error with the Source defined in the wizard.");
         Content* l_cntn = m_src->generate();
         if ( l_cntn == 0 ) {
             QMessageBox::warning ( 0,

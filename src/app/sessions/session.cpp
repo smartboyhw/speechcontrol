@@ -141,7 +141,6 @@ bool Session::isValid() const
                              && m_corpus && m_corpus->isValid()
                              && m_content && m_content->isValid()
                          );
-    //Q_ASSERT ( l_valid == true );
     return l_valid;
 }
 

@@ -117,7 +117,8 @@ void SpeechControl::Microphone::startRecording() {
     m_data.clear();
 
     if ( !m_sinkAudio ) {
-        qCritical() << tr ( "One or more elements could not be created. "
+        qCritical() << "Microphone::startRecording()"
+                    << tr ( "One or more elements could not be created. "
                             "Verify that you have all the necessary element plugins installed." );
         return;
     }
@@ -137,10 +138,9 @@ void SpeechControl::Microphone::startRecording() {
     QGlib::connect ( m_sinkAudio, "new-buffer", this, &Microphone::onSinkAudioNewbuffer );
 
     // Get the party started :)
-    m_sinkAudio->setState ( QGst::StatePlaying );
-    m_srcAudio->setState ( QGst::StatePlaying );
     m_pipeline->setState ( QGst::StatePlaying );
 
+    qDebug() << "[Microphone::startRecording()] Pipeline active, recording started.";
     emit startedListening();
 }
 
@@ -149,6 +149,7 @@ void SpeechControl::Microphone::stopRecording() {
     m_srcAudio->setState ( QGst::StateNull );
     m_pipeline->setState ( QGst::StateNull );
 
+    qDebug() << "[Microphone::stopRecording()] Pipeline disabled, recording stopped.";
     emit stoppedListening();
 }
 
@@ -178,10 +179,12 @@ void SpeechControl::Microphone::setVolume ( const double &p_volume ) {
         return;
     }
 
+    qDebug() << "[Microphone::setVolume()] Set volume to " << ( int ) ( p_volume * 100 ) << "%.";
     m_srcVolume->setProperty ( "volume", p_volume );
 }
 
 void SpeechControl::Microphone::mute ( const bool &p_muted ) {
+    qDebug() << "[Microphone::mute()] Is microphone muted? (" << p_muted << ").";
     m_srcVolume->setProperty ( "mute", p_muted );
 }
 
@@ -191,7 +194,7 @@ void SpeechControl::Microphone::obtain() {
                      "audioresample ! audiorate ! volume name=volume ! "
                      "appsink name=sink" );
     } catch ( const QGlib::Error & error ) {
-        qCritical() << "Failed to create audio source bin:" << error;
+        qCritical() << QString ( "[Microphone::obtain()] Failed to create audio source bin: %1" ).arg ( error.what() );
         m_binAudio.clear();
         return;
     }
@@ -207,6 +210,13 @@ void SpeechControl::Microphone::obtain() {
     if ( childProxy && childProxy->childrenCount() > 0 ) {
         QGst::ObjectPtr realSrc = childProxy->childByIndex ( 0 );
         realSrc->setProperty ( "device", m_device.toString() );
+        QList<QGlib::ParamSpecPtr> properties = realSrc->listProperties();
+        Q_FOREACH ( QGlib::ParamSpecPtr property, properties ) {
+            QString name = property->name();
+            QGlib::Value value = realSrc->property ( property->name().toStdString().c_str() );
+            qDebug() << QString( "[Microphone::obtain()] Device property %1 = %2" ).arg ( name, value.toString() );
+        }
+        qDebug() << QString( "[Microphone::obtain()] Obtained device %1" ).arg ( m_device.toString() );
     }
 
     m_binAudio->setState ( QGst::StatePaused );
@@ -214,15 +224,9 @@ void SpeechControl::Microphone::obtain() {
 
 void SpeechControl::Microphone::release() {
     // Turn everything off.
-    m_binAudio->setState ( QGst::StateNull );
-    m_srcAudio->setState ( QGst::StateNull );
-    m_sinkAudio->setState ( QGst::StateNull );
     m_pipeline->setState ( QGst::StateNull );
 
     // Free memory.
-    m_binAudio.clear();
-    m_srcAudio.clear();
-    m_sinkAudio.clear();
     m_pipeline.clear();
 }
 
@@ -234,40 +238,46 @@ void Microphone::onPipelineBusmessage ( const QGst::MessagePtr & message ) {
     switch ( message->type() ) {
     case QGst::MessageError: {
         QGst::ErrorMessagePtr l_errMsg = message.staticCast<QGst::ErrorMessage>();
-        qWarning() << "Pipeline Error: " << l_errMsg->debugMessage();
+        qWarning() << "[Microphone::onPipelineBusmessage()] Error message:" << l_errMsg->debugMessage();
     }
     break;
 
     case QGst::MessageStateChanged: {
         QGst::StateChangedMessagePtr l_stateMsg = message.staticCast<QGst::StateChangedMessage>();
-        qDebug() << "State: " << l_stateMsg->newState();
+        qWarning() << "[Microphone::onPipelineBusmessage()] Message started:" << l_stateMsg->newState();
     }
     break;
 
     case QGst::MessageAsyncDone: {
         stopRecording();
-    } break;
+        qWarning() << "[Microphone::onPipelineBusmessage()] Asynchronous stop.";
+    }
+    break;
 
     case QGst::MessageAsyncStart: {
         QGst::AsyncDoneMessagePtr l_asyncDoneMsg = message.staticCast<QGst::AsyncDoneMessage>();
-        qDebug() << l_asyncDoneMsg->sequenceNumber() << l_asyncDoneMsg->internalStructure()->numberOfFields();
-    } break;
+        qWarning() << "[Microphone::onPipelineBusmessage()] Asynchronous start:" << l_asyncDoneMsg->sequenceNumber() << l_asyncDoneMsg->internalStructure()->numberOfFields();
+    }
+    break;
+
     default:
-        qDebug() << message->typeName();
+        qWarning() << "[Microphone::onPipelineBusmessage()] Unhandled message:" << message->typeName();
         break;
     }
 }
 
 void Microphone::onSinkAudioEos ( const QGlib::Value &p_eos ) {
-    qDebug() << "EOS:" << p_eos;
+    qWarning() << "[Microphone::onSinkAudioEos()] End-of-stream encountered" << p_eos.toString();
 }
 
 void Microphone::onSinkAudioNewbuffer ( const QGlib::Value &p_strm ) {
+    qWarning() << "[Microphone::onSinkAudioNewbuffer()] Buffer: " << p_strm.toByteArray();
     m_data.append ( p_strm.toByteArray() );
     qDebug() << "BUFFER:" << p_strm;
 }
 
 Microphone::~Microphone() {
+    qWarning() << "[Microphone::~Microphone()] Deleted.";
     m_data.clear();
 }
 

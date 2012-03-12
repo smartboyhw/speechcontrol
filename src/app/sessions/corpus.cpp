@@ -219,7 +219,7 @@ void Corpus::load (const QUuid& p_uuid)
 bool Corpus::isValid() const
 {
     const bool l_valid = m_dom && !m_uuid.isNull();
-    Q_ASSERT (l_valid == true);
+    SC_ASSERT(l_valid == true,"Invalid Corpus.");
     qDebug() << "Is corpus valid?" << l_valid;
     return l_valid;
 }

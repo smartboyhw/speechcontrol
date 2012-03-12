@@ -21,6 +21,8 @@
 #include <QMessageBox>
 #include <QListWidget>
 #include <QTableWidget>
+#include <QCheckBox>
+#include <QLabel>
 
 #include "factory.hpp"
 #include "plugins-pane.hpp"
@@ -46,38 +48,43 @@ PluginsSettingsPane::~PluginsSettingsPane()
 
 void PluginsSettingsPane::updateUi()
 {
-    QTableWidget* l_view = ui->lstPlugins;
-    l_view->clear();
+    QTableWidget* view = ui->lstPlugins;
+    view->clear();
 
-    PluginList l_plgnLst = Factory::availablePlugins().values();
-    qDebug() << "[PluginsSettingsPane::updateUi()" << l_plgnLst.length() << "plug-ins installed.";
-    l_view->setHorizontalHeaderLabels(QStringList() << "Enabled" << "Name" << "Version");
-    l_view->setRowCount(l_plgnLst.count());
-    l_view->setColumnWidth(0,30);
-    l_view->setColumnCount(3);
+    QList<QUuid> plgnLst = Factory::availablePlugins().keys();
+    qDebug() << "[PluginsSettingsPane::updateUi()" << plgnLst.length() << "plug-ins installed.";
+    view->setHorizontalHeaderLabels (QStringList() << tr ("Enabled") << tr ("Name") << tr ("Version"));
+    view->horizontalHeaderItem (0)->setSizeHint (QSize (30, 20));
+    view->horizontalHeaderItem (2)->setSizeHint (QSize (40, 20));
+    view->setRowCount (plgnLst.count());
+    view->setColumnCount (3);
+    view->setColumnWidth (0, 30);
+    view->setColumnWidth (2, 40);
     int index = 0;
 
-    Q_FOREACH (AbstractPlugin * l_plgn, l_plgnLst) {
-        QTableWidgetItem* l_autoStart = new QTableWidgetItem;
-        QTableWidgetItem* l_pluginTitle = new QTableWidgetItem;
-        QTableWidgetItem* l_pluginVersion = new QTableWidgetItem;
+    Q_FOREACH (QUuid uuid, plgnLst) {
+        GenericPlugin* plgn = new GenericPlugin (uuid);
+        QCheckBox* checkBox = new QCheckBox (this);
+        QLabel* title = new QLabel (plgn->name(), this);
+        QLabel* version = new QLabel (QString::number (plgn->version()), this);
 
-        l_autoStart->setFlags (Qt::ItemIsUserCheckable);
-        l_autoStart->setCheckState (l_plgn->isEnabled() ? Qt::Checked : Qt::Unchecked);
-        l_pluginTitle->setText(l_plgn->name());
-        l_pluginTitle->setToolTip(l_plgn->description());
-        l_pluginVersion->setText(QString::number(l_plgn->version()));
+        checkBox->setChecked (plgn->isEnabled());
+        checkBox->setGeometry (0, 0, 30, 30);
+        checkBox->setSizePolicy (QSizePolicy::Fixed, QSizePolicy::Fixed);
 
-        l_view->setItem(index,0,l_autoStart);
-        l_view->setItem(index,1,l_pluginTitle);
-        l_view->setItem(index,2,l_pluginVersion);
+        title->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
+        version->setSizePolicy (QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+        view->setCellWidget (index, 0, checkBox);
+        view->setCellWidget (index, 1, title);
+        view->setCellWidget (index, 2, version);
         index++;
     }
 }
 
 QString PluginsSettingsPane::title() const
 {
-    return tr("Plug-ins");
+    return tr ("Plug-ins");
 }
 
 QString PluginsSettingsPane::id() const

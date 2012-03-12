@@ -69,7 +69,7 @@ bool AbstractPlugin::isSupported() const
 
 const QString AbstractPlugin::name() const
 {
-    if (hasLoaded()) {
+    if (m_cfg) {
         return m_cfg->value ("Plugin/Name").toString();
     }
 
@@ -78,7 +78,7 @@ const QString AbstractPlugin::name() const
 
 const QUuid AbstractPlugin::uuid() const
 {
-    if (hasLoaded()) {
+    if (m_cfg) {
         return QUuid (m_cfg->value ("Plugin/UUID").toString());
     }
 
@@ -87,7 +87,7 @@ const QUuid AbstractPlugin::uuid() const
 
 double AbstractPlugin::version() const
 {
-    if (hasLoaded()) {
+    if (m_cfg) {
         return m_cfg->value ("Plugin/Version").toDouble();
     }
 
@@ -96,7 +96,7 @@ double AbstractPlugin::version() const
 
 const QString AbstractPlugin::description() const
 {
-    if (hasLoaded()) {
+    if (m_cfg) {
         return m_cfg->value ("Plugin/Description").toString();
     }
 
@@ -105,7 +105,7 @@ const QString AbstractPlugin::description() const
 
 const QUrl AbstractPlugin::url() const
 {
-    if (hasLoaded()) {
+    if (m_cfg) {
         return m_cfg->value ("Plugin/URL").toUrl();
     }
 
@@ -114,7 +114,7 @@ const QUrl AbstractPlugin::url() const
 
 const PluginList AbstractPlugin::plugins() const
 {
-    if (hasLoaded()) {
+    if (m_cfg) {
         PluginList l_lst;
         const QStringList l_plgns = m_cfg->value ("Dependencies/Plugins").toStringList();
 
@@ -223,12 +223,12 @@ void AbstractPlugin::addActions (QList< QAction* > p_actions)
 
 bool AbstractPlugin::isEnabled() const
 {
-    return configuration()->value("Plugin/Enabled").toBool();
+    return configuration()->value ("Plugin/Enabled").toBool();
 }
 
 bool AbstractPlugin::isLoaded() const
 {
-    return Factory::isPluginLoaded(uuid());
+    return Factory::isPluginLoaded (uuid());
 }
 
 AbstractPlugin::~AbstractPlugin()
@@ -240,9 +240,9 @@ Plugins::GenericPlugin::GenericPlugin (const QUuid& p_uuid) : AbstractPlugin (p_
 {
 }
 
-Plugins::GenericPlugin::GenericPlugin (const Plugins::GenericPlugin& p_other) : AbstractPlugin(p_other.uuid(),Core::instance())
+Plugins::GenericPlugin::GenericPlugin (const Plugins::GenericPlugin& p_other) : AbstractPlugin (p_other.uuid(), Core::instance())
 {
-
+    qFatal ("Shouldn't hit here.");
 }
 
 #include "plugins.moc"

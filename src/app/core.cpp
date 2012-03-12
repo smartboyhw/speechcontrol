@@ -78,6 +78,7 @@ Core::Core ( int p_argc, char** p_argv, QApplication* app ) : QObject ( app ),
     loadTranslations ( QLocale::system() );
 
     // Set up indicator.
+    qDebug() << "[Core::${constructor}] Show indicator on start? " << configuration ( "Indicator/Show" ).toBool();
     if ( configuration ( "Indicator/Show" ).toBool() )
         Indicator::show();
 }

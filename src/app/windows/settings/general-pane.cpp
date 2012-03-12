@@ -22,6 +22,7 @@
 #include "general-pane.hpp"
 #include "core.hpp"
 #include <desktopcontrol/agent.hpp>
+#include <indicator.hpp>
 #include "ui_settingspane-general.h"
 
 using namespace SpeechControl;
@@ -61,6 +62,7 @@ const QString GeneralSettingsPane::id() const {
 
 void GeneralSettingsPane::on_checkBoxIndicatorIcon_toggled ( bool p_checked ) {
     Core::setConfiguration ( "Indicator/Show",p_checked );
+    (p_checked) ? Indicator::show() : Indicator::hide();
 }
 #include "general-pane.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

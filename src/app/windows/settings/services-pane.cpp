@@ -19,6 +19,8 @@
  */
 
 #include "services-pane.hpp"
+#include "desktopcontrol-pane.hpp"
+#include "dictation-pane.hpp"
 #include "ui_settingspane-services.h"
 
 using namespace SpeechControl::Windows;
@@ -27,6 +29,8 @@ ServicesSettingsPane::ServicesSettingsPane() :
     ui ( new Ui::ServicesSettingsPane ) {
     qDebug() << "[ServicesSettingsPane::{constructor}] Building services settings pane...";
     ui->setupUi ( this );
+    addPane ( new DesktopControlSettingsPane );
+    addPane ( new DictationSettingsPane );
     updateUi();
     qDebug() << "[ServicesSettingsPane::{constructor}] Built services settings pane.";
 }

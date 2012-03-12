@@ -68,24 +68,38 @@ Settings::Settings ( const Settings& p_other ) : QDialog() {
 
 /// @todo Add it to the list of options.
 void Settings::addPane ( AbstractSettingsPane* p_pane ) {
-    AbstractSettingsPane* parentPane = 0;
-    if (p_pane->parent())
-        parentPane = instance()->m_panes.value ( p_pane->parent()->property ( "id" ).toString() );
+    if ( instance()->m_panes.contains ( p_pane->id() ) )
+        return;
 
+    QString parentPaneId = p_pane->property ( "parent-widget" ).toString();
+    const bool hasParentPane = ( !parentPaneId.isNull() && !parentPaneId.isEmpty() );
+    AbstractSettingsPane* parentPane = ( hasParentPane ) ? instance()->m_panes.value ( parentPaneId ) : 0;
+    QTreeWidgetItem* parentItem = ( hasParentPane ) ? instance()->findPaneItem ( parentPaneId ) : 0;
+    QTreeWidgetItem* itm = 0;
     QTreeWidget* treeWidget = instance()->m_ui->treeNavigation;
-    QTreeWidgetItem* l_itm = new QTreeWidgetItem ( treeWidget,QStringList() << p_pane->title() );
+
+    if ( hasParentPane )
+        itm = new QTreeWidgetItem ( parentItem , ( QStringList() << p_pane->title() ) );
+    else
+        itm = new QTreeWidgetItem ( treeWidget , ( QStringList() << p_pane->title() ) );
 
     instance()->m_panes.insert ( p_pane->id(), p_pane );
-    l_itm->setData ( 0,Qt::UserRole,p_pane->id() );
-    l_itm->setIcon ( 0,p_pane->pixmap() );
+    itm->setData ( 0,Qt::UserRole,p_pane->id() );
+    itm->setIcon ( 0,p_pane->pixmap() );
 
-    if ( parentPane ) {
-        instance()->findPaneItem ( parentPane->id() )->addChild ( l_itm );
-    } else {
-        treeWidget->addTopLevelItem ( l_itm );
+    if ( !hasParentPane ) {
+        treeWidget->addTopLevelItem ( itm );
     }
+
     p_pane->setParent ( instance()->m_ui->frmPageContainer );
     p_pane->hide();
+
+    // add sub-panes.
+    if ( !p_pane->m_panes.isEmpty() ) {
+        Q_FOREACH ( AbstractSettingsPane* pane, p_pane->m_panes ) {
+            addPane ( pane );
+        }
+    }
 }
 
 void Settings::displayPane ( const QString& p_paneID ) {
@@ -168,7 +182,8 @@ AbstractSettingsPane::AbstractSettingsPane ( ) {
 
 void AbstractSettingsPane::addPane ( AbstractSettingsPane* p_subPane ) {
     m_panes.insert ( p_subPane->id(),p_subPane );
-    p_subPane->setParent ( this );
+    p_subPane->setProperty ( "parent-widget",id() );
+    qDebug() << "[AbstractSettingsPane::addPane()] Made" << p_subPane->id() << "sub-pane of" << this->id();
 }
 
 bool AbstractSettingsPane::hasPane ( const QString& p_paneID ) const {

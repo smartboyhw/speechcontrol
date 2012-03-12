@@ -17,12 +17,6 @@ find_library(SPHINXBASE_LIBRARY NAMES sphinxbase
 set(SPHINXBASE_INCLUDE_DIRS ${SPHINXBASE_INCLUDE_DIR})
 set(SPHINXBASE_LIBRARIES ${SPHINXBASE_LIBRARY})
 
-include(FindPackageHandleStandardArgs)
-# handle the QUIETLY and REQUIRED arguments and set SPHINXBASE_FOUND to TRUE
-# if all listed variables are TRUE
-find_package_handle_standard_args(SphinxBase DEFAULT_MSG
-    SPHINXBASE_LIBRARY SPHINXBASE_INCLUDE_DIRS)
-
 mark_as_advanced(SPHINXBASE_INCLUDE_DIR SPHINXBASE_LIBRARY)
 
 ## Report information back to the developer about it's state.

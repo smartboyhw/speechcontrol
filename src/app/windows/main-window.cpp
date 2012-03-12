@@ -308,7 +308,7 @@ void Main::on_actionWizardVoxForge_triggered()
 
 void Main::on_actionReportBug_triggered()
 {
-    QProcess::startDetached ("sensible-browser", (QStringList() << "http://dev.thesii.org/reporting-bugs"));
+    QProcess::startDetached ("x-www-browser", (QStringList() << "http://tasks.thesii.org/reporting-bugs"));
 }
 
 Main::~Main()

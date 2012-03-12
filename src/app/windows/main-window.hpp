@@ -50,7 +50,6 @@ namespace Windows {
  **/
 class Main : public QMainWindow {
     Q_OBJECT
-    Q_DISABLE_COPY(Main)
     friend class SpeechControl::Core;
     friend class Plugins::AbstractPlugin;
 

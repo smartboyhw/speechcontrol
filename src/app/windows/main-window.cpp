@@ -57,6 +57,7 @@ using namespace SpeechControl::Windows;
 using namespace SpeechControl::Wizards;
 using namespace SpeechControl::Windows::Managers;
 
+using SpeechControl::Windows::Main;
 using SpeechControl::DesktopControl::AbstractCommand;
 using SpeechControl::DesktopControl::AbstractCategory;
 using SpeechControl::DesktopControl::CommandList;
@@ -185,11 +186,11 @@ void Main::setProgress ( const double p_progress ) {
 }
 
 void Main::on_actionDesktopControlOptions_triggered() {
-    Settings::switchToPanel ( "dsktpcntrl" );
+    Settings::displayPane ( "dsktpcntrl" );
 }
 
 void Main::on_actionOptions_triggered() {
-    Settings::switchToPanel ( "gnrl" );
+    Settings::displayPane ( "gnrl" );
 }
 
 /// @todo Invoke the process of adapting a model. If anything, have a special window for such a process.
@@ -226,10 +227,12 @@ void Main::on_actionDictationActive_triggered ( const bool p_checked ) {
 }
 
 void Main::refreshUi() {
-    const bool dictationActive = Dictation::Agent::instance()->isActive() && Dictation::Agent::instance()->isEnabled();
-    const bool desktopControlActive = DesktopControl::Agent::instance()->isActive() && DesktopControl::Agent::instance()->isEnabled();
-    const bool desktopControlPossible = !dictationActive && desktopControlActive;
-    const bool dictationPossible = !desktopControlActive && dictationActive;
+    const bool dictationActive = Dictation::Agent::instance()->isActive();
+    const bool dictationEnabled = Dictation::Agent::instance()->isEnabled();
+    const bool desktopControlActive = DesktopControl::Agent::instance()->isActive();
+    const bool desktopControlEnabled = DesktopControl::Agent::instance()->isEnabled();
+    const bool desktopControlPossible = !dictationEnabled && desktopControlEnabled;
+    const bool dictationPossible = !desktopControlEnabled && dictationEnabled;
 
     m_ui->btnDsktpCntrl->setChecked ( desktopControlActive );
     m_ui->btnDsktpCntrl->setIcon ( ( ( desktopControlActive ) ? QIcon::fromTheme ( "media-record" ) : QIcon::fromTheme ( "media-playback-pause" ) ) );
@@ -250,11 +253,11 @@ void Main::on_actionAboutSpeechControl_triggered() {
 }
 
 void Main::on_actionPluginOptions_triggered() {
-    Settings::switchToPanel ( "dsktpcntrl" );
+    Settings::displayPane ( "dsktpcntrl" );
 }
 
 void Main::on_actionDictationOptions_triggered() {
-    Settings::switchToPanel ( "dctn" );
+    Settings::displayPane ( "dctn" );
 }
 
 void Main::on_actionWizardMicrophone_triggered() {

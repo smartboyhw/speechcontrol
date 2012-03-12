@@ -27,7 +27,6 @@
 #include "desktopcontrol-pane.hpp"
 #include <dictation/agent.hpp>
 #include "ui_settingspane-desktopcontrol.h"
-#include <app/windows/main-window.hpp>
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
@@ -124,7 +123,7 @@ void DesktopControlSettingsPane::updateUi()
 void DesktopControlSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
 {
     Core::setConfiguration ("DesktopControl/Enabled", p_checked);
-    Core::mainWindow()->refreshUi();
+    DesktopControl::Agent::instance()->setState ( ( (p_checked) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled));
 }
 
 void DesktopControlSettingsPane::on_checkBoxEnableStartup_toggled (bool p_checked)
@@ -133,4 +132,4 @@ void DesktopControlSettingsPane::on_checkBoxEnableStartup_toggled (bool p_checke
 }
 
 #include "desktopcontrol-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

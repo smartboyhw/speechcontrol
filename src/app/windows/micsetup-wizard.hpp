@@ -22,7 +22,7 @@
 #ifndef MS_WIZARD_HPP
 #define MS_WIZARD_HPP
 
-#include "wizards/base.hpp"
+#include <windows/wizards/base.hpp>
 
 namespace SpeechControl
 {
@@ -51,4 +51,4 @@ public slots:
 }
 }
 #endif // WIZARD_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -221,6 +221,16 @@ void AbstractPlugin::addActions (QList< QAction* > p_actions)
     }
 }
 
+bool AbstractPlugin::isEnabled() const
+{
+    return configuration()->value("Plugin/Enabled").toBool();
+}
+
+bool AbstractPlugin::isLoaded() const
+{
+    return Factory::isPluginLoaded(uuid());
+}
+
 AbstractPlugin::~AbstractPlugin()
 {
 
@@ -230,5 +240,10 @@ Plugins::GenericPlugin::GenericPlugin (const QUuid& p_uuid) : AbstractPlugin (p_
 {
 }
 
+Plugins::GenericPlugin::GenericPlugin (const Plugins::GenericPlugin& p_other) : AbstractPlugin(p_other.uuid(),Core::instance())
+{
+
+}
+
 #include "plugins.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

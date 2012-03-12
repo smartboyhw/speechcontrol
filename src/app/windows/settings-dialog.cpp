@@ -171,16 +171,21 @@ void Settings::on_buttonBox_clicked (QAbstractButton* p_button)
     switch (buttonState) {
     case QDialogButtonBox::Ok:
         this->accept();
+        close();
+        break;
 
     case QDialogButtonBox::Help:
+        close();
         break;
 
     case QDialogButtonBox::Reset:
         /// @todo Add functionality to reset options to the state they were before opening the dialog.
+        close();
         break;
 
     case QDialogButtonBox::RestoreDefaults:
         /// @todo Add functionality to set the values of the properties all back to default.
+        close();
         break;
     }
 }
@@ -222,4 +227,4 @@ AbstractSettingsPane::~AbstractSettingsPane()
 
 }
 #include "settings-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

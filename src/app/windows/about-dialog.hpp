@@ -22,7 +22,9 @@
 #define ABOUTDIALOG_HPP
 
 #include <QDialog>
-#include "ui_about-dialog.h"
+namespace Ui {
+    class AboutDialog;
+}
 
 namespace SpeechControl {
 namespace Windows {
@@ -33,16 +35,11 @@ public:
     AboutDialog ( QWidget *parent = 0 );
 
 private:
-    Ui::AboutDialog ui;
-
-    QString about() const;
-    QString authors() const;
-    QString contributors() const;
-    QString thanksTo() const;
+    Ui::AboutDialog* ui;
 
 };
 }
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

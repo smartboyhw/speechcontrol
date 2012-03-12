@@ -3,7 +3,7 @@ Installing SpeechControl
 
 0. For the Impatient
 
-    # apt-get install cmake libqt4-dev libqtgstreamer-dev libpocketsphinx-dev libsphinxbase-dev libxdo-dev python-dev libboost-python-dev gstreamer0.10-pocketsphinx
+    # apt-get install cmake libqt4-dev libqtgstreamer-dev libpocketsphinx-dev libsphinxbase-dev libxdo-dev python-dev libboost-python-dev gstreamer0.10-pocketsphinx pkg-config
     $ mkdir build && cd build
     $ cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug
     $ make

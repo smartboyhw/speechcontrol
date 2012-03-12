@@ -35,7 +35,7 @@ KeyboardEmulator::KeyboardEmulator() : QObject ( Core::instance() ), m_xdo(0),
     SC_ASSERT ( m_xdo != 0, "Failed to create 'xdo' instance.");
 
     int l_x, l_y;
-    qDebug() << xdo_mouselocation ( m_xdo,&l_x,&l_y,0 );
+    qDebug() << "[KeyboardEmulator::{constructor}] " << xdo_mouselocation ( m_xdo,&l_x,&l_y,0 );
 }
 
 /// @todo Allow the value of the delay to be adjustable.

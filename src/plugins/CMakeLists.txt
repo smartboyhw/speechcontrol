@@ -17,6 +17,6 @@ if (WITH_PLUGINS)
     #add_subdirectory(python)
     add_subdirectory(unity-hud)
     add_subdirectory(transcriber)
-    add_subdirectory(dsktpcntrl)
+    add_subdirectory(desktopctl)
 
 endif(WITH_PLUGINS)

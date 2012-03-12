@@ -68,7 +68,7 @@ bool DesktopControlSettingsPane::containsText ( const QString& p_query ) const {
 }
 
 QPixmap DesktopControlSettingsPane::pixmap() const {
-
+    return QIcon::fromTheme ( "audio-headset" ).pixmap ( 32,32 );
 }
 
 void DesktopControlSettingsPane::resetPanel() {

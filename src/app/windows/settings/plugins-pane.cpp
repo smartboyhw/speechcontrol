@@ -66,7 +66,7 @@ bool PluginsSettingsPane::containsText ( const QString& p_query ) const {
 }
 
 QPixmap PluginsSettingsPane::pixmap() const {
-
+    return QIcon::fromTheme ( "configure" ).pixmap ( 32,32 );
 }
 
 void PluginsSettingsPane::resetPanel() {

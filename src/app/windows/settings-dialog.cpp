@@ -76,6 +76,7 @@ void Settings::addPane ( AbstractSettingsPane* p_pane ) {
     QListWidgetItem* l_itm = new QListWidgetItem ( p_pane->title(), listWidget );
     instance()->m_panes.insert ( p_pane->id(), p_pane );
     l_itm->setData ( Qt::UserRole,p_pane->id() );
+    l_itm->setIcon ( p_pane->pixmap() );
     p_pane->setParent ( instance()->m_ui->frmPageContainer );
     p_pane->hide();
 }

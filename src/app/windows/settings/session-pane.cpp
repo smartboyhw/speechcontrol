@@ -120,7 +120,7 @@ bool SessionSettingsPane::containsText ( const QString& p_query ) const {
 }
 
 QPixmap SessionSettingsPane::pixmap() const {
-
+    return QIcon::fromTheme ( "configure" ).pixmap ( 32,32 );
 }
 
 void SessionSettingsPane::resetPanel() {

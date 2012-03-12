@@ -72,7 +72,7 @@ bool ContentSettingsPane::containsText ( const QString& p_query ) const {
 }
 
 QPixmap ContentSettingsPane::pixmap() const {
-
+    return QIcon::fromTheme ( "configure" ).pixmap ( 32,32 );
 }
 
 void ContentSettingsPane::resetPanel() {

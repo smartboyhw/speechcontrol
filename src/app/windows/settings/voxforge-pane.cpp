@@ -59,7 +59,7 @@ bool VoxforgeSettingsPane::containsText ( const QString& p_query ) const {
 }
 
 QPixmap VoxforgeSettingsPane::pixmap() const {
-
+    return QIcon::fromTheme ( "configure" ).pixmap ( 32,32 );
 }
 
 void VoxforgeSettingsPane::resetPanel() {

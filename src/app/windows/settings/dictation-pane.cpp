@@ -64,7 +64,7 @@ bool DictationSettingsPane::containsText ( const QString& p_query ) const {
 }
 
 QPixmap DictationSettingsPane::pixmap() const {
-
+    return QIcon::fromTheme ( "audio-input-microphone" ).pixmap ( 32,32 );
 }
 
 void DictationSettingsPane::resetPanel() {

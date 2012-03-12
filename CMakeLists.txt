@@ -23,6 +23,7 @@ find_package(Qt4 4.7 COMPONENTS
   QtXml
   REQUIRED)
 find_package(QtGStreamer REQUIRED)
+find_package(SphinxBase REQUIRED)
 find_package(PocketSphinx REQUIRED)
 
 ## Now we'll add in the Qt stuff

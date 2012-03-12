@@ -30,33 +30,7 @@
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0" colspan="2">
-     <widget class="QDialogButtonBox" name="buttonBox">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="standardButtons">
-       <set>QDialogButtonBox::Ok</set>
-      </property>
-      <property name="centerButtons">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QListWidget" name="lstNavigation">
-      <property name="maximumSize">
-       <size>
-        <width>150</width>
-        <height>16777215</height>
-       </size>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1">
+    <item row="1" column="1">
      <widget class="QFrame" name="frmPageContainer">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -69,6 +43,32 @@
       </property>
       <property name="frameShadow">
        <enum>QFrame::Plain</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0" colspan="2">
+     <widget class="QDialogButtonBox" name="buttonBox">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="standardButtons">
+       <set>QDialogButtonBox::Help|QDialogButtonBox::Ok|QDialogButtonBox::Reset</set>
+      </property>
+      <property name="centerButtons">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0" rowspan="2">
+     <widget class="QListWidget" name="lstNavigation">
+      <property name="maximumSize">
+       <size>
+        <width>150</width>
+        <height>16777215</height>
+       </size>
       </property>
      </widget>
     </item>

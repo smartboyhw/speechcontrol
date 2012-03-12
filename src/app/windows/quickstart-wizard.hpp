@@ -22,7 +22,7 @@
 #ifndef QS_WIZARD_HPP
 #define QS_WIZARD_HPP
 
-#include "wizards/base.hpp"
+#include <windows/wizards/base.hpp>
 
 namespace SpeechControl {
 namespace Wizards {

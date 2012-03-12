@@ -22,6 +22,7 @@
 #define GENERAL_SETTINGS_HPP
 
 #include <QFrame>
+#include <app/windows/settings-dialog.hpp>
 
 namespace Ui {
 class GeneralSettingsPane;
@@ -36,17 +37,15 @@ namespace Windows {
  * This window presents the user in the Settings dialog with general, overlying
  * options that can manipulate SpeechControl's operation.
  **/
-class GeneralSettingsPane : public QFrame {
+class GeneralSettingsPane : public AbstractSettingsPane {
     Q_OBJECT
-    Q_PROPERTY ( const QString Title READ title )   ///< The title of the pane.
-    Q_PROPERTY ( const QString ID READ id )         ///< The ID of the pane.
 
 public:
     /**
      * @brief Constructor.
      * @param parent Defaults to 0.
      **/
-    explicit GeneralSettingsPane ( QWidget *p_parent = 0 );
+    explicit GeneralSettingsPane ();
 
     /**
      * @brief Destructor.
@@ -56,19 +55,27 @@ public:
     /**
      * @brief Obtains the title of this configuration pane.
      **/
-    const QString title() const;
+    QString title() const;
 
     /**
      * @brief Obtains the ID of this configuration pane.
      **/
+    QString id() const;
 
-    const QString id() const;
+    virtual bool containsText ( const QString& p_query ) const;
+
+    QPixmap pixmap() const;
+
+    virtual void resetPanel();
+
+    virtual void restoreDefaults();
 
 protected:
     void changeEvent ( QEvent *e );
 
 private slots:
     void on_checkBoxIndicatorIcon_toggled ( bool p_checked );
+    virtual void updateUi();
 
 private:
     Ui::GeneralSettingsPane *ui;

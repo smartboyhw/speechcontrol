@@ -25,18 +25,20 @@
 #include "desktopcontrol/agent.hpp"
 #include "desktopcontrol/command.hpp"
 #include "desktopcontrol-pane.hpp"
+#include <dictation/agent.hpp>
 #include "ui_settingspane-desktopcontrol.h"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 using namespace SpeechControl::DesktopControl;
 
-DesktopControlSettingsPane::DesktopControlSettingsPane ( QWidget *parent ) :
-    QFrame ( parent ),
+DesktopControlSettingsPane::DesktopControlSettingsPane ( ) :
     m_ui ( new Ui::DesktopControlSettingsPane ) {
-    m_ui->setupUi ( this );
-    updateContent();
-}
+        qDebug() << "[DesktopControlSettingsPane::{constructor}] Building desktop control settings pane...";
+        m_ui->setupUi ( this );
+        updateUi();
+        qDebug() << "[DesktopControlSettingsPane::{constructor}] Built desktop control settings pane.";
+    }
 
 DesktopControlSettingsPane::~DesktopControlSettingsPane() {
     delete m_ui;
@@ -53,16 +55,34 @@ void DesktopControlSettingsPane::changeEvent ( QEvent *e ) {
     }
 }
 
-const QString DesktopControlSettingsPane::title() const {
+QString DesktopControlSettingsPane::title() const {
     return "Desktop Control";
 }
 
-const QString DesktopControlSettingsPane::id() const {
+QString DesktopControlSettingsPane::id() const {
     return "dsktpcntrl";
 }
 
-void DesktopControlSettingsPane::updateContent() {
-    m_ui->checkBoxEnable->setChecked ( DesktopControl::Agent::instance()->isEnabled() );
+bool DesktopControlSettingsPane::containsText ( const QString& p_query ) const {
+
+}
+
+QPixmap DesktopControlSettingsPane::pixmap() const {
+
+}
+
+void DesktopControlSettingsPane::resetPanel() {
+
+}
+
+void DesktopControlSettingsPane::restoreDefaults() {
+
+}
+
+void DesktopControlSettingsPane::updateUi() {
+    m_ui->checkBoxEnable->setChecked ( !Dictation::Agent::instance()->isEnabled() && DesktopControl::Agent::instance()->isEnabled() );
+    m_ui->checkBoxEnable->setEnabled ( !Dictation::Agent::instance()->isEnabled() );
+
     AbstractCategory* l_glbl = DesktopControl::AbstractCategory::global();
     CommandList l_cmds = l_glbl->commands();
     QTableWidget* l_widg = m_ui->tableWidget;

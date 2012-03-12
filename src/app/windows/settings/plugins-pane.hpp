@@ -22,6 +22,7 @@
 #define PLUGINS_SETTINGS_HPP
 
 #include <QFrame>
+#include <app/windows/settings-dialog.hpp>
 
 namespace Ui {
 class PluginsSettingsPane;
@@ -30,18 +31,19 @@ class PluginsSettingsPane;
 namespace SpeechControl {
 namespace Windows {
 
-class PluginsSettingsPane : public QFrame {
+class PluginsSettingsPane : public AbstractSettingsPane {
     Q_OBJECT
-    Q_PROPERTY ( const QString Title READ title )
-    Q_PROPERTY ( const QString ID READ id )
 
 public:
-    explicit PluginsSettingsPane ( QWidget *parent = 0 );
-    ~PluginsSettingsPane();
-    void updateList();
-    const QString title() const;
-    const QString id() const;
-
+    explicit PluginsSettingsPane ( );
+    virtual ~PluginsSettingsPane();
+    virtual bool containsText ( const QString& p_query ) const;
+    virtual QString id() const;
+    virtual QPixmap pixmap() const;
+    virtual void resetPanel();
+    virtual void restoreDefaults();
+    virtual QString title() const;
+    virtual void updateUi();
 protected:
     void changeEvent ( QEvent *e );
 
@@ -56,4 +58,4 @@ private:
 }
 
 #endif // PLUGINS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

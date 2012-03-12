@@ -23,11 +23,13 @@
 
 using namespace SpeechControl::Windows;
 
-VoxforgeSettingsPane::VoxforgeSettingsPane ( QWidget *parent ) :
-    QFrame ( parent ),
+VoxforgeSettingsPane::VoxforgeSettingsPane():
     ui ( new Ui::VoxforgeSettingsPane ) {
-    ui->setupUi ( this );
-}
+        qDebug() << "[VoxforgeSettingsPane::{constructor}] Building voxforge settings pane...";
+        ui->setupUi ( this );
+        updateUi();
+        qDebug() << "[VoxforgeSettingsPane::{constructor}] Built voxforge settings pane.";
+    }
 
 VoxforgeSettingsPane::~VoxforgeSettingsPane() {
     delete ui;
@@ -44,13 +46,34 @@ void VoxforgeSettingsPane::changeEvent ( QEvent *e ) {
     }
 }
 
-const QString SpeechControl::Windows::VoxforgeSettingsPane::title() const {
+QString SpeechControl::Windows::VoxforgeSettingsPane::title() const {
     return "VoxForge";
 }
 
-const QString SpeechControl::Windows::VoxforgeSettingsPane::id() const {
+QString SpeechControl::Windows::VoxforgeSettingsPane::id() const {
     return "vxfrg";
 }
+
+bool VoxforgeSettingsPane::containsText ( const QString& p_query ) const {
+
+}
+
+QPixmap VoxforgeSettingsPane::pixmap() const {
+
+}
+
+void VoxforgeSettingsPane::resetPanel() {
+
+}
+
+void VoxforgeSettingsPane::restoreDefaults() {
+
+}
+
+void VoxforgeSettingsPane::updateUi() {
+
+}
+
 
 /// @todo Toggle the ability to upload content up to VoxForge.
 void SpeechControl::Windows::VoxforgeSettingsPane::on_checkBox_clicked() {

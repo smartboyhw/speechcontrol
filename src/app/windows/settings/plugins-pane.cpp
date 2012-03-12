@@ -29,18 +29,19 @@ using namespace SpeechControl;
 using namespace SpeechControl::Plugins;
 using namespace SpeechControl::Windows;
 
-PluginsSettingsPane::PluginsSettingsPane ( QWidget *parent ) :
-    QFrame ( parent ),
+PluginsSettingsPane::PluginsSettingsPane ( ) :
     ui ( new Ui::PluginsSettingsPane ) {
-    ui->setupUi ( this );
-    updateList();
-}
+        qDebug() << "[PluginsSettingsPane::{constructor}] Building plugins settings pane...";
+        ui->setupUi ( this );
+        updateUi();
+        qDebug() << "[PluginsSettingsPane::{constructor}] Built plugins settings pane.";
+    }
 
 PluginsSettingsPane::~PluginsSettingsPane() {
     delete ui;
 }
 
-void PluginsSettingsPane::updateList() {
+void PluginsSettingsPane::updateUi() {
     QListWidget* l_lstWidg = ui->lstPlugins;
     l_lstWidg->clear();
 
@@ -50,6 +51,34 @@ void PluginsSettingsPane::updateList() {
         QListWidgetItem* l_itm = new QListWidgetItem ( l_plgn->name(),l_lstWidg );
         l_lstWidg->addItem ( l_itm );
     }
+}
+
+QString PluginsSettingsPane::title() const {
+    return "Plugins";
+}
+
+QString PluginsSettingsPane::id() const {
+    return "plgn";
+}
+
+bool PluginsSettingsPane::containsText ( const QString& p_query ) const {
+
+}
+
+QPixmap PluginsSettingsPane::pixmap() const {
+
+}
+
+void PluginsSettingsPane::resetPanel() {
+
+}
+
+void PluginsSettingsPane::restoreDefaults() {
+
+}
+
+void PluginsSettingsPane::on_btnInfo_clicked() {
+
 }
 
 void PluginsSettingsPane::changeEvent ( QEvent *e ) {
@@ -63,17 +92,5 @@ void PluginsSettingsPane::changeEvent ( QEvent *e ) {
     }
 }
 
-const QString PluginsSettingsPane::title() const {
-    return "Plugins";
-}
-
-const QString PluginsSettingsPane::id() const {
-    return "plgn";
-}
-
-void PluginsSettingsPane::on_btnInfo_clicked() {
-
-}
-
 #include "plugins-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

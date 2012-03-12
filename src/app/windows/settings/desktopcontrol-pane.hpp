@@ -22,6 +22,7 @@
 #define DESKTOPCONTROL_SETTINGS_HPP
 
 #include <QFrame>
+#include <app/windows/settings-dialog.hpp>
 
 namespace Ui {
 class DesktopControlSettingsPane;
@@ -30,17 +31,15 @@ class DesktopControlSettingsPane;
 namespace SpeechControl {
 namespace Windows {
 
-class DesktopControlSettingsPane : public QFrame {
+class DesktopControlSettingsPane : public AbstractSettingsPane {
     Q_OBJECT
-    Q_PROPERTY ( const QString Title READ title )   ///< The title of the pane.
-    Q_PROPERTY ( const QString ID READ id )         ///< The ID of the pane.
 
 public:
     /**
      * @brief Constructor.
      * @param parent Defaults to 0.
      **/
-    explicit DesktopControlSettingsPane ( QWidget *p_parent = 0 );
+    explicit DesktopControlSettingsPane (  );
 
     /**
      * @brief Destructor.
@@ -50,21 +49,29 @@ public:
     /**
      * @brief Obtains the title of this configuration pane.
      **/
-    const QString title() const;
+    QString title() const;
 
     /**
      * @brief Obtains the ID of this configuration pane.
      **/
 
-    const QString id() const;
+    QString id() const;
 
+    virtual void updateUi();
+
+    virtual bool containsText ( const QString& p_query ) const;
+
+    virtual QPixmap pixmap() const;
+
+    virtual void resetPanel();
+
+    virtual void restoreDefaults();
 protected:
     void changeEvent ( QEvent *e );
 
 private slots:
     void on_checkBoxEnable_toggled ( bool p_checked );
     void on_checkBoxEnableStartup_toggled (bool p_checked);
-    void updateContent();
 
 private:
     Ui::DesktopControlSettingsPane *m_ui;

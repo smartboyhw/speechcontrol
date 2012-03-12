@@ -31,11 +31,12 @@
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 
-SessionSettingsPane::SessionSettingsPane ( QWidget *parent ) :
-    QFrame ( parent ),
+SessionSettingsPane::SessionSettingsPane() :
     m_ui ( new Ui::SessionSettingsPane ) {
+    qDebug() << "[SessionSettingsPane::{constructor}] Building session settings pane...";
     m_ui->setupUi ( this );
-    updateList();
+    updateUi();
+    qDebug() << "[SessionSettingsPane::{constructor}] Built session settings pane.";
 
     QList<QAction*> l_modifyActions;
     QList<QAction*> l_archiveActions;
@@ -56,7 +57,7 @@ SessionSettingsPane::SessionSettingsPane ( QWidget *parent ) :
 }
 
 void SessionSettingsPane::show() {
-    updateList();
+    updateUi();
     QFrame::show();
 }
 
@@ -75,15 +76,15 @@ void SessionSettingsPane::changeEvent ( QEvent *e ) {
     }
 }
 
-const QString SpeechControl::Windows::SessionSettingsPane::title() const {
+QString SpeechControl::Windows::SessionSettingsPane::title() const {
     return "Sessions";
 }
 
-const QString SpeechControl::Windows::SessionSettingsPane::id() const {
+QString SpeechControl::Windows::SessionSettingsPane::id() const {
     return "sssns";
 }
 
-void SessionSettingsPane::updateList() {
+void SessionSettingsPane::updateUi() {
     QListWidget* l_widget = m_ui->listWidgetSession;
     l_widget->clear();
 
@@ -111,6 +112,22 @@ void SessionSettingsPane::updateList() {
         l_widget->setCurrentItem ( l_item );
     }
 
+
+}
+
+bool SessionSettingsPane::containsText ( const QString& p_query ) const {
+
+}
+
+QPixmap SessionSettingsPane::pixmap() const {
+
+}
+
+void SessionSettingsPane::resetPanel() {
+
+}
+
+void SessionSettingsPane::restoreDefaults() {
 
 }
 
@@ -159,7 +176,7 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionDelete_triggered() {
         }
     }
 
-    updateList();
+    updateUi();
 }
 
 /// @todo Add support for multiple session selection.
@@ -170,7 +187,7 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionCopy_triggered() {
     Session* l_ss = Session::obtain ( l_itm->data ( Qt::UserRole ).toString() );
     Session* l_newSs = l_ss->clone();
     if ( l_newSs ) {
-        updateList();
+        updateUi();
     }
 }
 
@@ -182,7 +199,7 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionBackup_triggered() {
     Session* l_ss = Session::obtain ( l_itm->data ( Qt::UserRole ).toString() );
     Session::Backup* l_bckpSs = l_ss->createBackup();
     if ( l_bckpSs ) {
-        updateList();
+        updateUi();
     }
 }
 
@@ -203,4 +220,4 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionRestoreBackup_trigger
 }
 
 #include "session-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

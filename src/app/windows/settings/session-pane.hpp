@@ -21,7 +21,7 @@
 #ifndef SESSIONSETTINGSPANE_HPP
 #define SESSIONSETTINGSPANE_HPP
 
-#include <QFrame>
+#include <app/windows/settings-dialog.hpp>
 
 namespace Ui {
 class SessionSettingsPane;
@@ -30,17 +30,19 @@ class SessionSettingsPane;
 namespace SpeechControl {
 namespace Windows {
 
-class SessionSettingsPane : public QFrame {
+class SessionSettingsPane : public AbstractSettingsPane {
     Q_OBJECT
-    Q_PROPERTY ( const QString Title READ title )
-    Q_PROPERTY ( const QString ID READ id )
 
 public:
-    explicit SessionSettingsPane ( QWidget *parent = 0 );
+    explicit SessionSettingsPane (  );
     ~SessionSettingsPane();
-    const QString title() const;
-    const QString id() const;
-    void updateList();
+    virtual QString title() const;
+    virtual QString id() const;
+    virtual void updateUi();
+    virtual bool containsText ( const QString& p_query ) const;
+    virtual QPixmap pixmap() const;
+    virtual void resetPanel();
+    virtual void restoreDefaults();
     virtual void show();
 
 protected:
@@ -61,4 +63,4 @@ private:
 }
 
 #endif // SESSIONSETTINGSPANE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

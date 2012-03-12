@@ -21,6 +21,7 @@
 #define VOXFORGESETTINGSPANE_HPP
 
 #include <QFrame>
+#include <windows/settings-dialog.hpp>
 
 namespace Ui {
 class VoxforgeSettingsPane;
@@ -29,16 +30,19 @@ class VoxforgeSettingsPane;
 namespace SpeechControl {
 namespace Windows {
 
-class VoxforgeSettingsPane : public QFrame {
+class VoxforgeSettingsPane : public AbstractSettingsPane {
     Q_OBJECT
-    Q_PROPERTY ( const QString Title READ title )
-    Q_PROPERTY ( const QString ID READ id )
 
 public:
-    explicit VoxforgeSettingsPane ( QWidget *parent = 0 );
+    explicit VoxforgeSettingsPane (  );
     ~VoxforgeSettingsPane();
-    const QString title() const;
-    const QString id() const;
+    QString title() const;
+    QString id() const;
+    virtual bool containsText ( const QString& p_query ) const;
+    virtual QPixmap pixmap() const;
+    virtual void resetPanel();
+    virtual void restoreDefaults();
+    virtual void updateUi();
 
 protected:
     void changeEvent ( QEvent *e );

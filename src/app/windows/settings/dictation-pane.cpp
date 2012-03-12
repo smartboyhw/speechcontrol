@@ -22,17 +22,19 @@
 #include "dictation-pane.hpp"
 #include "core.hpp"
 #include <dictation/agent.hpp>
+#include <desktopcontrol/agent.hpp>
 #include "ui_settingspane-dictation.h"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 
-DictationSettingsPane::DictationSettingsPane ( QWidget *parent ) :
-    QFrame ( parent ),
+DictationSettingsPane::DictationSettingsPane():
     m_ui ( new Ui::DictationSettingsPane ) {
-    m_ui->setupUi ( this );
-    updateContent();
-}
+        qDebug() << "[DictationSettingsPane::{constructor}] Building dictation settings pane...";
+        m_ui->setupUi ( this );
+        updateUi();
+        qDebug() << "[DictationSettingsPane::{constructor}] Built dictation settings pane.";
+    }
 
 DictationSettingsPane::~DictationSettingsPane() {
     delete m_ui;
@@ -49,25 +51,46 @@ void DictationSettingsPane::changeEvent ( QEvent *e ) {
     }
 }
 
-const QString DictationSettingsPane::title() const {
+QString DictationSettingsPane::title() const {
     return "Dictation";
 }
 
-const QString DictationSettingsPane::id() const {
+QString DictationSettingsPane::id() const {
     return "dctn";
 }
 
-void DictationSettingsPane::updateContent() {
-    m_ui->checkBoxEnable->setChecked ( Dictation::Agent::instance()->isEnabled() );
+bool DictationSettingsPane::containsText ( const QString& p_query ) const {
+
+}
+
+QPixmap DictationSettingsPane::pixmap() const {
+
+}
+
+void DictationSettingsPane::resetPanel() {
+
+}
+
+void DictationSettingsPane::restoreDefaults() {
+
+}
+
+void DictationSettingsPane::updateUi() {
+    m_ui->checkBoxEnable->setChecked ( Dictation::Agent::instance()->isEnabled() && !DesktopControl::Agent::instance()->isEnabled() );
+    m_ui->checkBoxEnable->setEnabled ( !DesktopControl::Agent::instance()->isEnabled() );
 }
 
 void DictationSettingsPane::on_checkBoxEnable_toggled ( bool p_checked ) {
-    Core::setConfiguration ( "Dictation/Enabled",p_checked );
-    Dictation::Agent::instance()->setState ( ( ( p_checked ) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled ) );
+    if ( !DesktopControl::Agent::instance()->isEnabled() ) {
+        Core::setConfiguration ( "Dictation/Enabled",p_checked );
+        Dictation::Agent::instance()->setState ( ( ( p_checked ) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled ) );
+    }
 }
 
 void DictationSettingsPane::on_checkBoxEnableStartup_toggled ( bool p_checked ) {
-    Core::setConfiguration ( "Dictation/AutoStart",p_checked );
+    if ( !DesktopControl::Agent::instance()->isEnabled() ) {
+        Core::setConfiguration ( "Dictation/AutoStart",p_checked );
+    }
 }
 
 #include "dictation-pane.moc"

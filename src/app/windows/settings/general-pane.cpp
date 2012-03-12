@@ -18,23 +18,25 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "sessions/session.hpp"
+#include <QDebug>
+
+#include <app/core.hpp>
+#include <app/indicator.hpp>
+#include <app/sessions/session.hpp>
+#include <app/desktopcontrol/agent.hpp>
+
 #include "general-pane.hpp"
-#include "core.hpp"
-#include <desktopcontrol/agent.hpp>
-#include <indicator.hpp>
 #include "ui_settingspane-general.h"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 
-GeneralSettingsPane::GeneralSettingsPane ( QWidget *parent ) :
-    QFrame ( parent ),
+GeneralSettingsPane::GeneralSettingsPane ():
     ui ( new Ui::GeneralSettingsPane ) {
+    qDebug() << "[GeneralSettingsPane::{constructor}] Building general settings pane...";
     ui->setupUi ( this );
-    ui->lblSessionCount->setText ( QString::number ( Session::allSessions().count() ) );
-    ui->lblAccuracyRating->setText ( "<i>n/a</i>" );
-    ui->checkBoxIndicatorIcon->setChecked ( Core::configuration ( "DesktopControl/AutoStart" ).toBool() );
+    updateUi();
+    qDebug() << "[GeneralSettingsPane::{constructor}] Built general settings pane.";
 }
 
 GeneralSettingsPane::~GeneralSettingsPane() {
@@ -42,7 +44,7 @@ GeneralSettingsPane::~GeneralSettingsPane() {
 }
 
 void GeneralSettingsPane::changeEvent ( QEvent *e ) {
-    QFrame::changeEvent ( e );
+    QWidget::changeEvent ( e );
     switch ( e->type() ) {
     case QEvent::LanguageChange:
         ui->retranslateUi ( this );
@@ -52,17 +54,40 @@ void GeneralSettingsPane::changeEvent ( QEvent *e ) {
     }
 }
 
-const QString GeneralSettingsPane::title() const {
+QString GeneralSettingsPane::title() const {
     return "General";
 }
 
-const QString GeneralSettingsPane::id() const {
+QString GeneralSettingsPane::id() const {
     return "gnrl";
+}
+
+bool GeneralSettingsPane::containsText ( const QString& p_query ) const {
+
+}
+
+QPixmap GeneralSettingsPane::pixmap() const {
+    return QIcon::fromTheme ( "configure" ).pixmap ( 32,32 );
+}
+
+void GeneralSettingsPane::resetPanel() {
+
+}
+
+void GeneralSettingsPane::restoreDefaults() {
+    Core::setConfiguration ( "Indicator/Show",false );
+    updateUi();
+}
+
+void GeneralSettingsPane::updateUi() {
+    ui->lblSessionCount->setText ( QString::number ( Session::allSessions().count() ) );
+    ui->lblAccuracyRating->setText ( "<i>n/a</i>" );
+    ui->checkBoxIndicatorIcon->setChecked ( Core::configuration ( "DesktopControl/AutoStart" ).toBool() );
 }
 
 void GeneralSettingsPane::on_checkBoxIndicatorIcon_toggled ( bool p_checked ) {
     Core::setConfiguration ( "Indicator/Show",p_checked );
-    (p_checked) ? Indicator::show() : Indicator::hide();
+    ( p_checked ) ? Indicator::show() : Indicator::hide();
 }
 #include "general-pane.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

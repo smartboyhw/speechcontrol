@@ -21,7 +21,7 @@
 #ifndef CONTENTSETTINGSPANE_HPP
 #define CONTENTSETTINGSPANE_HPP
 
-#include <QFrame>
+#include <app/windows/settings-dialog.hpp>
 
 namespace Ui {
 class ContentSettingsPane;
@@ -30,21 +30,23 @@ class ContentSettingsPane;
 namespace SpeechControl {
 namespace Windows {
 
-class ContentSettingsPane : public QFrame {
+class ContentSettingsPane : public AbstractSettingsPane {
     Q_OBJECT
-    Q_PROPERTY ( const QString Title READ title )
-    Q_PROPERTY ( const QString ID READ id )
 
 public:
-    explicit ContentSettingsPane ( QWidget *parent = 0 );
+    explicit ContentSettingsPane (  );
     ~ContentSettingsPane();
-    const QString title() const;
-    const QString id() const;
+    QString title() const;
+    QString id() const;
     virtual void show();
+    void updateUi();
+    virtual bool containsText ( const QString& p_query ) const;
+    virtual QPixmap pixmap() const;
+    virtual void resetPanel();
+    virtual void restoreDefaults();
 
 protected:
     void changeEvent ( QEvent *e );
-    void updateList();
 
 private slots:
     void on_btnDelete_clicked();

@@ -31,19 +31,20 @@
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 
-ContentSettingsPane::ContentSettingsPane ( QWidget *parent ) :
-    QFrame ( parent ),
+ContentSettingsPane::ContentSettingsPane () :
     ui ( new Ui::ContentSettingsPane ) {
-    ui->setupUi ( this );
-    updateList();
-}
+        qDebug() << "[ContentSettingsPane::{constructor}] Building content settings pane...";
+        ui->setupUi ( this );
+        updateUi();
+        qDebug() << "[ContentSettingsPane::{constructor}] Built content settings pane.";
+    }
 
 ContentSettingsPane::~ContentSettingsPane() {
     delete ui;
 }
 
 void ContentSettingsPane::show() {
-    updateList();
+    updateUi();
     QFrame::show();
 }
 
@@ -58,15 +59,31 @@ void ContentSettingsPane::changeEvent ( QEvent *e ) {
     }
 }
 
-const QString SpeechControl::Windows::ContentSettingsPane::title() const {
+QString ContentSettingsPane::title() const {
     return "Content";
 }
 
-const QString SpeechControl::Windows::ContentSettingsPane::id() const {
+QString ContentSettingsPane::id() const {
     return "cntns";
 }
 
-void SpeechControl::Windows::ContentSettingsPane::updateList() {
+bool ContentSettingsPane::containsText ( const QString& p_query ) const {
+
+}
+
+QPixmap ContentSettingsPane::pixmap() const {
+
+}
+
+void ContentSettingsPane::resetPanel() {
+
+}
+
+void ContentSettingsPane::restoreDefaults() {
+
+}
+
+void ContentSettingsPane::updateUi() {
     QListWidget* l_widget = ui->lstContent;
     ContentList l_lst = Content::allContents();
 
@@ -88,7 +105,7 @@ void SpeechControl::Windows::ContentSettingsPane::updateList() {
     }
 }
 
-void SpeechControl::Windows::ContentSettingsPane::on_btnDelete_clicked() {
+void ContentSettingsPane::on_btnDelete_clicked() {
     QListWidget* l_widg = ui->lstContent;
     if ( !l_widg->selectedItems().empty() ) {
         Q_FOREACH ( QListWidgetItem* l_itm, l_widg->selectedItems() ) {
@@ -102,18 +119,18 @@ void SpeechControl::Windows::ContentSettingsPane::on_btnDelete_clicked() {
             }
         }
 
-        updateList();
+        updateUi();
     }
 }
 
-void SpeechControl::Windows::ContentSettingsPane::on_btnAdd_clicked() {
+void ContentSettingsPane::on_btnAdd_clicked() {
     Wizards::ContentWizard* l_wiz = new Wizards::ContentWizard ( this );
     if ( l_wiz->exec() == QDialog::Accepted ) {
-        updateList();
+        updateUi();
     }
 }
 
-void SpeechControl::Windows::ContentSettingsPane::on_btnInfo_clicked() {
+void ContentSettingsPane::on_btnInfo_clicked() {
     QListWidget* l_widg = ui->lstContent;
     if ( !l_widg->selectedItems().empty() ) {
         Q_FOREACH ( QListWidgetItem* l_itm, l_widg->selectedItems() ) {

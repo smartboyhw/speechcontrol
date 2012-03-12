@@ -21,7 +21,7 @@
 #ifndef DICTATION_SETTINGS_HPP
 #define DICTATION_SETTINGS_HPP
 
-#include <QFrame>
+#include <app/windows/settings-dialog.hpp>
 
 namespace Ui {
 class DictationSettingsPane;
@@ -36,33 +36,23 @@ namespace Windows {
  * This window presents the user in the Settings dialog with general, overlying
  * options that can manipulate SpeechControl's operation.
  **/
-class DictationSettingsPane : public QFrame {
+class DictationSettingsPane : public AbstractSettingsPane {
     Q_OBJECT
-    Q_PROPERTY ( const QString Title READ title )   ///< The title of the pane.
-    Q_PROPERTY ( const QString ID READ id )         ///< The ID of the pane.
 
 public:
     /**
      * @brief Constructor.
      * @param parent Defaults to 0.
      **/
-    explicit DictationSettingsPane ( QWidget *p_parent = 0 );
-
-    /**
-     * @brief Destructor.
-     **/
+    explicit DictationSettingsPane (  );
     ~DictationSettingsPane();
-
-    /**
-     * @brief Obtains the title of this configuration pane.
-     **/
-    const QString title() const;
-
-    /**
-     * @brief Obtains the ID of this configuration pane.
-     **/
-
-    const QString id() const;
+    QString title() const;
+    QString id() const;
+    void updateUi();
+    virtual bool containsText ( const QString& p_query ) const;
+    virtual QPixmap pixmap() const;
+    virtual void resetPanel();
+    virtual void restoreDefaults();
 
 protected:
     void changeEvent ( QEvent *e );
@@ -70,7 +60,6 @@ protected:
 private slots:
     void on_checkBoxEnable_toggled ( bool p_checked );
     void on_checkBoxEnableStartup_toggled (bool p_checked);
-    void updateContent();
 
 private:
     Ui::DictationSettingsPane *m_ui;

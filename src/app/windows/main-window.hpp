@@ -46,6 +46,9 @@ class Core;
  **/
 namespace Windows
 {
+
+class DesktopControlSettingsPane;
+
 /**
  * @brief Represents the Main window of SpeechControl.
  *
@@ -57,6 +60,7 @@ class Main : public QMainWindow
     Q_OBJECT
     friend class SpeechControl::Core;
     friend class Plugins::AbstractPlugin;
+    friend class SpeechControl::Windows::DesktopControlSettingsPane;
 
 public:
     /**

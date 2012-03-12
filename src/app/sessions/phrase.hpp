@@ -51,12 +51,14 @@ public:
      *
      **/
     virtual ~Phrase();
+    
     /**
      * @brief ...
      *
      * @return QFile*
      **/
     QFile* audio() const;
+    
     /**
      * @brief ...
      *
@@ -77,6 +79,7 @@ public:
      * @return int
      **/
     int index() const;
+    
     /**
      * @brief ...
      *

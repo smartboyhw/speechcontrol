@@ -170,7 +170,7 @@ void Settings::on_buttonBox_clicked (QAbstractButton* p_button)
 
     switch (buttonState) {
     case QDialogButtonBox::Ok:
-        break;
+        this->accept();
 
     case QDialogButtonBox::Help:
         break;

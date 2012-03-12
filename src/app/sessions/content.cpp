@@ -88,7 +88,7 @@ void Content::load (const QUuid& p_uuid)
 
     if (!l_file->exists()) {
         qDebug() << "Content" << m_uuid << "doesn't exist.";
-        m_uuid = QUuid();
+        m_uuid = QUuid::createUuid();
         return;
     }
 

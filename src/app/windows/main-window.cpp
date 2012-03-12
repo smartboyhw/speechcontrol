@@ -183,8 +183,8 @@ void Main::updateContent()
 {
     m_ui->lblSessions->setText (QString::number (Session::allSessions().count()));
     m_ui->lblContent->setText (QString::number (Content::allContents().count()));
-    m_ui->lblAccuracy->setText ("100.0%");
-    m_ui->lblSpeechIndex->setText ("10.0");
+    m_ui->lblAccuracy->setText ("N/A");
+    m_ui->lblSpeechIndex->setText ("N/A");
 }
 
 void Main::setProgress (const double p_progress)

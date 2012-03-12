@@ -43,7 +43,7 @@ class Settings;
 class AbstractSettingsPane;
 
 /**
- * @brief ...
+ * @brief Settings dialog
  **/
 class Settings : public QDialog
 {

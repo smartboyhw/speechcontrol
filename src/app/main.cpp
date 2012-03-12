@@ -48,6 +48,7 @@ int main ( int argc, char** argv ) {
     app->setOrganizationName ( "Synthetic Intellect Institute" );
     app->setWindowIcon ( QIcon ( ":/logo/sc-large" ) );
     app->setApplicationVersion ( SPCHCNTRL_BUILD_VERSION );
+    app->setQuitOnLastWindowClosed( false );
 
     SpeechControl::Core appCore ( argc, argv, app );
     appCore.start();

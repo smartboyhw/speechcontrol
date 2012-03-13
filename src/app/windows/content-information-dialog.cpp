@@ -32,6 +32,7 @@ ContentInformationDialog::ContentInformationDialog (Content* p_content) :
     m_content (p_content)
 {
     m_ui->setupUi (this);
+    this->setLayout(m_ui->verticalLayout);
     updateUi();
 
     connect (m_ui->btnGoLeft, SIGNAL (clicked()), this, SLOT (goToPreviousPage()));
@@ -86,4 +87,4 @@ ContentInformationDialog::~ContentInformationDialog()
 }
 
 #include "content-information-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

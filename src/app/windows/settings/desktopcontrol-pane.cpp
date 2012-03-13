@@ -19,6 +19,7 @@
  */
 
 #include <QTableWidget>
+#include <QLabel>
 
 #include "core.hpp"
 #include "sessions/session.hpp"
@@ -37,6 +38,7 @@ DesktopControlSettingsPane::DesktopControlSettingsPane () :
 {
     qDebug() << "[DesktopControlSettingsPane::{constructor}] Building desktop control settings pane...";
     m_ui->setupUi (this);
+    this->setLayout(m_ui->gridLayout);
     updateUi();
     qDebug() << "[DesktopControlSettingsPane::{constructor}] Built desktop control settings pane.";
 }
@@ -107,14 +109,13 @@ void DesktopControlSettingsPane::updateUi()
         int count = 0;
         Q_FOREACH (const QString statement, cmd->statements()) {
             const int row = widget->rowCount() - cmd->statements().count() - count;
-            QTableWidgetItem* itemStatement = new QTableWidgetItem;
-            QTableWidgetItem* commandStatement = new QTableWidgetItem;
+            QLabel* command = new QLabel(statement,widget);
+            QLabel* category = new QLabel(cmd->id(),widget);
 
-            itemStatement->setText (statement);
-            commandStatement->setText (cmd->id());
+            command->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
 
-            widget->setItem (row, 0, itemStatement);
-            widget->setItem (row, 1, commandStatement);
+            widget->setCellWidget (row, 0, command);
+            widget->setCellWidget (row, 1, category);
             count--;
         }
     }

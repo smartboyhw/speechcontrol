@@ -35,6 +35,7 @@ MicrophoneSelection::MicrophoneSelection (QWidget* parent) :
     m_mic (DeviceAudioSource::defaultDevice())
 {
     ui->setupUi (this);
+    this->setLayout(ui->verticalLayout);
     this->registerField ("mic", ui->comboBoxMicrophones, "currentIndex", SIGNAL (currentIndexChanged (QString)));
 }
 
@@ -49,8 +50,9 @@ void SpeechControl::Wizards::Pages::MicrophoneSelection::initializePage()
     AbstractAudioSourceList l_allMics = DeviceAudioSource::allDevices();
 
     if (!l_allMics.empty()) {
-        Q_FOREACH (AbstractAudioSource * l_mic, l_allMics) {
-            //ui->comboBoxMicrophones->addItem ( l_mic->deviceName() ,l_mic->deviceName() );
+        Q_FOREACH (AbstractAudioSource * src, l_allMics) {
+            DeviceAudioSource* deviceSrc = (DeviceAudioSource*) src;
+            ui->comboBoxMicrophones->addItem ( QIcon::fromTheme("audio-input-microphone"), deviceSrc->deviceName(), deviceSrc->deviceName());
         }
     }
 }
@@ -92,4 +94,4 @@ void MicrophoneSelection::microphoneSelected()
 }
 
 #include "micselect.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

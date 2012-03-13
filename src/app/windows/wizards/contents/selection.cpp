@@ -34,6 +34,7 @@ SourceSelectionPage::SourceSelectionPage (QWidget* parent) :
     m_ui (new Ui::SourceSelectionPage)
 {
     m_ui->setupUi (this);
+    this->setLayout(m_ui->gridLayout);
 
     addDefaultSources();
     updateUi();

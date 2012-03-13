@@ -40,6 +40,7 @@ TextContentSourceWidget::TextContentSourceWidget (QWidget* parent) :
     m_ui (new Ui::TextContentSourceWidget)
 {
     m_ui->setupUi (this);
+    this->setLayout(m_ui->gridLayout);
     setProperty ("id", "txt");
     setProperty ("title", "Text-Based");
 }
@@ -72,4 +73,4 @@ TextContentSourceWidget::~TextContentSourceWidget()
 }
 
 #include "source-text.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -33,16 +33,24 @@ using namespace SpeechControl::Wizards;
 MicrophoneSetup::MicrophoneSetup (QWidget* parent) :
     WizardBase (parent)
 {
+    // http://wiki.thesii.org/SpeechControl/UserGuides/Microphones
     QIcon l_icon = QIcon::fromTheme ("audio-headset");
     setPixmap (QWizard::LogoPixmap, l_icon.pixmap (32, 32, QIcon::Active, QIcon::On));
     setWindowTitle (tr ("Microphone Setup Wizard - SpeechControl"));
     setPage (MicrophoneSetup::IntroductionPage,
-             new Pages::IntroductionPage (tr ("This wizard will help you configure your microphone ") +
-                                          tr ("for optimal performance in SpeechControl.")));
+             new Pages::IntroductionPage (tr ("This wizard will help you configure your microphone for optimal performance in SpeechControl."
+                                              " If this is the first time you've used a microphone or an alternative audio input device, please "
+                                              "visit <a href=\"http://wiki.thesii.org/SpeechControl/UserGuides/Microphones\">http://wiki.thesii.org/SpeechControl/UserGuides/Microphones</a> "
+                                              "for more detialed information about correct and recommended use of the microphone whilst using SpeechControl."
+            )));
     setPage (MicrophoneSetup::SelectionPage, new Pages::MicrophoneSelection);
     setPage (MicrophoneSetup::ConclusionPage,
-             new Pages::ConclusionPage (tr ("You've configured your microphone to work optimally with SpeechControl. "
-                                            "Click <b>Finish</b> to finialize your results and commit them to SpeechControl.")));
+             new Pages::ConclusionPage (tr ("You've configured your microphone to work optimally with SpeechControl. Click <b>Finish</b> to finialize your results and commit them to SpeechControl."
+                                            "Remember to use this wizard to tweak and adapt your microphone in SpeechControl so that it works optimally. "
+                                            "If your accuracy is poor, consider training your acoustic models by using the Adaption Wizard."
+                                            "Visit <a href=\"http://wiki.thesii.org/SpeechControl/UserGuides/Microphones\">http://wiki.thesii.org/SpeechControl/UserGuides/Microphones</a> "
+                                            "for more detialed information about correct and recommended use of the microphone whilst using SpeechControl."
+            )));
 }
 
 void MicrophoneSetup::accept()
@@ -57,4 +65,4 @@ MicrophoneSetup::~MicrophoneSetup()
 }
 
 #include "micsetup-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

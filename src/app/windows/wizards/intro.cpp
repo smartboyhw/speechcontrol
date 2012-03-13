@@ -28,6 +28,7 @@ IntroductionPage::IntroductionPage (const QString& summary) :
     ui (new Ui::Introduction)
 {
     ui->setupUi (this);
+    this->setLayout(ui->verticalLayout);
     ui->labelSummary->setText (summary);
 }
 
@@ -37,4 +38,4 @@ IntroductionPage::~IntroductionPage()
 }
 
 #include "intro.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -41,11 +41,20 @@ ContentWizard::ContentWizard (QWidget* parent) :
     setPixmap (QWizard::LogoPixmap, l_icon.pixmap (32, 32, QIcon::Active, QIcon::On));
     setWindowTitle (tr ("Content Addition Wizard - SpeechControl"));
     setPage (ContentWizard::IntroductionPage,
-             (new Wizards::Pages::IntroductionPage (tr ("This wizard allows you to add a new book into SpeechControl's collection."))));
+             (new Wizards::Pages::IntroductionPage (tr ("This wizard allows you to add a new source of content into SpeechControl's collection of content."
+                     "In SpeechControl, the term <b>content</b> refers to arbitrary text that's been formatted so "
+                     "that SpeechControl can efficiently render it for training. Check the Synthetic Intellect Institute's "
+                     "wiki for more information at "
+                     "<a href=\"http://wiki.thesii.org/UserGuides/AddingContent\">http://wiki.thesii.org/UserGuides/AddingContent</a>."
+                                                       ))));
     setPage (ContentWizard::SourceSelectionPage,
              (new Wizards::Pages::SourceSelectionPage));
     setPage (ContentWizard::ConclusionPage,
-             (new Wizards::Pages::ConclusionPage (tr ("You've successfully added a book into SpeechControl."))));
+             (new Wizards::Pages::ConclusionPage (tr ("You've successfully added a Content into SpeechControl. With this new Content, you can now "
+                     "start a new Session and train your acoustic models.Check the Synthetic Intellect Institute's "
+                     "wiki for more information at "
+                     "<a href=\"http://wiki.thesii.org/UserGuides/Training#Introduction\">http://wiki.thesii.org/UserGuides/Training#Introduction</a>."
+                                                     ))));
 }
 
 AbstractContentSource* ContentWizard::source()
@@ -97,4 +106,4 @@ ContentWizard::~ContentWizard()
 }
 
 #include "contents-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

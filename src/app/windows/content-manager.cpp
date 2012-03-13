@@ -37,6 +37,7 @@ ContentManager::ContentManager (QWidget* parent) :
     m_content (0)
 {
     ui->setupUi (this);
+    this->setLayout(ui->gridLayout);
     updateList();
 }
 
@@ -141,4 +142,4 @@ void ContentManager::on_lstContent_itemSelectionChanged()
 }
 
 #include "content-manager.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

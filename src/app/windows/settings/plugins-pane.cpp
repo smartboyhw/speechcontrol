@@ -39,6 +39,7 @@ PluginsSettingsPane::PluginsSettingsPane () :
 {
     qDebug() << "[PluginsSettingsPane::{constructor}] Building plugins settings pane...";
     ui->setupUi (this);
+    this->setLayout(ui->gridLayout);
     updateUi();
     connect (ui->lstPlugins, SIGNAL (itemClicked (QListWidgetItem*)), this, SLOT (on_lstPlugins_itemActivated (QListWidgetItem*)));
     connect (ui->lstPlugins, SIGNAL (itemSelectionChanged()), this, SLOT (on_lstPlugins_itemSelectedChanged()));

@@ -87,7 +87,7 @@ Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0)
     m_ui->actionWizardSessions->setIcon (QIcon::fromTheme ("application-x-tar"));
     m_ui->actionDesktopControlCommands->setIcon (QIcon::fromTheme ("view-list-text"));
     m_ui->actionStartTraining->setIcon (QIcon::fromTheme ("system-run"));
-    m_ui->actionHelp->setIcon(QIcon::fromTheme("help"));
+    m_ui->actionHelp->setIcon (QIcon::fromTheme ("help"));
 
     // Update the actions and buttons.
     connect (DesktopControl::Agent::instance(), SIGNAL (stateChanged (ActivityState)), this, SLOT (desktopControlStateChanged()));
@@ -155,10 +155,10 @@ void Main::desktopControlStateChanged()
 {
     switch (DesktopControl::Agent::instance()->state()) {
     case AbstractAgent::ActivityState::Enabled:
-        setStatusMessage (tr ("Desktop control enabled."));
+        setStatusMessage (tr ("Desktop control activated."));
         break;
     case AbstractAgent::ActivityState::Disabled:
-        setStatusMessage (tr ("Desktop control disabled."));
+        setStatusMessage (tr ("Desktop control deactivated."));
         break;
     default:
         break;
@@ -169,10 +169,10 @@ void Main::dictationStateChanged()
 {
     switch (Dictation::Agent::instance()->state()) {
     case AbstractAgent::ActivityState::Enabled:
-        setStatusMessage (tr ("Dictation enabled."));
+        setStatusMessage (tr ("Dictation activated."));
         break;
     case AbstractAgent::ActivityState::Disabled:
-        setStatusMessage (tr ("Dictation disabled."));
+        setStatusMessage (tr ("Dictation deactivated."));
         break;
     default:
         break;
@@ -233,7 +233,7 @@ void Main::on_actionDesktopControlActive_triggered (bool p_checked)
         return;
 
     DesktopControl::Agent::instance()->setState (p_checked ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled);
-    setStatusMessage ( (p_checked ? tr ("Desktop control enabled.") : tr ("Desktop control disabled.")) , 3000);
+    setStatusMessage ( (p_checked ? tr ("Desktop control activated.") : tr ("Desktop control deactivated.")) , 3000);
     refreshUi();
 }
 
@@ -244,7 +244,7 @@ void Main::on_actionDictationActive_triggered (const bool p_checked)
         return;
 
     Dictation::Agent::instance()->setState ( (p_checked) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled);
-    setStatusMessage ( ( (p_checked) ? tr ("Dictation enabled.") : tr ("Dictation disabled."))  , 3000);
+    setStatusMessage ( ( (p_checked) ? tr ("Dictation activated.") : tr ("Dictation deactivated."))  , 3000);
     refreshUi();
 }
 
@@ -255,17 +255,19 @@ void Main::refreshUi()
     const bool desktopControlActive = DesktopControl::Agent::instance()->isActive();
     const bool desktopControlEnabled = DesktopControl::Agent::instance()->isEnabled();
 
-    m_ui->btnDsktpCntrl->setChecked (desktopControlActive);
-    m_ui->btnDsktpCntrl->setIcon ( ( (desktopControlActive) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
+    m_ui->btnDsktpCntrl->setEnabled (desktopControlEnabled);
 
-    if (!desktopControlActive)
-        m_ui->btnDsktpCntrl->setEnabled(desktopControlEnabled);
+    if (desktopControlEnabled) {
+        m_ui->btnDctn->setChecked (dictationActive);
+        m_ui->btnDctn->setIcon ( ( (dictationActive) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
+    }
 
-    m_ui->btnDctn->setChecked (dictationActive);
-    m_ui->btnDctn->setIcon ( ( (dictationActive) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
+    m_ui->btnDctn->setEnabled (dictationEnabled);
 
-    if (!dictationActive)
-        m_ui->btnDctn->setEnabled(dictationEnabled);
+    if (dictationEnabled) {
+        m_ui->btnDsktpCntrl->setChecked (desktopControlActive);
+        m_ui->btnDsktpCntrl->setIcon ( ( (desktopControlActive) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
+    }
 }
 
 void Main::on_actionAboutQt_triggered()
@@ -291,20 +293,20 @@ void Main::on_actionDictationOptions_triggered()
 
 void Main::on_actionWizardMicrophone_triggered()
 {
-    MicrophoneSetup* l_wiz = new MicrophoneSetup;
-    l_wiz->exec();
+    MicrophoneSetup wiz(this);
+    wiz.exec();
 }
 
 void Main::on_actionWizardContent_triggered()
 {
-    ContentWizard* l_wiz = new ContentWizard;
-    l_wiz->exec();
+    ContentWizard wiz(this);
+    wiz.exec();
 }
 
 void Main::on_actionWizardSessions_triggered()
 {
-    SessionWizard* l_wiz = new SessionWizard;
-    l_wiz->exec();
+    SessionWizard wiz(this);
+    wiz.exec();
 }
 
 /// @todo Build the Voxforge Wizard.

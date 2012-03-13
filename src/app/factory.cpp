@@ -61,6 +61,14 @@ PluginMap Factory::availablePlugins()
     return l_plgnLst;
 }
 
+AbstractPlugin* Factory::plugin (const QUuid& p_uuid)
+{
+    if (isPluginLoaded(p_uuid))
+        return s_ldPlgns.value(p_uuid);
+
+    return 0;
+}
+
 PluginList Factory::loadedPlugins()
 {
     return s_ldPlgns.values();
@@ -155,4 +163,4 @@ Factory::~Factory()
 }
 
 #include "factory.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

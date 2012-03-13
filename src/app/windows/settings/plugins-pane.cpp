@@ -65,9 +65,14 @@ void PluginsSettingsPane::updateUi()
         QListWidgetItem* item = new QListWidgetItem (plgn->name(), list);
         item->setFlags (Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 
-        if (!plgn->isSupported())
-            item->setFlags (item->flags() & Qt::ItemIsEnabled);
+        item->setHidden(plgn->isSupported());
 
+        if (plgn->isLoaded())
+            item->setIcon(Factory::plugin(plgn->uuid())->pixmap());
+        else
+            item->setIcon(QIcon::fromTheme("dialog-error"));
+
+        item->font().setBold(plgn->isLoaded());
         item->setCheckState (plgn->isEnabled() ? Qt::Checked : Qt::Unchecked);
         item->setData (Qt::UserRole, plgn->uuid().toString());
 
@@ -85,7 +90,7 @@ void PluginsSettingsPane::on_lstPlugins_itemSelectedChanged()
 void PluginsSettingsPane::on_lstPlugins_itemActivated (QListWidgetItem* p_item)
 {
     GenericPlugin* plgn = new GenericPlugin (p_item->data (Qt::UserRole).toString());
-    const bool isChecked = p_item->checkState() == Qt::Unchecked;
+    const bool isChecked = p_item->checkState() == Qt::Checked;
     p_item->setCheckState (isChecked ? Qt::Unchecked : Qt::Checked);
     Factory::pluginConfiguration (plgn->uuid())->setValue ("Plugin/Enabled", isChecked);
     qDebug() << "[PluginsSettingsPane::on_table_cellClicked()]" << plgn->name() << "is now enabled?" << plgn->isEnabled();

@@ -118,14 +118,22 @@ public:
      * @param p_uuid The UUID of the plug-in to unload.
      * @return bool True if the plug-in unloaded successfully, false otherwise.
      **/
-    void unloadPlugin (const QUuid& p_uuid);
+    static void unloadPlugin (const QUuid& p_uuid);
 
     /**
      * @brief Determines if a plug-in has been loaded.
      * @param p_uuid The plug-in's UUID to verify.
      * @return bool True if the plug-in is loaded, false otherwise.
      **/
-    static bool isPluginLoaded (const QUuid&);
+    static bool isPluginLoaded (const QUuid& p_uuid);
+
+    /**
+     * @brief Obtains a pointer to a loaded plugin.
+     *
+     * @param p_uuid The UUID of the plugin.
+     * @return NULL if the plug-in isn't loaded. A pointer to the plug-in otherwise.
+     **/
+    static AbstractPlugin* plugin(const QUuid& p_uuid);
 
     /**
      * @brief Obtains a list of loaded plug-ins.
@@ -162,4 +170,4 @@ private:
 }
 
 #endif // FACTORY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

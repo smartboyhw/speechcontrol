@@ -23,6 +23,7 @@
 #include <QTableWidget>
 #include <QCheckBox>
 #include <QLabel>
+#include <QSettings>
 
 #include "factory.hpp"
 #include "plugins-pane.hpp"
@@ -38,6 +39,7 @@ PluginsSettingsPane::PluginsSettingsPane () :
     qDebug() << "[PluginsSettingsPane::{constructor}] Building plugins settings pane...";
     ui->setupUi (this);
     updateUi();
+    connect (ui->lstPlugins, SIGNAL (cellClicked (int, int)), this, SLOT (on_table_cellClicked (int, int)));
     qDebug() << "[PluginsSettingsPane::{constructor}] Built plugins settings pane.";
 }
 
@@ -53,40 +55,66 @@ void PluginsSettingsPane::updateUi()
 
     QList<QUuid> plgnLst = Factory::availablePlugins().keys();
     qDebug() << "[PluginsSettingsPane::updateUi()" << plgnLst.length() << "plug-ins installed.";
-    table->setColumnCount(3);
-    table->setRowCount(plgnLst.count());
-    table->setHorizontalHeaderItem(0,(new QTableWidgetItem("[-]")));
-    table->setHorizontalHeaderItem(1,(new QTableWidgetItem(tr("Name"))));
-    table->setHorizontalHeaderItem(2,(new QTableWidgetItem(tr("Version"))));
-    table->setColumnWidth(1,30);
-    table->setColumnWidth(2,50);
+    table->setColumnCount (3);
+    table->setRowCount (plgnLst.count());
+    table->setHorizontalHeaderItem (0, (new QTableWidgetItem ("[-]")));
+    table->setHorizontalHeaderItem (1, (new QTableWidgetItem (tr ("Name"))));
+    table->setHorizontalHeaderItem (2, (new QTableWidgetItem (tr ("Version"))));
     int index = 0;
 
     Q_FOREACH (QUuid uuid, plgnLst) {
         GenericPlugin* plgn = new GenericPlugin (uuid);
-        QCheckBox* checkBox = new QCheckBox (this);
-        QLabel* title = new QLabel (plgn->name(), this);
-        QLabel* version = new QLabel (QString::number (plgn->version()), this);
+        QLabel* title = new QLabel (plgn->name(), table);
+        QLabel* version = new QLabel (QString::number (plgn->version()), table);
+        QTableWidgetItem* checkItem = new QTableWidgetItem;
+        checkItem->setFlags (Qt::ItemIsUserCheckable);
 
-        table->setCellWidget (index, 0, checkBox);
+        table->setItem (index, 0, checkItem);
         table->setCellWidget (index, 1, title);
         table->setCellWidget (index, 2, version);
 
-        checkBox->setChecked (plgn->isEnabled());
-        checkBox->setGeometry(checkBox->geometry().x(),checkBox->geometry().y(),30,30);
-        title->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
+        checkItem->setCheckState (plgn->isEnabled() ? Qt::Checked : Qt::Unchecked);
+        checkItem->setData (Qt::UserRole, plgn->uuid().toString());
 
-        if (!plgn->isSupported()){
-            checkBox->setEnabled(false);
-            title->setEnabled(false);
-            version->setEnabled(false);
+        if (!plgn->isSupported()) {
+            checkItem->setFlags (Qt::ItemIsEnabled);
+            title->setEnabled (false);
+            version->setEnabled (false);
         }
 
         qDebug() << "[PluginsSettingsPane::updateUi()" << plgn->name() << "enabled?" << plgn->isEnabled();
         index++;
     }
 
-    table->resizeColumnToContents(1);
+    table->resizeColumnToContents (0);
+    table->resizeColumnToContents (1);
+    table->resizeColumnToContents (2);
+}
+
+void PluginsSettingsPane::on_table_cellClicked (int p_row, int p_col)
+{
+    qDebug() << "[PluginsSettingsPane::on_table_cellClicked()] Row" << p_row << ", Col" << p_col << "clicked.";
+    QTableWidget* table = ui->lstPlugins;
+    QTableWidgetItem* itemChecked = table->item(p_row, p_col);
+    GenericPlugin* plgn = new GenericPlugin (itemChecked->data (Qt::UserRole).toString());
+
+    if (plgn->isSupported())
+        return;
+
+    switch (p_col) {
+    case 0: {
+        const bool isChecked = itemChecked->checkState() == Qt::Unchecked;
+        itemChecked->setCheckState (isChecked ? Qt::Unchecked : Qt::Checked);
+        Factory::pluginConfiguration (plgn->uuid())->setValue ("Plugin/Enabled", isChecked);
+        qDebug() << "[PluginsSettingsPane::on_table_cellClicked()]" << plgn->name() << "is now enabled?" << plgn->isEnabled();
+    }
+    break;
+    case 1: {
+
+    } break;
+    case 2: {
+    } break;
+    }
 }
 
 QString PluginsSettingsPane::title() const

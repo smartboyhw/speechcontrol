@@ -56,10 +56,12 @@ private slots:
 
 private:
     Ui::PluginsSettingsPane* ui;
+public slots:
+    void on_table_cellClicked (int p_row, int p_col);
 };
 
 }
 }
 
 #endif // PLUGINS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

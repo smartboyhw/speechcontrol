@@ -27,6 +27,7 @@
 
 #include "factory.hpp"
 #include "plugins-pane.hpp"
+#include <windows/plugin-info-dialog.hpp>
 #include "ui_settingspane-plugins.h"
 
 using namespace SpeechControl;
@@ -39,7 +40,8 @@ PluginsSettingsPane::PluginsSettingsPane () :
     qDebug() << "[PluginsSettingsPane::{constructor}] Building plugins settings pane...";
     ui->setupUi (this);
     updateUi();
-    connect (ui->lstPlugins, SIGNAL (cellClicked (int, int)), this, SLOT (on_table_cellClicked (int, int)));
+    connect (ui->lstPlugins, SIGNAL (itemClicked (QListWidgetItem*)), this, SLOT (on_lstPlugins_itemActivated (QListWidgetItem*)));
+    connect (ui->lstPlugins, SIGNAL (itemSelectionChanged()), this, SLOT (on_lstPlugins_itemSelectedChanged()));
     qDebug() << "[PluginsSettingsPane::{constructor}] Built plugins settings pane.";
 }
 
@@ -48,73 +50,44 @@ PluginsSettingsPane::~PluginsSettingsPane()
     delete ui;
 }
 
+/// @todo Disable an item if it's not supported to be loaded.
 void PluginsSettingsPane::updateUi()
 {
-    QTableWidget* table = ui->lstPlugins;
-    table->clear();
+    QListWidget* list = ui->lstPlugins;
+    list->clear();
 
     QList<QUuid> plgnLst = Factory::availablePlugins().keys();
     qDebug() << "[PluginsSettingsPane::updateUi()" << plgnLst.length() << "plug-ins installed.";
-    table->setColumnCount (3);
-    table->setRowCount (plgnLst.count());
-    table->setHorizontalHeaderItem (0, (new QTableWidgetItem ("[-]")));
-    table->setHorizontalHeaderItem (1, (new QTableWidgetItem (tr ("Name"))));
-    table->setHorizontalHeaderItem (2, (new QTableWidgetItem (tr ("Version"))));
-    int index = 0;
 
     Q_FOREACH (QUuid uuid, plgnLst) {
         GenericPlugin* plgn = new GenericPlugin (uuid);
-        QLabel* title = new QLabel (plgn->name(), table);
-        QLabel* version = new QLabel (QString::number (plgn->version()), table);
-        QTableWidgetItem* checkItem = new QTableWidgetItem;
-        checkItem->setFlags (Qt::ItemIsUserCheckable);
+        QListWidgetItem* item = new QListWidgetItem (plgn->name(), list);
+        item->setFlags (Qt::ItemIsUserCheckable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
 
-        table->setItem (index, 0, checkItem);
-        table->setCellWidget (index, 1, title);
-        table->setCellWidget (index, 2, version);
+        if (!plgn->isSupported())
+            item->setFlags (item->flags() & Qt::ItemIsEnabled);
 
-        checkItem->setCheckState (plgn->isEnabled() ? Qt::Checked : Qt::Unchecked);
-        checkItem->setData (Qt::UserRole, plgn->uuid().toString());
-
-        if (!plgn->isSupported()) {
-            checkItem->setFlags (Qt::ItemIsEnabled);
-            title->setEnabled (false);
-            version->setEnabled (false);
-        }
+        item->setCheckState (plgn->isEnabled() ? Qt::Checked : Qt::Unchecked);
+        item->setData (Qt::UserRole, plgn->uuid().toString());
 
         qDebug() << "[PluginsSettingsPane::updateUi()" << plgn->name() << "enabled?" << plgn->isEnabled();
-        index++;
     }
 
-    table->resizeColumnToContents (0);
-    table->resizeColumnToContents (1);
-    table->resizeColumnToContents (2);
+    ui->lstPlugins->setCurrentItem (ui->lstPlugins->item (0));
 }
 
-void PluginsSettingsPane::on_table_cellClicked (int p_row, int p_col)
+void PluginsSettingsPane::on_lstPlugins_itemSelectedChanged()
 {
-    qDebug() << "[PluginsSettingsPane::on_table_cellClicked()] Row" << p_row << ", Col" << p_col << "clicked.";
-    QTableWidget* table = ui->lstPlugins;
-    QTableWidgetItem* itemChecked = table->item(p_row, p_col);
-    GenericPlugin* plgn = new GenericPlugin (itemChecked->data (Qt::UserRole).toString());
+    ui->btnInfo->setEnabled (!ui->lstPlugins->selectedItems().isEmpty());
+}
 
-    if (plgn->isSupported())
-        return;
-
-    switch (p_col) {
-    case 0: {
-        const bool isChecked = itemChecked->checkState() == Qt::Unchecked;
-        itemChecked->setCheckState (isChecked ? Qt::Unchecked : Qt::Checked);
-        Factory::pluginConfiguration (plgn->uuid())->setValue ("Plugin/Enabled", isChecked);
-        qDebug() << "[PluginsSettingsPane::on_table_cellClicked()]" << plgn->name() << "is now enabled?" << plgn->isEnabled();
-    }
-    break;
-    case 1: {
-
-    } break;
-    case 2: {
-    } break;
-    }
+void PluginsSettingsPane::on_lstPlugins_itemActivated (QListWidgetItem* p_item)
+{
+    GenericPlugin* plgn = new GenericPlugin (p_item->data (Qt::UserRole).toString());
+    const bool isChecked = p_item->checkState() == Qt::Unchecked;
+    p_item->setCheckState (isChecked ? Qt::Unchecked : Qt::Checked);
+    Factory::pluginConfiguration (plgn->uuid())->setValue ("Plugin/Enabled", isChecked);
+    qDebug() << "[PluginsSettingsPane::on_table_cellClicked()]" << plgn->name() << "is now enabled?" << plgn->isEnabled();
 }
 
 QString PluginsSettingsPane::title() const
@@ -149,7 +122,13 @@ void PluginsSettingsPane::restoreDefaults()
 
 void PluginsSettingsPane::on_btnInfo_clicked()
 {
+    QListWidgetItem* item = ui->lstPlugins->currentItem();
 
+    if (item) {
+        GenericPlugin* plgn = new GenericPlugin (item->data (Qt::UserRole).toString());
+        PluginInfoDialog window (plgn, this);
+        window.exec();
+    }
 }
 
 void PluginsSettingsPane::changeEvent (QEvent* e)

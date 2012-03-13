@@ -18,51 +18,38 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef PLUGINS_SETTINGS_HPP
-#define PLUGINS_SETTINGS_HPP
+#ifndef PLUGININFODIALOG_HPP
+#define PLUGININFODIALOG_HPP
 
-#include <QFrame>
-#include <QListWidgetItem>
-#include <app/windows/settings-dialog.hpp>
+#include <QDialog>
+#include <QUuid>
+#include <app/plugins.hpp>
 
 namespace Ui
 {
-class PluginsSettingsPane;
+class PluginInfoDialog;
 }
 
 namespace SpeechControl
 {
 namespace Windows
 {
-
-class PluginsSettingsPane : public AbstractSettingsPane
+class PluginInfoDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit PluginsSettingsPane ();
-    virtual ~PluginsSettingsPane();
-    virtual bool containsText (const QString& p_query) const;
-    virtual QString id() const;
-    virtual QPixmap pixmap() const;
-    virtual void resetPanel();
-    virtual void restoreDefaults();
-    virtual QString title() const;
-    virtual void updateUi();
-protected:
-    void changeEvent (QEvent* e);
-
-private slots:
-    void on_btnInfo_clicked();
-    void on_lstPlugins_itemActivated (QListWidgetItem* p_item);
-    void on_lstPlugins_itemSelectedChanged();
+    PluginInfoDialog (QUuid p_uuid, QWidget* parent = 0);
+    PluginInfoDialog (Plugins::AbstractPlugin* p_plugin, QWidget* parent = 0);
 
 private:
-    Ui::PluginsSettingsPane* ui;
+    Ui::PluginInfoDialog* ui;
+    void updateUi();
+    Plugins::GenericPlugin* m_plgn;
+
 };
-
 }
 }
 
-#endif // PLUGINS_HPP
+#endif
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

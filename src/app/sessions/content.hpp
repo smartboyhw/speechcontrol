@@ -191,16 +191,60 @@ public:
 
     virtual ~AbstractContentSource();
 
+    /**
+     * @brief Sets the author of the Content to be generated.
+     *
+     * @param p_author The name of the author.
+     **/
     void setAuthor (const QString p_author);
+
+    /**
+     * @brief Sets the title of the Content to be generated.
+     *
+     * @param p_title The title of the content.
+     **/
     void setTitle (const QString p_title);
+
+    /**
+     * @brief Sets the text of the Content.
+     *
+     * @param p_text The text of the Content.
+     **/
     void setText (const QString p_text);
 
+    /**
+     * @brief Obtains the ID of this AbstractContentSource.
+     **/
     QString id() const;
+
+    /**
+     * @brief Obtains the author of this AbstractContentSource.
+     **/
     QString author() const;
+
+    /**
+     * @brief Obtains the title of this AbstractContentSource.
+     **/
     QString title() const;
+
+    /**
+     * @brief Obtains the text of this AbstractContentSource.
+     **/
     QString text() const;
+
+    /**
+     * @brief Determines if the data stored by this AbstractContentSource is valid.
+     *
+     * The data of the AbstractContentSource is considered to be valid when the
+     * title, author and text are all set to valid, non-empty values.
+     *
+     * @return TRUE if the data's valid, FALSE otherwise.
+     **/
     bool isValid();
 
+    /**
+     * @brief Generates a Content from the information stored by this AbstractContentSource.
+     **/
     Content* generate();
 
 protected:
@@ -208,14 +252,15 @@ protected:
     explicit AbstractContentSource (QString p_id, QObject* p_parent = 0);
 
 private:
-    QString m_id;
-    QString m_author;
-    QString m_text;
-    QString m_title;
+    QString m_id;           ///< The ID of the AbstractContentSource.
+    QString m_author;       ///< The author of the AbstractContentSource.
+    QString m_text;         ///< The text of the AbstractContentSource.
+    QString m_title;        ///< The title of the AbstractContentSource.
 };
 
 /**
  * @brief A content source that allows content generation from XML-formatted text sources.
+ *
  * Sources that are formatted in the XML format for SpeechControl (typically end in the *.spch
  * extension) can be used to render content for SpeechControl for corpus training. This format
  * is typically the local and distributional format as it's usable for sharing.
@@ -229,11 +274,24 @@ class TextContentSource : public AbstractContentSource
 public:
     explicit TextContentSource (QObject* p_parent = 0);
     virtual ~TextContentSource();
+    /**
+     * @brief Sets the QFile to be used to load the Content data.
+     *
+     * @param p_file A reference to the QFile in question.
+     * @return TRUE if the data was loaded successfully, FALSE otherwise.
+     **/
     bool setFile (QFile& p_file);
+
+    /**
+     * @brief Attempts to load data from the specified QUrl p_url to be used as the AbstractContentSource.
+     *
+     * @param p_url A constant reference to the QUrl of the potential data.
+     * @return TRUE if the data was loaded successfully, FALSE otherwise.
+     **/
     bool setUrl (const QUrl& p_url);
 };
 
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

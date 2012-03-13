@@ -34,24 +34,20 @@ namespace DesktopControl
 class AbstractCommand;
 class AbstractCategory;
 
-/**
- * @brief ...
- **/
 typedef QList<AbstractCommand*> CommandList;
-
-/**
- * @brief ...
- **/
 typedef QList<AbstractCategory*> CategoryList;
 
 /**
  * @brief Abstract class defining commands for desktop control.
+ *
  * The abstract command interface provides a common base for all possible
  * commands to be defined with desktop control. All commands are expected to
  * have a definable statement, something that the user can know to say to
  * expect a command to be invoked, a verification method that checks if the
  * input string fits closely to what is expected to be, and an invocation slot
  * that takes one argument optionally to solidify the action's potential.
+ *
+ * @see AbstractCategory
  **/
 class AbstractCommand : public QObject
 {
@@ -59,66 +55,19 @@ class AbstractCommand : public QObject
     friend class AbstractCategory;
 
 public:
-    /**
-     * @brief ...
-     *
-     **/
     virtual ~AbstractCommand();
-    /**
-     * @brief ...
-     *
-     * @return QString
-     **/
     virtual QString id() = 0;
-    /**
-     * @brief ...
-     *
-     * @return const QStringList
-     **/
     virtual const QStringList statements() const;
-    /**
-     * @brief ...
-     *
-     * @param  ...
-     * @return bool
-     **/
     bool isValidStatement (const QString&) const;
 
 public slots:
-    /**
-     * @brief ...
-     *
-     * @param p_statement ... Defaults to QString::null.
-     * @return bool
-     **/
     virtual bool invoke (const QString& p_statement = QString::null) const = 0;
 
 protected:
-    /**
-     * @brief ...
-     *
-     * @param p_parent ...
-     * @param p_commands ...
-     **/
     explicit AbstractCommand (AbstractCategory* p_parentCategory , QStringList p_commands);
-    /**
-     * @brief ...
-     *
-     * @param p_statement ...
-     * @return QString
-     **/
     QString santizeStatement (const QString p_statement) const;
-    /**
-     * @brief ...
-     *
-     * @param p_command ...
-     * @param p_statement ...
-     * @return bool
-     **/
     bool areStatementsEquivalent (const QString p_command, const QString p_statement) const;
-
-private:
-    QStringList m_commands;     ///< The commands.
+    QStringList m_commands;     ///< The commands defined by this AbstractCommand.
 };
 
 /**
@@ -140,21 +89,15 @@ class AbstractCategory : public QObject
     friend class AbstractCommand;
 
 public:
-    /**
-     * @brief Destructor.
-     *
-     **/
     virtual ~AbstractCategory();
 
     /**
      * @brief Obtains the title of this AbstractCategory.
-     * @return const QString
      **/
     virtual const QString title() = 0;
 
     /**
      * @brief Obtains the unique ID of this AbstractCategory.
-     * @return const QString
      **/
     virtual const QString id() const = 0;
 
@@ -165,45 +108,23 @@ public:
      * they can handle p_statement as a valid command.
      *
      * @param p_command The command to match up.
-     * @return CommandList
+     * @return CommandList A list of commands.
      **/
     CommandList matchCommands (const QString& p_command);
 
     /**
      * @brief Returns a list of Command objects held by this AbstractCategory.
-     *
-     * @return CommandList
+     * @return CommandList The list of commands.
      **/
     CommandList commands();
-    /**
-     * @brief ...
-     *
-     * @param p_command ...
-     * @return CommandList
-     **/
-    static CommandList matchAllCommands (const QString& p_command);
-    /**
-     * @brief ...
-     *
-     * @return AbstractCategory*
-     **/
-    static AbstractCategory* global();
-    /**
-     * @brief ...
-     *
-     * @return CategoryList
-     **/
-    static CategoryList categories();
 
+    static CommandList matchAllCommands (const QString& p_command);
+    static AbstractCategory* global();
+    static CategoryList categories();
     bool hasCommand (AbstractCommand* p_command);
     bool hasCommand (const QString& p_id);
 
 protected:
-    /**
-     * @brief ...
-     *
-     * @param parent ... Defaults to AbstractCategory::global().
-     **/
     explicit AbstractCategory (AbstractCategory* p_parentCategory);
     AbstractCategory();
 
@@ -213,10 +134,10 @@ protected:
 
 private:
     static QMap<QString, AbstractCategory*> s_ctgrs;    ///< A global listing of all categories.
-    QMap<QString, AbstractCommand*> m_map;                                 ///< The commands held by the category.
+    QMap<QString, AbstractCommand*> m_map;              ///< The commands held by the category.
 };
 }
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

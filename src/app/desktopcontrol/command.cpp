@@ -59,20 +59,21 @@ QMap<QString, AbstractCategory*> AbstractCategory::s_ctgrs;
 AbstractCommand::AbstractCommand (AbstractCategory* p_parentCategory, QStringList p_commands) : QObject (p_parentCategory),
     m_commands (p_commands)
 {
-    qDebug() << "New commands!" << p_commands;
+    qDebug() << "[AbstractCommand::{constructor}] Discovered commands" << p_commands;
 }
 
 /// @todo Instead of returning a boolean value, we should have a comparison value on a scale of 0.0 to 1.0, where 0.0 = not equal and 1.0 = fully equal.
 bool AbstractCommand::areStatementsEquivalent (const QString p_command, const QString p_statement) const
 {
+    qDebug() << "[AbstractCommand::areStatementsEquivalent()]" << p_statement << "~=" << p_command;
     return p_statement.contains (p_command);
 }
 
 /// @todo When @c areStatementsEquivalent is updated, this should return an average.
 bool AbstractCommand::isValidStatement (const QString& p_statement) const
 {
-    Q_FOREACH (const QString l_statement, m_commands) {
-        if (AbstractCommand::areStatementsEquivalent (l_statement, p_statement)) {
+    Q_FOREACH (const QString statement, m_commands) {
+        if (AbstractCommand::areStatementsEquivalent (statement, p_statement)) {
             return true;
         }
     }
@@ -81,9 +82,9 @@ bool AbstractCommand::isValidStatement (const QString& p_statement) const
 
 QString AbstractCommand::santizeStatement (const QString p_statement) const
 {
-    Q_FOREACH (const QString l_command, m_commands) {
-        if (p_statement.contains (l_command)) {
-            return QString (p_statement).remove (l_command);
+    Q_FOREACH (const QString command, m_commands) {
+        if (p_statement.contains (command)) {
+            return QString (p_statement).remove (command);
         }
     }
 
@@ -195,4 +196,4 @@ AbstractCategory::~AbstractCategory()
 }
 
 #include "command.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

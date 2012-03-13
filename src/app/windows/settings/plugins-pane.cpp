@@ -48,16 +48,18 @@ PluginsSettingsPane::~PluginsSettingsPane()
 
 void PluginsSettingsPane::updateUi()
 {
-    QTableWidget* view = ui->lstPlugins;
-    view->clear();
+    QTableWidget* table = ui->lstPlugins;
+    table->clear();
 
     QList<QUuid> plgnLst = Factory::availablePlugins().keys();
     qDebug() << "[PluginsSettingsPane::updateUi()" << plgnLst.length() << "plug-ins installed.";
-    view->setHorizontalHeaderItem(0,(new QTableWidgetItem("Enabled")));
-    view->setHorizontalHeaderItem(1,(new QTableWidgetItem("Name")));
-    view->setHorizontalHeaderItem(2,(new QTableWidgetItem("Version")));
-    view->setColumnCount(3);
-    view->setRowCount(plgnLst.count());
+    table->setColumnCount(3);
+    table->setRowCount(plgnLst.count());
+    table->setHorizontalHeaderItem(0,(new QTableWidgetItem("[-]")));
+    table->setHorizontalHeaderItem(1,(new QTableWidgetItem(tr("Name"))));
+    table->setHorizontalHeaderItem(2,(new QTableWidgetItem(tr("Version"))));
+    table->setColumnWidth(1,30);
+    table->setColumnWidth(2,50);
     int index = 0;
 
     Q_FOREACH (QUuid uuid, plgnLst) {
@@ -66,15 +68,25 @@ void PluginsSettingsPane::updateUi()
         QLabel* title = new QLabel (plgn->name(), this);
         QLabel* version = new QLabel (QString::number (plgn->version()), this);
 
+        table->setCellWidget (index, 0, checkBox);
+        table->setCellWidget (index, 1, title);
+        table->setCellWidget (index, 2, version);
+
         checkBox->setChecked (plgn->isEnabled());
         checkBox->setGeometry(checkBox->geometry().x(),checkBox->geometry().y(),30,30);
+        title->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
 
-        view->setCellWidget (index, 0, checkBox);
-        view->setCellWidget (index, 1, title);
-        view->setCellWidget (index, 2, version);
+        if (!plgn->isSupported()){
+            checkBox->setEnabled(false);
+            title->setEnabled(false);
+            version->setEnabled(false);
+        }
 
+        qDebug() << "[PluginsSettingsPane::updateUi()" << plgn->name() << "enabled?" << plgn->isEnabled();
         index++;
     }
+
+    table->resizeColumnToContents(1);
 }
 
 QString PluginsSettingsPane::title() const

@@ -57,6 +57,7 @@ class PlayStateCommand : public AbstractCommand
 {
     Q_OBJECT
     friend class Plugin;
+    friend class MprisCategory;
 
 public:
     virtual QString id();
@@ -66,9 +67,16 @@ private:
     explicit PlayStateCommand ();
 };
 
+/**
+ * @brief Library control command for MPRIS.
+ *
+ * This command is based partly on the D-Bus specification for MPRIS
+ * defined at http://www.mpris.org/2.1/spec/Player_Node.html.
+ **/
 class LibraryCommand : public AbstractCommand {
     Q_OBJECT
     friend class Plugin;
+    friend class MprisCategory;
 
 public:
     virtual QString id();

@@ -20,6 +20,7 @@
  */
 #include <QDebug>
 #include <QtPlugin>
+#include <QIcon>
 
 #include "config.hpp"
 #include "plugin.hpp"
@@ -35,12 +36,18 @@ void Plugin::initialize()
 {
     qDebug() << "Plug-in loaded! (mpris)";
     MprisCategory::instance()->addCommand ( (new PlayStateCommand));
+    MprisCategory::instance()->addCommand ( (new LibraryCommand));
 }
 
 void Plugin::deinitialize()
 {
     qDebug() << "Plug-in unloaded! (mprislist)";
     MprisCategory::instance()->deleteLater();
+}
+
+QPixmap Plugin::pixmap() const
+{
+    return QIcon::fromTheme ("applications-multimedia").pixmap (64, 64);
 }
 
 Plugin::~Plugin()
@@ -52,6 +59,6 @@ Plugin::~Plugin()
 
 MPRIS_NAMESPACE_END
 
-Q_EXPORT_PLUGIN2 (spchcntrl-mpris, SpeechControl::Plugins::DesktopControl::MPRIS::Plugin)
+Q_EXPORT_PLUGIN2 (spchcntrl - mpris, SpeechControl::Plugins::DesktopControl::MPRIS::Plugin)
 
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

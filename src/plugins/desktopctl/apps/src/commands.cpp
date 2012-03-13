@@ -28,7 +28,6 @@ ApplicationListCategory* ApplicationListCategory::s_inst = 0;
 
 ApplicationListCategory::ApplicationListCategory () : AbstractCategory (global())
 {
-    //addCommand((new ListCommand));
 }
 
 const QString ApplicationListCategory::id() const
@@ -78,4 +77,4 @@ bool StartCommand::invoke (const QString& p_statement) const
 
 APPLIST_NAMESPACE_END
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

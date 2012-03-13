@@ -20,6 +20,7 @@
  */
 #include <QDebug>
 #include <QtPlugin>
+#include <QIcon>
 
 #include "config.hpp"
 #include "plugin.hpp"
@@ -41,6 +42,11 @@ void Plugin::deinitialize()
 {
     qDebug() << "Plug-in unloaded! (applist)";
     ApplicationListCategory::instance()->deleteLater();
+}
+
+QPixmap Plugin::pixmap() const
+{
+    return QIcon::fromTheme("applications-internet").pixmap(64,64);
 }
 
 Plugin::~Plugin()

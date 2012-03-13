@@ -28,35 +28,59 @@ MprisCategory* MprisCategory::s_inst = 0;
 
 MprisCategory::MprisCategory () : AbstractCategory (global())
 {
-    //addCommand((new ListCommand));
 }
 
 const QString MprisCategory::id() const
 {
-    return "applicationlist";
+    return "mpris";
 }
 
 const QString MprisCategory::title()
 {
-    return "Application List";
+    return "MPRIS";
 }
 
 QString PlayStateCommand::id()
 {
-    return "start-applist";
+    return "mpris-playstate";
 }
 
 PlayStateCommand::PlayStateCommand () : AbstractCommand (MprisCategory::instance() ,
-            (QStringList() << "Play music"
-             << "Pause music"
-             << "Stop playing music"
-             << "Next track"
-             << "Previous track"))
+            QStringList() << tr ("Play music")
+            << tr ("Pause music")
+            << tr ("Stop playing music")
+            << tr ("Next track")
+            << tr ("Previous track"))
 {
 }
 
-/// @todo Detect the application name and invoke it.
+/// @todo Detect the arguments.
 bool PlayStateCommand::invoke (const QString& p_statement) const
+{
+    if (!isValidStatement (p_statement)) {
+        return false;
+    }
+
+    const QString l_tokenArgument = AbstractCommand::santizeStatement (p_statement);
+
+    return true;
+}
+
+LibraryCommand::LibraryCommand() : AbstractCommand (MprisCategory::instance(),
+            QStringList() << tr ("Play track")
+            << tr ("Play album")
+            << tr ("Play all by artist")
+            << tr ("Play genre"))
+{
+
+}
+
+QString LibraryCommand::id()
+{
+    return "mpris-library";
+}
+
+bool LibraryCommand::invoke (const QString& p_statement) const
 {
     if (!isValidStatement (p_statement)) {
         return false;

@@ -23,6 +23,7 @@
 
 #include "config.hpp"
 #include "plugin.hpp"
+#include "session.hpp"
 
 using namespace SpeechControl::Plugins::Unity;
 
@@ -33,12 +34,12 @@ Plugin::Plugin (QObject* parent) : AbstractPlugin (QUuid (PLUGIN_UUID), parent)
 
 void Plugin::initialize()
 {
-
+    Session::init();
 }
 
 void Plugin::deinitialize()
 {
-
+    Session::deinit();
 }
 
 QPixmap Plugin::pixmap() const

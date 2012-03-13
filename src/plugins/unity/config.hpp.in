@@ -19,5 +19,5 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#define PLUGIN_UUID "@SPHUD_PLUGIN_UUID@"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#define PLUGIN_UUID "@SPUNITY_PLUGIN_UUID@"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

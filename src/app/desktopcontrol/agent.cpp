@@ -90,7 +90,12 @@ void Agent::invokeCommand (const QString& cmd)
 
     if (!l_cmds.isEmpty()) {
         Q_FOREACH (AbstractCommand * l_cmd, l_cmds) {
-            qDebug() << "[DesktopControl::Agent::invokeCommand()] " << l_cmd->id() << l_cmd->statements();
+            qDebug() << "[DesktopControl::Agent::invokeCommand()] Command " << l_cmd->id() << "matched with statements" << l_cmd->statements();
+
+            if (l_cmd == l_cmds.first()){
+                qDebug() << "[DesktopControl::Agent::invokeCommand()] Only invoking first command " << l_cmd->id();
+                l_cmd->invoke(cmd);
+            }
         }
     }
     else {
@@ -101,4 +106,4 @@ void Agent::invokeCommand (const QString& cmd)
 }
 }
 #include "desktopcontrol/agent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

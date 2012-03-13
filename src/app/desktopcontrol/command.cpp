@@ -62,18 +62,20 @@ AbstractCommand::AbstractCommand (AbstractCategory* p_parentCategory, QStringLis
     qDebug() << "[AbstractCommand::{constructor}] Discovered commands" << p_commands;
 }
 
-/// @todo Instead of returning a boolean value, we should have a comparison value on a scale of 0.0 to 1.0, where 0.0 = not equal and 1.0 = fully equal.
 bool AbstractCommand::areStatementsEquivalent (const QString p_command, const QString p_statement) const
 {
     qDebug() << "[AbstractCommand::areStatementsEquivalent()]" << p_statement << "~=" << p_command;
-    return p_statement.contains (p_command);
+    /*
+     * If we were going to use a regular expression, this would have been appropriate.
+     * ^\b(p_command)\b{1,1}
+     */
+    return p_statement.startsWith (p_command);
 }
 
-/// @todo When @c areStatementsEquivalent is updated, this should return an average.
 bool AbstractCommand::isValidStatement (const QString& p_statement) const
 {
-    Q_FOREACH (const QString statement, m_commands) {
-        if (AbstractCommand::areStatementsEquivalent (statement, p_statement)) {
+    Q_FOREACH (const QString command, m_commands) {
+        if (AbstractCommand::areStatementsEquivalent (command.toLower(), p_statement.toLower())) {
             return true;
         }
     }

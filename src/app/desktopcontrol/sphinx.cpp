@@ -19,6 +19,7 @@
  */
 
 #include "sphinx.hpp"
+#include <desktopcontrol/command.hpp>
 
 using namespace SpeechControl::DesktopControl;
 
@@ -44,10 +45,10 @@ void Sphinx::applicationMessage (const QGst::MessagePtr& p_message)
     QString l_uttid      = p_message->internalStructure()->value ("uttid").toString();
 
     if (l_msgType == "result") {
-        qDebug() << "ASR result:" << l_hypothesis << l_uttid;
+        qDebug() << "[DesktopControl::Sphinx::applicationMessage()] Obtained hypothesis" << l_hypothesis << "from user.";
         emit finished (l_hypothesis);
     }
 }
 
 #include "desktopcontrol/sphinx.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

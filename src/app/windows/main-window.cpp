@@ -87,6 +87,7 @@ Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0)
     m_ui->actionWizardSessions->setIcon (QIcon::fromTheme ("application-x-tar"));
     m_ui->actionDesktopControlCommands->setIcon (QIcon::fromTheme ("view-list-text"));
     m_ui->actionStartTraining->setIcon (QIcon::fromTheme ("system-run"));
+    m_ui->actionHelp->setIcon(QIcon::fromTheme("help"));
 
     // Update the actions and buttons.
     connect (DesktopControl::Agent::instance(), SIGNAL (stateChanged (ActivityState)), this, SLOT (desktopControlStateChanged()));
@@ -256,13 +257,13 @@ void Main::refreshUi()
 
     m_ui->btnDsktpCntrl->setChecked (desktopControlActive);
     m_ui->btnDsktpCntrl->setIcon ( ( (desktopControlActive) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
-    
+
     if (!desktopControlActive)
         m_ui->btnDsktpCntrl->setEnabled(desktopControlEnabled);
 
     m_ui->btnDctn->setChecked (dictationActive);
     m_ui->btnDctn->setIcon ( ( (dictationActive) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
-    
+
     if (!dictationActive)
         m_ui->btnDctn->setEnabled(dictationEnabled);
 }
@@ -312,9 +313,20 @@ void Main::on_actionWizardVoxForge_triggered()
 
 }
 
+void Main::on_actionWizardQuickStart_triggered()
+{
+    QuickStart* wiz = new QuickStart;
+    wiz->exec();
+}
+
 void Main::on_actionReportBug_triggered()
 {
     QProcess::startDetached ("x-www-browser", (QStringList() << "http://tasks.thesii.org/reporting-bugs"));
+}
+
+void Main::on_actionHelp_triggered()
+{
+    QProcess::startDetached ("x-www-browser", (QStringList() << "http://thesii.org/wiki/SpeechControl/UserGuides"));
 }
 
 Main::~Main()

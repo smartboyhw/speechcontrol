@@ -121,9 +121,11 @@ private slots:
     void on_actionWizardContent_triggered();
     void on_actionWizardSessions_triggered();
     void on_actionWizardVoxForge_triggered();
+    void on_actionWizardQuickStart_triggered();
 
     // misc.
     void on_actionPluginOptions_triggered();
+    void on_actionHelp_triggered();
     void on_actionOptions_triggered();
     void on_actionAboutQt_triggered();
     void on_actionReportBug_triggered();
@@ -140,4 +142,4 @@ private:
 }
 
 #endif // MAIN_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

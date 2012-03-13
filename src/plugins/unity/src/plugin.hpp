@@ -18,35 +18,34 @@
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#include <QtPlugin>
 
-#include "config.hpp"
-#include "plugin.hpp"
+#ifndef PLUGIN_HPP
+#define PLUGIN_HPP
 
-using namespace SpeechControl::Plugins::UnityHud;
+#include <app/plugins.hpp>
 
-Plugin::Plugin (QObject* parent) : AbstractPlugin (QUuid (PLUGIN_UUID), parent)
+namespace SpeechControl
 {
+namespace Plugins
+{
+namespace UnityHud
+{
+class Plugin : public AbstractPlugin
+{
+    Q_OBJECT
 
+public:
+    explicit Plugin (QObject* parent = 0);
+    virtual ~Plugin();
+    virtual QPixmap pixmap() const;
+
+protected:
+    virtual void initialize();
+    virtual void deinitialize();
+};
+}
+}
 }
 
-void Plugin::initialize()
-{
-
-}
-
-void Plugin::deinitialize()
-{
-
-}
-
-Plugin::~Plugin()
-{
-
-}
-
-
-Q_EXPORT_PLUGIN2 (spchcntrl - python, SpeechControl::Plugins::UnityHud::Plugin)
-#include "plugin.moc"
-
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

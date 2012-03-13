@@ -256,6 +256,7 @@ void Main::refreshUi()
     const bool desktopControlEnabled = DesktopControl::Agent::instance()->isEnabled();
 
     m_ui->btnDsktpCntrl->setEnabled (desktopControlEnabled);
+    m_ui->actionDesktopControlActive->setEnabled(desktopControlEnabled);
 
     if (desktopControlEnabled) {
         m_ui->btnDctn->setChecked (dictationActive);
@@ -263,6 +264,7 @@ void Main::refreshUi()
     }
 
     m_ui->btnDctn->setEnabled (dictationEnabled);
+    m_ui->actionDictationActive->setEnabled(dictationEnabled);
 
     if (dictationEnabled) {
         m_ui->btnDsktpCntrl->setChecked (desktopControlActive);
@@ -284,29 +286,34 @@ void Main::on_actionAboutSpeechControl_triggered()
 void Main::on_actionPluginOptions_triggered()
 {
     Settings::displayPane ("dsktpcntrl");
+    refreshUi();
 }
 
 void Main::on_actionDictationOptions_triggered()
 {
     Settings::displayPane ("dctn");
+    refreshUi();
 }
 
 void Main::on_actionWizardMicrophone_triggered()
 {
     MicrophoneSetup wiz(this);
     wiz.exec();
+    refreshUi();
 }
 
 void Main::on_actionWizardContent_triggered()
 {
     ContentWizard wiz(this);
     wiz.exec();
+    refreshUi();
 }
 
 void Main::on_actionWizardSessions_triggered()
 {
     SessionWizard wiz(this);
     wiz.exec();
+    refreshUi();
 }
 
 /// @todo Build the Voxforge Wizard.
@@ -319,6 +326,7 @@ void Main::on_actionWizardQuickStart_triggered()
 {
     QuickStart* wiz = new QuickStart;
     wiz->exec();
+    refreshUi();
 }
 
 void Main::on_actionReportBug_triggered()

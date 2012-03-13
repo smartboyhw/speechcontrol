@@ -6,21 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>410</width>
-    <height>246</height>
+    <width>502</width>
+    <height>323</height>
    </rect>
   </property>
-  <property name="minimumSize">
-   <size>
-    <width>410</width>
-    <height>246</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>410</width>
-    <height>246</height>
-   </size>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>WizardPage</string>
@@ -36,8 +30,8 @@
     <rect>
      <x>0</x>
      <y>8</y>
-     <width>405</width>
-     <height>231</height>
+     <width>501</width>
+     <height>309</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -52,17 +46,20 @@
       <property name="text">
        <string>This wizard is designed to assist and alleviate the complexity of a process.</string>
       </property>
+      <property name="scaledContents">
+       <bool>true</bool>
+      </property>
       <property name="alignment">
-       <set>Qt::AlignJustify|Qt::AlignVCenter</set>
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
       </property>
       <property name="margin">
-       <number>10</number>
+       <number>5</number>
       </property>
       <property name="indent">
-       <number>7</number>
+       <number>5</number>
       </property>
      </widget>
     </item>

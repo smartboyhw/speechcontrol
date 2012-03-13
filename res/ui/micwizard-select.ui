@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>322</width>
-    <height>202</height>
+    <width>354</width>
+    <height>229</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,19 +27,13 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>321</width>
-     <height>201</height>
+     <width>353</width>
+     <height>229</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QLabel" name="label">
-      <property name="minimumSize">
-       <size>
-        <width>311</width>
-        <height>21</height>
-       </size>
-      </property>
       <property name="text">
        <string>Please select your preferred micrphone from the drop-list below. </string>
       </property>
@@ -48,12 +42,6 @@
       </property>
       <property name="wordWrap">
        <bool>true</bool>
-      </property>
-      <property name="margin">
-       <number>4</number>
-      </property>
-      <property name="indent">
-       <number>12</number>
       </property>
      </widget>
     </item>
@@ -98,18 +86,6 @@
     </item>
     <item>
      <widget class="QLabel" name="label_3">
-      <property name="minimumSize">
-       <size>
-        <width>311</width>
-        <height>31</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>311</width>
-        <height>31</height>
-       </size>
-      </property>
       <property name="text">
        <string>If your microphone is operational, the progress bar below will react to feedback.</string>
       </property>
@@ -119,28 +95,10 @@
       <property name="wordWrap">
        <bool>true</bool>
       </property>
-      <property name="margin">
-       <number>-2</number>
-      </property>
-      <property name="indent">
-       <number>12</number>
-      </property>
      </widget>
     </item>
     <item>
      <widget class="QProgressBar" name="progressBarFeedback">
-      <property name="minimumSize">
-       <size>
-        <width>311</width>
-        <height>23</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>311</width>
-        <height>23</height>
-       </size>
-      </property>
       <property name="value">
        <number>0</number>
       </property>

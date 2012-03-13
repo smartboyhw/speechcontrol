@@ -94,28 +94,28 @@ void DesktopControlSettingsPane::updateUi()
     m_ui->checkBoxEnable->setChecked (!Dictation::Agent::instance()->isEnabled() && DesktopControl::Agent::instance()->isEnabled());
     m_ui->checkBoxEnable->setEnabled (!Dictation::Agent::instance()->isEnabled());
 
-    AbstractCategory* l_glbl = DesktopControl::AbstractCategory::global();
-    CommandList l_cmds = l_glbl->commands();
-    QTableWidget* l_widg = m_ui->tableWidget;
-    l_widg->clear();
-    l_widg->setHorizontalHeaderLabels (QStringList() << tr ("Statement") << tr ("Command"));
-    l_widg->setRowCount (0);
-    l_widg->setColumnCount (2);
+    AbstractCategory* glbl = DesktopControl::AbstractCategory::global();
+    CommandList cmds = glbl->commands();
+    QTableWidget* widget = m_ui->tableWidget;
+    widget->clear();
+    widget->setHorizontalHeaderLabels (QStringList() << tr ("Statement") << tr ("Command"));
+    widget->setRowCount (0);
+    widget->setColumnCount (2);
 
-    Q_FOREACH (AbstractCommand * l_cmd, l_cmds) {
-        l_widg->setRowCount (l_cmd->statements().count() + l_widg->rowCount());
-        int l_count = 0;
-        Q_FOREACH (const QString l_statement, l_cmd->statements()) {
-            const int l_row = l_widg->rowCount() - l_cmd->statements().count() - l_count;
-            QTableWidgetItem* l_itemStatement = new QTableWidgetItem;
-            QTableWidgetItem* l_commandStatement = new QTableWidgetItem;
+    Q_FOREACH (AbstractCommand * cmd, cmds) {
+        widget->setRowCount (cmd->statements().count() + widget->rowCount());
+        int count = 0;
+        Q_FOREACH (const QString statement, cmd->statements()) {
+            const int row = widget->rowCount() - cmd->statements().count() - count;
+            QTableWidgetItem* itemStatement = new QTableWidgetItem;
+            QTableWidgetItem* commandStatement = new QTableWidgetItem;
 
-            l_itemStatement->setText (l_statement);
-            l_commandStatement->setText (l_cmd->id());
+            itemStatement->setText (statement);
+            commandStatement->setText (cmd->id());
 
-            l_widg->setItem (l_row, 0, l_itemStatement);
-            l_widg->setItem (l_row, 1, l_commandStatement);
-            l_count--;
+            widget->setItem (row, 0, itemStatement);
+            widget->setItem (row, 1, commandStatement);
+            count--;
         }
     }
 }

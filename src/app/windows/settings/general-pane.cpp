@@ -93,7 +93,7 @@ void GeneralSettingsPane::updateUi()
 {
     ui->lblSessionCount->setText (QString::number (Session::allSessions().count()));
     ui->lblAccuracyRating->setText ("<i>n/a</i>");
-    ui->checkBoxIndicatorIcon->setChecked (Core::configuration ("DesktopControl/AutoStart").toBool());
+    ui->checkBoxIndicatorIcon->setChecked (Core::configuration ("Indicator/Show").toBool());
 }
 
 void GeneralSettingsPane::on_checkBoxIndicatorIcon_toggled (bool p_checked)
@@ -102,4 +102,4 @@ void GeneralSettingsPane::on_checkBoxIndicatorIcon_toggled (bool p_checked)
     (p_checked) ? Indicator::show() : Indicator::hide();
 }
 #include "general-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -53,13 +53,11 @@ void PluginsSettingsPane::updateUi()
 
     QList<QUuid> plgnLst = Factory::availablePlugins().keys();
     qDebug() << "[PluginsSettingsPane::updateUi()" << plgnLst.length() << "plug-ins installed.";
-    view->setHorizontalHeaderLabels (QStringList() << tr ("Enabled") << tr ("Name") << tr ("Version"));
-    view->horizontalHeaderItem (0)->setSizeHint (QSize (30, 20));
-    view->horizontalHeaderItem (2)->setSizeHint (QSize (40, 20));
-    view->setRowCount (plgnLst.count());
-    view->setColumnCount (3);
-    view->setColumnWidth (0, 30);
-    view->setColumnWidth (2, 40);
+    view->setHorizontalHeaderItem(0,(new QTableWidgetItem("Enabled")));
+    view->setHorizontalHeaderItem(1,(new QTableWidgetItem("Name")));
+    view->setHorizontalHeaderItem(2,(new QTableWidgetItem("Version")));
+    view->setColumnCount(3);
+    view->setRowCount(plgnLst.count());
     int index = 0;
 
     Q_FOREACH (QUuid uuid, plgnLst) {
@@ -69,15 +67,12 @@ void PluginsSettingsPane::updateUi()
         QLabel* version = new QLabel (QString::number (plgn->version()), this);
 
         checkBox->setChecked (plgn->isEnabled());
-        checkBox->setGeometry (0, 0, 30, 30);
-        checkBox->setSizePolicy (QSizePolicy::Fixed, QSizePolicy::Fixed);
-
-        title->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::MinimumExpanding);
-        version->setSizePolicy (QSizePolicy::Minimum, QSizePolicy::Minimum);
+        checkBox->setGeometry(checkBox->geometry().x(),checkBox->geometry().y(),30,30);
 
         view->setCellWidget (index, 0, checkBox);
         view->setCellWidget (index, 1, title);
         view->setCellWidget (index, 2, version);
+
         index++;
     }
 }

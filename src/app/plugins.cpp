@@ -94,6 +94,15 @@ double AbstractPlugin::version() const
     return -1.0;
 }
 
+const QString AbstractPlugin::author() const
+{
+    if (m_cfg) {
+        return m_cfg->value ("Plugin/Author").toString();
+    }
+
+    return QString::null;
+}
+
 const QString AbstractPlugin::description() const
 {
     if (m_cfg) {
@@ -243,6 +252,11 @@ Plugins::GenericPlugin::GenericPlugin (const QUuid& p_uuid) : AbstractPlugin (p_
 Plugins::GenericPlugin::GenericPlugin (const Plugins::GenericPlugin& p_other) : AbstractPlugin (p_other.uuid(), Core::instance())
 {
     qFatal ("Shouldn't hit here.");
+}
+
+QPixmap Plugins::GenericPlugin::pixmap() const
+{
+    return QApplication::windowIcon().pixmap(64,64);
 }
 
 #include "plugins.moc"

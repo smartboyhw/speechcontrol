@@ -30,6 +30,7 @@
 #include <QObject>
 #include <QStringList>
 
+class QPixmap;
 class QAction;
 class QPluginLoader;
 class QSettings;
@@ -130,6 +131,13 @@ public:
     const QString description() const;
 
     /**
+     * @brief ...
+     *
+     * @return const QString
+     **/
+    const QString author() const;
+
+    /**
      * @brief Obtains a URL to a page that provides more information about the plug-in.
      * @return An invalid QUrl if it couldn't be determined, a QUrl otherwise.
      **/
@@ -140,6 +148,8 @@ public:
      * @return A invalid QUuid if it couldn't be determined, a QUuid otherwise.
      **/
     const QUuid uuid() const;
+
+    virtual QPixmap pixmap() const = 0;
 
     /**
      * @brief Obtains a list of dependency plug-ins.
@@ -241,34 +251,18 @@ private:
     QList<QAction*> m_acts;
 };
 
-/**
- * @brief ...
- **/
 class GenericPlugin : public AbstractPlugin
 {
     Q_OBJECT
     Q_DISABLE_COPY (GenericPlugin)
 
 public:
-    /**
-     * @brief ...
-     *
-     * @param  ...
-     **/
-    GenericPlugin (const QUuid&);
+    GenericPlugin (const QUuid& p_uuid);
+
+    QPixmap pixmap() const;
 
 protected:
-    /**
-     * @brief ...
-     *
-
-     **/
     virtual void initialize() { };
-    /**
-     * @brief ...
-     *
-
-     **/
     virtual void deinitialize() { };
 };
 

@@ -41,6 +41,9 @@ void PluginInfoDialog::updateUi()
     ui = new Ui::PluginInfoDialog;
     ui->setupUi(this);
     ui->lblTitle->setText(QString("<em style='font-size: large'>%1</em></font><br /><small>version %2</small>").arg(m_plgn->name()).arg(m_plgn->version()));
+    ui->lblAbout->setText(m_plgn->description());
+    ui->lblAuthors->setText(m_plgn->author());
+    ui->lblIcon->setPixmap(m_plgn->pixmap());
 }
 
 

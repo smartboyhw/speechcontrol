@@ -33,6 +33,7 @@ class Plugin : public AbstractPlugin
 
 public:
     explicit Plugin (QObject* parent = 0);
+    virtual QPixmap pixmap() const;
     virtual ~Plugin();
 
 protected:
@@ -43,4 +44,4 @@ protected:
 MPRIS_NAMESPACE_END
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

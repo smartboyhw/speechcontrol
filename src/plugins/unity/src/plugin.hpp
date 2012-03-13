@@ -28,7 +28,7 @@ namespace SpeechControl
 {
 namespace Plugins
 {
-namespace UnityHud
+namespace Unity
 {
 class Plugin : public AbstractPlugin
 {

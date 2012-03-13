@@ -23,14 +23,14 @@ include_directories(${SPHUD_PLUGIN_INCLUDE_DIRS}
     "${PROJECT_SOURCE_DIR}/src"
     "${SPCHCNTRL_PLUGIN_BUILD_INCLUDE_DIRS}")
 
-add_library(spchcntrl-unity-hud SHARED ${SPHUD_SRCS})
-target_link_libraries(spchcntrl-unity-hud ${SPHUD_PLUGIN_LIBRARIES})
-set_target_properties(spchcntrl-unity-hud PROPERTIES
+add_library(spchcntrl-unity SHARED ${SPHUD_SRCS})
+target_link_libraries(spchcntrl-unity ${SPHUD_PLUGIN_LIBRARIES})
+set_target_properties(spchcntrl-unity PROPERTIES
     DEFINE_SYMBOL "SPCH_EXPORT_SYMBOLS"
     VERSION "${SPHUD_PLUGIN_VERSION}"
     SOVERSION "${SPHUD_PLUGIN_VERSION}")
-speechcontrol_install_plugin(spchcntrl-unity-hud)
-add_dependencies(plugins spchcntrl-unity-hud)
+speechcontrol_install_plugin(spchcntrl-unity)
+add_dependencies(plugins spchcntrl-unity)
 
 install(FILES "${PROJECT_SOURCE_DIR}/data/${SPHUD_PLUGIN_UUID}.spec"
         DESTINATION ${SPCHCNTRL_PLUGINS_SPEC_INSTALL_DIR})

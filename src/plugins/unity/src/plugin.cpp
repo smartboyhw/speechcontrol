@@ -24,7 +24,7 @@
 #include "config.hpp"
 #include "plugin.hpp"
 
-using namespace SpeechControl::Plugins::UnityHud;
+using namespace SpeechControl::Plugins::Unity;
 
 Plugin::Plugin (QObject* parent) : AbstractPlugin (QUuid (PLUGIN_UUID), parent)
 {
@@ -52,7 +52,7 @@ Plugin::~Plugin()
 }
 
 
-Q_EXPORT_PLUGIN2 (spchcntrl-unity-hud, SpeechControl::Plugins::UnityHud::Plugin)
+Q_EXPORT_PLUGIN2 (spchcntrl-unity-hud, SpeechControl::Plugins::Unity::Plugin)
 #include "plugin.moc"
 
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

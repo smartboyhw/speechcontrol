@@ -46,6 +46,11 @@ void Plugin::deinitialize()
 
 }
 
+QPixmap Plugin::pixmap() const
+{
+    return QIcon::fromTheme("audio-x-wav").pixmap(64,64);
+}
+
 void Plugin::showTranscriberDialog ()
 {
     TranscriberDialog* l_dialog = new TranscriberDialog;
@@ -57,7 +62,7 @@ Plugin::~Plugin()
 
 }
 
-Q_EXPORT_PLUGIN2 (spchcntrl - transcriber, SpeechControl::Plugins::Transcriber::Plugin)
+Q_EXPORT_PLUGIN2 (spchcntrl-transcriber, SpeechControl::Plugins::Transcriber::Plugin)
 #include "plugin.moc"
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

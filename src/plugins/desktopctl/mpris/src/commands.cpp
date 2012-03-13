@@ -41,20 +41,22 @@ const QString MprisCategory::title()
     return "Application List";
 }
 
-QString PlayCommand::id()
+QString PlayStateCommand::id()
 {
     return "start-applist";
 }
 
-PlayCommand::PlayCommand () : AbstractCommand (MprisCategory::instance() ,
-            (QStringList() << "Play application"
-             << "Run application"
-             << "Open application"))
+PlayStateCommand::PlayStateCommand () : AbstractCommand (MprisCategory::instance() ,
+            (QStringList() << "Play music"
+             << "Pause music"
+             << "Stop playing music"
+             << "Next track"
+             << "Previous track"))
 {
 }
 
 /// @todo Detect the application name and invoke it.
-bool PlayCommand::invoke (const QString& p_statement) const
+bool PlayStateCommand::invoke (const QString& p_statement) const
 {
     if (!isValidStatement (p_statement)) {
         return false;
@@ -69,4 +71,4 @@ bool PlayCommand::invoke (const QString& p_statement) const
 
 MPRIS_NAMESPACE_END
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

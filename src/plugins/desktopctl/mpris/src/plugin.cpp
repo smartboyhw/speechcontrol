@@ -34,7 +34,7 @@ Plugin::Plugin (QObject* parent) : AbstractPlugin (QUuid (PLUGIN_UUID), parent)
 void Plugin::initialize()
 {
     qDebug() << "Plug-in loaded! (mpris)";
-    MprisCategory::instance()->addCommand ( (new PlayCommand));
+    MprisCategory::instance()->addCommand ( (new PlayStateCommand));
 }
 
 void Plugin::deinitialize()

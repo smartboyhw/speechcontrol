@@ -35,9 +35,6 @@ using SpeechControl::DesktopControl::AbstractCategory;
 
 MPRIS_NAMESPACE_BEGIN
 
-/**
- * @brief ...
- **/
 class MprisCategory : public AbstractCategory
 {
     Q_OBJECT
@@ -49,39 +46,39 @@ public:
     virtual const QString title();
 };
 
+
 /**
- * @brief ...
+ * @brief Player command for MPRIS.
+ *
+ * This command is based partly on the D-Bus specification for MPRIS
+ * defined at http://www.mpris.org/2.1/spec/Player_Node.html.
  **/
-class PlayCommand : public AbstractCommand
+class PlayStateCommand : public AbstractCommand
 {
     Q_OBJECT
     friend class Plugin;
 
 public:
-    /**
-     * @brief ...
-     *
-     * @return QString
-     **/
     virtual QString id();
-    /**
-     * @brief ...
-     *
-     * @param p_statement ... Defaults to QString::null.
-     * @return bool
-     **/
     virtual bool invoke (const QString& p_statement = QString::null) const;
 
 private:
-    /**
-     * @brief ...
-     *
-     **/
-    explicit PlayCommand ();
-    QStringList m_cmds;
+    explicit PlayStateCommand ();
+};
+
+class LibraryCommand : public AbstractCommand {
+    Q_OBJECT
+    friend class Plugin;
+
+public:
+    virtual QString id();
+    virtual bool invoke (const QString& p_statement = QString::null) const;
+
+private:
+    explicit LibraryCommand ();
 };
 
 MPRIS_NAMESPACE_END
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -109,9 +109,6 @@ void AbstractAudioSource::startRecording()
         return;
     }
 
-    //m_sinkAudio->setProperty("location", "file.wav");
-    m_sinkAudio->setProperty ("buffer-size", 1024);
-
     // Build the pipeline.
     m_pipeline = QGst::Pipeline::create ();
     m_pipeline->add (m_binAudio);
@@ -246,4 +243,4 @@ DeviceAudioSource::~DeviceAudioSource()
 }
 
 #include "abstractaudiosource.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -142,7 +142,6 @@ bool Session::isValid() const
     const bool l_valid = (
                              m_elem && !m_elem->isNull()
                              && m_corpus && m_corpus->isValid()
-                             && m_content && m_content->isValid()
                          );
     return l_valid;
 }
@@ -309,8 +308,12 @@ QString Session::name() const
 {
     if (m_elem->hasAttribute ("Name"))
         return m_elem->attribute ("Name");
+    else {
+        if (content())
+            return content()->title();
+    }
 
-    return content()->title();
+    return QString::null;
 }
 
 
@@ -382,4 +385,4 @@ Session::Backup* Session::Backup::generate (const Session& p_sssn)
 }
 
 #include "session.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

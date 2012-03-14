@@ -93,33 +93,33 @@ QString SpeechControl::Windows::SessionSettingsPane::id() const
 
 void SessionSettingsPane::updateUi()
 {
-    QListWidget* l_widget = m_ui->listWidgetSession;
-    l_widget->clear();
+    QListWidget* widget = m_ui->listWidgetSession;
+    widget->clear();
 
     SessionList l_lst = Session::allSessions();
-    Q_FOREACH (const Session * l_sssn, l_lst) {
-        QListWidgetItem* l_item = new QListWidgetItem (l_widget);
-        l_item->setData (Qt::UserRole, l_sssn->uuid().toString());
-        l_widget->addItem (l_item);
+    Q_FOREACH (const Session * sssn, l_lst) {
+        QListWidgetItem* item = new QListWidgetItem (widget);
+        item->setData (Qt::UserRole, sssn->uuid().toString());
+        widget->addItem (item);
 
-        if (l_sssn->content()) {
-            const QString l_lbl = l_sssn->content()->title();
+        if (sssn->content()) {
+            const QString lbl = sssn->name();
 
-            if (l_lbl.isEmpty()) {
-                QString l_sssnUuid = l_sssn->uuid().toString();
-                l_sssnUuid.chop (l_sssnUuid.lastIndexOf ("-"));
-                l_item->setText (l_sssnUuid);
+            if (lbl.isEmpty()) {
+                QString sssnUuid = sssn->uuid().toString();
+                sssnUuid.chop (sssnUuid.lastIndexOf ("-"));
+                item->setText (sssnUuid);
             }
             else {
-                l_item->setText (l_lbl);
+                item->setText (lbl);
             }
         }
         else {
-            l_item->setText (tr ("* missing book data *"));
+            item->setText (tr ("* missing book data *"));
         }
 
-        l_widget->clearSelection();
-        l_widget->setCurrentItem (l_item);
+        widget->clearSelection();
+        widget->setCurrentItem (item);
     }
 
 
@@ -243,4 +243,4 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionRestoreBackup_trigger
 }
 
 #include "session-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -96,23 +96,23 @@ void ContentSettingsPane::restoreDefaults()
 
 void ContentSettingsPane::updateUi()
 {
-    QListWidget* l_widget = ui->lstContent;
-    ContentList l_lst = Content::allContents();
+    QListWidget* widget = ui->lstContent;
+    ContentList lst = Content::allContents();
 
-    l_widget->clear();
+    widget->clear();
 
-    if (!l_lst.empty()) {
-        Q_FOREACH (const Content * l_cnt, l_lst) {
-            const QString l_lbl = l_cnt->title();
-            QListWidgetItem* l_item = new QListWidgetItem (l_widget);
-            l_item->setData (Qt::UserRole, l_cnt->uuid().toString());
-            l_widget->addItem (l_item);
+    if (!lst.empty()) {
+        Q_FOREACH (const Content * cnt, lst) {
+            const QString lbl = cnt->title();
+            QListWidgetItem* item = new QListWidgetItem (widget);
+            item->setData (Qt::UserRole, cnt->uuid().toString());
+            widget->addItem (item);
 
-            if (l_lbl.isEmpty()) {
-                l_item->setText (tr ("Unnamed"));
+            if (lbl.isEmpty()) {
+                item->setText (tr ("Unnamed"));
             }
             else {
-                l_item->setText (l_lbl);
+                item->setText (tr ("%1 [%2 word(s)]").arg (lbl).arg (cnt->words()));
             }
         }
     }
@@ -120,18 +120,34 @@ void ContentSettingsPane::updateUi()
 
 void ContentSettingsPane::on_btnDelete_clicked()
 {
-    QListWidget* l_widg = ui->lstContent;
+    QListWidget* widget = ui->lstContent;
+    bool doAll = false;
+    const bool multiple = widget->selectedItems().size() >= 2;
 
-    if (!l_widg->selectedItems().empty()) {
-        Q_FOREACH (QListWidgetItem * l_itm, l_widg->selectedItems()) {
-            Content* l_cntn = Content::obtain (l_itm->data (Qt::UserRole).toString());
+    if (multiple) {
+        QMessageBox* msg = new QMessageBox (this);
+        msg->setIcon (QMessageBox::Question);
+        msg->setText (tr ("Do you want to delete %1 content(s)?").arg (widget->selectedItems().size()));
+        msg->setInformativeText (tr ("All of the Sessions created from these Contents will be preserved."));
+        msg->setWindowTitle (tr ("Delete Multiple Contents"));
+        msg->setStandardButtons (QMessageBox::No | QMessageBox::Yes);
+        msg->setDefaultButton (QMessageBox::NoButton);
+        doAll = (msg->exec() == QMessageBox::Yes);
+    }
 
-            if (QMessageBox::Yes == QMessageBox::question (this,
-                    tr ("Confirm Content Delete"),
-                    tr ("Are you sure you want to delete this book '%1' by '%2'?\nAny session connected to the book will become invalid and untrainable.").arg (l_cntn->title()).arg (l_cntn->author()),
-                    QMessageBox::Yes | QMessageBox::No,
-                    QMessageBox::No)) {
-                l_cntn->erase();
+
+    if (!widget->selectedItems().empty()) {
+        Q_FOREACH (QListWidgetItem * itm, widget->selectedItems()) {
+            Content* cntn = Content::obtain (itm->data (Qt::UserRole).toString());
+
+            if ( (multiple && doAll) ||
+                    QMessageBox::Yes == QMessageBox::question (this,
+                            tr ("Confirm Content Delete"),
+                            tr ("Are you sure you want to delete this book '%1' by '%2'?\nAny session connected to the book will become invalid and untrainable.").arg (cntn->title()).arg (cntn->author()),
+                            QMessageBox::Yes | QMessageBox::No,
+                            QMessageBox::No)) {
+                cntn->erase();
+                widget->removeItemWidget (itm);
             }
         }
 
@@ -162,4 +178,4 @@ void ContentSettingsPane::on_btnInfo_clicked()
 }
 
 #include "content-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

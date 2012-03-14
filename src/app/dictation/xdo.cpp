@@ -42,21 +42,19 @@ KeyboardEmulator::KeyboardEmulator() : QObject (Core::instance()), m_xdo (0),
 /// @todo Allow the value of the delay to be adjustable.
 bool KeyboardEmulator::sendKey (const QChar& p_character)
 {
-    qDebug() << "[Dictation::KeyboardEmulator] Echoing character " << p_character;
+    qDebug() << "[Dictation::KeyboardEmulator::sendKey()] Echoing character " << p_character;
     const char l_char = p_character.toAscii();
-    xdo_type (m_xdo, m_win, &l_char, 1);
+    const int val = xdo_type (m_xdo, m_win, &l_char, 100);
+    qDebug() << "[Dictation::KeyboardEmulator::sendKey()] xdo_type " <<  val;
     return false;
 }
 
 bool KeyboardEmulator::sendKeys (const QString& p_characters)
 {
-    Q_FOREACH (const QChar l_char, p_characters) {
-        if (!sendKey (l_char)) {
-            return false;
-        }
-    }
-
-    return false;
+    // for now, just send the entire phrase.
+    const int val = xdo_type(m_xdo,m_win,p_characters.toStdString().c_str(),100);
+    qDebug() << "[Dictation::KeyboardEmulator::sendKey()] xdo_type " <<  val;
+    return true;
 }
 
 KeyboardEmulator::~KeyboardEmulator()
@@ -65,4 +63,4 @@ KeyboardEmulator::~KeyboardEmulator()
 }
 
 #include "xdo.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

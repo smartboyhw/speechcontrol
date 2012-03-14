@@ -40,7 +40,7 @@ TextContentSourceWidget::TextContentSourceWidget (QWidget* parent) :
     m_ui (new Ui::TextContentSourceWidget)
 {
     m_ui->setupUi (this);
-    this->setLayout(m_ui->gridLayout);
+    this->setLayout (m_ui->gridLayout);
     setProperty ("id", "txt");
     setProperty ("title", "Text-Based");
 }
@@ -49,11 +49,16 @@ void TextContentSourceWidget::on_btnOpen_clicked()
 {
     QString l_path = QFileDialog::getOpenFileName (this, "Select SpeechControl Content",
                      QDir::homePath());
+    Q_ASSERT (QFile::exists (l_path));
 
-    Q_ASSERT (QFile::exists (l_path) != false);
-
-    m_ui->lineEditPath->setText (l_path);
-    updateView();
+    if (!QFile::exists (l_path)) {
+        QMessageBox::critical (this, tr ("Invalid Content Source"), tr ("The content source specified is invalid.\nPlease select another."));
+        return;
+    }
+    else {
+        m_ui->lineEditPath->setText (l_path);
+        updateView();
+    }
 }
 
 void TextContentSourceWidget::updateView()

@@ -65,10 +65,15 @@ void TextContentSourceWidget::updateView()
     TextContentSource* l_src = new TextContentSource;
     l_src->setUrl (QUrl::fromUserInput (m_ui->lineEditPath->text()));
     Content* l_content = l_src->generate();
-    Q_ASSERT (l_content != 0);
-    m_ui->lblInfo->setText (tr ("<h2>%1</h2>by <b>%2</b>").arg (l_content->title()).arg (l_content->author()));
 
-    ( (SpeechControl::Wizards::ContentWizard*) this->window())->setSource (l_src);
+    if (l_content) {
+        m_ui->lblInfo->setText (tr ("<h2>%1</h2>by <b>%2</b>").arg (l_content->title()).arg (l_content->author()));
+        ( (SpeechControl::Wizards::ContentWizard*) this->window())->setSource (l_src);
+    }
+    else {
+        m_ui->lblInfo->setText (tr ("<h2>Invalid Content</h2>"));
+        ( (SpeechControl::Wizards::ContentWizard*) this->window())->setSource (0);
+    }
 }
 
 TextContentSourceWidget::~TextContentSourceWidget()

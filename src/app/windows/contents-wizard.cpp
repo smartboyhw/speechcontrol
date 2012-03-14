@@ -64,9 +64,13 @@ AbstractContentSource* ContentWizard::source()
 
 void ContentWizard::setSource (AbstractContentSource* p_src)
 {
-    SC_ASSERT (p_src != 0, "Invalid AbstractContentSource passed to the ContentWizard.");
-    m_src = new AbstractContentSource (*p_src);
-    qDebug() << "[ContentWizard::setSource()] Got source type" << m_src->id();
+    if (p_src) {
+        m_src = new AbstractContentSource (*p_src);
+        qDebug() << "[ContentWizard::setSource()] Got source type" << m_src->id();
+    }
+    else {
+        m_src = 0;
+    }
 }
 
 int ContentWizard::nextId() const
@@ -81,16 +85,16 @@ int ContentWizard::nextId() const
         break;
 
     case ConclusionPage: {
-        SC_ASSERT (m_src != 0, "No AbstractContentSource was chosen to be used with the ContentWizard. This is a logical error with the Source defined in the wizard.");
-        Content* l_cntn = m_src->generate();
-
-        if (l_cntn == 0) {
-            QMessageBox::warning (0,
-                                  tr ("Failure Creating Content"),
-                                  tr ("There was an issue creating your content; thus resulting in a failure."),
-                                  QMessageBox::Ok
-                                 );
-            return SourceSelectionPage;
+        if (m_src) {
+            Content* cntn = m_src->generate();
+            if (!cntn) {
+                QMessageBox::warning (0,
+                                      tr ("Failure Creating Content"),
+                                      tr ("There was an issue creating your content; thus resulting in a failure."),
+                                      QMessageBox::Ok
+                                     );
+                return SourceSelectionPage;
+            }
         }
 
         return -1;

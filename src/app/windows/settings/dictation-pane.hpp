@@ -48,7 +48,7 @@ public:
      * @brief Constructor.
      * @param parent Defaults to 0.
      **/
-    explicit DictationSettingsPane ();
+    explicit DictationSettingsPane();
     ~DictationSettingsPane();
     QString title() const;
     QString id() const;

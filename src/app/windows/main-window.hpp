@@ -47,6 +47,8 @@ class Core;
 namespace Windows
 {
 
+class DictationSettingsPane;
+
 class DesktopControlSettingsPane;
 
 /**
@@ -61,6 +63,7 @@ class Main : public QMainWindow
     friend class SpeechControl::Core;
     friend class Plugins::AbstractPlugin;
     friend class SpeechControl::Windows::DesktopControlSettingsPane;
+    friend class SpeechControl::Windows::DictationSettingsPane;
 
 public:
     /**

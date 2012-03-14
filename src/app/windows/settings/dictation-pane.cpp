@@ -20,6 +20,7 @@
 
 #include "sessions/session.hpp"
 #include "dictation-pane.hpp"
+#include <windows/main-window.hpp>
 #include "core.hpp"
 #include <dictation/agent.hpp>
 #include <desktopcontrol/agent.hpp>
@@ -95,13 +96,15 @@ void DictationSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
 {
     if (!DesktopControl::Agent::instance()->isEnabled()) {
         Core::setConfiguration ("Dictation/Enabled", p_checked);
-        Dictation::Agent::instance()->setState ( ( (p_checked) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled));
+        if (!p_checked)
+            Dictation::Agent::instance()->stop();
+        Core::mainWindow()->refreshUi();
     }
 }
 
 void DictationSettingsPane::on_checkBoxEnableStartup_toggled (bool p_checked)
 {
-    if (!DesktopControl::Agent::instance()->isEnabled()) {
+    if (DesktopControl::Agent::instance()->isEnabled()) {
         Core::setConfiguration ("Dictation/AutoStart", p_checked);
     }
 }

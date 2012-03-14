@@ -74,7 +74,7 @@ bool Agent::isEnabled() const
 void Agent::handleText (const QString& p_text)
 {
     qDebug() << "Got text" << p_text;
-    KeyboardEmulator::instance()->sendKeys (p_text);
+    KeyboardEmulator::instance()->sendPhrase (p_text);
 }
 
 Agent::~Agent()

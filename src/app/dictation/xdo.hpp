@@ -67,7 +67,7 @@ public:
      * @param p_characters The characters to be passed into X.
      * @return bool True if all of the characters passed in successfully, false if one fails.
      **/
-    bool sendKeys (const QString& p_characters);
+    bool sendPhrase (const QString& p_characters);
 
 private:
     xdo* m_xdo;                             ///< the XDO handle.

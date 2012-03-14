@@ -33,10 +33,10 @@ KeyboardEmulator::KeyboardEmulator() : QObject (Core::instance()), m_xdo (0),
     m_win (0)
 {
     m_xdo = xdo_new (0);
-    SC_ASSERT (m_xdo != 0, "Failed to create 'xdo' instance.");
+    int x, y;
 
-    int l_x, l_y;
-    qDebug() << "[KeyboardEmulator::{constructor}] " << xdo_mouselocation (m_xdo, &l_x, &l_y, 0);
+    SC_ASSERT (m_xdo != 0, "Failed to create 'xdo' instance.");
+    qDebug() << "[KeyboardEmulator::{constructor}] Mouse location" << xdo_mouselocation (m_xdo, &x, &y, 0) << x << "," << y;
 }
 
 /// @todo Allow the value of the delay to be adjustable.
@@ -49,11 +49,12 @@ bool KeyboardEmulator::sendKey (const QChar& p_character)
     return false;
 }
 
-bool KeyboardEmulator::sendKeys (const QString& p_characters)
+bool KeyboardEmulator::sendPhrase (const QString& p_characters)
 {
     // for now, just send the entire phrase.
+    qDebug() << "[Dictation::KeyboardEmulator::sendKeys()] Echoing phrase " << p_characters << "...";
     const int val = xdo_type(m_xdo,m_win,p_characters.toStdString().c_str(),100);
-    qDebug() << "[Dictation::KeyboardEmulator::sendKey()] xdo_type " <<  val;
+    qDebug() << "[Dictation::KeyboardEmulator::sendKeys()] xdo_type " <<  val;
     return true;
 }
 

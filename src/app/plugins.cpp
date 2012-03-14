@@ -49,7 +49,6 @@ AbstractPlugin::AbstractPlugin (const QUuid& p_uuid , QObject* p_parent) : QObje
 
 }
 
-
 AbstractPlugin::AbstractPlugin (const AbstractPlugin& p_other) : QObject (p_other.parent()),
     m_ldr (p_other.m_ldr), m_cfg (p_other.m_cfg), m_sttgs (p_other.m_sttgs)
 {

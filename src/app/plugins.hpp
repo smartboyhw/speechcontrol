@@ -21,9 +21,6 @@
 #ifndef PLUGINS_HPP
 #define PLUGINS_HPP
 
-#define SPCHCNTRL_PLUGINS_DIR "@SPCHCNTRL_PLUGINS_DIR@"
-#define SPCHCNTRL_PLUGINS_CONFIG_DIR "@SPCHCNTRL_PLUGINS_CONFIG_DIR@"
-
 #include <QUrl>
 #include <QUuid>
 #include <QList>
@@ -163,15 +160,22 @@ public:
      **/
     bool isSupported() const;
 
+    /**
+     * @brief Determines if the plug-in has been enabled.
+     * @return TRUE if the plug-in is enabled, FALSE otherwise.
+     **/
     bool isEnabled() const;
 
+    /**
+     * @brief Determines if the plug-in has been loaded.
+     * @return TRUE if the plug-in is loaded, FALSE otherwise.
+     **/
     bool isLoaded() const;
 
 public slots:
 
     /**
      * @brief Loads the required components of the plug-in to SpeechControl.
-     *
      * @return TRUE if the load was successful, FALSE otherwise.
      **/
     bool load();
@@ -211,9 +215,25 @@ protected:
      **/
     QSettings* configuration() const;
 
+    /**
+     * @brief Obtains the list of QActions used by this plug-in.
+     *
+     * @return A QList< QAction* > of actions. It'll be empty if no QActions have been added.
+     **/
     QList<QAction*> actions();
 
+    /**
+     * @brief Adds a QAction for this plug-in to the Main window.
+     *
+     * @param p_action The QAction to be added.
+     **/
     void addAction (QAction* p_action);
+
+    /**
+     * @brief Adds a list of QActions for the plug-in to the Main window.
+     *
+     * @param p_actions A list of QActions to be added.
+     **/
     void addActions (QList<QAction*> p_actions);
 
 private slots:
@@ -245,10 +265,10 @@ private:
      **/
     bool loadPlugins();
 
-    QPluginLoader* m_ldr;   ///< The magical QPluginLoader!
-    QSettings* m_cfg;       ///< Holds the configuration of the plug-in.
-    QSettings* m_sttgs;     ///< Holds the settings of the plug-in.
-    QList<QAction*> m_acts;
+    QPluginLoader* m_ldr;     ///< The magical QPluginLoader!
+    QSettings* m_cfg;         ///< Holds the configuration of the plug-in.
+    QSettings* m_sttgs;       ///< Holds the settings of the plug-in.
+    QList<QAction*> m_acts;   ///< The QActions used to add the 'Plugins' menu.
 };
 
 class GenericPlugin : public AbstractPlugin

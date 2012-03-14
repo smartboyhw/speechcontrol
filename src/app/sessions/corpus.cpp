@@ -185,7 +185,7 @@ void Corpus::load (const QUuid& p_uuid)
         }
 
         if (!m_dom->setContent (l_file)) {
-            qDebug() << "Failed to load corpus.";
+            qDebug() << "[Corpus::load()] Failed to load corpus.";
             return;
         }
 
@@ -193,14 +193,12 @@ void Corpus::load (const QUuid& p_uuid)
 
         for (int i = 0; i < l_elems.count(); ++i) {
             QDomElement l_elem = l_elems.at (i).toElement();
-            qDebug() << "Loading sentence:" << l_elem.attribute ("uuid");
-
             if (l_elem.isNull()) {
                 continue;
             }
 
             Sentence* l_sntc = new Sentence (this, (new QDomElement (l_elems.at (i).toElement())));
-            qDebug() << "Loaded sentence:" << l_sntc->text();
+            qDebug() << "[Corpus::load()] Loaded sentence:" << l_sntc->text();
             addSentence (l_sntc);
         }
 
@@ -211,7 +209,7 @@ void Corpus::load (const QUuid& p_uuid)
         m_dict = 0;
         m_sntncLst = SentenceList();
         m_uuid = QUuid (QString::null);
-        qDebug() << "Failed to open corpus XML file.";
+        qDebug() << "[Corpus::load()] Failed to open corpus XML file.";
     }
 }
 
@@ -221,7 +219,7 @@ bool Corpus::isValid() const
 {
     const bool l_valid = m_dom && !m_uuid.isNull();
     SC_ASSERT (l_valid == true, "Invalid Corpus.");
-    qDebug() << "Is corpus valid?" << l_valid;
+    qDebug() << "[Corpus::isValid()] Is corpus valid?" << l_valid;
     return l_valid;
 }
 
@@ -233,9 +231,10 @@ void Corpus::save()
     if (l_file->open (QIODevice::WriteOnly | QIODevice::Truncate)) {
         QTextStream l_strm (l_file);
         m_dom->save (l_strm, 4);
+        qDebug() << "[Corpus::save()] Saved Corpus to" << l_file->fileName() << "with size" << l_file->size();
     }
     else {
-        qWarning() << "Can't write to" << l_file->fileName() << ":" << l_file->errorString();
+        qDebug() << "[Corpus::save()] Can't write to" << l_file->fileName() << ":" << l_file->errorString();
     }
 }
 
@@ -249,6 +248,7 @@ CorpusList Corpus::allCorpuses()
         l_lst << Corpus::obtain (QUuid (l_uuid));
     }
 
+    qDebug() << "[Corpus::allCorpuses()] Found " << l_lst.length() << "corpuses.";
     return l_lst;
 }
 
@@ -257,6 +257,7 @@ void Corpus::erase()
     const QUrl l_path = getPath (m_uuid);
     QDir* l_dir = new QDir (l_path.toLocalFile());
     l_dir->rmdir (l_dir->absolutePath());
+    qDebug() << "[Corpus::erase()] Erased Corpus" << m_uuid << "from" << l_dir->absolutePath();
 }
 
 Corpus* Corpus::clone() const
@@ -308,4 +309,4 @@ Corpus::~Corpus()
 }
 
 #include "corpus.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

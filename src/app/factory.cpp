@@ -144,9 +144,9 @@ QSettings* Factory::pluginSettings (QUuid p_uuid)
 
 void Factory::start()
 {
-    const QStringList l_plgnLst = Core::configuration ("Plugins/AutoStart").toStringList();
-    Q_FOREACH (const QUuid l_plgn, availablePlugins().keys()) {
-        Plugins::Factory::loadPlugin (l_plgn);
+    const QStringList plgnLst = Core::configuration ("Plugins/AutoStart").toStringList();
+    Q_FOREACH (const QUuid plgn, plgnLst) {
+        Plugins::Factory::loadPlugin (plgn);
     }
 }
 

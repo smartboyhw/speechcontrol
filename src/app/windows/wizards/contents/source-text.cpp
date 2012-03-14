@@ -49,7 +49,6 @@ void TextContentSourceWidget::on_btnOpen_clicked()
 {
     QString l_path = QFileDialog::getOpenFileName (this, "Select SpeechControl Content",
                      QDir::homePath());
-    Q_ASSERT (QFile::exists (l_path));
 
     if (!QFile::exists (l_path)) {
         QMessageBox::critical (this, tr ("Invalid Content Source"), tr ("The content source specified is invalid.\nPlease select another."));

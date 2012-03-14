@@ -142,7 +142,7 @@ void Main::open()
                             "NoMicrophonesFoundOnStart");
     }
 
-    updateContent();
+    updateWindow();
     QMainWindow::show();
 }
 
@@ -180,13 +180,39 @@ void Main::dictationStateChanged()
 }
 
 /// @todo Instead of this constant ticking, use signals to update this code.
-void Main::updateContent()
+void Main::updateText()
 {
     m_ui->lblSessions->setText (QString::number (Session::allSessions().count()));
     m_ui->lblContent->setText (QString::number (Content::allContents().count()));
     m_ui->lblAccuracy->setText ("N/A");
     m_ui->lblSpeechIndex->setText ("N/A");
 }
+
+void Main::updateUi()
+{
+    // update desktop control & dictation buttons.
+    const bool dictationActive = Dictation::Agent::instance()->isActive();
+    const bool dictationEnabled = Dictation::Agent::instance()->isEnabled();
+    const bool desktopControlActive = DesktopControl::Agent::instance()->isActive();
+    const bool desktopControlEnabled = DesktopControl::Agent::instance()->isEnabled();
+
+    m_ui->btnDsktpCntrl->setEnabled (desktopControlEnabled);
+    m_ui->actionDesktopControlActive->setEnabled(desktopControlEnabled);
+
+    if (desktopControlEnabled) {
+        m_ui->btnDctn->setChecked (dictationActive);
+        m_ui->btnDctn->setIcon ( ( (dictationActive) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
+    }
+
+    m_ui->btnDctn->setEnabled (dictationEnabled);
+    m_ui->actionDictationActive->setEnabled(dictationEnabled);
+
+    if (dictationEnabled) {
+        m_ui->btnDsktpCntrl->setChecked (desktopControlActive);
+        m_ui->btnDsktpCntrl->setIcon ((desktopControlActive ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
+    }
+}
+
 
 void Main::setProgress (const double p_progress)
 {
@@ -234,7 +260,7 @@ void Main::on_actionDesktopControlActive_triggered (bool p_checked)
 
     DesktopControl::Agent::instance()->setState (p_checked ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled);
     setStatusMessage ( (p_checked ? tr ("Desktop control activated.") : tr ("Desktop control deactivated.")) , 3000);
-    refreshUi();
+    updateWindow();
 }
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
@@ -245,31 +271,13 @@ void Main::on_actionDictationActive_triggered (const bool p_checked)
 
     Dictation::Agent::instance()->setState ( (p_checked) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled);
     setStatusMessage ( ( (p_checked) ? tr ("Dictation activated.") : tr ("Dictation deactivated."))  , 3000);
-    refreshUi();
+    updateWindow();
 }
 
-void Main::refreshUi()
+void Main::updateWindow()
 {
-    const bool dictationActive = Dictation::Agent::instance()->isActive();
-    const bool dictationEnabled = Dictation::Agent::instance()->isEnabled();
-    const bool desktopControlActive = DesktopControl::Agent::instance()->isActive();
-    const bool desktopControlEnabled = DesktopControl::Agent::instance()->isEnabled();
-
-    m_ui->btnDsktpCntrl->setEnabled (desktopControlEnabled);
-    m_ui->actionDesktopControlActive->setEnabled(desktopControlEnabled);
-
-    if (desktopControlEnabled) {
-        m_ui->btnDctn->setChecked (dictationActive);
-        m_ui->btnDctn->setIcon ( ( (dictationActive) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
-    }
-
-    m_ui->btnDctn->setEnabled (dictationEnabled);
-    m_ui->actionDictationActive->setEnabled(dictationEnabled);
-
-    if (dictationEnabled) {
-        m_ui->btnDsktpCntrl->setChecked (desktopControlActive);
-        m_ui->btnDsktpCntrl->setIcon ((desktopControlActive ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
-    }
+    updateUi();
+    updateText();
 }
 
 void Main::on_actionAboutQt_triggered()
@@ -286,40 +294,40 @@ void Main::on_actionAboutSpeechControl_triggered()
 void Main::on_actionPluginOptions_triggered()
 {
     Settings::displayPane ("dsktpcntrl");
-    refreshUi();
+    updateWindow();
 }
 
 void Main::on_actionTrainingOptions_triggered()
 {
     Settings::displayPane("trnng");
-    refreshUi();
+    updateWindow();
 }
 
 void Main::on_actionDictationOptions_triggered()
 {
     Settings::displayPane ("dctn");
-    refreshUi();
+    updateWindow();
 }
 
 void Main::on_actionWizardMicrophone_triggered()
 {
     MicrophoneSetup wiz(this);
     wiz.exec();
-    refreshUi();
+    updateWindow();
 }
 
 void Main::on_actionWizardContent_triggered()
 {
     ContentWizard wiz(this);
     wiz.exec();
-    refreshUi();
+    updateWindow();
 }
 
 void Main::on_actionWizardSessions_triggered()
 {
     SessionWizard wiz(this);
     wiz.exec();
-    refreshUi();
+    updateWindow();
 }
 
 /// @todo Build the Voxforge Wizard.
@@ -332,7 +340,7 @@ void Main::on_actionWizardQuickStart_triggered()
 {
     QuickStart* wiz = new QuickStart;
     wiz->exec();
-    refreshUi();
+    updateWindow();
 }
 
 void Main::on_actionReportBug_triggered()

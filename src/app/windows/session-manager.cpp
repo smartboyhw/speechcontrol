@@ -129,7 +129,7 @@ void SessionManager::on_btnCreate_clicked()
 
         if (l_session) {
             m_session = l_session;
-            Core::mainWindow()->updateContent();
+            Core::mainWindow()->updateWindow();
         }
     }
 

@@ -112,7 +112,7 @@ void ContentManager::on_btnAdd_clicked()
     ContentWizard* l_wiz = new ContentWizard;
 
     if (l_wiz->exec() == QDialog::Accepted) {
-        Core::mainWindow()->updateContent();
+        Core::mainWindow()->updateWindow();
         updateList();
     }
 }

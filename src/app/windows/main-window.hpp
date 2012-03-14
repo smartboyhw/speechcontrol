@@ -62,14 +62,25 @@ class Main : public QMainWindow
     Q_OBJECT
     friend class SpeechControl::Core;
     friend class Plugins::AbstractPlugin;
-    friend class SpeechControl::Windows::DesktopControlSettingsPane;
-    friend class SpeechControl::Windows::DictationSettingsPane;
 
 public:
     /**
      * @brief Destructor.
      **/
     virtual ~Main();
+
+    /**
+     * @brief Updates the window's data.
+     **/
+    void updateWindow();
+
+    /**
+     * @brief Shows a brief message in the status bar of the main window.
+     *
+     * @param p_message The message to display.
+     * @param p_timeout How long it should be displayed without disturbance (in milliseconds) .Defaults to 8000.
+     **/
+    void setStatusMessage (const QString& p_message, const int p_timeout = 8000);
 
 private:
     /**
@@ -84,25 +95,12 @@ public slots:
     virtual void open();
 
     /**
-     * @brief Updates the window's data.
-     **/
-    void updateContent();
-
-    /**
      * @brief Shows progress in the task bar.
      *
      * @note At 1.0, the progress bar is hidden.
      * @param p_value The value of the progress on a scale of 0.0 to 1.0
      **/
     void setProgress (const double p_value);
-
-    /**
-     * @brief Shows a brief message in the status bar of the main window.
-     *
-     * @param p_message The message to display.
-     * @param p_timeout How long it should be displayed without disturbance (in milliseconds) .Defaults to 8000.
-     **/
-    void setStatusMessage (const QString& p_message, const int p_timeout = 8000);
 
 private slots:
     // desktop control
@@ -137,7 +135,8 @@ private slots:
 
 private:
     virtual void closeEvent (QCloseEvent* p_closeEvent);
-    void refreshUi();
+    void updateText();
+    void updateUi();
     Ui::MainWindow* m_ui;
     QProgressBar* m_prgStatusbar;
     QTimer* m_tckr;

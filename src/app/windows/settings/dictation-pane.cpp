@@ -98,7 +98,7 @@ void DictationSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
         Core::setConfiguration ("Dictation/Enabled", p_checked);
         if (!p_checked)
             Dictation::Agent::instance()->stop();
-        Core::mainWindow()->refreshUi();
+        Core::mainWindow()->updateWindow();
     }
 }
 
@@ -110,4 +110,4 @@ void DictationSettingsPane::on_checkBoxEnableStartup_toggled (bool p_checked)
 }
 
 #include "dictation-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -39,12 +39,16 @@
       </rect>
      </property>
      <property name="text">
-      <string>&amp;copy;2010 - 2012 by the Synthetic Intellect Institute&lt;br&gt;
-&lt;a href=&quot;http://wiki.thesii.org/SpeechControl&quot;&gt;http://wiki.thesii.org/SpeechControl&lt;/a&gt;&lt;br&gt;
-&lt;a href=&quot;irc://irc.freenode.net/sii-speechcontrol&quot;&gt;#sii-speechcontrol&lt;/a&gt; on &lt;a href=&quot;http://www.freenode.net&quot;&gt;Freenode&lt;/a&gt;&lt;br&gt;&lt;br&gt;
-SpeechControl is licensed under &lt;a href=&quot;http://www.gnu.org/licenses/gpl-3.0.txt&quot;&gt;GPLv3&lt;/a&gt;.&lt;br&gt;
- Please use &lt;a href=&quot;http://tasks.thesii.org&quot;&gt;http://tasks.thesii.org&lt;/a&gt; to report bugs.
-</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;©2010 - 2012 by the Synthetic Intellect Institute&lt;img src=&quot;:/logo/sii&quot; width=&quot;64&quot; height=&quot;64&quot; style=&quot;float: right; margin: 10px;&quot; /&gt;&lt;br/&gt;&lt;a href=&quot;http://wiki.thesii.org/SpeechControl&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://wiki.thesii.org/SpeechControl&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;&lt;a href=&quot;irc://irc.freenode.net/sii-speechcontrol&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;#sii-speechcontrol&lt;/span&gt;&lt;/a&gt; on &lt;a href=&quot;http://www.freenode.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Freenode&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;SpeechControl is licensed under &lt;a href=&quot;http://www.gnu.org/licenses/gpl-3.0.txt&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;GPLv3&lt;/span&gt;&lt;/a&gt;.&lt;br/&gt;Please use &lt;a href=&quot;http://tasks.thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://tasks.thesii.org&lt;/span&gt;&lt;/a&gt; to report bugs. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
      <property name="margin">
       <number>10</number>
@@ -153,5 +157,38 @@ SpeechControl is licensed under &lt;a href=&quot;http://www.gnu.org/licenses/gpl
  <resources>
   <include location="../res.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>AboutDialog</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>165</x>
+     <y>344</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>180</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>AboutDialog</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>165</x>
+     <y>344</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>161</x>
+     <y>180</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

@@ -268,7 +268,7 @@ void Main::refreshUi()
 
     if (dictationEnabled) {
         m_ui->btnDsktpCntrl->setChecked (desktopControlActive);
-        m_ui->btnDsktpCntrl->setIcon ( ( (desktopControlActive) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
+        m_ui->btnDsktpCntrl->setIcon ((desktopControlActive ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
     }
 }
 

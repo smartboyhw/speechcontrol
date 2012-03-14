@@ -159,13 +159,20 @@ void Content::parseText (const QString& p_text)
 
 bool Content::isValid() const
 {
-    if (!QFile::exists (getPath (m_uuid))) {
-        qWarning() << "[Content::isValid()] Content's data file doesn't exists." << getPath (m_uuid);
+    if (m_uuid.isNull()) {
+        qDebug() << "[Content::isValid()] UUID of Content is null.";
         return false;
     }
-
-    if (m_pages.isEmpty()) {
+    else if (!QFile::exists (getPath (m_uuid))) {
+        qDebug() << "[Content::isValid()] Content's data file doesn't exists." << getPath (m_uuid);
+        return false;
+    }
+    else if (m_pages.isEmpty()) {
         qDebug() << "[Content::isValid()] Content has no pages." << m_uuid;
+        return false;
+    }
+    else if (!m_dom || m_dom->isNull()) {
+        qDebug() << "[Content::isValid()] DOM element of Corpus is null." << m_uuid;
         return false;
     }
 
@@ -203,7 +210,7 @@ QString Content::getPath (const QUuid& p_uuid)
 
 QString Content::title() const
 {
-    if (m_dom) {
+    if (isValid()) {
         QDomElement l_domElem = m_dom->documentElement();
         QDomElement l_bilboElem = l_domElem.namedItem ("Bibliography").toElement();
         return l_bilboElem.attribute ("Title");
@@ -216,7 +223,7 @@ QString Content::title() const
 
 QString Content::author() const
 {
-    if (m_dom) {
+    if (isValid()) {
         QDomElement l_domElem = m_dom->documentElement();
         QDomElement l_bilboElem = l_domElem.namedItem ("Bibliography").toElement();
         return l_bilboElem.attribute ("Author");
@@ -248,7 +255,8 @@ ContentList Content::allContents()
 
     Q_FOREACH (const QUuid uuid, results) {
         qDebug () << "[Content::allContents()] Parsing potential Content " << uuid;
-        if (uuid.isNull()){
+
+        if (uuid.isNull()) {
             qDebug () << "[Content::allContents()] Invliad Content found at" << uuid;
             continue;
         }

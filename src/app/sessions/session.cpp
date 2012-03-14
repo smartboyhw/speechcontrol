@@ -309,7 +309,7 @@ QString Session::name() const
     if (m_elem->hasAttribute ("Name"))
         return m_elem->attribute ("Name");
     else {
-        if (content())
+        if (content() && content()->isValid())
             return content()->title();
     }
 

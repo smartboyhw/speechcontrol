@@ -115,6 +115,7 @@ private slots:
     // training
     void on_actionStartTraining_triggered();
     void on_actionAdaptModels_triggered();
+    void on_actionTrainingOptions_triggered();
 
     // wizards
     void on_actionWizardMicrophone_triggered();

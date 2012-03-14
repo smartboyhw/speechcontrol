@@ -466,7 +466,7 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionStartTraining"/>
      <addaction name="actionAdaptModels"/>
      <addaction name="separator"/>
-     <addaction name="actionOptions_2"/>
+     <addaction name="actionTrainingOptions"/>
     </widget>
     <widget class="QMenu" name="menuWizards">
      <property name="title">
@@ -635,7 +635,7 @@ p, li { white-space: pre-wrap; }
     <string>Optio&amp;ns</string>
    </property>
   </action>
-  <action name="actionOptions_2">
+  <action name="actionTrainingOptions">
    <property name="text">
     <string>O&amp;ptions</string>
    </property>

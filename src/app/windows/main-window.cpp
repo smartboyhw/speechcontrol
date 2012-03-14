@@ -289,6 +289,12 @@ void Main::on_actionPluginOptions_triggered()
     refreshUi();
 }
 
+void Main::on_actionTrainingOptions_triggered()
+{
+    Settings::displayPane("trnng");
+    refreshUi();
+}
+
 void Main::on_actionDictationOptions_triggered()
 {
     Settings::displayPane ("dctn");

@@ -40,17 +40,14 @@ class SessionSettingsPane : public AbstractSettingsPane
 public:
     explicit SessionSettingsPane ();
     ~SessionSettingsPane();
-    virtual QString title() const;
     virtual QString id() const;
-    virtual void updateUi();
-    virtual bool containsText (const QString& p_query) const;
     virtual QPixmap pixmap() const;
-    virtual void resetPanel();
     virtual void restoreDefaults();
-    virtual void show();
+    virtual QString title() const;
 
 protected:
     void changeEvent (QEvent* e);
+    virtual void updateUi();
 
 private slots:
     void on_btnInfo_clicked();
@@ -67,4 +64,4 @@ private:
 }
 
 #endif // SESSIONSETTINGSPANE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

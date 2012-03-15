@@ -57,12 +57,6 @@ SessionSettingsPane::SessionSettingsPane() :
     m_ui->btnArchive->setMenu (l_archiveMenu);
 }
 
-void SessionSettingsPane::show()
-{
-    updateUi();
-    QFrame::show();
-}
-
 SessionSettingsPane::~SessionSettingsPane()
 {
     delete m_ui;
@@ -121,23 +115,11 @@ void SessionSettingsPane::updateUi()
         widget->clearSelection();
         widget->setCurrentItem (item);
     }
-
-
-}
-
-bool SessionSettingsPane::containsText (const QString& p_query) const
-{
-
 }
 
 QPixmap SessionSettingsPane::pixmap() const
 {
     return QIcon::fromTheme ("configure").pixmap (32, 32);
-}
-
-void SessionSettingsPane::resetPanel()
-{
-
 }
 
 void SessionSettingsPane::restoreDefaults()

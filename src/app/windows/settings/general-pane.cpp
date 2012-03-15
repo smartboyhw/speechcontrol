@@ -68,25 +68,14 @@ QString GeneralSettingsPane::id() const
     return "gnrl";
 }
 
-bool GeneralSettingsPane::containsText (const QString& p_query) const
-{
-
-}
-
 QPixmap GeneralSettingsPane::pixmap() const
 {
     return QIcon::fromTheme ("configure").pixmap (32, 32);
 }
 
-/// @todo Add code here to reset the panel to the values they had initially.
-void GeneralSettingsPane::resetPanel()
-{
-}
-
 void GeneralSettingsPane::restoreDefaults()
 {
     Core::setConfiguration ("Indicator/Show", false);
-    updateUi();
 }
 
 void GeneralSettingsPane::updateUi()

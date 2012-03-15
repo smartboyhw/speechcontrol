@@ -39,7 +39,7 @@ DesktopControlSettingsPane::DesktopControlSettingsPane () :
 {
     qDebug() << "[DesktopControlSettingsPane::{constructor}] Building desktop control settings pane...";
     m_ui->setupUi (this);
-    this->setLayout(m_ui->gridLayout);
+    this->setLayout (m_ui->gridLayout);
     updateUi();
     qDebug() << "[DesktopControlSettingsPane::{constructor}] Built desktop control settings pane.";
 }
@@ -72,24 +72,16 @@ QString DesktopControlSettingsPane::id() const
     return "dsktpcntrl";
 }
 
-bool DesktopControlSettingsPane::containsText (const QString& p_query) const
-{
-
-}
-
 QPixmap DesktopControlSettingsPane::pixmap() const
 {
     return QIcon::fromTheme ("audio-headset").pixmap (32, 32);
 }
 
-void DesktopControlSettingsPane::resetPanel()
-{
-
-}
-
 void DesktopControlSettingsPane::restoreDefaults()
 {
-
+    Core::setConfiguration ("DesktopControl/Enabled", false);
+    Core::setConfiguration ("DesktopControl/AutoStart", false);
+    updateUi();
 }
 
 void DesktopControlSettingsPane::updateUi()
@@ -97,10 +89,12 @@ void DesktopControlSettingsPane::updateUi()
     m_ui->checkBoxEnable->setChecked (!Dictation::Agent::instance()->isEnabled() && DesktopControl::Agent::instance()->isEnabled());
     m_ui->checkBoxEnable->setEnabled (!Dictation::Agent::instance()->isEnabled());
 
-    AbstractCategory* glbl = DesktopControl::AbstractCategory::global();
-    CommandList cmds = glbl->commands();
     QTableWidget* widget = m_ui->tableWidget;
     widget->clear();
+
+    widget->setEnabled (DesktopControl::Agent::instance()->isEnabled());
+    AbstractCategory* glbl = DesktopControl::AbstractCategory::global();
+    CommandList cmds = glbl->commands();
     widget->setHorizontalHeaderLabels (QStringList() << tr ("Statement") << tr ("Command"));
     widget->setRowCount (0);
     widget->setColumnCount (2);
@@ -110,10 +104,10 @@ void DesktopControlSettingsPane::updateUi()
         int count = 0;
         Q_FOREACH (const QString statement, cmd->statements()) {
             const int row = widget->rowCount() - cmd->statements().count() - count;
-            QLabel* command = new QLabel(statement,widget);
-            QLabel* category = new QLabel(cmd->id(),widget);
+            QLabel* command = new QLabel (statement, widget);
+            QLabel* category = new QLabel (cmd->id(), widget);
 
-            command->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
+            command->setSizePolicy (QSizePolicy::Expanding, QSizePolicy::Preferred);
 
             widget->setCellWidget (row, 0, command);
             widget->setCellWidget (row, 1, category);
@@ -126,9 +120,11 @@ void DesktopControlSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
 {
     Core::setConfiguration ("DesktopControl/Enabled", p_checked);
 
-    if (!p_checked)
+    if (!p_checked && DesktopControl::Agent::instance()->isActive())
         DesktopControl::Agent::instance()->stop();
+
     Core::mainWindow()->updateWindow();
+    updateUi();
 }
 
 void DesktopControlSettingsPane::on_checkBoxEnableStartup_toggled (bool p_checked)

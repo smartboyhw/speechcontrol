@@ -42,15 +42,13 @@ class PluginsSettingsPane : public AbstractSettingsPane
 public:
     explicit PluginsSettingsPane ();
     virtual ~PluginsSettingsPane();
-    virtual bool containsText (const QString& p_query) const;
     virtual QString id() const;
     virtual QPixmap pixmap() const;
-    virtual void resetPanel();
     virtual void restoreDefaults();
     virtual QString title() const;
-    virtual void updateUi();
 protected:
     void changeEvent (QEvent* e);
+    virtual void updateUi();
 
 private slots:
     void on_btnInfo_clicked();

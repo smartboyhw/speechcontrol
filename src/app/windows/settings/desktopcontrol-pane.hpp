@@ -50,28 +50,14 @@ public:
      **/
     ~DesktopControlSettingsPane();
 
-    /**
-     * @brief Obtains the title of this configuration pane.
-     **/
-    QString title() const;
-
-    /**
-     * @brief Obtains the ID of this configuration pane.
-     **/
-
-    QString id() const;
-
-    virtual void updateUi();
-
-    virtual bool containsText (const QString& p_query) const;
-
+    virtual QString id() const;
+    virtual QString title() const;
     virtual QPixmap pixmap() const;
-
-    virtual void resetPanel();
-
     virtual void restoreDefaults();
+
 protected:
     void changeEvent (QEvent* e);
+    virtual void updateUi();
 
 private slots:
     void on_checkBoxEnable_toggled (bool p_checked);
@@ -85,4 +71,4 @@ private:
 }
 
 #endif // GENERAL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

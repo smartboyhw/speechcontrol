@@ -40,15 +40,13 @@ class VoxforgeSettingsPane : public AbstractSettingsPane
 public:
     explicit VoxforgeSettingsPane ();
     ~VoxforgeSettingsPane();
-    QString title() const;
-    QString id() const;
-    virtual bool containsText (const QString& p_query) const;
+    virtual QString id() const;
     virtual QPixmap pixmap() const;
-    virtual void resetPanel();
     virtual void restoreDefaults();
-    virtual void updateUi();
+    virtual QString title() const;
 
 protected:
+    virtual void updateUi();
     void changeEvent (QEvent* e);
 
 private slots:
@@ -62,4 +60,4 @@ private:
 }
 
 #endif // VOXFORGESETTINGSPANE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

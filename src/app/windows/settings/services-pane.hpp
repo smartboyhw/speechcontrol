@@ -38,14 +38,11 @@ class ServicesSettingsPane : public AbstractSettingsPane
 public:
     explicit ServicesSettingsPane ();
     ~ServicesSettingsPane();
-    QString title() const;
-    QString id() const;
-    virtual bool containsText (const QString& p_query) const;
+    virtual QString id() const;
     virtual QPixmap pixmap() const;
-    virtual void resetPanel();
     virtual void restoreDefaults();
+    virtual QString title() const;
     virtual void updateUi();
-
 protected:
     void changeEvent (QEvent* e);
 
@@ -57,4 +54,4 @@ private:
 }
 
 #endif // SERVICESSETTINGSPANE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -64,19 +64,9 @@ QString SpeechControl::Windows::ServicesSettingsPane::id() const
     return "srvcs";
 }
 
-bool ServicesSettingsPane::containsText (const QString& p_query) const
-{
-
-}
-
 QPixmap ServicesSettingsPane::pixmap() const
 {
-    return QIcon::fromTheme ("configure").pixmap (32, 32);
-}
-
-void ServicesSettingsPane::resetPanel()
-{
-
+    return QIcon::fromTheme ("services").pixmap (32, 32);
 }
 
 void ServicesSettingsPane::restoreDefaults()
@@ -90,4 +80,4 @@ void ServicesSettingsPane::updateUi()
 }
 
 #include "services-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -60,19 +60,9 @@ QString SpeechControl::Windows::VoxforgeSettingsPane::id() const
     return "vxfrg";
 }
 
-bool VoxforgeSettingsPane::containsText (const QString& p_query) const
-{
-
-}
-
 QPixmap VoxforgeSettingsPane::pixmap() const
 {
     return QIcon::fromTheme ("configure").pixmap (32, 32);
-}
-
-void VoxforgeSettingsPane::resetPanel()
-{
-
 }
 
 void VoxforgeSettingsPane::restoreDefaults()
@@ -85,7 +75,6 @@ void VoxforgeSettingsPane::updateUi()
 
 }
 
-
 /// @todo Toggle the ability to upload content up to VoxForge.
 void SpeechControl::Windows::VoxforgeSettingsPane::on_checkBox_clicked()
 {
@@ -93,4 +82,4 @@ void SpeechControl::Windows::VoxforgeSettingsPane::on_checkBox_clicked()
 }
 
 #include "voxforge-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

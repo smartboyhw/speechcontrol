@@ -64,19 +64,9 @@ QString SpeechControl::Windows::TrainingSettingsPane::id() const
     return "trnng";
 }
 
-bool TrainingSettingsPane::containsText (const QString& p_query) const
-{
-
-}
-
 QPixmap TrainingSettingsPane::pixmap() const
 {
     return QIcon::fromTheme ("configure").pixmap (32, 32);
-}
-
-void TrainingSettingsPane::resetPanel()
-{
-
 }
 
 void TrainingSettingsPane::restoreDefaults()
@@ -91,4 +81,4 @@ void TrainingSettingsPane::updateUi()
 
 
 #include "training-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

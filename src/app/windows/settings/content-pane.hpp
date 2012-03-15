@@ -40,14 +40,12 @@ class ContentSettingsPane : public AbstractSettingsPane
 public:
     explicit ContentSettingsPane ();
     ~ContentSettingsPane();
-    QString title() const;
-    QString id() const;
-    virtual void show();
     void updateUi();
-    virtual bool containsText (const QString& p_query) const;
+    virtual void show();
+    virtual void restoreDefaults() { }
+    virtual QString title() const;
+    virtual QString id() const;
     virtual QPixmap pixmap() const;
-    virtual void resetPanel();
-    virtual void restoreDefaults();
 
 protected:
     void changeEvent (QEvent* e);
@@ -65,4 +63,4 @@ private:
 }
 
 #endif // CONTENTSETTINGSPANE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

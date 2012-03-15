@@ -50,15 +50,14 @@ public:
      **/
     explicit DictationSettingsPane();
     ~DictationSettingsPane();
-    QString title() const;
-    QString id() const;
-    void updateUi();
-    virtual bool containsText (const QString& p_query) const;
+
+    virtual QString title() const;
+    virtual QString id() const;
     virtual QPixmap pixmap() const;
-    virtual void resetPanel();
     virtual void restoreDefaults();
 
 protected:
+    void updateUi();
     void changeEvent (QEvent* e);
 
 private slots:
@@ -73,4 +72,4 @@ private:
 }
 
 #endif // GENERAL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

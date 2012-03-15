@@ -106,19 +106,9 @@ QString PluginsSettingsPane::id() const
     return "plgn";
 }
 
-bool PluginsSettingsPane::containsText (const QString& p_query) const
-{
-
-}
-
 QPixmap PluginsSettingsPane::pixmap() const
 {
     return QIcon::fromTheme ("list-add").pixmap (32, 32);
-}
-
-void PluginsSettingsPane::resetPanel()
-{
-
 }
 
 void PluginsSettingsPane::restoreDefaults()

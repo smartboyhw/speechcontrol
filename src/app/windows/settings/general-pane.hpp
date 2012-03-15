@@ -55,23 +55,9 @@ public:
      * @brief Destructor.
      **/
     ~GeneralSettingsPane();
-
-    /**
-     * @brief Obtains the title of this configuration pane.
-     **/
-    QString title() const;
-
-    /**
-     * @brief Obtains the ID of this configuration pane.
-     **/
-    QString id() const;
-
-    virtual bool containsText (const QString& p_query) const;
-
-    QPixmap pixmap() const;
-
-    virtual void resetPanel();
-
+    virtual QString id() const;
+    virtual QString title() const;
+    virtual QPixmap pixmap() const;
     virtual void restoreDefaults();
 
 protected:
@@ -89,4 +75,4 @@ private:
 }
 
 #endif // GENERAL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

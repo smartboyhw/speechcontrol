@@ -74,24 +74,9 @@ QString ContentSettingsPane::id() const
     return "cntns";
 }
 
-bool ContentSettingsPane::containsText (const QString& p_query) const
-{
-    return !p_query.isEmpty();
-}
-
 QPixmap ContentSettingsPane::pixmap() const
 {
-    return QIcon::fromTheme ("configure").pixmap (32, 32);
-}
-
-void ContentSettingsPane::resetPanel()
-{
-
-}
-
-void ContentSettingsPane::restoreDefaults()
-{
-
+    return QIcon::fromTheme ("text-plain").pixmap (32, 32);
 }
 
 void ContentSettingsPane::updateUi()
@@ -109,7 +94,7 @@ void ContentSettingsPane::updateUi()
             widget->addItem (item);
 
             if (lbl.isEmpty()) {
-                item->setText (tr ("Unnamed"));
+                item->setText (tr ("Unnamed [%1 word(s)]").arg (lbl).arg (cnt->words()));
             }
             else {
                 item->setText (tr ("%1 [%2 word(s)]").arg (lbl).arg (cnt->words()));

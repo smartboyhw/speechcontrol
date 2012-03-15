@@ -1,6 +1,9 @@
 *** To see a live list of TODOs, we recommend that you
 *** use Doxygen to generate all of the @todo mentions
-*** in the source code.
+*** in the source code or invoke in a terminal window from
+*** the source directory:
+***
+***   $ cat `find . | grep .cpp` | grep @todo
 ***
 *** Completed tasks have a (!), whereas incompleted tasks have a (*).
 *** Tasks in progress should have a (-) as its indicator.

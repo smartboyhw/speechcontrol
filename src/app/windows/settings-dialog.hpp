@@ -63,8 +63,10 @@ private slots:
     void on_buttonBox_clicked (QAbstractButton* p_button);
 
 private:
-    QTreeWidgetItem* findPaneItem (const QString& p_panelID);
     void buildWindow();
+    QTreeWidgetItem* findPaneForItem (const QString& p_panelID);
+    AbstractSettingsPane* currentPane();
+    AbstractSettingsPane* findPane (QString id);
     Ui::SettingsDialog* m_ui;
     QMap<QString, AbstractSettingsPane*> m_panes;
 };
@@ -78,15 +80,13 @@ class AbstractSettingsPane : public QFrame
     friend class Settings;
 
 public:
-    explicit AbstractSettingsPane();
+    explicit AbstractSettingsPane(QWidget* parent = 0);
     virtual ~AbstractSettingsPane();
-    virtual void resetPanel() = 0;
+    bool hasPane (const QString& p_paneID) const;
     virtual void restoreDefaults() = 0;
     virtual QString title() const = 0;
     virtual QString id() const = 0;
     virtual QPixmap pixmap() const = 0;
-    virtual bool containsText (const QString& p_query) const = 0;
-    bool hasPane (const QString& p_paneID) const;
 
 protected:
     void addPane (AbstractSettingsPane* p_subPane);

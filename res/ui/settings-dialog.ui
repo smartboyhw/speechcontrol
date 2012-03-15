@@ -55,7 +55,7 @@
        </sizepolicy>
       </property>
       <property name="standardButtons">
-       <set>QDialogButtonBox::Help|QDialogButtonBox::Ok|QDialogButtonBox::Reset</set>
+       <set>QDialogButtonBox::Help|QDialogButtonBox::Ok|QDialogButtonBox::RestoreDefaults</set>
       </property>
       <property name="centerButtons">
        <bool>false</bool>

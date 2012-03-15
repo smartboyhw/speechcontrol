@@ -86,7 +86,6 @@ private:
 class SPCH_EXPORT AbstractAudioSource : public QObject
 {
     Q_OBJECT
-    QGst::PipelinePtr m_pipeline;
 
 public:
     virtual ~AbstractAudioSource();
@@ -104,18 +103,19 @@ protected:
     explicit AbstractAudioSource (QObject* parent = 0);
     AbstractAudioSource (const QObject& p_other);
     Q_DISABLE_COPY (AbstractAudioSource)
-    virtual QString pipelineDescription() = 0;
+    virtual QString pipelineDescription() const = 0;
     QString caps() const;
     virtual void buildPipeline();
     GenericSink* m_sink;
     QGlib::Value m_device;
-    QGst::BinPtr m_binAudio;
+    QGst::PipelinePtr m_pipeline;
     QGst::ElementPtr m_sinkAudio;
     QGst::ElementPtr m_srcAudio;
     QGst::ElementPtr m_srcVolume;
 
 private:
     void onPipelineBusmessage (const QGst::MessagePtr& message);
+    QString pipelineStr() const;
 };
 
 class SPCH_EXPORT DeviceAudioSource : public AbstractAudioSource
@@ -133,7 +133,7 @@ public:
     static DeviceAudioSource* defaultDevice();
 
 protected:
-    virtual QString pipelineDescription();
+    virtual QString pipelineDescription() const;
     virtual void buildPipeline();
 
 private:
@@ -152,4 +152,4 @@ class SPCH_EXPORT StreamAudioSource : public AbstractAudioSource
 #endif // ABSTRACTAUDIOSOURCE_HPP
 
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

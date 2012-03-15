@@ -49,7 +49,7 @@ TrainingDialog::TrainingDialog (QWidget* p_parent) :
     QDialog (p_parent),
     m_currentPosition (0), m_initialPosition (0),
     m_ui (new Ui::Training),
-    m_mic (DeviceAudioSource::defaultDevice()),
+    m_mic (DeviceAudioSource::allDevices().first()),
     m_session (0), m_currentSentence (0), m_initialSentence (0)
 {
     m_ui->setupUi (this);
@@ -351,4 +351,4 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonNext_clicked()
 }
 
 #include "training-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

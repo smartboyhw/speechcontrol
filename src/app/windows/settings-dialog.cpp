@@ -79,22 +79,21 @@ void Settings::addPane (AbstractSettingsPane* p_pane)
     QString parentPaneId = p_pane->property ("parent-widget").toString();
     const bool hasParentPane = (!parentPaneId.isNull() && !parentPaneId.isEmpty());
     AbstractSettingsPane* parentPane = (hasParentPane) ? instance()->m_panes.value (parentPaneId) : 0;
-    QTreeWidgetItem* parentItem = (hasParentPane) ? instance()->findPaneItem (parentPaneId) : 0;
+    QTreeWidgetItem* parentItem = (hasParentPane) ? instance()->findPaneForItem (parentPaneId) : 0;
     QTreeWidgetItem* itm = 0;
     QTreeWidget* treeWidget = instance()->m_ui->treeNavigation;
 
+    // got a parent? add them to it.
     if (hasParentPane)
         itm = new QTreeWidgetItem (parentItem , (QStringList() << p_pane->title()));
-    else
+    else {
         itm = new QTreeWidgetItem (treeWidget , (QStringList() << p_pane->title()));
+        treeWidget->addTopLevelItem (itm);
+    }
 
     instance()->m_panes.insert (p_pane->id(), p_pane);
     itm->setData (0, Qt::UserRole, p_pane->id());
     itm->setIcon (0, p_pane->pixmap());
-
-    if (!hasParentPane) {
-        treeWidget->addTopLevelItem (itm);
-    }
 
     p_pane->setParent (instance()->m_ui->frmPageContainer);
     p_pane->hide();
@@ -115,7 +114,7 @@ void Settings::displayPane (const QString& p_paneID)
     if (l_currentPane != 0) {
         l_currentPane->show();
         l_currentPane->updateUi();
-        l_treeNavi->setCurrentItem (instance()->findPaneItem (p_paneID));
+        l_treeNavi->setCurrentItem (instance()->findPaneForItem (p_paneID));
     }
     else {
         Core::mainWindow()->setStatusMessage (tr ("Invalid settings pane ID '%1'").arg (p_paneID));
@@ -127,16 +126,30 @@ void Settings::displayPane (const QString& p_paneID)
     }
 }
 
-QTreeWidgetItem* Settings::findPaneItem (const QString& p_panelID)
+AbstractSettingsPane* Settings::currentPane()
 {
-    QTreeWidget* l_treeNavi = instance()->m_ui->treeNavigation;
-    AbstractSettingsPane* l_pane = m_panes.value (p_panelID);
-    QList<QTreeWidgetItem*> l_items = l_treeNavi->findItems (l_pane->title(), Qt::MatchExactly, 0);
+    QTreeWidget* treeNavi = instance()->m_ui->treeNavigation;
+    QTreeWidgetItem* treeItem = treeNavi->currentItem();
 
-    if (l_items.isEmpty())
+    if (treeItem) {
+        AbstractSettingsPane* l_pane = m_panes.value (treeItem->data (0, Qt::UserRole).toString());
+        return l_pane;
+    }
+    else {
+        return 0;
+    }
+}
+
+QTreeWidgetItem* Settings::findPaneForItem (const QString& p_panelID)
+{
+    QTreeWidget* treeNavi = instance()->m_ui->treeNavigation;
+    AbstractSettingsPane* pane = m_panes.value (p_panelID);
+    QList<QTreeWidgetItem*> items = treeNavi->findItems (pane->title(), Qt::MatchExactly, 0);
+
+    if (items.isEmpty())
         return 0;
 
-    return l_items.first();
+    return items.first();
 }
 
 /// @todo Remove this from the list of options.
@@ -147,20 +160,19 @@ void Settings::removePane (const QString& p_panelID)
 
 void Settings::on_treeNavigation_itemSelectionChanged()
 {
-    QWidget* l_container = instance()->m_ui->frmPageContainer;
-    QTreeWidget* l_treeNavi = instance()->m_ui->treeNavigation;
+    QWidget* container = instance()->m_ui->frmPageContainer;
+    QTreeWidget* treeNavi = instance()->m_ui->treeNavigation;
 
-    if (!l_treeNavi->selectedItems().empty()) {
-        QTreeWidgetItem* l_itm = l_treeNavi->selectedItems().first();
-        const QString l_id = l_itm->data (0, Qt::UserRole).toString();
+    if (!treeNavi->selectedItems().empty()) {
+        QTreeWidgetItem* itm = treeNavi->selectedItems().first();
+        const QString id = itm->data (0, Qt::UserRole).toString();
 
-        QWidget* l_pane = m_panes[l_id];
-        Q_FOREACH (QObject * l_subPane, l_container->children()) {
-            ( (QWidget*) l_subPane)->hide();
+        Q_FOREACH (QObject * subPane, container->children()) {
+            ( (QWidget*) subPane)->hide();
         }
 
-        l_pane->setParent (l_container);
-        l_pane->show();
+        findPane(id)->show();
+        findPane(id)->updateUi();;
     }
 }
 
@@ -171,21 +183,15 @@ void Settings::on_buttonBox_clicked (QAbstractButton* p_button)
     switch (buttonState) {
     case QDialogButtonBox::Ok:
         this->accept();
-        close();
         break;
 
     case QDialogButtonBox::Help:
-        close();
-        break;
-
-    case QDialogButtonBox::Reset:
-        /// @todo Add functionality to reset options to the state they were before opening the dialog.
-        close();
+        /// @todo Add ability to queue for help.
         break;
 
     case QDialogButtonBox::RestoreDefaults:
         /// @todo Add functionality to set the values of the properties all back to default.
-        close();
+        currentPane()->restoreDefaults();
         break;
     }
 }
@@ -194,8 +200,13 @@ Settings::~Settings()
     delete m_ui;
 }
 
-AbstractSettingsPane::AbstractSettingsPane ()
+AbstractSettingsPane::AbstractSettingsPane (QWidget* parent) : QFrame(parent)
 {
+}
+
+AbstractSettingsPane* Settings::findPane (QString id)
+{
+    return m_panes.value(id);
 }
 
 void AbstractSettingsPane::addPane (AbstractSettingsPane* p_subPane)

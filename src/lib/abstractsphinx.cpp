@@ -131,6 +131,7 @@ const QGst::ElementPtr AbstractSphinx::audioSrcElement() const
 /// @todo Implement support for using AbstractAudioSource to provide input for devices.
 void AbstractSphinx::useMicrophone (const AbstractAudioSource* p_microphone)
 {
+    p_microphone->isRecording();
 }
 
 const QGst::ElementPtr AbstractSphinx::pocketSphinxElement() const

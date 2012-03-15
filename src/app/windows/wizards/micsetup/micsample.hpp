@@ -18,38 +18,57 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#ifndef MS_MICSAMPLE_HPP
+#define MS_MICSAMPLE_HPP
 
-#ifndef MS_WIZARD_HPP
-#define MS_WIZARD_HPP
+#include <QWizardPage>
+#include <abstractsphinx.hpp>
 
-#include <windows/wizards/base.hpp>
+namespace Ui
+{
+class MicrophoneSample;
+}
 
 namespace SpeechControl
 {
+class DeviceAudioSource;
 namespace Wizards
 {
+namespace Pages
+{
 
-class MicrophoneSetup : public WizardBase
+class MicrophoneSample : public QWizardPage
 {
     Q_OBJECT
-    enum {
-        IntroductionPage = 0,
-        SelectionPage,
-        SamplingPage,
-        ConfigurationPage,
-        ConclusionPage
-    };
 
 public:
-    explicit MicrophoneSetup (QWidget* parent = 0);
-    ~MicrophoneSetup();
+    explicit MicrophoneSample (QWidget* p_parent = 0);
+    virtual ~MicrophoneSample();
+    virtual void initializePage();
+    virtual bool validatePage();
+    virtual bool isComplete();
 
-public slots:
-    virtual void accept();
+private slots:
+    bool isAtFinalPrompt();
+    bool hasCompletedPrompts();
+    void updateUi();
+    void handleReceivedPrompt (QString p_str);
+    void on_btnBeginPrompt_clicked();
 
+private:
+    class Sphinx : public AbstractSphinx {
+        friend class MicrophoneSample;
+        virtual void applicationMessage (const QGst::MessagePtr& p_message);
+    };
+
+    Ui::MicrophoneSample* ui;
+    Sphinx* m_sphnx;
+    int m_index;
+    QStringList m_prompts;
 };
 
 }
 }
-#endif // WIZARD_HPP
+}
+#endif // MICSAMPLE_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

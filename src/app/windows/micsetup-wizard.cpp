@@ -24,6 +24,7 @@
 #include "wizards/outro.hpp"
 #include "micsetup-wizard.hpp"
 #include "wizards/micsetup/micselect.hpp"
+#include "wizards/micsetup/micsample.hpp"
 
 #include <QIcon>
 
@@ -44,6 +45,7 @@ MicrophoneSetup::MicrophoneSetup (QWidget* parent) :
                                               "for more detialed information about correct and recommended use of the microphone whilst using SpeechControl."
             )));
     setPage (MicrophoneSetup::SelectionPage, new Pages::MicrophoneSelection);
+    setPage (MicrophoneSetup::SamplingPage, new Pages::MicrophoneSample);
     setPage (MicrophoneSetup::ConclusionPage,
              new Pages::ConclusionPage (tr ("You've configured your microphone to work optimally with SpeechControl. Click <b>Finish</b> to finialize your results and commit them to SpeechControl."
                                             "Remember to use this wizard to tweak and adapt your microphone in SpeechControl so that it works optimally. "

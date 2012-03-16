@@ -21,6 +21,7 @@
 #include "training-pane.hpp"
 #include "session-pane.hpp"
 #include "content-pane.hpp"
+#include "microphone-pane.hpp"
 #include "ui_settingspane-training.h"
 
 using namespace SpeechControl::Windows;
@@ -32,7 +33,8 @@ TrainingSettingsPane::TrainingSettingsPane() :
     ui->setupUi (this);
     addPane (new SessionSettingsPane);
     addPane (new ContentSettingsPane);
-    updateUi();
+    addPane (new MicrophoneSettingsPane);
+updateUi();
     qDebug() << "[TrainingSettingsPane::{constructor}] Built training settings pane.";
 }
 

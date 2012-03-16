@@ -86,8 +86,7 @@ int ContentWizard::nextId() const
 
     case ConclusionPage: {
         if (m_src) {
-            Content* cntn = m_src->generate();
-            if (!cntn) {
+            if (!m_src->isValid()) {
                 QMessageBox::warning (0,
                                       tr ("Failure Creating Content"),
                                       tr ("There was an issue creating your content; thus resulting in a failure."),
@@ -103,6 +102,12 @@ int ContentWizard::nextId() const
     }
 
     return QWizard::nextId();
+}
+
+void ContentWizard::accept()
+{
+    m_src->generate();
+    QDialog::accept();
 }
 
 ContentWizard::~ContentWizard()

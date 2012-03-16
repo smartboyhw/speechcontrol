@@ -42,6 +42,7 @@ public:
 
     explicit ContentWizard (QWidget* parent = 0);
     virtual ~ContentWizard();
+    virtual void accept();
     AbstractContentSource* source();
     void setSource (AbstractContentSource* p_src);
 
@@ -55,4 +56,4 @@ private:
 }
 }
 #endif // WIZARD_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

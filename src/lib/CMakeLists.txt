@@ -38,6 +38,10 @@ else(WITH_PYTHON_BINDINGS)
     message(STATUS "Python bindings for libspeechcontrol disabled.")
 endif(WITH_PYTHON_BINDINGS)
 
+set(SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS ${SPCHCNTRL_LIB_INCLUDE_DIRS}
+    "${PROJECT_SOURCE_DIR}")
+list(REMOVE_ITEM SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS ${SPCHCNTRL_LIB_INCLUDE_DIR})
+
 ## configures
 configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
     "${PROJECT_SOURCE_DIR}/config.hpp" @ONLY)
@@ -69,7 +73,6 @@ install(FILES ${SPCHCNTRL_LIB_HEADERS}
     DESTINATION "${SPCHCNTRL_LIB_INCLUDE_DIR}"
     COMPONENT "dev")
 
-include_directories(${SPCHCNTRL_LIB_INCLUDE_DIRS}
-    "${PROJECT_SOURCE_DIR}")
+include_directories(${SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS})
 
 add_subdirectory(cmake)

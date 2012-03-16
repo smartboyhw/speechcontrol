@@ -65,6 +65,7 @@ protected:
 
 private slots:
     void on_checkBoxIndicatorIcon_toggled (bool p_checked);
+    void on_checkBoxAutoStartApp_toggled(bool p_checked);
     virtual void updateUi();
 
 private:

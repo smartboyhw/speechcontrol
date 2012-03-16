@@ -76,6 +76,7 @@ QPixmap GeneralSettingsPane::pixmap() const
 void GeneralSettingsPane::restoreDefaults()
 {
     Core::setConfiguration ("Indicator/Show", false);
+    Core::setAutoStart(false);
 }
 
 void GeneralSettingsPane::updateUi()
@@ -83,6 +84,11 @@ void GeneralSettingsPane::updateUi()
     ui->lblSessionCount->setText (QString::number (Session::allSessions().count()));
     ui->lblAccuracyRating->setText ("<i>n/a</i>");
     ui->checkBoxIndicatorIcon->setChecked (Core::configuration ("Indicator/Show").toBool());
+    ui->checkBoxAutoStartApp->setChecked(Core::doesAutoStart());
+}
+
+void GeneralSettingsPane::on_checkBoxAutoStartApp_toggled(bool p_checked){
+    Core::setAutoStart(p_checked);
 }
 
 void GeneralSettingsPane::on_checkBoxIndicatorIcon_toggled (bool p_checked)

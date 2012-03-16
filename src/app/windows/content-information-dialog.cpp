@@ -32,7 +32,7 @@ ContentInformationDialog::ContentInformationDialog (Content* p_content) :
     m_content (p_content)
 {
     m_ui->setupUi (this);
-    this->setLayout(m_ui->verticalLayout);
+    this->setLayout (m_ui->verticalLayout);
     updateUi();
 
     connect (m_ui->btnGoLeft, SIGNAL (clicked()), this, SLOT (goToPreviousPage()));
@@ -67,18 +67,11 @@ void ContentInformationDialog::goToPage (const int p_index)
     m_ui->txtEdit->setPlainText (m_content->pageAt (p_index));
     m_ui->lblPageCounter->setText (tr ("Page %1 of %2").arg (p_index + 1).arg (m_content->pageCount()));
 
-    if (m_indx == 0) {
-        m_ui->btnGoLeft->setEnabled (false);
-        m_ui->btnGoRight->setEnabled (true);
-    }
-    else if (m_indx == m_content->pageCount() - 1) {
-        m_ui->btnGoLeft->setEnabled (true);
-        m_ui->btnGoRight->setEnabled (false);
-    }
-    else {
-        m_ui->btnGoLeft->setEnabled (true);
-        m_ui->btnGoRight->setEnabled (true);
-    }
+    const bool isAtLast = m_indx == m_content->pageCount() - 1;
+    const bool isAtFirst  = m_indx == 0;
+
+    m_ui->btnGoLeft->setEnabled (!isAtFirst);
+    m_ui->btnGoRight->setEnabled (!isAtLast);
 }
 
 ContentInformationDialog::~ContentInformationDialog()

@@ -73,13 +73,27 @@ QPixmap DictationSettingsPane::pixmap() const
 
 void DictationSettingsPane::restoreDefaults()
 {
-
+    Core::setConfiguration("Dictation/StartWord","start dictation");
+    Core::setConfiguration("Dictation/StartWord","end dictation");
 }
 
 void DictationSettingsPane::updateUi()
 {
     m_ui->checkBoxEnable->setChecked (Dictation::Agent::instance()->isEnabled() && !DesktopControl::Agent::instance()->isEnabled());
     m_ui->checkBoxEnable->setEnabled (!DesktopControl::Agent::instance()->isEnabled());
+    m_ui->groupBoxKeywords->setChecked(Core::configuration("Dictation/UseSafeWords").toBool());
+    m_ui->lineEditStart->setText(Core::configuration("Dictation/StartWord").toString());
+    m_ui->lineEditEnd->setText(Core::configuration("Dictation/EndWord").toString());
+}
+
+void DictationSettingsPane::on_lineEditStart_textChanged (QString p_text)
+{
+    Core::setConfiguration("Dictation/StartWord",p_text.toLower());
+}
+
+void DictationSettingsPane::on_lineEditEnd_textChanged (QString p_text)
+{
+    Core::setConfiguration("Dictation/EndWord",p_text.toLower());
 }
 
 void DictationSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
@@ -90,6 +104,8 @@ void DictationSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
             Dictation::Agent::instance()->stop();
         Core::mainWindow()->updateWindow();
     }
+
+    updateUi();
 }
 
 void DictationSettingsPane::on_checkBoxEnableStartup_toggled (bool p_checked)

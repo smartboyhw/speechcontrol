@@ -29,7 +29,7 @@
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="3" column="0">
+    <item row="4" column="0">
      <spacer name="horizontalSpacer">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -58,7 +58,7 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
+    <item row="4" column="1">
      <spacer name="verticalSpacer">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -100,6 +100,63 @@
        </widget>
       </item>
      </layout>
+    </item>
+    <item row="3" column="1">
+     <widget class="QGroupBox" name="groupBoxKeywords">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>80</height>
+       </size>
+      </property>
+      <property name="title">
+       <string>Use Safety Words</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="flat">
+       <bool>true</bool>
+      </property>
+      <property name="checkable">
+       <bool>true</bool>
+      </property>
+      <property name="checked">
+       <bool>false</bool>
+      </property>
+      <widget class="QWidget" name="formLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>8</x>
+         <y>20</y>
+         <width>261</width>
+         <height>57</height>
+        </rect>
+       </property>
+       <layout class="QFormLayout" name="formLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="lblStart">
+          <property name="text">
+           <string>Start:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="lineEditStart"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="lblEnd">
+          <property name="text">
+           <string>End:</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="lineEditEnd"/>
+        </item>
+       </layout>
+      </widget>
+     </widget>
     </item>
    </layout>
   </widget>

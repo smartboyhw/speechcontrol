@@ -58,8 +58,8 @@ TrainingDialog::TrainingDialog (QWidget* p_parent) :
     m_ui->pushButtonUndo->setIcon (QIcon::fromTheme (ICON_UNDO));
     m_ui->pushButtonNext->setIcon (QIcon::fromTheme (ICON_NEXT));
 
-    connect (m_mic, SIGNAL (startedListening()), this, SLOT (onMicStartedListening()));
-    connect (m_mic, SIGNAL (stoppedListening()), this, SLOT (onMicStoppedListening()));
+    connect (m_mic, SIGNAL (recordingBegun()), this, SLOT (onMicStartedListening()));
+    connect (m_mic, SIGNAL (recordingEnded()), this, SLOT (onMicStoppedListening()));
 
     onMicStoppedListening();
 }
@@ -81,15 +81,20 @@ void TrainingDialog::onMicStoppedListening()
 }
 
 
-void TrainingDialog::startTraining (Session* p_session)
+void TrainingDialog::startTraining (Session* session)
 {
-    if (!p_session->isCompleted()) {
-        TrainingDialog* l_dialog = new TrainingDialog;
-        l_dialog->setSession (p_session);
-        l_dialog->open();
+    if (!session->isCompleted()) {
+        TrainingDialog* dialog = new TrainingDialog;
+
+        if (!dialog->m_mic->isNull()) {
+            dialog->setSession (session);
+            dialog->open();
+        } else {
+            QMessageBox::critical(0,tr("Microphone Error"),tr("<h2>Microphone Error</h2>SpeechControl is unable to get a proper handle on your microphone. Please check that all required peripherals are connected."));
+        }
     }
     else {
-        QMessageBox::information (0 , tr ("Session Completed"), tr ("Session <b>%1</b> has been completed already.").arg (p_session->name()));
+        QMessageBox::information (0 , tr ("Session Completed"), tr ("<h2>Session Completed</h2>Session <b>%1</b> has been completed already.").arg (session->name()));
     }
 }
 

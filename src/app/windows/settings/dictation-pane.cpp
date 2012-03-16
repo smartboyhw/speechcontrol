@@ -81,6 +81,7 @@ void DictationSettingsPane::updateUi()
 {
     m_ui->checkBoxEnable->setChecked (Dictation::Agent::instance()->isEnabled() && !DesktopControl::Agent::instance()->isEnabled());
     m_ui->checkBoxEnable->setEnabled (!DesktopControl::Agent::instance()->isEnabled());
+    m_ui->groupBoxKeywords->setEnabled(Dictation::Agent::instance()->isEnabled());
     m_ui->groupBoxKeywords->setChecked(Core::configuration("Dictation/UseSafeWords").toBool());
     m_ui->lineEditStart->setText(Core::configuration("Dictation/StartWord").toString());
     m_ui->lineEditEnd->setText(Core::configuration("Dictation/EndWord").toString());

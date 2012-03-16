@@ -164,9 +164,41 @@ QDir Core::configurationPath()
     return QDir (QDir::homePath().append ("/.config/speechcontrol"));
 }
 
+void Core::setAutoStart (const bool p_toggle)
+{
+    QFile* autoStartFile = new QFile (QDir::homePath().append ("/.config/autostart/SpeechControl.desktop"));
+
+    if (p_toggle) {
+        if (autoStartFile->open (QIODevice::WriteOnly | QIODevice::Truncate)) {
+            QTextStream desktopFile (autoStartFile);
+            desktopFile << "[Desktop Entry]" << endl
+                        << "Name=Start SpeechControl on Launch" << endl
+                        << "Icon=speechcontrol" << endl
+                        << "Exec=speechcontrol-frontend" << endl
+                        << "Terminal=false" << endl
+                        << "Type=Application" << endl
+                        << "X-GNOME-Autostart-enabled=true" << endl
+                        << "X-GNOME-Autostart-Delay=30" << endl;
+            autoStartFile->close();
+            autoStartFile->setPermissions(autoStartFile->permissions() | QFile::ExeUser | QFile::ExeOwner | QFile::ExeGroup);
+        }
+    }
+    else {
+        if (autoStartFile->exists()) {
+            autoStartFile->remove();
+        }
+    }
+}
+
+bool Core::doesAutoStart()
+{
+    QFile* autoStartFile = new QFile (QDir::homePath().append ("/.config/autostart/SpeechControl.desktop"));
+    return autoStartFile->exists();
+}
+
 Core::~Core ()
 {
     m_settings->sync();
 }
 #include "core.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

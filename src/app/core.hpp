@@ -115,6 +115,10 @@ public:
      **/
     static void loadTranslations (const QLocale& p_locale);
 
+    static void setAutoStart(const bool p_toggle);
+
+    static bool doesAutoStart();
+
     /**
      * @brief ...
      *
@@ -161,4 +165,4 @@ private slots:
 }
 
 #endif // CORE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

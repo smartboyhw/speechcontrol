@@ -115,6 +115,11 @@ public:
     double version() const;
 
     /**
+     * @brief Obtains the id of the plug-in.
+     **/
+    QUuid id() const;
+
+    /**
      * @brief Obtains the name of the plug-in.
      * @return QString::null if it couldn't be determined, a QString otherwise.
      **/

@@ -75,6 +75,16 @@ private:
     QGst::Utils::ApplicationSource* m_src;
 };
 
+class SPCH_EXPORT GenericSource : public QGst::Utils::ApplicationSource {
+public:
+    explicit GenericSource();
+    QGst::Utils::ApplicationSink* sink();
+    void setSink(QGst::Utils::ApplicationSink* p_sink);
+
+private:
+    QGst::Utils::ApplicationSink* m_sink;
+};
+
 /**
  * @brief Represents a handle of an audio input device on this computer.
  *
@@ -90,6 +100,11 @@ class SPCH_EXPORT AbstractAudioSource : public QObject
 public:
     virtual ~AbstractAudioSource();
     bool isRecording() const;
+    bool isNull() const;
+    bool isMuted() const;
+    double volume() const;
+    void setMuted(const bool p_muted);
+    void setVolume(const double p_volume);
 
 signals:
     void recordingBegun();
@@ -100,22 +115,22 @@ public slots:
     void stopRecording();
 
 protected:
+    Q_DISABLE_COPY (AbstractAudioSource)
     explicit AbstractAudioSource (QObject* parent = 0);
     AbstractAudioSource (const QObject& p_other);
-    Q_DISABLE_COPY (AbstractAudioSource)
     virtual QString pipelineDescription() const = 0;
     QString caps() const;
+    QString pipelineStr() const;
     virtual void buildPipeline();
     GenericSink* m_sink;
     QGlib::Value m_device;
     QGst::PipelinePtr m_pipeline;
-    QGst::ElementPtr m_sinkAudio;
-    QGst::ElementPtr m_srcAudio;
-    QGst::ElementPtr m_srcVolume;
+    QGst::ElementPtr m_sinkPtr;
+    QGst::ElementPtr m_srcPtr;
+    QGst::ElementPtr m_volumePtr;
 
-private:
+private slots:
     void onPipelineBusmessage (const QGst::MessagePtr& message);
-    QString pipelineStr() const;
 };
 
 class SPCH_EXPORT DeviceAudioSource : public AbstractAudioSource
@@ -143,8 +158,22 @@ private:
 
 class SPCH_EXPORT StreamAudioSource : public AbstractAudioSource
 {
+    Q_OBJECT
+    Q_DISABLE_COPY(StreamAudioSource)
 
+public:
+    explicit StreamAudioSource ();
+    StreamAudioSource(QDataStream& p_stream);
+    StreamAudioSource(const AbstractAudioSource& p_other);
+    virtual ~StreamAudioSource();
+    QDataStream* stream() const;
 
+protected:
+    virtual QString pipelineDescription() const;
+    virtual void buildPipeline();
+
+private:
+    QDataStream* m_strm;
 };
 
 }

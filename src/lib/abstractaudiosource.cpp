@@ -28,19 +28,17 @@
 using namespace SpeechControl;
 
 AbstractAudioSource::AbstractAudioSource (const AbstractAudioSource& p_other) : QObject (p_other.parent()), m_sink (0),
-    m_device (p_other.m_device), m_pipeline (p_other.m_pipeline), m_sinkAudio (p_other.m_sinkAudio),
-    m_srcAudio (p_other.m_srcAudio), m_srcVolume (p_other.m_srcVolume)
+    m_device (p_other.m_device), m_pipeline (p_other.m_pipeline), m_sinkPtr (p_other.m_sinkPtr),
+    m_srcPtr (p_other.m_srcPtr), m_volumePtr (p_other.m_volumePtr)
 {
 
 }
 
 AbstractAudioSource::AbstractAudioSource (QObject* parent) : QObject (parent), m_sink (0), m_device(),
-    m_pipeline(), m_sinkAudio(), m_srcAudio(), m_srcVolume()
+    m_pipeline(), m_sinkPtr(), m_srcPtr(), m_volumePtr()
 {
 
 }
-
-
 
 QString AbstractAudioSource::caps() const
 {
@@ -50,11 +48,7 @@ QString AbstractAudioSource::caps() const
 
 QString AbstractAudioSource::pipelineStr() const
 {
-    return pipelineDescription() + " ! "
-           + QString ("audioconvert ! "
-                      "audioresample ! "
-                      "volume name=volume ! "
-                      "appsink name=sink caps='%1'").arg (caps());
+    return QString ("%1 ! audioconvert ! audioresample ! appsink name=sink").arg (pipelineDescription());
 }
 
 void AbstractAudioSource::buildPipeline()
@@ -73,33 +67,66 @@ void AbstractAudioSource::buildPipeline()
         return;
     }
     else {
-
-        qDebug() << "[AbstractAudioSource::buildPipeline()] Pipeline built using description" << pipelineStr();
+        qDebug() << "[AbstractAudioSource::buildPipeline()] Pipeline built using description" << pipelineStr() << m_pipeline->pathString();
 
         // build our magical sink.
         m_sink = new GenericSink;
         m_sink->setCaps (QGst::Caps::fromString (caps()));
 
         // Obtain tools for recording like the encoder and the source.
-        m_sinkAudio = m_pipeline->getElementByName ("sink");
-        m_srcAudio = m_pipeline->getElementByName ("src");
-        m_srcVolume = m_pipeline->getElementByName ("volume");
+        m_sinkPtr = m_pipeline->getElementByName ("sink");
+        m_srcPtr = m_pipeline->getElementByName ("src");
+        m_volumePtr = m_pipeline->getElementByName ("volume");
         qDebug() << "[AbstractAudioSource::buildPipeline()] Obtained pipeline elements.";
 
-        if (m_sinkAudio.isNull()) {
+        if (m_sinkPtr.isNull()) {
             qDebug() << "[AbstractAudioSource::buildPipeline()] Invalid element pointer obtained for the application sink.";
-            return;
         }
-        else if (m_srcAudio.isNull()) {
+
+        if (m_srcPtr.isNull()) {
             qDebug() << "[AbstractAudioSource::buildPipeline()] Invalid element pointer obtained for the dynamic source.";
+        }
+
+        if (isNull()) {
+            qDebug() << "[AbstractAudioSource::buildPipeline()] NULL elements discovered, aborting the building of the pipeline.";
+            m_pipeline.clear();
             return;
         }
-        else {
-            m_sink->setElement (m_sinkAudio);
-            m_pipeline->setState (QGst::StatePaused);
-            QGlib::connect (m_pipeline->bus(), "message", this, &AbstractAudioSource::onPipelineBusmessage);
-            qDebug() << "[AbstractAudioSource::buildPipeline()] Paused elements in pipeline.";
-        }
+
+        m_sink->setElement (m_sinkPtr);
+        m_pipeline->setState (QGst::StatePaused);
+        QGlib::connect (m_pipeline->bus(), "message", this, &AbstractAudioSource::onPipelineBusmessage);
+        qDebug() << "[AbstractAudioSource::buildPipeline()] Paused elements in pipeline.";
+    }
+}
+
+double AbstractAudioSource::volume() const
+{
+    if (isNull())
+        return -1.0;
+
+    return m_volumePtr->property ("volume").toString().toDouble();
+}
+
+bool AbstractAudioSource::isMuted() const
+{
+    if (isNull())
+        return -1.0;
+
+    return m_volumePtr->property ("mute").toBool();
+}
+
+void AbstractAudioSource::setVolume (const double p_volume)
+{
+    if (!isNull()) {
+        m_volumePtr->setProperty<double> ("volume", p_volume);
+    }
+}
+
+void AbstractAudioSource::setMuted (const bool p_muted)
+{
+    if (!isNull()) {
+        m_volumePtr->setProperty<bool> ("mute", p_muted);
     }
 }
 
@@ -165,9 +192,18 @@ void AbstractAudioSource::onPipelineBusmessage (const QGst::MessagePtr& message)
     }
 }
 
+bool AbstractAudioSource::isNull() const
+{
+    qDebug() << "[AbstractAudioSource::isNull()] Pipeline null?" << m_pipeline.isNull();
+    qDebug() << "[AbstractAudioSource::isNull()] Sink null?" << m_sinkPtr.isNull();
+    qDebug() << "[AbstractAudioSource::isNull()] Source null?" << m_srcPtr.isNull();
+    qDebug() << "[AbstractAudioSource::isNull()] Volume null?" << m_volumePtr.isNull();
+    return (m_pipeline.isNull() || m_sinkPtr.isNull() || m_srcPtr.isNull() || m_volumePtr.isNull());
+}
+
 void AbstractAudioSource::startRecording()
 {
-    if (!m_pipeline) {
+    if (isNull()) {
         qCritical() << "[AbstractAudioSource::startRecording()]"
                     << "One or more elements could not be created. "
                     << "Verify that you have all the necessary element plug-ins installed.";
@@ -186,21 +222,24 @@ void AbstractAudioSource::startRecording()
 
 void AbstractAudioSource::stopRecording()
 {
-    if (!m_pipeline) {
+    if (isNull()) {
         qCritical() << "[AbstractAudioSource::stopRecording()]"
-        << "One or more elements could not be created. "
-        << "Verify that you have all the necessary element plug-ins installed.";
+                    << "One or more elements could not be created. "
+                    << "Verify that you have all the necessary element plug-ins installed.";
         return;
     }
 
     m_pipeline->bus()->removeSignalWatch();
-    m_pipeline->setState(QGst::StateNull);
+    m_pipeline->setState (QGst::StateNull);
     qDebug() << "[AbstractAudioSource::startRecording()] Pipeline inactive, recording stopped.";
     emit recordingEnded();
 }
 
 bool AbstractAudioSource::isRecording() const
 {
+    if (isNull())
+        return false;
+
     qDebug() << "[AbstractAudioSource::isRecording()] State of pipeline" << getStateText (m_pipeline->currentState());
     return (m_pipeline->currentState() == QGst::StatePlaying);
 }
@@ -210,7 +249,7 @@ AbstractAudioSource::~AbstractAudioSource()
 
 }
 
-GenericSink::GenericSink()
+GenericSink::GenericSink() : m_src (0)
 {
 
 }
@@ -323,18 +362,24 @@ AbstractAudioSourceList DeviceAudioSource::allDevices()
 
 QString DeviceAudioSource::deviceName() const
 {
-    return m_devicePtr->pathString();
+    return m_device.toString();
 }
 
 QString DeviceAudioSource::pipelineDescription() const
 {
-    return QString ("autoaudiosrc name=src ! decodebin2");
+    return QString ("autoaudiosrc name=src");
 }
 
 void DeviceAudioSource::buildPipeline()
 {
     AbstractAudioSource::buildPipeline();
-    QGst::ChildProxyPtr childProxy = m_srcAudio.dynamicCast<QGst::ChildProxy>();
+
+    if (isNull()) {
+        qDebug() << "[DeviceAudioSource::obtain()] Can't obtain device element, base pipeline is NULL.";
+        return;
+    }
+
+    QGst::ChildProxyPtr childProxy = m_srcPtr.dynamicCast<QGst::ChildProxy>();
 
     if (childProxy && childProxy->childrenCount() > 0) {
         QGst::ObjectPtr realSrc = childProxy->childByIndex (0);
@@ -355,6 +400,46 @@ void DeviceAudioSource::buildPipeline()
 }
 
 DeviceAudioSource::~DeviceAudioSource()
+{
+
+}
+
+StreamAudioSource::StreamAudioSource() : AbstractAudioSource()
+{
+
+}
+
+StreamAudioSource::StreamAudioSource (const AbstractAudioSource& p_other) : AbstractAudioSource (p_other)
+{
+
+}
+
+StreamAudioSource::StreamAudioSource (const StreamAudioSource& p_other) : AbstractAudioSource (p_other), m_strm (p_other.m_strm)
+{
+
+}
+
+StreamAudioSource::StreamAudioSource (QDataStream& p_stream) : AbstractAudioSource (0), m_strm (&p_stream)
+{
+
+}
+
+void StreamAudioSource::buildPipeline()
+{
+    SpeechControl::AbstractAudioSource::buildPipeline();
+}
+
+QString StreamAudioSource::pipelineDescription() const
+{
+    return QString ("appsrc name=src");
+}
+
+QDataStream* StreamAudioSource::stream() const
+{
+    return m_strm;
+}
+
+StreamAudioSource::~StreamAudioSource()
 {
 
 }

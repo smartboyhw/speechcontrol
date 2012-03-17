@@ -26,5 +26,5 @@
  
 #define MPRIS_NAMESPACE_END } } } }
 
-#define PLUGIN_UUID "@SPDSKMPRIS_PLUGIN_UUID@"
+#define PLUGIN_ID "@SPDSKMPRIS_PLUGIN_ID@"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

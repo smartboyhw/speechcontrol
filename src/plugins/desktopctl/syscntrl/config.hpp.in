@@ -26,5 +26,5 @@
  
 #define APPLIST_NAMESPACE_END } } } }
 
-#define PLUGIN_UUID "@SPDSKAPP_PLUGIN_UUID@"
+#define PLUGIN_ID "@SPDSKAPP_PLUGIN_ID@"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

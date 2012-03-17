@@ -4,9 +4,9 @@ cmake_minimum_required(VERSION 2.8)
 find_package(SpeechControlApplication REQUIRED QUIET)
 include(SpeechControlMacros)
 
-set(SPDSKAPP_PLUGIN_MINOR_VERSION 0)
-set(SPDSKAPP_PLUGIN_MAJOR_VERSION 1)
-set(SPDSKAPP_PLUGIN_UUID "bbb53bbb-d879-43e3-b9ba-f24060293488")
+set(SPDSKAPP_PLUGIN_MINOR_VERSION 1)
+set(SPDSKAPP_PLUGIN_MAJOR_VERSION 0)
+set(SPDSKAPP_PLUGIN_ID "bbb53bbb")
 set(SPDSKAPP_PLUGIN_VERSION "${SPDSKAPP_PLUGIN_MAJOR_VERSION}.${SPDSKAPP_PLUGIN_MINOR_VERSION}")
 set(SPDSKAPP_PLUGIN_INCLUDE_DIRS ${SPCHCNTRL_INCLUDE_DIRS})
 set(SPDSKAPP_PLUGIN_LIBRARIES ${SPCHCNTRL_LIBRARIES})
@@ -27,8 +27,5 @@ set_target_properties(spchcntrl-applist PROPERTIES
     DEFINE_SYMBOL "SPCH_EXPORT_SYMBOLS"
     VERSION "${SPDSKAPP_PLUGIN_VERSION}"
     SOVERSION "${SPDSKAPP_PLUGIN_VERSION}")
-speechcontrol_install_plugin(spchcntrl-applist)
+speechcontrol_install_plugin(spchcntrl-applist ${SPDSKAPP_PLUGIN_ID})
 add_dependencies(plugins spchcntrl-applist)
-
-install(FILES "${PROJECT_SOURCE_DIR}/data/bbb53bbb-d879-43e3-b9ba-f24060293488.spec"
-        DESTINATION ${SPCHCNTRL_PLUGINS_SPEC_INSTALL_DIR})

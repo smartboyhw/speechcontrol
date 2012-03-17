@@ -25,7 +25,7 @@
 
 using namespace SpeechControl::Plugins::Python;
 
-Plugin::Plugin (QObject* parent) : AbstractPlugin (QUuid (PLUGIN_UUID), parent)
+Plugin::Plugin (QObject* parent) : AbstractPlugin (QUuid (PLUGIN_ID), parent)
 {
 
 }

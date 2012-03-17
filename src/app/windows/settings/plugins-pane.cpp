@@ -67,12 +67,12 @@ void PluginsSettingsPane::updateUi()
         item->setHidden(!plgn->isSupported());
 
         if (plgn->isLoaded())
-            item->setIcon(Factory::plugin(plgn->uuid())->pixmap());
+            item->setIcon(Factory::plugin(plgn->id())->pixmap());
         else
             item->setIcon(QIcon::fromTheme("dialog-error"));
 
         item->font().setBold(plgn->isLoaded());
-        item->setData (Qt::UserRole, plgn->uuid().toString());
+        item->setData (Qt::UserRole, plgn->id().toString());
 
         qDebug() << "[PluginsSettingsPane::updateUi()" << plgn->name() << "enabled?" << plgn->isEnabled();
     }
@@ -91,14 +91,14 @@ void PluginsSettingsPane::on_lstPlugins_itemActivated (QListWidgetItem* p_item)
     GenericPlugin* plgn = new GenericPlugin (p_item->data (Qt::UserRole).toString());
     ui->checkBoxEnabled->setChecked(plgn->isEnabled());
     ui->checkBoxAutoStart->setEnabled(plgn->isEnabled());
-    ui->checkBoxAutoStart->setChecked(Factory::doesLoadOnStart(plgn->uuid()));
+    ui->checkBoxAutoStart->setChecked(Factory::doesLoadOnStart(plgn->id()));
 }
 
 void PluginsSettingsPane::on_checkBoxAutoStart_toggled (const bool p_checked)
 {
     QListWidgetItem* item = ui->lstPlugins->currentItem();
     GenericPlugin* plgn = new GenericPlugin (item->data (Qt::UserRole).toString());
-    Factory::setLoadOnStart(plgn->uuid(),true);
+    Factory::setLoadOnStart(plgn->id(),true);
 }
 
 void PluginsSettingsPane::on_checkBoxEnabled_toggled (const bool p_checked)
@@ -106,7 +106,7 @@ void PluginsSettingsPane::on_checkBoxEnabled_toggled (const bool p_checked)
     QListWidgetItem* item = ui->lstPlugins->currentItem();
     GenericPlugin* plgn = new GenericPlugin (item->data (Qt::UserRole).toString());
     ui->checkBoxAutoStart->setEnabled(plgn->isEnabled());
-    Factory::pluginConfiguration (plgn->uuid())->setValue ("Plugin/Enabled", p_checked);
+    Factory::pluginConfiguration (plgn->id())->setValue ("Plugin/Enabled", p_checked);
     qDebug() << "[PluginsSettingsPane::on_table_cellClicked()]" << plgn->name() << "is now enabled?" << plgn->isEnabled() << p_checked;
 }
 

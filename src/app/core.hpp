@@ -99,7 +99,6 @@ public:
 
     /**
      * @brief Provides a pointer to the Main Window instance.
-     * @return KMainWindow*
      **/
     static Windows::Main* mainWindow();
 

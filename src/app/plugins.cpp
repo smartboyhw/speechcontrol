@@ -75,7 +75,7 @@ const QString AbstractPlugin::name() const
     return QString::null;
 }
 
-const QUuid AbstractPlugin::id() const
+QUuid AbstractPlugin::id() const
 {
     if (configuration()) {
         return QUuid (configuration()->value ("Plugin/ID").toString());

@@ -81,7 +81,7 @@ void AbstractSphinx::prepare()
 
 QString AbstractSphinx::standardDescription()
 {
-    return QString ("appsrc name=audiosrc ! audioconvert"
+    return QString ("autoaudiosrc name=audiosrc ! audioconvert"
                     " ! audioresample ! audiorate ! volume name=volume"
                     " ! vader name=vad auto_threshold=true"
                     " ! pocketsphinx name=asr"

@@ -42,11 +42,11 @@ AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::Activit
     case Enabled:
 
         if (!m_sphinx->start()) {
-            qWarning() << "[Dictation::Agent] Start unsuccessful.";
-            return Disabled;
+            qWarning() << "[Dictation::Agent::onStateChanged()] Start unsuccessful.";
+            return ActivityState::Disabled;
         }
 
-        return Enabled;
+        return ActivityState::Enabled;
         break;
 
     case Disabled:
@@ -58,12 +58,12 @@ AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::Activit
         break;
     }
 
-    return Undefined;
+    return ActivityState::Undefined;
 }
 
 bool Agent::isActive() const
 {
-    return state() == Enabled;
+    return state() == ActivityState::Enabled;
 }
 
 bool Agent::isEnabled() const
@@ -71,9 +71,40 @@ bool Agent::isEnabled() const
     return Core::configuration ("Dictation/Enabled").toBool() == true;
 }
 
+bool Agent::isSafetyModeActive() const
+{
+    return m_mode == Active;
+}
+
+bool Agent::isSafetyModeEnabled() const
+{
+    return Core::configuration("Dictation/UseSafetyWords").toBool();
+}
+
+Agent::SafetyMode Agent::safetyMode() const
+{
+    return m_mode;
+}
+
+void Agent::setSafetyMode (const Agent::SafetyMode& p_mode)
+{
+    switch (p_mode){
+        case Enabled:
+        case Disabled:
+            Core::setConfiguration("Dictation/UseSafetyWords",((p_mode == Enabled) ? true : false));
+            break;
+
+        default:
+            break;
+    }
+
+    m_mode = p_mode;
+}
+
+/// @todo Detect the use of safety words.
 void Agent::handleText (const QString& p_text)
 {
-    qDebug() << "Got text" << p_text;
+    qDebug() << "[Dictation::Agent::handleText()] Got text" << p_text;
     KeyboardEmulator::instance()->sendPhrase (p_text);
 }
 
@@ -85,4 +116,4 @@ Agent::~Agent()
 }
 
 #include "dictation/agent.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

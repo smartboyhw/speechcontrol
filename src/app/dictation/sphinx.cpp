@@ -44,10 +44,10 @@ void Sphinx::applicationMessage (const QGst::MessagePtr& p_message)
     QString l_uttid      = p_message->internalStructure()->value ("uttid").toString();
 
     if (l_msgType == "result") {
-        qDebug() << "AbstractSphinx result:" << l_hypothesis;
+        qDebug() << "[Dictation::Sphinx::applicationMessage()] Result:" << l_hypothesis;
         emit finished (l_hypothesis);
     }
 }
 
 #include "dictation/sphinx.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

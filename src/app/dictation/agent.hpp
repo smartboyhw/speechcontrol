@@ -37,9 +37,20 @@ class Agent : public AbstractAgent
     Q_OBJECT
     SC_SINGLETON (Agent)
 public:
+    enum SafetyMode {
+        Undefined = -1,
+        Disabled,
+        Enabled,
+        Active,
+        Inactive
+    };
     virtual ~Agent();
+    SafetyMode safetyMode() const;
     virtual bool isActive() const;
+    bool isSafetyModeActive() const;
+    bool isSafetyModeEnabled() const;
     bool isEnabled() const;
+    void setSafetyMode(const SafetyMode& p_mode);
 
 public slots:
     void handleText (const QString& p_text);
@@ -47,9 +58,10 @@ public slots:
 private:
     virtual ActivityState onStateChanged (const SpeechControl::AbstractAgent::ActivityState p_stt);
     Sphinx* m_sphinx;
+    SafetyMode m_mode;
 };
 }
 }
 
 #endif // DICTATION_AGENT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

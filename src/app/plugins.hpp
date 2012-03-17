@@ -22,7 +22,6 @@
 #define PLUGINS_HPP
 
 #include <QUrl>
-#include <QUuid>
 #include <QList>
 #include <QObject>
 #include <QStringList>
@@ -46,9 +45,9 @@ class AbstractPlugin;
 typedef QList<AbstractPlugin*> PluginList;
 
 /**
- * @brief Represents a mapping of UUIDs and plug-ins.
+ * @brief Represents a mapping of IDs and plug-ins.
  **/
-typedef QMap<QUuid, AbstractPlugin*> PluginMap;
+typedef QMap<QString, AbstractPlugin*> PluginMap;
 
 /**
  * @brief An abstract base for plug-ins to define their entry class.
@@ -93,10 +92,10 @@ public:
      *
      * Builds an AbstractPlugin and loads the configuration.
      *
-     * @param p_uuid The UUID of the plug-in to build.
+     * @param p_id The ID of the plug-in to build.
      * @param p_parent The parent of this QObject.
      **/
-    AbstractPlugin (const QUuid& p_uuid, QObject* p_parent = 0);
+    AbstractPlugin (const QString& p_id, QObject* p_parent = 0);
 
     /**
      * @brief Destructor.
@@ -143,7 +142,7 @@ public:
     /**
      * @brief Obtains the id of the plug-in.
      **/
-    const QString uuid() const;
+    const QString id() const;
 
     virtual QPixmap pixmap() const = 0;
 
@@ -275,7 +274,7 @@ class GenericPlugin : public AbstractPlugin
     Q_DISABLE_COPY (GenericPlugin)
 
 public:
-    GenericPlugin (const QUuid& p_uuid);
+    GenericPlugin (const QString& p_id);
 
     QPixmap pixmap() const;
 

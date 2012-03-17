@@ -20,6 +20,7 @@
 
 #include "plugin-info-dialog.hpp"
 #include "ui_plugin-info-dialog.h"
+#include <app/factory.hpp>
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
@@ -43,7 +44,11 @@ void PluginInfoDialog::updateUi()
     ui->lblTitle->setText(QString("<em style='font-size: large'>%1</em></font><br /><small>version %2</small>").arg(m_plgn->name()).arg(m_plgn->version()));
     ui->lblAbout->setText(m_plgn->description());
     ui->lblAuthors->setText(m_plgn->author());
-    ui->lblIcon->setPixmap(m_plgn->pixmap());
+
+    if (!m_plgn->isLoaded())
+        ui->lblIcon->setPixmap(m_plgn->pixmap());
+    else
+        ui->lblIcon->setPixmap(Plugins::Factory::plugin(m_plgn->id())->pixmap());
 }
 
 

@@ -43,7 +43,7 @@ AbstractPlugin::AbstractPlugin (QObject* p_prnt) :
 {
 }
 
-AbstractPlugin::AbstractPlugin (const QUuid& p_id , QObject* p_parent) : QObject (p_parent),
+AbstractPlugin::AbstractPlugin (const QString& p_id, QObject* p_parent) : QObject (p_parent),
     m_ldr (0), m_id (p_id)
 {
 
@@ -75,13 +75,13 @@ const QString AbstractPlugin::name() const
     return QString::null;
 }
 
-const QUuid AbstractPlugin::id() const
+const QString AbstractPlugin::id() const
 {
     if (configuration()) {
-        return QUuid (configuration()->value ("Plugin/ID").toString());
+        return configuration()->value ("Plugin/ID").toString();
     }
 
-    return QUuid (QString::null);
+    return QString::null;
 }
 
 double AbstractPlugin::version() const
@@ -123,14 +123,16 @@ const QUrl AbstractPlugin::url() const
 const PluginList AbstractPlugin::plugins() const
 {
     if (configuration()) {
-        PluginList l_lst;
-        const QStringList l_plgns = configuration()->value ("Dependencies/Plugins").toStringList();
+        PluginList plgnLst;
+        const QStringList plgns = configuration()->value ("Dependencies/Plugins").toStringList();
 
-        Q_FOREACH (const QString l_plgnUuid, l_plgns) {
-            l_lst << new GenericPlugin (l_plgnUuid);
+        if (!plgns.isEmpty()) {
+            Q_FOREACH (const QString id, plgns) {
+                plgnLst << new GenericPlugin (id);
+            }
         }
 
-        return l_lst;
+        return plgnLst;
     }
 
     return PluginList();
@@ -142,20 +144,20 @@ bool AbstractPlugin::loadComponents()
         return loadLibrary();
     }
 
-    qDebug() << "Failed to load components for " << name();
+    qDebug() << "[Factory::loadPlugin()] Failed to load components for " << name();
     return false;
 }
 
 bool AbstractPlugin::loadLibrary()
 {
-    const QString l_libName = "lib" + configuration()->value ("Dependencies/Library").toString() + ".so";
-    const QString l_pth = SPCHCNTRL_PLUGINS_LIB_DIR "/" + l_libName;
+    const QString libName = "lib" + configuration()->value ("Dependencies/Library").toString() + ".so";
+    const QString pth = SPCHCNTRL_PLUGINS_LIB_DIR "/" + libName;
     m_ldr = new QPluginLoader;
-    m_ldr->setFileName (l_pth);
+    m_ldr->setFileName (pth);
 
     if (!m_ldr->load()) {
-        qDebug() << name() << "'s library failed to load."
-                 << m_ldr->errorString() << m_ldr->fileName() << l_pth;
+        qDebug() << "[Factory::loadPlugin()]" << name() << "'s library failed to load."
+                 << m_ldr->errorString() << m_ldr->fileName() << pth << m_id;
         return false;
     }
 
@@ -166,7 +168,7 @@ bool AbstractPlugin::loadPlugins()
 {
     Q_FOREACH (AbstractPlugin * l_plgn, plugins()) {
         if (! (l_plgn->isSupported() && Factory::isPluginLoaded (l_plgn->id()))) {
-            qDebug() << "Plugin" << name() << "is missing a dependency:" << l_plgn->name();
+            qDebug() << "[Factory::loadPlugin()] Plugin" << name() << "is missing a dependency:" << l_plgn->name();
             return false;
         }
     }
@@ -244,7 +246,7 @@ AbstractPlugin::~AbstractPlugin()
 
 }
 
-Plugins::GenericPlugin::GenericPlugin (const QUuid& p_id) : AbstractPlugin (p_id, Core::instance())
+Plugins::GenericPlugin::GenericPlugin (const QString& p_id) : AbstractPlugin (p_id, Core::instance())
 {
 }
 

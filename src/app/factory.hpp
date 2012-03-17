@@ -71,13 +71,13 @@ signals:
      * @brief Emitted when a plug-in is loaded.
      * @param p_uuid The UUID of the plug-in loaded.
      **/
-    void pluginLoaded (const QUuid& p_uuid);
+    void pluginLoaded (const QString& p_id);
 
     /**
      * @brief Emitted when a plug-in is unloaded.
      * @param p_uuid The UUID of the plug-in unloaded.
      **/
-    void pluginUnloaded (const QUuid&);
+    void pluginUnloaded (const QString& p_id);
 
 public slots:
     /**
@@ -107,7 +107,7 @@ public:
      * @param p_uuid The UUID of the plug-in to load.
      * @return bool True if the plug-in loaded successfully, false otherwise.
      **/
-    static bool loadPlugin (const QUuid&);
+    static bool loadPlugin (const QString& p_id);
 
     /**
      * @brief Unloads a plug-in.
@@ -118,14 +118,14 @@ public:
      * @param p_uuid The UUID of the plug-in to unload.
      * @return bool True if the plug-in unloaded successfully, false otherwise.
      **/
-    static void unloadPlugin (const QUuid& p_uuid);
+    static void unloadPlugin (const QString& p_id);
 
     /**
      * @brief Determines if a plug-in has been loaded.
      * @param p_uuid The plug-in's UUID to verify.
      * @return bool True if the plug-in is loaded, false otherwise.
      **/
-    static bool isPluginLoaded (const QUuid& p_uuid);
+    static bool isPluginLoaded (const QString& p_id);
 
     /**
      * @brief Obtains a pointer to a loaded plugin.
@@ -133,7 +133,7 @@ public:
      * @param p_uuid The UUID of the plugin.
      * @return NULL if the plug-in isn't loaded. A pointer to the plug-in otherwise.
      **/
-    static AbstractPlugin* plugin (const QUuid& p_uuid);
+    static AbstractPlugin* plugin (const QString& p_id);
 
     /**
      * @brief Obtains a list of loaded plug-ins.
@@ -153,7 +153,7 @@ public:
      * @return A pointer to a QSettings* object. NULL if the UUID points to an invalid plug-in.
      * @see pluginSettings()
      **/
-    static QSettings* pluginConfiguration (QUuid p_uuid);
+    static QSettings* pluginConfiguration (const QString& p_id);
 
     /**
      * @brief Obtains the settings of a plug-in by its specified UUID.
@@ -161,11 +161,11 @@ public:
      * @return A pointer to a QSettings* object. NULL if the UUID points to an invalid plug-in.
      * @see pluginConfiguration()
      **/
-    static QSettings* pluginSettings (QUuid p_uuid);
+    static QSettings* pluginSettings (const QString& p_id);
 
-    static void setLoadOnStart (QUuid uuid, bool state);
-    static bool doesLoadOnStart (QUuid uuid);
-    static QList<QUuid> autoStart();
+    static void setLoadOnStart (const QString& p_id, const bool p_state);
+    static bool doesLoadOnStart (const QString& id);
+    static QStringList autoStart();
 
 private:
     static PluginMap s_ldPlgns;  ///< The loaded plug-ins.

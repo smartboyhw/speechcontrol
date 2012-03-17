@@ -51,20 +51,19 @@ PluginMap Factory::availablePlugins()
     PluginMap l_plgnLst;
 
     Q_FOREACH (const QString l_specPth, l_specPths) {
-        const QString l_pth = l_specDir.absolutePath() + "/" + l_specPth;
-        QSettings* l_specCfg = new QSettings (l_pth, QSettings::IniFormat, instance());
-        QFile l_file (l_pth);
-        const QUuid l_uuid (l_specCfg->value ("Plugin/UUID").toString());
-        l_plgnLst.insert (l_uuid, new GenericPlugin (l_uuid));
+        const QString pth = l_specDir.absolutePath() + "/" + l_specPth;
+        QSettings* specCfg = new QSettings (pth, QSettings::IniFormat, instance());
+        const QString id (specCfg->value ("Plugin/ID").toString());
+        l_plgnLst.insert (id, new GenericPlugin (id));
     }
 
     return l_plgnLst;
 }
 
-AbstractPlugin* Factory::plugin (const QUuid& p_uuid)
+AbstractPlugin* Factory::plugin (const QString& p_id)
 {
-    if (isPluginLoaded (p_uuid))
-        return s_ldPlgns.value (p_uuid);
+    if (isPluginLoaded (p_id))
+        return s_ldPlgns.value (p_id);
 
     return 0;
 }
@@ -74,121 +73,109 @@ PluginList Factory::loadedPlugins()
     return s_ldPlgns.values();
 }
 
-bool Factory::isPluginLoaded (const QUuid& p_uuid)
+bool Factory::isPluginLoaded (const QString& p_id)
 {
-    return s_ldPlgns.keys().contains (p_uuid);
+    return s_ldPlgns.keys().contains (p_id);
 }
 
-bool Factory::loadPlugin (const QUuid& p_uuid)
+bool Factory::loadPlugin (const QString& p_id)
 {
-    if (isPluginLoaded (p_uuid)) {
+    if (isPluginLoaded (p_id)) {
         return true;
     }
 
-    GenericPlugin* l_gnrcPlgn = new GenericPlugin (p_uuid);
+    GenericPlugin* l_gnrcPlgn = new GenericPlugin (p_id);
 
     if (l_gnrcPlgn->isSupported() && l_gnrcPlgn->loadComponents()) {
         AbstractPlugin* l_plgn = qobject_cast<AbstractPlugin*> (l_gnrcPlgn->m_ldr->instance());
 
         if (!l_plgn) {
-            qDebug() << "Couldn't nab core object.";
+            qDebug() << "[Factory::loadPlugin()] Couldn't nab core object.";
             return false;
         }
         else if (l_plgn->load()) {
-            s_ldPlgns.insert (p_uuid, l_plgn);
+            s_ldPlgns.insert (p_id, l_plgn);
             l_plgn->start();
-            emit instance()->pluginLoaded (p_uuid);
-            qDebug() << "Plugin" << l_plgn->name() << "loaded.";
+            emit instance()->pluginLoaded (p_id);
+            qDebug() << "[Factory::loadPlugin()] Plugin" << l_plgn->name() << "loaded.";
             return true;
         }
         else {
-            qDebug() << "Plugin" << l_plgn->name() << "refused to load.";
+            qDebug() << "[Factory::loadPlugin()] Plugin" << l_plgn->name() << "refused to load.";
             return false;
         }
     }
     else {
-        qDebug() << "Plugin" << p_uuid << "unsupported.";
+        qDebug() << "[Factory::loadPlugin()] Plugin" << p_id << "unsupported.";
     }
 
-    qDebug() << "Plugin" << p_uuid << "not loaded.";
+    qDebug() << "[Factory::loadPlugin()] Plugin" << p_id << "not loaded.";
     return false;
 }
 
-void Factory::unloadPlugin (const QUuid& p_uuid)
+void Factory::unloadPlugin (const QString& p_id)
 {
-    if (!isPluginLoaded (p_uuid)) {
+    if (!isPluginLoaded (p_id)) {
         return;
     }
 
-    if (s_ldPlgns.contains (p_uuid)) {
-        AbstractPlugin* l_plgn = s_ldPlgns.value (p_uuid);
+    if (s_ldPlgns.contains (p_id)) {
+        AbstractPlugin* l_plgn = s_ldPlgns.value (p_id);
         l_plgn->stop();
-        s_ldPlgns.remove (p_uuid);
+        s_ldPlgns.remove (p_id);
         qDebug() << "Plugin" << l_plgn->name() << "unloaded.";
         delete l_plgn;
-        emit instance()->pluginUnloaded (p_uuid);
+        emit instance()->pluginUnloaded (p_id);
     }
 }
 
-QSettings* Factory::pluginConfiguration (QUuid p_uuid)
+QSettings* Factory::pluginConfiguration (const QString& p_id)
 {
-    const QString pth (QString (SPCHCNTRL_PLUGINS_SPEC_DIR) + QString ("/") + p_uuid.toString() + QString (".spec"));
+    const QString pth (QString (SPCHCNTRL_PLUGINS_SPEC_DIR) + QString ("/") + p_id + QString (".spec"));
     return new QSettings (pth , QSettings::IniFormat, Factory::instance());
 }
 
-QSettings* Factory::pluginSettings (QUuid p_uuid)
+QSettings* Factory::pluginSettings (const QString& p_id)
 {
-    const QString pth (QDir::homePath() + Core::configurationPath().absolutePath() + "/plugins/" + p_uuid.toString() + QString (".conf"));
+    const QString pth (QDir::homePath() + Core::configurationPath().absolutePath() + "/plugins/" + p_id + QString (".conf"));
     return new QSettings (pth , QSettings::IniFormat, Factory::instance());
 }
 
-QList< QUuid > Factory::autoStart()
+QStringList Factory::autoStart()
 {
-    QStringList strings = Core::configuration ("Plugins/AutoStart").toStringList();
-    strings.removeDuplicates();
-    QList<QUuid> uuids;
-
-    Q_FOREACH (const QString string, strings) {
-        uuids << QUuid (string);
-    }
-
-    return uuids;
+    return Core::configuration ("Plugins/AutoStart").toStringList();
 }
 
-bool Factory::doesLoadOnStart (QUuid uuid)
+bool Factory::doesLoadOnStart (const QString& id)
 {
-    return autoStart().contains (uuid);
+    return autoStart().contains (id);
 }
 
-void Factory::setLoadOnStart (QUuid uuid, bool state)
+void Factory::setLoadOnStart (const QString& p_id, const bool p_state)
 {
-    QList<QUuid> uuids = autoStart();
+    QStringList ids = autoStart();
 
-    if (state)
-        uuids << uuid;
+    if (p_state)
+        ids << p_id;
     else
-        uuids.removeAll (uuid);
+        ids.removeAll (p_id);
 
-    QStringList strings;
-    Q_FOREACH (const QUuid uuid, uuids) {
-        strings << uuid.toString();
-    }
-
-    strings.removeDuplicates();
-    Core::setConfiguration ("Plugins/AutoStart", strings);
+    ids.removeDuplicates();
+    Core::setConfiguration ("Plugins/AutoStart", ids);
 }
 
 void Factory::start()
 {
-    Q_FOREACH (const QUuid plgn, autoStart()) {
-        Plugins::Factory::loadPlugin (plgn);
+    Q_FOREACH (const QString plgn, autoStart()) {
+        if (Factory::pluginConfiguration (plgn)->value ("Plugin/Enabled").toBool())
+            Plugins::Factory::loadPlugin (plgn);
     }
 }
 
 void Factory::stop()
 {
-    Q_FOREACH (AbstractPlugin * l_plgn, loadedPlugins()) {
-        unloadPlugin (l_plgn->uuid());
+    Q_FOREACH (AbstractPlugin * plgn, loadedPlugins()) {
+        unloadPlugin (plgn->id());
     }
 }
 

@@ -176,6 +176,7 @@ void Factory::stop()
 {
     Q_FOREACH (AbstractPlugin * plgn, loadedPlugins()) {
         unloadPlugin (plgn->id());
+    }
 }
 
 Factory::~Factory()

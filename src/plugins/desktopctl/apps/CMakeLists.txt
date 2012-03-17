@@ -19,7 +19,7 @@ configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
                "${PROJECT_SOURCE_DIR}/src/config.hpp" @ONLY)
 include_directories(${SPDSKAPP_PLUGIN_INCLUDE_DIRS}
     "${PROJECT_SOURCE_DIR}/src"
-    "${SPCHCNTRL_PLUGIN_BUILD_INCLUDE_DIRS}")
+    ${SPCHCNTRL_PLUGIN_BUILD_INCLUDE_DIRS})
 
 add_library(spchcntrl-applist SHARED ${SPDSKAPP_SRCS})
 target_link_libraries(spchcntrl-applist ${SPDSKAPP_PLUGIN_LIBRARIES})

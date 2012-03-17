@@ -21,7 +21,7 @@ configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
 
 include_directories(${SPUNITY_PLUGIN_INCLUDE_DIRS}
     "${PROJECT_SOURCE_DIR}/src"
-    "${SPCHCNTRL_PLUGIN_BUILD_INCLUDE_DIRS}")
+    ${SPCHCNTRL_PLUGIN_BUILD_INCLUDE_DIRS})
 
 add_library(spchcntrl-unity SHARED ${SPUNITY_SRCS})
 target_link_libraries(spchcntrl-unity ${SPUNITY_PLUGIN_LIBRARIES})

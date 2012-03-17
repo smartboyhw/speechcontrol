@@ -27,7 +27,7 @@
 
 using namespace SpeechControl::Plugins::Unity;
 
-Plugin::Plugin (QObject* parent) : AbstractPlugin (QUuid (PLUGIN_ID), parent)
+Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent)
 {
 
 }

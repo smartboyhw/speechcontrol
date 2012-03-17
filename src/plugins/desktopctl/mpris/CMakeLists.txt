@@ -19,7 +19,7 @@ configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
                "${PROJECT_SOURCE_DIR}/src/config.hpp" @ONLY)
 include_directories(${SPDSKMPRIS_PLUGIN_INCLUDE_DIRS}
     "${PROJECT_SOURCE_DIR}/src"
-    "${SPCHCNTRL_PLUGIN_BUILD_INCLUDE_DIRS}")
+    ${SPCHCNTRL_PLUGIN_BUILD_INCLUDE_DIRS})
 
 add_library(spchcntrl-mpris SHARED ${SPDSKMPRIS_SRCS})
 target_link_libraries(spchcntrl-mpris ${SPDSKMPRIS_PLUGIN_LIBRARIES})

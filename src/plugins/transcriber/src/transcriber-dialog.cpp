@@ -21,7 +21,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-#include "sphinx.hpp"
+#include <lib/abstractaudiosource.hpp>
 #include "transcriber-dialog.hpp"
 #include "ui_transcriber-dialog.h"
 
@@ -34,8 +34,7 @@ TranscriberDialog::TranscriberDialog (QWidget* parent) :
     m_sphnx (0)
 {
     m_ui->setupUi (this);
-    m_sphnx = new Sphinx;
-    connect (m_sphnx, SIGNAL (finished (QString)), this, SLOT (outputValue (QString)));
+    m_sphnx = new AudioSourceSphinx;
 }
 
 /// @todo Fix this to have an approved list of audio files that can read by GStreamer.
@@ -61,15 +60,7 @@ void TranscriberDialog::on_btnTranscribe_clicked()
     while (m_sphnx->isRunning())
         m_sphnx->stop();
 
-    m_sphnx->prepareForFile (l_file->fileName());
-
-    if (m_sphnx->start()) {
-        m_ui->textBrowserTranscription->setText (tr ("Transcribing..."));
-        QString l_text, l_uttid;
-        m_sphnx->formPartialResult (l_text, l_uttid);
-        qDebug() << l_text << l_uttid;
-    }
-    else {
+    if (!m_sphnx->start()) {
         m_ui->textBrowserTranscription->setText (tr ("Initialization of transcribing service failed."));
     }
 }
@@ -88,4 +79,4 @@ TranscriberDialog::~TranscriberDialog()
 }
 
 #include "transcriber-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

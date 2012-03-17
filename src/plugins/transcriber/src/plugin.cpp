@@ -28,7 +28,7 @@
 using namespace SpeechControl::Windows;
 using namespace SpeechControl::Plugins::Transcriber;
 
-Plugin::Plugin (QObject* parent) : AbstractPlugin (QUuid (PLUGIN_ID), parent)
+Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent)
 {
 
 }

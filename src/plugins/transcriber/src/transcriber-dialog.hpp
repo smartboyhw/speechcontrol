@@ -32,6 +32,7 @@ class TranscriberDialog;
 
 namespace SpeechControl
 {
+class AudioSourceSphinx;
 namespace Windows
 {
 
@@ -49,7 +50,7 @@ private slots:
 
 private:
     Ui::TranscriberDialog* m_ui;
-    SpeechControl::Plugins::Transcriber::Sphinx* m_sphnx;
+    AudioSourceSphinx* m_sphnx;
 public slots:
     void outputValue (const QString& p_value);
 };
@@ -58,4 +59,4 @@ public slots:
 }
 
 #endif // TRANSCRIBERDIALOG_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

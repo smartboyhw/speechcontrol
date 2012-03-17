@@ -28,7 +28,7 @@
 
 MPRIS_NAMESPACE_BEGIN
 
-Plugin::Plugin (QObject* parent) : AbstractPlugin (QUuid (PLUGIN_ID), parent)
+Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent)
 {
 }
 

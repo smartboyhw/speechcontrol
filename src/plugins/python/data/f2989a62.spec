@@ -6,4 +6,4 @@ URL=http://www.thesii.org
 Version=0.1
 
 [Dependencies]
-Library=pyspchcntrl
+Library=spchcntrl-python

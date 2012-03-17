@@ -63,8 +63,8 @@ PluginMap Factory::availablePlugins()
 
 AbstractPlugin* Factory::plugin (const QUuid& p_uuid)
 {
-    if (isPluginLoaded(p_uuid))
-        return s_ldPlgns.value(p_uuid);
+    if (isPluginLoaded (p_uuid))
+        return s_ldPlgns.value (p_uuid);
 
     return 0;
 }
@@ -132,20 +132,55 @@ void Factory::unloadPlugin (const QUuid& p_uuid)
 
 QSettings* Factory::pluginConfiguration (QUuid p_uuid)
 {
-    const QString l_pth (QString (SPCHCNTRL_PLUGINS_SPEC_DIR) + QString ("/") + p_uuid.toString().replace ("{", "").replace ("}", "") + QString (".spec"));
-    return new QSettings (l_pth , QSettings::IniFormat, Factory::instance());
+    const QString pth (QString (SPCHCNTRL_PLUGINS_SPEC_DIR) + QString ("/") + p_uuid.toString() + QString (".spec"));
+    return new QSettings (pth , QSettings::IniFormat, Factory::instance());
 }
 
 QSettings* Factory::pluginSettings (QUuid p_uuid)
 {
-    const QString l_pth (QDir::homePath() + Core::configurationPath().absolutePath() + "/plugins/" + p_uuid.toString().replace ("{", "").replace ("}", "") + QString (".conf"));
-    return new QSettings (l_pth , QSettings::IniFormat, Factory::instance());
+    const QString pth (QDir::homePath() + Core::configurationPath().absolutePath() + "/plugins/" + p_uuid.toString() + QString (".conf"));
+    return new QSettings (pth , QSettings::IniFormat, Factory::instance());
+}
+
+QList< QUuid > Factory::autoStart()
+{
+    QStringList strings = Core::configuration ("Plugins/AutoStart").toStringList();
+    strings.removeDuplicates();
+    QList<QUuid> uuids;
+
+    Q_FOREACH (const QString string, strings) {
+        uuids << QUuid (string);
+    }
+
+    return uuids;
+}
+
+bool Factory::doesLoadOnStart (QUuid uuid)
+{
+    return autoStart().contains (uuid);
+}
+
+void Factory::setLoadOnStart (QUuid uuid, bool state)
+{
+    QList<QUuid> uuids = autoStart();
+
+    if (state)
+        uuids << uuid;
+    else
+        uuids.removeAll (uuid);
+
+    QStringList strings;
+    Q_FOREACH (const QUuid uuid, uuids) {
+        strings << uuid.toString();
+    }
+
+    strings.removeDuplicates();
+    Core::setConfiguration ("Plugins/AutoStart", strings);
 }
 
 void Factory::start()
 {
-    const QStringList plgnLst = Core::configuration ("Plugins/AutoStart").toStringList();
-    Q_FOREACH (const QUuid plgn, plgnLst) {
+    Q_FOREACH (const QUuid plgn, autoStart()) {
         Plugins::Factory::loadPlugin (plgn);
     }
 }

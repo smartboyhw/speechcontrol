@@ -133,7 +133,7 @@ public:
      * @param p_uuid The UUID of the plugin.
      * @return NULL if the plug-in isn't loaded. A pointer to the plug-in otherwise.
      **/
-    static AbstractPlugin* plugin(const QUuid& p_uuid);
+    static AbstractPlugin* plugin (const QUuid& p_uuid);
 
     /**
      * @brief Obtains a list of loaded plug-ins.
@@ -162,6 +162,10 @@ public:
      * @see pluginConfiguration()
      **/
     static QSettings* pluginSettings (QUuid p_uuid);
+
+    static void setLoadOnStart (QUuid uuid, bool state);
+    static bool doesLoadOnStart (QUuid uuid);
+    static QList<QUuid> autoStart();
 
 private:
     static PluginMap s_ldPlgns;  ///< The loaded plug-ins.

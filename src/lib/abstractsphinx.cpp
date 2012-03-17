@@ -81,7 +81,7 @@ void AbstractSphinx::prepare()
 
 QString AbstractSphinx::standardDescription()
 {
-    return QString ("autoaudiosrc name=audiosrc ! audioconvert"
+    return QString ("appsrc name=audiosrc ! audioconvert"
                     " ! audioresample ! audiorate ! volume name=volume"
                     " ! vader name=vad auto_threshold=true"
                     " ! pocketsphinx name=asr"
@@ -126,12 +126,6 @@ const QGst::ElementPtr AbstractSphinx::volumeElement() const
 const QGst::ElementPtr AbstractSphinx::audioSrcElement() const
 {
     return m_pipeline->getElementByName ("audiosrc");
-}
-
-/// @todo Implement support for using AbstractAudioSource to provide input for devices.
-void AbstractSphinx::useMicrophone (const AbstractAudioSource* p_microphone)
-{
-    p_microphone->isRecording();
 }
 
 const QGst::ElementPtr AbstractSphinx::pocketSphinxElement() const
@@ -269,5 +263,54 @@ AbstractSphinx::~AbstractSphinx()
 {
     m_pipeline->setState (QGst::StateNull);
 }
+
+AudioSourceSphinx::AudioSourceSphinx (QObject* p_parent) : AbstractSphinx (p_parent), m_src (0)
+{
+
+}
+
+AudioSourceSphinx::AudioSourceSphinx (AbstractAudioSource* p_source, QObject* p_parent) : AbstractSphinx (p_parent->parent()), m_src (p_source)
+{
+    linkSource(m_src);
+}
+
+AudioSourceSphinx::AudioSourceSphinx (const AudioSourceSphinx& p_other) : AbstractSphinx(p_other.parent()), m_src(p_other.m_src)
+{
+    linkSource(m_src);
+}
+
+/// @todo Rig up the Sphinx instance to send data from the abstract source as a buffer into the sink in sphinx.
+void AudioSourceSphinx::linkSource (AbstractAudioSource* m_src)
+{
+
+}
+
+void AudioSourceSphinx::setSource (AbstractAudioSource* p_source)
+{
+    m_src = p_source;
+}
+
+AbstractAudioSource* AudioSourceSphinx::source()
+{
+    return m_src;
+}
+
+void AudioSourceSphinx::applicationMessage (const QGst::MessagePtr& p_message)
+{
+    QString msgType    = p_message->internalStructure()->name();
+    QString hypothesis = p_message->internalStructure()->value ("hyp").toString();
+    QString uttid      = p_message->internalStructure()->value ("uttid").toString();
+
+    if (msgType == "result") {
+        qDebug() << "[DesktopControl::Sphinx::applicationMessage()] Obtained hypothesis" << hypothesis << "from user of a utterance" << uttid << ".";
+        emit finished (hypothesis);
+    }
+}
+
+AudioSourceSphinx::~AudioSourceSphinx()
+{
+
+}
+
 #include "abstractsphinx.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

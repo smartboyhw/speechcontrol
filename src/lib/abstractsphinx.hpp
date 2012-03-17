@@ -40,8 +40,8 @@
 #include <pocketsphinx.h>
 
 // local includes
-#include "config.hpp"
-#include "export.hpp"
+#include <config.hpp>
+#include <export.hpp>
 
 
 namespace SpeechControl
@@ -186,13 +186,6 @@ public:
     const QGst::ElementPtr volumeElement() const;
 
     /**
-     * @brief Hooks up a microphone to be used with this AbstractSphinx instance.
-     *
-     * @param p_microphone The microphone to use.
-     **/
-    void useMicrophone (const AbstractAudioSource* p_microphone);
-
-    /**
      * @brief Set PocketSphinx element property
      * @param p_property Name of the property.
      * @param p_value Value for the property.
@@ -316,7 +309,27 @@ protected:
     void buildPipeline (QString p_description);
 };
 
+
+class SPCH_EXPORT AudioSourceSphinx : public AbstractSphinx
+{
+    Q_OBJECT
+    Q_DISABLE_COPY(AudioSourceSphinx)
+
+public:
+    explicit AudioSourceSphinx (QObject* p_parent = 0);
+    AudioSourceSphinx (AbstractAudioSource* p_source, QObject* p_parent = 0);
+    virtual ~AudioSourceSphinx();
+
+    AbstractAudioSource* source();
+    void setSource(AbstractAudioSource* p_source);
+
+private:
+    AbstractAudioSource* m_src;
+    virtual void applicationMessage (const QGst::MessagePtr& p_message);
+    void linkSource (AbstractAudioSource* m_src);
+};
+
 }
 
 #endif // ABSTRACTSPHINX_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

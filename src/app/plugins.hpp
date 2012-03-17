@@ -141,10 +141,9 @@ public:
     const QUrl url() const;
 
     /**
-     * @brief Obtains the QUuid of the plug-in.
-     * @return A invalid QUuid if it couldn't be determined, a QUuid otherwise.
+     * @brief Obtains the id of the plug-in.
      **/
-    const QUuid uuid() const;
+    const QString uuid() const;
 
     virtual QPixmap pixmap() const = 0;
 
@@ -266,8 +265,7 @@ private:
     bool loadPlugins();
 
     QPluginLoader* m_ldr;     ///< The magical QPluginLoader!
-    QSettings* m_cfg;         ///< Holds the configuration of the plug-in.
-    QSettings* m_sttgs;       ///< Holds the settings of the plug-in.
+    QString m_id;             ///< The ID of the plug-in.
     QList<QAction*> m_acts;   ///< The QActions used to add the 'Plugins' menu.
 };
 

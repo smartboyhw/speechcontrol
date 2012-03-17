@@ -39,18 +39,18 @@ using SpeechControl::Plugins::AbstractPlugin;
 
 /// @bug The symbols for this class aren't exported properly.
 AbstractPlugin::AbstractPlugin (QObject* p_prnt) :
-    QObject (p_prnt), m_ldr (0), m_cfg (0), m_sttgs (0)
+    QObject (p_prnt), m_ldr (0), m_id (QString::null)
 {
 }
 
-AbstractPlugin::AbstractPlugin (const QUuid& p_uuid , QObject* p_parent) : QObject (p_parent),
-    m_ldr (0), m_cfg (Factory::pluginConfiguration (p_uuid)), m_sttgs (Factory::pluginSettings (p_uuid))
+AbstractPlugin::AbstractPlugin (const QUuid& p_id , QObject* p_parent) : QObject (p_parent),
+    m_ldr (0), m_id (p_id)
 {
 
 }
 
 AbstractPlugin::AbstractPlugin (const AbstractPlugin& p_other) : QObject (p_other.parent()),
-    m_ldr (p_other.m_ldr), m_cfg (p_other.m_cfg), m_sttgs (p_other.m_sttgs)
+    m_ldr (p_other.m_ldr), m_id (p_other.m_id)
 {
 
 }
@@ -68,17 +68,17 @@ bool AbstractPlugin::isSupported() const
 
 const QString AbstractPlugin::name() const
 {
-    if (m_cfg) {
-        return m_cfg->value ("Plugin/Name").toString();
+    if (configuration()) {
+        return configuration()->value ("Plugin/Name").toString();
     }
 
     return QString::null;
 }
 
-const QUuid AbstractPlugin::uuid() const
+const QUuid AbstractPlugin::id() const
 {
-    if (m_cfg) {
-        return QUuid (m_cfg->value ("Plugin/UUID").toString());
+    if (configuration()) {
+        return QUuid (configuration()->value ("Plugin/ID").toString());
     }
 
     return QUuid (QString::null);
@@ -86,8 +86,8 @@ const QUuid AbstractPlugin::uuid() const
 
 double AbstractPlugin::version() const
 {
-    if (m_cfg) {
-        return m_cfg->value ("Plugin/Version").toDouble();
+    if (configuration()) {
+        return configuration()->value ("Plugin/Version").toDouble();
     }
 
     return -1.0;
@@ -95,8 +95,8 @@ double AbstractPlugin::version() const
 
 const QString AbstractPlugin::author() const
 {
-    if (m_cfg) {
-        return m_cfg->value ("Plugin/Author").toString();
+    if (configuration()) {
+        return configuration()->value ("Plugin/Author").toString();
     }
 
     return QString::null;
@@ -104,8 +104,8 @@ const QString AbstractPlugin::author() const
 
 const QString AbstractPlugin::description() const
 {
-    if (m_cfg) {
-        return m_cfg->value ("Plugin/Description").toString();
+    if (configuration()) {
+        return configuration()->value ("Plugin/Description").toString();
     }
 
     return QString::null;
@@ -113,8 +113,8 @@ const QString AbstractPlugin::description() const
 
 const QUrl AbstractPlugin::url() const
 {
-    if (m_cfg) {
-        return m_cfg->value ("Plugin/URL").toUrl();
+    if (configuration()) {
+        return configuration()->value ("Plugin/URL").toUrl();
     }
 
     return QUrl (QString::null);
@@ -122,9 +122,9 @@ const QUrl AbstractPlugin::url() const
 
 const PluginList AbstractPlugin::plugins() const
 {
-    if (m_cfg) {
+    if (configuration()) {
         PluginList l_lst;
-        const QStringList l_plgns = m_cfg->value ("Dependencies/Plugins").toStringList();
+        const QStringList l_plgns = configuration()->value ("Dependencies/Plugins").toStringList();
 
         Q_FOREACH (const QString l_plgnUuid, l_plgns) {
             l_lst << new GenericPlugin (l_plgnUuid);
@@ -148,7 +148,7 @@ bool AbstractPlugin::loadComponents()
 
 bool AbstractPlugin::loadLibrary()
 {
-    const QString l_libName = "lib" + m_cfg->value ("Dependencies/Library").toString() + ".so";
+    const QString l_libName = "lib" + configuration()->value ("Dependencies/Library").toString() + ".so";
     const QString l_pth = SPCHCNTRL_PLUGINS_LIB_DIR "/" + l_libName;
     m_ldr = new QPluginLoader;
     m_ldr->setFileName (l_pth);
@@ -165,7 +165,7 @@ bool AbstractPlugin::loadLibrary()
 bool AbstractPlugin::loadPlugins()
 {
     Q_FOREACH (AbstractPlugin * l_plgn, plugins()) {
-        if (! (l_plgn->isSupported() && Factory::isPluginLoaded (l_plgn->uuid()))) {
+        if (! (l_plgn->isSupported() && Factory::isPluginLoaded (l_plgn->id()))) {
             qDebug() << "Plugin" << name() << "is missing a dependency:" << l_plgn->name();
             return false;
         }
@@ -203,12 +203,12 @@ bool AbstractPlugin::load()
 
 QSettings* AbstractPlugin::configuration() const
 {
-    return m_cfg;
+    return Factory::pluginConfiguration (m_id);
 }
 
 QSettings* AbstractPlugin::settings() const
 {
-    return m_sttgs;
+    return Factory::pluginSettings (m_id);
 }
 
 QList< QAction* > AbstractPlugin::actions()
@@ -236,7 +236,7 @@ bool AbstractPlugin::isEnabled() const
 
 bool AbstractPlugin::isLoaded() const
 {
-    return Factory::isPluginLoaded (uuid());
+    return Factory::isPluginLoaded (id());
 }
 
 AbstractPlugin::~AbstractPlugin()
@@ -244,18 +244,18 @@ AbstractPlugin::~AbstractPlugin()
 
 }
 
-Plugins::GenericPlugin::GenericPlugin (const QUuid& p_uuid) : AbstractPlugin (p_uuid, Core::instance())
+Plugins::GenericPlugin::GenericPlugin (const QUuid& p_id) : AbstractPlugin (p_id, Core::instance())
 {
 }
 
-Plugins::GenericPlugin::GenericPlugin (const Plugins::GenericPlugin& p_other) : AbstractPlugin (p_other.uuid(), Core::instance())
+Plugins::GenericPlugin::GenericPlugin (const Plugins::GenericPlugin& p_other) : AbstractPlugin (p_other.id(), Core::instance())
 {
     qFatal ("Shouldn't hit here.");
 }
 
 QPixmap Plugins::GenericPlugin::pixmap() const
 {
-    return QApplication::windowIcon().pixmap(64,64);
+    return QApplication::windowIcon().pixmap (64, 64);
 }
 
 #include "plugins.moc"

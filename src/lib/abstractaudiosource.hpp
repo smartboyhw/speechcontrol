@@ -65,15 +65,15 @@ class SPCH_EXPORT GenericSink : public QGst::Utils::ApplicationSink
 {
 public:
     explicit GenericSink();
-    QGst::Utils::ApplicationSource* source();
-    void setSource (QGst::Utils::ApplicationSource* p_source);
+    GenericSource* source();
+    void setSource (SpeechControl::GenericSource* p_source);
 
 protected:
     virtual void eos();
     virtual QGst::FlowReturn newBuffer();
 
 private:
-    QGst::Utils::ApplicationSource* m_src;
+    GenericSource* m_src;
 };
 
 class SPCH_EXPORT GenericSource : public QObject, public QGst::Utils::ApplicationSource
@@ -118,6 +118,7 @@ public:
 signals:
     void recordingBegun();
     void recordingEnded();
+    void bufferObtained(const QByteArray p_buffer);
 
 public slots:
     void startRecording();
@@ -132,12 +133,13 @@ protected:
     QString pipelineStr() const;
     virtual void buildPipeline();
     GenericSink* m_appSink;
+    GenericSource* m_appSrc;
     QGst::BinPtr m_binPtr;
     QGst::PipelinePtr m_pipeline;
     QGst::ElementPtr m_sinkPtr;
     QGst::ElementPtr m_srcPtr;
     QGst::ElementPtr m_volumePtr;
-    QGst::Utils::ApplicationSource* m_appSrc;
+    QGst::ElementPtr m_levelPtr;
 
 private slots:
     void onPipelineBusmessage (const QGst::MessagePtr& message);
@@ -150,14 +152,15 @@ class SPCH_EXPORT DeviceAudioSource : public AbstractAudioSource
 
 public:
     explicit DeviceAudioSource();
-    DeviceAudioSource (const QString& p_deviceName);
     DeviceAudioSource (const AbstractAudioSource& p_other);
     virtual ~DeviceAudioSource();
     QString deviceName() const;
     static AbstractAudioSourceList allDevices();
     static DeviceAudioSource* defaultDevice();
+    static DeviceAudioSource* obtain(const QString& p_deviceName);
 
 protected:
+    DeviceAudioSource (const QString& p_deviceName);
     virtual QString pipelineDescription() const;
     virtual void buildPipeline();
 
@@ -165,6 +168,7 @@ private:
     void obtainDevice (const QString& p_deviceName);
     QGlib::Value m_device;
     QGst::ElementPtr m_devicePtr;
+    static QMap<QString,DeviceAudioSource*> s_map;
 };
 
 class SPCH_EXPORT StreamAudioSource : public AbstractAudioSource

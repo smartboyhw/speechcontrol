@@ -106,7 +106,7 @@ void MicrophoneSettingsPane::on_comboBoxDevices_currentIndexChanged (const QStri
 void MicrophoneSettingsPane::on_horizontialSliderVolume_valueChanged (const int p_value)
 {
     QString curVal = ui->comboBoxDevices->currentText();
-    DeviceAudioSource* mic = new DeviceAudioSource (curVal);
+    DeviceAudioSource* mic = DeviceAudioSource::obtain(curVal);
     mic->setVolume ( (double) (p_value / 1000));
     delete mic;
 }
@@ -114,7 +114,7 @@ void MicrophoneSettingsPane::on_horizontialSliderVolume_valueChanged (const int 
 void MicrophoneSettingsPane::on_checkBoxMute_toggled (const bool p_checked)
 {
     QString curVal = ui->comboBoxDevices->currentText();
-    DeviceAudioSource* mic = new DeviceAudioSource (curVal);
+    DeviceAudioSource* mic = DeviceAudioSource::obtain(curVal);
     mic->setMuted(p_checked);
     delete mic;
 }

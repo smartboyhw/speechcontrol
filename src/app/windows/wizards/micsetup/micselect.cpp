@@ -35,7 +35,7 @@ MicrophoneSelection::MicrophoneSelection (QWidget* parent) :
     m_mic (DeviceAudioSource::defaultDevice())
 {
     ui->setupUi (this);
-    this->setLayout(ui->verticalLayout);
+    this->setLayout (ui->verticalLayout);
     this->registerField ("mic", ui->comboBoxMicrophones, "currentIndex", SIGNAL (currentIndexChanged (QString)));
 }
 
@@ -52,7 +52,7 @@ void SpeechControl::Wizards::Pages::MicrophoneSelection::initializePage()
     if (!l_allMics.empty()) {
         Q_FOREACH (AbstractAudioSource * src, l_allMics) {
             DeviceAudioSource* deviceSrc = (DeviceAudioSource*) src;
-            ui->comboBoxMicrophones->addItem ( QIcon::fromTheme("audio-input-microphone"), deviceSrc->deviceName(), deviceSrc->deviceName());
+            ui->comboBoxMicrophones->addItem (QIcon::fromTheme ("audio-input-microphone"), deviceSrc->deviceName(), deviceSrc->deviceName());
         }
     }
 }
@@ -82,15 +82,28 @@ bool SpeechControl::Wizards::Pages::MicrophoneSelection::isComplete()
 /// @todo Set this page's value to this field.
 void SpeechControl::Wizards::Pages::MicrophoneSelection::on_comboBoxMicrophones_activated (int index)
 {
+    if (m_mic) {
+        m_mic->stopRecording();
+    }
+
     const QString deviceName = ui->comboBoxMicrophones->itemData (index).toString();
-    m_mic = new DeviceAudioSource (deviceName);
+
+    m_mic = DeviceAudioSource::obtain (deviceName);
+
     m_mic->startRecording();
+
     connect (m_mic, SIGNAL (recordingBegun()), this, SLOT (microphoneSelected()));
 }
 
 void MicrophoneSelection::microphoneSelected()
 {
+    connect (m_mic, SIGNAL (bufferObtained (QByteArray)), this, SLOT (on_mic_bufferObtained (QByteArray)));
+}
 
+void MicrophoneSelection::on_mic_bufferObtained (QByteArray p_buffer)
+{
+    qDebug() << m_mic->volume() << m_mic->volume() * 100;
+    ui->progressBarFeedback->setValue (m_mic->volume() * 100);
 }
 
 #include "micselect.moc"

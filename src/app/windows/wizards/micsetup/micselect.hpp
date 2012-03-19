@@ -49,6 +49,7 @@ public:
     virtual bool isComplete();
 
 private slots:
+    void on_mic_bufferObtained(QByteArray p_buffer);
     void on_comboBoxMicrophones_activated (int p_index);
     void microphoneSelected();
 
@@ -62,4 +63,4 @@ private:
 }
 }
 #endif // MICSELECT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

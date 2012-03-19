@@ -271,23 +271,23 @@ AudioSourceSphinx::AudioSourceSphinx (QObject* p_parent) : AbstractSphinx (p_par
 
 AudioSourceSphinx::AudioSourceSphinx (AbstractAudioSource* p_source, QObject* p_parent) : AbstractSphinx (p_parent->parent()), m_src (p_source)
 {
-    linkSource(m_src);
+    linkSource();
 }
 
 AudioSourceSphinx::AudioSourceSphinx (const AudioSourceSphinx& p_other) : AbstractSphinx(p_other.parent()), m_src(p_other.m_src)
 {
-    linkSource(m_src);
+    linkSource();
 }
 
 /// @todo Rig up the Sphinx instance to send data from the abstract source as a buffer into the sink in sphinx.
-void AudioSourceSphinx::linkSource (AbstractAudioSource* m_src)
+void AudioSourceSphinx::linkSource ()
 {
-
 }
 
 void AudioSourceSphinx::setSource (AbstractAudioSource* p_source)
 {
     m_src = p_source;
+    linkSource();
 }
 
 AbstractAudioSource* AudioSourceSphinx::source()

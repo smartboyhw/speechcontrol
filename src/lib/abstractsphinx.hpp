@@ -319,14 +319,13 @@ public:
     explicit AudioSourceSphinx (QObject* p_parent = 0);
     AudioSourceSphinx (AbstractAudioSource* p_source, QObject* p_parent = 0);
     virtual ~AudioSourceSphinx();
-
     AbstractAudioSource* source();
     void setSource(AbstractAudioSource* p_source);
 
 private:
     AbstractAudioSource* m_src;
     virtual void applicationMessage (const QGst::MessagePtr& p_message);
-    void linkSource (AbstractAudioSource* m_src);
+    void linkSource ();
 };
 
 }

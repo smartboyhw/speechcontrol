@@ -46,6 +46,7 @@
 namespace SpeechControl
 {
 class GenericSink;
+class GenericSource;
 class AbstractAudioSource;
 class DeviceAudioSource;
 class StreamAudioSource;
@@ -75,14 +76,21 @@ private:
     QGst::Utils::ApplicationSource* m_src;
 };
 
-class SPCH_EXPORT GenericSource : public QGst::Utils::ApplicationSource {
+class SPCH_EXPORT GenericSource : public QObject, public QGst::Utils::ApplicationSource
+{
+    Q_OBJECT
+
+signals:
+    void bufferObtained (const QByteArray p_bufferData);
+
 public:
-    explicit GenericSource();
-    QGst::Utils::ApplicationSink* sink();
-    void setSink(QGst::Utils::ApplicationSink* p_sink);
+    explicit GenericSource (AbstractAudioSource* p_audioSource);
+    virtual ~GenericSource();
+    virtual QGst::FlowReturn endOfStream();
+    virtual QGst::FlowReturn pushBuffer (const QGst::BufferPtr& p_buffer);
 
 private:
-    QGst::Utils::ApplicationSink* m_sink;
+    AbstractAudioSource* m_audioSrc;
 };
 
 /**
@@ -96,6 +104,7 @@ private:
 class SPCH_EXPORT AbstractAudioSource : public QObject
 {
     Q_OBJECT
+    friend class GenericSource;
 
 public:
     virtual ~AbstractAudioSource();
@@ -103,8 +112,8 @@ public:
     bool isNull() const;
     bool isMuted() const;
     double volume() const;
-    void setMuted(const bool p_muted);
-    void setVolume(const double p_volume);
+    void setMuted (const bool p_muted);
+    void setVolume (const double p_volume);
 
 signals:
     void recordingBegun();
@@ -122,7 +131,7 @@ protected:
     QString caps() const;
     QString pipelineStr() const;
     virtual void buildPipeline();
-    GenericSink* m_sink;
+    GenericSink* m_appSink;
     QGst::BinPtr m_binPtr;
     QGst::PipelinePtr m_pipeline;
     QGst::ElementPtr m_sinkPtr;
@@ -161,12 +170,12 @@ private:
 class SPCH_EXPORT StreamAudioSource : public AbstractAudioSource
 {
     Q_OBJECT
-    Q_DISABLE_COPY(StreamAudioSource)
+    Q_DISABLE_COPY (StreamAudioSource)
 
 public:
     explicit StreamAudioSource ();
-    StreamAudioSource(QDataStream& p_stream);
-    StreamAudioSource(const AbstractAudioSource& p_other);
+    StreamAudioSource (QDataStream& p_stream);
+    StreamAudioSource (const AbstractAudioSource& p_other);
     virtual ~StreamAudioSource();
     QDataStream* stream() const;
 

@@ -55,13 +55,13 @@ class SPCH_EXPORT Sentence : public QObject
 
 public:
     explicit Sentence (Corpus*, QDomElement*);
-    
+
     /**
      * @brief ...
      *
      **/
     virtual ~Sentence();
-    
+
     /**
      * @brief ...
      *
@@ -70,21 +70,21 @@ public:
      * @return :Sentence*
      **/
     static Sentence* create (SpeechControl::Corpus* p_corpus, const QString& p_text);
-    
+
     /**
      * @brief ...
      *
      * @return :Corpus*
      **/
     Corpus* parentSession() const;
-    
+
     /**
      * @brief ...
      *
      * @return const QUuid
      **/
     const QUuid uuid() const;
-    
+
     /**
      * @brief ...
      *
@@ -100,21 +100,21 @@ public:
      * @return const QDir
      **/
     const QDir audioPath() const;
-    
+
     /**
      * @brief ...
      *
      * @return :PhraseList
      **/
     const PhraseList phrases() const;
-    
+
     /**
      * @brief ...
      *
      * @return bool
      **/
     bool allPhrasesCompleted() const;
-    
+
     /**
      * @brief ...
      *
@@ -122,21 +122,21 @@ public:
      * @return bool
      **/
     bool isPhraseCompleted (const int&) const;
-    
+
     /**
      * @brief ...
      *
      * @return double
      **/
     double completedProgress() const;
-    
+
     /**
      * @brief ...
      *
      * @return int
      **/
     int index() const;
-    
+
     /**
      * @brief ...
      *
@@ -144,6 +144,8 @@ public:
      * @return :Phrase*
      **/
     Phrase* phrase (const int&) const;
+    Sentence* nextSibling() const;
+    Sentence* previousSibling() const;
 
 private:
     QDomElement* getPhraseElement (const int p_indx) const;
@@ -155,4 +157,4 @@ private:
 }
 
 #endif // SENTENCE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

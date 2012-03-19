@@ -55,7 +55,7 @@ const QUuid Sentence::uuid() const
 
 const QDir Sentence::audioPath() const
 {
-    return QDir (m_corpus->audioPath().toLocalFile() + "/" + m_elem->attribute ("file"));
+    return QDir (m_corpus->audioPath() + "/" + m_elem->attribute ("file"));
 }
 
 /// @todo Merge all of the phrases together.
@@ -88,19 +88,19 @@ Sentence* Sentence::create (Corpus* p_corpus, const QString& p_text)
 
     QString l_phrase;
 
-    qDebug() << "Assumed word count:" << l_words.count();
-    qDebug() << "Words:" << l_words;
-    qDebug() << "If segmented into about 4 parts each, we get about" << l_words.count() / 4 << "words per phrase.";
+    qDebug() << "[Sentence::create()] Assumed word count:" << l_words.count();
+    qDebug() << "[Sentence::create()] Words:" << l_words;
+    qDebug() << "[Sentence::create()] If segmented into about 4 parts each, we get about" << l_words.count() / 4 << "words per phrase.";
 
     Q_FOREACH (const QString l_word, l_words) {
         if (l_wordSize <= l_phraseSize) {
             l_phrase += l_word + " ";
-            qDebug() << "Appended" << l_wordSize << l_word;
+            qDebug() << "[Sentence::create()] Appended" << l_wordSize << l_word;
         }
 
         if ( (l_wordSize == l_phraseSize || l_word == l_words.last()) && !l_phrase.trimmed().isEmpty()) {
             l_phrase = l_phrase.trimmed();
-            qDebug() << "Phrase" << l_phrase << "formed. At end?" << (l_word == l_words.last());
+            qDebug() << "[Sentence::create()] Phrase" << l_phrase << "formed. At end?" << (l_word == l_words.last());
 
             QDomElement* l_phrsElem = new QDomElement (p_corpus->m_dom->createElement ("Phrase"));
             l_phrsElem->setAttribute ("uuid", QUuid::createUuid());
@@ -158,12 +158,25 @@ QDomElement* Sentence::getPhraseElement (const int p_indx) const
 
 Phrase* Sentence::phrase (const int& p_indx) const
 {
-    return m_phrsLst.at (p_indx);
+    if (p_indx < 0 || p_indx > m_phrsLst.length())
+        return 0;
+    else
+        return m_phrsLst.at (p_indx);
 }
 
 const PhraseList Sentence::phrases() const
 {
     return m_phrsLst;
+}
+
+Sentence* Sentence::nextSibling() const
+{
+    return m_corpus->sentenceAt(index() + 1);
+}
+
+Sentence* Sentence::previousSibling() const
+{
+    return m_corpus->sentenceAt(index() - 1);
 }
 
 Sentence::~Sentence()
@@ -172,4 +185,4 @@ Sentence::~Sentence()
 }
 
 #include "sentence.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -69,13 +69,13 @@ void Session::setContent (Content* p_content)
 
 double Session::assessProgress() const
 {
-    double l_progress = 0.0;
+    double progress = 0.0;
 
     Q_FOREACH (const Sentence * l_snt, corpus()->sentences()) {
-        l_progress += l_snt->completedProgress();
+        progress += l_snt->completedProgress();
     }
 
-    double progressDelta = l_progress / (double) (corpus()->sentences().count());
+    double progressDelta = progress / (double) (corpus()->sentences().count());
     emit progressChanged (progressDelta);
     return progressDelta;
 }
@@ -218,12 +218,14 @@ Sentence* Session::firstIncompleteSentence() const
 
     if (!lst.isEmpty())
         return lst.first();
+
     return 0;
 }
 
 Sentence* Session::lastIncompleteSentence() const
 {
     const SentenceList lst = incompletedSentences();
+
     if (!lst.isEmpty())
         return lst.last();
 
@@ -234,9 +236,10 @@ SentenceList Session::incompletedSentences() const
 {
     SentenceList list;
 
-    Q_FOREACH(Sentence* sentence, m_corpus->sentences()){
+    Q_FOREACH (Sentence * sentence, m_corpus->sentences()) {
         if (!sentence->allPhrasesCompleted())
             list << sentence;
+
         continue;
     }
 
@@ -304,7 +307,7 @@ Session* Session::clone() const
     elem.attribute ("corpus", corpus->uuid());
     elem.namedItem ("Date").toElement().setAttribute ("created", QDateTime::currentDateTimeUtc().toString (Qt::SystemLocaleDate));
     s_dom->documentElement().appendChild (elem);
-    s_elems.insert (uuid, new QDomElement(elem));
+    s_elems.insert (uuid, new QDomElement (elem));
     return Session::obtain (uuid);
 }
 

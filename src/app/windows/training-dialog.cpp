@@ -58,10 +58,11 @@ TrainingDialog::TrainingDialog (QWidget* p_parent) :
     m_ui->pushButtonNext->setIcon (QIcon::fromTheme (ICON_NEXT));
 
     connect (m_mic, SIGNAL (recordingBegun()), this, SLOT (onMicStartedListening()));
-    connect (m_mic, SIGNAL (bufferObtained (QByteArray)), this, SLOT (on_mic_BufferObtained (QByteArray)));
     connect (m_mic, SIGNAL (recordingEnded()), this, SLOT (onMicStoppedListening()));
+    connect (m_mic, SIGNAL (bufferObtained (QByteArray)), this, SLOT (on_mic_BufferObtained (QByteArray)));
 
     onMicStoppedListening();
+    stopCollecting();
 }
 
 TrainingDialog::~TrainingDialog()
@@ -200,8 +201,9 @@ void TrainingDialog::updateProgress (const double p_progress)
 
 void TrainingDialog::open()
 {
+    stopCollecting();
+    m_ui->labelText->setText(tr("<i>click <em>start</b> to begin training.</i>"));
     QDialog::open();
-    m_ui->pushButtonProgress->setChecked (true);
 }
 
 /// @todo In order for this to work properly, we'd need to detect empty pauses in the user's speech. We'd might have to record a 'garbage' model of empty noises and detect when empty noises are made and then advance.
@@ -241,7 +243,7 @@ void TrainingDialog::navigateToPart (const uint& p_index, Sentence* p_sentence)
     m_ui->labelText->setText (l_text);
     m_ui->pushButtonReset->setEnabled (! ( (int) m_initialPosition == m_currentPosition && m_initialSentence == m_currentSentence));
     m_ui->pushButtonUndo->setEnabled (m_ui->pushButtonReset->isEnabled());
-    m_session->assessProgress();
+    updateProgress(m_session->assessProgress());
 }
 
 void TrainingDialog::navigateNextPart()
@@ -340,13 +342,13 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonNext_clicked()
     qDebug() << "[TrainingDialog::onPushButtonNext_clicked()] Is recording? " << m_mic->isRecording();
     if (m_mic->isRecording()) {
         m_mic->stopRecording();
-        QFile* l_file = m_currentSentence->phrase (m_currentPosition)->audio();
-        l_file->open (QIODevice::WriteOnly | QIODevice::Truncate);
-        if (!l_file->write("Sample data")){
-            qDebug() << "[TrainingDialog::onPushButtonNext_clicked()] Failed to save audio:" << l_file->errorString();
+        QFile* file = m_currentSentence->phrase (m_currentPosition)->audio();
+        file->open (QIODevice::WriteOnly | QIODevice::Truncate);
+        if (!file->write("Sample data")){
+            qDebug() << "[TrainingDialog::onPushButtonNext_clicked()] Failed to save audio:" << file->errorString();
         }
         //l_file->write ( m_mic->data() );
-        l_file->close();
+        file->close();
     }
 
     if (m_currentSentence->allPhrasesCompleted()) {

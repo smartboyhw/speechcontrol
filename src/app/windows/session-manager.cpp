@@ -60,14 +60,14 @@ void SessionManager::updateList()
 
     SessionList l_lst = Session::allSessions();
     Q_FOREACH (const Session * l_sessionItr, l_lst) {
-        QListWidgetItem* l_item = new QListWidgetItem (m_ui->listSession);
-        l_item->setData (Qt::UserRole, l_sessionItr->uuid().toString());
-        l_item->setText (tr ("%1 - %2%").arg (l_sessionItr->name()).arg ( (int) l_sessionItr->assessProgress() * 100.0));
-        l_item->setIcon ( (l_sessionItr->isCompleted()) ? QIcon::fromTheme ("task-complete") : QIcon::fromTheme ("task-ongoing"));
-        m_ui->listSession->addItem (l_item);
+        QListWidgetItem* item = new QListWidgetItem (m_ui->listSession);
+        item->setData (Qt::UserRole, l_sessionItr->uuid().toString());
+        item->setText (tr ("%1 - %2%").arg (l_sessionItr->name()).arg ( (int) (l_sessionItr->assessProgress() * 100.0)));
+        item->setIcon ( (l_sessionItr->isCompleted()) ? QIcon::fromTheme ("task-complete") : QIcon::fromTheme ("task-ongoing"));
+        m_ui->listSession->addItem (item);
 
         if (m_session && m_session->uuid() == l_sessionItr->uuid()) {
-            l_item->setSelected (true);
+            item->setSelected (true);
         }
     }
 
@@ -122,10 +122,10 @@ void SessionManager::on_btnOk_clicked()
 
 void SessionManager::on_btnCreate_clicked()
 {
-    Content* l_content = ContentManager::doSelectContent();
+    Content* content = ContentManager::doSelectContent();
 
-    if (l_content) {
-        Session* l_session = Session::create (l_content);
+    if (content) {
+        Session* l_session = Session::create (content);
 
         if (l_session) {
             m_session = l_session;
@@ -139,11 +139,11 @@ void SessionManager::on_btnCreate_clicked()
 void SessionManager::on_listSession_itemDoubleClicked (QListWidgetItem* p_item)
 {
     if (p_item) {
-        Session* l_session = Session::obtain (QUuid (p_item->data (Qt::UserRole).toString()));
+        Session* session = Session::obtain (QUuid (p_item->data (Qt::UserRole).toString()));
 
-        if (l_session) {
-            SessionInformationDialog* l_dialog = new SessionInformationDialog (l_session);
-            l_dialog->exec();
+        if (session) {
+            SessionInformationDialog dialog (session);
+            dialog.exec();
             updateList();
         }
     }
@@ -151,14 +151,20 @@ void SessionManager::on_listSession_itemDoubleClicked (QListWidgetItem* p_item)
 
 void SessionManager::on_listSession_itemSelectionChanged()
 {
-    const QListWidgetItem* l_item = m_ui->listSession->currentItem();
+    const QListWidgetItem* item = m_ui->listSession->currentItem();
 
-    if (l_item) {
-        m_session = Session::obtain (QUuid (l_item->data (Qt::UserRole).toString()));
+    if (item) {
+        m_session = Session::obtain (QUuid (item->data (Qt::UserRole).toString()));
 
         if (m_session) {
-            m_ui->progressBar->setFormat (tr ("%p% complete"));
-            m_ui->progressBar->setValue ( (int) (m_session->assessProgress() * 100.0));
+            const int progress = (int) (m_session->assessProgress() * 100.0);
+
+            if (progress == 100)
+                m_ui->progressBar->setFormat (tr ("Completed"));
+            else
+                m_ui->progressBar->setFormat (tr ("%p% complete"));
+
+            m_ui->progressBar->setValue (progress);
         }
         else {
             m_ui->progressBar->setFormat (tr ("no session selected"));
@@ -168,4 +174,4 @@ void SessionManager::on_listSession_itemSelectionChanged()
 }
 
 #include "session-manager.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

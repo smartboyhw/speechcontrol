@@ -158,9 +158,9 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionDelete_triggered()
 
     QList<QListWidgetItem*> l_itms = l_widget->selectedItems();
     foreach (QListWidgetItem * l_itm, l_itms) {
-        qDebug() << l_itm->data (Qt::UserRole);
+        qDebug() << "[SessionSettingsPane::on_actionDelete_triggered()]" << l_itm->data (Qt::UserRole);
         const QString l_uuid = l_itm->data (Qt::UserRole).toString();
-        qDebug() << l_uuid;
+        qDebug() << "[SessionSettingsPane::on_actionDelete_triggered()]" << l_uuid;
         Session* l_ss = Session::obtain (l_uuid);
 
         if ( (l_multiple && l_doAll) ||

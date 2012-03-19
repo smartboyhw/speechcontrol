@@ -10,8 +10,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>446</width>
-    <height>261</height>
+    <width>443</width>
+    <height>241</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,13 +34,19 @@
    <widget class="QWidget" name="formLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>8</x>
+      <x>4</x>
       <y>5</y>
       <width>429</width>
-      <height>205</height>
+      <height>193</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_2">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetMaximumSize</enum>
+     </property>
+     <property name="margin">
+      <number>10</number>
+     </property>
      <item row="2" column="2">
       <widget class="QLabel" name="lblContent">
        <property name="sizePolicy">
@@ -431,7 +437,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>446</width>
+     <width>443</width>
      <height>21</height>
     </rect>
    </property>

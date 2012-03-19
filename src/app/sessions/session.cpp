@@ -52,7 +52,7 @@ void Session::setCorpus (Corpus* l_corpus)
         assessProgress();
     }
     else {
-        qDebug() << "Null corpus not added.";
+        qDebug() << "[Session::setCorpus()] Null corpus not added.";
     }
 }
 
@@ -214,62 +214,40 @@ Session* Session::Backup::session()
 
 Sentence* Session::firstIncompleteSentence() const
 {
-    const SentenceList lst = m_corpus->sentences();
+    const SentenceList lst = incompletedSentences();
 
-    for (int i = 0; i < lst.count(); i++) {
-        Sentence* l_sent = lst.at (i);
-
-        if (!l_sent->allPhrasesCompleted())
-            return l_sent;
-        else {
-            qDebug() << "[Session::firstIncompleteSentence()]" << l_sent->text() << "already completed @" << l_sent->audioPath().absolutePath();
-            continue;
-        }
-    }
-
+    if (!lst.isEmpty())
+        return lst.first();
     return 0;
 }
 
 Sentence* Session::lastIncompleteSentence() const
 {
-    const SentenceList l_lst = m_corpus->sentences();
-    SentenceList::ConstIterator l_endItr = l_lst.begin();
-
-    for (SentenceList::ConstIterator l_itr = l_lst.end(); l_itr != l_endItr; l_itr--) {
-        const Sentence* l_sent = (*l_itr);
-
-        if (!l_sent->allPhrasesCompleted())
-            return *l_itr;
-        else {
-            continue;
-        }
-    }
+    const SentenceList lst = incompletedSentences();
+    if (!lst.isEmpty())
+        return lst.last();
 
     return 0;
 }
 
 SentenceList Session::incompletedSentences() const
 {
-    SentenceList l_baseLst = m_corpus->sentences();
-    SentenceList l_lst;
+    SentenceList list;
 
-    for (SentenceList::Iterator l_itr = l_baseLst.begin(); l_itr != l_baseLst.end(); l_itr++) {
-        Sentence* l_sent = (*l_itr);
-
-        if (!l_sent->allPhrasesCompleted())
-            l_lst << l_sent;
-
+    Q_FOREACH(Sentence* sentence, m_corpus->sentences()){
+        if (!sentence->allPhrasesCompleted())
+            list << sentence;
         continue;
     }
 
-    //qDebug() << l_lst;
+    qDebug() << "[Sentence::incompletedSentences()] Number of incomplete sentences:" << list.length();
 
-    return l_lst;
+    return list;
 }
 
 bool Session::isCompleted() const
 {
-    return (incompletedSentences().empty());
+    return incompletedSentences().isEmpty() == true;
 }
 
 Session::BackupList* Session::backups() const
@@ -284,7 +262,7 @@ void Session::erase() const
     m_corpus->erase();
     s_dom->documentElement().removeChild (*m_elem);
 
-    QFile* file = new QFile (QDir::homePath() + "/.speechcontrol/sessions.xml");
+    QFile* file = new QFile (Core::configurationPath().absolutePath() + "/sessions.xml");
     file->open (QIODevice::WriteOnly | QIODevice::Truncate);
     QTextStream strm (file);
 
@@ -366,7 +344,7 @@ Session::Backup* Session::Backup::generate (const Session& p_sssn)
 
     // Compress corpus data.
     const Corpus* corpus = p_sssn.corpus();
-    QFile* corpusFile = new QFile (Corpus::getPath (corpus->uuid()).toLocalFile());
+    QFile* corpusFile = new QFile (Corpus::getPath (corpus->uuid()));
     QByteArray corpusData;
     corpusData = qCompress (corpusFile->readAll());
 

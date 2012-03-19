@@ -22,7 +22,6 @@
 #define CORPUS_HPP
 
 #include <QMap>
-#include <QUrl>
 #include <QUuid>
 #include <QObject>
 #include <QStringList>
@@ -243,16 +242,17 @@ public slots:
      * @brief Obtains the path to a Corpus's data.
      *
      * @param p_uuid The UUID of the Corpus.
-     * @return A QUrl to the Corpus data or an invalid one if the UUID doesn't point to a valid Corpus.
+     * @return A QString to the Corpus data or an invalid one if the UUID doesn't point to a valid Corpus.
      **/
-    static QUrl getPath (const QUuid& p_uuid);
+    static QString getPath (const QUuid& p_uuid);
 
 private:
     /**
      * @brief Obtains a path to the Corpus XML data.
-     * @return A QUrl with the location of the Corpus's data.
+     * @return A QString with the location of the Corpus's data.
      **/
-    QUrl audioPath() const;
+    QString audioPath() const;
+    void nullify();
 
     QUuid m_uuid;               ///< Holds the UUID of this Corpus.
     QDomDocument* m_dom;        ///< The QDomDoc representing the Corpus's data.
@@ -264,4 +264,4 @@ private:
 }
 
 #endif // CORPUS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

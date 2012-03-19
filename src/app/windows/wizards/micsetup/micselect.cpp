@@ -102,7 +102,6 @@ void MicrophoneSelection::on_mic_bufferObtained (QByteArray p_buffer)
     quint8 max = pow (2, 8) - 1;
     quint8 val = p_buffer.at (0);
     double progress = (double) val / (double) max;
-    qDebug() << max << val << progress;
     ui->progressBarFeedback->setValue (progress * 100);
 }
 

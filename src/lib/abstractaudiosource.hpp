@@ -123,11 +123,12 @@ protected:
     QString pipelineStr() const;
     virtual void buildPipeline();
     GenericSink* m_sink;
-    QGlib::Value m_device;
+    QGst::BinPtr m_binPtr;
     QGst::PipelinePtr m_pipeline;
     QGst::ElementPtr m_sinkPtr;
     QGst::ElementPtr m_srcPtr;
     QGst::ElementPtr m_volumePtr;
+    QGst::Utils::ApplicationSource* m_appSrc;
 
 private slots:
     void onPipelineBusmessage (const QGst::MessagePtr& message);
@@ -153,6 +154,7 @@ protected:
 
 private:
     void obtainDevice (const QString& p_deviceName);
+    QGlib::Value m_device;
     QGst::ElementPtr m_devicePtr;
 };
 

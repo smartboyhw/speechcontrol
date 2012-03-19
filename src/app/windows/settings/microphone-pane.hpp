@@ -55,6 +55,7 @@ private slots:
 private:
     Ui::MicrophoneSettingsPane* ui;
 public slots:
+    void on_checkBoxMute_toggled(const bool p_checked);
     void on_comboBoxDevices_currentIndexChanged (const QString p_device);
     void on_horizontialSliderVolume_valueChanged (const int p_value);
 };

@@ -67,12 +67,12 @@ bool NoiseDictionary::load (QIODevice* p_device)
     p_device->open (QIODevice::ReadOnly | QIODevice::Text);
 
     if (!p_device->isOpen()) {
-        qDebug() << "Can't open noise dictionary" << p_device->errorString();
+        qDebug() << "[NoiseDictionary::load()] Can't open noise dictionary" << p_device->errorString();
         return false;
     }
 
     if (!p_device->isReadable()) {
-        qDebug() << "Can't read noise dictionary file" << p_device->errorString();
+        qDebug() << "[NoiseDictionary::load()] Can't read noise dictionary file" << p_device->errorString();
         return false;
     }
 
@@ -98,12 +98,12 @@ void NoiseDictionary::save()
     m_device->open (QIODevice::WriteOnly | QIODevice::Truncate);
 
     if (!m_device->isOpen()) {
-        qDebug() << "Can't open noise dictionary" << m_device->errorString();
+        qDebug() << "[NoiseDictionary::load()] Can't open noise dictionary" << m_device->errorString();
         return;
     }
 
     if (!m_device->isWritable()) {
-        qDebug() << "Can't read noise dictionary file" << m_device->errorString();
+        qDebug() << "[NoiseDictionary::load()] Can't read noise dictionary file" << m_device->errorString();
         return;
     }
 
@@ -128,4 +128,4 @@ void NoiseDictionary::save()
 
 #include "noisedictionary.moc"
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

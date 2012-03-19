@@ -200,7 +200,7 @@ void AbstractAudioSource::onPipelineBusmessage (const QGst::MessagePtr& message)
 
     case QGst::MessageElement: {
         QGst::ElementMessagePtr elementMessage = message.staticCast<QGst::ElementMessage>();
-        qDebug() << "[AbstractContentSource::onPipelineBusmessage()] Element message: " << elementMessage->internalStructure()->toString();
+        //qDebug() << "[AbstractContentSource::onPipelineBusmessage()] Element message: " << elementMessage->internalStructure()->toString();
     }
     break;
 
@@ -304,8 +304,7 @@ QGst::FlowReturn GenericSource::pushBuffer (const QGst::BufferPtr& p_buffer)
     buffer[0] = (qint8) * bufferInt;
     emit bufferObtained (buffer);
 
-    if (bufferInt != 0)
-        qDebug() << "[GenericSource::pushBuffer()] Buffer obtained from AbstractAudioSource" << p_buffer->data() << bufferInt << buffer;
+    //qDebug() << "[GenericSource::pushBuffer()] Buffer obtained from AbstractAudioSource" << p_buffer->data() << bufferInt << buffer;
 
     return QGst::FlowCustomSuccess;
 }
@@ -328,8 +327,7 @@ QGst::FlowReturn GenericSink::newBuffer()
 {
     QGst::BufferPtr buffer = pullBuffer();
 
-    if (* (buffer->data()) != 0)
-        qDebug() << "[GenericSink::newBuffer()] Buffer: " << * (buffer->data());
+    //qDebug() << "[GenericSink::newBuffer()] Buffer: " << * (buffer->data());
 
     return m_src->pushBuffer (buffer);
 }
@@ -428,24 +426,28 @@ AbstractAudioSourceList DeviceAudioSource::allDevices()
             audioSrcPtr->setState (QGst::StateNull);
 
             if (propProbe && propProbe->propertySupportsProbe ("device")) {
-                Q_FOREACH (QGlib::Value l_device, devices) {
-                    qDebug() << "[DeviceAudioSource::allDevices()] Found audio device" << l_device.toString();
+                Q_FOREACH (QGlib::Value device, devices) {
+                    qDebug() << "[DeviceAudioSource::allDevices()] Found audio device" << device.toString();
                     QList<QGlib::ParamSpecPtr> specs = propProbe->listProperties();
-                    propProbe->setProperty ("device", l_device);
+                    propProbe->setProperty ("device", device);
 
                     Q_FOREACH (const QGlib::ParamSpecPtr spec, specs) {
-                        qDebug() << "[DeviceAudioSource::allDevices()] Device:" << l_device.toString()
+                        qDebug() << "[DeviceAudioSource::allDevices()] Device:" << device.toString()
                                  << spec->name() << propProbe->property (spec->name().toStdString().c_str()).toString()
                                  << spec->description();
                         ;
                     }
-                    list << new DeviceAudioSource (l_device.toString());
+
+                    if (!s_map.contains (device.toString()))
+                        s_map.insert (device.toString(), new DeviceAudioSource (device.toString()));
+
+                    list << DeviceAudioSource::obtain(device.toString());
                 }
             }
         }
     }
     else {
-        qDebug() << QString ("Failed to create element \"%1\". Make sure you have "
+        qDebug() << QString ("[DeviceAudioSource::allDevices()] Failed to create element \"%1\". Make sure you have "
                              "gstreamer-plugins-good installed").arg (audioSrc);
     }
 
@@ -459,7 +461,7 @@ QString DeviceAudioSource::deviceName() const
 
 QString DeviceAudioSource::humanName() const
 {
-    QString name = m_devicePtr->property("device-name").toString();
+    QString name = m_devicePtr->property ("device-name").toString();
 
     if (name.isEmpty() || name.isNull())
         return deviceName();

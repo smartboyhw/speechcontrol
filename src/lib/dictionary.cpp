@@ -71,7 +71,7 @@ void Dictionary::load (QIODevice* p_device)
 
     m_device->close();
 
-    qDebug() << m_words.size() << "words found in this dictionary.";
+    qDebug() << "[Dictionary::load()]"<< m_words.size() << "words found in this dictionary.";
 }
 
 /// @bug This location should be passed in as a macro.
@@ -179,4 +179,4 @@ DictionaryEntry::~DictionaryEntry()
 }
 
 #include "dictionary.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -40,7 +40,7 @@ class Training;
 
 namespace SpeechControl
 {
-class AbstractAudioSource;
+class DeviceAudioSource;
 namespace Windows
 {
 
@@ -111,6 +111,7 @@ public slots:
      * @return void
      **/
     virtual void open();
+    void on_mic_BufferObtained (QByteArray);
 
 private slots:
     void updateProgress (const double p_progress);
@@ -148,17 +149,17 @@ private:
     void navigatePreviousPart();
     bool currentPhraseCompleted();
 
-    int m_currentPosition;           ///< The current position of the phrase in the current sentence being trained.
-    uint m_initialPosition;          ///< The position that training began at in this dialog.
-    Ui::Training* m_ui;              ///< The object used to manage the dialog's widgets.
-    AbstractAudioSource* m_mic;      ///< The Microphone used by this dialog.
-    Session* m_session;              ///< The current Session being trained.
-    Sentence* m_currentSentence;     ///< The current sentence being focused on.
-    Sentence* m_initialSentence;     ///< The Sentence that of which training began with when the dialog opened.
+    int m_currentPosition;           /// The current position of the phrase in the current sentence being trained.
+    uint m_initialPosition;          /// The position that training began at in this dialog.
+    Ui::Training* m_ui;              /// The object used to manage the dialog's widgets.
+    DeviceAudioSource* m_mic;        /// The Microphone used by this dialog.
+    Session* m_session;              /// The current Session being trained.
+    Sentence* m_currentSentence;     /// The current sentence being focused on.
+    Sentence* m_initialSentence;     /// The Sentence that of which training began with when the dialog opened.
 };
 
 }
 }
 
 #endif // TRAINING_WINDOW_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

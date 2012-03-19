@@ -18,7 +18,6 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-
 #include <QDebug>
 #include <QDateTime>
 #include <QProgressBar>
@@ -49,7 +48,7 @@ TrainingDialog::TrainingDialog (QWidget* p_parent) :
     QDialog (p_parent),
     m_currentPosition (0), m_initialPosition (0),
     m_ui (new Ui::Training),
-    m_mic (DeviceAudioSource::allDevices().first()),
+    m_mic ( (DeviceAudioSource*) DeviceAudioSource::allDevices().first()),
     m_session (0), m_currentSentence (0), m_initialSentence (0)
 {
     m_ui->setupUi (this);
@@ -59,6 +58,7 @@ TrainingDialog::TrainingDialog (QWidget* p_parent) :
     m_ui->pushButtonNext->setIcon (QIcon::fromTheme (ICON_NEXT));
 
     connect (m_mic, SIGNAL (recordingBegun()), this, SLOT (onMicStartedListening()));
+    connect (m_mic, SIGNAL (bufferObtained (QByteArray)), this, SLOT (on_mic_BufferObtained (QByteArray)));
     connect (m_mic, SIGNAL (recordingEnded()), this, SLOT (onMicStoppedListening()));
 
     onMicStoppedListening();
@@ -69,10 +69,21 @@ TrainingDialog::~TrainingDialog()
     delete m_ui;
 }
 
+void TrainingDialog::on_mic_BufferObtained (QByteArray p_buffer)
+{
+    quint8 max = pow (2, 8) - 1;
+    quint8 val = p_buffer.at (0);
+    double progress = (double) val / (double) max;
+    m_ui->progressBarVolume->setValue(progress * 100);
+}
+
 void TrainingDialog::onMicStartedListening()
 {
     m_ui->lblRecording->setPixmap (QIcon::fromTheme ("audio-volume-high").pixmap (32, 32));
-    qDebug() << m_currentSentence->phrase (m_currentPosition)->audio()->write ("kick me in the face");
+    QFile* file = m_currentSentence->phrase (m_currentPosition)->audio();
+    file->open(QIODevice::WriteOnly | QIODevice::Truncate);
+    qDebug() << "[TrainingDialog::onMicStartedListening()]" << file->write ("kick me in the face")
+    << file->errorString();
 }
 
 void TrainingDialog::onMicStoppedListening()
@@ -89,8 +100,9 @@ void TrainingDialog::startTraining (Session* session)
         if (!dialog->m_mic->isNull()) {
             dialog->setSession (session);
             dialog->open();
-        } else {
-            QMessageBox::critical(0,tr("Microphone Error"),tr("<h2>Microphone Error</h2>SpeechControl is unable to get a proper handle on your microphone. Please check that all required peripherals are connected."));
+        }
+        else {
+            QMessageBox::critical (0, tr ("Microphone Error"), tr ("<h2>Microphone Error</h2>SpeechControl is unable to get a proper handle on your microphone. Please check that all required peripherals are connected."));
         }
     }
     else {
@@ -222,7 +234,7 @@ void TrainingDialog::navigateToPart (const uint& p_index, Sentence* p_sentence)
         }
     }
 
-    qDebug() << l_text;
+    qDebug() << "[TrainingDialog::navigateToPart()]" << l_text;
 
     m_currentPosition = p_index;
     m_currentSentence = p_sentence;
@@ -239,7 +251,7 @@ void TrainingDialog::navigateNextPart()
             navigateToPart (m_currentPosition + 1);
         }
         else {
-            navigateToPart (m_currentSentence->phrases().count() - 1);
+            navigateToPart (0, m_currentSentence->nextSibling());
         }
     }
 }
@@ -251,13 +263,15 @@ void TrainingDialog::navigatePreviousPart()
             navigateToPart (m_currentPosition - 1);
         }
         else {
-            navigateToPart (0);
+            Sentence* prev = m_currentSentence->previousSibling();
+            navigateToPart (prev->phrases().count() - 1, prev);
         }
     }
 }
 
 bool TrainingDialog::currentPhraseCompleted()
 {
+    qDebug() << "[TrainingDialog::currentPhraseCompleted()] Is phrase completed? " << m_currentSentence->phrase (m_currentPosition)->isCompleted();
     return m_currentSentence->phrase (m_currentPosition)->isCompleted();
 }
 
@@ -274,7 +288,7 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonReset_clicked()
     // Wipe out the work up to the initial point.
     for (int i = m_currentSentence->index(); i >= m_initialSentence->index(); i--) {
         Sentence* l_sntc = m_session->corpus()->sentenceAt (i);
-        qDebug() << "Wiping sentence" << l_sntc->text();
+        qDebug() << "[TrainingDialog::on_pushButtonReset_clicked()] Wiping sentence" << l_sntc->text();
         Q_FOREACH (Phrase * l_phrs, l_sntc->phrases()) {
             l_phrs->audio()->remove();
         }
@@ -312,7 +326,7 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonUndo_clicked()
     }
     else {
         m_currentSentence->phrase (m_currentPosition - 1)->audio()->remove();
-        qDebug() << "Wiping phrase" << m_currentSentence->phrase (m_currentPosition - 1)->text();
+        qDebug() << "[TrainingDialog::on_pushButtonUndo_clicked()] Wiping phrase" << m_currentSentence->phrase (m_currentPosition - 1)->text();
         l_pos = m_currentPosition - 1;
     }
 
@@ -323,10 +337,14 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonUndo_clicked()
 /// @todo This method here should handle the act of recording audio.
 void SpeechControl::Windows::TrainingDialog::on_pushButtonNext_clicked()
 {
+    qDebug() << "[TrainingDialog::onPushButtonNext_clicked()] Is recording? " << m_mic->isRecording();
     if (m_mic->isRecording()) {
         m_mic->stopRecording();
         QFile* l_file = m_currentSentence->phrase (m_currentPosition)->audio();
         l_file->open (QIODevice::WriteOnly | QIODevice::Truncate);
+        if (!l_file->write("Sample data")){
+            qDebug() << "[TrainingDialog::onPushButtonNext_clicked()] Failed to save audio:" << l_file->errorString();
+        }
         //l_file->write ( m_mic->data() );
         l_file->close();
     }
@@ -346,8 +364,6 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonNext_clicked()
             close();
             return;
         }
-
-        m_currentPosition = -1;
     }
 
     // Advance to that part and start recording.

@@ -102,7 +102,7 @@ void AbstractCategory::addCommand (AbstractCommand* p_command)
 {
     if (!hasCommand (p_command)) {
         m_map.insert (p_command->id(), p_command);
-        qDebug() << "Added command" << p_command->id() << "to category" << id();
+        qDebug() << "[AbstractCategory::addCommand()] Added command" << p_command->id() << "to category" << id();
     }
 }
 
@@ -113,7 +113,7 @@ bool AbstractCategory::hasCommand (AbstractCommand* p_command)
 
 bool AbstractCategory::hasCommand (const QString& p_id)
 {
-    qDebug() << id() << "has" << p_id << "?" << m_map.contains (p_id);
+    qDebug() << "[AbstractCategory::hasCommand()] " << id() << "has" << p_id << "?" << m_map.contains (p_id);
     return m_map.contains (p_id);
 }
 

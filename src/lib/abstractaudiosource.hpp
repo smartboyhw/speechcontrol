@@ -155,6 +155,7 @@ public:
     DeviceAudioSource (const AbstractAudioSource& p_other);
     virtual ~DeviceAudioSource();
     QString deviceName() const;
+    QString humanName() const;
     static AbstractAudioSourceList allDevices();
     static DeviceAudioSource* defaultDevice();
     static DeviceAudioSource* obtain(const QString& p_deviceName);

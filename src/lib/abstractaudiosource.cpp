@@ -48,7 +48,7 @@ QString AbstractAudioSource::caps() const
 
 QString AbstractAudioSource::pipelineStr() const
 {
-    return QString ("%1 ! audioconvert ! audioresample ! audiorate ! volume name=volume ! level name=level ! appsink name=sink").arg (pipelineDescription());
+    return QString ("%1 ! level name=level ! audioconvert ! audioresample ! audiorate ! volume name=volume ! appsink name=sink").arg (pipelineDescription());
 }
 
 /// @todo Delete m_appSrc if it exists but disconnect its slot/signal first.
@@ -75,7 +75,7 @@ void AbstractAudioSource::buildPipeline()
         m_sinkPtr = m_binPtr->getElementByName ("sink");
         m_srcPtr = m_binPtr->getElementByName ("src");
         m_volumePtr = m_binPtr->getElementByName ("volume");
-        m_levelPtr = m_binPtr->getElementByName("level");
+        m_levelPtr = m_binPtr->getElementByName ("level");
         qDebug() << "[AbstractAudioSource::buildPipeline()] Obtained pipeline elements.";
 
         if (m_sinkPtr.isNull()) {
@@ -111,7 +111,7 @@ double AbstractAudioSource::volume() const
     if (isNull())
         return -1.0;
 
-    qDebug() << m_levelPtr->property("peak-falloff").toString();
+    qDebug() << "[AbstractContentSource::volume()] Level: " << m_levelPtr->property ("peak-falloff").toString();
     return m_volumePtr->property ("volume").toString().toDouble();
 }
 
@@ -201,7 +201,8 @@ void AbstractAudioSource::onPipelineBusmessage (const QGst::MessagePtr& message)
     case QGst::MessageElement: {
         QGst::ElementMessagePtr elementMessage = message.staticCast<QGst::ElementMessage>();
         qDebug() << "[AbstractContentSource::onPipelineBusmessage()] Element message: " << elementMessage->internalStructure()->toString();
-    }break;
+    }
+    break;
 
     default:
         qWarning() << "[AbstractContentSource::onPipelineBusmessage()] Unexpected message:" << message->typeName();
@@ -217,7 +218,7 @@ bool AbstractAudioSource::isNull() const
              << "); Volume (" << m_volumePtr.isNull()
              << "); Level (" << m_levelPtr.isNull()
              << ")";
-             return (m_binPtr.isNull() || m_sinkPtr.isNull() || m_srcPtr.isNull() || m_volumePtr.isNull()|| m_levelPtr.isNull());
+    return (m_binPtr.isNull() || m_sinkPtr.isNull() || m_srcPtr.isNull() || m_volumePtr.isNull() || m_levelPtr.isNull());
 }
 
 void AbstractAudioSource::startRecording()
@@ -303,7 +304,9 @@ QGst::FlowReturn GenericSource::pushBuffer (const QGst::BufferPtr& p_buffer)
     buffer[0] = (qint8) * bufferInt;
     emit bufferObtained (buffer);
 
-    qDebug() << "[GenericSource::pushBuffer()] Buffer obtained from AbstractAudioSource" << p_buffer->data();
+    if (bufferInt != 0)
+        qDebug() << "[GenericSource::pushBuffer()] Buffer obtained from AbstractAudioSource" << p_buffer->data() << bufferInt << buffer;
+
     return QGst::FlowCustomSuccess;
 }
 
@@ -324,7 +327,10 @@ void GenericSink::eos()
 QGst::FlowReturn GenericSink::newBuffer()
 {
     QGst::BufferPtr buffer = pullBuffer();
-    qDebug() << "[GenericSink::newBuffer()] Buffer: " << * (buffer->data());
+
+    if (* (buffer->data()) != 0)
+        qDebug() << "[GenericSink::newBuffer()] Buffer: " << * (buffer->data());
+
     return m_src->pushBuffer (buffer);
 }
 
@@ -449,6 +455,16 @@ AbstractAudioSourceList DeviceAudioSource::allDevices()
 QString DeviceAudioSource::deviceName() const
 {
     return m_device.toString();
+}
+
+QString DeviceAudioSource::humanName() const
+{
+    QString name = m_devicePtr->property("device-name").toString();
+
+    if (name.isEmpty() || name.isNull())
+        return deviceName();
+    else
+        return name;
 }
 
 QString DeviceAudioSource::pipelineDescription() const

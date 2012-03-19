@@ -51,7 +51,6 @@ public:
 private slots:
     void on_mic_bufferObtained(QByteArray p_buffer);
     void on_comboBoxMicrophones_activated (int p_index);
-    void microphoneSelected();
 
 private:
     Ui::MicrophoneSelection* ui;

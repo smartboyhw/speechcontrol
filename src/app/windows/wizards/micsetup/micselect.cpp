@@ -52,9 +52,12 @@ void SpeechControl::Wizards::Pages::MicrophoneSelection::initializePage()
     if (!l_allMics.empty()) {
         Q_FOREACH (AbstractAudioSource * src, l_allMics) {
             DeviceAudioSource* deviceSrc = (DeviceAudioSource*) src;
-            ui->comboBoxMicrophones->addItem (QIcon::fromTheme ("audio-input-microphone"), deviceSrc->deviceName(), deviceSrc->deviceName());
+            ui->comboBoxMicrophones->addItem (QIcon::fromTheme ("audio-input-microphone"), deviceSrc->humanName(), deviceSrc->deviceName());
+            connect (deviceSrc, SIGNAL (bufferObtained (QByteArray)), this, SLOT (on_mic_bufferObtained (QByteArray)));
         }
     }
+
+    on_comboBoxMicrophones_activated(ui->comboBoxMicrophones->currentIndex());
 }
 
 bool SpeechControl::Wizards::Pages::MicrophoneSelection::validatePage()
@@ -68,6 +71,7 @@ bool SpeechControl::Wizards::Pages::MicrophoneSelection::validatePage()
 
 void SpeechControl::Wizards::Pages::MicrophoneSelection::cleanupPage()
 {
+    m_mic->stopRecording();
     ui->comboBoxMicrophones->clear();
     ui->progressBarFeedback->setValue (0);
     ui->progressBarFeedback->setFormat ("inactive");
@@ -91,19 +95,15 @@ void SpeechControl::Wizards::Pages::MicrophoneSelection::on_comboBoxMicrophones_
     m_mic = DeviceAudioSource::obtain (deviceName);
 
     m_mic->startRecording();
-
-    connect (m_mic, SIGNAL (recordingBegun()), this, SLOT (microphoneSelected()));
-}
-
-void MicrophoneSelection::microphoneSelected()
-{
-    connect (m_mic, SIGNAL (bufferObtained (QByteArray)), this, SLOT (on_mic_bufferObtained (QByteArray)));
 }
 
 void MicrophoneSelection::on_mic_bufferObtained (QByteArray p_buffer)
 {
-    qDebug() << m_mic->volume() << m_mic->volume() * 100;
-    ui->progressBarFeedback->setValue (m_mic->volume() * 100);
+    quint8 max = pow (2, 8) - 1;
+    quint8 val = p_buffer.at (0);
+    double progress = (double) val / (double) max;
+    qDebug() << max << val << progress;
+    ui->progressBarFeedback->setValue (progress * 100);
 }
 
 #include "micselect.moc"

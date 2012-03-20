@@ -124,6 +124,7 @@ private slots:
     void on_actionWizardSessions_triggered();
     void on_actionWizardVoxForge_triggered();
     void on_actionWizardQuickStart_triggered();
+    void on_actionWizardAdaption_triggered();
 
     // misc.
     void on_actionPluginOptions_triggered();

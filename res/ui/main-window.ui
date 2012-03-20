@@ -499,6 +499,7 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionWizardContent"/>
      <addaction name="actionWizardSessions"/>
      <addaction name="actionWizardVoxForge"/>
+     <addaction name="actionWizardAdaption"/>
     </widget>
     <widget class="QMenu" name="menuPlugins">
      <property name="title">
@@ -681,6 +682,11 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="shortcutContext">
     <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="actionWizardAdaption">
+   <property name="text">
+    <string>Adaption...</string>
    </property>
   </action>
  </widget>

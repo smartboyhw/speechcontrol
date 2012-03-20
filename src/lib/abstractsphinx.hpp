@@ -36,9 +36,6 @@
 #include <QGst/Bus>
 #include <QGst/Message>
 
-// PocketSphinx includes
-#include <pocketsphinx.h>
-
 // local includes
 #include <config.hpp>
 #include <export.hpp>
@@ -56,15 +53,14 @@ class Dictionary;
  * @brief Implementation of automatic speech recognition.
  *
  * AbstractSphinx is an abstract class responsible
- * for handling GStreamer audio and PocketSphinx plugins and management
- * of dictionaries, language and acoustic models. It also performs
- * acoustic training and adjusts models to its needs.
+ * for handling GStreamer audio and PocketSphinx plug-ins and management
+ * of dictionaries, language and acoustic models.
  */
 class SPCH_EXPORT AbstractSphinx : public QObject
 {
-
     Q_OBJECT
     Q_DISABLE_COPY (AbstractSphinx)
+    friend class AudioSourceSphinx;
 
 protected:
     /**
@@ -308,7 +304,6 @@ protected:
      **/
     void buildPipeline (QString p_description);
 };
-
 
 class SPCH_EXPORT AudioSourceSphinx : public AbstractSphinx
 {

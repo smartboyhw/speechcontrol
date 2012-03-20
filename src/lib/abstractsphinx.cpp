@@ -81,7 +81,7 @@ void AbstractSphinx::prepare()
 
 QString AbstractSphinx::standardDescription()
 {
-    return QString ("autoaudiosrc name=audiosrc ! audioconvert"
+    return QString ("autoaudiosrc name=src ! audioconvert"
                     " ! audioresample ! audiorate ! volume name=volume"
                     " ! vader name=vad auto_threshold=true"
                     " ! pocketsphinx name=asr"
@@ -125,7 +125,7 @@ const QGst::ElementPtr AbstractSphinx::volumeElement() const
 
 const QGst::ElementPtr AbstractSphinx::audioSrcElement() const
 {
-    return m_pipeline->getElementByName ("audiosrc");
+    return m_pipeline->getElementByName ("src");
 }
 
 const QGst::ElementPtr AbstractSphinx::pocketSphinxElement() const
@@ -279,9 +279,13 @@ AudioSourceSphinx::AudioSourceSphinx (const AudioSourceSphinx& p_other) : Abstra
     linkSource();
 }
 
-/// @todo Rig up the Sphinx instance to send data from the abstract source as a buffer into the sink in sphinx.
 void AudioSourceSphinx::linkSource ()
 {
+    QString description = standardDescription();
+    description = description.replace("autoaudiosrc name=src","appsrc name=src");
+    buildPipeline(description);
+
+    // set the source's source as this source.
 }
 
 void AudioSourceSphinx::setSource (AbstractAudioSource* p_source)

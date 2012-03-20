@@ -315,6 +315,11 @@ GenericSource::GenericSource (AbstractAudioSource* p_audioSource) : m_audioSrc (
     qDebug() << "[GenericSource::{constructor}] Built source for " << m_audioSrc->pipelineStr() << ".";
 }
 
+GenericSource::GenericSource (const GenericSource& p_other) : QObject (p_other.parent()), ApplicationSource(), m_audioSrc (p_other.m_audioSrc)
+{
+
+}
+
 QGst::FlowReturn GenericSource::endOfStream()
 {
     return QGst::FlowOk;
@@ -341,6 +346,12 @@ GenericSource::~GenericSource()
 
 GenericSink::GenericSink() : m_src (0)
 {
+
+}
+
+GenericSink::GenericSink (const GenericSink& p_other) : QObject(p_other.parent()), ApplicationSink(), m_src(p_other.m_src)
+{
+
 }
 
 void GenericSink::eos()
@@ -552,6 +563,63 @@ DeviceAudioSource::~DeviceAudioSource()
 
 }
 
+StreamSource::StreamSource (StreamAudioSource* p_audioSource) : GenericSource (p_audioSource)
+{
+
+}
+
+StreamSource::StreamSource (const StreamSource& p_source) : GenericSource (p_source)
+{
+
+}
+
+QGst::FlowReturn StreamSource::endOfStream()
+{
+    return SpeechControl::GenericSource::endOfStream();
+}
+
+QGst::FlowReturn StreamSource::pushBuffer (const QGst::BufferPtr& p_buffer)
+{
+    return SpeechControl::GenericSource::pushBuffer (p_buffer);
+}
+
+StreamSource::~StreamSource()
+{
+
+}
+
+StreamSink::StreamSink(StreamAudioSource* p_audioSrc) : GenericSink(), m_audioSrc(p_audioSrc)
+{
+
+}
+
+StreamSink::StreamSink (const StreamSink& p_other) : GenericSink(p_other)
+{
+
+}
+
+StreamSink::StreamSink (const GenericSink& p_other) : GenericSink(p_other)
+{
+
+}
+
+void StreamSink::eos()
+{
+    SpeechControl::GenericSink::eos();
+}
+
+QGst::BufferPtr StreamSink::pullBuffer()
+{
+    quint8 data = 0;
+    *(m_audioSrc->stream()) >> data;
+    return QGst::Buffer::create(data);
+}
+
+StreamSink::~StreamSink()
+{
+
+}
+
 StreamAudioSource::StreamAudioSource() : AbstractAudioSource()
 {
 
@@ -567,7 +635,7 @@ StreamAudioSource::StreamAudioSource (const StreamAudioSource& p_other) : Abstra
 
 }
 
-StreamAudioSource::StreamAudioSource (QDataStream& p_stream) : AbstractAudioSource (0), m_strm (&p_stream)
+StreamAudioSource::StreamAudioSource (QDataStream* p_stream) : AbstractAudioSource (0), m_strm (p_stream)
 {
 
 }
@@ -575,11 +643,16 @@ StreamAudioSource::StreamAudioSource (QDataStream& p_stream) : AbstractAudioSour
 void StreamAudioSource::buildPipeline()
 {
     SpeechControl::AbstractAudioSource::buildPipeline();
+
+    // Replace the appsrc used by AbstractAudioSource usually with the stream source.
+    m_appSrc = new StreamSource(this);
+    m_appSrc->setCaps (QGst::Caps::fromString (caps()));
+    m_appSrc->setElement(this->m_srcPtr);
 }
 
 QString StreamAudioSource::pipelineDescription() const
 {
-    return QString ("appsrc name=src");
+    return QString ("appsrc name=src ! decodebin");
 }
 
 QDataStream* StreamAudioSource::stream() const

@@ -61,19 +61,19 @@ typedef QList<AbstractAudioSource*> AbstractAudioSourceList;
  **/
 typedef QMap<QUuid, AbstractAudioSource*> AbstractAudioSourceMap;
 
-class SPCH_EXPORT GenericSink : public QGst::Utils::ApplicationSink
+class SPCH_EXPORT GenericSink : public QObject, public QGst::Utils::ApplicationSink
 {
+    Q_OBJECT
 public:
     explicit GenericSink();
     virtual ~GenericSink();
     GenericSource* source();
-    void setSource (SpeechControl::GenericSource* p_source);
+    void setSource (GenericSource* p_source);
 
 protected:
+    Q_DISABLE_COPY(GenericSink)
     virtual void eos();
     virtual QGst::FlowReturn newBuffer();
-
-private:
     GenericSource* m_src;
 };
 
@@ -90,7 +90,8 @@ public:
     virtual QGst::FlowReturn endOfStream();
     virtual QGst::FlowReturn pushBuffer (const QGst::BufferPtr& p_buffer);
 
-private:
+protected:
+    Q_DISABLE_COPY(GenericSource)
     AbstractAudioSource* m_audioSrc;
 };
 
@@ -173,6 +174,34 @@ private:
     static QMap<QString,DeviceAudioSource*> s_map;
 };
 
+class SPCH_EXPORT StreamSource : public GenericSource {
+    Q_OBJECT
+    Q_DISABLE_COPY(StreamSource)
+
+public:
+    explicit StreamSource (StreamAudioSource* p_audioSource);
+    virtual ~StreamSource();
+    virtual QGst::FlowReturn endOfStream();
+    virtual QGst::FlowReturn pushBuffer (const QGst::BufferPtr& p_buffer);
+};
+
+class SPCH_EXPORT StreamSink : public GenericSink {
+    Q_OBJECT
+    Q_DISABLE_COPY(StreamSink)
+
+public:
+    explicit StreamSink(StreamAudioSource* p_audioSrc);
+    StreamSink (const GenericSink&);
+    virtual ~StreamSink();
+    virtual void eos();
+    virtual QGst::BufferPtr pullBuffer();
+    uint bufferSize();
+    void setBufferSize(const uint& p_bufferSize);
+
+private:
+    StreamAudioSource* m_audioSrc;
+};
+
 class SPCH_EXPORT StreamAudioSource : public AbstractAudioSource
 {
     Q_OBJECT
@@ -180,7 +209,7 @@ class SPCH_EXPORT StreamAudioSource : public AbstractAudioSource
 
 public:
     explicit StreamAudioSource ();
-    StreamAudioSource (QDataStream& p_stream);
+    StreamAudioSource (QDataStream* p_stream);
     StreamAudioSource (const AbstractAudioSource& p_other);
     virtual ~StreamAudioSource();
     QDataStream* stream() const;

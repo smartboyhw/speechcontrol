@@ -39,12 +39,12 @@ Corpus::Corpus (const QString& p_id) : QObject(), m_dom (new QDomDocument)
 
 PhraseList Corpus::phrases() const
 {
-    return m_phrsLst;
+    return m_phraseList;
 }
 
 Phrase* Corpus::addPhrase (Phrase* p_phrase)
 {
-    m_phrsLst << p_phrase;
+    m_phraseList << p_phrase;
     return p_phrase;
 }
 
@@ -233,7 +233,7 @@ void Corpus::nullify()
 {
     m_dom = 0;
     m_dict = 0;
-    m_phrsLst = PhraseList();
+    m_phraseList = PhraseList();
     m_id = QString (QString::null);
     qDebug() << "[Corpus::nullify()] Nullified.";
 }
@@ -303,10 +303,10 @@ Corpus* Corpus::clone() const
 
 Phrase* Corpus::phraseAt (const int& p_index) const
 {
-    if (p_index < 0 || p_index > m_phrsLst.count())
+    if (p_index < 0 || p_index > m_phraseList.count())
         return 0;
     else
-        return m_phrsLst.at (p_index);
+        return m_phraseList.at (p_index);
 }
 
 Dictionary* Corpus::dictionary() const

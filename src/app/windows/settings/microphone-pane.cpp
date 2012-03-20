@@ -90,34 +90,37 @@ void MicrophoneSettingsPane::updateUi()
         const DeviceAudioSource* mic = (DeviceAudioSource*) device;
         ui->comboBoxDevices->addItem (mic->humanName());
         ui->comboBoxDevices->setItemIcon (ui->comboBoxDevices->findText (mic->humanName()), QIcon::fromTheme ("audio-input-microphone"));
-        ui->comboBoxDevices->setItemData(ui->comboBoxDevices->findText (mic->humanName()),mic->deviceName());
+        ui->comboBoxDevices->setItemData (ui->comboBoxDevices->findText (mic->humanName()), mic->deviceName());
     }
 
     if (!defaultMic.isNull())
-        ui->comboBoxDevices->setCurrentIndex (ui->comboBoxDevices->findText (DeviceAudioSource::obtain(defaultMic)->humanName()));
+        ui->comboBoxDevices->setCurrentIndex (ui->comboBoxDevices->findText (DeviceAudioSource::obtain (defaultMic)->humanName()));
 
     ui->horizontalSliderVolume->setValue (devices.first()->volume());
 }
 
 void MicrophoneSettingsPane::on_comboBoxDevices_currentIndexChanged (const int p_index)
 {
-    Core::setConfiguration ("Microphone/Default", ui->comboBoxDevices->itemData(p_index).toString());
+    Core::setConfiguration ("Microphone/Default", ui->comboBoxDevices->itemData (p_index).toString());
+    QString curVal = ui->comboBoxDevices->itemData (p_index).toString();
+    DeviceAudioSource* mic = DeviceAudioSource::obtain (curVal);
+    ui->horizontalSliderVolume->setValue (mic->volume() * 100);
 }
 
 void MicrophoneSettingsPane::on_horizontialSliderVolume_valueChanged (const int p_value)
 {
     QString curVal = ui->comboBoxDevices->currentText();
-    DeviceAudioSource* mic = DeviceAudioSource::obtain(curVal);
-    mic->setVolume ( (double) (p_value / 1000));
-    delete mic;
+    DeviceAudioSource* mic = DeviceAudioSource::obtain (curVal);
+    mic->setVolume ( (double) (p_value / 100.0));
 }
 
 void MicrophoneSettingsPane::on_checkBoxMute_toggled (const bool p_checked)
 {
     QString curVal = ui->comboBoxDevices->currentText();
-    DeviceAudioSource* mic = DeviceAudioSource::obtain(curVal);
-    mic->setMuted(p_checked);
-    delete mic;
+    DeviceAudioSource* mic = DeviceAudioSource::obtain (curVal);
+    mic->setMuted (p_checked);
+    ui->horizontalSliderVolume->setEnabled (!p_checked);
+    ui->horizontalSliderVolume->setValue ( (p_checked ? 0 : mic->volume() * 100));
 }
 
 #include "microphone-pane.moc"

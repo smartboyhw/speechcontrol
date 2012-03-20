@@ -61,8 +61,8 @@ TrainingDialog::TrainingDialog (QWidget* p_parent) :
     connect (m_mic, SIGNAL (recordingEnded()), this, SLOT (onMicStoppedListening()));
     connect (m_mic, SIGNAL (bufferObtained (QByteArray)), this, SLOT (on_mic_BufferObtained (QByteArray)));
 
-    onMicStoppedListening();
     stopCollecting();
+    onMicStoppedListening();
 }
 
 TrainingDialog::~TrainingDialog()
@@ -126,18 +126,14 @@ void TrainingDialog::startCollecting()
         m_ui->pushButtonProgress->setText (tr ("Pause"));
         m_ui->labelText->setEnabled (true);
         m_ui->labelText->setText (tr ("<i>Rendering...</i>"));
-        navigateToPart (m_initialPosition);
+        qDebug() << "[TrainingDialog::startCollecting()] Cur: " << m_currentPosition << m_initialPosition;
+        navigateToPart (m_currentPosition);
     }
 }
 
 void TrainingDialog::stopCollecting()
 {
     m_mic->stopRecording();
-
-    // Erase the current phrase's audio if it exists.
-    if (m_session && currentPhrase() && currentPhrase()->audio()->exists())
-        currentPhrase()->audio()->remove();
-
     m_ui->pushButtonNext->setEnabled (false);
     m_ui->pushButtonUndo->setEnabled (false);
     m_ui->pushButtonReset->setEnabled (false);
@@ -152,7 +148,7 @@ void TrainingDialog::setSession (Session* p_session)
     if (p_session) {
         m_session = p_session;
         this->setWindowTitle (tr ("Training '%1' (0%) - SpeechControl").arg (m_session->name()));
-        updateProgress (0.0);
+        updateProgress(m_session->assessProgress());
         connect (m_session, SIGNAL (progressChanged (double)), this, SLOT (updateProgress (double)));
     }
 }
@@ -217,15 +213,17 @@ void TrainingDialog::navigateToPart (const uint& p_index)
 
 void TrainingDialog::navigateNextPart()
 {
-    if (currentPhraseCompleted()) {
-        navigateToPart (m_currentPosition + 1);
+    const Phrase* nextPhrase = m_session->firstIncompletePhrase();
+    if (currentPhraseCompleted() && nextPhrase) {
+        navigateToPart (nextPhrase->index());
     }
 }
 
 void TrainingDialog::navigatePreviousPart()
 {
-    if (currentPhraseCompleted()) {
-        navigateToPart (m_currentPosition - 1);
+    const Phrase* prevPhrase = m_session->lastIncompletePhrase();
+    if (currentPhraseCompleted() && prevPhrase) {
+        navigateToPart (prevPhrase->index());
     }
 }
 

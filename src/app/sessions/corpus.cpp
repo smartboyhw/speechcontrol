@@ -128,12 +128,11 @@ Corpus* Corpus::create (const QStringList& p_text)
 
     Q_FOREACH (QString word, words) {
         if (wordCount == CHUNK_SIZE) {
-            phrase = phrase.trimmed().simplified();
-            Phrase* phrs = corpus->addPhrase (phrase, 0);
+            Phrase* phrs = corpus->addPhrase (phrase.trimmed().simplified(), 0);
             corpus->m_dom->documentElement().namedItem ("Phrases").appendChild (* (phrs->m_elem));
-            qDebug() << "[Corpus::create()] Added phrase" << corpus->phrases().count() << word;
-            wordCount = -1;
-            phrase.clear();
+            qDebug() << "[Corpus::create()] Added phrase" << corpus->phrases().count() << phrase;
+            wordCount = 0;
+            phrase = word.simplified().trimmed();
         }
         else {
             word = word.simplified().trimmed();

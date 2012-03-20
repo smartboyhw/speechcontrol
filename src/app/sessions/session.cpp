@@ -71,11 +71,11 @@ double Session::assessProgress() const
 {
     double progress = 0.0;
 
-    Q_FOREACH (const Sentence * l_snt, corpus()->sentences()) {
-        progress += l_snt->completedProgress();
+    Q_FOREACH (const Phrase * phrase, corpus()->phrases()) {
+        progress += (phrase->isCompleted()) ? 1.0 : 0.0;
     }
 
-    double progressDelta = progress / (double) (corpus()->sentences().count());
+    double progressDelta = progress / (double) (corpus()->phrases().count());
     emit progressChanged (progressDelta);
     return progressDelta;
 }
@@ -191,7 +191,7 @@ Session* Session::create (const Content* p_content)
     dateElem.setAttribute ("completed", "-1");
     sessElem.setAttribute ("uuid", uuid.toString());
     sessElem.setAttribute ("content", p_content->uuid().toString());
-    sessElem.setAttribute ("corpus", corpus->uuid());
+    sessElem.setAttribute ("corpus", corpus->id());
 
     s_dom->documentElement().appendChild (sessElem);
     s_dom->documentElement().appendChild (dateElem);
@@ -212,9 +212,9 @@ Session* Session::Backup::session()
     return 0;
 }
 
-Sentence* Session::firstIncompleteSentence() const
+Phrase* Session::firstIncompletePhrase() const
 {
-    const SentenceList lst = incompletedSentences();
+    const PhraseList lst = incompletedPhrases();
 
     if (!lst.isEmpty())
         return lst.first();
@@ -222,9 +222,9 @@ Sentence* Session::firstIncompleteSentence() const
     return 0;
 }
 
-Sentence* Session::lastIncompleteSentence() const
+Phrase* Session::lastIncompletePhrase() const
 {
-    const SentenceList lst = incompletedSentences();
+    const PhraseList lst = incompletedPhrases();
 
     if (!lst.isEmpty())
         return lst.last();
@@ -232,25 +232,25 @@ Sentence* Session::lastIncompleteSentence() const
     return 0;
 }
 
-SentenceList Session::incompletedSentences() const
+PhraseList Session::incompletedPhrases() const
 {
-    SentenceList list;
+    PhraseList list;
 
-    Q_FOREACH (Sentence * sentence, m_corpus->sentences()) {
-        if (!sentence->allPhrasesCompleted())
+    Q_FOREACH (Phrase * sentence, m_corpus->phrases()) {
+        if (!sentence->isCompleted())
             list << sentence;
 
         continue;
     }
 
-    qDebug() << "[Sentence::incompletedSentences()] Number of incomplete sentences:" << list.length();
+    qDebug() << "[Phrase::incompletedPhrases()] Number of incomplete sentences:" << list.length();
 
     return list;
 }
 
 bool Session::isCompleted() const
 {
-    return incompletedSentences().isEmpty() == true;
+    return incompletedPhrases().isEmpty() == true;
 }
 
 Session::BackupList* Session::backups() const
@@ -304,7 +304,7 @@ Session* Session::clone() const
     Corpus* corpus = m_corpus->clone();
     QDomElement elem = m_elem->cloneNode (true).toElement();
     elem.attribute ("uuid", uuid.toString());
-    elem.attribute ("corpus", corpus->uuid());
+    elem.attribute ("corpus", corpus->id());
     elem.namedItem ("Date").toElement().setAttribute ("created", QDateTime::currentDateTimeUtc().toString (Qt::SystemLocaleDate));
     s_dom->documentElement().appendChild (elem);
     s_elems.insert (uuid, new QDomElement (elem));
@@ -347,7 +347,7 @@ Session::Backup* Session::Backup::generate (const Session& p_sssn)
 
     // Compress corpus data.
     const Corpus* corpus = p_sssn.corpus();
-    QFile* corpusFile = new QFile (Corpus::getPath (corpus->uuid()));
+    QFile* corpusFile = new QFile (Corpus::getPath (corpus->id()));
     QByteArray corpusData;
     corpusData = qCompress (corpusFile->readAll());
 

@@ -22,18 +22,18 @@
 #define CORPUS_HPP
 
 #include <QMap>
-#include <QUuid>
+#include <QString>
 #include <QObject>
+#include <QDateTime>
 #include <QStringList>
 
-#include <app/sessions/sentence.hpp>
+#include <app/sessions/phrase.hpp>
 
 class QDomDocument;
 
 namespace SpeechControl
 {
 class Corpus;
-class Sentence;
 class Dictionary;
 
 /**
@@ -42,9 +42,9 @@ class Dictionary;
 typedef QList<Corpus*> CorpusList;
 
 /**
- * @brief Represents a mapping of QUuids to Corpus elements.
+ * @brief Represents a mapping of QStrings to Corpus elements.
  **/
-typedef QMap<QUuid, Corpus*> CorpusMap;
+typedef QMap<QString, Corpus*> CorpusMap;
 
 /**
  * @brief Represents a corpus of text to be used for training acoustic models.
@@ -62,29 +62,29 @@ typedef QMap<QUuid, Corpus*> CorpusMap;
  * the capacity of XML.
  *
  * @see AcousticModel
- * @see Sentence
+ * @see Phrase
  * @see Dictionary
  */
 class SPCH_EXPORT Corpus : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY (Corpus)
-    Q_PROPERTY (SentenceList Sentences READ sentences)      ///< Represents the Sentence objects of this Corpus.
-    Q_PROPERTY (Dictionary* Dictionary READ dictionary)     ///< Represents the Dictionary used by this Corpus.
-    Q_PROPERTY (const QUuid Uuid READ uuid)                 ///< The identifying UUID of this Corpus.
-    friend class Sentence;
+    Q_PROPERTY (PhraseList Phrases READ phrases)         ///< Represents the Phrase objects of this Corpus.
+    Q_PROPERTY (Dictionary* Dictionary READ dictionary)  ///< Represents the Dictionary used by this Corpus.
+    Q_PROPERTY (const QString ID READ id)                ///< The identifying ID of this Corpus.
+    friend class Phrase;
     friend class Dictionary;
 
 public:
     /**
      * @brief Default constructor.
      *
-     * Loads a Corpus with the specified UUID.
+     * Loads a Corpus with the specified ID.
      *
      * @note You can check if the load process was successful by evaluating @c isValid() == true.
-     * @param p_uuid The UUID to load this Corpus with.
+     * @param p_id The ID to load this Corpus with.
      **/
-    explicit Corpus (const QUuid& p_uuid);
+    explicit Corpus (const QString& p_id);
 
     /**
      * @brief Destructor.
@@ -93,11 +93,11 @@ public:
 
     virtual ~Corpus();
     /**
-     * @brief Obtains an existing Corpus from its specified UUID.
-     * @param p_uuid The UUID of the corpus to be found.
+     * @brief Obtains an existing Corpus from its specified ID.
+     * @param p_id The ID of the corpus to be found.
      * @return A pointer to a @c Corpus object if found, else NULL.
      */
-    static Corpus* obtain (const QUuid& p_uuid);
+    static Corpus* obtain (const QString& p_id);
 
     /**
      * @brief Generates a new, generic corpus from a list of strings.
@@ -115,26 +115,26 @@ public:
 
     /**
      * @brief Determines the existence of a specified corpus.
-     * @param p_uuid The UUID of a @c Corpus to be found.
+     * @param p_id The ID of a @c Corpus to be found.
      * @return True, if the @c Corpus exists; otherwise, returns false.
      * @note This method does a bit of nitty-gritty searching, just checks for a folder.
      */
-    static bool exists (const QUuid& p_uuid);
+    static bool exists (const QString& p_id);
 
     /**
-     * @brief Adds a sentence to this @c Corpus .
-     * @param p_sentence The @c Sentence to be added.
-     * @return The @c Sentence that was added.
+     * @brief Adds a phrase to this @c Corpus .
+     * @param p_phrase The @c Phrase to be added.
+     * @return The @c Phrase that was added.
      */
-    Sentence* addSentence (Sentence* p_sentence);
+    Phrase* addPhrase (Phrase* p_phrase);
 
     /**
-     * @brief Adds a sentence to this @c Corpus , in its more raw format.
-     * @param p_text The text that represents the @c Sentence.
-     * @param p_audio The @c QFile that represents the transcribed audio of the @c Sentence.
-     * @return The @c Sentence that was formed and then added.
+     * @brief Adds a phrase to this @c Corpus , in its more raw format.
+     * @param p_text The text that represents the @c Phrase.
+     * @param p_audio The @c QFile that represents the transcribed audio of the @c Phrase.
+     * @return The @c Phrase that was formed and then added.
      */
-    Sentence* addSentence (const QString& p_text, const QFile* p_audio);
+    Phrase* addPhrase (const QString& p_text, const QFile* p_audio);
 
     /**
      * @brief Determines the time when training of this @c Corpus began.
@@ -161,23 +161,23 @@ public:
     Dictionary* dictionary() const;
 
     /**
-     * @brief Obtains a list of @c Sentence objects that are held by this corpus.
-     * @return A @c SentenceList holding all of the @c Sentence objects represented within this @c Corpus .
+     * @brief Obtains a list of @c Phrase objects that are held by this corpus.
+     * @return A @c PhraseList holding all of the @c Phrase objects represented within this @c Corpus .
      */
-    SentenceList sentences() const;
+    PhraseList phrases() const;
 
     /**
-     * @brief Obtains a specific @c Sentence object at a specified index.
-     * @param p_index The index that of which the sentence should be picked at.
-     * @return A pointer to the @c Sentence object at that index, or NULL.
+     * @brief Obtains a specific @c Phrase object at a specified index.
+     * @param p_index The index that of which the phrase should be picked at.
+     * @return A pointer to the @c Phrase object at that index, or NULL.
      */
-    Sentence* sentenceAt (const int& p_index) const;
+    Phrase* phraseAt (const int& p_index) const;
 
     /**
-     * @brief Obtains the @c QUuid identifying this @c Corpus
-     * @return A @c QUuid
+     * @brief Obtains the @c QString identifying this @c Corpus
+     * @return A @c QString
      */
-    const QUuid uuid() const;
+    const QString id() const;
 
     /**
      * @brief Erases the data of this @c Corpus.
@@ -197,41 +197,31 @@ public:
      */
     bool isValid() const;
 
-    /**
-     * @brief ...
-     *
-     * @return QString
-     **/
     QString transcription();
 
-    /**
-     * @brief ...
-     *
-     * @return QString
-     **/
     QString fileIds();
 
     /**
-     * @brief Stream operator to add sentences.
-     * @param p_sentence The Sentence to add.
+     * @brief Stream operator to add phrases.
+     * @param p_phrase The Phrase to add.
      * @return A reference to the Corpus object being streamed.
      **/
-    Corpus& operator<< (Sentence* p_sentence);
+    Corpus& operator<< (Phrase* p_phrase);
 
     /**
-     * @brief Stream operator to add a list of sentences.
+     * @brief Stream operator to add a list of phrases.
      *
-     * @param p_sentenceList The list of Sentence objects to add.
+     * @param p_phraseList The list of Phrase objects to add.
      * @return A reference to the Corpus object being streamed.
      **/
-    Corpus& operator<< (SentenceList& p_sentenceList);
+    Corpus& operator<< (PhraseList& p_phraseList);
 
 public slots:
     /**
-     * @brief Loads the @c Corpus data using its identifying @c QUuid.
-     * @param p_uuid The @c QUuid identifying this @c Corpus.
+     * @brief Loads the @c Corpus data using its identifying @c QString.
+     * @param p_id The @c QString identifying this @c Corpus.
      */
-    void load (const QUuid& p_uuid);
+    void load (const QString& p_id);
 
     /**
      * @brief Saves this @c Corpus's information.
@@ -241,10 +231,10 @@ public slots:
     /**
      * @brief Obtains the path to a Corpus's data.
      *
-     * @param p_uuid The UUID of the Corpus.
-     * @return A QString to the Corpus data or an invalid one if the UUID doesn't point to a valid Corpus.
+     * @param p_id The ID of the Corpus.
+     * @return A QString to the Corpus data or an invalid one if the ID doesn't point to a valid Corpus.
      **/
-    static QString getPath (const QUuid& p_uuid);
+    static QString getPath (const QString& p_id);
 
 private:
     /**
@@ -254,9 +244,9 @@ private:
     QString audioPath() const;
     void nullify();
 
-    QUuid m_uuid;               ///< Holds the UUID of this Corpus.
-    QDomDocument* m_dom;        ///< The QDomDoc representing the Corpus's data.
-    SentenceList m_sntncLst;    ///< The list of sentences held by this Corpus.
+    QString m_id;               ///< Holds the ID of this Corpus.
+    QDomDocument* m_dom;        ///< The QDomDocument representing the Corpus's data.
+    PhraseList m_phrsLst;    ///< The list of phrases held by this Corpus.
     Dictionary* m_dict;         ///< The dictionary generated or being used by this Corpus.
 
     static CorpusMap s_lst;     ///< Used to centralize the obtaining of @c Corpus objects.

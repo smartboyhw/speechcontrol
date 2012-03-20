@@ -63,19 +63,7 @@ public:
 
     public:
         virtual ~Backup();
-
-        /**
-         * @brief ...
-         *
-         * @return :Session*
-         **/
         Session* session();
-
-        /**
-         * @brief ...
-         *
-         * @return QDateTime
-         **/
         QDateTime created();
 
     private:
@@ -131,11 +119,6 @@ public:
      **/
     bool isValid() const;
 
-    /**
-     * @brief ...
-     *
-     * @return void
-     **/
     void erase() const;
 
     /**
@@ -144,97 +127,18 @@ public:
      **/
     void setName (const QString& p_name);
 
-    /**
-     * @brief ...
-     *
-     * @return :Session*
-     **/
     Session* clone() const;
-
-    /**
-     * @brief ...
-     *
-     * @return :Session::Backup*
-     **/
     Backup* createBackup() const;
-
-    /**
-     * @brief ...
-     *
-     * @return :Session::BackupList*
-     **/
     BackupList* backups() const;
-
-    /**
-     * @brief ...
-     *
-     * @return Corpus*
-     **/
     Corpus* corpus() const;
-
-    /**
-     * @brief ...
-     *
-     * @return Content*
-     **/
     Content* content() const;
-
-    /**
-     * @brief ...
-     *
-     * @return :Sentence*
-     **/
-    Sentence* firstIncompleteSentence() const;
-
-    /**
-     * @brief ...
-     *
-     * @return :Sentence*
-     **/
-    Sentence* lastIncompleteSentence() const;
-
-    /**
-     * @brief ...
-     *
-     * @return :SentenceList
-     **/
-    SentenceList incompletedSentences() const;
-
-    /**
-     * @brief ...
-     *
-     * @return void
-     **/
+    Phrase* firstIncompletePhrase() const;
+    Phrase* lastIncompletePhrase() const;
+    PhraseList incompletedPhrases() const;
     static void init();
-
-    /**
-     * @brief ...
-     *
-     * @param  ...
-     * @return :Session*
-     **/
     static Session* obtain (const QUuid& p_uuid);
-
-    /**
-     * @brief ...
-     *
-     * @param  ...
-     * @return :Session*
-     **/
     static Session* create (const Content*);
-
-    /**
-     * @brief ...
-     *
-     * @return void
-     **/
     static void save();
-
-    /**
-     * @brief ...
-     *
-     * @return :SessionList
-     **/
     static SessionList allSessions();
 
 signals:
@@ -252,28 +156,8 @@ public slots:
      * @param  p_corpus Corpus for this Session
      **/
     void setCorpus (Corpus* p_corpus);
-
-    /**
-     * @brief ...
-     *
-     * @param  ...
-     * @return void
-     **/
     void setContent (Content* p_content);
-
-    /**
-     * @brief ...
-     *
-     * @param  ...
-     * @return void
-     **/
     void load (const QUuid& p_uuid);
-
-    /**
-     * @brief ...
-     *
-     * @return void
-     **/
     double assessProgress() const;
 
 private:
@@ -286,4 +170,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

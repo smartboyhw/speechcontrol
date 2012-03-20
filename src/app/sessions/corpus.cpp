@@ -19,65 +19,57 @@
  */
 
 #include "corpus.hpp"
-#include "sentence.hpp"
+#include "phrase.hpp"
 #include "dictionary.hpp"
 #include "app/core.hpp"
+#include "lib/config.hpp"
 
 #include <QDir>
-#include <QFileInfo>
 #include <QDebug>
+#include <QFileInfo>
 #include <QDateTime>
 #include <QDomDocument>
 
-using SpeechControl::Core;
-using SpeechControl::Corpus;
-using SpeechControl::Sentence;
-using SpeechControl::Dictionary;
-using SpeechControl::CorpusList;
-using SpeechControl::SentenceList;
+using namespace SpeechControl;
 
-Corpus::Corpus (const QUuid& p_uuid) : QObject(), m_dom (new QDomDocument)
+Corpus::Corpus (const QString& p_id) : QObject(), m_dom (new QDomDocument)
 {
-    load (p_uuid);
+    load (p_id);
 }
 
-/// @todo This list has to be ordered from '0' to 'n-1'.
-/// @note Since this sorts the values by index, the value returned should be called once and stored into a variable, to prevent overhead.
-/// @todo Cache the ordered listing and update it whenever it's modified.
-SentenceList Corpus::sentences() const
+PhraseList Corpus::phrases() const
 {
-    return m_sntncLst;
+    return m_phrsLst;
 }
 
-/// @todo Add the Sentence to the XML document and then to the list.
-Sentence* Corpus::addSentence (Sentence* p_sentence)
+Phrase* Corpus::addPhrase (Phrase* p_phrase)
 {
-    m_sntncLst << p_sentence;
-    return p_sentence;
+    m_phrsLst << p_phrase;
+    return p_phrase;
 }
 
-Sentence* Corpus::addSentence (const QString& p_text, const QFile* p_audio)
+Phrase* Corpus::addPhrase (const QString& p_text, const QFile* p_audio)
 {
-    Sentence* l_sentence = Sentence::create (this, p_text);
+    Phrase* phrase = Phrase::create (this, p_text);
 
     if (p_audio) {
-        l_sentence->getElement()->attribute (p_audio->fileName());
+        phrase->m_elem->attribute (p_audio->fileName());
     }
 
-    return l_sentence;
+    return phrase;
 }
 
-Corpus& Corpus::operator << (Sentence* p_sentence)
+Corpus& Corpus::operator << (Phrase* p_phrase)
 {
-    this->addSentence (p_sentence);
+    this->addPhrase (p_phrase);
     return *this;
 }
 
 /// @todo Just invoke the above method.
-Corpus& Corpus::operator << (SentenceList& p_sentenceList)
+Corpus& Corpus::operator << (PhraseList& p_phraseList)
 {
-    Q_FOREACH (Sentence * l_phrs, p_sentenceList) {
-        this->addSentence (l_phrs);
+    Q_FOREACH (Phrase * phrs, p_phraseList) {
+        this->addPhrase (phrs);
     }
 
     return *this;
@@ -87,28 +79,29 @@ Corpus& Corpus::operator << (SentenceList& p_sentenceList)
 /// @todo Find a way to keep the text in an ordinal fashion.
 Corpus* Corpus::create (const QStringList& p_text)
 {
-    QUuid uuid = QUuid::createUuid();
-    QDir dir (getPath (uuid));
+    QString id = QUuid::createUuid().toString().split("-").at(0);
+    id = id.replace("{","");
+    QDir dir (getPath (id));
 
     if (!dir.mkpath (dir.path())) {
-        qDebug() << "[Corpus::create()] Can't make corpus directory" << uuid << "at" << dir.path();
+        qDebug() << "[Corpus::create()] Can't make corpus directory" << id << "at" << dir.path();
         return 0;
     }
 
     QDomDocument dom ("Corpus");
     QDomElement rootElem = dom.createElement ("Corpuses");
     QDomElement dateElem = dom.createElement ("Timing");
-    QDomElement sentencesElem = dom.createElement ("Sentences");
+    QDomElement phrasesElem = dom.createElement ("Phrases");
 
-    rootElem.setAttribute ("Uuid", uuid.toString());
-    rootElem.setAttribute ("Version", 0.01);
+    rootElem.setAttribute ("ID", id);
+    rootElem.setAttribute ("Version", SPCHCNTRL_BUILD_VERSION);
     dateElem.setAttribute ("Created", QDateTime::currentDateTimeUtc().toString());
 
     rootElem.appendChild (dateElem);
-    rootElem.appendChild (sentencesElem);
+    rootElem.appendChild (phrasesElem);
     dom.appendChild (rootElem);
 
-    QFile* file = new QFile (getPath (uuid) + "/corpus.xml");
+    QFile* file = new QFile (getPath (id) + "/corpus.xml");
 
     if (!file->open (QIODevice::WriteOnly | QIODevice::Truncate)) {
         qDebug() << "[Corpus::create()] Failed to create corpus XML: " << file->errorString();
@@ -120,7 +113,7 @@ Corpus* Corpus::create (const QStringList& p_text)
 
     qDebug() << "[Corpus::create()] XML dump: " << dom.toString() << file->size();
 
-    Corpus* corpus = Corpus::obtain (uuid);
+    Corpus* corpus = Corpus::obtain (id);
 
     if (!corpus) {
         qDebug() << "[Corpus::create()] Failed to render Corpus." << file->errorString();
@@ -133,9 +126,9 @@ Corpus* Corpus::create (const QStringList& p_text)
         if (str.isEmpty() || str.isNull())
             continue;
 
-        Sentence* l_sent = corpus->addSentence (str.toUtf8() , 0);
-        corpus->m_dom->documentElement().namedItem ("Sentences").appendChild (*l_sent->getElement());
-        qDebug() << "[Corpus::create()] Added sentence" << corpus->sentences().count() << str;
+        Phrase* phrs = corpus->addPhrase (str , 0);
+        corpus->m_dom->documentElement().namedItem ("Phrases").appendChild (*(phrs->m_elem));
+        qDebug() << "[Corpus::create()] Added phrase" << corpus->phrases().count() << str;
     }
 
     corpus->save();
@@ -143,51 +136,51 @@ Corpus* Corpus::create (const QStringList& p_text)
     return corpus;
 }
 
-bool Corpus::exists (const QUuid& p_uuid)
+bool Corpus::exists (const QString& p_id)
 {
-    return QFile::exists (getPath (p_uuid));
+    return QFile::exists (getPath (p_id));
 }
 
-QString Corpus::getPath (const QUuid& p_uuid)
+QString Corpus::getPath (const QString& p_id)
 {
     const QString l_baseComp = Core::configurationPath().path() + "/corpus/";
-    return l_baseComp + p_uuid.toString();
+    return l_baseComp + p_id;
 }
 
 QString Corpus::audioPath() const
 {
-    return getPath (this->uuid()) + "/audio";
+    return getPath (this->id()) + "/audio";
 }
 
-const QUuid Corpus::uuid() const
+const QString Corpus::id() const
 {
-    return m_dom->documentElement().attribute ("Uuid");
+    return m_dom->documentElement().attribute ("ID");
 }
 
-Corpus* Corpus::obtain (const QUuid& p_uuid)
+Corpus* Corpus::obtain (const QString& p_id)
 {
     Corpus* crps = 0;
-    const QString path = getPath (p_uuid) + "/corpus.xml";
-    qDebug() << "[Corpus::obtain()] Obtaining corpus" << p_uuid << path;
+    const QString path = getPath (p_id) + "/corpus.xml";
+    qDebug() << "[Corpus::obtain()] Obtaining corpus" << p_id << path;
 
     if (!QFile::exists (path)) {
         qDebug() << "[Corpus::obtain()] Corpus not found at" << path;
         return 0;
     }
 
-    crps = new Corpus (p_uuid);
+    crps = new Corpus (p_id);
 
     if (!crps->isValid()) {
-        qDebug() << "[Corpus::obtain()] Invalid corpus" << p_uuid;
+        qDebug() << "[Corpus::obtain()] Invalid corpus" << p_id;
         return 0;
     }
 
     return crps;
 }
 
-void Corpus::load (const QUuid& p_uuid)
+void Corpus::load (const QString& p_id)
 {
-    QFile* file = new QFile (getPath (p_uuid) + "/corpus.xml");
+    QFile* file = new QFile (getPath (p_id) + "/corpus.xml");
 
     if (!file->exists()) {
         qDebug() << "[Corpus::load()] Corpus XML doesn't exist at" << file->fileName();
@@ -214,10 +207,10 @@ void Corpus::load (const QUuid& p_uuid)
         return;
     }
 
-    QDomNodeList elems = m_dom->documentElement().firstChildElement ("Sentences").childNodes();
+    QDomNodeList elems = m_dom->documentElement().firstChildElement ("Phrases").childNodes();
 
     if (elems.isEmpty()) {
-        qDebug() << "[Corpus::load()] This corpus has no sentences.";
+        qDebug() << "[Corpus::load()] This corpus has no phrases.";
     }
     else {
         for (int i = 0; i < elems.count(); ++i) {
@@ -227,37 +220,37 @@ void Corpus::load (const QUuid& p_uuid)
                 continue;
             }
 
-            Sentence* l_sntc = new Sentence (this, (new QDomElement (elems.at (i).toElement())));
-            qDebug() << "[Corpus::load()] Loaded sentence:" << l_sntc->text();
-            addSentence (l_sntc);
+            Phrase* l_sntc = new Phrase (this, (new QDomElement (elems.at (i).toElement())));
+            qDebug() << "[Corpus::load()] Loaded phrase:" << l_sntc->text();
+            addPhrase (l_sntc);
         }
     }
 
-    m_uuid = p_uuid;
+    m_id = p_id;
 }
 
 void Corpus::nullify()
 {
     m_dom = 0;
     m_dict = 0;
-    m_sntncLst = SentenceList();
-    m_uuid = QUuid (QString::null);
+    m_phrsLst = PhraseList();
+    m_id = QString (QString::null);
     qDebug() << "[Corpus::nullify()] Nullified.";
 }
 
-/// @todo What happens if this corpus has no sentences?
+/// @todo What happens if this corpus has no phrases?
 /// @todo The dictionary isn't checked at the moment, but should be in the future when the class is more defined.
 bool Corpus::isValid() const
 {
-    const bool l_valid = m_dom && !m_uuid.isNull();
-    SC_ASSERT (l_valid == true, "Invalid Corpus.");
-    qDebug() << "[Corpus::isValid()] Is corpus valid?" << l_valid;
-    return l_valid;
+    const bool valid = m_dom && !m_id.isNull();
+    SC_ASSERT (valid == true, "Invalid Corpus.");
+    qDebug() << "[Corpus::isValid()] Is corpus valid?" << valid;
+    return valid;
 }
 
 void Corpus::save()
 {
-    QFile* file = new QFile (getPath (this->uuid()) + "/corpus.xml");
+    QFile* file = new QFile (getPath (this->id()) + "/corpus.xml");
 
     if (file->open (QIODevice::WriteOnly | QIODevice::Truncate)) {
         QTextStream l_strm (file);
@@ -271,48 +264,49 @@ void Corpus::save()
 
 CorpusList Corpus::allCorpuses()
 {
-    CorpusList l_lst;
-    QDir l_dir (Core::configurationPath().path() + "/corpus");
-    l_dir.setFilter (QDir::Dirs);
-    QStringList l_results = l_dir.entryList (QStringList() << "*");
-    Q_FOREACH (const QString & l_uuid, l_results) {
-        l_lst << Corpus::obtain (QUuid (l_uuid));
+    CorpusList lst;
+    QDir dir (Core::configurationPath().path() + "/corpus");
+    dir.setFilter (QDir::Dirs);
+    QStringList results = dir.entryList (QStringList() << "*");
+    Q_FOREACH (const QString & id, results) {
+        lst << Corpus::obtain (QString (id));
     }
 
-    qDebug() << "[Corpus::allCorpuses()] Found " << l_lst.length() << "corpuses.";
-    return l_lst;
+    qDebug() << "[Corpus::allCorpuses()] Found " << lst.length() << "corpuses.";
+    return lst;
 }
 
 void Corpus::erase()
 {
-    QDir* l_dir = new QDir (getPath (m_uuid));
-    l_dir->rmdir (l_dir->absolutePath());
-    qDebug() << "[Corpus::erase()] Erased Corpus" << m_uuid << "from" << l_dir->absolutePath();
+    QDir* dir = new QDir (getPath (m_id));
+    dir->rmdir (dir->absolutePath());
+    qDebug() << "[Corpus::erase()] Erased Corpus" << m_id << "from" << dir->absolutePath();
 }
 
 Corpus* Corpus::clone() const
 {
-    QUuid l_uuid = QUuid::createUuid();
-    QDir l_thisDir (Core::configurationPath().path() + "/corpus/" + m_uuid.toString());
-    QDir l_newDir (Core::configurationPath().path() + "/corpus/" + l_uuid.toString());
-    l_newDir.mkpath (l_newDir.absolutePath());
-    QStringList l_lst = l_newDir.entryList ( (QStringList() << "*"), QDir::NoDotAndDotDot | QDir::Files, QDir::NoSort);
+    QString id = QUuid::createUuid().toString().split("-").at(0);
+    id = id.replace("{","");
+    QDir thisDir (Core::configurationPath().path() + "/corpus/" + m_id);
+    QDir newDir (Core::configurationPath().path() + "/corpus/" + id);
+    newDir.mkpath (newDir.absolutePath());
+    QStringList lst = newDir.entryList ( (QStringList() << "*"), QDir::NoDotAndDotDot | QDir::Files, QDir::NoSort);
 
-    Q_FOREACH (QString l_pth, l_lst) {
-        QFile* l_file = new QFile (l_pth);
-        const QString l_newPth = l_pth.replace (m_uuid.toString(), l_uuid.toString());
-        l_file->copy (l_newPth);
+    Q_FOREACH (QString pth, lst) {
+        QFile* file = new QFile (pth);
+        const QString newPth = pth.replace (m_id, id);
+        file->copy (newPth);
     }
 
-    return Corpus::obtain (l_uuid);
+    return Corpus::obtain (id);
 }
 
-Sentence* Corpus::sentenceAt (const int& p_index) const
+Phrase* Corpus::phraseAt (const int& p_index) const
 {
-    if (p_index < 0 || p_index > m_sntncLst.count())
+    if (p_index < 0 || p_index > m_phrsLst.count())
         return 0;
     else
-        return m_sntncLst.at (p_index);
+        return m_phrsLst.at (p_index);
 }
 
 Dictionary* Corpus::dictionary() const

@@ -26,74 +26,40 @@
 
 #include <export.hpp>
 
+class QDomElement;
+
 namespace SpeechControl
 {
-class Phrase;
-class Sentence;
 
-/**
- * @brief ...
- **/
+class Corpus;
+class Phrase;
+class Corpus;
+
 typedef QList<Phrase*> PhraseList;
 
-/**
- * @brief ...
- **/
 class SPCH_EXPORT Phrase : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY (Phrase)
-    friend class Sentence;
+    friend class Corpus;
 
 public:
-    /**
-     * @brief ...
-     *
-     **/
     virtual ~Phrase();
-    
-    /**
-     * @brief ...
-     *
-     * @return QFile*
-     **/
     QFile* audio() const;
-    
-    /**
-     * @brief ...
-     *
-     * @return const QString
-     **/
     const QString text() const;
-
-    /**
-     * @brief ...
-     *
-     * @return int
-     **/
-    int words() const;
-
-    /**
-     * @brief ...
-     *
-     * @return int
-     **/
-    int index() const;
-    
-    /**
-     * @brief ...
-     *
-     * @return bool
-     **/
+    uint words() const;
+    uint index() const;
     bool isCompleted() const;
+    QString audioPath() const;
+    static Phrase* create(Corpus* p_corpus, const QString& p_text);
 
 private:
-    explicit Phrase (const Sentence*, const int&);
-    const Sentence* m_sntnc;
-    const int m_indx;
+    explicit Phrase (Corpus* p_corpus, const QDomElement* p_elem);
+    const QDomElement* m_elem;
+    Corpus* m_corpus;
 };
 
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

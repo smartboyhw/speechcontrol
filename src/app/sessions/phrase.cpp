@@ -19,7 +19,7 @@
  */
 
 #include "phrase.hpp"
-#include "sentence.hpp"
+#include "corpus.hpp"
 
 #include <QFile>
 #include <QDebug>
@@ -27,38 +27,45 @@
 
 using namespace SpeechControl;
 
-Phrase::Phrase (const Sentence* p_sntnct, const int& p_index) :
-    m_sntnc (p_sntnct), m_indx (p_index)
+Phrase::Phrase (Corpus* p_corpus, const QDomElement* p_elem) : QObject (p_corpus), m_elem (p_elem), m_corpus (p_corpus)
 {
     qDebug() << "[Phrase::{constructor}] Phrase" << this->text() << "rendered.";
 }
 
+Phrase* Phrase::create (Corpus* p_corpus, const QString& p_text)
+{
+    QDomElement* elem = new QDomElement (p_corpus->m_dom->createElement ("Phrase"));
+    elem->setAttribute ("index", p_corpus->phrases().count());
+    elem->setAttribute ("text", p_text);
+    p_corpus->m_dom->documentElement().namedItem ("Phrases").appendChild (*elem);
+    qDebug() << p_corpus->m_dom->toString();
+    return p_corpus->addPhrase (new Phrase (p_corpus, elem));
+}
+
 bool Phrase::isCompleted() const
 {
-    qDebug() << "[Phrase::isCompleted()] Audio exists?" << audio()->exists() << audio()->fileName();
+    //qDebug() << "[Phrase::isCompleted()] Audio exists?" << audio()->exists() << audio()->fileName();
     return audio()->exists();
 }
 
 const QString Phrase::text() const
 {
-    QDomElement* l_elem = m_sntnc->getPhraseElement (m_indx);
-    return QByteArray::fromBase64 (l_elem->text().toAscii());
+    return m_elem->attribute("text").toLocal8Bit();
 }
 
 QFile* Phrase::audio() const
 {
-    const QString l_fileName = m_sntnc->getPhraseElement (m_indx)->attribute ("uuid") + ".raw";
-    const QString l_pth = m_sntnc->audioPath().path();
-    qDebug() << "[Phrase::audio()]" << l_pth << l_fileName;
-    return new QFile (l_pth + "/" + l_fileName);
+    const QString fileName = m_corpus->audioPath() + QString::number (index()) + ".raw";
+    //qDebug() << "[Phrase::audio()]" << fileName;
+    return new QFile (fileName);
 }
 
-int Phrase::index() const
+uint Phrase::index() const
 {
-    return m_indx;
+    return m_elem->attribute ("index").toInt();
 }
 
-int Phrase::words() const
+uint Phrase::words() const
 {
     return text().split (" ").length();
 }

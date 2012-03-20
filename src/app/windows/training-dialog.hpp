@@ -27,8 +27,6 @@
 
 // local includes
 #include <core.hpp>
-#include <sessions/sentence.hpp>
-#include <sessions/session.hpp>
 
 namespace Ui
 {
@@ -40,6 +38,8 @@ class Training;
 
 namespace SpeechControl
 {
+class Phrase;
+class Session;
 class DeviceAudioSource;
 namespace Windows
 {
@@ -127,12 +127,12 @@ private:
 
     /**
      * @brief Moves training to a specific position within the Session.
-     * Focuses training to the p_index'th Phrase in Sentence p_sentence.
+     * Focuses training to the p_index'th Phrase in Phrase p_sentence.
      * @param p_index uint The position of the Phrase within the specified sentence.
-     * @param p_sentence Sentence* Defaults to 0 (which changes to the current sentence, m_curSntct)
+     * @param p_sentence Phrase* Defaults to 0 (which changes to the current sentence, m_curSntct)
      * @return void
      **/
-    void navigateToPart (const uint& p_index, Sentence* p_sentence = 0);
+    void navigateToPart (const uint& p_index);
 
     /**
      * @brief Moves the focused text to a spot ahead.
@@ -140,6 +140,9 @@ private:
      * @return void
      **/
     void navigateNextPart();
+
+    Phrase* currentPhrase();
+    Phrase* initialPhrase();
 
     /**
      * @brief Moves the focused text to a previous spot.
@@ -149,13 +152,11 @@ private:
     void navigatePreviousPart();
     bool currentPhraseCompleted();
 
-    int m_currentPosition;           /// The current position of the phrase in the current sentence being trained.
-    uint m_initialPosition;          /// The position that training began at in this dialog.
     Ui::Training* m_ui;              /// The object used to manage the dialog's widgets.
     DeviceAudioSource* m_mic;        /// The Microphone used by this dialog.
     Session* m_session;              /// The current Session being trained.
-    Sentence* m_currentSentence;     /// The current sentence being focused on.
-    Sentence* m_initialSentence;     /// The Sentence that of which training began with when the dialog opened.
+    uint m_initialPosition;           /// The position of the current phrase being focused on.
+    uint m_currentPosition;          /// The position of the phrase that of which training began with when the dialog opened.
 };
 
 }

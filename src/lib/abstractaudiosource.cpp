@@ -276,13 +276,37 @@ bool AbstractAudioSource::isRecording() const
 AbstractAudioSource::~AbstractAudioSource()
 {
     stopRecording();
+
+    // Clean our goodies' memory.
     delete m_appSrc;
     delete m_appSink;
+
+    // Clean up your junk!
+    if (!m_binPtr.isNull())
+        m_binPtr->setState (QGst::StateNull);
+
+    if (!m_pipeline.isNull())
+        m_pipeline->setState (QGst::StateNull);
+
+    if (!m_sinkPtr.isNull())
+        m_sinkPtr->setState (QGst::StateNull);
+
+    if (!m_srcPtr.isNull())
+        m_srcPtr->setState (QGst::StateNull);
+
+    if (!m_volumePtr.isNull())
+        m_volumePtr->setState (QGst::StateNull);
+
+    if (!m_levelPtr.isNull())
+        m_levelPtr->setState (QGst::StateNull);
+
+    // Clean memory.
     m_binPtr.clear();
     m_pipeline.clear();
     m_sinkPtr.clear();
     m_srcPtr.clear();
     m_volumePtr.clear();
+    m_levelPtr.clear();
 }
 
 GenericSource::GenericSource (AbstractAudioSource* p_audioSource) : m_audioSrc (p_audioSource)
@@ -311,6 +335,8 @@ QGst::FlowReturn GenericSource::pushBuffer (const QGst::BufferPtr& p_buffer)
 
 GenericSource::~GenericSource()
 {
+    if (!element().isNull())
+        element()->setState (QGst::StateNull);
 }
 
 GenericSink::GenericSink() : m_src (0)
@@ -341,6 +367,12 @@ void GenericSink::setSource (GenericSource* p_source)
 GenericSource* GenericSink::source()
 {
     return m_src;
+}
+
+GenericSink::~GenericSink()
+{
+    if (!element().isNull())
+        element()->setState (QGst::StateNull);
 }
 
 DeviceAudioSource::DeviceAudioSource() : AbstractAudioSource (0), m_device(), m_devicePtr()
@@ -441,7 +473,7 @@ AbstractAudioSourceList DeviceAudioSource::allDevices()
                     if (!s_map.contains (device.toString()))
                         s_map.insert (device.toString(), new DeviceAudioSource (device.toString()));
 
-                    list << DeviceAudioSource::obtain(device.toString());
+                    list << DeviceAudioSource::obtain (device.toString());
                 }
             }
         }
@@ -461,12 +493,16 @@ QString DeviceAudioSource::deviceName() const
 
 QString DeviceAudioSource::humanName() const
 {
-    QString name = m_devicePtr->property ("device-name").toString();
-
-    if (name.isEmpty() || name.isNull())
+    if (m_devicePtr.isNull())
         return deviceName();
-    else
-        return name;
+    else {
+        QString name = m_devicePtr->property ("device-name").toString();
+
+        if (name.isEmpty() || name.isNull())
+            return deviceName();
+        else
+            return name;
+    }
 }
 
 QString DeviceAudioSource::pipelineDescription() const

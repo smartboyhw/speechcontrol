@@ -65,6 +65,7 @@ class SPCH_EXPORT GenericSink : public QGst::Utils::ApplicationSink
 {
 public:
     explicit GenericSink();
+    virtual ~GenericSink();
     GenericSource* source();
     void setSource (SpeechControl::GenericSource* p_source);
 

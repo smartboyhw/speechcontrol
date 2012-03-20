@@ -46,10 +46,10 @@ using SpeechControl::Windows::TrainingDialog;
 
 TrainingDialog::TrainingDialog (QWidget* p_parent) :
     QDialog (p_parent),
-    m_currentPosition (0), m_initialPosition (0),
     m_ui (new Ui::Training),
     m_mic ( (DeviceAudioSource*) DeviceAudioSource::allDevices().first()),
-    m_session (0)
+    m_session (0),
+    m_currentPosition (0), m_initialPosition (0)
 {
     m_ui->setupUi (this);
     m_ui->pushButtonProgress->setIcon (QIcon::fromTheme (ICON_RECORD));
@@ -244,7 +244,7 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonReset_clicked()
     }
 
     // Wipe out the work up to the initial point.
-    for (int i = currentPhrase()->index(); i >= initialPhrase()->index(); i--) {
+    for (uint i = currentPhrase()->index(); i >= initialPhrase()->index(); i--) {
         Phrase* sntc = m_session->corpus()->phraseAt (i);
         qDebug() << "[TrainingDialog::on_pushButtonReset_clicked()] Wiping phrase" << sntc->text();
         Q_FOREACH (Phrase * phrs, m_session->corpus()->phrases()) {

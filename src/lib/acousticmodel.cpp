@@ -23,6 +23,7 @@
 #include <QDebug>
 #include <QTextStream>
 #include <QStringList>
+#include <QUuid>
 
 #include "noisedictionary.hpp"
 #include "acousticmodel.hpp"
@@ -127,5 +128,38 @@ bool AcousticModel::isValid() const
     return (QDir (m_path)).exists();
 }
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+/// @note This method should always clone acoustic models to the local user's directory.
+AcousticModel* AcousticModel::clone()
+{
+    // obtain directory info.
+    QDir model (m_path);
+    QString newPath = QDir::homePath() + "/.config/speechcontrol/models";
+    QString randomID = QUuid::createUuid().toString();
+    randomID = randomID.split ("-").at (0);
+    randomID = randomID.replace ("{", "");
+    newPath += "/" + model.dirName() + "-" + randomID;
+
+    // create directory.
+    cloneDirectory (model, QDir (newPath));
+
+    return new AcousticModel (newPath);
+}
+
+QDir cloneDirectory (QDir p_base, QDir p_newDir)
+{
+    QStringList entries = p_base.entryList (QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files);
+
+    Q_FOREACH (const QString entry, entries) {
+        QFileInfo entryInfo (entry);
+
+        if (entryInfo.isDir()) {
+            QDir::mkpath (p_newDir.absolutePath() + "/" + entryInfo.baseName());
+            cloneDirectory (QDir (entryInfo.absolutePath()), QDir (p_newDir.absolutePath() + "/" + entryInfo.baseName()));
+        }
+        else
+            QFile::copy (entry, p_base.absoluteFilePath (QFile::fileName()));
+    }
+}
+
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
 #include "acousticmodel.moc"

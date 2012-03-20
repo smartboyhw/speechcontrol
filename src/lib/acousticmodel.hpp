@@ -157,6 +157,7 @@ public:
      * @return void
      **/
     void load (QString p_path);
+    AcousticModel* clone();
 };
 
 /**

@@ -239,9 +239,11 @@ void Main::on_actionOptions_triggered()
     Settings::displayPane ("gnrl");
 }
 
-/// @todo Invoke the process of adapting a model. If anything, have a special window for such a process.
 void Main::on_actionAdaptModels_triggered()
 {
+    AdaptWizard* wiz = new AdaptWizard(this);
+    wiz->exec();
+    updateWindow();
 }
 
 void Main::on_actionStartTraining_triggered ()

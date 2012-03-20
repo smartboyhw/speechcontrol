@@ -50,12 +50,12 @@ Content::Content (const Content& p_other) : QObject(),
 Content* Content::obtain (const QUuid& p_uuid)
 {
     qDebug() << "[Content::obtain()] Potential Content UUID:" << p_uuid;
-    SC_ASSERT (!p_uuid.isNull(), "Invalid UUID sent to Corpus instance for obtaining.");
+//     SC_ASSERT (!p_uuid.isNull(), "Invalid UUID sent to Corpus instance for obtaining.");
 
-    if (p_uuid.isNull()) {
-        qWarning() << "[Content::obtain()] Null UUID passed.";
-        return 0;
-    }
+//     if (p_uuid.isNull()) {
+//         qWarning() << "[Content::obtain()] Null UUID passed.";
+//         return 0;
+//     }
 
     if (!s_lst.contains (p_uuid)) {
         Content* l_content = new Content (p_uuid);

@@ -30,6 +30,8 @@
 #include <QDateTime>
 #include <QDomDocument>
 
+#include <stdexcept>
+
 using namespace SpeechControl;
 
 Corpus::Corpus (const QString& p_id) : QObject(), m_dom (new QDomDocument)
@@ -164,15 +166,15 @@ Corpus* Corpus::obtain (const QString& p_id)
     qDebug() << "[Corpus::obtain()] Obtaining corpus" << p_id << path;
 
     if (!QFile::exists (path)) {
-        qDebug() << "[Corpus::obtain()] Corpus not found at" << path;
-        return 0;
+//         qDebug() << "[Corpus::obtain()] Corpus not found at" << path;
+        throw std::runtime_error("Corpus not found at " + path.toStdString());
     }
 
     crps = new Corpus (p_id);
 
     if (!crps->isValid()) {
-        qDebug() << "[Corpus::obtain()] Invalid corpus" << p_id;
-        return 0;
+//         qDebug() << "[Corpus::obtain()] Invalid corpus" << p_id;
+        throw std::runtime_error("Invalid corpus.");
     }
 
     return crps;

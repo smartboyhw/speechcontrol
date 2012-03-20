@@ -19,15 +19,16 @@
  */
 
 #include "adaptionutility.hpp"
+#include <acousticmodel.hpp>
 
 using namespace SpeechControl;
 
-AdaptionUtility::AdaptionUtility() : QObject(), m_session (0), m_model (0)
+AdaptionUtility::AdaptionUtility() : QObject(), m_session (0), m_modelBase (0), m_modelResult(0)
 {
 
 }
 
-AdaptionUtility::AdaptionUtility (Session* p_session, AcousticModel* p_model) : QObject(), m_session (p_session), m_model (p_model)
+AdaptionUtility::AdaptionUtility (Session* p_session, AcousticModel* p_model) : QObject(), m_session (p_session), m_modelBase (p_model), m_modelResult(0)
 {
 
 }
@@ -37,9 +38,14 @@ Session* AdaptionUtility::session()
     return m_session;
 }
 
-AcousticModel* AdaptionUtility::model()
+AcousticModel* AdaptionUtility::baseModel()
 {
-    return m_model;
+    return m_modelBase;
+}
+
+AcousticModel* AdaptionUtility::resultingModel()
+{
+    return m_modelResult;
 }
 
 void AdaptionUtility::setSession (Session* p_session)
@@ -49,14 +55,15 @@ void AdaptionUtility::setSession (Session* p_session)
 
 void AdaptionUtility::setAcousticModel (AcousticModel* p_model)
 {
-    m_model = p_model;
+    m_modelBase = p_model;
 }
 
 AcousticModel* AdaptionUtility::adapt()
 {
-    if (!m_session || !m_model)
+    if (!m_session || !m_modelBase)
         return 0;
 
+    copyAcousticModel();
     generateFeatures();
     generateMixtureWeights();
     convertModelDefinitions();
@@ -66,6 +73,11 @@ AcousticModel* AdaptionUtility::adapt()
     generateAccuracyReport();
 
     return 0;
+}
+
+void AdaptionUtility::copyAcousticModel()
+{
+    m_modelResult = m_modelBase->clone();
 }
 
 void AdaptionUtility::generateFeatures()
@@ -109,4 +121,4 @@ AdaptionUtility::~AdaptionUtility()
 }
 
 #include "adaptionutility.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

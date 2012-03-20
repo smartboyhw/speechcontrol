@@ -86,9 +86,11 @@ public:
     Session* session();
 
     /**
-     * @brief Returns the AcousticModel that'll be adapted.
+     * @brief Returns the AcousticModel that'll be used for the base of adaption.
      **/
-    AcousticModel* model();
+    AcousticModel* baseModel();
+
+    AcousticModel* resultingModel();
 
     /**
      * @brief Invokes the adaption process.
@@ -104,12 +106,14 @@ private:
     void performAdaption();
     void generateSendmap();
     void generateAccuracyReport();
+    void copyAcousticModel();
 
     Session* m_session;
-    AcousticModel* m_model;
+    AcousticModel* m_modelBase;
+    AcousticModel* m_modelResult;
 };
 
 }
 
 #endif // SPEECHCONTROL_ADAPTIONUTILITY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -53,8 +53,11 @@ bool KeyboardEmulator::sendPhrase (const QString& p_characters)
 {
     // for now, just send the entire phrase.
     qDebug() << "[Dictation::KeyboardEmulator::sendKeys()] Echoing phrase " << p_characters << "...";
-    const int val = xdo_type(m_xdo,m_win,p_characters.toStdString().c_str(),100);
-    qDebug() << "[Dictation::KeyboardEmulator::sendKeys()] xdo_type " <<  val;
+    QString fixedPhrase = p_characters.toCaseFolded();
+    fixedPhrase[0] = fixedPhrase.at (0).toUpper();
+
+    const int val = xdo_type (m_xdo, m_win, fixedPhrase.toStdString().c_str(), 100);
+    qDebug() << "[Dictation::KeyboardEmulator::sendKeys()] xdo_type " <<  val << "(text:" << val << ")";
     return true;
 }
 

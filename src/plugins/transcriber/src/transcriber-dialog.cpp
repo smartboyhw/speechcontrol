@@ -21,20 +21,20 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-#include <lib/abstractaudiosource.hpp>
+#include "plugin.hpp"
 #include "transcriber-dialog.hpp"
 #include "ui_transcriber-dialog.h"
 
+using namespace SpeechControl;
 using namespace SpeechControl::Plugins::Transcriber;
 using namespace SpeechControl::Windows;
 
 TranscriberDialog::TranscriberDialog (QWidget* parent) :
     QDialog (parent),
     m_ui (new Ui::TranscriberDialog),
-    m_sphnx (0)
+    m_streamSrc(0), m_audioSrcSphnx(0), m_strm(0)
 {
     m_ui->setupUi (this);
-    m_sphnx = new AudioSourceSphinx;
 }
 
 /// @todo Fix this to have an approved list of audio files that can read by GStreamer.
@@ -57,11 +57,14 @@ void TranscriberDialog::on_btnTranscribe_clicked()
         return;
     }
 
-    while (m_sphnx->isRunning())
-        m_sphnx->stop();
+    m_strm = new QDataStream(l_file);
+    m_streamSrc = new StreamAudioSource(m_strm);
+    m_audioSrcSphnx = new AudioSourceSphinx(m_streamSrc,this);
 
-    if (!m_sphnx->start()) {
-        m_ui->textBrowserTranscription->setText (tr ("Initialization of transcribing service failed."));
+    connect(m_audioSrcSphnx,SIGNAL(finished(QString)),this,SLOT(outputValue(QString)));
+
+    if (!m_audioSrcSphnx->start()){
+        qDebug() << "CANT STARERETE";
     }
 }
 

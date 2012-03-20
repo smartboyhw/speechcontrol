@@ -23,7 +23,8 @@
 #define TRANSCRIBERDIALOG_HPP
 
 #include <QDialog>
-#include "sphinx.hpp"
+#include <lib/abstractaudiosource.hpp>
+#include <lib/abstractsphinx.hpp>
 
 namespace Ui
 {
@@ -32,7 +33,6 @@ class TranscriberDialog;
 
 namespace SpeechControl
 {
-class AudioSourceSphinx;
 namespace Windows
 {
 
@@ -50,7 +50,10 @@ private slots:
 
 private:
     Ui::TranscriberDialog* m_ui;
-    AudioSourceSphinx* m_sphnx;
+    StreamAudioSource* m_streamSrc;
+    AudioSourceSphinx* m_audioSrcSphnx;
+    QDataStream* m_strm;
+
 public slots:
     void outputValue (const QString& p_value);
 };

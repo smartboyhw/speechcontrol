@@ -236,14 +236,18 @@ PhraseList Session::incompletedPhrases() const
 {
     PhraseList list;
 
-    Q_FOREACH (Phrase * sentence, m_corpus->phrases()) {
-        if (!sentence->isCompleted())
-            list << sentence;
-
-        continue;
+    Q_FOREACH (Phrase * phrase, m_corpus->phrases()) {
+        if (!phrase->isCompleted()){
+            list << phrase;
+            qDebug() << "[Phrase::incompletedPhrases()] Incomplete: " << phrase->index() << phrase->text();
+        }
+        else
+            continue;
     }
 
     qDebug() << "[Phrase::incompletedPhrases()] Number of incomplete sentences:" << list.length();
+    if (list.length() > 0)
+        qDebug() << "[Phrase::incompletedPhrases()] First up at: " << list.first()->index();
 
     return list;
 }

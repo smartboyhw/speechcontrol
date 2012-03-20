@@ -26,6 +26,8 @@
 #include <QObject>
 #include <QStringList>
 
+#include <lib/export.hpp>
+
 class QPixmap;
 class QAction;
 class QPluginLoader;
@@ -62,7 +64,7 @@ typedef QMap<QString, AbstractPlugin*> PluginMap;
  *
  * @see Factory
  **/
-class AbstractPlugin : public QObject
+class SPCH_EXPORT AbstractPlugin : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY (AbstractPlugin)

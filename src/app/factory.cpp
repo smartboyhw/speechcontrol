@@ -81,6 +81,7 @@ bool Factory::isPluginLoaded (const QString& p_id)
 bool Factory::loadPlugin (const QString& p_id)
 {
     if (isPluginLoaded (p_id)) {
+        qDebug() << "[Factory::loadPlugin()] Plugin" << p_id << "already loaded.";
         return true;
     }
 
@@ -166,10 +167,14 @@ void Factory::setLoadOnStart (const QString& p_id, const bool p_state)
 
 void Factory::start()
 {
+    qDebug() << "[Factory::start()] Loading auto-start plug-ins..." << endl
+             << autoStart();
     Q_FOREACH (const QString plgn, autoStart()) {
+        qDebug() << "[Factory::start()] Attempting to load plug-in" << Factory::pluginConfiguration (plgn)->value("Plugin/Name").toString() << "...";
         if (Factory::pluginConfiguration (plgn)->value ("Plugin/Enabled").toBool())
             Plugins::Factory::loadPlugin (plgn);
     }
+    qDebug() << "[Factory::start()] Auto-start plug-ins loaded.";
 }
 
 void Factory::stop()

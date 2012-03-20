@@ -37,7 +37,6 @@ using SpeechControl::Plugins::PluginMap;
 using SpeechControl::Plugins::PluginList;
 using SpeechControl::Plugins::AbstractPlugin;
 
-/// @bug The symbols for this class aren't exported properly.
 AbstractPlugin::AbstractPlugin (QObject* p_prnt) :
     QObject (p_prnt), m_ldr (0), m_id (QString::null)
 {
@@ -63,7 +62,12 @@ bool AbstractPlugin::hasLoaded() const
 
 bool AbstractPlugin::isSupported() const
 {
-    return true;
+    qDebug() << "[AbstractPlugin::isSupported()] Is enabled?" << configuration()->value("Plugin/Enabled").toBool();
+
+    if (configuration())
+        return configuration()->value("Plugin/Enabled").toBool();
+
+    return false;
 }
 
 const QString AbstractPlugin::name() const
@@ -144,7 +148,7 @@ bool AbstractPlugin::loadComponents()
         return loadLibrary();
     }
 
-    qDebug() << "[Factory::loadPlugin()] Failed to load components for " << name();
+    qDebug() << "[AbstractPlugin::loadComponents()] Failed to load components for " << name();
     return false;
 }
 
@@ -156,7 +160,7 @@ bool AbstractPlugin::loadLibrary()
     m_ldr->setFileName (pth);
 
     if (!m_ldr->load()) {
-        qDebug() << "[Factory::loadPlugin()]" << name() << "'s library failed to load."
+        qDebug() << "[AbstractPlugin::loadLibrary()]" << name() << "'s library failed to load."
                  << m_ldr->errorString() << m_ldr->fileName() << pth << m_id;
         return false;
     }
@@ -168,7 +172,7 @@ bool AbstractPlugin::loadPlugins()
 {
     Q_FOREACH (AbstractPlugin * l_plgn, plugins()) {
         if (! (l_plgn->isSupported() && Factory::isPluginLoaded (l_plgn->id()))) {
-            qDebug() << "[Factory::loadPlugin()] Plugin" << name() << "is missing a dependency:" << l_plgn->name();
+            qDebug() << "[AbstractPlugin::loadPlugins()] Plugin" << name() << "is missing a dependency:" << l_plgn->name();
             return false;
         }
     }
@@ -222,6 +226,7 @@ void AbstractPlugin::addAction (QAction* p_action)
 {
     p_action->setParent (this);
     Core::mainWindow()->m_ui->menuPlugins->insertAction (0, p_action);
+    qDebug() << "[AbstractPlugin::addAction()] Added action" << p_action->text() << "to the Main window.";
 }
 
 void AbstractPlugin::addActions (QList< QAction* > p_actions)

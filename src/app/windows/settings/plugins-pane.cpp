@@ -64,7 +64,7 @@ void PluginsSettingsPane::updateUi()
     Q_FOREACH (QString id, plgnLst) {
         GenericPlugin* plgn = new GenericPlugin (id);
         QListWidgetItem* item = new QListWidgetItem (plgn->name(), list);
-        item->setHidden (!plgn->isSupported());
+        //item->setHidden (!plgn->isSupported());
 
         if (plgn->isLoaded())
             item->setIcon (Factory::plugin (plgn->id())->pixmap());
@@ -93,29 +93,31 @@ void PluginsSettingsPane::on_lstPlugins_itemActivated (QListWidgetItem* p_item)
         ui->checkBoxEnabled->setChecked (plgn->isEnabled());
         ui->checkBoxAutoStart->setEnabled (plgn->isEnabled());
         ui->checkBoxAutoStart->setChecked (Factory::doesLoadOnStart (plgn->id()));
-        ui->btnLoadPlugin->setText(plgn->isLoaded() ? "Unload" : "Load");
-        ui->btnLoadPlugin->setEnabled(true);
-        ui->btnInfo->setEnabled(true);
-    } else {
-        ui->btnLoadPlugin->setEnabled(false);
-        ui->checkBoxAutoStart->setChecked(false);
-        ui->checkBoxAutoStart->setEnabled(false);
-        ui->checkBoxEnabled->setChecked(false);
-        ui->checkBoxEnabled->setEnabled(false);
-        ui->btnInfo->setEnabled(false);
+        ui->btnLoadPlugin->setText (plgn->isLoaded() ? "Unload" : "Load");
+        ui->btnLoadPlugin->setEnabled (true);
+        ui->btnInfo->setEnabled (true);
+    }
+    else {
+        ui->btnLoadPlugin->setEnabled (false);
+        ui->checkBoxAutoStart->setChecked (false);
+        ui->checkBoxAutoStart->setEnabled (false);
+        ui->checkBoxEnabled->setChecked (false);
+        ui->checkBoxEnabled->setEnabled (false);
+        ui->btnInfo->setEnabled (false);
     }
 }
 
-void PluginsSettingsPane::on_btnLoadPlugin_clicked(){
+void PluginsSettingsPane::on_btnLoadPlugin_clicked()
+{
     QListWidgetItem* item = ui->lstPlugins->currentItem();
-    const QString id(item->data (Qt::UserRole).toString());
+    const QString id (item->data (Qt::UserRole).toString());
 
-    if (!Factory::isPluginLoaded(id))
-        Factory::loadPlugin(id);
+    if (!Factory::isPluginLoaded (id))
+        Factory::loadPlugin (id);
     else
-        Factory::unloadPlugin(id);
+        Factory::unloadPlugin (id);
 
-    on_lstPlugins_itemActivated(item);
+    on_lstPlugins_itemActivated (item);
 }
 
 void PluginsSettingsPane::on_checkBoxAutoStart_toggled (const bool p_checked)

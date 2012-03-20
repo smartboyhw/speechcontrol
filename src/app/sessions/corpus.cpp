@@ -30,6 +30,8 @@
 #include <QDateTime>
 #include <QDomDocument>
 
+#define CHUNK_SIZE 5
+
 using namespace SpeechControl;
 
 Corpus::Corpus (const QString& p_id) : QObject(), m_dom (new QDomDocument)
@@ -79,8 +81,8 @@ Corpus& Corpus::operator << (PhraseList& p_phraseList)
 /// @todo Find a way to keep the text in an ordinal fashion.
 Corpus* Corpus::create (const QStringList& p_text)
 {
-    QString id = QUuid::createUuid().toString().split("-").at(0);
-    id = id.replace("{","");
+    QString id = QUuid::createUuid().toString().split ("-").at (0);
+    id = id.replace ("{", "");
     QDir dir (getPath (id));
 
     if (!dir.mkpath (dir.path())) {
@@ -120,15 +122,31 @@ Corpus* Corpus::create (const QStringList& p_text)
         return 0;
     }
 
-    Q_FOREACH (QString str, p_text) {
-        str = str.simplified().trimmed();
+    QStringList words = p_text.join (".").split (" ");
+    QString phrase;
+    uint wordCount = 0;
 
-        if (str.isEmpty() || str.isNull())
-            continue;
+    Q_FOREACH (QString word, words) {
+        if (wordCount == CHUNK_SIZE) {
+            phrase = phrase.trimmed().simplified();
+            Phrase* phrs = corpus->addPhrase (phrase, 0);
+            corpus->m_dom->documentElement().namedItem ("Phrases").appendChild (* (phrs->m_elem));
+            qDebug() << "[Corpus::create()] Added phrase" << corpus->phrases().count() << word;
+            wordCount = -1;
+            phrase.clear();
+        }
+        else {
+            word = word.simplified().trimmed();
 
-        Phrase* phrs = corpus->addPhrase (str , 0);
-        corpus->m_dom->documentElement().namedItem ("Phrases").appendChild (*(phrs->m_elem));
-        qDebug() << "[Corpus::create()] Added phrase" << corpus->phrases().count() << str;
+            if (word.isEmpty() || word.isNull()) {
+                continue;
+            }
+            else {
+                phrase += " " + word;
+            }
+        }
+
+        wordCount++;
     }
 
     corpus->save();
@@ -285,8 +303,8 @@ void Corpus::erase()
 
 Corpus* Corpus::clone() const
 {
-    QString id = QUuid::createUuid().toString().split("-").at(0);
-    id = id.replace("{","");
+    QString id = QUuid::createUuid().toString().split ("-").at (0);
+    id = id.replace ("{", "");
     QDir thisDir (Core::configurationPath().path() + "/corpus/" + m_id);
     QDir newDir (Core::configurationPath().path() + "/corpus/" + id);
     newDir.mkpath (newDir.absolutePath());

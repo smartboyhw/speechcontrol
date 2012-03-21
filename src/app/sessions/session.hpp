@@ -140,6 +140,8 @@ public:
     static Session* create (const Content*);
     static void save();
     static SessionList allSessions();
+    static SessionList completedSessions();
+    static SessionList incompleteSessions();
 
 signals:
     /**

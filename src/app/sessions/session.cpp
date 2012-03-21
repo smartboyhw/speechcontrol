@@ -87,7 +87,6 @@ void Session::init()
     s_elems.clear();
 
     if (s_dom) {
-        s_dom->clear();
         delete s_dom;
     }
 
@@ -98,24 +97,39 @@ void Session::init()
         s_dom->setContent (configFile);
 
         const QDomElement documentElem = s_dom->documentElement();
-        const QDomNodeList domList = documentElem.elementsByTagName ("Session");
 
-        for (int i = 0; i < domList.count(); i++) {
-            QDomElement node = domList.at (i).toElement();
-            const QUuid uuid (node.attribute ("uuid"));
-            s_elems.insert (uuid, new QDomElement (domList.at (i).toElement()));
+        if (documentElem.isNull()) {
+            qDebug() << "[Session:init()] Core Session XML is null; resetting...";
+            configFile->remove();
+            init();
+            qDebug() << "[Session:init()] Core Session XML has been reset.";
         }
+        else {
 
-        qDebug() << "[Session::init()] " << domList.count() << "sessions loaded.";
+            const QDomNodeList domList = documentElem.elementsByTagName ("Session");
+
+            for (int i = 0; i < domList.count(); i++) {
+                QDomElement node = domList.at (i).toElement();
+                const QUuid uuid (node.attribute ("uuid"));
+                s_elems.insert (uuid, new QDomElement (domList.at (i).toElement()));
+            }
+
+            qDebug() << "[Session::init()] " << domList.count() << "sessions loaded.";
+        }
     }
     else {
-        configFile->open (QIODevice::WriteOnly | QIODevice::Truncate);
+        qDebug() << "[Session::init()] Creating session listing...";
         QDomElement elem = s_dom->createElement ("Sessions");
-        s_dom->appendChild (elem);
-        configFile->write (s_dom->toString (4).toLocal8Bit());
+
+        if (s_dom->appendChild (elem).isNull()) {
+            qFatal ("[Session::init()] The internal Session XML is corrupt.");
+        }
+
+        save();
         qDebug() << "[Session::init()] Created session listing.";
     }
 
+    qDebug() << s_dom->toString (4);
     configFile->close();
 }
 
@@ -148,15 +162,55 @@ bool Session::isValid() const
 
 SessionList Session::allSessions()
 {
-    SessionList l_lst;
-    Q_FOREACH (const QUuid l_uuid, s_elems.keys()) {
-        Session* l_session = Session::obtain (l_uuid);
+    SessionList lst;
+    Q_FOREACH (const QUuid uuid, s_elems.keys()) {
+        Session* session = Session::obtain (uuid);
 
-        if (l_session && l_session->isValid())
-            l_lst << l_session;
+        if (session && session->isValid())
+            lst << session;
     }
 
-    return l_lst;
+    return lst;
+}
+
+SessionList Session::completedSessions()
+{
+    SessionList lst = allSessions();
+    SessionList completedLst;
+
+    Q_FOREACH (Session * session, lst) {
+        if (session->isCompleted())
+            completedLst << session;
+    }
+
+    return completedLst;
+}
+
+SessionList Session::incompleteSessions()
+{
+    SessionList lst = allSessions();
+    SessionList incompletedLst;
+
+    Q_FOREACH (Session * session, lst) {
+        if (!session->isCompleted())
+            incompletedLst << session;
+    }
+
+    return incompletedLst;
+
+}
+
+void Session::save()
+{
+    QFile* configFile = new QFile (Core::configurationPath().absolutePath() + "/sessions.xml");
+
+    if (!configFile->open (QIODevice::WriteOnly | QIODevice::Truncate)) {
+        qDebug() << "[Session::save()] Unable to open session data for saving." << configFile->errorString();
+        return;
+    }
+
+    configFile->write (s_dom->toByteArray (4));
+    configFile->close();
 }
 
 QUuid Session::uuid() const
@@ -174,7 +228,7 @@ Session* Session::obtain (const QUuid& p_uuid)
 Session* Session::create (const Content* p_content)
 {
     const QStringList lst = p_content->pages().join ("\n").simplified().trimmed().replace (".", ".\n").split ("\n", QString::SkipEmptyParts);
-    qDebug() << "[Session::create()] Session has " << lst.length() << "potential sentences.";
+    qDebug() << "[Session::create()] Session has" << lst.length() << "sentences.";
     const QUuid uuid = QUuid::createUuid();
     Corpus* corpus = Corpus::create (lst);
 
@@ -193,17 +247,16 @@ Session* Session::create (const Content* p_content)
     sessElem.setAttribute ("content", p_content->uuid().toString());
     sessElem.setAttribute ("corpus", corpus->id());
 
-    s_dom->documentElement().appendChild (sessElem);
-    s_dom->documentElement().appendChild (dateElem);
+    sessElem = s_dom->documentElement().appendChild (sessElem).toElement();
+    dateElem = s_dom->documentElement().appendChild (dateElem).toElement();
 
-    QFile* file = new QFile (Core::configurationPath().path() + "/sessions.xml");
-    file->open (QIODevice::WriteOnly | QIODevice::Truncate);
-    QTextStream str (file);
-    s_dom->save (str, 4);
-    file->close();
+    if (dateElem.isNull() || sessElem.isNull()) {
+        qDebug() << "[Session::create()] Error creating Session, invalid DOM used.";
+        return 0;
+    }
 
+    save();
     init();
-
     return Session::obtain (uuid);
 }
 
@@ -237,7 +290,7 @@ PhraseList Session::incompletedPhrases() const
     PhraseList list;
 
     Q_FOREACH (Phrase * phrase, m_corpus->phrases()) {
-        if (!phrase->isCompleted()){
+        if (!phrase->isCompleted()) {
             list << phrase;
             qDebug() << "[Phrase::incompletedPhrases()] Incomplete: " << phrase->index() << phrase->text();
         }
@@ -246,6 +299,7 @@ PhraseList Session::incompletedPhrases() const
     }
 
     qDebug() << "[Phrase::incompletedPhrases()] Number of incomplete sentences:" << list.length();
+
     if (list.length() > 0)
         qDebug() << "[Phrase::incompletedPhrases()] First up at: " << list.first()->index();
 
@@ -269,11 +323,8 @@ void Session::erase() const
     m_corpus->erase();
     s_dom->documentElement().removeChild (*m_elem);
 
-    QFile* file = new QFile (Core::configurationPath().absolutePath() + "/sessions.xml");
-    file->open (QIODevice::WriteOnly | QIODevice::Truncate);
-    QTextStream strm (file);
-
-    s_dom->save (strm, 4);
+    save();
+    init();
 
     qDebug() << "[Session::erase()] Session" << uuid << "removed.";
 }

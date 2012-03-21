@@ -127,12 +127,14 @@ void Core::stop()
 
 QVariant Core::configuration (const QString& p_attrName, QVariant p_attrDefValue)
 {
+    instance()->m_settings->sync();
     return instance()->m_settings->value (p_attrName, p_attrDefValue);
 }
 
 void Core::setConfiguration (const QString& p_attrName, const QVariant& p_attrValue)
 {
     instance()->m_settings->setValue (p_attrName, p_attrValue);
+    instance()->m_settings->sync();
 }
 
 int Core::exec()

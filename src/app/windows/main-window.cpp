@@ -248,11 +248,11 @@ void Main::on_actionAdaptModels_triggered()
 
 void Main::on_actionStartTraining_triggered ()
 {
-    Session* l_session = SessionManager::pickSession();
+    Session* session = SessionManager::pickSession();
 
-    if (l_session) {
-        TrainingDialog::startTraining (l_session);
-        setStatusMessage (tr ("Training session \"%1\"").arg (l_session->content()->title()) , 3000);
+    if (session && session->isValid() && !session->isCompleted()) {
+        TrainingDialog::startTraining (session);
+        setStatusMessage (tr ("Training session \"%1\"").arg (session->content()->title()) , 3000);
     }
 }
 

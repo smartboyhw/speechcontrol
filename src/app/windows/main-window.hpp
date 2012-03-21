@@ -34,6 +34,8 @@ class MainWindow;
 
 namespace SpeechControl
 {
+
+class Indicator;
 namespace Plugins
 {
 
@@ -61,6 +63,7 @@ class Main : public QMainWindow
 {
     Q_OBJECT
     friend class SpeechControl::Core;
+    friend class SpeechControl::Indicator;
     friend class Plugins::AbstractPlugin;
 
 public:

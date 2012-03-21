@@ -71,10 +71,11 @@ public:
     /**
      * @brief Initiates a new Training session.
      * Starts a new training session with the specified session p_session.
-     * @param  p_session The @c Session to train.
+     * @param p_session The @c Session to train.
+     * @param p_device The @c DeviceAudioSource to use for recording.
      * @return void
      **/
-    static void startTraining (Session* p_session);
+    static void startTraining (Session* session, DeviceAudioSource* device = 0);
 
     /**
      * @brief Changes the Session object used by this Training dialog.
@@ -83,6 +84,10 @@ public:
      * @return void
      **/
     void setSession (Session* p_session);
+
+    void setDevice(DeviceAudioSource* p_device);
+
+    DeviceAudioSource* deviceSource() const;
 
     /**
      * @brief Obtains the Session currently being trained.

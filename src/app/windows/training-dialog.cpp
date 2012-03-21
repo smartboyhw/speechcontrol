@@ -29,6 +29,7 @@
 #include "ui_training-dialog.h"
 #include "sessions/session.hpp"
 #include "training-dialog.hpp"
+#include "select-microphone-dialog.hpp"
 
 #include <sessions/phrase.hpp>
 #include <sessions/phrase.hpp>
@@ -47,7 +48,7 @@ using SpeechControl::Windows::TrainingDialog;
 TrainingDialog::TrainingDialog (QWidget* p_parent) :
     QDialog (p_parent),
     m_ui (new Ui::Training),
-    m_mic ( (DeviceAudioSource*) DeviceAudioSource::allDevices().first()),
+    m_mic (0),
     m_session (0),
     m_currentPosition (0), m_initialPosition (0)
 {
@@ -57,10 +58,6 @@ TrainingDialog::TrainingDialog (QWidget* p_parent) :
     m_ui->pushButtonUndo->setIcon (QIcon::fromTheme (ICON_UNDO));
     m_ui->pushButtonNext->setIcon (QIcon::fromTheme (ICON_NEXT));
 
-    connect (m_mic, SIGNAL (recordingBegun()), this, SLOT (onMicStartedListening()));
-    connect (m_mic, SIGNAL (recordingEnded()), this, SLOT (onMicStoppedListening()));
-    connect (m_mic, SIGNAL (bufferObtained (QByteArray)), this, SLOT (on_mic_BufferObtained (QByteArray)));
-
     stopCollecting();
     onMicStoppedListening();
 }
@@ -68,6 +65,20 @@ TrainingDialog::TrainingDialog (QWidget* p_parent) :
 TrainingDialog::~TrainingDialog()
 {
     delete m_ui;
+}
+
+DeviceAudioSource* TrainingDialog::deviceSource() const
+{
+    return m_mic;
+}
+
+void TrainingDialog::setDevice (DeviceAudioSource* p_device)
+{
+    m_mic = p_device;
+    connect (m_mic, SIGNAL (recordingBegun()), this, SLOT (onMicStartedListening()));
+    connect (m_mic, SIGNAL (recordingEnded()), this, SLOT (onMicStoppedListening()));
+    connect (m_mic, SIGNAL (bufferObtained (QByteArray)), this, SLOT (on_mic_BufferObtained (QByteArray)));
+
 }
 
 /// @todo Write data to a stream representing the current phrase's audio.
@@ -90,17 +101,26 @@ void TrainingDialog::onMicStoppedListening()
 }
 
 
-void TrainingDialog::startTraining (Session* session)
+void TrainingDialog::startTraining (Session* session, DeviceAudioSource* device)
 {
-    if (!session->isCompleted()) {
+    if (!device) {
+        device = Windows::MicrophoneSelectionDialog::select();
+
+        if (!device)
+            return;
+    }
+
+    if (session->isValid() && !session->isCompleted()) {
         TrainingDialog* dialog = new TrainingDialog;
 
-        if (!dialog->m_mic->isNull()) {
-            dialog->setSession (session);
-            dialog->open();
+        if (device->isNull()) {
+            QMessageBox::critical (0, tr ("Microphone Error"), tr ("<h2>Microphone Error</h2>SpeechControl is unable to get a proper handle on your microphone. Please check that all required peripherals are connected."));
+            return;
         }
         else {
-            QMessageBox::critical (0, tr ("Microphone Error"), tr ("<h2>Microphone Error</h2>SpeechControl is unable to get a proper handle on your microphone. Please check that all required peripherals are connected."));
+            dialog->setSession (session);
+            dialog->setDevice (device);
+            dialog->open();
         }
     }
     else {
@@ -133,7 +153,9 @@ void TrainingDialog::startCollecting()
 
 void TrainingDialog::stopCollecting()
 {
-    m_mic->stopRecording();
+    if (m_mic)
+        m_mic->stopRecording();
+
     m_ui->pushButtonNext->setEnabled (false);
     m_ui->pushButtonUndo->setEnabled (false);
     m_ui->pushButtonReset->setEnabled (false);
@@ -148,7 +170,7 @@ void TrainingDialog::setSession (Session* p_session)
     if (p_session) {
         m_session = p_session;
         this->setWindowTitle (tr ("Training '%1' (0%) - SpeechControl").arg (m_session->name()));
-        updateProgress(m_session->assessProgress());
+        updateProgress (m_session->assessProgress());
         connect (m_session, SIGNAL (progressChanged (double)), this, SLOT (updateProgress (double)));
     }
 }
@@ -214,6 +236,7 @@ void TrainingDialog::navigateToPart (const uint& p_index)
 void TrainingDialog::navigateNextPart()
 {
     const Phrase* nextPhrase = m_session->firstIncompletePhrase();
+
     if (currentPhraseCompleted() && nextPhrase) {
         navigateToPart (nextPhrase->index());
     }
@@ -222,6 +245,7 @@ void TrainingDialog::navigateNextPart()
 void TrainingDialog::navigatePreviousPart()
 {
     const Phrase* prevPhrase = m_session->lastIncompletePhrase();
+
     if (currentPhraseCompleted() && prevPhrase) {
         navigateToPart (prevPhrase->index());
     }

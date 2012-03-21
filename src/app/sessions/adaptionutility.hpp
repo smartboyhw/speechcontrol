@@ -32,20 +32,20 @@ class Session;
 /**
  * @brief Provides SpeechControl with the ability to adapt sessions into existing acoustic models.
  *
- * AdaptionUtility performs most of the actions required to perform an adaption as
+ * AdaptationUtility performs most of the actions required to perform an adaption as
  * prescribed by <http://cmusphinx.sourceforge.net/wiki/tutorialadapt>. The process is
  * typically as follows:
  *
  * @li Obtain the feature parameters of the acoustic model to be adapted. ( @c generateFeatures() )
  * @li Convert the model definitions from its binary format into a text format. ( @c convertModelDefinitions() )
  * @li Obtain statistical information about the acoustic model. ( @c collectAcousticStatistics() )
- * @li Enacts the adaption process, MAP-style. ( @c performAdaption() )
+ * @li Enacts the adaption process, MAP-style. ( @c performAdaptation() )
  * @li Re-generate the sendmap file (to save disk space) ( @c generateSendmap() )
  * @li Generate statistical information about the accuracy and efficiency of the newly adopted model. ( @c generateAccuracyReport() )
  *
  * More information about adaption in SpeechControl can be found at <http://wiki.thesii.org/SpeechControl/AdaptingAcousticModels>.
  **/
-class AdaptionUtility : public QObject
+class AdaptationUtility : public QObject
 {
     Q_OBJECT
 
@@ -55,18 +55,18 @@ public:
      * @param p_session The Session to be adapted with.
      * @param p_model The AcousticModel to be adapted.
      **/
-    explicit AdaptionUtility (Session* p_session, AcousticModel* p_model);
+    explicit AdaptationUtility (Session* p_session, AcousticModel* p_model);
 
     /**
      * @brief Null constructor.
      **/
-    AdaptionUtility();
+    AdaptationUtility();
 
     /**
      * @brief Destructor.
      **/
 
-    virtual ~AdaptionUtility();
+    virtual ~AdaptationUtility();
 
     /**
      * @brief Changes the Session to be merged with the acoustic model.
@@ -103,7 +103,7 @@ private:
     void generateMixtureWeights();
     void convertModelDefinitions();
     void collectAcousticStatistics();
-    void performAdaption();
+    void performAdaptation();
     void generateSendmap();
     void generateAccuracyReport();
     void copyAcousticModel();

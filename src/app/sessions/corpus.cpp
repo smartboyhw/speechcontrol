@@ -31,6 +31,7 @@
 #include <QDomDocument>
 
 #define CHUNK_SIZE 5
+#include <stdexcept>
 
 using namespace SpeechControl;
 
@@ -41,12 +42,12 @@ Corpus::Corpus (const QString& p_id) : QObject(), m_dom (new QDomDocument)
 
 PhraseList Corpus::phrases() const
 {
-    return m_phrsLst;
+    return m_phraseList;
 }
 
 Phrase* Corpus::addPhrase (Phrase* p_phrase)
 {
-    m_phrsLst << p_phrase;
+    m_phraseList << p_phrase;
     return p_phrase;
 }
 
@@ -181,15 +182,15 @@ Corpus* Corpus::obtain (const QString& p_id)
     qDebug() << "[Corpus::obtain()] Obtaining corpus" << p_id << path;
 
     if (!QFile::exists (path)) {
-        qDebug() << "[Corpus::obtain()] Corpus not found at" << path;
-        return 0;
+//         qDebug() << "[Corpus::obtain()] Corpus not found at" << path;
+        throw std::runtime_error("Corpus not found at " + path.toStdString());
     }
 
     crps = new Corpus (p_id);
 
     if (!crps->isValid()) {
-        qDebug() << "[Corpus::obtain()] Invalid corpus" << p_id;
-        return 0;
+//         qDebug() << "[Corpus::obtain()] Invalid corpus" << p_id;
+        throw std::runtime_error("Invalid corpus.");
     }
 
     return crps;
@@ -250,7 +251,7 @@ void Corpus::nullify()
 {
     m_dom = 0;
     m_dict = 0;
-    m_phrsLst = PhraseList();
+    m_phraseList = PhraseList();
     m_id = QString (QString::null);
     qDebug() << "[Corpus::nullify()] Nullified.";
 }
@@ -320,10 +321,10 @@ Corpus* Corpus::clone() const
 
 Phrase* Corpus::phraseAt (const int& p_index) const
 {
-    if (p_index < 0 || p_index > m_phrsLst.count())
+    if (p_index < 0 || p_index > m_phraseList.count())
         return 0;
     else
-        return m_phrsLst.at (p_index);
+        return m_phraseList.at (p_index);
 }
 
 Dictionary* Corpus::dictionary() const

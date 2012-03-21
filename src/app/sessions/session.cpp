@@ -24,6 +24,8 @@
 #include <QDebug>
 #include <QFile>
 
+#include <stdexcept>
+
 using namespace SpeechControl;
 
 QMap<QUuid, QDomElement*> Session::s_elems;
@@ -45,15 +47,15 @@ Corpus* Session::corpus() const
 }
 
 /// @todo Invoke the progress of this session when loaded.
-void Session::setCorpus (Corpus* l_corpus)
+void Session::setCorpus (Corpus* corpus)
 {
-    if (l_corpus) {
-        m_corpus = l_corpus;
-        assessProgress();
-    }
-    else {
-        qDebug() << "[Session::setCorpus()] Null corpus not added.";
-    }
+    if (corpus == NULL)
+        throw std::invalid_argument("Null corpus error.");
+    
+    m_corpus = corpus;
+    assessProgress();
+    
+//         qDebug() << "[Session::setCorpus()] Null corpus not added.";
 }
 
 Content* Session::content() const
@@ -63,6 +65,9 @@ Content* Session::content() const
 
 void Session::setContent (Content* p_content)
 {
+    if (p_content == NULL)
+        throw std::invalid_argument("Null content error.");
+    
     m_content = p_content;
     assessProgress();
 }

@@ -246,7 +246,7 @@ private:
 
     QString m_id;               ///< Holds the ID of this Corpus.
     QDomDocument* m_dom;        ///< The QDomDocument representing the Corpus's data.
-    PhraseList m_phrsLst;    ///< The list of phrases held by this Corpus.
+    PhraseList m_phraseList;    ///< The list of phrases held by this Corpus.
     Dictionary* m_dict;         ///< The dictionary generated or being used by this Corpus.
 
     static CorpusMap s_lst;     ///< Used to centralize the obtaining of @c Corpus objects.

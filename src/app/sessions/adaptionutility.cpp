@@ -21,44 +21,48 @@
 #include "adaptionutility.hpp"
 #include <acousticmodel.hpp>
 
+#include <QDebug>
+#include <QProcess>
+
 using namespace SpeechControl;
 
-AdaptionUtility::AdaptionUtility() : QObject(), m_session (0), m_modelBase (0), m_modelResult(0)
+
+AdaptationUtility::AdaptationUtility() : QObject(), m_session (0), m_modelBase (0), m_modelResult(0)
+{
+    qWarning() << "[AdaptationUtility] Initialized with null objects.";
+}
+
+AdaptationUtility::AdaptationUtility (Session* p_session, AcousticModel* p_model) : QObject(), m_session (p_session), m_modelBase (p_model), m_modelResult(0)
 {
 
 }
 
-AdaptionUtility::AdaptionUtility (Session* p_session, AcousticModel* p_model) : QObject(), m_session (p_session), m_modelBase (p_model), m_modelResult(0)
-{
-
-}
-
-Session* AdaptionUtility::session()
+Session* AdaptationUtility::session()
 {
     return m_session;
 }
 
-AcousticModel* AdaptionUtility::baseModel()
+AcousticModel* AdaptationUtility::baseModel()
 {
     return m_modelBase;
 }
 
-AcousticModel* AdaptionUtility::resultingModel()
+AcousticModel* AdaptationUtility::resultingModel()
 {
     return m_modelResult;
 }
 
-void AdaptionUtility::setSession (Session* p_session)
+void AdaptationUtility::setSession (Session* p_session)
 {
     m_session = p_session;
 }
 
-void AdaptionUtility::setAcousticModel (AcousticModel* p_model)
+void AdaptationUtility::setAcousticModel (AcousticModel* p_model)
 {
     m_modelBase = p_model;
 }
 
-AcousticModel* AdaptionUtility::adapt()
+AcousticModel* AdaptationUtility::adapt()
 {
     if (!m_session || !m_modelBase)
         return 0;
@@ -68,54 +72,54 @@ AcousticModel* AdaptionUtility::adapt()
     generateMixtureWeights();
     convertModelDefinitions();
     collectAcousticStatistics();
-    performAdaption();
+    performAdaptation();
     generateSendmap();
     generateAccuracyReport();
 
     return 0;
 }
 
-void AdaptionUtility::copyAcousticModel()
+void AdaptationUtility::copyAcousticModel()
 {
     m_modelResult = m_modelBase->clone();
 }
 
-void AdaptionUtility::generateFeatures()
+void AdaptationUtility::generateFeatures()
 {
 
 }
 
-void AdaptionUtility::generateMixtureWeights()
+void AdaptationUtility::generateMixtureWeights()
 {
 
 }
 
-void AdaptionUtility::convertModelDefinitions()
+void AdaptationUtility::convertModelDefinitions()
 {
 
 }
 
-void AdaptionUtility::collectAcousticStatistics()
+void AdaptationUtility::collectAcousticStatistics()
 {
 
 }
 
-void AdaptionUtility::performAdaption ()
+void AdaptationUtility::performAdaptation ()
 {
 
 }
 
-void AdaptionUtility::generateSendmap()
+void AdaptationUtility::generateSendmap()
 {
 
 }
 
-void AdaptionUtility::generateAccuracyReport()
+void AdaptationUtility::generateAccuracyReport()
 {
 
 }
 
-AdaptionUtility::~AdaptionUtility()
+AdaptationUtility::~AdaptationUtility()
 {
 
 }

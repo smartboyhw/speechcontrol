@@ -51,10 +51,10 @@ void Session::setCorpus (Corpus* corpus)
 {
     if (corpus == NULL)
         throw std::invalid_argument("Null corpus error.");
-    
+
     m_corpus = corpus;
     assessProgress();
-    
+
 //         qDebug() << "[Session::setCorpus()] Null corpus not added.";
 }
 
@@ -67,7 +67,7 @@ void Session::setContent (Content* p_content)
 {
     if (p_content == NULL)
         throw std::invalid_argument("Null content error.");
-    
+
     m_content = p_content;
     assessProgress();
 }
@@ -253,7 +253,7 @@ Session* Session::create (const Content* p_content)
     sessElem.setAttribute ("corpus", corpus->id());
 
     sessElem = s_dom->documentElement().appendChild (sessElem).toElement();
-    dateElem = s_dom->documentElement().appendChild (dateElem).toElement();
+    dateElem = sessElem.appendChild (dateElem).toElement();
 
     if (dateElem.isNull() || sessElem.isNull()) {
         qDebug() << "[Session::create()] Error creating Session, invalid DOM used.";
@@ -307,6 +307,10 @@ PhraseList Session::incompletedPhrases() const
 
     if (list.length() > 0)
         qDebug() << "[Phrase::incompletedPhrases()] First up at: " << list.first()->index();
+    else {
+        m_elem->namedItem("Date").toElement().setAttribute("completed",QDateTime::currentDateTimeUtc().toString());
+        qDebug() << "[Phrase::incompletedPhrases()] No more phrases detected, setting Session to 'completed' state.";
+    }
 
     return list;
 }

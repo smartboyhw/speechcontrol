@@ -40,23 +40,21 @@ SessionInformationDialog::SessionInformationDialog (Session* p_session) : QDialo
 
 void SessionInformationDialog::updateUi()
 {
-    int l_sharedSessionCount = 0;
+    int sharedSessionCount = 0;
 
-    Q_FOREACH (const Session * l_session, Session::allSessions()) {
-        if (l_session->content() == m_session->content())
-            l_sharedSessionCount += 0;
+    Q_FOREACH (const Session * session, Session::allSessions()) {
+        if (session->content() == m_session->content() && session->uuid() != m_session->uuid())
+            sharedSessionCount += 1;
     }
 
-    const int l_progress = (int) (m_session->assessProgress() * 100.0);
-    m_ui->lblContentInfo->setText (tr ("This session uses the text from <b>%1</b>.<br />"
-                                       "%2 other sessions use <b>%1</b> for transcription as well.")
-                                   .arg (m_session->name())
-                                   .arg (l_sharedSessionCount)
+    const int progress = (int) (m_session->assessProgress() * 100.0);
+    m_ui->lblContentInfo->setText (tr ("Shared with %1 other session(s).")
+                                   .arg (sharedSessionCount)
                                   );
 
-    if (l_progress > 0) {
+    if (progress > 0) {
         m_ui->progressBarCompletion->setFormat (tr ("%p% complete"));
-        m_ui->progressBarCompletion->setValue (l_progress);
+        m_ui->progressBarCompletion->setValue (progress);
     }
     else {
         m_ui->progressBarCompletion->setFormat (tr ("no training progress"));
@@ -69,9 +67,9 @@ void SessionInformationDialog::updateUi()
 
 void SessionInformationDialog::on_btnOpenContent_clicked()
 {
-    ContentInformationDialog l_dialog (m_session->content());
-    l_dialog.setParent (this);
-    l_dialog.show();
+    ContentInformationDialog dialog (m_session->content());
+    dialog.setParent (this);
+    dialog.exec();
 }
 
 void SessionInformationDialog::on_btnTrainSession_clicked()
@@ -100,4 +98,4 @@ SessionInformationDialog::~SessionInformationDialog()
 }
 
 #include "session-information-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

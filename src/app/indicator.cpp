@@ -26,6 +26,7 @@
 #include "core.hpp"
 #include "indicator.hpp"
 #include "windows/main-window.hpp"
+#include <ui_main-window.h>
 
 // Qt
 #include <QImage>
@@ -43,22 +44,64 @@ Indicator::Indicator () : QObject (Core::instance()),
 {
     s_inst = this;
 
-    m_icon = new QSystemTrayIcon (QIcon (":/logo/sc-large"), this);
+    m_icon = new QSystemTrayIcon (icon(), this);
+    buildMenu();
+}
+
+void Indicator::buildMenu()
+{
     QMenu* l_menu = new QMenu;
+    QMenu* menuDesktopControl = l_menu->addMenu (Core::mainWindow()->m_ui->menuDesktopControl->icon(),
+                                                 Core::mainWindow()->m_ui->menuDesktopControl->title());
+    QMenu* menuDictation      = l_menu->addMenu (Core::mainWindow()->m_ui->menuDictation->icon(),
+                                                 Core::mainWindow()->m_ui->menuDictation->title());
+    QMenu* menuPlugins        = l_menu->addMenu (Core::mainWindow()->m_ui->menuPlugins->icon(),
+                                                 Core::mainWindow()->m_ui->menuPlugins->title());
+    QMenu* menuHelp           = l_menu->addMenu (Core::mainWindow()->m_ui->menuHelp->icon(),
+                                                 Core::mainWindow()->m_ui->menuHelp->title());
+
+    menuDesktopControl->addActions (Core::mainWindow()->m_ui->menuDesktopControl->actions());
+    menuDictation->addActions (Core::mainWindow()->m_ui->menuDictation->actions());
+    menuPlugins->addActions (Core::mainWindow()->m_ui->menuPlugins->actions());
+    menuHelp->addActions (Core::mainWindow()->m_ui->menuHelp->actions());
+
+    l_menu->addMenu (menuDesktopControl);
+    l_menu->addMenu (menuDictation);
+    l_menu->addMenu (menuPlugins);
+        l_menu->addSeparator();
+    l_menu->addMenu (menuHelp);
+    l_menu->addAction (Core::mainWindow()->m_ui->actionOptions);
+        l_menu->addSeparator();
     l_menu->addAction ("Restore", Core::mainWindow(), SLOT (open()));
     l_menu->addAction (QIcon::fromTheme ("application-exit"), "Quit", QApplication::instance(), SLOT (quit()));
+
     m_icon->setContextMenu (l_menu);
 }
 
-/// @todo Implement the appropriate code using QtIndicate to hide the indicator.
+
+QIcon Indicator::icon()
+{
+    const QString state = Core::configuration ("Indicator/Icon").toString();
+    qDebug() << "[Indicator::icon] " << state;
+
+    if (state == "White")
+        return QIcon (":/indicator/white");
+    else if (state == "Black")
+        return QIcon (":/indicator/black");
+    else if (state == "Default")
+        return QIcon (":/logo/sc");
+
+    return QApplication::windowIcon();
+}
+
 void Indicator::hide()
 {
     instance()->m_icon->hide();
 }
 
-/// @todo Implement the appropriate code using QtIndicate to show the indicator.
 void Indicator::show()
 {
+    instance()->m_icon->setIcon (icon().pixmap (48, 48));
     instance()->m_icon->show();
 }
 

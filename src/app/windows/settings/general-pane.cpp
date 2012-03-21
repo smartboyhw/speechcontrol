@@ -85,6 +85,9 @@ void GeneralSettingsPane::updateUi()
     ui->lblAccuracyRating->setText ("<i>n/a</i>");
     ui->checkBoxIndicatorIcon->setChecked (Core::configuration ("Indicator/Show").toBool());
     ui->checkBoxAutoStartApp->setChecked(Core::doesAutoStart());
+    ui->radioButtonIconBlack->setChecked(Core::configuration("Indicator/Icon").toString() == "Black");
+    ui->radioButtonIconWhite->setChecked(Core::configuration("Indicator/Icon").toString() == "White");
+    ui->radioButtonIconDefault->setChecked(Core::configuration("Indicator/Icon").toString() == "Default");
 }
 
 void GeneralSettingsPane::on_checkBoxAutoStartApp_toggled(bool p_checked){
@@ -95,6 +98,39 @@ void GeneralSettingsPane::on_checkBoxIndicatorIcon_toggled (bool p_checked)
 {
     Core::setConfiguration ("Indicator/Show", p_checked);
     (p_checked) ? Indicator::show() : Indicator::hide();
+    ui->radioButtonIconBlack->setEnabled(p_checked);
+    ui->radioButtonIconWhite->setEnabled(p_checked);
+    ui->radioButtonIconDefault->setEnabled(p_checked);
+}
+
+void GeneralSettingsPane::on_radioButtonIconBlack_toggled (bool p_checked)
+{
+    if (p_checked){
+        Core::setConfiguration("Indicator/Icon","Black");
+        ui->lblSampleIcon->setPixmap(Indicator::icon().pixmap(48,48));
+    }
+
+    Indicator::show();
+}
+
+void GeneralSettingsPane::on_radioButtonIconDefault_toggled (bool p_checked)
+{
+    if (p_checked){
+        Core::setConfiguration("Indicator/Icon","Default");
+        ui->lblSampleIcon->setPixmap(Indicator::icon().pixmap(48,48));
+    }
+
+    Indicator::show();
+}
+
+void GeneralSettingsPane::on_radioButtonIconWhite_toggled (bool p_checked)
+{
+    if (p_checked){
+        Core::setConfiguration("Indicator/Icon","White");
+        ui->lblSampleIcon->setPixmap(Indicator::icon().pixmap(48,48));
+    }
+
+    Indicator::show();
 }
 #include "general-pane.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

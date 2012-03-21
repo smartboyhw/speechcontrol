@@ -69,9 +69,11 @@ public:
      * @brief Determines whether or not the Indicator's icon is visible.
      **/
     bool isVisible();
+    static QIcon icon();
 
 private slots:
     void showMainWindow();
+    void buildMenu();
 
 private:
     QSystemTrayIcon* m_icon;            ///< The tray icon.
@@ -79,4 +81,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -239,7 +239,7 @@ void Corpus::load (const QString& p_id)
             }
 
             Phrase* l_sntc = new Phrase (this, (new QDomElement (elems.at (i).toElement())));
-            qDebug() << "[Corpus::load()] Loaded phrase:" << l_sntc->text();
+            //qDebug() << "[Corpus::load()] Loaded phrase:" << l_sntc->text();
             addPhrase (l_sntc);
         }
     }

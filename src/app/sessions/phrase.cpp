@@ -29,7 +29,7 @@ using namespace SpeechControl;
 
 Phrase::Phrase (Corpus* p_corpus, const QDomElement* p_elem) : QObject (p_corpus), m_elem (p_elem), m_corpus (p_corpus)
 {
-    qDebug() << "[Phrase::{constructor}] Phrase" << this->text() << "rendered.";
+    //qDebug() << "[Phrase::{constructor}] Phrase" << this->text() << "rendered.";
 }
 
 Phrase* Phrase::create (Corpus* p_corpus, const QString& p_text)

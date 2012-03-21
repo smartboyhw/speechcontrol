@@ -38,6 +38,13 @@ AbstractAudioSource::AbstractAudioSource (QObject* parent) : QObject (parent),
     m_appSink (new GenericSink), m_binPtr(), m_pipeline(),
     m_sinkPtr(), m_srcPtr(), m_volumePtr(), m_levelPtr()
 {
+    // Ensure that the pointer's are empty.
+    m_binPtr.clear();
+    m_pipeline.clear();
+    m_sinkPtr.clear();
+    m_srcPtr.clear();
+    m_volumePtr.clear();
+    m_levelPtr.clear();
 }
 
 QString AbstractAudioSource::caps() const
@@ -507,7 +514,9 @@ QString DeviceAudioSource::humanName() const
     if (m_devicePtr.isNull())
         return deviceName();
     else {
+        m_devicePtr->setState(QGst::StatePlaying);
         QString name = m_devicePtr->property ("device-name").toString();
+        m_devicePtr->setState(QGst::StatePaused);
 
         if (name.isEmpty() || name.isNull())
             return deviceName();

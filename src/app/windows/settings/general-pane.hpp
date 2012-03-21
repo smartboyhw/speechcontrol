@@ -69,6 +69,7 @@ private slots:
     void on_radioButtonIconWhite_toggled(bool p_checked);
     void on_radioButtonIconBlack_toggled(bool p_checked);
     void on_radioButtonIconDefault_toggled(bool p_checked);
+    void on_checkBoxWindowState_toggled(bool p_checked);
     virtual void updateUi();
 
 private:

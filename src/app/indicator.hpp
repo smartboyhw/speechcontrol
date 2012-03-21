@@ -77,6 +77,8 @@ private slots:
 
 private:
     QSystemTrayIcon* m_icon;            ///< The tray icon.
+public slots:
+    void on_mIcon_activated (QSystemTrayIcon::ActivationReason p_reason);
 };
 }
 

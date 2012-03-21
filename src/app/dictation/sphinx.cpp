@@ -39,13 +39,13 @@ Sphinx::Sphinx (QGst::PipelinePtr p_pipeline, QObject* p_parent) : AbstractSphin
 
 void Sphinx::applicationMessage (const QGst::MessagePtr& p_message)
 {
-    QString l_msgType    = p_message->internalStructure()->name();
-    QString l_hypothesis = p_message->internalStructure()->value ("hyp").toString();
-    QString l_uttid      = p_message->internalStructure()->value ("uttid").toString();
+    QString msgType    = p_message->internalStructure()->name();
+    QString hypothesis = p_message->internalStructure()->value ("hyp").toString();
+    QString uttid      = p_message->internalStructure()->value ("uttid").toString();
 
-    if (l_msgType == "result") {
-        qDebug() << "[Dictation::Sphinx::applicationMessage()] Result:" << l_hypothesis;
-        emit finished (l_hypothesis);
+    if (msgType == "result") {
+        qDebug() << "[Dictation::Sphinx::applicationMessage()] Result:" << hypothesis;
+        emit finished (hypothesis);
     }
 }
 

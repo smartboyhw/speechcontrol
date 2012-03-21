@@ -497,7 +497,6 @@ p, li { white-space: pre-wrap; }
      <addaction name="actionWizardQuickStart"/>
      <addaction name="actionWizardMicrophone"/>
      <addaction name="actionWizardContent"/>
-     <addaction name="actionWizardSessions"/>
      <addaction name="actionWizardVoxForge"/>
      <addaction name="actionWizardAdaption"/>
     </widget>
@@ -581,11 +580,6 @@ p, li { white-space: pre-wrap; }
    </property>
    <property name="toolTip">
     <string>Start the Content addition wizard.</string>
-   </property>
-  </action>
-  <action name="actionWizardSessions">
-   <property name="text">
-    <string>&amp;Sessions...</string>
    </property>
   </action>
   <action name="actionWizardVoxForge">

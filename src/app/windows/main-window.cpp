@@ -50,7 +50,6 @@
 #include "quickstart-wizard.hpp"
 #include "micsetup-wizard.hpp"
 #include "contents-wizard.hpp"
-#include "sessions-wizard.hpp"
 #include "adapt-wizard.hpp"
 #include "ui_main-window.h"
 
@@ -85,8 +84,7 @@ Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0)
     m_ui->menuDictation->setIcon (QIcon::fromTheme ("audio-input-microphone"));
     m_ui->menuDesktopControl->setIcon (QIcon::fromTheme ("audio-headset"));
     m_ui->actionWizardContent->setIcon (QIcon::fromTheme ("x-office-document"));
-    m_ui->actionWizardSessions->setIcon (QIcon::fromTheme ("application-x-tar"));
-    m_ui->actionWizardAdaption->setIcon(QIcon::fromTheme("configure"));
+    m_ui->actionWizardAdaption->setIcon (QIcon::fromTheme ("configure"));
     m_ui->actionDesktopControlCommands->setIcon (QIcon::fromTheme ("view-list-text"));
     m_ui->actionStartTraining->setIcon (QIcon::fromTheme ("system-run"));
     m_ui->actionHelp->setIcon (QIcon::fromTheme ("help"));
@@ -126,15 +124,19 @@ void Main::closeEvent (QCloseEvent* p_closeEvent)
         }
     }
 
-    Core::setConfiguration ("MainWindow/Geometry", saveGeometry());
-    Core::setConfiguration ("MainWindow/State", saveState());
+    if (Core::configuration ("MainWindow/RememberState").toBool()) {
+        Core::setConfiguration ("MainWindow/Geometry", saveGeometry());
+        Core::setConfiguration ("MainWindow/State", saveState());
+
+        if (Indicator::instance()->isVisible())
+            Core::setConfiguration ("MainWindow/Visible", isVisible());
+        else
+            Core::setConfiguration ("MainWindow/Visible", true);
+    }
 }
 
 void Main::open()
 {
-    restoreGeometry (Core::configuration ("MainWindow/Geometry").toByteArray());
-    restoreGeometry (Core::configuration ("MainWindow/State").toByteArray());
-
     if (DeviceAudioSource::allDevices().empty()) {
         QErrorMessage* l_msg = new QErrorMessage (this);
         l_msg->setModal (true);
@@ -145,7 +147,20 @@ void Main::open()
     }
 
     updateWindow();
-    QMainWindow::show();
+
+    if (Core::configuration ("MainWindow/RememberState").toBool()) {
+        restoreGeometry (Core::configuration ("MainWindow/Geometry").toByteArray());
+        restoreGeometry (Core::configuration ("MainWindow/State").toByteArray());
+        const bool isIndicatorVisible = Indicator::instance()->isVisible() && Core::configuration ("MainWindow/Visible").toBool() == true;
+
+        if (isIndicatorVisible || !Indicator::instance()->isVisible())
+            QMainWindow::show();
+        else
+            QMainWindow::hide();
+    }
+    else {
+        QMainWindow::show();
+    }
 }
 
 void Main::setStatusMessage (const QString& p_message , const int p_timeout)
@@ -199,7 +214,7 @@ void Main::updateUi()
     const bool desktopControlEnabled = DesktopControl::Agent::instance()->isEnabled();
 
     m_ui->btnDsktpCntrl->setEnabled (desktopControlEnabled);
-    m_ui->actionDesktopControlActive->setEnabled(desktopControlEnabled);
+    m_ui->actionDesktopControlActive->setEnabled (desktopControlEnabled);
 
     if (desktopControlEnabled) {
         m_ui->btnDctn->setChecked (dictationActive);
@@ -207,11 +222,11 @@ void Main::updateUi()
     }
 
     m_ui->btnDctn->setEnabled (dictationEnabled);
-    m_ui->actionDictationActive->setEnabled(dictationEnabled);
+    m_ui->actionDictationActive->setEnabled (dictationEnabled);
 
     if (dictationEnabled) {
         m_ui->btnDsktpCntrl->setChecked (desktopControlActive);
-        m_ui->btnDsktpCntrl->setIcon ((desktopControlActive ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
+        m_ui->btnDsktpCntrl->setIcon ( (desktopControlActive ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
     }
 }
 
@@ -241,7 +256,7 @@ void Main::on_actionOptions_triggered()
 
 void Main::on_actionAdaptModels_triggered()
 {
-    AdaptWizard* wiz = new AdaptWizard(this);
+    AdaptWizard* wiz = new AdaptWizard (this);
     wiz->exec();
     updateWindow();
 }
@@ -303,7 +318,7 @@ void Main::on_actionPluginOptions_triggered()
 
 void Main::on_actionTrainingOptions_triggered()
 {
-    Settings::displayPane("trnng");
+    Settings::displayPane ("trnng");
     updateWindow();
 }
 
@@ -315,21 +330,14 @@ void Main::on_actionDictationOptions_triggered()
 
 void Main::on_actionWizardMicrophone_triggered()
 {
-    MicrophoneSetup wiz(this);
+    MicrophoneSetup wiz (this);
     wiz.exec();
     updateWindow();
 }
 
 void Main::on_actionWizardContent_triggered()
 {
-    ContentWizard wiz(this);
-    wiz.exec();
-    updateWindow();
-}
-
-void Main::on_actionWizardSessions_triggered()
-{
-    SessionWizard wiz(this);
+    ContentWizard wiz (this);
     wiz.exec();
     updateWindow();
 }
@@ -358,7 +366,7 @@ void Main::on_actionHelp_triggered()
 
 void Main::on_actionWizardAdaption_triggered()
 {
-    AdaptWizard* wiz = new AdaptWizard(this);
+    AdaptWizard* wiz = new AdaptWizard (this);
     wiz->exec();
     updateWindow();
 }

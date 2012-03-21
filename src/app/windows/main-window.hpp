@@ -124,7 +124,6 @@ private slots:
     // wizards
     void on_actionWizardMicrophone_triggered();
     void on_actionWizardContent_triggered();
-    void on_actionWizardSessions_triggered();
     void on_actionWizardVoxForge_triggered();
     void on_actionWizardQuickStart_triggered();
     void on_actionWizardAdaption_triggered();

@@ -123,6 +123,9 @@ Windows::Main* Core::mainWindow()
 void Core::stop()
 {
     emit instance()->stopped();
+    if (Core::configuration ("MainWindow/RememberState").toBool()){
+        Core::setConfiguration ("MainWindow/Visible", mainWindow()->isVisible());
+    }
 }
 
 QVariant Core::configuration (const QString& p_attrName, QVariant p_attrDefValue)

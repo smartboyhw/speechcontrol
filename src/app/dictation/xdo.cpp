@@ -18,11 +18,16 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+// locals (order is IMPORTANT!)
 #include "xdo.hpp"
 #include "core.hpp"
+#include "xdo.hxx"
+
+// Qt
 #include <QDebug>
 
-#include "xdo.hxx"
+// Hunspell
+//#include <hunspell.hxx>
 
 using SpeechControl::Core;
 using SpeechControl::Dictation::KeyboardEmulator;
@@ -30,13 +35,15 @@ using SpeechControl::Dictation::KeyboardEmulator;
 KeyboardEmulator* KeyboardEmulator::s_inst = 0;
 
 KeyboardEmulator::KeyboardEmulator() : QObject (Core::instance()), m_xdo (0),
-    m_win (0)
+    m_win (0), m_spllchk (0)
 {
     m_xdo = xdo_new (0);
     int x, y;
 
     SC_ASSERT (m_xdo != 0, "Failed to create 'xdo' instance.");
     qDebug() << "[KeyboardEmulator::{constructor}] Mouse location" << xdo_mouselocation (m_xdo, &x, &y, 0) << x << "," << y;
+
+    //m_spllchk = new Hunspell (0, 0);
 }
 
 /// @todo Allow the value of the delay to be adjustable.

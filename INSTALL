@@ -3,7 +3,7 @@ Installing SpeechControl
 
 0. For the Impatient
 
-    # apt-get install cmake libqt4-dev libqtgstreamer-dev libpocketsphinx-dev libsphinxbase-dev libxdo-dev python-dev libboost-python-dev gstreamer0.10-pocketsphinx pkg-config
+    # apt-get install cmake libqt4-dev libqtgstreamer-dev libpocketsphinx-dev libsphinxbase-dev libxdo-dev python-dev libboost-python-dev gstreamer0.10-pocketsphinx pkg-config libhunspell-dev
     $ mkdir build && cd build
     $ cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug
     $ make
@@ -32,6 +32,9 @@ SpeechControl's core requires that you have the following packages installed:
 
     * XDO library and development files (for dictation functionality)
       # apt-get install libxdo-dev
+
+    * Hunspell spell-checking development files and library (for spell-checking dictation input)
+      # apt-get install libhunspell-dev
 
     * [Optional] Development files for Python 2.7 (or higher)
       # apt-get install python-dev

@@ -25,6 +25,7 @@
 #include <app/macros.hpp>
 
 struct xdo;
+class Hunspell;
 
 namespace SpeechControl
 {
@@ -72,9 +73,10 @@ public:
 private:
     xdo* m_xdo;                             ///< the XDO handle.
     long unsigned int m_win;                ///< the X11 window ID.
+    Hunspell* m_spllchk;                    ///< Spell checker.
 };
 }
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

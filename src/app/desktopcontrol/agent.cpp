@@ -30,10 +30,8 @@ namespace DesktopControl
 
 Agent* Agent::s_inst = 0;
 
-Agent::Agent() : AbstractAgent (AbstractCategory::global())
+Agent::Agent() : AbstractAgent (AbstractCategory::global()), m_sphinx (0)
 {
-    m_sphinx = new Sphinx (Sphinx::standardDescription(), parent());
-    connect (m_sphinx, SIGNAL (finished (QString)), this, SLOT (invokeCommand (QString)));
 }
 
 Agent::~Agent()
@@ -46,9 +44,16 @@ AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::Activit
     switch (p_state) {
     case Enabled:
 
+        if (!m_sphinx) {
+            m_sphinx = new Sphinx (Sphinx::standardDescription(), parent());
+            connect (m_sphinx, SIGNAL (finished (QString)), this, SLOT (invokeCommand (QString)));
+        }
+
         if (!m_sphinx->start()) {
             qWarning() << "[DesktopControl::Agent::onStateChanged()] Start unsuccessful.";
             return Disabled;
+        } else {
+            qDebug() << "[DesktopControl::Agent::onStateChanged()] Enabled.";
         }
 
         return Enabled;
@@ -56,12 +61,16 @@ AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::Activit
 
     case Disabled:
 
-        if (!m_sphinx->stop()) {
-            qWarning() << "[DesktopControl::Agent::onStateChanged()] Stop unsuccessful.";
-            return Enabled;
+        if (m_sphinx) {
+            if (!m_sphinx->stop()) {
+                qWarning() << "[DesktopControl::Agent::onStateChanged()] Stop unsuccessful.";
+                return Enabled;
+            }
+
+            qDebug() << "[DesktopControl::Agent::onStateChanged()] Stopped desktop control agent.";
+            delete m_sphinx;
         }
 
-        qDebug() << "[DesktopControl::Agent::onStateChanged()] Stopped desktop control agent.";
         return Disabled;
         break;
 
@@ -73,7 +82,7 @@ AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::Activit
 
 bool Agent::isActive() const
 {
-    return m_sphinx->isRunning();
+    return m_sphinx && m_sphinx->isRunning();
 }
 
 bool Agent::isEnabled()
@@ -92,9 +101,9 @@ void Agent::invokeCommand (const QString& cmd)
         Q_FOREACH (AbstractCommand * l_cmd, l_cmds) {
             qDebug() << "[DesktopControl::Agent::invokeCommand()] Command " << l_cmd->id() << "matched with statements" << l_cmd->statements();
 
-            if (l_cmd == l_cmds.first()){
+            if (l_cmd == l_cmds.first()) {
                 qDebug() << "[DesktopControl::Agent::invokeCommand()] Only invoking first command " << l_cmd->id();
-                l_cmd->invoke(cmd);
+                l_cmd->invoke (cmd);
             }
         }
     }

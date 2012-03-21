@@ -30,10 +30,8 @@ namespace Dictation
 
 Agent* Agent::s_inst = 0;
 
-Agent::Agent() : AbstractAgent (KeyboardEmulator::instance())
+Agent::Agent() : AbstractAgent (KeyboardEmulator::instance()), m_sphinx (0)
 {
-    m_sphinx = new Sphinx (Sphinx::standardDescription(), parent());
-    connect (m_sphinx, SIGNAL (finished (QString)), this, SLOT (handleText (QString)));
 }
 
 AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::ActivityState p_stt)
@@ -41,16 +39,29 @@ AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::Activit
     switch (p_stt) {
     case Enabled:
 
+        if (!m_sphinx) {
+            m_sphinx = new Sphinx (Sphinx::standardDescription(), parent());
+            connect (m_sphinx, SIGNAL (finished (QString)), this, SLOT (handleText (QString)));
+        }
+
         if (!m_sphinx->start()) {
             qWarning() << "[Dictation::Agent::onStateChanged()] Start unsuccessful.";
             return ActivityState::Disabled;
+        } else {
+            qDebug() << "[Dictation::Agent::onStateChanged()] Enabled.";
         }
 
         return ActivityState::Enabled;
         break;
 
     case Disabled:
-        m_sphinx->stop();
+
+        if (m_sphinx) {
+            m_sphinx->stop();
+            delete m_sphinx;
+            qDebug() << "[DesktopControl::Agent::onStateChanged()] Disabled.";
+        }
+
         break;
 
     case Undefined:
@@ -78,7 +89,7 @@ bool Agent::isSafetyModeActive() const
 
 bool Agent::isSafetyModeEnabled() const
 {
-    return Core::configuration("Dictation/UseSafetyWords").toBool();
+    return Core::configuration ("Dictation/UseSafetyWords").toBool();
 }
 
 Agent::SafetyMode Agent::safetyMode() const
@@ -88,14 +99,14 @@ Agent::SafetyMode Agent::safetyMode() const
 
 void Agent::setSafetyMode (const Agent::SafetyMode& p_mode)
 {
-    switch (p_mode){
-        case Enabled:
-        case Disabled:
-            Core::setConfiguration("Dictation/UseSafetyWords",((p_mode == Enabled) ? true : false));
-            break;
+    switch (p_mode) {
+    case Enabled:
+    case Disabled:
+        Core::setConfiguration ("Dictation/UseSafetyWords", ( (p_mode == Enabled) ? true : false));
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
     m_mode = p_mode;

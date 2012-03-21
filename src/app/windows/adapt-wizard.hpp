@@ -42,6 +42,7 @@ class AdaptWizard : public WizardBase
 public:
     explicit AdaptWizard (QWidget* parent = 0);
     virtual ~AdaptWizard();
+    virtual int nextId() const;
 
 public slots:
     virtual void accept();

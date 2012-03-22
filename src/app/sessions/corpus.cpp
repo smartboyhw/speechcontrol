@@ -183,14 +183,14 @@ Corpus* Corpus::obtain (const QString& p_id)
 
     if (!QFile::exists (path)) {
 //         qDebug() << "[Corpus::obtain()] Corpus not found at" << path;
-        throw std::runtime_error("Corpus not found at " + path.toStdString());
+        throw std::runtime_error ("Corpus not found at " + path.toStdString());
     }
 
     crps = new Corpus (p_id);
 
     if (!crps->isValid()) {
 //         qDebug() << "[Corpus::obtain()] Invalid corpus" << p_id;
-        throw std::runtime_error("Invalid corpus.");
+        throw std::runtime_error ("Invalid corpus.");
     }
 
     return crps;
@@ -305,8 +305,8 @@ Corpus* Corpus::clone() const
 {
     QString id = QUuid::createUuid().toString().split ("-").at (0);
     id = id.replace ("{", "");
-    QDir thisDir (Core::configurationPath().path() + "/corpus/" + m_id);
-    QDir newDir (Core::configurationPath().path() + "/corpus/" + id);
+    QDir thisDir (getPath (m_id));
+    QDir newDir (getPath (id));
     newDir.mkpath (newDir.absolutePath());
     QStringList lst = newDir.entryList ( (QStringList() << "*"), QDir::NoDotAndDotDot | QDir::Files, QDir::NoSort);
 
@@ -345,6 +345,62 @@ const QDateTime Corpus::timeLastModified() const
 const QDateTime Corpus::timeCompleted() const
 {
     return QDateTime::fromString (m_dom->elementsByTagName ("Date").at (0).toElement().attribute ("Completed"));
+}
+
+QFile* Corpus::fileIds() const
+{
+    QFile* fileIds = new QFile (getPath (m_id) + "/fileids");
+
+    if (!fileIds->exists()) {
+        fileIds->open (QIODevice::WriteOnly | QIODevice::Truncate);
+
+        if (!fileIds->isOpen() || !fileIds->isWritable()) {
+            qDebug() << "[Corpus::fileIds()] Can't open fileids for writing:" << fileIds->errorString();
+            return 0;
+        }
+
+        QTextStream strm (fileIds);
+
+        Q_FOREACH (const Phrase * phrase, phrases()) {
+            QFileInfo currentFile(phrase->audio()->fileName());
+            const QString fileid = currentFile.baseName();
+            strm << fileid << endl;
+        }
+
+        fileIds->close();
+    }
+
+    return fileIds;
+}
+
+QFile* Corpus::transcription(const QString& p_silencePrefix, const QString& p_silenceSuffix) const
+{
+    QFile* transcription = new QFile(getPath(m_id) + "/transcription");
+
+    if (!transcription->exists()){
+        transcription->open(QIODevice::WriteOnly | QIODevice::Truncate);
+
+        if (!transcription->isOpen() || !transcription->isWritable()){
+            qDebug() << "[Corpus::transcription()] Can't open transcription for writing:" << transcription->errorString();
+            return 0;
+        }
+
+        QTextStream strm(transcription);
+
+        Q_FOREACH (const Phrase * phrase, phrases()) {
+            QFileInfo currentFile(phrase->audio()->fileName());
+            const QString fileid = currentFile.baseName();
+            const QString phraseText = phrase->text().toUpper();
+            strm << p_silencePrefix << " "
+                 << phraseText << " "
+                 << p_silenceSuffix << " "
+                 << "(" << fileid << ")" << endl;
+        }
+
+        transcription->close();
+    }
+
+    return transcription;
 }
 
 /// @todo What to clean-up?

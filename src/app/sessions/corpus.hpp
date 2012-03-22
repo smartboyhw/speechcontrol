@@ -197,9 +197,9 @@ public:
      */
     bool isValid() const;
 
-    QString transcription();
+    QFile* transcription(const QString& p_silencePrefix, const QString& p_silenceSuffix) const;
 
-    QString fileIds();
+    QFile* fileIds() const;
 
     /**
      * @brief Stream operator to add phrases.
@@ -236,14 +236,14 @@ public slots:
      **/
     static QString getPath (const QString& p_id);
 
-private:
     /**
      * @brief Obtains a path to the Corpus XML data.
      * @return A QString with the location of the Corpus's data.
      **/
     QString audioPath() const;
-    void nullify();
+private:
 
+    void nullify();
     QString m_id;               ///< Holds the ID of this Corpus.
     QDomDocument* m_dom;        ///< The QDomDocument representing the Corpus's data.
     PhraseList m_phraseList;    ///< The list of phrases held by this Corpus.

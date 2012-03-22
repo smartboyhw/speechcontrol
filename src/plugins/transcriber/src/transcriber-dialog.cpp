@@ -49,15 +49,19 @@ void TranscriberDialog::on_btnOpen_clicked()
 
 void TranscriberDialog::on_btnTranscribe_clicked()
 {
-    QFile* l_file = new QFile (m_ui->lineEditPath->text());
+    QFile* file = new QFile (m_ui->lineEditPath->text());
 
-    if (!l_file->exists()) {
+    if (!file->exists()) {
         m_ui->lineEditPath->clear();
         qDebug() << "File doesn't exist.";
         return;
     }
 
-    m_strm = new QDataStream(l_file);
+    if (!file->open(QIODevice::ReadOnly)){
+        qDebug() << "File can't open.";
+    }
+
+    m_strm = new QDataStream(file);
     m_streamSrc = new StreamAudioSource(m_strm);
     m_audioSrcSphnx = new AudioSourceSphinx(m_streamSrc,this);
 

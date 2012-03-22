@@ -103,6 +103,7 @@ public:
      * @see load();
      **/
     void save();
+    bool isValid() const;
 
 private:
     QStringMap m_entries;       ///< Holds the entries.
@@ -112,4 +113,4 @@ private:
 }
 
 #endif // SPEECHCONTROL_NOISEDICTIONARY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

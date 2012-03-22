@@ -66,15 +66,11 @@ void AbstractSphinx::prepare()
 
     QGlib::connect (m_psphinx, "partial_result", this, &AbstractSphinx::formPartialResult);
     QGlib::connect (m_psphinx, "result", this, &AbstractSphinx::formResult);
-    //m_psphinx->setProperty ( "configured", true );
-
-    m_bus = m_pipeline->bus();
-    m_bus->addSignalWatch();
-    QGlib::connect (m_bus, "message::application", this, &AbstractSphinx::applicationMessage);
+    m_psphinx->setProperty ("configured", true);
 
     m_pipeline->setState (QGst::StateReady);
-    //m_psphinx->setState ( QGst::StateReady );
-    //m_vader->setState ( QGst::StateReady );
+    m_psphinx->setState (QGst::StateReady);
+    m_vader->setState (QGst::StateReady);
     qDebug() << "[AbstractSphinx::prepare()] Prepared pipeline.";
     m_ready = Ready;
 }
@@ -213,6 +209,10 @@ bool AbstractSphinx::start()
     qDebug() << "[AbstractSphinx::start()] Starting...";
 
     if (isReady()) {
+        m_bus = m_pipeline->bus();
+        m_bus->addSignalWatch();
+        QGlib::connect (m_bus, "message::application", this, &AbstractSphinx::applicationMessage);
+
         m_pipeline->setState (QGst::StatePlaying);
         m_running = Running;
         qDebug() << "[AbstractSphinx::start()] PocketSphinx started.";
@@ -226,8 +226,10 @@ bool AbstractSphinx::start()
 
 bool AbstractSphinx::stop()
 {
-    if (m_pipeline->setState (QGst::StateNull) == QGst::StateChangeSuccess)
+    if (m_pipeline->setState (QGst::StateNull) == QGst::StateChangeSuccess){
         m_running = NotPrepared;
+        m_bus.clear();
+    }
 
     qDebug() << "[AbstractSphinx::stop()] Has PocketSphinx halted?" << (m_running == NotPrepared);
     return m_running == NotPrepared;
@@ -262,41 +264,62 @@ void AbstractSphinx::formResult (QString& p_text, QString& p_uttid)
 AbstractSphinx::~AbstractSphinx()
 {
     m_pipeline->setState (QGst::StateNull);
+    m_psphinx->setState(QGst::StateNull);
+    m_bus.clear();
+    m_psphinx.clear();
 }
 
-AudioSourceSphinx::AudioSourceSphinx (QObject* p_parent) : AbstractSphinx (p_parent), m_src (0)
+AudioSourceSphinxSource::AudioSourceSphinxSource (AudioSourceSphinx* p_sphinx) : QObject(), m_sphinx (p_sphinx)
 {
 
 }
 
-AudioSourceSphinx::AudioSourceSphinx (AbstractAudioSource* p_source, QObject* p_parent) : AbstractSphinx (p_parent->parent()), m_src (p_source)
+AudioSourceSphinx::AudioSourceSphinx (QObject* p_parent) : AbstractSphinx (p_parent), m_audioSrc (0), m_appSrc (0)
 {
-    linkSource();
+
 }
 
-AudioSourceSphinx::AudioSourceSphinx (const AudioSourceSphinx& p_other) : AbstractSphinx(p_other.parent()), m_src(p_other.m_src)
+AudioSourceSphinx::AudioSourceSphinx (AbstractAudioSource* p_source, QObject* p_parent) : AbstractSphinx (p_parent->parent()), m_audioSrc (0), m_appSrc (0)
 {
-    linkSource();
+    setSource (p_source);
+}
+
+AudioSourceSphinx::AudioSourceSphinx (const AudioSourceSphinx& p_other) : AbstractSphinx (p_other.parent()), m_audioSrc (0), m_appSrc (0)
+{
+    setSource (p_other.m_audioSrc);
 }
 
 void AudioSourceSphinx::linkSource ()
 {
     QString description = standardDescription();
-    description = description.replace("autoaudiosrc name=src","appsrc name=src");
-    buildPipeline(description);
+    description = description.replace ("autoaudiosrc name=src", "appsrc name=src");
+    buildPipeline (description);
 
-    // set the source's source as this source.
+    m_appSrc = new AudioSourceSphinxSource (this);
+    qDebug() << "[AudioSourceSphinx::linkSource()] Linked up sources.";
 }
 
 void AudioSourceSphinx::setSource (AbstractAudioSource* p_source)
 {
-    m_src = p_source;
+    m_audioSrc = p_source;
     linkSource();
 }
 
 AbstractAudioSource* AudioSourceSphinx::source()
 {
-    return m_src;
+    return m_audioSrc;
+}
+
+bool AudioSourceSphinx::start()
+{
+    m_audioSrc->start();
+    return SpeechControl::AbstractSphinx::start();
+}
+
+bool AudioSourceSphinx::stop()
+{
+    m_audioSrc->stop();
+    return SpeechControl::AbstractSphinx::stop();
 }
 
 void AudioSourceSphinx::applicationMessage (const QGst::MessagePtr& p_message)

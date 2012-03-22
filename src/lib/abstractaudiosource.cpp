@@ -228,10 +228,10 @@ bool AbstractAudioSource::isNull() const
     return (m_binPtr.isNull() || m_sinkPtr.isNull() || m_srcPtr.isNull() || m_volumePtr.isNull() || m_levelPtr.isNull());
 }
 
-void AbstractAudioSource::startRecording()
+void AbstractAudioSource::start()
 {
     if (isNull()) {
-        qCritical() << "[AbstractAudioSource::startRecording()]"
+        qCritical() << "[AbstractAudioSource::start()]"
                     << "One or more elements could not be created. "
                     << "Verify that you have all the necessary element plug-ins installed.";
         return;
@@ -247,14 +247,14 @@ void AbstractAudioSource::startRecording()
     // Get the party started :)
     m_pipeline->setState (QGst::StatePlaying);
 
-    qDebug() << "[AbstractAudioSource::startRecording()] Bin active, recording started.";
+    qDebug() << "[AbstractAudioSource::start()] Bin active, recording started.";
     emit recordingBegun();
 }
 
-void AbstractAudioSource::stopRecording()
+void AbstractAudioSource::stop()
 {
     if (isNull()) {
-        qCritical() << "[AbstractAudioSource::stopRecording()] "
+        qCritical() << "[AbstractAudioSource::stop()] "
                     << "One or more elements could not be created. "
                     << "Verify that you have all the necessary element plug-ins installed.";
         return;
@@ -267,7 +267,7 @@ void AbstractAudioSource::stopRecording()
         m_binPtr->setState (QGst::StatePaused);
     }
 
-    qDebug() << "[AbstractAudioSource::startRecording()] Bin inactive, recording stopped.";
+    qDebug() << "[AbstractAudioSource::start()] Bin inactive, recording stopped.";
     emit recordingEnded();
 }
 
@@ -282,7 +282,7 @@ bool AbstractAudioSource::isRecording() const
 
 AbstractAudioSource::~AbstractAudioSource()
 {
-    stopRecording();
+    stop();
 
     // Clean our goodies' memory.
     delete m_appSrc;
@@ -342,7 +342,7 @@ QGst::FlowReturn GenericSource::pushBuffer (const QGst::BufferPtr& p_buffer)
 
     //qDebug() << "[GenericSource::pushBuffer()] Buffer obtained from AbstractAudioSource" << p_buffer->data() << bufferInt << buffer;
 
-    return QGst::FlowCustomSuccess;
+    return QGst::Utils::ApplicationSource::pushBuffer(p_buffer);
 }
 
 GenericSource::~GenericSource()
@@ -356,7 +356,7 @@ GenericSink::GenericSink() : m_src (0)
 
 }
 
-GenericSink::GenericSink (const GenericSink& p_other) : QObject(p_other.parent()), ApplicationSink(), m_src(p_other.m_src)
+GenericSink::GenericSink (const GenericSink& p_other) : QObject (p_other.parent()), ApplicationSink(), m_src (p_other.m_src)
 {
 
 }
@@ -365,6 +365,7 @@ void GenericSink::eos()
 {
     qDebug() << "[GenericSink::eos()] End of stream in generic sink.";
     m_src->endOfStream();
+    QGst::Utils::ApplicationSink::eos();
 }
 
 QGst::FlowReturn GenericSink::newBuffer()
@@ -408,7 +409,13 @@ DeviceAudioSource::DeviceAudioSource (const DeviceAudioSource& p_other) : Abstra
 
 DeviceAudioSource::DeviceAudioSource (const AbstractAudioSource& p_other) : AbstractAudioSource (p_other), m_devicePtr()
 {
-
+    QString deviceName = p_other.property("DeviceName").toString();
+    if (deviceName.isEmpty() && !deviceName.isNull())
+        obtainDevice(deviceName);
+    else {
+        qDebug() << "[DeviceAudioSource::{constructor}] Conversion from a AbstractAudioSource failed.";
+        Q_ASSERT(!deviceName.isNull());
+    }
 }
 
 DeviceAudioSource* DeviceAudioSource::obtain (const QString& p_deviceName)
@@ -477,16 +484,16 @@ AbstractAudioSourceList DeviceAudioSource::allDevices()
 
             if (propProbe && propProbe->propertySupportsProbe ("device")) {
                 Q_FOREACH (QGlib::Value device, devices) {
-                    qDebug() << "[DeviceAudioSource::allDevices()] Found audio device" << device.toString();
+                    //qDebug() << "[DeviceAudioSource::allDevices()] Found audio device" << device.toString();
                     QList<QGlib::ParamSpecPtr> specs = propProbe->listProperties();
                     propProbe->setProperty ("device", device);
 
-                    Q_FOREACH (const QGlib::ParamSpecPtr spec, specs) {
+                    /*Q_FOREACH (const QGlib::ParamSpecPtr spec, specs) {
                         qDebug() << "[DeviceAudioSource::allDevices()] Device:" << device.toString()
                                  << spec->name() << propProbe->property (spec->name().toStdString().c_str()).toString()
                                  << spec->description();
                         ;
-                    }
+                    }*/
 
                     if (!s_map.contains (device.toString()))
                         s_map.insert (device.toString(), new DeviceAudioSource (device.toString()));
@@ -506,7 +513,11 @@ AbstractAudioSourceList DeviceAudioSource::allDevices()
 
 QString DeviceAudioSource::deviceName() const
 {
-    return m_device.toString();
+    Q_ASSERT(m_device.isValid());
+    if (m_device.isValid())
+        return m_device.toString();
+    else
+        return QString::null;
 }
 
 QString DeviceAudioSource::humanName() const
@@ -514,9 +525,9 @@ QString DeviceAudioSource::humanName() const
     if (m_devicePtr.isNull())
         return deviceName();
     else {
-        m_devicePtr->setState(QGst::StatePlaying);
+        m_devicePtr->setState (QGst::StatePlaying);
         QString name = m_devicePtr->property ("device-name").toString();
-        m_devicePtr->setState(QGst::StatePaused);
+        m_devicePtr->setState (QGst::StatePaused);
 
         if (name.isEmpty() || name.isNull())
             return deviceName();
@@ -589,6 +600,7 @@ QGst::FlowReturn StreamSource::endOfStream()
 
 QGst::FlowReturn StreamSource::pushBuffer (const QGst::BufferPtr& p_buffer)
 {
+    qDebug() << "[StreamSource::pushBuffer()] Buffer:" << p_buffer->data();
     return SpeechControl::GenericSource::pushBuffer (p_buffer);
 }
 
@@ -597,31 +609,33 @@ StreamSource::~StreamSource()
 
 }
 
-StreamSink::StreamSink(StreamAudioSource* p_audioSrc) : GenericSink(), m_audioSrc(p_audioSrc)
+StreamSink::StreamSink (StreamAudioSource* p_audioSrc) : GenericSink(), m_audioSrc (p_audioSrc)
 {
 
 }
 
-StreamSink::StreamSink (const StreamSink& p_other) : GenericSink(p_other)
+StreamSink::StreamSink (const StreamSink& p_other) : GenericSink (p_other)
 {
 
 }
 
-StreamSink::StreamSink (const GenericSink& p_other) : GenericSink(p_other)
+StreamSink::StreamSink (const GenericSink& p_other) : GenericSink (p_other)
 {
 
 }
 
 void StreamSink::eos()
 {
+    qDebug() << "[StreamSink::eos()] End-of-stream detected.";
     SpeechControl::GenericSink::eos();
 }
 
 QGst::BufferPtr StreamSink::pullBuffer()
 {
     quint8 data = 0;
-    *(m_audioSrc->stream()) >> data;
-    return QGst::Buffer::create(data);
+    * (m_audioSrc->stream()) >> data;
+    qDebug() << "[StreamSink::pullBuffer()] Obtained buffer from stream: " << data;
+    return QGst::Buffer::create (data);
 }
 
 StreamSink::~StreamSink()
@@ -629,7 +643,7 @@ StreamSink::~StreamSink()
 
 }
 
-StreamAudioSource::StreamAudioSource() : AbstractAudioSource()
+StreamAudioSource::StreamAudioSource() : AbstractAudioSource(), m_strm (0)
 {
 
 }
@@ -653,10 +667,18 @@ void StreamAudioSource::buildPipeline()
 {
     SpeechControl::AbstractAudioSource::buildPipeline();
 
+    if (isNull()) {
+        qDebug() << "[StreamAudioSource::buildPipeline()] Failed to render stream, invalid base pipeline.";
+    }
+
     // Replace the appsrc used by AbstractAudioSource usually with the stream source.
-    m_appSrc = new StreamSource(this);
+    m_appSrc = new StreamSource (this);
     m_appSrc->setCaps (QGst::Caps::fromString (caps()));
-    m_appSrc->setElement(this->m_srcPtr);
+    m_appSrc->setElement (this->m_srcPtr);
+
+    m_appSink = new StreamSink (this);
+    m_appSink->setCaps (QGst::Caps::fromString (caps()));
+    m_appSink->setElement (this->m_sinkPtr);
 }
 
 QString StreamAudioSource::pipelineDescription() const
@@ -667,6 +689,22 @@ QString StreamAudioSource::pipelineDescription() const
 QDataStream* StreamAudioSource::stream() const
 {
     return m_strm;
+}
+
+uint StreamSink::bufferSize() const
+{
+    QGlib::Value bufferSizeVal = m_audioSrc->m_srcPtr->property ("blocksize");
+    const int bufferSize = bufferSizeVal.toUInt();
+
+    if (bufferSize == -1)
+        return 4096;
+    else
+        return (const uint) bufferSize;
+}
+
+void StreamSink::setBufferSize (const uint& p_bufferSize)
+{
+    m_audioSrc->m_srcPtr->setProperty ("blocksize", p_bufferSize);
 }
 
 StreamAudioSource::~StreamAudioSource()

@@ -23,6 +23,10 @@
 #ifndef ABSTRACTSPHINX_HPP
 #define ABSTRACTSPHINX_HPP
 
+// local includes
+#include <config.hpp>
+#include <export.hpp>
+
 // Qt includes
 #include <QMap>
 #include <QDir>
@@ -35,10 +39,7 @@
 #include <QGst/Pipeline>
 #include <QGst/Bus>
 #include <QGst/Message>
-
-// local includes
-#include <config.hpp>
-#include <export.hpp>
+#include <Utils/ApplicationSource>
 
 
 namespace SpeechControl
@@ -47,6 +48,7 @@ namespace SpeechControl
 class LanguageModel;
 
 class AbstractAudioSource;
+class AudioSourceSphinx;
 class AcousticModel;
 class Dictionary;
 /**
@@ -262,14 +264,14 @@ public slots:
      *
      * Starts the the AbstractSphinx instance by invoking the pipeline's execution.
      */
-    bool start();
+    virtual bool start();
 
     /**
      * @brief Stops the AbstractSphinx.
      *
      * Stops the the AbstractSphinx instance by halting the pipeline's execution.
      */
-    bool stop();
+    virtual bool stop();
 
     /**
      * @brief Obtains a partial value from the specified text p_text and utterance p_uttid.
@@ -277,7 +279,7 @@ public slots:
      * @param p_text The text to be passed.
      * @param p_uttid The utterance to be passed.
      **/
-    void formPartialResult (QString& p_text, QString& p_uttid);
+    virtual void formPartialResult (QString& p_text, QString& p_uttid);
 
     /**
      * @brief Obtains a value from the specified text p_text and utterance p_uttid.
@@ -285,7 +287,7 @@ public slots:
      * @param p_text The text to be passed.
      * @param p_uttid The utterance to be passed.
      **/
-    void formResult (QString& p_text, QString& p_uttid);
+    virtual void formResult (QString& p_text, QString& p_uttid);
 
 protected slots:
 
@@ -302,13 +304,25 @@ protected:
      *
      * @param p_description The description to be used to build a pipeline.
      **/
-    void buildPipeline (QString p_description);
+    virtual void buildPipeline (QString p_description);
+};
+
+class AudioSourceSphinxSource : public QObject, public QGst::Utils::ApplicationSource {
+    Q_OBJECT
+    Q_DISABLE_COPY(AudioSourceSphinxSource)
+
+public:
+    AudioSourceSphinxSource(AudioSourceSphinx* p_sphinx);
+
+private:
+    AudioSourceSphinx* m_sphinx;
 };
 
 class SPCH_EXPORT AudioSourceSphinx : public AbstractSphinx
 {
     Q_OBJECT
     Q_DISABLE_COPY(AudioSourceSphinx)
+    friend class AudioSourceSphinxSource;
 
 public:
     explicit AudioSourceSphinx (QObject* p_parent = 0);
@@ -316,9 +330,12 @@ public:
     virtual ~AudioSourceSphinx();
     AbstractAudioSource* source();
     void setSource(AbstractAudioSource* p_source);
+    virtual bool start();
+    virtual bool stop();
 
 private:
-    AbstractAudioSource* m_src;
+    AbstractAudioSource* m_audioSrc;
+    AudioSourceSphinxSource* m_appSrc;
     virtual void applicationMessage (const QGst::MessagePtr& p_message);
     void linkSource ();
 };

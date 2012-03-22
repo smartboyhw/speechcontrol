@@ -49,12 +49,12 @@ QStringMap NoiseDictionary::entries()
 
 NoiseDictionary* NoiseDictionary::fromFile (QFile* p_file)
 {
-    NoiseDictionary* l_dict = new NoiseDictionary;
+    NoiseDictionary* dict = new NoiseDictionary;
 
-    if (l_dict->load (p_file))
-        return l_dict;
-    else
-        return false;
+    if (dict->load (p_file))
+        return dict;
+
+    return 0;
 }
 
 bool NoiseDictionary::hasEntry (const QString& p_entry)
@@ -62,26 +62,65 @@ bool NoiseDictionary::hasEntry (const QString& p_entry)
     return m_entries.contains (p_entry);
 }
 
+/// @todo Populate m_entries with the data from the noise dictionary.
 bool NoiseDictionary::load (QIODevice* p_device)
 {
     p_device->open (QIODevice::ReadOnly | QIODevice::Text);
 
     if (!p_device->isOpen()) {
-        qDebug() << "[NoiseDictionary::load()] Can't open noise dictionary" << p_device->errorString();
+        qDebug() << "[NoiseDictionary::load()] Can't open noise dictionary for reading:" << p_device->errorString();
+        m_device = 0;
+        m_entries.clear();
         return false;
     }
 
     if (!p_device->isReadable()) {
-        qDebug() << "[NoiseDictionary::load()] Can't read noise dictionary file" << p_device->errorString();
+        qDebug() << "[NoiseDictionary::load()] Can't read noise dictionary file for loading:" << p_device->errorString();
+        m_device = 0;
+        m_entries.clear();
         return false;
     }
 
     m_device = p_device;
 
-    QTextStream l_strm (m_device);
+    QTextStream strm (m_device);
 
-    while (!l_strm.atEnd()) {
-        QString l_line = l_strm.readLine();
+    while (!strm.atEnd()) {
+        QString line = strm.readLine();
+        QString key;
+        QString value;
+        bool isInSpace = false;
+        bool isHandlingValue = false;
+        bool isHandlingKey = false;
+        QChar lastChar;
+
+        Q_FOREACH(const QChar charVal, line){
+            const bool isBeginningKey = key.isEmpty() && value.isEmpty() && !charVal.isSpace();
+            const bool isBeginningValue = !key.isEmpty() && value.isEmpty() && !charVal.isSpace() && lastChar.isSpace();
+
+            if (isBeginningKey)
+                key += charVal;
+            else if (isBeginningValue)
+                value += charVal;
+            else {
+                if (charVal.isSpace()){
+                    isInSpace = true;
+                }
+                else {
+                    if (isInSpace){
+                        isHandlingValue = true;
+                        value += charVal;
+                    } else {
+                        isHandlingKey = true;
+                        key += charVal;
+                    }
+                }
+            }
+
+            lastChar = charVal;
+        }
+
+        m_entries.insert(key,value);
     }
 
     m_device->close();
@@ -98,32 +137,38 @@ void NoiseDictionary::save()
     m_device->open (QIODevice::WriteOnly | QIODevice::Truncate);
 
     if (!m_device->isOpen()) {
-        qDebug() << "[NoiseDictionary::load()] Can't open noise dictionary" << m_device->errorString();
+        qDebug() << "[NoiseDictionary::save()] Can't open noise dictionary for saving:" << m_device->errorString();
         return;
     }
 
     if (!m_device->isWritable()) {
-        qDebug() << "[NoiseDictionary::load()] Can't read noise dictionary file" << m_device->errorString();
+        qDebug() << "[NoiseDictionary::save()] Can't write to noise dictionary file" << m_device->errorString();
         return;
     }
 
-    int l_size = 0;
+    int size = 1;
 
     for (QStringMap::iterator l_itr = m_entries.begin();
             l_itr != m_entries.end(); l_itr++) {
-        if (l_size < l_itr.key().size())
-            l_size = l_itr.key().size() + 5;
+        if (size < l_itr.key().size())
+            size = l_itr.key().size() + 5;
     }
 
-    QTextStream l_strm (m_device);
-    const QString l_padSpace = QString (l_size, ' ');
+    QTextStream strm (m_device);
+    const QString padSpace = QString (size, ' ');
 
-    for (QStringMap::iterator l_itr = m_entries.begin();
-            l_itr != m_entries.end(); l_itr++) {
-        l_strm << l_itr.key() << l_padSpace << l_itr.value() << "\n";
+    for (QStringMap::iterator itr = m_entries.begin();
+            itr != m_entries.end(); itr++) {
+        strm << itr.key() << padSpace << itr.value() << "\n";
+    qDebug() << "[NoiseDictionary::load()] Saving entry" << itr.key() << "with the value" << itr.value();
     }
 
     m_device->close();
+}
+
+bool NoiseDictionary::isValid() const
+{
+    return m_device && !m_entries.isEmpty();
 }
 
 #include "noisedictionary.moc"

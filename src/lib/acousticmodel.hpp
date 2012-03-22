@@ -150,14 +150,14 @@ public:
      **/
     bool isValid() const;
 
-    /**
-     * @brief ...
-     *
-     * @param p_path ...
-     * @return void
-     **/
     void load (QString p_path);
+
     AcousticModel* clone();
+
+    NoiseDictionary* noiseDictionary() const;
+
+    static AcousticModelList allModels();
+    QString parameterPath() const;
 };
 
 /**
@@ -168,4 +168,4 @@ typedef QList<AcousticModel*> AcousticModelList;
 }
 
 #endif // ACOUSTICMODEL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

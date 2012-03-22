@@ -19,17 +19,23 @@
  */
 
 #include <QDir>
-#include <QString>
+#include <QUuid>
 #include <QDebug>
+#include <QString>
 #include <QTextStream>
 #include <QStringList>
-#include <QUuid>
+#include <QDirIterator>
 
+#include <algorithm>
+
+#include "config.hpp"
 #include "noisedictionary.hpp"
 #include "acousticmodel.hpp"
 
+using namespace std;
 using SpeechControl::AcousticModel;
 using SpeechControl::NoiseDictionary;
+using SpeechControl::AcousticModelList;
 
 AcousticModel::AcousticModel (const AcousticModel& p_mdl) :
     QObject (p_mdl.parent()), m_params (p_mdl.m_params), m_path (p_mdl.m_path)
@@ -51,9 +57,9 @@ AcousticModel::~AcousticModel()
 
 void AcousticModel::load (QString p_path)
 {
-    QDir l_dir (p_path);
+    QDir dir (p_path);
 
-    if (!l_dir.exists())
+    if (!dir.exists())
         return;
 
     m_path = p_path;
@@ -62,17 +68,27 @@ void AcousticModel::load (QString p_path)
     loadNoiseDictionary();
 }
 
+QString AcousticModel::parameterPath() const
+{
+    return m_path + "/feat.params";
+}
+
 void AcousticModel::loadFeatureParameters()
 {
-    QFile* l_file = new QFile (m_path + "/feat.params");
+    QFile* l_file = new QFile (parameterPath());
     l_file->open (QIODevice::ReadOnly | QIODevice::Text);
 
-    QTextStream l_strm (l_file);
+    QTextStream strm (l_file);
 
-    while (!l_strm.atEnd()) {
-        const QStringList l_tokens = l_strm.readLine().split (" ");
-        qDebug() << "Parsing parameter" << l_tokens[0] << "=" << l_tokens[1];
-        setParameter (l_tokens[0], l_tokens[1]);
+    while (!strm.atEnd()) {
+        const QStringList tokens = strm.readLine().split (" ");
+        QString paramName = tokens[0];
+        if (paramName.startsWith("-"))
+            paramName = paramName.remove(0,1);
+
+        QString paramValue = tokens[1];
+        qDebug() << "[AcousticModel::loadFeatureParameters()] Parsing parameter" << paramName << "=" << paramValue;
+        setParameter (paramName,paramValue);
     }
 
     l_file->close();
@@ -80,8 +96,8 @@ void AcousticModel::loadFeatureParameters()
 
 void AcousticModel::loadNoiseDictionary()
 {
-    QFile* l_noiseDictFile = new QFile (m_path +  "/noisedict");
-    m_noisedict = NoiseDictionary::fromFile (l_noiseDictFile);
+    QFile* noiseDictFile = new QFile (m_path +  "/noisedict");
+    m_noisedict = NoiseDictionary::fromFile (noiseDictFile);
 }
 
 void AcousticModel::setParameter (const QString& p_key, const QVariant& p_value)
@@ -144,6 +160,11 @@ void cloneDirectory (QDir p_base, QDir p_newDir)
     }
 }
 
+NoiseDictionary* AcousticModel::noiseDictionary() const
+{
+    return m_noisedict;
+}
+
 /// @note This method should always clone acoustic models to the local user's directory.
 AcousticModel* AcousticModel::clone()
 {
@@ -159,6 +180,46 @@ AcousticModel* AcousticModel::clone()
     cloneDirectory (model, QDir (newPath));
 
     return new AcousticModel (newPath);
+}
+
+QStringList findAllAcousticModels (const QDir p_dir)
+{
+    QDirIterator itr (p_dir, QDirIterator::Subdirectories);
+    QStringList aList;
+
+    while (itr.hasNext()) {
+        const QString listing = itr.next();
+        QFileInfo featParams (listing + "/feat.params");
+
+        if (featParams.exists()) {
+            aList << listing;
+        }
+        else continue;
+    }
+
+    qDebug() << "[findAllAcousticModels()] Removed" << aList.removeDuplicates() << "duplicates.";
+    aList.removeAll (".");
+
+    return aList;
+}
+
+/// @todo This should find the models installed automagically installed by the user's package management system.
+AcousticModelList AcousticModel::allModels()
+{
+    // First, find the models imported by Sphinx. They're all stored under weird
+    // folder names in MODELDIR.
+
+    QDir baseModelDir (POCKETSPHINX_MODELDIR);
+    baseModelDir.cd ("hmm");
+    QStringList dirs = findAllAcousticModels (baseModelDir);
+
+    // Alright, we got the folders. Now, just build AcousticModel objects with it.
+    AcousticModelList list;
+    Q_FOREACH (const QString directory, dirs) {
+        list << new AcousticModel (directory);
+    }
+
+    return list;
 }
 
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

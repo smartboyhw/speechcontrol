@@ -123,8 +123,8 @@ signals:
     void bufferObtained(const QByteArray p_buffer);
 
 public slots:
-    void startRecording();
-    void stopRecording();
+    virtual void start();
+    virtual void stop();
 
 protected:
     Q_DISABLE_COPY (AbstractAudioSource)
@@ -150,7 +150,10 @@ private slots:
 class SPCH_EXPORT DeviceAudioSource : public AbstractAudioSource
 {
     Q_OBJECT
+    Q_PROPERTY(QString DeviceName READ deviceName)
+    Q_PROPERTY(QString HumanName READ humanName)
     Q_DISABLE_COPY (DeviceAudioSource)
+    friend class AbstractAudioSource;
 
 public:
     explicit DeviceAudioSource();
@@ -195,7 +198,7 @@ public:
     virtual ~StreamSink();
     virtual void eos();
     virtual QGst::BufferPtr pullBuffer();
-    uint bufferSize();
+    uint bufferSize() const;
     void setBufferSize(const uint& p_bufferSize);
 
 private:
@@ -206,6 +209,8 @@ class SPCH_EXPORT StreamAudioSource : public AbstractAudioSource
 {
     Q_OBJECT
     Q_DISABLE_COPY (StreamAudioSource)
+    friend class StreamSink;
+    friend class StreamSource;
 
 public:
     explicit StreamAudioSource ();

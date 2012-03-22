@@ -138,7 +138,7 @@ void AdaptationUtility::generateFeatures()
 * use sendump.py to convert the sendump file from the acoustic model to a
 * mixture_weights file.
 */
-* void AdaptationUtility::generateMixtureWeights()
+void AdaptationUtility::generateMixtureWeights()
 {
 
 }

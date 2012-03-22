@@ -107,6 +107,7 @@ private:
     void generateSendmap();
     void generateAccuracyReport();
     void copyAcousticModel();
+    void executeProcess (const QString& p_program, const QStringList p_arguments);
 
     Session* m_session;
     AcousticModel* m_modelBase;

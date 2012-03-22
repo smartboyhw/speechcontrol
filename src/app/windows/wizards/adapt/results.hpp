@@ -17,48 +17,41 @@
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#ifndef ADAPT_MODELSELECTION_HPP
-#define ADAPT_MODELSELECTION_HPP
+#ifndef ADAPT_RESULTS_HPP
+#define ADAPT_RESULTS_HPP
 
 #include <QWizardPage>
 
 namespace Ui
 {
-class ModelSelection;
+class Results;
 }
 
 namespace SpeechControl
 {
 
-class AcousticModel;
 namespace Wizards
 {
 namespace Pages
 {
 
-class ModelSelection : public QWizardPage
+class Results : public QWizardPage
 {
     Q_OBJECT
+    void updateUi();
 
 public:
-    explicit ModelSelection (QWidget* parent = 0);
-    AcousticModel* model();
-    ~ModelSelection();
-    virtual void initializePage();
-    virtual void cleanupPage();
-    virtual bool isComplete() const;
+    explicit Results (QWidget* parent = 0);
+    virtual ~Results();
 
-private slots:
-    void on_comboBoxModel_currentIndexChanged(const int index);
 
 private:
-    Ui::ModelSelection* ui;
-    AcousticModel* m_model;
+    Ui::Results* ui;
 };
 
 }
 }
 }
 
-#endif // ADAPT_MODELSELECTION_HPP
+#endif // ADAPT_RESULTS_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

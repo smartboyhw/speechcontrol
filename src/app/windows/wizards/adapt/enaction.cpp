@@ -17,48 +17,42 @@
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#ifndef ADAPT_MODELSELECTION_HPP
-#define ADAPT_MODELSELECTION_HPP
 
-#include <QWizardPage>
+#include "enaction.hpp"
+#include "ui_adaptwizard-enaction.h"
 
-namespace Ui
+using namespace SpeechControl;
+using SpeechControl::Wizards::Pages::Enaction;
+
+Enaction::Enaction (QWidget* parent) :
+    QWizardPage (parent),
+    ui (new Ui::Enaction)
 {
-class ModelSelection;
+    ui->setupUi (this);
+    this->setLayout (ui->gridLayout);
+    setCommitPage(true);
+    initializePage();
 }
 
-namespace SpeechControl
+void Enaction::initalizePage()
 {
-
-class AcousticModel;
-namespace Wizards
-{
-namespace Pages
-{
-
-class ModelSelection : public QWizardPage
-{
-    Q_OBJECT
-
-public:
-    explicit ModelSelection (QWidget* parent = 0);
-    AcousticModel* model();
-    ~ModelSelection();
-    virtual void initializePage();
-    virtual void cleanupPage();
-    virtual bool isComplete() const;
-
-private slots:
-    void on_comboBoxModel_currentIndexChanged(const int index);
-
-private:
-    Ui::ModelSelection* ui;
-    AcousticModel* m_model;
-};
 
 }
-}
+
+void Enaction::cleanupPage()
+{
+
 }
 
-#endif // ADAPT_MODELSELECTION_HPP
+bool Enaction::isComplete() const
+{
+    return true;
+}
+
+Enaction::~Enaction()
+{
+    delete ui;
+}
+
+#include "enaction.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

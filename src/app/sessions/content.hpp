@@ -92,6 +92,8 @@ public:
      **/
     uint words() const;
 
+    uint uniqueWords() const;
+
     /**
      * @brief Counts the characters within this @c Content and returns that number.
      * @return A unsigned integer representing the total number of characters in the text.

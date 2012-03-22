@@ -55,7 +55,7 @@ const QString Phrase::text() const
 
 QFile* Phrase::audio() const
 {
-    const QString fileName = m_corpus->audioPath() + QString::number (index()) + ".raw";
+    const QString fileName = m_corpus->audioPath() + "/phrase" + QString::number (index()) + ".raw";
     //qDebug() << "[Phrase::audio()]" << fileName;
     return new QFile (fileName);
 }

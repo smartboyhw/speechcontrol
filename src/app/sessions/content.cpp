@@ -186,10 +186,16 @@ uint Content::pageCount() const
     return m_pages.count();
 }
 
-/// @todo Determine a means of finding the words in the text.
 uint Content::words() const
 {
     return m_pages.join ("\n").split (" ").count();
+}
+
+uint Content::uniqueWords() const
+{
+    QStringList words = m_pages.join ("\n").split (" ");
+    words.removeDuplicates();
+    return words.count();
 }
 
 uint Content::length() const

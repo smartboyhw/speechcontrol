@@ -53,7 +53,6 @@ void SpeechControl::Wizards::Pages::MicrophoneSelection::initializePage()
         Q_FOREACH (AbstractAudioSource * src, l_allMics) {
             DeviceAudioSource* deviceSrc = (DeviceAudioSource*) src;
             ui->comboBoxMicrophones->addItem (QIcon::fromTheme ("audio-input-microphone"), deviceSrc->humanName(), deviceSrc->deviceName());
-            connect (deviceSrc, SIGNAL (bufferObtained (QByteArray)), this, SLOT (on_mic_bufferObtained (QByteArray)));
         }
     }
 
@@ -71,7 +70,7 @@ bool SpeechControl::Wizards::Pages::MicrophoneSelection::validatePage()
 
 void SpeechControl::Wizards::Pages::MicrophoneSelection::cleanupPage()
 {
-    m_mic->stopRecording();
+    m_mic->stop();
     ui->comboBoxMicrophones->clear();
     ui->progressBarFeedback->setValue (0);
     ui->progressBarFeedback->setFormat ("inactive");
@@ -87,20 +86,23 @@ bool SpeechControl::Wizards::Pages::MicrophoneSelection::isComplete()
 void SpeechControl::Wizards::Pages::MicrophoneSelection::on_comboBoxMicrophones_activated (int index)
 {
     if (m_mic) {
-        m_mic->stopRecording();
+        m_mic->stop();
     }
+
+    m_mic = 0;
 
     const QString deviceName = ui->comboBoxMicrophones->itemData (index).toString();
 
     m_mic = DeviceAudioSource::obtain (deviceName);
 
-    m_mic->startRecording();
+    m_mic->start();
+    connect (m_mic, SIGNAL (bufferObtained (QByteArray)), this, SLOT (on_mic_bufferObtained (QByteArray)));
 }
 
 void MicrophoneSelection::on_mic_bufferObtained (QByteArray p_buffer)
 {
-    quint8 max = pow (2, 8) - 1;
-    quint8 val = p_buffer.at (0);
+    quint16 max = pow (2, 16) - 1;
+    quint16 val = p_buffer.at (0);
     double progress = (double) val / (double) max;
     ui->progressBarFeedback->setValue (progress * 100);
 }

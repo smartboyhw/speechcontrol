@@ -51,15 +51,20 @@ void MicrophoneSelectionDialog::updateUi()
     if (!defaultDevice.isNull() && !defaultDevice.isEmpty()) {
         ui->comboBoxDevices->setCurrentIndex (ui->comboBoxDevices->findData (defaultDevice));
     }
-    m_mic = DeviceAudioSource::obtain(defaultDevice);
+
+    m_mic = DeviceAudioSource::obtain (defaultDevice);
 }
 
 void MicrophoneSelectionDialog::on_comboBoxDevices_currentIndexChanged (const int index)
 {
     const QString itemDevice = ui->comboBoxDevices->itemData (index).toString();
     const QString defaultDevice = Core::configuration ("Microphone/Default").toString();
-    ui->checkBoxUseDefault->setChecked (itemDevice == defaultDevice);
-    m_mic = DeviceAudioSource::obtain(defaultDevice);
+
+    if (!defaultDevice.isEmpty() && !defaultDevice.isNull()) {
+        ui->checkBoxUseDefault->setChecked (itemDevice == defaultDevice);
+        m_mic = DeviceAudioSource::obtain (defaultDevice);
+    }
+
     qDebug() << "[MicrophoneSelectionDialog::on_comboBoxDevices_currentIndexChanged()]" << itemDevice << defaultDevice;
 }
 

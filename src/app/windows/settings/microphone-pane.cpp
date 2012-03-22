@@ -85,26 +85,34 @@ void MicrophoneSettingsPane::updateUi()
     ui->comboBoxDevices->clear();
 
     AbstractAudioSourceList devices = DeviceAudioSource::allDevices();
-    QString defaultMic = Core::configuration ("Microphone/Default").toString();
+    qDebug() << "[MicrophoneSettingsPane::updateUi()]" << Core::configuration ("Microphone/Default");
     Q_FOREACH (const AbstractAudioSource * device, devices) {
         const DeviceAudioSource* mic = (DeviceAudioSource*) device;
         ui->comboBoxDevices->addItem (mic->humanName());
-        ui->comboBoxDevices->setItemIcon (ui->comboBoxDevices->findText (mic->humanName()), QIcon::fromTheme ("audio-input-microphone"));
-        ui->comboBoxDevices->setItemData (ui->comboBoxDevices->findText (mic->humanName()), mic->deviceName());
+        const int index = ui->comboBoxDevices->findText(mic->humanName());
+        qDebug() << "[MicrophoneSettingsPane::updateUi()] Building #" << index;
+        ui->comboBoxDevices->setItemIcon (index, QIcon::fromTheme ("audio-input-microphone"));
+        ui->comboBoxDevices->setItemData (index, mic->deviceName());
     }
 
-    if (!defaultMic.isNull())
-        ui->comboBoxDevices->setCurrentIndex (ui->comboBoxDevices->findText (DeviceAudioSource::obtain (defaultMic)->humanName()));
-
-    ui->horizontalSliderVolume->setValue (devices.first()->volume());
+    QString defaultMic = Core::configuration ("Microphone/Default").toString();
+    qDebug() << defaultMic.isNull() << defaultMic.isEmpty() << Core::configuration ("Microphone/Default").isNull() << Core::configuration ("Microphone/Default").isValid();
+    if (!defaultMic.isNull() && !defaultMic.isEmpty())
+        ui->comboBoxDevices->setCurrentIndex (ui->comboBoxDevices->findData (DeviceAudioSource::obtain (defaultMic)->deviceName()));
+    else
+        ui->comboBoxDevices->setCurrentIndex(0);
 }
 
 void MicrophoneSettingsPane::on_comboBoxDevices_currentIndexChanged (const int p_index)
 {
-    Core::setConfiguration ("Microphone/Default", ui->comboBoxDevices->itemData (p_index).toString());
+    const QString selectedDevice = ui->comboBoxDevices->itemData (p_index).toString();
+    qDebug() << "MicrophoneSettingsPane::on_comboBoxDevices_currentIndexChanged()] Selected device: " << selectedDevice;
+    Core::setConfiguration ("Microphone/Default", selectedDevice);
     QString curVal = ui->comboBoxDevices->itemData (p_index).toString();
     DeviceAudioSource* mic = DeviceAudioSource::obtain (curVal);
     ui->horizontalSliderVolume->setValue (mic->volume() * 100);
+    ui->checkBoxMute->setChecked(mic->isMuted());
+    on_checkBoxMute_toggled(mic->isMuted());
 }
 
 void MicrophoneSettingsPane::on_horizontialSliderVolume_valueChanged (const int p_value)

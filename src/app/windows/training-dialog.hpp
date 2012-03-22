@@ -162,6 +162,7 @@ private:
     Session* m_session;              /// The current Session being trained.
     uint m_currentPosition;          /// The position of the phrase that of which training began with when the dialog opened.
     uint m_initialPosition;          /// The position of the current phrase being focused on.
+    QByteArray m_data;               /// The collected data from the device buffer.
 };
 
 }

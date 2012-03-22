@@ -84,6 +84,8 @@ void TrainingDialog::setDevice (DeviceAudioSource* p_device)
 /// @todo Write data to a stream representing the current phrase's audio.
 void TrainingDialog::on_mic_BufferObtained (QByteArray p_buffer)
 {
+    m_data.append(p_buffer);
+    qDebug() << "[TrainingDialog::on_mic_BufferObtained()] Added to internal buffer:" << p_buffer.toUInt();
 }
 
 void TrainingDialog::onMicStartedListening()
@@ -154,7 +156,7 @@ void TrainingDialog::startCollecting()
 void TrainingDialog::stopCollecting()
 {
     if (m_mic)
-        m_mic->stopRecording();
+        m_mic->stop();
 
     m_ui->pushButtonNext->setEnabled (false);
     m_ui->pushButtonUndo->setEnabled (false);
@@ -182,6 +184,7 @@ Session* TrainingDialog::session() const
 
 void TrainingDialog::on_pushButtonClose_clicked()
 {
+    stopCollecting();
     reject();
 }
 
@@ -230,7 +233,7 @@ void TrainingDialog::navigateToPart (const uint& p_index)
     m_ui->pushButtonReset->setEnabled (! (currentPhrase() == initialPhrase()));
     m_ui->pushButtonUndo->setEnabled (m_ui->pushButtonReset->isEnabled());
     updateProgress (m_session->assessProgress());
-    m_mic->startRecording();
+    m_mic->start();
 }
 
 void TrainingDialog::navigateNextPart()
@@ -299,16 +302,17 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonNext_clicked()
     qDebug() << "[TrainingDialog::onPushButtonNext_clicked()] Is recording? " << m_mic->isRecording();
 
     if (m_mic->isRecording()) {
-        m_mic->stopRecording();
+        m_mic->stop();
         QFile* file = currentPhrase()->audio();
-        file->open (QIODevice::WriteOnly | QIODevice::Truncate);
 
-        if (!file->write ("Sample data")) {
+        if (!file->open (QIODevice::WriteOnly | QIODevice::Truncate)) {
             qDebug() << "[TrainingDialog::onPushButtonNext_clicked()] Failed to save audio:" << file->errorString();
         }
-
-        //l_file->write ( m_mic->data() );
-        file->close();
+        else {
+            QDataStream strm (file);
+            strm << m_data;
+            file->close();
+        }
     }
 
     if (!m_session->firstIncompletePhrase()) {

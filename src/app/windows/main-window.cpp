@@ -228,6 +228,8 @@ void Main::updateUi()
         m_ui->btnDsktpCntrl->setChecked (desktopControlActive);
         m_ui->btnDsktpCntrl->setIcon ( (desktopControlActive ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
     }
+
+    m_ui->btnAdapt->setEnabled(!Session::completedSessions().isEmpty());
 }
 
 
@@ -247,11 +249,13 @@ void Main::setProgress (const double p_progress)
 void Main::on_actionDesktopControlOptions_triggered()
 {
     Settings::displayPane ("dsktpcntrl");
+    updateWindow();
 }
 
 void Main::on_actionOptions_triggered()
 {
     Settings::displayPane ("gnrl");
+    updateWindow();
 }
 
 void Main::on_actionAdaptModels_triggered()
@@ -265,10 +269,13 @@ void Main::on_actionStartTraining_triggered ()
 {
     Session* session = SessionManager::pickSession();
 
+    updateWindow();
     if (session && session->isValid() && !session->isCompleted()) {
         TrainingDialog::startTraining (session);
         setStatusMessage (tr ("Training session \"%1\"").arg (session->content()->title()) , 3000);
     }
+
+    updateWindow();
 }
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
@@ -312,7 +319,7 @@ void Main::on_actionAboutSpeechControl_triggered()
 
 void Main::on_actionPluginOptions_triggered()
 {
-    Settings::displayPane ("dsktpcntrl");
+    Settings::displayPane ("plgns");
     updateWindow();
 }
 

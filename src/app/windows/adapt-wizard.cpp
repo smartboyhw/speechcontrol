@@ -22,8 +22,14 @@
 #include "wizards/intro.hpp"
 #include "wizards/outro.hpp"
 #include "wizards/adapt/modelselection.hpp"
+#include "wizards/adapt/sessionselection.hpp"
+#include "wizards/adapt/enaction.hpp"
+#include "wizards/adapt/results.hpp"
+#include <core.hpp>
+#include <acousticmodel.hpp>
 
 #include <QIcon>
+#include <QMessageBox>
 
 using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
@@ -37,27 +43,58 @@ AdaptWizard::AdaptWizard (QWidget* parent) :
     setWindowTitle (tr ("Adaption Wizard - SpeechControl"));
     setPage (AdaptWizard::IntroductionPage,
              new Pages::IntroductionPage (tr ("This wizard will help you adapt acoustic models for optimal performance in SpeechControl."
-                                              " If this is the first time you've attempted to adapt an acoustic model, please "
-                                              "visit <a href=\"http://wiki.thesii.org/SpeechControl/UserGuides/AdaptingAcousticModels\">http://wiki.thesii.org/SpeechControl/UserGuides/AdaptingAcousticModels</a> "
-                                              "for more detailed information about how adaption and adapting acoustic models enhance SpeechControl's performance."
-            )));
-    setPage (AdaptWizard::SelectionPage, new Pages::ModelSelection);
+                                          " If this is the first time you've attempted to adapt an acoustic model, please "
+                                          "visit <a href=\"http://wiki.thesii.org/SpeechControl/UserGuides/AdaptingAcousticModels\">http://wiki.thesii.org/SpeechControl/UserGuides/AdaptingAcousticModels</a> "
+                                          "for more detailed information about how adaption and adapting acoustic models enhance SpeechControl's performance."
+                                             )));
+    setPage (AdaptWizard::ModelSelectionPage, new Pages::ModelSelection);
+    setPage (AdaptWizard::SessionSelectionPage, new Pages::SessionSelection);
+    setPage (AdaptWizard::EnactionPage, new Pages::Enaction);
+    setPage (AdaptWizard::ResultsPage, new Pages::Results);
     setPage (AdaptWizard::ConclusionPage,
              new Pages::ConclusionPage (tr ("You've successfully adapted your acoustic model to be used with SpeechControl. Click <b>Finish</b> to finalize your results and commit them to SpeechControl."
-             " If this is the first time you've attempted to adapt an acoustic model, please "
-             "visit <a href=\"http://wiki.thesii.org/SpeechControl/UserGuides/AdaptingAcousticModels\">http://wiki.thesii.org/SpeechControl/UserGuides/AdaptingAcousticModels</a> "
-             "for more detailed information about how adaption and adapting acoustic models enhance SpeechControl's performance."
-             )));
+                                            " If this is the first time you've attempted to adapt an acoustic model, please "
+                                            "visit <a href=\"http://wiki.thesii.org/SpeechControl/UserGuides/AdaptingAcousticModels\">http://wiki.thesii.org/SpeechControl/UserGuides/AdaptingAcousticModels</a> "
+                                            "for more detailed information about how adaption and adapting acoustic models enhance SpeechControl's performance."
+                                           )));
 }
 
 int AdaptWizard::nextId() const
 {
-    switch (currentId()){
-        case AdaptWizard::IntroductionPage:
-            break;
+    switch (currentId()) {
+    case AdaptWizard::IntroductionPage: {
+        return AdaptWizard::ModelSelectionPage;
+    }
+    break;
 
-        case AdaptWizard::ConclusionPage:
-            break;
+    case AdaptWizard::ModelSelectionPage: {
+        Pages::ModelSelection* page = (Pages::ModelSelection*) currentPage();
+        if (page->model() && page->model()->isValid()){
+            return AdaptWizard::SessionSelectionPage;
+        } else {
+            QMessageBox::warning(topLevelWidget(),tr("Invalid Model"),
+                                 tr("<h2>Invalid Model</h2>"
+                                 "The model you've selected is invalid. Please select another."));
+            return AdaptWizard::ModelSelectionPage;
+        }
+    }
+    break;
+
+    case AdaptWizard::SessionSelectionPage: {
+        return AdaptWizard::EnactionPage;
+    } break;
+
+    case AdaptWizard::EnactionPage: {
+        return AdaptWizard::ResultsPage;
+    } break;
+
+    case AdaptWizard::ResultsPage: {
+        return AdaptWizard::ConclusionPage;
+    } break;
+
+    case AdaptWizard::ConclusionPage: {
+        // just return, willis!
+    } break;
     }
 
     return -1;

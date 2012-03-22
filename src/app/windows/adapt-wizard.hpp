@@ -35,7 +35,10 @@ class AdaptWizard : public WizardBase
     Q_DISABLE_COPY (AdaptWizard)
     enum {
         IntroductionPage = 0,
-        SelectionPage,
+        ModelSelectionPage,
+        SessionSelectionPage,
+        EnactionPage,
+        ResultsPage,
         ConclusionPage
     };
 

@@ -28,6 +28,11 @@ namespace SpeechControl
 {
 namespace Wizards
 {
+namespace Pages
+{
+class Enaction;
+class Results;
+}
 
 class AdaptWizard : public WizardBase
 {
@@ -41,6 +46,9 @@ class AdaptWizard : public WizardBase
         ResultsPage,
         ConclusionPage
     };
+
+    friend class Pages::Enaction;
+    friend class Pages::Results;
 
 public:
     explicit AdaptWizard (QWidget* parent = 0);
@@ -56,3 +64,4 @@ public slots:
 }
 #endif // WIZARD_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+

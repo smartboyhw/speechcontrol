@@ -27,6 +27,7 @@ Application (general)
 * Add support for multiple languages (i18n) into SpeechControl. (bug #000022)
 * Add more tests for the UI.
 * Generate icons for Voxforge.
+* Determine if adding icons to /usr/share/icons/hicolor/*x* would make icon detection better.
 
 Application (daemon)
 ----------------------------------------------------------

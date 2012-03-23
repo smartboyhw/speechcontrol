@@ -22,6 +22,7 @@
 #define SPEECHCONTROL_ADAPTIONUTILITY_HPP
 
 #include <QObject>
+#include <QProcess>
 
 namespace SpeechControl
 {
@@ -50,6 +51,21 @@ class AdaptationUtility : public QObject
     Q_OBJECT
 
 public:
+    typedef enum {
+        PhaseUndefined = -1,
+        PhaseInitialized,
+        PhaseCopyAcousticModels,
+        PhaseGenerateFeatures,
+        PhaseGenerateMixtureWeights,
+        PhaseConvertModelDefinitions,
+        PhaseCollectAcousticStatistics,
+        PhasePerformAdaptation,
+        PhaseGenerateSendmap,
+        PhaseGenerateAccuracyReport,
+        PhaseCompleteAdaption,
+        PhaseDeinitialized
+    } Phases;
+
     /**
      * @brief Default constructor.
      * @param p_session The Session to be adapted with.
@@ -92,29 +108,21 @@ public:
 
     AcousticModel* resultingModel();
 
+    Phases currentPhase();
+
     /**
      * @brief Invokes the adaption process.
      * @return A pointer to the new AcousticModel, or NULL if the operation failed.
      **/
     AcousticModel* adapt();
-
-    enum {
-        PhaseUndefined = -1,
-        PhaseCopyAcousticModels,
-        PhaseGenerateFeatures,
-        PhaseConvertModelDefinitions,
-        PhaseCollectAcousticStatistics,
-        PhasePerformAdaptation,
-        PhaseGenerateSendmap,
-        PhaseGenerateAccuracyReport,
-        PhaseCopyAcousticModel
-    } Phases;
+    QString obtainPhaseText (const SpeechControl::AdaptationUtility::Phases& p_phase) const;
 
 signals:
-    void phaseChanged();
+    void phaseStarted(const Phases& p_phase);
+    void phaseEnded(const Phases& p_phase);
 
 private:
-    void setPhase(const Phases& p_phase);
+    void changePhase (const Phases& p_phase);
     void generateFeatures();
     void generateMixtureWeights();
     void convertModelDefinitions();
@@ -124,11 +132,18 @@ private:
     void generateAccuracyReport();
     void copyAcousticModel();
     void executeProcess (const QString& p_program, const QStringList p_arguments);
+    void advanceNextPhase();
+    void cleanupPhases(const SpeechControl::AdaptationUtility::Phases& phase);
+    void haltPhasing();
+    void completeAdaptation();
 
     Session* m_session;
     AcousticModel* m_modelBase;
     AcousticModel* m_modelResult;
+    QProcess* m_prcss;
     Phases m_phase;
+public slots:
+    void on_mPrcss_finished (const int& p_exitCode, QProcess::ExitStatus p_exitStatus);
 };
 
 }

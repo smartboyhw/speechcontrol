@@ -18,9 +18,8 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "adaptionutility.hpp"
-#include "session.hpp"
 #include <acousticmodel.hpp>
+#include <dictionary.hpp>
 
 #include <QDebug>
 #include <QProcess>
@@ -29,12 +28,12 @@
 using namespace SpeechControl;
 
 
-AdaptationUtility::AdaptationUtility() : QObject(), m_session (0), m_modelBase (0), m_modelResult(0), m_phase(PhaseUndefined)
+AdaptationUtility::AdaptationUtility() : QObject(), m_session (0), m_modelBase (0), m_modelResult (0), m_prcss (0), m_phase (PhaseUndefined)
 {
     qWarning() << "[AdaptationUtility] Initialized with null objects.";
 }
 
-AdaptationUtility::AdaptationUtility (Session* p_session, AcousticModel* p_model) : QObject(), m_session (p_session), m_modelBase (p_model), m_modelResult(0), m_phase(PhaseUndefined)
+AdaptationUtility::AdaptationUtility (Session* p_session, AcousticModel* p_model) : QObject(), m_session (p_session), m_modelBase (p_model), m_modelResult (0), m_prcss (0), m_phase (PhaseUndefined)
 {
 
 }
@@ -69,21 +68,217 @@ AcousticModel* AdaptationUtility::adapt()
     if (!m_session || !m_modelBase)
         return 0;
 
-    copyAcousticModel();
-    generateFeatures();
-    generateMixtureWeights();
-    convertModelDefinitions();
-    collectAcousticStatistics();
-    performAdaptation();
-    generateSendmap();
-    generateAccuracyReport();
+    // set up the process.
+    m_prcss = new QProcess (this);
+    connect (m_prcss, SIGNAL (finished (int, QProcess::ExitStatus)), this, SLOT (on_mPrcss_finished (int, QProcess::ExitStatus)));
+
+    // invoke the cycle.
+    changePhase (PhaseInitialized);
+    advanceNextPhase();
 
     return m_modelResult;
 }
 
+void AdaptationUtility::advanceNextPhase()
+{
+    switch (m_phase) {
+    case PhaseInitialized:
+        copyAcousticModel();
+        break;
+
+    case PhaseCopyAcousticModels:
+        generateFeatures();
+        break;
+
+    case PhaseGenerateFeatures:
+        generateMixtureWeights();
+        break;
+
+    case PhaseGenerateMixtureWeights:
+        convertModelDefinitions();
+        break;
+
+    case PhaseConvertModelDefinitions:
+        collectAcousticStatistics();
+        break;
+
+    case PhaseCollectAcousticStatistics:
+        performAdaptation();
+        break;
+
+    case PhasePerformAdaptation:
+        generateSendmap();
+        break;
+
+    case PhaseGenerateSendmap:
+        generateAccuracyReport();
+        break;
+
+    case PhaseGenerateAccuracyReport:
+        completeAdaptation();
+        break;
+
+    case PhaseDeinitialized:
+        changePhase (PhaseUndefined);
+        break;
+
+    default:
+    case PhaseUndefined:
+        break;
+    }
+}
+
+void AdaptationUtility::cleanupPhases (const Phases& phase = PhaseUndefined)
+{
+    if (phase == PhaseUndefined) {
+        cleanupPhases (PhaseCopyAcousticModels);
+        cleanupPhases (PhaseCollectAcousticStatistics);
+        cleanupPhases (PhaseGenerateMixtureWeights);
+        cleanupPhases (PhaseGenerateFeatures);
+        cleanupPhases (PhaseGenerateSendmap);
+        cleanupPhases (PhaseGenerateAccuracyReport);
+        cleanupPhases (PhasePerformAdaptation);
+    }
+    else {
+        switch (phase) {
+        case PhaseCopyAcousticModels:
+            break;
+
+        case PhaseCollectAcousticStatistics:
+            break;
+
+        case PhaseConvertModelDefinitions:
+            break;
+
+        case PhaseGenerateAccuracyReport:
+            break;
+
+        case PhaseGenerateFeatures:
+            break;
+
+        case PhaseGenerateMixtureWeights:
+            break;
+
+        case PhaseGenerateSendmap:
+            break;
+
+        case PhasePerformAdaptation:
+            break;
+
+        case PhaseInitialized:
+        case PhaseDeinitialized:
+        case PhaseUndefined:
+            break;
+        }
+    }
+}
+
+void AdaptationUtility::completeAdaptation()
+{
+    changePhase(PhaseCompleteAdaption);
+}
+
+void AdaptationUtility::haltPhasing()
+{
+    changePhase (PhaseDeinitialized);
+}
+
+void AdaptationUtility::on_mPrcss_finished (const int& p_exitCode, QProcess::ExitStatus p_exitStatus)
+{
+    qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Exit code" << p_exitCode;
+    qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Output:" << m_prcss->readAll();
+
+    switch (p_exitStatus) {
+    case QProcess::NormalExit:
+        qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Normal exit experienced.";
+        advanceNextPhase();
+        break;
+
+    case QProcess::CrashExit:
+        qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Crash exit experienced!";
+        cleanupPhases();
+        haltPhasing();
+        break;
+    }
+}
+
+AdaptationUtility::Phases AdaptationUtility::currentPhase()
+{
+    return m_phase;
+}
+
+void AdaptationUtility::changePhase (const Phases& p_phase)
+{
+    if (m_phase != PhaseUndefined) {
+        emit phaseEnded (p_phase);
+        m_phase = PhaseUndefined;
+    }
+
+    m_phase = p_phase;
+    qDebug() << "[AdaptationUtility::changePhase()] Set to phase" << obtainPhaseText (m_phase);
+    emit phaseStarted (p_phase);
+}
+
+QString AdaptationUtility::obtainPhaseText (const Phases& p_phase) const
+{
+    switch (p_phase) {
+    case PhaseCollectAcousticStatistics:
+        return "Collecting Acoustic Statistics";
+        break;
+
+    case PhaseConvertModelDefinitions:
+        return "Convert Model Definitions";
+        break;
+
+    case PhaseCopyAcousticModels:
+        return "Copy Acoustic Model";
+        break;
+
+    case PhaseGenerateAccuracyReport:
+        return "Generate Accuracy Report";
+        break;
+
+    case PhaseGenerateFeatures:
+        return "Generate Features";
+        break;
+
+    case PhaseGenerateMixtureWeights:
+        return "Generate Mixture Weights";
+        break;
+
+    case PhaseCompleteAdaption:
+        return "Complete Adaption";
+        break;
+
+    case PhaseDeinitialized:
+        return "Deinitialized";
+        break;
+
+    case PhaseInitialized:
+        return "Initialized";
+        break;
+
+    case PhaseGenerateSendmap:
+        return "Generate sendmap";
+        break;
+
+    case PhasePerformAdaptation:
+        return "Perform Adaption";
+        break;
+
+    default:
+        return "Invalid Phase";
+        break;
+    }
+
+    return "Unknown Phase";
+}
+
 void AdaptationUtility::copyAcousticModel()
 {
+    changePhase (PhaseCopyAcousticModels);
     m_modelResult = m_modelBase->clone();
+    advanceNextPhase();
 }
 
 /*
@@ -109,11 +304,13 @@ void AdaptationUtility::copyAcousticModel()
              -raw yes                              [defines input data as raw binary data]
  *
  *
+ * Typically, the recorded audio is in raw binary, straight from the mic.
  */
 void AdaptationUtility::generateFeatures()
 {
+    changePhase (PhaseGenerateFeatures);
     // Build argument values.
-    QDir dirInput(m_session->corpus()->audioPath());
+    QDir dirInput (m_session->corpus()->audioPath());
     QDir dirOutput = QDir::temp();
     QString suffixInput = ".raw";
     QString suffiXOutput = ".mfc";
@@ -122,15 +319,16 @@ void AdaptationUtility::generateFeatures()
     QFile* controlFile = m_session->corpus()->fileIds();
 
     QStringList args;
-    args << "-argfile" << m_modelBase->parameterPath()
-         << "-samprate" << QString::number(16000)
+    args << "-argfile" << m_modelResult->parameterPath()
+         << "-samprate" << QString::number (16000)
          << "-c" << controlFile->fileName()
          << "-di" << dirInput.absolutePath()
          << "-do" << dirOutput.absolutePath()
          << "-ei" << suffixInput
-         << "-eo" << suffiXOutput;
+         << "-eo" << suffiXOutput
+         ;
 
-    executeProcess("sphinx_fe",args);
+    executeProcess ("sphinx_fe", args);
 }
 
 /*
@@ -140,7 +338,11 @@ void AdaptationUtility::generateFeatures()
 */
 void AdaptationUtility::generateMixtureWeights()
 {
+    changePhase (PhaseGenerateMixtureWeights);
 
+    QStringList args;
+
+    executeProcess ("ls", args);
 }
 
 /*
@@ -149,7 +351,16 @@ void AdaptationUtility::generateMixtureWeights()
  */
 void AdaptationUtility::convertModelDefinitions()
 {
+    changePhase (PhaseConvertModelDefinitions);
 
+    QFile* fileMdef = m_modelResult->modelDefinitions();
+
+    QStringList args;
+    args << "-text" << fileMdef->fileName()
+         << (fileMdef->fileName() + ".txt")
+         ;
+
+    executeProcess ("pocketsphinx_mdef_convert", args);
 }
 
 /*
@@ -184,9 +395,27 @@ void AdaptationUtility::convertModelDefinitions()
  * copy the fillerdict file into the directory that you choose in the hmmdir
  * parameter, renaming it to noisedict.
  */
+/// @todo Use silence deliminators from noise dictionary for transcription.
 void AdaptationUtility::collectAcousticStatistics()
 {
+    changePhase (PhaseCollectAcousticStatistics);
+    QDir dirAccum;
 
+    QStringList args;
+    args << "-hmmdir" << m_modelResult->path()
+         << "-moddeffn" << (m_modelResult->modelDefinitions()->fileName() + ".txt")
+         << "-t2cbfn .semi."
+         << "-feat" << "ls_c_d_dd"
+         << "-svspec" << "0-12/13-25/26-38"
+         << "-cmn" << "current"
+         << "-agc" << "none"
+         << "-dictfn" << m_session->corpus()->dictionary()->path()
+         << "-ctlfn" << m_session->corpus()->fileIds()->fileName()
+         << "-lsnfn" << m_session->corpus()->transcription ("<s>", "</s>")->fileName()
+         << "-accumdir" << dirAccum.absolutePath();
+    ;
+
+    executeProcess ("bw", args);
 }
 
 /*
@@ -239,7 +468,11 @@ void AdaptationUtility::collectAcousticStatistics()
  */
 void AdaptationUtility::performAdaptation ()
 {
+    changePhase (PhasePerformAdaptation);
 
+    QStringList args;
+
+    executeProcess ("map_adapt", args);
 }
 
 /*
@@ -263,7 +496,16 @@ void AdaptationUtility::performAdaptation ()
  */
 void AdaptationUtility::generateSendmap()
 {
+    changePhase (PhaseGenerateSendmap);
 
+    QStringList args;
+    args << "-pocketsphinx" << "yes"
+         << "-modddefn" << (m_modelResult->modelDefinitions()->fileName() + "txt")
+         << "-mixwfn" << (m_modelResult->mixtureWeights()->fileName())
+         << "-sendumpfn" << (m_modelResult->senDump()->fileName())
+         ;
+
+    executeProcess ("mk_s2sendump", args);
 }
 
 /*
@@ -272,13 +514,15 @@ void AdaptationUtility::generateSendmap()
  */
 void AdaptationUtility::generateAccuracyReport()
 {
-
+    changePhase (PhaseGenerateAccuracyReport);
+    advanceNextPhase();
 }
 
+/// @todo Have the execution of the next phase halt until this completes.
 void AdaptationUtility::executeProcess (const QString& p_program, const QStringList p_arguments)
 {
-    QProcess process(this);
-    process.start(p_program,p_arguments);
+    m_prcss->start (p_program, p_arguments);
+    qDebug() << "[AdaptationUtility::executeProcess()] Invoking" << p_program << "with" << p_arguments << "..";
 }
 
 AdaptationUtility::~AdaptationUtility()

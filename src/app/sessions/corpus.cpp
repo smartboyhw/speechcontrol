@@ -91,6 +91,11 @@ Corpus* Corpus::create (const QStringList& p_text)
         return 0;
     }
 
+    if (!dir.mkdir("audio")){
+        qDebug() << "[Corpus::create()] Can't make corpus's at directory" << id << "at" << dir.path() + "/audio";
+        return 0;
+    }
+
     QDomDocument dom ("Corpus");
     QDomElement rootElem = dom.createElement ("Corpuses");
     QDomElement dateElem = dom.createElement ("Timing");
@@ -245,6 +250,8 @@ void Corpus::load (const QString& p_id)
     }
 
     m_id = p_id;
+    QDir path(getPath (this->id()));
+    path.mkdir("audio");
 }
 
 void Corpus::nullify()

@@ -22,8 +22,6 @@
 
 #include <app/core.hpp>
 #include <app/indicator.hpp>
-#include <app/sessions/session.hpp>
-#include <app/desktopcontrol/agent.hpp>
 
 #include "general-pane.hpp"
 #include "ui_settingspane-general.h"

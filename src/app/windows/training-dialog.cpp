@@ -26,14 +26,10 @@
 #include <lib/abstractaudiosource.hpp>
 
 #include "core.hpp"
-#include "ui_training-dialog.h"
-#include "sessions/session.hpp"
+#include "sessions.hpp"
 #include "training-dialog.hpp"
 #include "select-microphone-dialog.hpp"
-
-#include <sessions/phrase.hpp>
-#include <sessions/phrase.hpp>
-#include <sessions/corpus.hpp>
+#include "ui_training-dialog.h"
 
 #define ICON_RECORD "media-record"
 #define ICON_PAUSE "media-playback-pause"

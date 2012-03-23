@@ -61,12 +61,12 @@ void SessionManager::updateList()
     SessionList l_lst = Session::allSessions();
     Q_FOREACH (const Session * l_sessionItr, l_lst) {
         QListWidgetItem* item = new QListWidgetItem (m_ui->listSession);
-        item->setData (Qt::UserRole, l_sessionItr->uuid().toString());
+        item->setData (Qt::UserRole, l_sessionItr->id());
         item->setText (tr ("%1 - %2%").arg (l_sessionItr->name()).arg ( (int) (l_sessionItr->assessProgress() * 100.0)));
         item->setIcon ( (l_sessionItr->isCompleted()) ? QIcon::fromTheme ("task-complete") : QIcon::fromTheme ("task-ongoing"));
         m_ui->listSession->addItem (item);
 
-        if (m_session && m_session->uuid() == l_sessionItr->uuid()) {
+        if (m_session && m_session->id() == l_sessionItr->id()) {
             item->setSelected (true);
         }
     }
@@ -139,7 +139,7 @@ void SessionManager::on_btnCreate_clicked()
 void SessionManager::on_listSession_itemDoubleClicked (QListWidgetItem* p_item)
 {
     if (p_item) {
-        Session* session = Session::obtain (QUuid (p_item->data (Qt::UserRole).toString()));
+        Session* session = Session::obtain (p_item->data (Qt::UserRole).toString());
 
         if (session) {
             SessionInformationDialog dialog (session);
@@ -154,10 +154,10 @@ void SessionManager::on_listSession_itemSelectionChanged()
     const QListWidgetItem* item = m_ui->listSession->currentItem();
 
     if (item) {
-        m_session = Session::obtain (QUuid (item->data (Qt::UserRole).toString()));
+        Session* session = Session::obtain (item->data (Qt::UserRole).toString());
 
-        if (m_session) {
-            const int progress = (int) (m_session->assessProgress() * 100.0);
+        if (session) {
+            const int progress = (int) (session->assessProgress() * 100.0);
 
             if (progress == 100)
                 m_ui->progressBar->setFormat (tr ("Completed"));

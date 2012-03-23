@@ -22,12 +22,11 @@
 #include <QLabel>
 
 #include "core.hpp"
-#include "sessions/session.hpp"
 #include "desktopcontrol/agent.hpp"
 #include "desktopcontrol/command.hpp"
 #include "desktopcontrol-pane.hpp"
-#include <windows/main-window.hpp>
-#include <dictation/agent.hpp>
+#include "windows/main-window.hpp"
+#include "dictation/agent.hpp"
 #include "ui_settingspane-desktopcontrol.h"
 
 using namespace SpeechControl;

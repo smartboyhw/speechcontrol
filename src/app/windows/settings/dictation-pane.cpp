@@ -18,12 +18,11 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "sessions/session.hpp"
-#include "dictation-pane.hpp"
-#include <windows/main-window.hpp>
 #include "core.hpp"
-#include <dictation/agent.hpp>
-#include <desktopcontrol/agent.hpp>
+#include "dictation-pane.hpp"
+#include "windows/main-window.hpp"
+#include "dictation/agent.hpp"
+#include "desktopcontrol/agent.hpp"
 #include "ui_settingspane-dictation.h"
 
 using namespace SpeechControl;

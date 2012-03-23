@@ -23,10 +23,11 @@
 #define CONTENTS_WIZARD_HPP
 
 #include <windows/wizards/base.hpp>
-#include <sessions/content.hpp>
 
 namespace SpeechControl
 {
+class Content;
+class AbstractContentSource;
 namespace Wizards
 {
 

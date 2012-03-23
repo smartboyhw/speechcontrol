@@ -19,7 +19,7 @@
  */
 
 #include "content-pane.hpp"
-#include "sessions/session.hpp"
+#include "sessions.hpp"
 #include "windows/content-information-dialog.hpp"
 #include "windows/contents-wizard.hpp"
 #include "ui_settingspane-content.h"
@@ -90,7 +90,7 @@ void ContentSettingsPane::updateUi()
         Q_FOREACH (const Content * cnt, lst) {
             const QString lbl = cnt->title();
             QListWidgetItem* item = new QListWidgetItem (widget);
-            item->setData (Qt::UserRole, cnt->uuid().toString());
+            item->setData (Qt::UserRole, cnt->id().toString());
             widget->addItem (item);
 
             if (lbl.isEmpty()) {

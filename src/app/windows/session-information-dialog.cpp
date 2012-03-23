@@ -19,7 +19,7 @@
  */
 
 #include "core.hpp"
-#include "sessions/session.hpp"
+#include "sessions.hpp"
 #include "training-dialog.hpp"
 #include "session-information-dialog.hpp"
 #include "content-information-dialog.hpp"
@@ -43,7 +43,7 @@ void SessionInformationDialog::updateUi()
     int sharedSessionCount = 0;
 
     Q_FOREACH (const Session * session, Session::allSessions()) {
-        if (session->content() == m_session->content() && session->uuid() != m_session->uuid())
+        if (session->content() == m_session->content() && session->id() != m_session->id())
             sharedSessionCount += 1;
     }
 

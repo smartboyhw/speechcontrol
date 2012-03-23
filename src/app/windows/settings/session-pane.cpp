@@ -19,7 +19,7 @@
  */
 
 #include "session-pane.hpp"
-#include "sessions/session.hpp"
+#include "sessions.hpp"
 #include "windows/session-information-dialog.hpp"
 #include "ui_settingspane-sessions.h"
 
@@ -93,16 +93,15 @@ void SessionSettingsPane::updateUi()
     SessionList l_lst = Session::allSessions();
     Q_FOREACH (const Session * sssn, l_lst) {
         QListWidgetItem* item = new QListWidgetItem (widget);
-        item->setData (Qt::UserRole, sssn->uuid().toString());
+        QString sssnId = sssn->id();
+        item->setData (Qt::UserRole, sssnId);
         widget->addItem (item);
 
         if (sssn->content()) {
             const QString lbl = sssn->name();
 
             if (lbl.isEmpty()) {
-                QString sssnUuid = sssn->uuid().toString();
-                sssnUuid.chop (sssnUuid.lastIndexOf ("-"));
-                item->setText (sssnUuid);
+                item->setText (sssnId);
             }
             else {
                 item->setText (lbl);

@@ -18,14 +18,12 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-
-#include "content-manager.hpp"
-
-#include "ui_manager-content.h"
-#include "sessions/session.hpp"
+#include "core.hpp"
+#include "sessions.hpp"
 #include "contents-wizard.hpp"
 #include "windows/main-window.hpp"
-#include "core.hpp"
+#include "content-manager.hpp"
+#include "ui_manager-content.h"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
@@ -61,10 +59,10 @@ void ContentManager::updateList()
     if (!l_lst.empty()) {
         Q_FOREACH (const Content * l_cnt, l_lst) {
             QListWidgetItem* l_item = new QListWidgetItem (l_cnt->title(), ui->lstContent);
-            l_item->setData (Qt::UserRole, l_cnt->uuid().toString());
+            l_item->setData (Qt::UserRole, l_cnt->id().toString());
             ui->lstContent->addItem (l_item);
 
-            if (m_content && m_content->uuid() == l_cnt->uuid()) {
+            if (m_content && m_content->id() == l_cnt->id()) {
                 l_item->setSelected (true);
             }
         }

@@ -20,13 +20,10 @@
 
 #include <QDebug>
 
-#include <app/core.hpp>
-#include <app/indicator.hpp>
-#include <app/sessions/session.hpp>
-#include <app/desktopcontrol/agent.hpp>
+#include <lib/abstractaudiosource.hpp>
 
+#include "core.hpp"
 #include "microphone-pane.hpp"
-#include <abstractaudiosource.hpp>
 #include "ui_settingspane-microphone.h"
 
 using namespace SpeechControl;

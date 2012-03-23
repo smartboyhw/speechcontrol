@@ -68,6 +68,21 @@ void AcousticModel::load (QString p_path)
     loadNoiseDictionary();
 }
 
+QFile* AcousticModel::modelDefinitions() const
+{
+    return new QFile (path() + "/mdef");
+}
+
+QFile* AcousticModel::mixtureWeights()
+{
+    return new QFile (path() + "/mixture_weights");
+}
+
+QFile* AcousticModel::senDump()
+{
+    return new QFile (path() + "/sendump");
+}
+
 QString AcousticModel::parameterPath() const
 {
     return m_path + "/feat.params";
@@ -83,12 +98,13 @@ void AcousticModel::loadFeatureParameters()
     while (!strm.atEnd()) {
         const QStringList tokens = strm.readLine().split (" ");
         QString paramName = tokens[0];
-        if (paramName.startsWith("-"))
-            paramName = paramName.remove(0,1);
+
+        if (paramName.startsWith ("-"))
+            paramName = paramName.remove (0, 1);
 
         QString paramValue = tokens[1];
         qDebug() << "[AcousticModel::loadFeatureParameters()] Parsing parameter" << paramName << "=" << paramValue;
-        setParameter (paramName,paramValue);
+        setParameter (paramName, paramValue);
     }
 
     l_file->close();
@@ -153,10 +169,15 @@ void cloneDirectory (QDir p_base, QDir p_newDir)
 
         if (entryInfo.isDir()) {
             p_base.mkpath (p_newDir.absolutePath() + "/" + entryInfo.baseName());
+            qDebug() << "[cloneDirectory()] Descending into " << entryInfo.absolutePath();
             cloneDirectory (QDir (entryInfo.absolutePath()), QDir (p_newDir.absolutePath() + "/" + entryInfo.baseName()));
         }
-        else
-            QFile::copy (entry, p_base.absoluteFilePath (entryInfo.baseName()));
+        else {
+            QString fileBase = p_base.absoluteFilePath(entry);
+            QString fileNew = p_newDir.absoluteFilePath (entryInfo.fileName());
+            qDebug() << "[cloneDirectory()] Copying" << fileBase << "to" << fileNew << "..";
+            QFile::copy (fileBase,fileNew);
+        }
     }
 }
 
@@ -170,16 +191,21 @@ AcousticModel* AcousticModel::clone()
 {
     // obtain directory info.
     QDir model (m_path);
-    QString newPath = QDir::homePath() + "/.config/speechcontrol/models";
+    QDir newDir (QDir::homePath() + "/.config/speechcontrol/models");
+    newDir.mkpath (newDir.absolutePath());
+
     QString randomID = QUuid::createUuid().toString();
     randomID = randomID.split ("-").at (0);
     randomID = randomID.replace ("{", "");
-    newPath += "/" + model.dirName() + "-" + randomID;
+    const QString newModelName = model.dirName() + "-" + randomID;
+    newDir.mkdir(newModelName);
+    newDir.cd(newModelName);
 
     // create directory.
-    cloneDirectory (model, QDir (newPath));
+    cloneDirectory (model, newDir);
 
-    return new AcousticModel (newPath);
+    qDebug() << "[AcousticModel::clone()] Cloned" << m_path << "to" << newDir;
+    return new AcousticModel (newDir.path());
 }
 
 QStringList findAllAcousticModels (const QDir p_dir)

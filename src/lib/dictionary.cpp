@@ -39,17 +39,37 @@ Dictionary::Dictionary (const Dictionary& p_other) : QObject (p_other.parent()),
 
 }
 
-Dictionary::Dictionary (const QUuid& p_uuid)
+Dictionary::Dictionary (const QString& p_id)
 {
-    load (new QFile (getPathFromUuid (p_uuid)));
+    load (new QFile (getPath (p_id)));
 }
 
-void Dictionary::load (const QUuid& p_uuid)
+void Dictionary::load (const QString& p_id)
 {
-    load (getPathFromUuid (p_uuid));
+    load (getPath (p_id));
 }
 
-void Dictionary::load (QIODevice* p_device)
+/// @todo The words should be separated by any non-alphanumeric symbol.
+Dictionary* Dictionary::create (QStringList p_wordlist, QString p_id)
+{
+    QFile* fileDictionary = new QFile(getPath(p_id));
+    fileDictionary->open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream strm(fileDictionary);
+
+    Q_FOREACH(const QString& word, p_wordlist){
+        QString phonemes;
+        QString wordUpper = word.toUpper();
+        wordUpper = wordUpper.replace(QRegExp("\.\.+"),".");
+        wordUpper = wordUpper.trimmed().simplified();
+        strm << wordUpper << "\t" << wordUpper << endl;
+    }
+
+    fileDictionary->close();
+
+    return Dictionary::obtain(p_id);
+}
+
+void Dictionary::load (QFile* p_device)
 {
     Q_ASSERT (m_device != 0 || p_device != 0);
 
@@ -57,7 +77,7 @@ void Dictionary::load (QIODevice* p_device)
         m_device = p_device;
 
     if (!m_device->open (QIODevice::ReadOnly | QIODevice::Text)) {
-        qWarning() << "Failed to open dictionary" << m_device->errorString();
+        qWarning() << "[Dictionary::load()] Failed to open dictionary" << m_device->errorString();
         return;
     }
 
@@ -74,22 +94,23 @@ void Dictionary::load (QIODevice* p_device)
     qDebug() << "[Dictionary::load()]"<< m_words.size() << "words found in this dictionary.";
 }
 
+
 /// @bug This location should be passed in as a macro.
-QString Dictionary::getPathFromUuid (const QUuid& p_uuid)
+QString Dictionary::getPath (const QString& p_id)
 {
-    return QDir::homePath() + "/.config/speechcontrol/dictionaries/" + p_uuid.toString() + ".dic";
+    return QDir::homePath() + "/.config/speechcontrol/dictionaries/" + p_id + ".dict";
 }
 
-Dictionary* Dictionary::obtain (const QUuid& p_uuid)
+Dictionary* Dictionary::obtain (const QString& p_id)
 {
-    if (!QFile::exists (getPathFromUuid (p_uuid)))
+    if (!QFile::exists (getPath (p_id)))
         return 0;
 
-    Dictionary* l_dict = new Dictionary (p_uuid);
+    Dictionary* l_dict = new Dictionary (p_id);
     return l_dict;
 }
 
-Dictionary* Dictionary::obtain (const QString& p_path)
+Dictionary* Dictionary::obtainFromPath (const QString& p_path)
 {
     QFile* l_file = new QFile (p_path);
     Dictionary* l_dict = new Dictionary;
@@ -145,7 +166,7 @@ void Dictionary::save()
 
 QString Dictionary::path() const
 {
-    return m_device->property ("fileName").toString();
+    return m_device->fileName();
 }
 
 Dictionary::~Dictionary()

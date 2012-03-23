@@ -26,6 +26,7 @@
 
 #include <export.hpp>
 
+class QFile;
 namespace SpeechControl
 {
 class AcousticModel;
@@ -158,6 +159,9 @@ public:
 
     static AcousticModelList allModels();
     QString parameterPath() const;
+    QFile* modelDefinitions() const;
+    QFile* mixtureWeights();
+    QFile* senDump();
 };
 
 /**

@@ -24,7 +24,7 @@
 #include <QMap>
 #include <QDir>
 #include <QList>
-#include <QUuid>
+#include <QString>
 #include <QObject>
 #include <QDateTime>
 
@@ -37,7 +37,7 @@ class QDomElement;
 
 namespace SpeechControl
 {
-class Corpus;
+
 class Phrase;
 class Sentence;
 class Dictionary;
@@ -54,9 +54,9 @@ typedef QList<Dictionary*> DictionaryList;
 typedef QList<DictionaryEntry*> DictionaryEntryList;
 
 /**
- * @brief Represents a mapping of QUuids to Dictionary objects.
+ * @brief Represents a mapping of QStrings to Dictionary objects.
  **/
-typedef QMap<QUuid, Dictionary*> DictionaryMap;
+typedef QMap<QString, Dictionary*> DictionaryMap;
 
 /**
  * @brief Represents a mapping of QStrings to DictionaryEntry objects.
@@ -134,9 +134,9 @@ public:
 
     /**
      * @brief Constructor.
-     * @param p_uuid The UUID to obtain this dictionary with.
+     * @param p_id The ID to obtain this dictionary with.
      **/
-    Dictionary (const QUuid& p_uuid);
+    Dictionary (const QString& p_id);
 
     /**
      * @brief Destructor.
@@ -144,11 +144,11 @@ public:
     virtual ~Dictionary();
 
     /**
-     * @brief Obtains a Dictionary by its UUID.
-     * @param p_uuid The UUID to obtain the dictionary with.
+     * @brief Obtains a Dictionary by its ID.
+     * @param p_id The ID to obtain the dictionary with.
      * @return A pointer to a Dictionary object if found, NULL otherwise.
      **/
-    static Dictionary* obtain (const QUuid& p_uuid);
+    static Dictionary* obtain (const QString& p_id);
 
     /**
      * @brief Obtains a Dictionary from a path.
@@ -156,7 +156,16 @@ public:
      * @param p_path The path of which the dictionary resides.
      * @return A pointer to a Dictionary object if found, NULL otherwise.
      **/
-    static Dictionary* obtain (const QString& p_path);
+    static Dictionary* obtainFromPath (const QString& p_path);
+
+    /**
+     * @brief Creates a new Dictionary from the specified text.
+     *
+     * @param p_text The text to use.
+     * @param p_id The dictionary's path.
+     * @return Dictionary* A pointer to the newly formed Dictionary.
+     **/
+    static Dictionary* create(QStringList p_text, QString p_id);
 
     /**
      * @brief Obtains the list of entries representing this Dictionary.
@@ -195,14 +204,14 @@ public:
     /**
      * @brief Loads the Dictionary from the specified QIODevice p_device.
      **/
-    void load (QIODevice* p_device);
+    void load (QFile* p_device);
 
     /**
-     * @brief Loads the Dictionary from a specified UUID.
+     * @brief Loads the Dictionary from a specified ID.
      *
-     * @param p_uuid The UUID of the Dictionary to load.
+     * @param p_id The ID of the Dictionary to load.
      **/
-    void load (const QUuid& p_uuid);
+    void load (const QString& p_id);
 
     /**
      * @brief Saves the Dictionary.
@@ -216,11 +225,11 @@ public:
     QString path() const;
 
 private:
-    static QString getPathFromUuid (const QUuid& p_uuid);
+    static QString getPath (const QString& p_id);
     static DictionaryMap s_lst;
     DictionaryEntryMap m_words;
-    QIODevice* m_device;
+    QFile* m_device;
 };
 }
 #endif // DICTIONARY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -111,7 +111,7 @@ public:
     } Phases;
 
 signals:
-    void phaseChanged()
+    void phaseChanged();
 
 private:
     void setPhase(const Phases& p_phase);

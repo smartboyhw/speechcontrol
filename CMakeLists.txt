@@ -14,7 +14,7 @@ option(WITH_DOCS               "Generate Doxygen-made documentation?"       OFF)
 option(WITH_TESTS              "Generate the test build system?"            OFF)
 
 ## Required packages
-find_package(PkgConfig REQUIRED)
+find_package(PkgConfig 0.2 REQUIRED)
 find_package(Qt4 4.7 COMPONENTS
   QtCore
   QtGui
@@ -23,8 +23,8 @@ find_package(Qt4 4.7 COMPONENTS
   QtXml
   REQUIRED)
 find_package(QtGStreamer REQUIRED)
-find_package(SphinxBase REQUIRED)
-find_package(PocketSphinx REQUIRED)
+find_package(SphinxBase 0.7 REQUIRED)
+find_package(PocketSphinx 0.7 REQUIRED)
 
 ## Now we'll add in the Qt stuff
 include("${QT_USE_FILE}")

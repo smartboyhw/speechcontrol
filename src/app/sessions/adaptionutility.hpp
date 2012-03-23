@@ -98,7 +98,23 @@ public:
      **/
     AcousticModel* adapt();
 
+    enum {
+        PhaseUndefined = -1,
+        PhaseCopyAcousticModels,
+        PhaseGenerateFeatures,
+        PhaseConvertModelDefinitions,
+        PhaseCollectAcousticStatistics,
+        PhasePerformAdaptation,
+        PhaseGenerateSendmap,
+        PhaseGenerateAccuracyReport,
+        PhaseCopyAcousticModel
+    } Phases;
+
+signals:
+    void phaseChanged()
+
 private:
+    void setPhase(const Phases& p_phase);
     void generateFeatures();
     void generateMixtureWeights();
     void convertModelDefinitions();
@@ -112,6 +128,7 @@ private:
     Session* m_session;
     AcousticModel* m_modelBase;
     AcousticModel* m_modelResult;
+    Phases m_phase;
 };
 
 }

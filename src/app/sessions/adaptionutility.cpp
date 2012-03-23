@@ -29,12 +29,12 @@
 using namespace SpeechControl;
 
 
-AdaptationUtility::AdaptationUtility() : QObject(), m_session (0), m_modelBase (0), m_modelResult(0)
+AdaptationUtility::AdaptationUtility() : QObject(), m_session (0), m_modelBase (0), m_modelResult(0), m_phase(PhaseUndefined)
 {
     qWarning() << "[AdaptationUtility] Initialized with null objects.";
 }
 
-AdaptationUtility::AdaptationUtility (Session* p_session, AcousticModel* p_model) : QObject(), m_session (p_session), m_modelBase (p_model), m_modelResult(0)
+AdaptationUtility::AdaptationUtility (Session* p_session, AcousticModel* p_model) : QObject(), m_session (p_session), m_modelBase (p_model), m_modelResult(0), m_phase(PhaseUndefined)
 {
 
 }

@@ -19,34 +19,74 @@
  */
 
 #include "enaction.hpp"
+#include "modelselection.hpp"
+#include "sessionselection.hpp"
+#include <windows/adapt-wizard.hpp>
+#include <sessions/adaptionutility.hpp>
 #include "ui_adaptwizard-enaction.h"
 
 using namespace SpeechControl;
-using SpeechControl::Wizards::Pages::Enaction;
+using namespace SpeechControl::Wizards::Pages;
 
 Enaction::Enaction (QWidget* parent) :
     QWizardPage (parent),
-    ui (new Ui::Enaction)
+    ui (new Ui::Enaction), m_utility (0)
 {
     ui->setupUi (this);
     this->setLayout (ui->gridLayout);
-    setCommitPage(true);
+    setCommitPage (true);
     initializePage();
 }
 
 void Enaction::initalizePage()
 {
-
+    cleanupPage();
 }
 
 void Enaction::cleanupPage()
 {
+    ui->progressBarStatus->setFormat (QString::null);
+    ui->progressBarStatus->setValue (0);
+    ui->lblStatus->setText (QString::null);
+    ui->btnAdapt->setEnabled(true);
+}
 
+void Enaction::on_btnAdapt_clicked()
+{
+    ui->btnAdapt->setEnabled (false);
+
+    Session* session = 0;
+    AcousticModel* model = 0;
+
+    SessionSelection* sessionPage = (SessionSelection*) wizard()->page (Wizards::AdaptWizard::SessionSelectionPage);
+    ModelSelection* modelPage = (ModelSelection*) wizard()->page (Wizards::AdaptWizard::ModelSelectionPage);
+
+    session = sessionPage->session();
+    model = modelPage->model();
+
+    m_utility = new AdaptationUtility (session, model);
+    connect (m_utility, SIGNAL (phaseStarted (Phases)), this, SLOT (on_mUtility_phaseStarted (Phases)));
+    connect (m_utility, SIGNAL (phaseEnded (Phases)), this, SLOT (on_mUtility_phaseEnded (Phases)));
+    m_utility->adapt();
+}
+
+void Enaction::on_mUtility_phaseEnded (const Phases& p_phase)
+{
+    ui->progressBarStatus->setFormat ("Ended phase " + m_utility->obtainPhaseText(p_phase) + "(" + QString::number((int) p_phase) + ")");
+}
+
+void Enaction::on_mUtility_phaseStarted (const Phases& p_phase)
+{
+    ui->progressBarStatus->setFormat ("Started phase " + m_utility->obtainPhaseText(p_phase) + "(" + QString::number((int) p_phase) + ")");
+    ui->progressBarStatus->setValue((int) p_phase);
+
+    if (p_phase == Phases::PhaseCompleteAdaption)
+        this->wizard()->next();
 }
 
 bool Enaction::isComplete() const
 {
-    return true;
+    return m_utility && m_utility->currentPhase() == Phases::PhaseCompleteAdaption;
 }
 
 Enaction::~Enaction()
@@ -56,3 +96,5 @@ Enaction::~Enaction()
 
 #include "enaction.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+
+

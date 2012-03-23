@@ -21,6 +21,7 @@
 #define ADAPT_ENACTIONSELECTION_HPP
 
 #include <QWizardPage>
+#include <app/sessions/adaptionutility.hpp>
 
 namespace Ui
 {
@@ -35,6 +36,7 @@ namespace Wizards
 namespace Pages
 {
 
+typedef SpeechControl::AdaptationUtility::Phases Phases;
 class Enaction : public QWizardPage
 {
     Q_OBJECT
@@ -46,8 +48,15 @@ public:
     virtual void cleanupPage();
     virtual bool isComplete() const;
 
+private slots:
+    void on_btnAdapt_clicked();
+
 private:
     Ui::Enaction* ui;
+    AdaptationUtility* m_utility;
+public slots:
+    void on_mUtility_phaseStarted (const Phases& p_phase);
+    void on_mUtility_phaseEnded (const Phases& p_phase);
 };
 
 }

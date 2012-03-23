@@ -18,10 +18,12 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <app/sessions/session.hpp>
-
 #include <QDir>
 #include <QDebug>
+
+#include "app/sessions/session.hpp"
+#include "app/sessions/content.hpp"
+
 #include "sessionselection.hpp"
 #include "ui_adaptwizard-sessionselection.h"
 
@@ -51,7 +53,7 @@ void SessionSelection::initializePage()
     Q_FOREACH (const Session * session, sessions) {
         if (session->isCompleted()) {
             const QString name = session->name();
-            ui->comboBoxSession->addItem (name, session->uuid().toString());
+            ui->comboBoxSession->addItem (name, session->id());
         }
     }
 }

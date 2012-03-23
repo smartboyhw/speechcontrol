@@ -25,6 +25,7 @@
 #include "lib/config.hpp"
 
 #include <QDir>
+#include <QUuid>
 #include <QDebug>
 #include <QFileInfo>
 #include <QDateTime>
@@ -35,7 +36,7 @@
 
 using namespace SpeechControl;
 
-Corpus::Corpus (const QString& p_id) : QObject(), m_dom (new QDomDocument)
+Corpus::Corpus (const QString& p_id) : QObject(), m_dom (new QDomDocument), m_dict (0), m_phraseList()
 {
     load (p_id);
 }
@@ -91,7 +92,7 @@ Corpus* Corpus::create (const QStringList& p_text)
         return 0;
     }
 
-    if (!dir.mkdir("audio")){
+    if (!dir.mkdir ("audio")) {
         qDebug() << "[Corpus::create()] Can't make corpus's at directory" << id << "at" << dir.path() + "/audio";
         return 0;
     }
@@ -153,6 +154,9 @@ Corpus* Corpus::create (const QStringList& p_text)
 
         wordCount++;
     }
+
+    // Create dictionary.
+    corpus->m_dict = Dictionary::create (words, id);
 
     corpus->save();
     qDebug() << "[Corpus::create()] Created corpus at " << file->fileName();
@@ -250,8 +254,10 @@ void Corpus::load (const QString& p_id)
     }
 
     m_id = p_id;
-    QDir path(getPath (this->id()));
-    path.mkdir("audio");
+    QDir path (getPath (id()));
+    path.mkdir ("audio");
+
+    m_dict = Dictionary::obtain (id());
 }
 
 void Corpus::nullify()
@@ -369,7 +375,7 @@ QFile* Corpus::fileIds() const
         QTextStream strm (fileIds);
 
         Q_FOREACH (const Phrase * phrase, phrases()) {
-            QFileInfo currentFile(phrase->audio()->fileName());
+            QFileInfo currentFile (phrase->audio()->fileName());
             const QString fileid = currentFile.baseName();
             strm << fileid << endl;
         }
@@ -380,22 +386,22 @@ QFile* Corpus::fileIds() const
     return fileIds;
 }
 
-QFile* Corpus::transcription(const QString& p_silencePrefix, const QString& p_silenceSuffix) const
+QFile* Corpus::transcription (const QString& p_silencePrefix, const QString& p_silenceSuffix) const
 {
-    QFile* transcription = new QFile(getPath(m_id) + "/transcription");
+    QFile* transcription = new QFile (getPath (m_id) + "/transcription");
 
-    if (!transcription->exists()){
-        transcription->open(QIODevice::WriteOnly | QIODevice::Truncate);
+    if (!transcription->exists()) {
+        transcription->open (QIODevice::WriteOnly | QIODevice::Truncate);
 
-        if (!transcription->isOpen() || !transcription->isWritable()){
+        if (!transcription->isOpen() || !transcription->isWritable()) {
             qDebug() << "[Corpus::transcription()] Can't open transcription for writing:" << transcription->errorString();
             return 0;
         }
 
-        QTextStream strm(transcription);
+        QTextStream strm (transcription);
 
         Q_FOREACH (const Phrase * phrase, phrases()) {
-            QFileInfo currentFile(phrase->audio()->fileName());
+            QFileInfo currentFile (phrase->audio()->fileName());
             const QString fileid = currentFile.baseName();
             const QString phraseText = phrase->text().toUpper();
             strm << p_silencePrefix << " "

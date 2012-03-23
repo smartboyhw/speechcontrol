@@ -69,11 +69,7 @@ class SPCH_EXPORT Corpus : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY (Corpus)
-    Q_PROPERTY (PhraseList Phrases READ phrases)         ///< Represents the Phrase objects of this Corpus.
-    Q_PROPERTY (Dictionary* Dictionary READ dictionary)  ///< Represents the Dictionary used by this Corpus.
-    Q_PROPERTY (const QString ID READ id)                ///< The identifying ID of this Corpus.
     friend class Phrase;
-    friend class Dictionary;
 
 public:
     /**
@@ -197,7 +193,7 @@ public:
      */
     bool isValid() const;
 
-    QFile* transcription(const QString& p_silencePrefix, const QString& p_silenceSuffix) const;
+    QFile* transcription (const QString& p_silencePrefix, const QString& p_silenceSuffix) const;
 
     QFile* fileIds() const;
 
@@ -241,13 +237,13 @@ public slots:
      * @return A QString with the location of the Corpus's data.
      **/
     QString audioPath() const;
-private:
 
+private:
     void nullify();
     QString m_id;               ///< Holds the ID of this Corpus.
     QDomDocument* m_dom;        ///< The QDomDocument representing the Corpus's data.
-    PhraseList m_phraseList;    ///< The list of phrases held by this Corpus.
     Dictionary* m_dict;         ///< The dictionary generated or being used by this Corpus.
+    PhraseList m_phraseList;    ///< The list of phrases held by this Corpus.
 
     static CorpusMap s_lst;     ///< Used to centralize the obtaining of @c Corpus objects.
 };

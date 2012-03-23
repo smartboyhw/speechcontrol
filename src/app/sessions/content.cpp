@@ -245,7 +245,7 @@ Content::~Content()
 {
 }
 
-QUuid Content::uuid() const
+QUuid Content::id() const
 {
     return m_uuid;
 }

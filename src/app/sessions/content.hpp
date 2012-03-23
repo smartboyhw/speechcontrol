@@ -110,7 +110,7 @@ public:
      * @brief Obtains the UUID of this @c Content.
      * @return The UUID of this @c Content.
      **/
-    QUuid uuid() const;
+    QUuid id() const;
 
     /**
      * @brief Obtains the title of this @c Content, or if provided, the nickname of the Session.

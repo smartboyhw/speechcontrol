@@ -27,12 +27,13 @@
 #include <QDateTime>
 #include <QDomDocument>
 
-// speechcontrol includes
-#include <app/sessions/corpus.hpp>
-#include <app/sessions/content.hpp>
+#include <app/sessions/phrase.hpp>
 
 namespace SpeechControl
 {
+class Phrase;
+class Corpus;
+class Content;
 class Session;
 
 /**
@@ -41,9 +42,9 @@ class Session;
 typedef QList<Session*> SessionList;
 
 /**
- * @brief Represents a @c QMap of @c Session objects, mapped by their @c QUuid keys.
+ * @brief Represents a @c QMap of @c Session objects, mapped by their @c QString keys.
  **/
-typedef QMap<QUuid, Session*> SessionMap;
+typedef QMap<QString, Session*> SessionMap;
 
 /**
  * @brief Represents data to be used for adaption.
@@ -80,11 +81,11 @@ public:
     typedef QList<Backup*> BackupList;
 
     /**
-     * @brief New Session with UUID
+     * @brief New Session with ID
      *
-     * @param  QUuid UUID of the Session
+     * @param  QString ID of the Session
      **/
-    explicit Session (const QUuid&);
+    explicit Session (const QString& p_id);
 
     /**
      * @brief Destructor
@@ -92,11 +93,11 @@ public:
     virtual ~Session();
 
     /**
-     * @brief UUID of the Session
+     * @brief ID of the Session
      *
-     * @return UUID of the Session
+     * @return ID of the Session
      **/
-    QUuid uuid() const;
+    QString id() const;
 
     /**
      * @brief ...
@@ -136,8 +137,8 @@ public:
     Phrase* lastIncompletePhrase() const;
     PhraseList incompletedPhrases() const;
     static void init();
-    static Session* obtain (const QUuid& p_uuid);
-    static Session* create (const Content*);
+    static Session* obtain (const QString& p_id);
+    static Session* create (const Content* p_content);
     static void save();
     static SessionList allSessions();
     static SessionList completedSessions();
@@ -159,12 +160,12 @@ public slots:
      **/
     void setCorpus (Corpus* p_corpus);
     void setContent (Content* p_content);
-    void load (const QUuid& p_uuid);
+    void load (const QString& p_id);
     double assessProgress() const;
 
 private:
     static QDomDocument* s_dom;
-    static QMap<QUuid, QDomElement*> s_elems;
+    static QMap<QString, QDomElement*> s_elems;
     Corpus* m_corpus;
     Content* m_content;
     QDomElement* m_elem;

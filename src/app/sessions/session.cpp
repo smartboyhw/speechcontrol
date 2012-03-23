@@ -18,7 +18,6 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "session.hpp"
 #include <core.hpp>
 
 #include <QDebug>
@@ -28,13 +27,13 @@
 
 using namespace SpeechControl;
 
-QMap<QUuid, QDomElement*> Session::s_elems;
+QMap<QString, QDomElement*> Session::s_elems;
 QDomDocument* Session::s_dom = 0;
 ContentMap Content::s_lst;
 
-Session::Session (const QUuid& p_uuid) : m_corpus (0), m_content (0), m_elem (0)
+Session::Session (const QString& p_id) : m_corpus (0), m_content (0), m_elem (0)
 {
-    load (p_uuid);
+    load (p_id);
 }
 
 Session::~Session()
@@ -115,8 +114,8 @@ void Session::init()
 
             for (int i = 0; i < domList.count(); i++) {
                 QDomElement node = domList.at (i).toElement();
-                const QUuid uuid (node.attribute ("uuid"));
-                s_elems.insert (uuid, new QDomElement (domList.at (i).toElement()));
+                const QString id (node.attribute ("id"));
+                s_elems.insert (id, new QDomElement (domList.at (i).toElement()));
             }
 
             qDebug() << "[Session::init()] " << domList.count() << "sessions loaded.";
@@ -138,22 +137,22 @@ void Session::init()
     configFile->close();
 }
 
-void Session::load (const QUuid& p_uuid)
+void Session::load (const QString& p_id)
 {
-    m_elem = s_elems.value (p_uuid);
+    m_elem = s_elems.value (p_id);
 
     if (m_elem && !m_elem->isNull()) {
         setCorpus (Corpus::obtain (m_elem->attribute ("corpus")));
         setContent (Content::obtain (m_elem->attribute ("content")));
     }
     else {
-        s_elems.remove (p_uuid);
+        s_elems.remove (p_id);
         m_content = 0;
         m_corpus = 0;
         m_elem = 0;
     }
 
-    qDebug() << "[Session::load()] Is Session" << p_uuid << "valid?" << isValid();
+    qDebug() << "[Session::load()] Is Session" << p_id << "valid?" << isValid();
 }
 
 bool Session::isValid() const
@@ -168,8 +167,8 @@ bool Session::isValid() const
 SessionList Session::allSessions()
 {
     SessionList lst;
-    Q_FOREACH (const QUuid uuid, s_elems.keys()) {
-        Session* session = Session::obtain (uuid);
+    Q_FOREACH (const QString id, s_elems.keys()) {
+        Session* session = Session::obtain (id);
 
         if (session && session->isValid())
             lst << session;
@@ -218,15 +217,15 @@ void Session::save()
     configFile->close();
 }
 
-QUuid Session::uuid() const
+QString Session::id() const
 {
-    return m_elem->attribute ("uuid");
+    return m_elem->attribute ("id");
 }
 
-Session* Session::obtain (const QUuid& p_uuid)
+Session* Session::obtain (const QString& p_id)
 {
-    qDebug() << "[Session::obtain()] Obtaining session" << p_uuid;
-    return new Session (p_uuid);
+    qDebug() << "[Session::obtain()] Obtaining session" << p_id;
+    return new Session (p_id);
 }
 
 /// @todo Create a new Corpus with this Session.
@@ -234,7 +233,7 @@ Session* Session::create (const Content* p_content)
 {
     const QStringList lst = p_content->pages().join ("\n").simplified().trimmed().replace (".", ".\n").split ("\n", QString::SkipEmptyParts);
     qDebug() << "[Session::create()] Session has" << lst.length() << "sentences.";
-    const QUuid uuid = QUuid::createUuid();
+    const QString id = QUuid::createUuid().toString().split("-")[0].replace("{","");
     Corpus* corpus = Corpus::create (lst);
 
     if (!corpus) {
@@ -248,8 +247,8 @@ Session* Session::create (const Content* p_content)
 
     dateElem.setAttribute ("created", QDateTime::currentDateTimeUtc().toString (Qt::SystemLocaleDate));
     dateElem.setAttribute ("completed", "-1");
-    sessElem.setAttribute ("uuid", uuid.toString());
-    sessElem.setAttribute ("content", p_content->uuid().toString());
+    sessElem.setAttribute ("id", id);
+    sessElem.setAttribute ("content", p_content->id());
     sessElem.setAttribute ("corpus", corpus->id());
 
     sessElem = s_dom->documentElement().appendChild (sessElem).toElement();
@@ -262,7 +261,7 @@ Session* Session::create (const Content* p_content)
 
     save();
     init();
-    return Session::obtain (uuid);
+    return Session::obtain (id);
 }
 
 Session* Session::Backup::session()
@@ -327,15 +326,15 @@ Session::BackupList* Session::backups() const
 
 void Session::erase() const
 {
-    QUuid uuid (m_elem->attribute ("uuid"));
-    s_elems.remove (uuid);
+    QString id (m_elem->attribute ("id"));
+    s_elems.remove (id);
     m_corpus->erase();
     s_dom->documentElement().removeChild (*m_elem);
 
     save();
     init();
 
-    qDebug() << "[Session::erase()] Session" << uuid << "removed.";
+    qDebug() << "[Session::erase()] Session" << id << "removed.";
 }
 
 Session::Backup* Session::createBackup() const
@@ -364,15 +363,15 @@ QString Session::name() const
 
 Session* Session::clone() const
 {
-    QUuid uuid = QUuid::createUuid();
+    const QString id = QUuid::createUuid().toString().split("-")[0].replace("{","");
     Corpus* corpus = m_corpus->clone();
     QDomElement elem = m_elem->cloneNode (true).toElement();
-    elem.attribute ("uuid", uuid.toString());
+    elem.attribute ("id", id);
     elem.attribute ("corpus", corpus->id());
     elem.namedItem ("Date").toElement().setAttribute ("created", QDateTime::currentDateTimeUtc().toString (Qt::SystemLocaleDate));
     s_dom->documentElement().appendChild (elem);
-    s_elems.insert (uuid, new QDomElement (elem));
-    return Session::obtain (uuid);
+    s_elems.insert (id, new QDomElement (elem));
+    return Session::obtain (id);
 }
 
 Session::Backup::Backup() : m_dom (0)
@@ -400,7 +399,7 @@ Session::Backup* Session::Backup::generate (const Session& p_sssn)
 {
     QDomDocument dom ("Backup");
     QDateTime tm = QDateTime::currentDateTimeUtc();
-    QString id = p_sssn.uuid().toString() + "_" + QString::number (tm.toMSecsSinceEpoch());
+    QString id = p_sssn.id() + "_" + QString::number (tm.toMSecsSinceEpoch());
     QDomElement domElem = dom.appendChild (dom.createElement ("Backup")).toElement();
     QFile* file = new QFile (getPath (id));
     file->open (QIODevice::WriteOnly | QIODevice::Truncate);

@@ -47,29 +47,19 @@ void TestCorpus::createCorpus()
     generateCorpus();
     QCOMPARE (m_crps != 0, 1);
 }
-
-void TestCorpus::countPhrases()
-{
-    generateCorpus();
-    QCOMPARE (m_crps != 0, 1);
-    QCOMPARE (m_crps->sentences().length(), s_strlist.length());
-}
-
 void TestCorpus::countPhrases()
 {
     generateCorpus();
     QCOMPARE (m_crps != 0, 1);
 
-    const int l_count = s_strlist.join (" ").split (" ").length();
-    int l_genCount = 0;
+    const int count = s_strlist.join (" ").split (" ").length();
+    int genCount = 0;
 
-    Q_FOREACH (Phrase * l_snt, m_crps->sentences()) {
-        Q_FOREACH (Phrase * l_phr, l_snt->phrases()) {
-            l_genCount += l_phr->words();
-        }
+    Q_FOREACH (Phrase * snt, m_crps->phrases()) {
+        genCount += snt->words();
     }
 
-    QCOMPARE (l_genCount, l_count);
+    QCOMPARE (genCount, count);
 }
 
 void TestCorpus::cleanupTestCase()

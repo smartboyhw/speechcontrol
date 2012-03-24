@@ -48,7 +48,7 @@ void TestCorpus::createCorpus()
     QCOMPARE (m_crps != 0, 1);
 }
 
-void TestCorpus::countSentences()
+void TestCorpus::countPhrases()
 {
     generateCorpus();
     QCOMPARE (m_crps != 0, 1);
@@ -63,7 +63,7 @@ void TestCorpus::countPhrases()
     const int l_count = s_strlist.join (" ").split (" ").length();
     int l_genCount = 0;
 
-    Q_FOREACH (Sentence * l_snt, m_crps->sentences()) {
+    Q_FOREACH (Phrase * l_snt, m_crps->sentences()) {
         Q_FOREACH (Phrase * l_phr, l_snt->phrases()) {
             l_genCount += l_phr->words();
         }
@@ -84,4 +84,4 @@ void TestCorpus::cleanupTestCase()
 QTEST_MAIN (TestCorpus)
 
 #include "corpus_test.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

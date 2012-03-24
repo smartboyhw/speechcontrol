@@ -39,6 +39,7 @@
 #include "dictation/agent.hpp"
 #include "desktopcontrol/agent.hpp"
 #include "sessions/session.hpp"
+#include "sessions/content.hpp"
 #include "windows/main-window.hpp"
 #include "windows/training-dialog.hpp"
 #include "windows/settings-dialog.hpp"
@@ -57,9 +58,6 @@ using namespace SpeechControl::Wizards;
 using namespace SpeechControl::Windows::Managers;
 
 using SpeechControl::Windows::Main;
-using SpeechControl::DesktopControl::AbstractCommand;
-using SpeechControl::DesktopControl::AbstractCategory;
-using SpeechControl::DesktopControl::CommandList;
 
 /// @todo Add icons to the QActions.
 Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0)

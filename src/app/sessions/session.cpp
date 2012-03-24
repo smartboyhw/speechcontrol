@@ -18,12 +18,15 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <core.hpp>
-
+#include <stdexcept>
 #include <QDebug>
 #include <QFile>
 
-#include <stdexcept>
+#include "app/core.hpp"
+#include "sessions/phrase.hpp"
+#include "sessions/corpus.hpp"
+#include "sessions/content.hpp"
+#include "sessions/session.hpp"
 
 using namespace SpeechControl;
 

@@ -19,7 +19,7 @@
  */
 
 #include "content-pane.hpp"
-#include "sessions.hpp"
+#include "sessions/content.hpp"
 #include "windows/content-information-dialog.hpp"
 #include "windows/contents-wizard.hpp"
 #include "ui_settingspane-content.h"

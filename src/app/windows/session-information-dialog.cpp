@@ -19,7 +19,7 @@
  */
 
 #include "core.hpp"
-#include "sessions.hpp"
+#include "sessions/session.hpp"
 #include "training-dialog.hpp"
 #include "session-information-dialog.hpp"
 #include "content-information-dialog.hpp"

@@ -19,7 +19,7 @@
  */
 
 #include "core.hpp"
-#include "sessions.hpp"
+#include "sessions/content.hpp"
 #include "content-information-dialog.hpp"
 #include "ui_content-information-dialog.h"
 

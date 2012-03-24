@@ -19,7 +19,7 @@
  */
 
 #include "session-pane.hpp"
-#include "sessions.hpp"
+#include "sessions/session.hpp"
 #include "windows/session-information-dialog.hpp"
 #include "ui_settingspane-sessions.h"
 

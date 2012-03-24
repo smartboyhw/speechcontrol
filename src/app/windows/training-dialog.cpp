@@ -26,7 +26,10 @@
 #include <lib/abstractaudiosource.hpp>
 
 #include "core.hpp"
-#include "sessions.hpp"
+#include "sessions/session.hpp"
+#include "sessions/phrase.hpp"
+#include "sessions/content.hpp"
+#include "sessions/corpus.hpp"
 #include "training-dialog.hpp"
 #include "select-microphone-dialog.hpp"
 #include "ui_training-dialog.h"

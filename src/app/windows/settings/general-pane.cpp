@@ -24,6 +24,7 @@
 #include <app/indicator.hpp>
 
 #include "general-pane.hpp"
+#include "sessions/session.hpp"
 #include "ui_settingspane-general.h"
 
 using namespace SpeechControl;

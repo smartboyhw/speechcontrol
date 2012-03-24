@@ -19,7 +19,7 @@
  */
 
 #include "core.hpp"
-#include "sessions.hpp"
+#include "sessions/content.hpp"
 #include "contents-wizard.hpp"
 #include "windows/main-window.hpp"
 #include "content-manager.hpp"

@@ -18,12 +18,16 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <acousticmodel.hpp>
-#include <dictionary.hpp>
+#include <lib/acousticmodel.hpp>
+#include <lib/dictionary.hpp>
 
 #include <QDebug>
 #include <QProcess>
 #include <QDir>
+
+#include "sessions/session.hpp"
+#include "sessions/corpus.hpp"
+#include "sessions/adaptionutility.hpp"
 
 using namespace SpeechControl;
 

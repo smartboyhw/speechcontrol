@@ -271,7 +271,7 @@ void AbstractAudioSource::stop()
     emit recordingEnded();
 }
 
-bool AbstractAudioSource::isRecording() const
+bool AbstractAudioSource::isActive() const
 {
     if (isNull())
         return false;

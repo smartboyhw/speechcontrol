@@ -71,7 +71,7 @@ public:
     void setSource (GenericSource* p_source);
 
 protected:
-    Q_DISABLE_COPY(GenericSink)
+    Q_DISABLE_COPY (GenericSink)
     virtual void eos();
     virtual QGst::FlowReturn newBuffer();
     GenericSource* m_src;
@@ -91,7 +91,7 @@ public:
     virtual QGst::FlowReturn pushBuffer (const QGst::BufferPtr& p_buffer);
 
 protected:
-    Q_DISABLE_COPY(GenericSource)
+    Q_DISABLE_COPY (GenericSource)
     AbstractAudioSource* m_audioSrc;
 };
 
@@ -109,10 +109,39 @@ class SPCH_EXPORT AbstractAudioSource : public QObject
     friend class GenericSource;
 
 public:
+    /**
+     * @brief Destructor.
+     **/
     virtual ~AbstractAudioSource();
-    bool isRecording() const;
+
+    /**
+     * @brief Determines if the AbstractAudioSource is active.
+     *
+     * @return TRUE if the AbstractAudioSource is currently active.
+     **/
+    bool isActive() const;
+
+    /**
+     * @brief Determines if the AbstractAudioSource is properly formed.
+     *
+     * @return TRUE if the building of the internal pipeline succeeded and all of the elements were formed.
+     *         FALSE if that operation failed.
+     **/
     bool isNull() const;
+
+    /**
+     * @brief Determnies if the AbstractAudioSource is muted.
+     *
+     * @return TRUE if the mute state of this AbstractAudioSource is true.
+     * @note This method always returns false if isNull() returns true.
+     **/
     bool isMuted() const;
+
+    /**
+     * @brief Obtains the current volume of the AbstractAudioSource.
+     *
+     * @return The volume of the stream within AbstractAudioSource.
+     **/
     double volume() const;
     void setMuted (const bool p_muted);
     void setVolume (const double p_volume);
@@ -120,7 +149,7 @@ public:
 signals:
     void recordingBegun();
     void recordingEnded();
-    void bufferObtained(const QByteArray p_buffer);
+    void bufferObtained (const QByteArray p_buffer);
 
 public slots:
     virtual void start();
@@ -150,8 +179,8 @@ private slots:
 class SPCH_EXPORT DeviceAudioSource : public AbstractAudioSource
 {
     Q_OBJECT
-    Q_PROPERTY(QString DeviceName READ deviceName)
-    Q_PROPERTY(QString HumanName READ humanName)
+    Q_PROPERTY (QString DeviceName READ deviceName)
+    Q_PROPERTY (QString HumanName READ humanName)
     Q_DISABLE_COPY (DeviceAudioSource)
     friend class AbstractAudioSource;
 
@@ -163,7 +192,7 @@ public:
     QString humanName() const;
     static AbstractAudioSourceList allDevices();
     static DeviceAudioSource* defaultDevice();
-    static DeviceAudioSource* obtain(const QString& p_deviceName);
+    static DeviceAudioSource* obtain (const QString& p_deviceName);
 
 protected:
     DeviceAudioSource (const QString& p_deviceName);
@@ -174,12 +203,13 @@ private:
     void obtainDevice (const QString& p_deviceName);
     QGlib::Value m_device;
     QGst::ElementPtr m_devicePtr;
-    static QMap<QString,DeviceAudioSource*> s_map;
+    static QMap<QString, DeviceAudioSource*> s_map;
 };
 
-class SPCH_EXPORT StreamSource : public GenericSource {
+class SPCH_EXPORT StreamSource : public GenericSource
+{
     Q_OBJECT
-    Q_DISABLE_COPY(StreamSource)
+    Q_DISABLE_COPY (StreamSource)
 
 public:
     explicit StreamSource (StreamAudioSource* p_audioSource);
@@ -188,18 +218,19 @@ public:
     virtual QGst::FlowReturn pushBuffer (const QGst::BufferPtr& p_buffer);
 };
 
-class SPCH_EXPORT StreamSink : public GenericSink {
+class SPCH_EXPORT StreamSink : public GenericSink
+{
     Q_OBJECT
-    Q_DISABLE_COPY(StreamSink)
+    Q_DISABLE_COPY (StreamSink)
 
 public:
-    explicit StreamSink(StreamAudioSource* p_audioSrc);
+    explicit StreamSink (StreamAudioSource* p_audioSrc);
     StreamSink (const GenericSink&);
     virtual ~StreamSink();
     virtual void eos();
     virtual QGst::BufferPtr pullBuffer();
     uint bufferSize() const;
-    void setBufferSize(const uint& p_bufferSize);
+    void setBufferSize (const uint& p_bufferSize);
 
 private:
     StreamAudioSource* m_audioSrc;

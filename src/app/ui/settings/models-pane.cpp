@@ -18,73 +18,61 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "training-pane.hpp"
-#include "session-pane.hpp"
-#include "content-pane.hpp"
-#include "microphone-pane.hpp"
 #include "models-pane.hpp"
-#include "ui_settingspane-training.h"
+#include "ui_settingspane-model.h"
 
+using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 
-TrainingSettingsPane::TrainingSettingsPane() :
-    ui (new Ui::TrainingSettingsPane)
+AcousticModelSettingsPane::AcousticModelSettingsPane() :
+    m_ui (new Ui::AcousticModelSettingsPane)
 {
-    qDebug() << "[TrainingSettingsPane::{constructor}] Building training settings pane...";
-    ui->setupUi (this);
-    addPane (new SessionSettingsPane);
-    addPane (new ContentSettingsPane);
-    addPane (new AcousticModelSettingsPane);
-    //addPane (new LanguageModelSettingsPane);
-    //addPane (new DictionarySettingsPane);
-    addPane (new MicrophoneSettingsPane);
+    qDebug() << "[AcousticModelSettingsPane::{constructor}] Building acoustic model settings pane...";
+    m_ui->setupUi (this);
     updateUi();
-    qDebug() << "[TrainingSettingsPane::{constructor}] Built training settings pane.";
+    qDebug() << "[AcousticModelSettingsPane::{constructor}] Built acoustic model settings pane.";
 }
 
-TrainingSettingsPane::~TrainingSettingsPane()
+AcousticModelSettingsPane::~AcousticModelSettingsPane()
 {
-    delete ui;
+    delete m_ui;
 }
 
-void TrainingSettingsPane::changeEvent (QEvent* e)
+void AcousticModelSettingsPane::changeEvent (QEvent* e)
 {
     QFrame::changeEvent (e);
 
     switch (e->type()) {
     case QEvent::LanguageChange:
-        ui->retranslateUi (this);
+        m_ui->retranslateUi (this);
         break;
     default:
         break;
     }
 }
 
-QString SpeechControl::Windows::TrainingSettingsPane::title() const
+QString AcousticModelSettingsPane::title() const
 {
-    return "Training";
+    return "Acoustic Models";
 }
 
-QString SpeechControl::Windows::TrainingSettingsPane::id() const
+QString AcousticModelSettingsPane::id() const
 {
-    return "trnng";
+    return "cstc-mdls";
 }
 
-QPixmap TrainingSettingsPane::pixmap() const
+QPixmap AcousticModelSettingsPane::pixmap() const
 {
     return QIcon::fromTheme ("configure").pixmap (32, 32);
 }
 
-void TrainingSettingsPane::restoreDefaults()
+void AcousticModelSettingsPane::restoreDefaults()
 {
-
 }
 
-void TrainingSettingsPane::updateUi()
+void AcousticModelSettingsPane::updateUi()
 {
-
 }
 
-
-#include "training-pane.moc"
+#include "models-pane.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

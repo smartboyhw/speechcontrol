@@ -23,7 +23,7 @@
 
 #include <QFrame>
 #include <QListWidgetItem>
-#include <app/uisettings-dialog.hpp>
+#include <app/ui/settings-dialog.hpp>
 
 namespace Ui
 {

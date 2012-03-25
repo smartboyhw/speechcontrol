@@ -21,7 +21,7 @@
 #include "core.hpp"
 #include "sessions/content.hpp"
 #include "contents-wizard.hpp"
-#include "uimain-window.hpp"
+#include "ui/main-window.hpp"
 #include "content-manager.hpp"
 #include "ui_manager-content.h"
 
@@ -110,7 +110,7 @@ void ContentManager::on_btnAdd_clicked()
     ContentWizard* l_wiz = new ContentWizard;
 
     if (l_wiz->exec() == QDialog::Accepted) {
-        Core::mainWindow()->updateWindow();
+        Core::mainWindow()->updateUi();
         updateList();
     }
 }

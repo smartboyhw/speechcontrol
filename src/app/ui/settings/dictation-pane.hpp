@@ -21,7 +21,7 @@
 #ifndef DICTATION_SETTINGS_HPP
 #define DICTATION_SETTINGS_HPP
 
-#include <app/uisettings-dialog.hpp>
+#include <app/ui/settings-dialog.hpp>
 
 namespace Ui
 {

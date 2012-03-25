@@ -19,7 +19,7 @@
  */
 
 #include "micsample.hpp"
-#include "app/uimicsetup-wizard.hpp"
+#include "app/ui/micsetup-wizard.hpp"
 #include "ui_micwizard-sample.h"
 
 using namespace SpeechControl;

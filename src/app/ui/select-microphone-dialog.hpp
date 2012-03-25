@@ -22,7 +22,7 @@
 #ifndef SELECT_MIC_DIALOG_HPP
 #define SELECT_MIC_DIALOG_HPP
 
-#include <uiwizards/base.hpp>
+#include <ui/wizards/base.hpp>
 
 namespace Ui {
     class MicrophoneSelectionDialog;

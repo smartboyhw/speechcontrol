@@ -22,7 +22,7 @@
 #define GENERAL_SETTINGS_HPP
 
 #include <QFrame>
-#include <app/uisettings-dialog.hpp>
+#include <app/ui/settings-dialog.hpp>
 
 namespace Ui
 {

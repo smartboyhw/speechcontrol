@@ -21,7 +21,7 @@
 #include "selection.hpp"
 #include "source-text.hpp"
 #include "app/sessions/content.hpp"
-#include "app/uicontents-wizard.hpp"
+#include "app/ui/contents-wizard.hpp"
 #include "ui_contentwizard-sourceselect.h"
 
 using namespace SpeechControl;

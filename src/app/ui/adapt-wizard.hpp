@@ -22,7 +22,7 @@
 #ifndef ADAPTION_WIZARD_HPP
 #define ADAPTION_WIZARD_HPP
 
-#include <uiwizards/base.hpp>
+#include <ui/wizards/base.hpp>
 
 namespace SpeechControl
 {

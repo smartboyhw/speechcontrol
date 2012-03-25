@@ -19,7 +19,7 @@
  */
 
 #include "source-text.hpp"
-#include "app/uicontents-wizard.hpp"
+#include "app/ui/contents-wizard.hpp"
 #include "app/sessions/content.hpp"
 #include "ui_contentwizard-source-text.h"
 

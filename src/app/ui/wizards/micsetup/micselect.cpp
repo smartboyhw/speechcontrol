@@ -22,7 +22,7 @@
 #include <lib/abstractaudiosource.hpp>
 
 #include "micselect.hpp"
-#include "app/uimicsetup-wizard.hpp"
+#include "app/ui/micsetup-wizard.hpp"
 #include "ui_micwizard-select.h"
 
 using namespace SpeechControl;

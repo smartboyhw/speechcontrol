@@ -27,7 +27,7 @@
 
 #include "factory.hpp"
 #include "plugins-pane.hpp"
-#include <uiplugin-info-dialog.hpp>
+#include "ui/plugin-info-dialog.hpp"
 #include "ui_settingspane-plugins.h"
 
 using namespace SpeechControl;

@@ -20,8 +20,8 @@
 
 #include "content-pane.hpp"
 #include "sessions/content.hpp"
-#include "uicontent-information-dialog.hpp"
-#include "uicontents-wizard.hpp"
+#include "ui/content-information-dialog.hpp"
+#include "ui/contents-wizard.hpp"
 #include "ui_settingspane-content.h"
 
 #include <QListWidget>

@@ -25,7 +25,7 @@
 #include "desktopcontrol/agent.hpp"
 #include "desktopcontrol/command.hpp"
 #include "desktopcontrol-pane.hpp"
-#include "uimain-window.hpp"
+#include "ui/main-window.hpp"
 #include "dictation/agent.hpp"
 #include "ui_settingspane-desktopcontrol.h"
 
@@ -122,7 +122,7 @@ void DesktopControlSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
     if (!p_checked && DesktopControl::Agent::instance()->isActive())
         DesktopControl::Agent::instance()->stop();
 
-    Core::mainWindow()->updateWindow();
+    Core::mainWindow()->updateUi();
     updateUi();
 }
 

@@ -21,7 +21,7 @@
 #define TRAININGSETTINGSPANE_HPP
 
 #include <QFrame>
-#include <uisettings-dialog.hpp>
+#include <ui/settings-dialog.hpp>
 
 namespace Ui
 {

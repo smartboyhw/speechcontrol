@@ -75,7 +75,7 @@ public:
     /**
      * @brief Updates the window's data.
      **/
-    void updateWindow();
+    void updateUi();
 
     /**
      * @brief Shows a brief message in the status bar of the main window.
@@ -138,8 +138,9 @@ private slots:
 
 private:
     virtual void closeEvent (QCloseEvent* p_closeEvent);
-    void updateText();
-    void updateUi();
+    void updateSessionListing();
+    void updateServiceListing();
+    void updateRecognitionInfo();
     Ui::MainWindow* m_ui;
     QProgressBar* m_prgStatusbar;
     QTimer* m_tckr;

@@ -27,8 +27,8 @@
 #include "ui_manager-session.h"
 
 #include "sessions/session.hpp"
-#include "uiabout-dialog.hpp"
-#include "uimain-window.hpp"
+#include "ui/about-dialog.hpp"
+#include "ui/main-window.hpp"
 #include "content-manager.hpp"
 #include "session-manager.hpp"
 #include "session-information-dialog.hpp"
@@ -129,7 +129,7 @@ void SessionManager::on_btnCreate_clicked()
 
         if (l_session) {
             m_session = l_session;
-            Core::mainWindow()->updateWindow();
+            Core::mainWindow()->updateUi();
         }
     }
 

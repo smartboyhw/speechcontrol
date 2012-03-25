@@ -20,7 +20,7 @@
 
 #include "core.hpp"
 #include "dictation-pane.hpp"
-#include "uimain-window.hpp"
+#include "ui/main-window.hpp"
 #include "dictation/agent.hpp"
 #include "desktopcontrol/agent.hpp"
 #include "ui_settingspane-dictation.h"
@@ -102,7 +102,7 @@ void DictationSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
         Core::setConfiguration ("Dictation/Enabled", p_checked);
         if (!p_checked)
             Dictation::Agent::instance()->stop();
-        Core::mainWindow()->updateWindow();
+        Core::mainWindow()->updateUi();
     }
 
     updateUi();

@@ -22,7 +22,7 @@
 #ifndef QS_WIZARD_HPP
 #define QS_WIZARD_HPP
 
-#include <uiwizards/base.hpp>
+#include <ui/wizards/base.hpp>
 
 namespace SpeechControl
 {
@@ -53,4 +53,4 @@ public slots:
 }
 
 #endif // WIZARD_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

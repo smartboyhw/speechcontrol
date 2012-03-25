@@ -21,7 +21,7 @@
 #ifndef CONTENTSETTINGSPANE_HPP
 #define CONTENTSETTINGSPANE_HPP
 
-#include <app/uisettings-dialog.hpp>
+#include <app/ui/settings-dialog.hpp>
 
 namespace Ui
 {

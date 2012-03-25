@@ -23,7 +23,7 @@
 #include <QTreeWidget>
 
 #include "core.hpp"
-#include "uimain-window.hpp"
+#include "ui/main-window.hpp"
 #include "settings-dialog.hpp"
 #include "settings/general-pane.hpp"
 #include "settings/plugins-pane.hpp"

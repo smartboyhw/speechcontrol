@@ -22,7 +22,7 @@
 #ifndef CONTENTS_WIZARD_HPP
 #define CONTENTS_WIZARD_HPP
 
-#include <uiwizards/base.hpp>
+#include <ui/wizards/base.hpp>
 
 namespace SpeechControl
 {

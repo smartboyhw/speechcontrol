@@ -40,16 +40,16 @@
 #include "desktopcontrol/agent.hpp"
 #include "sessions/session.hpp"
 #include "sessions/content.hpp"
-#include "uimain-window.hpp"
-#include "uitraining-dialog.hpp"
-#include "uisettings-dialog.hpp"
-#include "uicontent-manager.hpp"
-#include "uisession-manager.hpp"
-#include "uiabout-dialog.hpp"
-#include "uiquickstart-wizard.hpp"
-#include "uimicsetup-wizard.hpp"
-#include "uicontents-wizard.hpp"
-#include "uiadapt-wizard.hpp"
+#include "ui/main-window.hpp"
+#include "ui/training-dialog.hpp"
+#include "ui/settings-dialog.hpp"
+#include "ui/content-manager.hpp"
+#include "ui/session-manager.hpp"
+#include "ui/about-dialog.hpp"
+#include "ui/quickstart-wizard.hpp"
+#include "ui/micsetup-wizard.hpp"
+#include "ui/contents-wizard.hpp"
+#include "ui/adapt-wizard.hpp"
 #include "ui_main-window.h"
 
 using namespace SpeechControl;
@@ -142,7 +142,7 @@ void Main::open()
                             "NoMicrophonesFoundOnStart");
     }
 
-    updateWindow();
+    updateUi();
 
     if (Core::configuration ("MainWindow/RememberState").toBool()) {
         restoreGeometry (Core::configuration ("MainWindow/Geometry").toByteArray());
@@ -192,42 +192,36 @@ void Main::dictationStateChanged()
     }
 }
 
-/// @todo Instead of this constant ticking, use signals to update this code.
-void Main::updateText()
-{
-    m_ui->lblSessions->setText (QString::number (Session::allSessions().count()));
-    m_ui->lblContent->setText (QString::number (Content::allContents().count()));
-    m_ui->lblAccuracy->setText ("N/A");
-    m_ui->lblSpeechIndex->setText ("N/A");
-}
-
 void Main::updateUi()
 {
-    // update desktop control & dictation buttons.
-    const bool dictationActive = Dictation::Agent::instance()->isActive();
-    const bool dictationEnabled = Dictation::Agent::instance()->isEnabled();
-    const bool desktopControlActive = DesktopControl::Agent::instance()->isActive();
-    const bool desktopControlEnabled = DesktopControl::Agent::instance()->isEnabled();
-
-    m_ui->btnDsktpCntrl->setEnabled (desktopControlEnabled);
-    m_ui->actionDesktopControlActive->setEnabled (desktopControlEnabled);
-
-    if (desktopControlEnabled) {
-        m_ui->btnDctn->setChecked (dictationActive);
-        m_ui->btnDctn->setIcon ( ( (dictationActive) ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
-    }
-
-    m_ui->btnDctn->setEnabled (dictationEnabled);
-    m_ui->actionDictationActive->setEnabled (dictationEnabled);
-
-    if (dictationEnabled) {
-        m_ui->btnDsktpCntrl->setChecked (desktopControlActive);
-        m_ui->btnDsktpCntrl->setIcon ( (desktopControlActive ? QIcon::fromTheme ("media-record") : QIcon::fromTheme ("media-playback-pause")));
-    }
-
-    m_ui->btnAdapt->setEnabled(!Session::completedSessions().isEmpty());
+    updateRecognitionInfo();
+    updateSessionListing();
+    updateServiceListing();
 }
 
+void Main::updateRecognitionInfo()
+{
+
+}
+
+void Main::updateSessionListing()
+{
+    QListWidget* widget = m_ui->listWidgetSessions;
+    widget->clear();
+
+    SessionList sessions = Session::allSessions();
+
+    Q_FOREACH (const Session * session, sessions) {
+        QListWidgetItem* item = new QListWidgetItem(widget);
+        item->setText(session->name());
+        widget->addItem(item);
+    }
+}
+
+void Main::updateServiceListing()
+{
+
+}
 
 void Main::setProgress (const double p_progress)
 {
@@ -245,33 +239,34 @@ void Main::setProgress (const double p_progress)
 void Main::on_actionDesktopControlOptions_triggered()
 {
     Settings::displayPane ("dsktpcntrl");
-    updateWindow();
+    updateUi();
 }
 
 void Main::on_actionOptions_triggered()
 {
     Settings::displayPane ("gnrl");
-    updateWindow();
+    updateUi();
 }
 
 void Main::on_actionAdaptModels_triggered()
 {
     AdaptWizard* wiz = new AdaptWizard (this);
     wiz->exec();
-    updateWindow();
+    updateUi();
 }
 
 void Main::on_actionStartTraining_triggered ()
 {
     Session* session = SessionManager::pickSession();
 
-    updateWindow();
+    updateUi();
+
     if (session && session->isValid() && !session->isCompleted()) {
         TrainingDialog::startTraining (session);
         setStatusMessage (tr ("Training session \"%1\"").arg (session->content()->title()) , 3000);
     }
 
-    updateWindow();
+    updateUi();
 }
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
@@ -282,7 +277,7 @@ void Main::on_actionDesktopControlActive_triggered (bool p_checked)
 
     DesktopControl::Agent::instance()->setState (p_checked ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled);
     setStatusMessage ( (p_checked ? tr ("Desktop control activated.") : tr ("Desktop control deactivated.")) , 3000);
-    updateWindow();
+    updateUi();
 }
 
 /// @todo Allow configuration option to show specific notifications to prevent noise.
@@ -293,15 +288,8 @@ void Main::on_actionDictationActive_triggered (const bool p_checked)
 
     Dictation::Agent::instance()->setState ( (p_checked) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled);
     setStatusMessage ( ( (p_checked) ? tr ("Dictation activated.") : tr ("Dictation deactivated."))  , 3000);
-    updateWindow();
-}
-
-void Main::updateWindow()
-{
     updateUi();
-    updateText();
 }
-
 void Main::on_actionAboutQt_triggered()
 {
     QApplication::aboutQt();
@@ -316,33 +304,33 @@ void Main::on_actionAboutSpeechControl_triggered()
 void Main::on_actionPluginOptions_triggered()
 {
     Settings::displayPane ("plgns");
-    updateWindow();
+    updateUi();
 }
 
 void Main::on_actionTrainingOptions_triggered()
 {
     Settings::displayPane ("trnng");
-    updateWindow();
+    updateUi();
 }
 
 void Main::on_actionDictationOptions_triggered()
 {
     Settings::displayPane ("dctn");
-    updateWindow();
+    updateUi();
 }
 
 void Main::on_actionWizardMicrophone_triggered()
 {
     MicrophoneSetup wiz (this);
     wiz.exec();
-    updateWindow();
+    updateUi();
 }
 
 void Main::on_actionWizardContent_triggered()
 {
     ContentWizard wiz (this);
     wiz.exec();
-    updateWindow();
+    updateUi();
 }
 
 /// @todo Build the Voxforge Wizard.
@@ -354,7 +342,7 @@ void Main::on_actionWizardQuickStart_triggered()
 {
     QuickStart* wiz = new QuickStart;
     wiz->exec();
-    updateWindow();
+    updateUi();
 }
 
 void Main::on_actionReportBug_triggered()
@@ -371,7 +359,7 @@ void Main::on_actionWizardAdaption_triggered()
 {
     AdaptWizard* wiz = new AdaptWizard (this);
     wiz->exec();
-    updateWindow();
+    updateUi();
 }
 
 Main::~Main()

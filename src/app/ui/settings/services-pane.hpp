@@ -19,7 +19,7 @@
  */
 #ifndef SERVICESSETTINGSPANE_HPP
 #define SERVICESSETTINGSPANE_HPP
-#include <uisettings-dialog.hpp>
+#include <ui/settings-dialog.hpp>
 
 namespace Ui
 {

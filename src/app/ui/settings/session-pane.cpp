@@ -20,7 +20,7 @@
 
 #include "session-pane.hpp"
 #include "sessions/session.hpp"
-#include "uisession-information-dialog.hpp"
+#include "ui/session-information-dialog.hpp"
 #include "ui_settingspane-sessions.h"
 
 #include <QMenu>

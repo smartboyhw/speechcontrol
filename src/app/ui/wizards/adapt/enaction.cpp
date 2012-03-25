@@ -21,8 +21,8 @@
 #include "enaction.hpp"
 #include "modelselection.hpp"
 #include "sessionselection.hpp"
-#include <uiadapt-wizard.hpp>
-#include <sessions/adaptionutility.hpp>
+#include "ui/adapt-wizard.hpp"
+#include "sessions/adaptionutility.hpp"
 #include "ui_adaptwizard-enaction.h"
 
 using namespace SpeechControl;

@@ -18,44 +18,92 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <QDebug>
+#include <QDirIterator>
 
+#include "config.hpp"
 #include "languagemodel.hpp"
 
 using namespace SpeechControl;
 
-LanguageModel::LanguageModel (QObject* p_parent) : QObject (p_parent)
+LanguageModel::LanguageModel (QObject* p_parent) : QObject (p_parent), m_path()
 {
 
 }
 
-LanguageModel::LanguageModel (const QUuid& p_uuid) : QObject(), m_uuid (p_uuid)
+LanguageModel::LanguageModel (const QString& p_id) : QObject(), m_path()
 {
 
-}
-
-LanguageModel::LanguageModel()
-{
-
-}
-
-LanguageModel* LanguageModel::fromCompressedFile (const QFile* p_archiveFile)
-{
-    return 0;
 }
 
 LanguageModel* LanguageModel::fromDirectory (const QDir& p_directory)
 {
-    return 0;
-}
-
-LanguageModel* LanguageModel::fromPath (const QString& p_path)
-{
-    return 0;
+    LanguageModel* lm = new LanguageModel;
+    lm->m_path = p_directory.absolutePath();
+    return lm;
 }
 
 QString LanguageModel::path() const
 {
-    return QString::null;
+    return m_path;
+}
+
+QString LanguageModel::name() const
+{
+    QDir dir (path());
+    return dir.dirName();
+}
+
+bool LanguageModel::isSystem() const
+{
+    return !isUser();
+}
+
+bool LanguageModel::isUser() const
+{
+    return m_path.contains (QDir::homePath());
+}
+
+/// @note This assumes that the LM file is the same name as the directory.
+QStringList findAllLanguageModels (const QDir p_dir)
+{
+    QDirIterator itr (p_dir.absolutePath(), QDir::NoDotAndDotDot | QDir::AllDirs, QDirIterator::Subdirectories);
+    QStringList aList;
+
+    while (itr.hasNext()) {
+        const QString listing = itr.next();
+        QDir listingDir (listing);
+        qDebug() << listing;
+        QFileInfo featParams (listing + "/" + listingDir.dirName() + ".lm");
+
+        if (featParams.exists()) {
+            aList << listing;
+        }
+        else continue;
+    }
+
+    qDebug() << "[findAllLanguageModels()] Removed" << aList.removeDuplicates() << "duplicates.";
+    aList.removeAll (".");
+
+    return aList;
+}
+
+LanguageModelList LanguageModel::allModels()
+{
+    // First, find the models imported by Sphinx. They're all stored under weird
+    // folder names in MODELDIR.
+
+    QDir baseModelDir (POCKETSPHINX_MODELDIR);
+    baseModelDir.cd ("lm");
+    QStringList dirs = findAllLanguageModels (baseModelDir);
+
+    // Alright, we got the folders. Now, just build LanguageModel objects with it.
+    LanguageModelList list;
+    Q_FOREACH (const QString directory, dirs) {
+        list << LanguageModel::fromDirectory (directory);
+    }
+
+    return list;
 }
 
 LanguageModel::~LanguageModel()
@@ -64,4 +112,4 @@ LanguageModel::~LanguageModel()
 }
 
 #include "languagemodel.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

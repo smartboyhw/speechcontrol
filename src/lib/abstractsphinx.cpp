@@ -94,7 +94,7 @@ QGlib::Value AbstractSphinx::decoder() const
 LanguageModel* AbstractSphinx::languageModel() const
 {
     QGlib::Value lm = m_psphinx->property ("lm");
-    return LanguageModel::fromPath (lm.toString());
+    return LanguageModel::fromDirectory (lm.toString());
 }
 
 Dictionary* AbstractSphinx::dictionary() const

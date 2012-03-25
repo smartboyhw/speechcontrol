@@ -150,6 +150,22 @@ quint16 AcousticModel::sampleRate() const
     return 16000;
 }
 
+QString AcousticModel::name() const
+{
+    QDir dir(path());
+    return dir.dirName();
+}
+
+bool AcousticModel::isSystem() const
+{
+    return !isUser();
+}
+
+bool AcousticModel::isUser() const
+{
+    return m_path.contains(QDir::homePath());
+}
+
 QString AcousticModel::path() const
 {
     return m_path;
@@ -210,7 +226,7 @@ AcousticModel* AcousticModel::clone()
 
 QStringList findAllAcousticModels (const QDir p_dir)
 {
-    QDirIterator itr (p_dir, QDirIterator::Subdirectories);
+    QDirIterator itr (p_dir.absolutePath(), QDir::NoDotAndDotDot | QDir::AllDirs, QDirIterator::Subdirectories);
     QStringList aList;
 
     while (itr.hasNext()) {

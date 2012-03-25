@@ -151,6 +151,11 @@ public:
      **/
     bool isValid() const;
 
+    bool isSystem() const;
+    bool isUser() const;
+
+    QString name() const;
+
     void load (QString p_path);
 
     AcousticModel* clone();

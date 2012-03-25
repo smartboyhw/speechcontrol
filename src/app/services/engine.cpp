@@ -20,4 +20,83 @@
 
 #include "engine.hpp"
 
+using namespace SpeechControl::Services;
+
+QMap<QString, AbstractModule*> Engine::s_list;
+Engine* Engine::s_inst = 0;
+
+AbstractModule::AbstractModule (const AbstractModule& p_other) : QObject (p_other.parent())
+{
+
+}
+
+AbstractModule::AbstractModule (QObject* p_parent) : QObject (p_parent)
+{
+}
+
+
+void AbstractModule::start()
+{
+    if (!isActive()) {
+        initialize();
+        emit started();
+    }
+}
+
+void AbstractModule::stop()
+{
+    if (isActive()) {
+        deinitialize();
+        emit stopped();
+    }
+}
+
+Engine::Engine() : QObject()
+{
+}
+
+Engine::Engine (const Engine& p_other) : QObject (p_other.parent())
+{
+
+}
+
+AbstractModuleList Engine::allModules()
+{
+    return s_list.values();
+}
+
+void Engine::registerModule (AbstractModule* p_module)
+{
+    if (!findModule (p_module->id())) {
+        s_list.insert (p_module->id(), p_module);
+    }
+}
+
+void Engine::unregisterModule (AbstractModule* p_module)
+{
+    if (findModule (p_module->id())) {
+        if (p_module->isActive())
+            p_module->stop();
+
+        s_list.remove (p_module->id());
+    }
+}
+
+AbstractModule* Engine::findModule (const QString& p_id)
+{
+    return s_list.value (p_id);
+}
+
+void Engine::start()
+{
+    emit instance()->started();
+}
+
+void Engine::stop()
+{
+    emit instance()->stopped();
+}
+
+
 #include "engine.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

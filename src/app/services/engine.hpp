@@ -21,12 +21,14 @@
 #ifndef SERVICES_ENGINE_HPP
 #define SERVICES_ENGINE_HPP
 
+#include <QMap>
 #include <QList>
 #include <QObject>
 #include <QString>
 #include <macros.hpp>
 
 class QPixmap;
+
 namespace SpeechControl
 {
 namespace Services
@@ -36,30 +38,57 @@ class Engine;
 
 typedef QList<AbstractModule*> AbstractModuleList;
 
-class AbstractModule : public QObject {
+class AbstractModule : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY(AbstractModule)
+    Q_DISABLE_COPY (AbstractModule)
+
+signals:
+    void started();
+    void stopped();
 
 public:
-    QString name() const;
-    QPixmap* pixmap() const;
+    virtual QString name() const = 0;
+    virtual QString id() const = 0;
+    virtual QPixmap pixmap() const = 0;
+    virtual bool isEnabled() const = 0;
+    virtual bool isActive() const = 0;
+
+public slots:
+    void start();
+    void stop();
 
 protected:
-    AbstractModule();
+    virtual void initialize() = 0;
+    virtual void deinitialize() = 0;
+    AbstractModule (QObject* p_parent);
 };
 
-class Engine : public QObject {
+class Engine : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY(Engine)
-    SC_SINGLETON(Engine)
+    Q_DISABLE_COPY (Engine)
+    SC_SINGLETON (Engine)
     friend class AbstractModule;
 
-public:
-    static AbstractModule* findModule(const QString& p_id);
+signals:
+    void started();
+    void stopped();
 
-protected:
-    static void
+public:
+    static AbstractModule* findModule (const QString& p_id);
+    static AbstractModuleList allModules();
+    static void registerModule (AbstractModule* p_module);
+    static void unregisterModule (AbstractModule* p_module);
+
+public slots:
+    static void start();
+    static void stop();
+
+private:
+    static QMap<QString, AbstractModule*> s_list;
 };
+
 }
 }
 

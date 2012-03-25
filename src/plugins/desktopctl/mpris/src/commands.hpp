@@ -26,8 +26,8 @@
 #include <config.hpp>
 #include "plugin.hpp"
 #include <app/macros.hpp>
-#include <app/desktopcontrol/agent.hpp>
-#include <app/desktopcontrol/command.hpp>
+#include <desktopcontrol/agent.hpp>
+#include <desktopcontrol/command.hpp>
 
 using SpeechControl::DesktopControl::AbstractCommand;
 using SpeechControl::DesktopControl::AbstractCategory;

@@ -294,9 +294,9 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonUndo_clicked()
 /// @todo This method here should handle the act of recording audio.
 void SpeechControl::Windows::TrainingDialog::on_pushButtonNext_clicked()
 {
-    qDebug() << "[TrainingDialog::onPushButtonNext_clicked()] Is recording? " << m_mic->isRecording();
+    qDebug() << "[TrainingDialog::onPushButtonNext_clicked()] Is recording? " << m_mic->isActive();
 
-    if (m_mic->isRecording()) {
+    if (m_mic->isActive()) {
         m_mic->stop();
         QFile* file = currentPhrase()->audio();
 

@@ -38,7 +38,10 @@
 #include "app/ui/main-window.hpp"
 #include "app/ui/quickstart-wizard.hpp"
 #include "desktopcontrol/agent.hpp"
+#include "desktopcontrol/service.hpp"
 #include "dictation/agent.hpp"
+#include "dictation/service.hpp"
+#include "services/engine.hpp"
 #include "indicator.hpp"
 
 using namespace SpeechControl;
@@ -71,10 +74,8 @@ Core::Core (int p_argc, char** p_argv, QApplication* app) : QObject (app),
 
     // build settings
     m_settings = new QSettings (QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", this);
-    connect (m_app, SIGNAL (aboutToQuit()), this, SLOT (stop()));
-    connect (this, SIGNAL (started()), this, SLOT (invokeAutoStart()));
-    connect (this, SIGNAL (started()), Plugins::Factory::instance(), SLOT (start()));
-    connect (this, SIGNAL (stopped()), Plugins::Factory::instance(), SLOT (stop()));
+
+    hookUpSignals();
     loadTranslations (QLocale::system());
 
     // Set up indicator.
@@ -93,6 +94,19 @@ Core::Core (const Core& p_other) : QObject (p_other.parent()), m_app (p_other.m_
     m_mw (p_other.m_mw), m_settings (p_other.m_settings), m_trnsltr (p_other.m_trnsltr)
 {
 
+}
+
+void Core::hookUpSignals()
+{
+    connect (m_app, SIGNAL (aboutToQuit()), this, SLOT (stop()));
+    connect (this, SIGNAL (started()), this, SLOT (invokeAutoStart()));
+    connect (this, SIGNAL (started()), Services::Engine::instance(), SLOT (start()));
+    connect (this, SIGNAL (started()), Plugins::Factory::instance(), SLOT (start()));
+    connect (this, SIGNAL (stopped()), Services::Engine::instance(), SLOT (stop()));
+    connect (this, SIGNAL (stopped()), Plugins::Factory::instance(), SLOT (stop()));
+
+    DesktopControl::Service::instance();
+    Dictation::Service::instance();
 }
 
 void Core::start()

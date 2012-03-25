@@ -83,6 +83,20 @@ public:
      * @return TRUE if it has been enabled, FALSE if it's disabled.
      **/
     bool isEnabled();
+    
+    /**
+     * @brief Set an acoustic model to use.
+     * 
+     * @param acModel An AcousticModel instance to use.
+     */
+    void setAcousticModel(AcousticModel* acModel);
+    
+    /**
+     * @brief Set the default acoustic model.
+     * 
+     * @param acModel An AcousticModel instance to use.
+     */
+    void setDefaultAcousticModel(AcousticModel* acModel);
 
 public slots:
     /**

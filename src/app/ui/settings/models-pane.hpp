@@ -18,14 +18,14 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef ACOUSTICMODEL_SETTINGS_HPP
-#define ACOUSTICMODEL_SETTINGS_HPP
+#ifndef MODEL_SETTINGS_HPP
+#define MODEL_SETTINGS_HPP
 
 #include <app/ui/settings-dialog.hpp>
 
 namespace Ui
 {
-class AcousticModelSettingsPane;
+class ModelSettingsPane;
 }
 
 namespace SpeechControl
@@ -33,25 +33,27 @@ namespace SpeechControl
 namespace Windows
 {
 
-class AcousticModelSettingsPane : public AbstractSettingsPane
+class ModelSettingsPane : public AbstractSettingsPane
 {
     Q_OBJECT
 
 public:
-    explicit AcousticModelSettingsPane();
-    ~AcousticModelSettingsPane();
+    explicit ModelSettingsPane();
+    ~ModelSettingsPane();
 
     virtual QString title() const;
     virtual QString id() const;
     virtual QPixmap pixmap() const;
     virtual void restoreDefaults();
+    void updateLanguageTab();
+    void updateAcousticTab();
 
 protected:
     void updateUi();
     void changeEvent (QEvent* e);
 
 private:
-    Ui::AcousticModelSettingsPane* m_ui;
+    Ui::ModelSettingsPane* m_ui;
 };
 
 }

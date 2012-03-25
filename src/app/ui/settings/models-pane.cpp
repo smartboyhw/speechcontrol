@@ -19,26 +19,31 @@
  */
 
 #include "models-pane.hpp"
+#include <lib/acousticmodel.hpp>
+#include <lib/languagemodel.hpp>
 #include "ui_settingspane-model.h"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 
-AcousticModelSettingsPane::AcousticModelSettingsPane() :
-    m_ui (new Ui::AcousticModelSettingsPane)
+ModelSettingsPane::ModelSettingsPane() :
+    m_ui (new Ui::ModelSettingsPane)
 {
-    qDebug() << "[AcousticModelSettingsPane::{constructor}] Building acoustic model settings pane...";
+    qDebug() << "[ModelSettingsPane::{constructor}] Building models settings pane...";
     m_ui->setupUi (this);
+    this->setLayout(m_ui->gridLayout);
+    m_ui->tabLanguage->setLayout(m_ui->gridLayoutLanguage);
+    m_ui->tabAcoustic->setLayout(m_ui->gridLayoutAcoustic);
     updateUi();
-    qDebug() << "[AcousticModelSettingsPane::{constructor}] Built acoustic model settings pane.";
+    qDebug() << "[ModelSettingsPane::{constructor}] Built models settings pane.";
 }
 
-AcousticModelSettingsPane::~AcousticModelSettingsPane()
+ModelSettingsPane::~ModelSettingsPane()
 {
     delete m_ui;
 }
 
-void AcousticModelSettingsPane::changeEvent (QEvent* e)
+void ModelSettingsPane::changeEvent (QEvent* e)
 {
     QFrame::changeEvent (e);
 
@@ -51,27 +56,55 @@ void AcousticModelSettingsPane::changeEvent (QEvent* e)
     }
 }
 
-QString AcousticModelSettingsPane::title() const
+QString ModelSettingsPane::title() const
 {
-    return "Acoustic Models";
+    return "Models";
 }
 
-QString AcousticModelSettingsPane::id() const
+QString ModelSettingsPane::id() const
 {
-    return "cstc-mdls";
+    return "mdls";
 }
 
-QPixmap AcousticModelSettingsPane::pixmap() const
+QPixmap ModelSettingsPane::pixmap() const
 {
     return QIcon::fromTheme ("configure").pixmap (32, 32);
 }
 
-void AcousticModelSettingsPane::restoreDefaults()
+void ModelSettingsPane::restoreDefaults()
 {
 }
 
-void AcousticModelSettingsPane::updateUi()
+void ModelSettingsPane::updateUi()
 {
+    updateAcousticTab();
+    updateLanguageTab();
+}
+
+void ModelSettingsPane::updateAcousticTab()
+{
+    QListWidget* widget = m_ui->listWidgetAcoustic;
+    AcousticModelList models = AcousticModel::allModels();
+    widget->clear();
+
+    Q_FOREACH(const AcousticModel* model, models){
+        QListWidgetItem* item = new QListWidgetItem(widget);
+        item->setText(model->name());
+        widget->addItem(item);
+    }
+}
+
+void ModelSettingsPane::updateLanguageTab()
+{
+    QListWidget* widget = m_ui->listWidgetLanguage;
+    LanguageModelList models = LanguageModel::allModels();
+    widget->clear();
+
+    Q_FOREACH(const LanguageModel* model, models){
+        QListWidgetItem* item = new QListWidgetItem(widget);
+        item->setText(model->name());
+        widget->addItem(item);
+    }
 }
 
 #include "models-pane.moc"

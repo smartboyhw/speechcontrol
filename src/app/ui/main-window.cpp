@@ -50,6 +50,7 @@
 #include "ui/micsetup-wizard.hpp"
 #include "ui/contents-wizard.hpp"
 #include "ui/adapt-wizard.hpp"
+#include "session-information-dialog.hpp"
 #include "ui_main-window.h"
 
 using namespace SpeechControl;
@@ -65,6 +66,12 @@ Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0)
     m_ui->setupUi (this);
     m_ui->retranslateUi (this);
     m_prgStatusbar = new QProgressBar (this);
+
+    // Redo layout
+    m_ui->centralwidget->setLayout (m_ui->gLayoutMain);
+    m_ui->groupBoxSessions->setLayout (m_ui->gridLayoutSessions);
+    m_ui->groupBoxRecognition->setLayout (m_ui->hLayoutRecognition);
+    m_ui->groupBoxServices->setLayout (m_ui->hLayoutServices);
 
     // Do a bit of cleanup on the status bar.
     m_ui->statusBar->addPermanentWidget (m_prgStatusbar);
@@ -124,7 +131,7 @@ void Main::closeEvent (QCloseEvent* p_closeEvent)
         Core::setConfiguration ("MainWindow/Geometry", saveGeometry());
         Core::setConfiguration ("MainWindow/State", saveState());
 
-        if (Indicator::instance()->isVisible())
+        if (Indicator::isEnabled())
             Core::setConfiguration ("MainWindow/Visible", isVisible());
         else
             Core::setConfiguration ("MainWindow/Visible", true);
@@ -147,9 +154,11 @@ void Main::open()
     if (Core::configuration ("MainWindow/RememberState").toBool()) {
         restoreGeometry (Core::configuration ("MainWindow/Geometry").toByteArray());
         restoreGeometry (Core::configuration ("MainWindow/State").toByteArray());
-        const bool isIndicatorVisible = Indicator::instance()->isVisible() && Core::configuration ("MainWindow/Visible").toBool() == true;
+        const bool isIndicatorVisible = Indicator::isVisible() && Indicator::isEnabled();
+        const bool isMainWindowVisible = Core::configuration ("MainWindow/Visible").toBool() == true;
+        qDebug() << isIndicatorVisible << isMainWindowVisible;
 
-        if (isIndicatorVisible || !Indicator::instance()->isVisible())
+        if (isIndicatorVisible || isMainWindowVisible)
             QMainWindow::show();
         else
             QMainWindow::hide();
@@ -212,10 +221,16 @@ void Main::updateSessionListing()
     SessionList sessions = Session::allSessions();
 
     Q_FOREACH (const Session * session, sessions) {
-        QListWidgetItem* item = new QListWidgetItem(widget);
-        item->setText(session->name());
-        widget->addItem(item);
+        QListWidgetItem* item = new QListWidgetItem (widget);
+        item->setText (session->name());
+        item->setData (Qt::UserRole, session->id());
+        widget->addItem (item);
     }
+
+    m_ui->btnSessionAdapt->setEnabled (false);
+    m_ui->btnSessionTrain->setEnabled (false);
+    m_ui->btnSessionInfo->setEnabled (false);
+    widget->clearSelection();
 }
 
 void Main::updateServiceListing()
@@ -277,6 +292,7 @@ void Main::on_actionDesktopControlActive_triggered (bool p_checked)
 
     DesktopControl::Agent::instance()->setState (p_checked ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled);
     setStatusMessage ( (p_checked ? tr ("Desktop control activated.") : tr ("Desktop control deactivated.")) , 3000);
+    Indicator::presentMessage ("Desktop Control");
     updateUi();
 }
 
@@ -290,6 +306,19 @@ void Main::on_actionDictationActive_triggered (const bool p_checked)
     setStatusMessage ( ( (p_checked) ? tr ("Dictation activated.") : tr ("Dictation deactivated."))  , 3000);
     updateUi();
 }
+
+void Main::on_actionCreateSession_triggered()
+{
+    Content* content = ContentManager::pickContent();
+
+    if (content) {
+        Session* session = Session::create (content);
+        TrainingDialog::startTraining (session);
+    }
+
+    updateUi();
+}
+
 void Main::on_actionAboutQt_triggered()
 {
     QApplication::aboutQt();
@@ -297,8 +326,8 @@ void Main::on_actionAboutQt_triggered()
 
 void Main::on_actionAboutSpeechControl_triggered()
 {
-    AboutDialog l_dlg (this);
-    l_dlg.exec();
+    AboutDialog dlg (this);
+    dlg.exec();
 }
 
 void Main::on_actionPluginOptions_triggered()
@@ -333,9 +362,9 @@ void Main::on_actionWizardContent_triggered()
     updateUi();
 }
 
-/// @todo Build the Voxforge Wizard.
 void Main::on_actionWizardVoxForge_triggered()
 {
+
 }
 
 void Main::on_actionWizardQuickStart_triggered()
@@ -359,6 +388,46 @@ void Main::on_actionWizardAdaption_triggered()
 {
     AdaptWizard* wiz = new AdaptWizard (this);
     wiz->exec();
+    updateUi();
+}
+
+void Main::on_btnSessionAdapt_clicked()
+{
+    QListWidget* widget = m_ui->listWidgetSessions;
+    QListWidgetItem* item = m_ui->listWidgetSessions->currentItem();
+    Session* session = Session::obtain (item->data (Qt::UserRole).toString());
+    AdaptWizard* wiz = new AdaptWizard (this);
+    wiz->setSession (session);
+    wiz->exec();
+    updateUi();
+}
+
+void Main::on_btnSessionTrain_clicked()
+{
+    QListWidget* widget = m_ui->listWidgetSessions;
+    QListWidgetItem* item = m_ui->listWidgetSessions->currentItem();
+    Session* session = Session::obtain (item->data (Qt::UserRole).toString());
+    TrainingDialog::startTraining (session);
+    updateUi();
+}
+
+void Main::on_listWidgetSessions_itemSelectionChanged()
+{
+    QListWidget* widget = m_ui->listWidgetSessions;
+    QListWidgetItem* item = m_ui->listWidgetSessions->currentItem();
+    Session* session = Session::obtain (item->data (Qt::UserRole).toString());
+    m_ui->btnSessionAdapt->setEnabled (session->isCompleted());
+    m_ui->btnSessionTrain->setEnabled (!session->isCompleted());
+    m_ui->btnSessionInfo->setEnabled (session->isValid());
+}
+
+void Main::on_btnSessionInfo_clicked()
+{
+    QListWidget* widget = m_ui->listWidgetSessions;
+    QListWidgetItem* item = m_ui->listWidgetSessions->currentItem();
+    Session* session = Session::obtain (item->data (Qt::UserRole).toString());
+    SessionInformationDialog* dialog = new SessionInformationDialog (session);
+    dialog->exec();
     updateUi();
 }
 

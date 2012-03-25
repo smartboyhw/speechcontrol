@@ -120,6 +120,7 @@ private slots:
     void on_actionStartTraining_triggered();
     void on_actionAdaptModels_triggered();
     void on_actionTrainingOptions_triggered();
+    void on_actionCreateSession_triggered();
 
     // wizards
     void on_actionWizardMicrophone_triggered();
@@ -127,6 +128,12 @@ private slots:
     void on_actionWizardVoxForge_triggered();
     void on_actionWizardQuickStart_triggered();
     void on_actionWizardAdaption_triggered();
+
+    // session pane
+    void on_btnSessionTrain_clicked();
+    void on_btnSessionAdapt_clicked();
+    void on_btnSessionInfo_clicked();
+    void on_listWidgetSessions_itemSelectionChanged();
 
     // misc.
     void on_actionPluginOptions_triggered();

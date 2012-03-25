@@ -87,7 +87,7 @@ void ContentManager::on_btnSelect_clicked()
     }
 }
 
-Content* ContentManager::doSelectContent()
+Content* ContentManager::pickContent()
 {
     ContentManager* l_wiz = new ContentManager;
 

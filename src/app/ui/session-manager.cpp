@@ -122,7 +122,7 @@ void SessionManager::on_btnOk_clicked()
 
 void SessionManager::on_btnCreate_clicked()
 {
-    Content* content = ContentManager::doSelectContent();
+    Content* content = ContentManager::pickContent();
 
     if (content) {
         Session* l_session = Session::create (content);

@@ -44,7 +44,7 @@ class ContentManager : public QDialog
 public:
     explicit ContentManager (QWidget* parent = 0);
     ~ContentManager();
-    static Content* doSelectContent();
+    static Content* pickContent();
 
 private slots:
     void on_btnSelect_clicked();
@@ -63,4 +63,4 @@ private:
 }
 
 #endif // CONTENTMANAGER_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

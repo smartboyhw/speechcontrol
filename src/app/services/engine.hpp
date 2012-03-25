@@ -18,12 +18,13 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifdef SERVICES_ENGINE_HPP
+#ifndef SERVICES_ENGINE_HPP
 #define SERVICES_ENGINE_HPP
 
 #include <QList>
 #include <QObject>
 #include <QString>
+#include <macros.hpp>
 
 class QPixmap;
 namespace SpeechControl

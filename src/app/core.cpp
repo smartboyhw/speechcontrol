@@ -108,7 +108,6 @@ void Core::start()
     }
 
     emit instance()->started();
-
     mainWindow()->open();
 }
 
@@ -123,7 +122,8 @@ Windows::Main* Core::mainWindow()
 void Core::stop()
 {
     emit instance()->stopped();
-    if (Core::configuration ("MainWindow/RememberState").toBool()){
+
+    if (Core::configuration ("MainWindow/RememberState").toBool()) {
         Core::setConfiguration ("MainWindow/Visible", mainWindow()->isVisible());
     }
 }
@@ -185,7 +185,7 @@ void Core::setAutoStart (const bool p_toggle)
                         << "X-GNOME-Autostart-enabled=true" << endl
                         << "X-GNOME-Autostart-Delay=30" << endl;
             autoStartFile->close();
-            autoStartFile->setPermissions(autoStartFile->permissions() | QFile::ExeUser | QFile::ExeOwner | QFile::ExeGroup);
+            autoStartFile->setPermissions (autoStartFile->permissions() | QFile::ExeUser | QFile::ExeOwner | QFile::ExeGroup);
         }
     }
     else {

@@ -36,7 +36,6 @@ SessionSelection::SessionSelection (QWidget* parent) :
 {
     ui->setupUi (this);
     this->setLayout (ui->gridLayout);
-    initializePage();
 }
 
 Session* SessionSelection::session()
@@ -46,8 +45,6 @@ Session* SessionSelection::session()
 
 void SessionSelection::initializePage()
 {
-    ui->comboBoxSession->clear();
-
     SessionList sessions = Session::allSessions();
 
     Q_FOREACH (const Session * session, sessions) {
@@ -60,12 +57,12 @@ void SessionSelection::initializePage()
 
 void SessionSelection::cleanupPage()
 {
-
+    ui->comboBoxSession->clear();
 }
 
 bool SessionSelection::isComplete() const
 {
-    return true;
+    return (m_session != 0);
 }
 
 void SessionSelection::on_comboBoxSession_currentIndexChanged (const int index)
@@ -77,6 +74,16 @@ void SessionSelection::on_comboBoxSession_currentIndexChanged (const int index)
         ui->lineEditUniqueWordCount->setText (QString::number (m_session->content()->uniqueWords()));
     else
         ui->lineEditUniqueWordCount->setText ("unknown; missing content");
+}
+
+Session* SessionSelection::session() const
+{
+    return m_session;
+}
+
+void SessionSelection::setSession (Session* p_session)
+{
+    m_session = p_session;
 }
 
 SessionSelection::~SessionSelection()

@@ -47,6 +47,8 @@ public:
     virtual void initializePage();
     virtual void cleanupPage();
     virtual bool isComplete() const;
+    Session* session() const;
+    void setSession (Session* p_session);
 
 private slots:
     void on_comboBoxSession_currentIndexChanged(const int index);

@@ -3,15 +3,12 @@
  <author>Jacky Alcine &lt;jacky.alcine@thesii.org&gt;</author>
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
-  <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>443</width>
-    <height>241</height>
+    <width>516</width>
+    <height>264</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,23 +21,118 @@
   <property name="statusTip">
    <string>Ready.</string>
   </property>
-  <property name="tabShape">
-   <enum>QTabWidget::Rounded</enum>
-  </property>
-  <property name="unifiedTitleAndToolBarOnMac">
-   <bool>true</bool>
-  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
       <x>4</x>
       <y>0</y>
-      <width>437</width>
-      <height>197</height>
+      <width>501</width>
+      <height>217</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout_2">
+    <layout class="QGridLayout" name="gLayoutMain">
+     <item row="0" column="0" rowspan="2">
+      <widget class="QGroupBox" name="groupBoxSessions">
+       <property name="title">
+        <string>Sessions</string>
+       </property>
+       <widget class="QWidget" name="gridLayoutWidget_2">
+        <property name="geometry">
+         <rect>
+          <x>4</x>
+          <y>20</y>
+          <width>241</width>
+          <height>193</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayoutSessions">
+         <item row="1" column="2">
+          <widget class="QPushButton" name="btnSessionAdapt">
+           <property name="statusTip">
+            <string>Adapt the selected model.</string>
+           </property>
+           <property name="text">
+            <string>Ada&amp;pt</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="5">
+          <widget class="QPushButton" name="btnSessionAdd">
+           <property name="statusTip">
+            <string>Adds a new session.</string>
+           </property>
+           <property name="text">
+            <string>Ad&amp;d</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" colspan="6">
+          <widget class="QListWidget" name="listWidgetSessions">
+           <property name="minimumSize">
+            <size>
+             <width>215</width>
+             <height>163</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QPushButton" name="btnSessionTrain">
+           <property name="statusTip">
+            <string>Train a model with the selected session.</string>
+           </property>
+           <property name="text">
+            <string>T&amp;rain</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="4">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="3">
+          <widget class="QPushButton" name="btnSessionInfo">
+           <property name="text">
+            <string>Info</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QGroupBox" name="groupBoxServices">
+       <property name="title">
+        <string>Services</string>
+       </property>
+       <widget class="QWidget" name="horizontalLayoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>3</x>
+          <y>20</y>
+          <width>241</width>
+          <height>81</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="hLayoutServices">
+         <item>
+          <widget class="QListWidget" name="listWidgetService"/>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
      <item row="0" column="1">
       <widget class="QGroupBox" name="groupBoxRecognition">
        <property name="title">
@@ -51,15 +143,28 @@
          <rect>
           <x>4</x>
           <y>24</y>
-          <width>205</width>
-          <height>69</height>
+          <width>241</width>
+          <height>81</height>
          </rect>
         </property>
-        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <layout class="QHBoxLayout" name="hLayoutRecognition">
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
-            <widget class="QProgressBar" name="progressBarAccuracy_2">
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QProgressBar" name="progressBarAccuracy">
              <property name="value">
               <number>0</number>
              </property>
@@ -69,7 +174,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QProgressBar" name="progressBarEstimatedEffort_2">
+            <widget class="QProgressBar" name="progressBarEstimatedEffort">
              <property name="value">
               <number>0</number>
              </property>
@@ -81,7 +186,7 @@
           </layout>
          </item>
          <item>
-          <widget class="QLabel" name="lblRating_2">
+          <widget class="QLabel" name="lblRating">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
              <horstretch>0</horstretch>
@@ -115,40 +220,6 @@
        </widget>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QGroupBox" name="groupBoxServices">
-       <property name="title">
-        <string>Services</string>
-       </property>
-       <widget class="QListWidget" name="listWidgetService">
-        <property name="geometry">
-         <rect>
-          <x>4</x>
-          <y>20</y>
-          <width>209</width>
-          <height>73</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-     </item>
-     <item row="0" column="0" rowspan="2">
-      <widget class="QGroupBox" name="groupBoxSessions">
-       <property name="title">
-        <string>Sessions</string>
-       </property>
-       <widget class="QListWidget" name="listWidgetSessions">
-        <property name="geometry">
-         <rect>
-          <x>4</x>
-          <y>20</y>
-          <width>209</width>
-          <height>175</height>
-         </rect>
-        </property>
-       </widget>
-      </widget>
-     </item>
     </layout>
    </widget>
   </widget>
@@ -174,7 +245,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>443</width>
+     <width>516</width>
      <height>21</height>
     </rect>
    </property>
@@ -420,6 +491,14 @@
     <string>Adaption...</string>
    </property>
   </action>
+  <action name="actionCreateSession">
+   <property name="text">
+    <string>Create Session...</string>
+   </property>
+   <property name="toolTip">
+    <string>Creates a new Session for training.</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="0" margin="0"/>
  <resources>
@@ -439,6 +518,22 @@
     <hint type="destinationlabel">
      <x>213</x>
      <y>158</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnSessionAdd</sender>
+   <signal>pressed()</signal>
+   <receiver>actionCreateSession</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>193</x>
+     <y>197</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
     </hint>
    </hints>
   </connection>

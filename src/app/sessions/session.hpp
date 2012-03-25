@@ -136,6 +136,8 @@ public:
     Phrase* firstIncompletePhrase() const;
     Phrase* lastIncompletePhrase() const;
     PhraseList incompletedPhrases() const;
+    QDateTime dateCompleted() const;
+    QDateTime dateCreated() const;
     static void init();
     static Session* obtain (const QString& p_id);
     static Session* create (const Content* p_content);

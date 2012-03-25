@@ -12,10 +12,7 @@ if(WITH_TESTS)
         set(SpeechControlApplication_DIR "${CMAKE_BINARY_DIR}/src/app/InstallFiles")
     endif (TARGET speechcontrol-frontend)
 
-    add_custom_target(tests ALL
-        COMMAND "ctest"
-        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
-        COMMENT "Invoking CTest..")
+    add_custom_target(tests ALL)
 
     ## Variables
     include(CTest)

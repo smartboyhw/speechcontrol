@@ -83,7 +83,7 @@ void TrainingDialog::setDevice (DeviceAudioSource* p_device)
 /// @todo Write data to a stream representing the current phrase's audio.
 void TrainingDialog::on_mic_BufferObtained (QByteArray p_buffer)
 {
-    m_data.append(p_buffer);
+    m_data.append (p_buffer);
     qDebug() << "[TrainingDialog::on_mic_BufferObtained()] Added to internal buffer:" << p_buffer.toUInt();
 }
 
@@ -107,22 +107,18 @@ void TrainingDialog::startTraining (Session* session, DeviceAudioSource* device)
     if (!device) {
         device = Windows::MicrophoneSelectionDialog::select();
 
-        if (!device)
+        if (!device) {
+            QMessageBox::critical (0, tr ("Microphone Error"), tr ("<h2>Microphone Error</h2>SpeechControl is unable to get a proper handle on your microphone. Please check that all required peripherals are connected."));
             return;
+        }
     }
 
     if (session->isValid() && !session->isCompleted()) {
         TrainingDialog* dialog = new TrainingDialog;
 
-        if (device->isNull()) {
-            QMessageBox::critical (0, tr ("Microphone Error"), tr ("<h2>Microphone Error</h2>SpeechControl is unable to get a proper handle on your microphone. Please check that all required peripherals are connected."));
-            return;
-        }
-        else {
-            dialog->setSession (session);
-            dialog->setDevice (device);
-            dialog->open();
-        }
+        dialog->setSession (session);
+        dialog->setDevice (device);
+        dialog->open();
     }
     else {
         QMessageBox::information (0 , tr ("Session Completed"), tr ("<h2>Session Completed</h2>Session <b>%1</b> has been completed already.").arg (session->name()));

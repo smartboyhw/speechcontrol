@@ -7,8 +7,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>516</width>
-    <height>264</height>
+    <width>527</width>
+    <height>318</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,13 +27,22 @@
      <rect>
       <x>4</x>
       <y>0</y>
-      <width>501</width>
-      <height>217</height>
+      <width>519</width>
+      <height>273</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gLayoutMain">
+     <property name="spacing">
+      <number>4</number>
+     </property>
      <item row="0" column="0" rowspan="2">
       <widget class="QGroupBox" name="groupBoxSessions">
+       <property name="minimumSize">
+        <size>
+         <width>248</width>
+         <height>215</height>
+        </size>
+       </property>
        <property name="title">
         <string>Sessions</string>
        </property>
@@ -42,8 +51,8 @@
          <rect>
           <x>4</x>
           <y>20</y>
-          <width>241</width>
-          <height>193</height>
+          <width>249</width>
+          <height>249</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayoutSessions">
@@ -113,21 +122,54 @@
      </item>
      <item row="1" column="1">
       <widget class="QGroupBox" name="groupBoxServices">
+       <property name="minimumSize">
+        <size>
+         <width>247</width>
+         <height>105</height>
+        </size>
+       </property>
        <property name="title">
-        <string>Services</string>
+        <string>Enabled Services</string>
        </property>
        <widget class="QWidget" name="horizontalLayoutWidget">
         <property name="geometry">
          <rect>
-          <x>3</x>
+          <x>4</x>
           <y>20</y>
-          <width>241</width>
-          <height>81</height>
+          <width>245</width>
+          <height>113</height>
          </rect>
         </property>
-        <layout class="QHBoxLayout" name="hLayoutServices">
-         <item>
-          <widget class="QListWidget" name="listWidgetService"/>
+        <layout class="QGridLayout" name="gridLayoutServices">
+         <item row="0" column="1">
+          <widget class="QPushButton" name="pushButton">
+           <property name="text">
+            <string>All Services...</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QListWidget" name="listWidgetService">
+           <property name="minimumSize">
+            <size>
+             <width>239</width>
+             <height>79</height>
+            </size>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -135,6 +177,12 @@
      </item>
      <item row="0" column="1">
       <widget class="QGroupBox" name="groupBoxRecognition">
+       <property name="minimumSize">
+        <size>
+         <width>247</width>
+         <height>106</height>
+        </size>
+       </property>
        <property name="title">
         <string>Recognition</string>
        </property>
@@ -165,6 +213,12 @@
            </item>
            <item>
             <widget class="QProgressBar" name="progressBarAccuracy">
+             <property name="minimumSize">
+              <size>
+               <width>169</width>
+               <height>23</height>
+              </size>
+             </property>
              <property name="value">
               <number>0</number>
              </property>
@@ -175,6 +229,12 @@
            </item>
            <item>
             <widget class="QProgressBar" name="progressBarEstimatedEffort">
+             <property name="minimumSize">
+              <size>
+               <width>169</width>
+               <height>23</height>
+              </size>
+             </property>
              <property name="value">
               <number>0</number>
              </property>
@@ -245,7 +305,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>516</width>
+     <width>527</width>
      <height>21</height>
     </rect>
    </property>

@@ -55,6 +55,7 @@ void Settings::buildWindow()
     qDebug() << "[Settings::buildWindow()] Building settings window.";
     m_ui = new Ui::SettingsDialog;
     m_ui->setupUi (this);
+    this->setLayout (m_ui->gridLayout);
 
     addPane (new GeneralSettingsPane);
     addPane (new TrainingSettingsPane);
@@ -106,13 +107,13 @@ void Settings::addPane (AbstractSettingsPane* p_pane)
 
 void Settings::displayPane (const QString& p_paneID)
 {
-    AbstractSettingsPane* l_currentPane = instance()->m_panes.value (p_paneID);
-    QTreeWidget* l_treeNavi = instance()->m_ui->treeNavigation;
+    AbstractSettingsPane* currentPane = instance()->m_panes.value (p_paneID);
+    QTreeWidget* treeNavi = instance()->m_ui->treeNavigation;
 
-    if (l_currentPane != 0) {
-        l_currentPane->show();
-        l_currentPane->updateUi();
-        l_treeNavi->setCurrentItem (instance()->findPaneForItem (p_paneID));
+    if (currentPane != 0) {
+        currentPane->show();
+        currentPane->updateUi();
+        treeNavi->setCurrentItem (instance()->findPaneForItem (p_paneID));
     }
     else {
         Core::mainWindow()->setStatusMessage (tr ("Invalid settings pane ID '%1'").arg (p_paneID));
@@ -169,8 +170,8 @@ void Settings::on_treeNavigation_itemSelectionChanged()
             ( (QWidget*) subPane)->hide();
         }
 
-        findPane(id)->show();
-        findPane(id)->updateUi();;
+        findPane (id)->show();
+        findPane (id)->updateUi();;
     }
 }
 
@@ -198,13 +199,13 @@ Settings::~Settings()
     delete m_ui;
 }
 
-AbstractSettingsPane::AbstractSettingsPane (QWidget* parent) : QFrame(parent)
+AbstractSettingsPane::AbstractSettingsPane (QWidget* parent) : QFrame (parent)
 {
 }
 
 AbstractSettingsPane* Settings::findPane (QString id)
 {
-    return m_panes.value(id);
+    return m_panes.value (id);
 }
 
 void AbstractSettingsPane::addPane (AbstractSettingsPane* p_subPane)

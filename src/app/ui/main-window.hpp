@@ -27,6 +27,7 @@
 #include <QProgressBar>
 #include <QMainWindow>
 
+class QListWidgetItem;
 namespace Ui
 {
 class MainWindow;
@@ -134,6 +135,10 @@ private slots:
     void on_btnSessionAdapt_clicked();
     void on_btnSessionInfo_clicked();
     void on_listWidgetSessions_itemSelectionChanged();
+
+    // services pane
+    void on_listWidgetService_itemClicked(QListWidgetItem* p_item);
+    void on_btnAllServices_clicked();
 
     // misc.
     void on_actionPluginOptions_triggered();

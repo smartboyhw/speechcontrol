@@ -38,6 +38,7 @@
 #include "indicator.hpp"
 #include "dictation/agent.hpp"
 #include "desktopcontrol/agent.hpp"
+#include <engine.hpp>
 #include "sessions/session.hpp"
 #include "sessions/content.hpp"
 #include "ui/main-window.hpp"
@@ -71,7 +72,7 @@ Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0)
     m_ui->centralwidget->setLayout (m_ui->gLayoutMain);
     m_ui->groupBoxSessions->setLayout (m_ui->gridLayoutSessions);
     m_ui->groupBoxRecognition->setLayout (m_ui->hLayoutRecognition);
-    m_ui->groupBoxServices->setLayout (m_ui->hLayoutServices);
+    m_ui->groupBoxServices->setLayout (m_ui->gridLayoutServices);
 
     // Do a bit of cleanup on the status bar.
     m_ui->statusBar->addPermanentWidget (m_prgStatusbar);
@@ -156,7 +157,6 @@ void Main::open()
         restoreGeometry (Core::configuration ("MainWindow/State").toByteArray());
         const bool isIndicatorVisible = Indicator::isVisible() && Indicator::isEnabled();
         const bool isMainWindowVisible = Core::configuration ("MainWindow/Visible").toBool() == true;
-        qDebug() << isIndicatorVisible << isMainWindowVisible;
 
         if (isIndicatorVisible || isMainWindowVisible)
             QMainWindow::show();
@@ -225,6 +225,7 @@ void Main::updateSessionListing()
         item->setText (session->name());
         item->setData (Qt::UserRole, session->id());
         widget->addItem (item);
+        qDebug() << "[Main::updateSessionListingListing()] Added session " << session->name() << "to listing.";
     }
 
     m_ui->btnSessionAdapt->setEnabled (false);
@@ -235,7 +236,33 @@ void Main::updateSessionListing()
 
 void Main::updateServiceListing()
 {
+    QListWidget* widget = m_ui->listWidgetService;
+    widget->clear();
 
+    Services::AbstractModuleList list = Services::Engine::allModules();
+
+    Q_FOREACH (const Services::AbstractModule * module, list) {
+        QListWidgetItem* item = new QListWidgetItem (widget);
+        item->setText (module->name());
+        item->setCheckState (module->isActive() ? Qt::Checked : Qt::Unchecked);
+        item->setHidden(!module->isEnabled());
+        item->setIcon (module->pixmap());
+        item->setData (Qt::UserRole, module->id());
+        widget->addItem (item);
+        qDebug() << "[Main::updateServiceListing()] Added service " << module->name() << "to listing.";
+    }
+
+    widget->clearSelection();
+}
+
+void Main::on_listWidgetService_itemClicked (QListWidgetItem* p_item)
+{
+    bool isChecked = p_item->checkState() == Qt::Checked;
+    Services::AbstractModule* module = Services::Engine::findModule (p_item->data (Qt::UserRole).toString());
+
+    (isChecked) ? module->start() : module->stop();
+    qDebug() << "[Main::on_listWidgetService_itemClicked()] Is checked?" << isChecked;
+    updateServiceListing();
 }
 
 void Main::setProgress (const double p_progress)
@@ -249,6 +276,12 @@ void Main::setProgress (const double p_progress)
         m_prgStatusbar->show();
         m_prgStatusbar->setValue (l_val);
     }
+}
+
+void Main::on_btnAllServices_clicked()
+{
+    Settings::displayPane("srvcs");
+    updateUi();
 }
 
 void Main::on_actionDesktopControlOptions_triggered()

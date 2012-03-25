@@ -127,7 +127,12 @@ void Indicator::presentMessage (const QString& p_title, const QString& p_message
 
 bool Indicator::isVisible()
 {
-    return m_icon->isVisible();
+    return instance()->m_icon->isVisible();
+}
+
+bool Indicator::isEnabled()
+{
+    return Core::configuration ("Indicator/Show").toBool();
 }
 
 Indicator::~Indicator()

@@ -63,13 +63,22 @@ public:
      * @brief Raises a new message to the system.
      * @param p_message The message to present to the user.
      **/
-    static void presentMessage (const QString& p_title, const QString& p_message, const int& p_timeout);
+    static void presentMessage (const QString& p_title, const QString& p_message = QString::null, const int& p_timeout = 3000);
 
     /**
      * @brief Determines whether or not the Indicator's icon is visible.
      **/
-    bool isVisible();
     static QIcon icon();
+
+    /**
+     * @brief Determines if the Indicator is visible.
+     **/
+    static bool isVisible();
+
+    /**
+     * @brief Determines if the Indicator is enabled.
+     **/
+    static bool isEnabled();
 
 private slots:
     void showMainWindow();

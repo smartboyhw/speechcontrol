@@ -21,6 +21,8 @@
 #include "services-pane.hpp"
 #include "desktopcontrol-pane.hpp"
 #include "dictation-pane.hpp"
+#include "plugins-pane.hpp"
+#include "voxforge-pane.hpp"
 #include "ui_settingspane-services.h"
 
 using namespace SpeechControl::Windows;
@@ -30,8 +32,10 @@ ServicesSettingsPane::ServicesSettingsPane() :
 {
     qDebug() << "[ServicesSettingsPane::{constructor}] Building services settings pane...";
     ui->setupUi (this);
+    addPane (new PluginsSettingsPane);
     addPane (new DesktopControlSettingsPane);
     addPane (new DictationSettingsPane);
+    addPane (new VoxforgeSettingsPane);
     updateUi();
     qDebug() << "[ServicesSettingsPane::{constructor}] Built services settings pane.";
 }
@@ -81,3 +85,5 @@ void ServicesSettingsPane::updateUi()
 
 #include "services-pane.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+
+

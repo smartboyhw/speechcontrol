@@ -59,8 +59,6 @@ void Settings::buildWindow()
     addPane (new GeneralSettingsPane);
     addPane (new TrainingSettingsPane);
     addPane (new ServicesSettingsPane);
-    addPane (new PluginsSettingsPane);
-    addPane (new VoxforgeSettingsPane);
     qDebug() << "[Settings::buildWindow()] Built settings window.";
 }
 

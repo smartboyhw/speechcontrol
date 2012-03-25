@@ -34,6 +34,8 @@ namespace Windows
 class ServicesSettingsPane : public AbstractSettingsPane
 {
     Q_OBJECT
+    void updateAcousticTab();
+    void updateLanguageTab();
 
 public:
     explicit ServicesSettingsPane ();

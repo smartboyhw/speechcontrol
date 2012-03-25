@@ -34,7 +34,7 @@ TrainingSettingsPane::TrainingSettingsPane() :
     ui->setupUi (this);
     addPane (new SessionSettingsPane);
     addPane (new ContentSettingsPane);
-    addPane (new AcousticModelSettingsPane);
+    addPane (new ModelSettingsPane);
     //addPane (new LanguageModelSettingsPane);
     //addPane (new DictionarySettingsPane);
     addPane (new MicrophoneSettingsPane);

@@ -73,7 +73,7 @@ QStringList findAllLanguageModels (const QDir p_dir)
     while (itr.hasNext()) {
         const QString listing = itr.next();
         QDir listingDir (listing);
-        qDebug() << listing;
+        qDebug() << "[findAllLanguageModels()] Found language model directory: " << listing;
         QFileInfo featParams (listing + "/" + listingDir.dirName() + ".lm");
 
         if (featParams.exists()) {

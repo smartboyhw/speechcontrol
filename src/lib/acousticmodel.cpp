@@ -152,7 +152,7 @@ quint16 AcousticModel::sampleRate() const
 
 QString AcousticModel::name() const
 {
-    QDir dir(path());
+    QDir dir (path());
     return dir.dirName();
 }
 
@@ -163,7 +163,7 @@ bool AcousticModel::isSystem() const
 
 bool AcousticModel::isUser() const
 {
-    return m_path.contains(QDir::homePath());
+    return m_path.contains (QDir::homePath());
 }
 
 QString AcousticModel::path() const
@@ -189,10 +189,10 @@ void cloneDirectory (QDir p_base, QDir p_newDir)
             cloneDirectory (QDir (entryInfo.absolutePath()), QDir (p_newDir.absolutePath() + "/" + entryInfo.baseName()));
         }
         else {
-            QString fileBase = p_base.absoluteFilePath(entry);
+            QString fileBase = p_base.absoluteFilePath (entry);
             QString fileNew = p_newDir.absoluteFilePath (entryInfo.fileName());
             qDebug() << "[cloneDirectory()] Copying" << fileBase << "to" << fileNew << "..";
-            QFile::copy (fileBase,fileNew);
+            QFile::copy (fileBase, fileNew);
         }
     }
 }
@@ -214,8 +214,8 @@ AcousticModel* AcousticModel::clone()
     randomID = randomID.split ("-").at (0);
     randomID = randomID.replace ("{", "");
     const QString newModelName = model.dirName() + "-" + randomID;
-    newDir.mkdir(newModelName);
-    newDir.cd(newModelName);
+    newDir.mkdir (newModelName);
+    newDir.cd (newModelName);
 
     // create directory.
     cloneDirectory (model, newDir);
@@ -236,6 +236,7 @@ QStringList findAllAcousticModels (const QDir p_dir)
         if (featParams.exists()) {
             aList << listing;
         }
+
         else continue;
     }
 

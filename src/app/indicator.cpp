@@ -54,19 +54,26 @@ void Indicator::on_mIcon_activated (QSystemTrayIcon::ActivationReason p_reason)
         case QSystemTrayIcon::Trigger:
             Core::mainWindow()->isVisible() ? Core::mainWindow()->hide() : Core::mainWindow()->show();
             break;
+
+        case QSystemTrayIcon::DoubleClick:
+        case QSystemTrayIcon::MiddleClick:
+        case QSystemTrayIcon::Context:
+        case QSystemTrayIcon::Unknown:
+        default:
+            break;
     }
 }
 
 void Indicator::buildMenu()
 {
-    QMenu* l_menu = new QMenu;
-    QMenu* menuDesktopControl = l_menu->addMenu (Core::mainWindow()->m_ui->menuDesktopControl->icon(),
+    QMenu* menu = new QMenu;
+    QMenu* menuDesktopControl = menu->addMenu (Core::mainWindow()->m_ui->menuDesktopControl->icon(),
                                 Core::mainWindow()->m_ui->menuDesktopControl->title());
-    QMenu* menuDictation      = l_menu->addMenu (Core::mainWindow()->m_ui->menuDictation->icon(),
+    QMenu* menuDictation      = menu->addMenu (Core::mainWindow()->m_ui->menuDictation->icon(),
                                 Core::mainWindow()->m_ui->menuDictation->title());
-    QMenu* menuPlugins        = l_menu->addMenu (Core::mainWindow()->m_ui->menuPlugins->icon(),
+    QMenu* menuPlugins        = menu->addMenu (Core::mainWindow()->m_ui->menuPlugins->icon(),
                                 Core::mainWindow()->m_ui->menuPlugins->title());
-    QMenu* menuHelp           = l_menu->addMenu (Core::mainWindow()->m_ui->menuHelp->icon(),
+    QMenu* menuHelp           = menu->addMenu (Core::mainWindow()->m_ui->menuHelp->icon(),
                                 Core::mainWindow()->m_ui->menuHelp->title());
 
     menuDesktopControl->addActions (Core::mainWindow()->m_ui->menuDesktopControl->actions());
@@ -74,17 +81,17 @@ void Indicator::buildMenu()
     menuPlugins->addActions (Core::mainWindow()->m_ui->menuPlugins->actions());
     menuHelp->addActions (Core::mainWindow()->m_ui->menuHelp->actions());
 
-    l_menu->addMenu (menuDesktopControl);
-    l_menu->addMenu (menuDictation);
-    l_menu->addMenu (menuPlugins);
-    l_menu->addSeparator();
-    l_menu->addMenu (menuHelp);
-    l_menu->addAction (Core::mainWindow()->m_ui->actionOptions);
-    l_menu->addSeparator();
-    l_menu->addAction ("Restore", Core::mainWindow(), SLOT (open()));
-    l_menu->addAction (QIcon::fromTheme ("application-exit"), "Quit", QApplication::instance(), SLOT (quit()));
+    menu->addMenu (menuDesktopControl);
+    menu->addMenu (menuDictation);
+    menu->addMenu (menuPlugins);
+    menu->addSeparator();
+    menu->addMenu (menuHelp);
+    menu->addAction (Core::mainWindow()->m_ui->actionOptions);
+    menu->addSeparator();
+    menu->addAction ("Restore", Core::mainWindow(), SLOT (open()));
+    menu->addAction (QIcon::fromTheme ("application-exit"), "Quit", QApplication::instance(), SLOT (quit()));
 
-    m_icon->setContextMenu (l_menu);
+    m_icon->setContextMenu (menu);
 }
 
 

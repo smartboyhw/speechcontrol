@@ -25,7 +25,7 @@
 // Local
 #include "core.hpp"
 #include "indicator.hpp"
-#include "windows/main-window.hpp"
+#include "ui/main-window.hpp"
 #include <ui_main-window.h>
 
 // Qt

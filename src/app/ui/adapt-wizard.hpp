@@ -26,6 +26,7 @@
 
 namespace SpeechControl
 {
+class Session;
 namespace Wizards
 {
 namespace Pages
@@ -54,10 +55,10 @@ public:
     explicit AdaptWizard (QWidget* parent = 0);
     virtual ~AdaptWizard();
     virtual int nextId() const;
+    void setSession (Session* session);
 
 public slots:
     virtual void accept();
-
 };
 
 }

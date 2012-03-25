@@ -105,6 +105,11 @@ void AdaptWizard::accept()
     this->QDialog::accept();
 }
 
+void AdaptWizard::setSession (Session* p_session)
+{
+    ((Pages::SessionSelection*) this->page(AdaptWizard::SessionSelectionPage))->setSession(p_session);
+}
+
 AdaptWizard::~AdaptWizard()
 {
 

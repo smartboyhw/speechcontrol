@@ -97,6 +97,9 @@ public:
      * @param acModel An AcousticModel instance to use.
      */
     void setDefaultAcousticModel(AcousticModel* acModel);
+    
+    void start();
+    void stop();
 
 public slots:
     /**

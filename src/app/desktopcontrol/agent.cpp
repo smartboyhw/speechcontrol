@@ -46,11 +46,32 @@ Agent::~Agent()
 
 }
 
+void Agent::start()
+{
+    if (!m_sphinx->start()) {
+        qWarning() << "[DesktopControl::Agent::onStateChanged()] Start unsuccessful.";
+//         return Disabled;
+    }
+    
+    qDebug() << "[DesktopControl::Agent::onStateChanged()] Enabled.";
+//     return Enabled;
+}
+
+void Agent::stop()
+{
+    if (!m_sphinx->stop()) {
+        qWarning() << "[DesktopControl::Agent::onStateChanged()] Stop unsuccessful.";
+//         return Enabled;
+    }
+    
+    qDebug() << "[DesktopControl::Agent::onStateChanged()] Stopped desktop control agent.";
+//     return Disabled;
+}
+
 AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::ActivityState p_state)
 {
     switch (p_state) {
     case Enabled:
-        
         if (!m_sphinx->start()) {
             qWarning() << "[DesktopControl::Agent::onStateChanged()] Start unsuccessful.";
             return Disabled;
@@ -70,7 +91,6 @@ AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::Activit
             }
 
             qDebug() << "[DesktopControl::Agent::onStateChanged()] Stopped desktop control agent.";
-            delete m_sphinx;
         }
 
         return Disabled;

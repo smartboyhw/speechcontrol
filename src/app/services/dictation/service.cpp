@@ -26,9 +26,9 @@
 using namespace SpeechControl::Dictation;
 Service* Service::s_inst = 0;
 
-Service::Service() : AbstractModule(Agent::instance())
+Service::Service() : AbstractModule (Agent::instance())
 {
-    Services::Engine::registerModule(this);
+    Services::Engine::registerModule (this);
 }
 
 void Service::deinitialize()
@@ -53,7 +53,7 @@ QString Service::id() const
 
 QPixmap Service::pixmap() const
 {
-    return QIcon::fromTheme("audio-input").pixmap(64,64);
+    return QIcon::fromTheme ("audio-input").pixmap (64, 64);
 }
 
 QString Service::name() const
@@ -72,3 +72,4 @@ Service::~Service()
 }
 
 #include "services/dictation/service.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

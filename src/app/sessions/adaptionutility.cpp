@@ -122,6 +122,10 @@ void AdaptationUtility::advanceNextPhase()
         completeAdaptation();
         break;
 
+    case PhaseCompleteAdaption:
+        changePhase(PhaseDeinitialized);
+        break;
+
     case PhaseDeinitialized:
         changePhase (PhaseUndefined);
         break;
@@ -132,16 +136,16 @@ void AdaptationUtility::advanceNextPhase()
     }
 }
 
-void AdaptationUtility::cleanupPhases (const Phases& phase = PhaseUndefined)
+void AdaptationUtility::cleanupPhase (const Phases& phase = PhaseUndefined)
 {
     if (phase == PhaseUndefined) {
-        cleanupPhases (PhaseCopyAcousticModels);
-        cleanupPhases (PhaseCollectAcousticStatistics);
-        cleanupPhases (PhaseGenerateMixtureWeights);
-        cleanupPhases (PhaseGenerateFeatures);
-        cleanupPhases (PhaseGenerateSendmap);
-        cleanupPhases (PhaseGenerateAccuracyReport);
-        cleanupPhases (PhasePerformAdaptation);
+        cleanupPhase (PhaseCopyAcousticModels);
+        cleanupPhase (PhaseCollectAcousticStatistics);
+        cleanupPhase (PhaseGenerateMixtureWeights);
+        cleanupPhase (PhaseGenerateFeatures);
+        cleanupPhase (PhaseGenerateSendmap);
+        cleanupPhase (PhaseGenerateAccuracyReport);
+        cleanupPhase (PhasePerformAdaptation);
     }
     else {
         switch (phase) {
@@ -168,6 +172,8 @@ void AdaptationUtility::cleanupPhases (const Phases& phase = PhaseUndefined)
 
         case PhasePerformAdaptation:
             break;
+
+        case PhaseCompleteAdaption:
 
         case PhaseInitialized:
         case PhaseDeinitialized:
@@ -200,7 +206,7 @@ void AdaptationUtility::on_mPrcss_finished (const int& p_exitCode, QProcess::Exi
 
     case QProcess::CrashExit:
         qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Crash exit experienced!";
-        cleanupPhases();
+        cleanupPhase();
         haltPhasing();
         break;
     }

@@ -22,7 +22,7 @@
 
 using namespace SpeechControl::Voxforge;
 
-UploadHandler::UploadHandler (QObject* parent)
+UploadHandler::UploadHandler (QObject* parent) : QObject(parent)
 {
 
 }
@@ -34,4 +34,4 @@ UploadHandler::~UploadHandler()
 
 
 #include "upload.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

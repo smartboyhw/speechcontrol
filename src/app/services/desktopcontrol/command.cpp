@@ -197,5 +197,5 @@ AbstractCategory::~AbstractCategory()
 {
 }
 
-#include "command.moc"
+#include "services/desktopcontrol/command.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

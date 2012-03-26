@@ -209,11 +209,10 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionBackup_triggered()
 /// @todo Implement a means of just clicking once for all to be affected by this action.
 void SpeechControl::Windows::SessionSettingsPane::on_actionRestoreBackup_triggered()
 {
+#ifdef RESTORESESSIONWIZARD_HPP
     QListWidget* l_widget = m_ui->listWidgetSession;
     QListWidgetItem* l_itm = l_widget->selectedItems().first();
     Session* l_ss = Session::obtain (l_itm->data (Qt::UserRole).toString());
-
-#ifdef RESTORESESSIONWIZARD_HPP
     Wizards::RestoreSessionWizard* l_wiz = new Wizards::RestoreSessionWizard (this, l_ss);
 
     if (l_wiz->exec() == QWizard::Accepted) {

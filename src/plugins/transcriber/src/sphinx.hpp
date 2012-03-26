@@ -30,7 +30,7 @@ namespace Transcriber
 {
 class Sphinx : public SpeechControl::AbstractSphinx
 {
-
+    Q_OBJECT
 public:
     Sphinx();
     void prepareForFile (const QString& p_path);
@@ -45,4 +45,4 @@ private:
 }
 
 #endif // SPEECHCONTROL_PLUGINS_TRANSCRIBER_SPHINX_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -133,7 +133,7 @@ private:
     void copyAcousticModel();
     void executeProcess (const QString& p_program, const QStringList p_arguments);
     void advanceNextPhase();
-    void cleanupPhases(const SpeechControl::AdaptationUtility::Phases& phase);
+    void cleanupPhase (const SpeechControl::AdaptationUtility::Phases& phase);
     void haltPhasing();
     void completeAdaptation();
 

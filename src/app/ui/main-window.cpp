@@ -427,7 +427,7 @@ void Main::on_actionWizardAdaption_triggered()
 void Main::on_btnSessionAdapt_clicked()
 {
     QListWidget* widget = m_ui->listWidgetSessions;
-    QListWidgetItem* item = m_ui->listWidgetSessions->currentItem();
+    QListWidgetItem* item = widget->currentItem();
     Session* session = Session::obtain (item->data (Qt::UserRole).toString());
     AdaptWizard* wiz = new AdaptWizard (this);
     wiz->setSession (session);
@@ -438,7 +438,7 @@ void Main::on_btnSessionAdapt_clicked()
 void Main::on_btnSessionTrain_clicked()
 {
     QListWidget* widget = m_ui->listWidgetSessions;
-    QListWidgetItem* item = m_ui->listWidgetSessions->currentItem();
+    QListWidgetItem* item = widget->currentItem();
     Session* session = Session::obtain (item->data (Qt::UserRole).toString());
     TrainingDialog::startTraining (session);
     updateUi();
@@ -447,7 +447,7 @@ void Main::on_btnSessionTrain_clicked()
 void Main::on_listWidgetSessions_itemSelectionChanged()
 {
     QListWidget* widget = m_ui->listWidgetSessions;
-    QListWidgetItem* item = m_ui->listWidgetSessions->currentItem();
+    QListWidgetItem* item = widget->currentItem();
     Session* session = Session::obtain (item->data (Qt::UserRole).toString());
     m_ui->btnSessionAdapt->setEnabled (session->isCompleted());
     m_ui->btnSessionTrain->setEnabled (!session->isCompleted());
@@ -457,7 +457,7 @@ void Main::on_listWidgetSessions_itemSelectionChanged()
 void Main::on_btnSessionInfo_clicked()
 {
     QListWidget* widget = m_ui->listWidgetSessions;
-    QListWidgetItem* item = m_ui->listWidgetSessions->currentItem();
+    QListWidgetItem* item = widget->currentItem();
     Session* session = Session::obtain (item->data (Qt::UserRole).toString());
     SessionInformationDialog* dialog = new SessionInformationDialog (session);
     dialog->exec();

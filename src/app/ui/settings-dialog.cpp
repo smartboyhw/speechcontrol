@@ -64,7 +64,7 @@ void Settings::buildWindow()
 }
 
 
-Settings::Settings (const Settings& p_other) : QDialog()
+Settings::Settings (const Settings& p_other) : QDialog(p_other.parentWidget())
 {
 
 }
@@ -77,7 +77,6 @@ void Settings::addPane (AbstractSettingsPane* p_pane)
 
     QString parentPaneId = p_pane->property ("parent-widget").toString();
     const bool hasParentPane = (!parentPaneId.isNull() && !parentPaneId.isEmpty());
-    AbstractSettingsPane* parentPane = (hasParentPane) ? instance()->m_panes.value (parentPaneId) : 0;
     QTreeWidgetItem* parentItem = (hasParentPane) ? instance()->findPaneForItem (parentPaneId) : 0;
     QTreeWidgetItem* itm = 0;
     QTreeWidget* treeWidget = instance()->m_ui->treeNavigation;
@@ -191,6 +190,9 @@ void Settings::on_buttonBox_clicked (QAbstractButton* p_button)
     case QDialogButtonBox::RestoreDefaults:
         /// @todo Add functionality to set the values of the properties all back to default.
         currentPane()->restoreDefaults();
+        break;
+
+    default:
         break;
     }
 }

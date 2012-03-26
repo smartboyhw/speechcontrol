@@ -35,10 +35,11 @@ Agent::Agent() : AbstractAgent (AbstractCategory::global())
 {
     m_sphinx = new Sphinx (Sphinx::standardDescription(), parent());
     connect (m_sphinx, SIGNAL (finished (QString)), this, SLOT (invokeCommand (QString)));
-    
-    QString defAcousticModel = Core::configuration("DesktopControl/DefaultAcousticModel").toString();
+
+    QString defAcousticModel = Core::configuration ("DesktopControl/DefaultAcousticModel").toString();
+
     if (!defAcousticModel.isEmpty())
-        m_sphinx->setAcousticModel(defAcousticModel);
+        m_sphinx->setAcousticModel (defAcousticModel);
 }
 
 Agent::~Agent()
@@ -52,7 +53,7 @@ void Agent::start()
         qWarning() << "[DesktopControl::Agent::onStateChanged()] Start unsuccessful.";
 //         return Disabled;
     }
-    
+
     qDebug() << "[DesktopControl::Agent::onStateChanged()] Enabled.";
 //     return Enabled;
 }
@@ -63,7 +64,7 @@ void Agent::stop()
         qWarning() << "[DesktopControl::Agent::onStateChanged()] Stop unsuccessful.";
 //         return Enabled;
     }
-    
+
     qDebug() << "[DesktopControl::Agent::onStateChanged()] Stopped desktop control agent.";
 //     return Disabled;
 }
@@ -72,10 +73,12 @@ AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::Activit
 {
     switch (p_state) {
     case Enabled:
+
         if (!m_sphinx->start()) {
             qWarning() << "[DesktopControl::Agent::onStateChanged()] Start unsuccessful.";
             return Disabled;
-        } else {
+        }
+        else {
             qDebug() << "[DesktopControl::Agent::onStateChanged()] Enabled.";
         }
 
@@ -114,12 +117,12 @@ bool Agent::isEnabled()
 
 void Agent::setAcousticModel (AcousticModel* acModel)
 {
-    m_sphinx->setAcousticModel(acModel->path());
+    m_sphinx->setAcousticModel (acModel->path());
 }
 
 void Agent::setDefaultAcousticModel (AcousticModel* acModel)
 {
-    Core::setConfiguration("DesktopControl/DefaultAcousticModel", acModel->path());
+    Core::setConfiguration ("DesktopControl/DefaultAcousticModel", acModel->path());
 }
 
 /// @todo Since this returns more than one command, should we provide a UI that allows you to pick which command you might want?

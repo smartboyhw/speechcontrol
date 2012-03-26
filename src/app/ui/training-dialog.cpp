@@ -74,8 +74,8 @@ DeviceAudioSource* TrainingDialog::deviceSource() const
 void TrainingDialog::setDevice (DeviceAudioSource* p_device)
 {
     m_mic = p_device;
-    connect (m_mic, SIGNAL (recordingBegun()), this, SLOT (onMicStartedListening()));
-    connect (m_mic, SIGNAL (recordingEnded()), this, SLOT (onMicStoppedListening()));
+    connect (m_mic, SIGNAL (start()), this, SLOT (onMicStartedListening()));
+    connect (m_mic, SIGNAL (ended()), this, SLOT (onMicStoppedListening()));
     connect (m_mic, SIGNAL (bufferObtained (QByteArray)), this, SLOT (on_mic_BufferObtained (QByteArray)));
 
 }

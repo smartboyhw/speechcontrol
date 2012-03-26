@@ -100,12 +100,12 @@ public slots:
     /**
      * @brief Sets the state of this Agent to Enabled.
      **/
-    void start();
+    virtual void start();
 
     /**
      * @brief Sets the state of this Agent to Disabled.
      **/
-    void stop();
+    virtual void stop();
 
 signals:
     /**
@@ -136,8 +136,6 @@ protected:
      * @see ActivityState
      **/
     virtual ActivityState onStateChanged (const ActivityState p_state) = 0;
-
-private:
     ActivityState m_state; ///< The state of the agent.
 };
 }

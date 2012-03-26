@@ -22,6 +22,7 @@
 #include "agent.hpp"
 #include "command.hpp"
 #include "sphinx.hpp"
+#include <acousticmodel.hpp>
 
 namespace SpeechControl
 {
@@ -30,8 +31,14 @@ namespace DesktopControl
 
 Agent* Agent::s_inst = 0;
 
-Agent::Agent() : AbstractAgent (AbstractCategory::global()), m_sphinx (0)
+Agent::Agent() : AbstractAgent (AbstractCategory::global())
 {
+    m_sphinx = new Sphinx (Sphinx::standardDescription(), parent());
+    connect (m_sphinx, SIGNAL (finished (QString)), this, SLOT (invokeCommand (QString)));
+    
+    QString defAcousticModel = Core::configuration("DesktopControl/DefaultAcousticModel").toString();
+    if (!defAcousticModel.isEmpty())
+        m_sphinx->setAcousticModel(defAcousticModel);
 }
 
 Agent::~Agent()
@@ -39,16 +46,32 @@ Agent::~Agent()
 
 }
 
+void Agent::start()
+{
+    if (!m_sphinx->start()) {
+        qWarning() << "[DesktopControl::Agent::onStateChanged()] Start unsuccessful.";
+//         return Disabled;
+    }
+    
+    qDebug() << "[DesktopControl::Agent::onStateChanged()] Enabled.";
+//     return Enabled;
+}
+
+void Agent::stop()
+{
+    if (!m_sphinx->stop()) {
+        qWarning() << "[DesktopControl::Agent::onStateChanged()] Stop unsuccessful.";
+//         return Enabled;
+    }
+    
+    qDebug() << "[DesktopControl::Agent::onStateChanged()] Stopped desktop control agent.";
+//     return Disabled;
+}
+
 AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::ActivityState p_state)
 {
     switch (p_state) {
     case Enabled:
-
-        if (!m_sphinx) {
-            m_sphinx = new Sphinx (Sphinx::standardDescription(), parent());
-            connect (m_sphinx, SIGNAL (finished (QString)), this, SLOT (invokeCommand (QString)));
-        }
-
         if (!m_sphinx->start()) {
             qWarning() << "[DesktopControl::Agent::onStateChanged()] Start unsuccessful.";
             return Disabled;
@@ -68,7 +91,6 @@ AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::Activit
             }
 
             qDebug() << "[DesktopControl::Agent::onStateChanged()] Stopped desktop control agent.";
-            delete m_sphinx;
         }
 
         return Disabled;
@@ -88,6 +110,16 @@ bool Agent::isActive() const
 bool Agent::isEnabled()
 {
     return Core::configuration ("DesktopControl/Enabled").toBool();
+}
+
+void Agent::setAcousticModel (AcousticModel* acModel)
+{
+    m_sphinx->setAcousticModel(acModel->path());
+}
+
+void Agent::setDefaultAcousticModel (AcousticModel* acModel)
+{
+    Core::setConfiguration("DesktopControl/DefaultAcousticModel", acModel->path());
 }
 
 /// @todo Since this returns more than one command, should we provide a UI that allows you to pick which command you might want?
@@ -114,5 +146,5 @@ void Agent::invokeCommand (const QString& cmd)
 
 }
 }
-#include "desktopcontrol/agent.moc"
+#include "services/desktopcontrol/agent.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

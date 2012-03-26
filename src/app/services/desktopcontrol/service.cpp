@@ -71,4 +71,4 @@ Service::~Service()
 
 }
 
-#include "desktopcontrol/service.moc"
+#include "services/desktopcontrol/service.moc"

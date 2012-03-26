@@ -207,6 +207,11 @@ bool AbstractSphinx::isRunning() const
 bool AbstractSphinx::start()
 {
     qDebug() << "[AbstractSphinx::start()] Starting...";
+    
+    if (isRunning()) {
+        qDebug() << "[AbstractSphinx::start()] Already started.";
+        return true;
+    }
 
     if (isReady()) {
         m_bus = m_pipeline->bus();

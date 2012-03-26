@@ -168,8 +168,8 @@ void Core::invokeAutoStart()
 {
     const bool l_dsktpCntrlState = configuration ("DesktopControl/AutoStart").toBool();
     const bool l_dctnState = configuration ("Dictation/AutoStart").toBool();
-    DesktopControl::Agent::instance()->setState ( (l_dsktpCntrlState) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled);
-    Dictation::Agent::instance()->setState ( (l_dctnState) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled);
+//     DesktopControl::Agent::instance()->setState ( (l_dsktpCntrlState) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled);
+//     Dictation::Agent::instance()->setState ( (l_dctnState) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled);
 }
 
 void Core::loadTranslations (const QLocale& p_locale)

@@ -31,11 +31,6 @@ LanguageModel::LanguageModel (QObject* p_parent) : QObject (p_parent), m_path()
 
 }
 
-LanguageModel::LanguageModel (const QString& p_id) : QObject(), m_path()
-{
-
-}
-
 LanguageModel* LanguageModel::fromDirectory (const QDir& p_directory)
 {
     LanguageModel* lm = new LanguageModel;

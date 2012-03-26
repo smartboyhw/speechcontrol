@@ -49,37 +49,42 @@ public:
      **/
     explicit LanguageModel (QObject* p_parent = 0);
 
-    /**
-     * @brief ...
-     *
-     * @param p_id ...
-     **/
-    LanguageModel (const QString& p_id);
 
     /**
-     * @brief ...
+     * @brief Obtains a language model from a directory.
      *
-     * @param p_directory ...
-     * @return LanguageModel*
+     * @param p_directory Path to the language model.
      **/
     static LanguageModel* fromDirectory (const QDir& p_directory);
 
-    static LanguageModelList allModels();
     /**
-     * @brief ...
-     *
-     * @return QDir
+     * @brief Obtains all of the known language models.
+     **/
+    static LanguageModelList allModels();
+
+    /**
+     * @brief Obtains the directory that holds this language model.
      **/
     QString path() const;
 
+    /**
+     * @brief Determines if this model is a system language model.
+     **/
     bool isSystem() const;
 
+    /**
+     * @brief Determines if this model is a user language model.
+     **/
     bool isUser() const;
 
-    QString name() const;
     /**
-     * @brief ...
-     *
+     * @brief Obtains the name of this language model.
+     * @note This value is not human-friendly.
+     **/
+    QString name() const;
+
+    /**
+     * @brief Destructor.
      **/
     virtual ~LanguageModel();
 };

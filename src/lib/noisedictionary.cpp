@@ -90,8 +90,6 @@ bool NoiseDictionary::load (QIODevice* p_device)
         QString key;
         QString value;
         bool isInSpace = false;
-        bool isHandlingValue = false;
-        bool isHandlingKey = false;
         QChar lastChar;
 
         Q_FOREACH(const QChar charVal, line){
@@ -108,10 +106,8 @@ bool NoiseDictionary::load (QIODevice* p_device)
                 }
                 else {
                     if (isInSpace){
-                        isHandlingValue = true;
                         value += charVal;
                     } else {
-                        isHandlingKey = true;
                         key += charVal;
                     }
                 }

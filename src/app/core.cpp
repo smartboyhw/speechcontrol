@@ -35,10 +35,13 @@
 #include "app/core.hpp"
 #include "app/factory.hpp"
 #include "app/sessions/session.hpp"
-#include "app/windows/main-window.hpp"
-#include "app/windows/quickstart-wizard.hpp"
+#include "app/ui/main-window.hpp"
+#include "app/ui/quickstart-wizard.hpp"
 #include "desktopcontrol/agent.hpp"
+#include "desktopcontrol/service.hpp"
 #include "dictation/agent.hpp"
+#include "dictation/service.hpp"
+#include "services/engine.hpp"
 #include "indicator.hpp"
 
 using namespace SpeechControl;
@@ -71,10 +74,8 @@ Core::Core (int p_argc, char** p_argv, QApplication* app) : QObject (app),
 
     // build settings
     m_settings = new QSettings (QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", this);
-    connect (m_app, SIGNAL (aboutToQuit()), this, SLOT (stop()));
-    connect (this, SIGNAL (started()), this, SLOT (invokeAutoStart()));
-    connect (this, SIGNAL (started()), Plugins::Factory::instance(), SLOT (start()));
-    connect (this, SIGNAL (stopped()), Plugins::Factory::instance(), SLOT (stop()));
+
+    hookUpSignals();
     loadTranslations (QLocale::system());
 
     // Set up indicator.
@@ -95,6 +96,19 @@ Core::Core (const Core& p_other) : QObject (p_other.parent()), m_app (p_other.m_
 
 }
 
+void Core::hookUpSignals()
+{
+    connect (m_app, SIGNAL (aboutToQuit()), this, SLOT (stop()));
+    connect (this, SIGNAL (started()), this, SLOT (invokeAutoStart()));
+    connect (this, SIGNAL (started()), Services::Engine::instance(), SLOT (start()));
+    connect (this, SIGNAL (started()), Plugins::Factory::instance(), SLOT (start()));
+    connect (this, SIGNAL (stopped()), Services::Engine::instance(), SLOT (stop()));
+    connect (this, SIGNAL (stopped()), Plugins::Factory::instance(), SLOT (stop()));
+
+    DesktopControl::Service::instance();
+    Dictation::Service::instance();
+}
+
 void Core::start()
 {
     // Detect if a first-run wizard should be run.
@@ -108,7 +122,6 @@ void Core::start()
     }
 
     emit instance()->started();
-
     mainWindow()->open();
 }
 
@@ -123,7 +136,8 @@ Windows::Main* Core::mainWindow()
 void Core::stop()
 {
     emit instance()->stopped();
-    if (Core::configuration ("MainWindow/RememberState").toBool()){
+
+    if (Core::configuration ("MainWindow/RememberState").toBool()) {
         Core::setConfiguration ("MainWindow/Visible", mainWindow()->isVisible());
     }
 }
@@ -185,7 +199,7 @@ void Core::setAutoStart (const bool p_toggle)
                         << "X-GNOME-Autostart-enabled=true" << endl
                         << "X-GNOME-Autostart-Delay=30" << endl;
             autoStartFile->close();
-            autoStartFile->setPermissions(autoStartFile->permissions() | QFile::ExeUser | QFile::ExeOwner | QFile::ExeGroup);
+            autoStartFile->setPermissions (autoStartFile->permissions() | QFile::ExeUser | QFile::ExeOwner | QFile::ExeGroup);
         }
     }
     else {

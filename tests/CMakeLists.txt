@@ -12,21 +12,11 @@ if(WITH_TESTS)
         set(SpeechControlApplication_DIR "${CMAKE_BINARY_DIR}/src/app/InstallFiles")
     endif (TARGET speechcontrol-frontend)
 
-    add_custom_target(tests ALL
-        COMMAND "ctest"
-        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/tests"
-        COMMENT "Invoking CTest..")
+    add_custom_target(tests ALL)
 
     ## Variables
     include(CTest)
     enable_testing()
-
-    ## Make test targets for application and daemon.
-    add_test(NAME testapp
-         COMMAND $<TARGET_FILE:speechcontrol-frontend>)
-    add_test(NAME testdaemon
-         COMMAND $<TARGET_FILE:speechcontrol-daemon>)
-
 
     file(READ "template.build" TEST_BUILD_TEMPLATE)
 

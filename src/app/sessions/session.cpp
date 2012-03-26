@@ -52,12 +52,10 @@ Corpus* Session::corpus() const
 void Session::setCorpus (Corpus* corpus)
 {
     if (corpus == NULL)
-        throw std::invalid_argument("Null corpus error.");
+        throw std::invalid_argument ("Null corpus error.");
 
     m_corpus = corpus;
     assessProgress();
-
-//         qDebug() << "[Session::setCorpus()] Null corpus not added.";
 }
 
 Content* Session::content() const
@@ -68,7 +66,7 @@ Content* Session::content() const
 void Session::setContent (Content* p_content)
 {
     if (p_content == NULL)
-        throw std::invalid_argument("Null content error.");
+        throw std::invalid_argument ("Null content error.");
 
     m_content = p_content;
     assessProgress();
@@ -236,7 +234,7 @@ Session* Session::create (const Content* p_content)
 {
     const QStringList lst = p_content->pages().join ("\n").simplified().trimmed().replace (".", ".\n").split ("\n", QString::SkipEmptyParts);
     qDebug() << "[Session::create()] Session has" << lst.length() << "sentences.";
-    const QString id = QUuid::createUuid().toString().split("-")[0].replace("{","");
+    const QString id = QUuid::createUuid().toString().split ("-") [0].replace ("{", "");
     Corpus* corpus = Corpus::create (lst);
 
     if (!corpus) {
@@ -310,11 +308,25 @@ PhraseList Session::incompletedPhrases() const
     if (list.length() > 0)
         qDebug() << "[Phrase::incompletedPhrases()] First up at: " << list.first()->index();
     else {
-        m_elem->namedItem("Date").toElement().setAttribute("completed",QDateTime::currentDateTimeUtc().toString());
-        qDebug() << "[Phrase::incompletedPhrases()] No more phrases detected, setting Session to 'completed' state.";
+        if (! (dateCompleted().isValid() && !dateCompleted().isNull())) {
+            m_elem->namedItem ("Date").toElement().setAttribute ("completed", QDateTime::currentDateTimeUtc().toString());
+            qDebug() << "[Phrase::incompletedPhrases()] No more phrases detected, setting Session to 'completed' state.";
+        } else {
+            qDebug() << "[Phrase::incompletedPhrases()] Completed on " << dateCompleted().toLocalTime();
+        }
     }
 
     return list;
+}
+
+QDateTime Session::dateCompleted() const
+{
+    return QDateTime::fromString (m_elem->namedItem ("Date").toElement().attribute ("completed"));
+}
+
+QDateTime Session::dateCreated() const
+{
+    return QDateTime::fromString (m_elem->namedItem ("Date").toElement().attribute ("created"));
 }
 
 bool Session::isCompleted() const
@@ -366,7 +378,7 @@ QString Session::name() const
 
 Session* Session::clone() const
 {
-    const QString id = QUuid::createUuid().toString().split("-")[0].replace("{","");
+    const QString id = QUuid::createUuid().toString().split ("-") [0].replace ("{", "");
     Corpus* corpus = m_corpus->clone();
     QDomElement elem = m_elem->cloneNode (true).toElement();
     elem.attribute ("id", id);

@@ -22,7 +22,7 @@
 #include "config.hpp"
 #include "plugins.hpp"
 #include "factory.hpp"
-#include "windows/main-window.hpp"
+#include "ui/main-window.hpp"
 #include "ui_main-window.h"
 
 #include <QDebug>

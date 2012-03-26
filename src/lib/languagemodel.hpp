@@ -21,13 +21,16 @@
 #ifndef SPEECHCONTROL_LANGUAGEMODEL_HPP
 #define SPEECHCONTROL_LANGUAGEMODEL_HPP
 
-#include <QObject>
 #include <QDir>
-#include <QUuid>
+#include <QList>
+#include <QObject>
 
 namespace SpeechControl
 {
 
+class LanguageModel;
+
+typedef QList<LanguageModel*> LanguageModelList;
 /**
  * @brief Represents a language model in its programmatic format.
  **/
@@ -37,7 +40,7 @@ class LanguageModel : public QObject
     Q_PROPERTY (QString Path READ path)     ///< The path to the language mode, be it a directory or file.
 
 private:
-    QUuid m_uuid;
+    QString m_path;
 
 public:
     /**
@@ -49,14 +52,9 @@ public:
     /**
      * @brief ...
      *
-     * @param p_uuid ...
+     * @param p_id ...
      **/
-    LanguageModel (const QUuid& p_uuid);
-    /**
-     * @brief ...
-     *
-     **/
-    LanguageModel();
+    LanguageModel (const QString& p_id);
 
     /**
      * @brief ...
@@ -66,27 +64,19 @@ public:
      **/
     static LanguageModel* fromDirectory (const QDir& p_directory);
 
-    /**
-     * @brief ...
-     *
-     * @param p_archiveFile ...
-     * @return LanguageModel*
-     **/
-    static LanguageModel* fromCompressedFile (const QFile* p_archiveFile);
-
-    /**
-     * @brief ...
-     *
-     * @param p_path ...
-     * @return LanguageModel*
-     **/
-    static LanguageModel* fromPath (const QString& p_path);
+    static LanguageModelList allModels();
     /**
      * @brief ...
      *
      * @return QDir
      **/
     QString path() const;
+
+    bool isSystem() const;
+
+    bool isUser() const;
+
+    QString name() const;
     /**
      * @brief ...
      *
@@ -97,4 +87,4 @@ public:
 }
 
 #endif // SPEECHCONTROL_LANGUAGEMODEL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

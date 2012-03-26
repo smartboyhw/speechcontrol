@@ -25,8 +25,8 @@
 #include <QStringList>
 #include <config.hpp>
 #include "plugin.hpp"
-#include <app/desktopcontrol/agent.hpp>
-#include <app/desktopcontrol/command.hpp>
+#include <desktopcontrol/agent.hpp>
+#include <desktopcontrol/command.hpp>
 
 using SpeechControl::DesktopControl::AbstractCommand;
 using SpeechControl::DesktopControl::AbstractCategory;
@@ -106,4 +106,4 @@ private:
 APPLIST_NAMESPACE_END
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

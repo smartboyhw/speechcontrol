@@ -159,6 +159,7 @@ public slots:
 
 private slots:
     void invokeAutoStart();
+    void hookUpSignals();
 };
 
 }

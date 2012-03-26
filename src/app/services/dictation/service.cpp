@@ -71,4 +71,4 @@ Service::~Service()
 
 }
 
-#include "dictation/service.moc"
+#include "services/dictation/service.moc"

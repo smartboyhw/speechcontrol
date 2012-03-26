@@ -146,5 +146,5 @@ void Agent::invokeCommand (const QString& cmd)
 
 }
 }
-#include "desktopcontrol/agent.moc"
+#include "services/desktopcontrol/agent.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

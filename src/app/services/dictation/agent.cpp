@@ -148,5 +148,5 @@ Agent::~Agent()
 }
 }
 
-#include "dictation/agent.moc"
+#include "services/dictation/agent.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -406,6 +406,11 @@ TextContentSource::TextContentSource (QObject* p_parent) : AbstractContentSource
 
 }
 
+TextContentSource::~TextContentSource()
+{
+    
+}
+
 /// @todo Should make a schema for this file and check it against the file.
 bool TextContentSource::setFile (QFile& p_file)
 {
@@ -421,29 +426,39 @@ bool TextContentSource::setFile (QFile& p_file)
         }
     }
 
-    QDomDocument l_dom ("Content");
-    QString l_errMsg;
-    int l_errLn, l_errCol;
+    QDomDocument document ("Content");
+    QString errMsg;
+    int errLn, errCol;
 
-    if (!l_dom.setContent (&p_file, &l_errMsg, &l_errLn, &l_errCol)) {
-        qDebug() << "[TextContentSource::setFile()] Unable to parse content XML:" << l_errMsg << l_errLn << l_errCol;
-        return false;
+    if (!document.setContent (&p_file, &errMsg, &errLn, &errCol)) {
+//         qDebug() << "[TextContentSource::setFile()] Unable to parse content XML:" << errMsg << errLn << errCol;
+//         return false;
+
+        // Not a standard content file - prepare the text.
+        /// @todo (Veles) Port the Python script here.
+        QByteArray rawText = p_file.readAll();
+        QString text (rawText);
+        
+        setText(text);
+        setTitle("Unknown");
+        setAuthor("Unknown");
+    } else {
+        
+        const QDomElement book = document.documentElement().namedItem ("Book").toElement();
+
+        const QString author = book.attribute ("author");
+
+        const QString title = book.attribute ("title");
+
+        const QString text = document.documentElement().namedItem ("Text").toElement().text();
+
+        setText (text);
+
+        setTitle (title);
+
+        setAuthor (author);
     }
-
-    const QDomElement l_book = l_dom.documentElement().namedItem ("Book").toElement();
-
-    const QString l_author = l_book.attribute ("author");
-
-    const QString l_title = l_book.attribute ("title");
-
-    const QString l_text = l_dom.documentElement().namedItem ("Text").toElement().text();
-
-    setText (l_text);
-
-    setTitle (l_title);
-
-    setAuthor (l_author);
-
+    
     return isValid();
 }
 
@@ -469,11 +484,6 @@ bool TextContentSource::setUrl (const QUrl& p_url)
     // Won't be reached.
     qDebug() << "[TextContentSource::setUrl()] Unknown failure.";
     return false;
-}
-
-TextContentSource::~TextContentSource()
-{
-
 }
 
 #include "content.moc"

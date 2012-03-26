@@ -43,6 +43,8 @@ class MicrophoneSelection : public QWizardPage
 public:
     explicit MicrophoneSelection (QWidget* p_parent = 0);
     ~MicrophoneSelection();
+    DeviceAudioSource* device();
+    void setDevice(DeviceAudioSource* p_device);
     virtual void initializePage();
     virtual void cleanupPage();
     virtual bool validatePage();
@@ -54,7 +56,6 @@ private slots:
 
 private:
     Ui::MicrophoneSelection* ui;
-    bool m_complete;
     DeviceAudioSource* m_mic;
 };
 

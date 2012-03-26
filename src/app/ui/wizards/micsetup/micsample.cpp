@@ -19,7 +19,9 @@
  */
 
 #include "micsample.hpp"
+#include "micselect.hpp"
 #include "app/ui/micsetup-wizard.hpp"
+#include <abstractaudiosource.hpp>
 #include "ui_micwizard-sample.h"
 
 using namespace SpeechControl;
@@ -28,7 +30,7 @@ using SpeechControl::Wizards::Pages::MicrophoneSample;
 
 /// @todo The loudness of the content spoken should begin detection here.
 MicrophoneSample::MicrophoneSample (QWidget* parent) :
-    QWizardPage (parent), ui (new Ui::MicrophoneSample), m_sphnx (new MicrophoneSample::Sphinx),
+    QWizardPage (parent), ui (new Ui::MicrophoneSample), m_sphnx (0),
     m_index (0)
 {
     m_prompts << "To divide something is to separate it into its component parts."
@@ -40,8 +42,7 @@ MicrophoneSample::MicrophoneSample (QWidget* parent) :
               ;
     ui->setupUi (this);
     this->setLayout (ui->verticalLayout);
-    connect (m_sphnx, SIGNAL (finished (QString)), this, SLOT (handleReceivedPrompt (QString)));;
-    connect(ui->btnBeginPrompt,SIGNAL(clicked()),this,SLOT(on_btnBeginPrompt_clicked()));
+    connect (ui->btnBeginPrompt, SIGNAL (clicked()), this, SLOT (on_btnBeginPrompt_clicked()));
 }
 
 MicrophoneSample::~MicrophoneSample()
@@ -54,13 +55,18 @@ void MicrophoneSample::on_btnBeginPrompt_clicked()
 {
     m_sphnx->start();
     m_index = 0;
-    ui->btnBeginPrompt->setEnabled(false);
+    ui->btnBeginPrompt->setEnabled (false);
     updateUi();
 }
 
 /// @todo Fill the combo box with all of the mics.
 void SpeechControl::Wizards::Pages::MicrophoneSample::initializePage()
 {
+    Wizards::MicrophoneSetup* wiz = ((Wizards::MicrophoneSetup*) wizard());
+    DeviceAudioSource* device = DeviceAudioSource::obtain(wiz->m_src);
+    qDebug() << "[MicrophoneSample::initializePage()]" << device->humanName() << device->deviceName() << wiz->m_src;
+    m_sphnx = new AudioSourceSphinx ((AbstractAudioSource*) device);
+    connect (m_sphnx, SIGNAL (finished (QString)), this, SLOT (handleReceivedPrompt (QString)));
     ui->lblPrompt->setText (QString::null);
 }
 
@@ -86,8 +92,8 @@ bool MicrophoneSample::isAtFinalPrompt()
 
 void MicrophoneSample::updateUi()
 {
-    if (m_index < m_prompts.length()){
-        ui->lblPrompt->setText(m_prompts[m_index]);
+    if (m_index < m_prompts.length()) {
+        ui->lblPrompt->setText (m_prompts[m_index]);
         m_index++;
     }
 }
@@ -98,8 +104,8 @@ void MicrophoneSample::handleReceivedPrompt (QString p_str)
     qDebug() << "[MicrophoneSample::handleReceivedPrompt()] Prompt was" << m_prompts[m_index]
              << "User said:" << p_str;
 
-    QStringList wordsFound = p_str.split(" ");
-    QStringList wordsHave = m_prompts[m_index].split(" ");
+    QStringList wordsFound = p_str.split (" ");
+    QStringList wordsHave = m_prompts[m_index].split (" ");
     const bool isTheSameSize = wordsHave.length() == wordsFound.length();
 
     /*
@@ -114,37 +120,25 @@ void MicrophoneSample::handleReceivedPrompt (QString p_str)
            Then enact the steps as if they were the same size.
      */
 
-    if (!isTheSameSize){
-        Q_FOREACH(const QString wordFound, wordsFound){
-            if (!wordsHave.contains(wordFound))
-                wordsFound.removeOne(wordFound);
+    if (!isTheSameSize) {
+        Q_FOREACH (const QString wordFound, wordsFound) {
+            if (!wordsHave.contains (wordFound))
+                wordsFound.removeOne (wordFound);
         }
     }
 
     int equivalenceCount = 0;
 
-    Q_FOREACH(const QString wordHave, wordsHave){
-        if (wordsFound.contains(wordHave))
+    Q_FOREACH (const QString wordHave, wordsHave) {
+        if (wordsFound.contains (wordHave))
             equivalenceCount += 1;
     }
 
-    double percentEqual = ((double) equivalenceCount / (double) wordsHave.length());
+    double percentEqual = ( (double) equivalenceCount / (double) wordsHave.length());
     int increment = (100 / m_prompts.length()) * percentEqual;
 
-        qDebug() << "[MicrophoneSample::handleReceivedPrompt()] Accuracy of current phrase: " << (int) (percentEqual * 100) << "%";
-    ui->progressBarRate->setValue(ui->progressBarRate->value() + increment);
-}
-
-void MicrophoneSample::Sphinx::applicationMessage (const QGst::MessagePtr& p_message)
-{
-    QString msgType    = p_message->internalStructure()->name();
-    QString hypothesis = p_message->internalStructure()->value ("hyp").toString();
-    QString uttid      = p_message->internalStructure()->value ("uttid").toString();
-
-    if (msgType == "result") {
-        qDebug() << "[MicrophoneSample::Sphinx::applicationMessage()] Obtained hypothesis" << hypothesis << "from user...";
-        emit finished (hypothesis);
-    }
+    qDebug() << "[MicrophoneSample::handleReceivedPrompt()] Accuracy of current phrase: " << (int) (percentEqual * 100) << "%";
+    ui->progressBarRate->setValue (ui->progressBarRate->value() + increment);
 }
 
 #include "micsample.moc"

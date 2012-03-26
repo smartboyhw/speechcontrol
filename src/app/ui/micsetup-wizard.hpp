@@ -23,6 +23,8 @@
 #define MS_WIZARD_HPP
 
 #include <ui/wizards/base.hpp>
+#include <ui/wizards/micsetup/micselect.hpp>
+#include <ui/wizards/micsetup/micsample.hpp>
 
 namespace SpeechControl
 {
@@ -32,6 +34,9 @@ namespace Wizards
 class MicrophoneSetup : public WizardBase
 {
     Q_OBJECT
+    friend class Pages::MicrophoneSelection;
+    friend class Pages::MicrophoneSample;
+public:
     enum {
         IntroductionPage = 0,
         SelectionPage,
@@ -40,12 +45,14 @@ class MicrophoneSetup : public WizardBase
         ConclusionPage
     };
 
-public:
     explicit MicrophoneSetup (QWidget* parent = 0);
     ~MicrophoneSetup();
 
 public slots:
     virtual void accept();
+
+private:
+    QString m_src;
 
 };
 

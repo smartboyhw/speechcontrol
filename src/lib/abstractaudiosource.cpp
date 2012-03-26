@@ -34,7 +34,7 @@ AbstractAudioSource::AbstractAudioSource (const AbstractAudioSource& p_other) : 
 
 }
 
-AbstractAudioSource::AbstractAudioSource (QObject* parent) : QObject (parent),
+AbstractAudioSource::AbstractAudioSource (QObject* p_parent) : QObject (p_parent),
     m_appSink (new GenericSink), m_binPtr(), m_pipeline(),
     m_sinkPtr(), m_srcPtr(), m_volumePtr(), m_levelPtr()
 {
@@ -248,7 +248,7 @@ void AbstractAudioSource::start()
     m_pipeline->setState (QGst::StatePlaying);
 
     qDebug() << "[AbstractAudioSource::start()] Bin active, recording started.";
-    emit recordingBegun();
+    emit begun();
 }
 
 void AbstractAudioSource::stop()
@@ -268,7 +268,7 @@ void AbstractAudioSource::stop()
     }
 
     qDebug() << "[AbstractAudioSource::start()] Bin inactive, recording stopped.";
-    emit recordingEnded();
+    emit ended();
 }
 
 bool AbstractAudioSource::isActive() const

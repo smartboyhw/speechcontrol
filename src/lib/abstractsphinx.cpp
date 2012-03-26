@@ -279,7 +279,7 @@ AudioSourceSphinx::AudioSourceSphinx (QObject* p_parent) : AbstractSphinx (p_par
 
 }
 
-AudioSourceSphinx::AudioSourceSphinx (AbstractAudioSource* p_source, QObject* p_parent) : AbstractSphinx (p_parent->parent()), m_audioSrc (0), m_appSrc (0)
+AudioSourceSphinx::AudioSourceSphinx (AbstractAudioSource* p_source, QObject* p_parent) : AbstractSphinx (p_parent), m_audioSrc (0), m_appSrc (0)
 {
     setSource (p_source);
 }

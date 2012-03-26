@@ -56,13 +56,8 @@ private slots:
     void on_btnBeginPrompt_clicked();
 
 private:
-    class Sphinx : public AbstractSphinx {
-        friend class MicrophoneSample;
-        virtual void applicationMessage (const QGst::MessagePtr& p_message);
-    };
-
     Ui::MicrophoneSample* ui;
-    Sphinx* m_sphnx;
+    AudioSourceSphinx* m_sphnx;
     int m_index;
     QStringList m_prompts;
 };

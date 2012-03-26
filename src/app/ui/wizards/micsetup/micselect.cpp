@@ -32,7 +32,7 @@ using SpeechControl::Wizards::Pages::MicrophoneSelection;
 /// @todo The loudness of the content spoken should begin detection here.
 MicrophoneSelection::MicrophoneSelection (QWidget* parent) :
     QWizardPage (parent), ui (new Ui::MicrophoneSelection),
-    m_mic (DeviceAudioSource::defaultDevice())
+    m_mic (0)
 {
     ui->setupUi (this);
     this->setLayout (ui->verticalLayout);
@@ -61,8 +61,9 @@ void SpeechControl::Wizards::Pages::MicrophoneSelection::initializePage()
 
 bool SpeechControl::Wizards::Pages::MicrophoneSelection::validatePage()
 {
-    if (m_mic) {
-        wizard()->setProperty ("mic-id", m_mic->deviceName());
+    device()->stop();
+    if (device()) {
+        wizard()->setProperty ("mic-id", device()->deviceName());
     }
 
     return ui->progressBarFeedback->isEnabled();
@@ -70,7 +71,7 @@ bool SpeechControl::Wizards::Pages::MicrophoneSelection::validatePage()
 
 void SpeechControl::Wizards::Pages::MicrophoneSelection::cleanupPage()
 {
-    m_mic->stop();
+    device()->stop();
     ui->comboBoxMicrophones->clear();
     ui->progressBarFeedback->setValue (0);
     ui->progressBarFeedback->setFormat ("inactive");
@@ -78,33 +79,47 @@ void SpeechControl::Wizards::Pages::MicrophoneSelection::cleanupPage()
 
 bool SpeechControl::Wizards::Pages::MicrophoneSelection::isComplete()
 {
-    return m_complete;
+    return device() != 0;
 }
 
 /// @todo Set the device to be detected for volume detection here.
 /// @todo Set this page's value to this field.
 void SpeechControl::Wizards::Pages::MicrophoneSelection::on_comboBoxMicrophones_activated (int index)
 {
-    if (m_mic) {
-        m_mic->stop();
+    if (device()) {
+        device()->stop();
     }
 
-    m_mic = 0;
+    setDevice(0);
 
     const QString deviceName = ui->comboBoxMicrophones->itemData (index).toString();
 
-    m_mic = DeviceAudioSource::obtain (deviceName);
+    setDevice(DeviceAudioSource::obtain (deviceName));
 
-    m_mic->start();
-    connect (m_mic, SIGNAL (bufferObtained (QByteArray)), this, SLOT (on_mic_bufferObtained (QByteArray)));
+    device()->start();
+    connect (device(), SIGNAL (bufferObtained (QByteArray)), this, SLOT (on_mic_bufferObtained (QByteArray)));
 }
 
 void MicrophoneSelection::on_mic_bufferObtained (QByteArray p_buffer)
 {
     quint16 max = pow (2, 16) - 1;
-    quint16 val = p_buffer.at (0);
+    quint16 val = p_buffer.toUInt();
     double progress = (double) val / (double) max;
+    qDebug() << p_buffer.toUInt();
     ui->progressBarFeedback->setValue (progress * 100);
+}
+
+DeviceAudioSource* MicrophoneSelection::device()
+{
+    return m_mic;
+}
+
+void MicrophoneSelection::setDevice (DeviceAudioSource* p_device)
+{
+    m_mic = p_device;
+    if (p_device){
+        ((Wizards::MicrophoneSetup*)wizard())->m_src = m_mic->deviceName();
+    }
 }
 
 #include "micselect.moc"

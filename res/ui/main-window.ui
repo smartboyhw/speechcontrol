@@ -15,7 +15,7 @@
    <string>SpeechControl</string>
   </property>
   <property name="windowIcon">
-   <iconset>
+   <iconset resource="../res.qrc">
     <normaloff>:/logo/sc</normaloff>:/logo/sc</iconset>
   </property>
   <property name="statusTip">
@@ -142,7 +142,7 @@
         </property>
         <layout class="QGridLayout" name="gridLayoutServices">
          <item row="0" column="1">
-          <widget class="QPushButton" name="pushButton">
+          <widget class="QPushButton" name="btnAllServices">
            <property name="text">
             <string>All Services...</string>
            </property>

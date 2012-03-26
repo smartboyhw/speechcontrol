@@ -37,7 +37,7 @@ set(SPCHCNTRL_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/share/cmake/SpeechControl")
 set(SPCHCNTRL_CMAKE_INSTALL_DIR "${CMAKE_MODULE_PATH}")
 set(SPCHCNTRL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
 set(SPCHCNTRL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
-set(SPCHCNTRL_SBIN_DIR "${CMAKE_INSTALL_PREFIX}/sbin")
+set(SPCHCNTRL_DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/speechcontrol")
 set(SPCHCNTRL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include/speechcontrol")
 set(SPCHCNTRL_INCLUDE_DIRS ${QT_INCLUDE_DIR}
     ${SPCHCNTRL_INCLUDE_DIR}
@@ -56,15 +56,12 @@ set(SPCHCNTRL_COMPILE_FLAGS "${QTGSTREAMER_FLAGS} -feliminate-unused-debug-symbo
 set(SPCHCNTRL_COMPILE_FLAGS_DEBUG "-Wall -Wextra -Wabi -Wctor-dtor-privacy -Wformat -Wunused")
 set(SPCHCNTRL_COMPILE_DEFINITIONS ${QT_DEFINITIONS})
 set(SPCHCNTRL_QRESC "${CMAKE_SOURCE_DIR}/res/res.qrc")
-
-set(SPHINXTRAIN_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/include/sphinxtrain")
-set(SPHINXTRAIN_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib")
-set(SPHINXTRAIN_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin")
 file(GLOB SPCHCNTRL_UI "res/ui/*.ui")
 
 ## The subdirectories, order's vital here.
 add_subdirectory(res)
 add_subdirectory(src)
+add_subdirectory(cmake)
 
 if(WITH_TESTS)
     add_subdirectory(tests)
@@ -73,5 +70,3 @@ endif()
 if(WITH_DOCS)
     add_subdirectory(doc)
 endif()
-
-add_subdirectory(cmake)

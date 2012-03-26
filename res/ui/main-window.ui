@@ -15,7 +15,7 @@
    <string>SpeechControl</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../res.qrc">
+   <iconset>
     <normaloff>:/logo/sc</normaloff>:/logo/sc</iconset>
   </property>
   <property name="statusTip">

@@ -359,8 +359,10 @@ Session::Backup* Session::createBackup() const
 
 void Session::setName (const QString& p_name)
 {
-    if (!p_name.isEmpty() && !p_name.isEmpty())
+    if (!p_name.isEmpty() && !p_name.isEmpty()){
         m_elem->setAttribute ("Name", p_name);
+        save();
+    }
 }
 
 QString Session::name() const

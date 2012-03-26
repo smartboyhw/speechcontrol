@@ -408,7 +408,7 @@ TextContentSource::TextContentSource (QObject* p_parent) : AbstractContentSource
 
 TextContentSource::~TextContentSource()
 {
-    
+
 }
 
 /// @todo Should make a schema for this file and check it against the file.
@@ -431,19 +431,16 @@ bool TextContentSource::setFile (QFile& p_file)
     int errLn, errCol;
 
     if (!document.setContent (&p_file, &errMsg, &errLn, &errCol)) {
-//         qDebug() << "[TextContentSource::setFile()] Unable to parse content XML:" << errMsg << errLn << errCol;
-//         return false;
-
         // Not a standard content file - prepare the text.
         /// @todo (Veles) Port the Python script here.
         QByteArray rawText = p_file.readAll();
         QString text (rawText);
-        
+
         setText(text);
-        setTitle("Unknown");
-        setAuthor("Unknown");
+        setTitle("Unknown Title");
+        setAuthor("Unknown Author");
     } else {
-        
+
         const QDomElement book = document.documentElement().namedItem ("Book").toElement();
 
         const QString author = book.attribute ("author");
@@ -458,7 +455,7 @@ bool TextContentSource::setFile (QFile& p_file)
 
         setAuthor (author);
     }
-    
+
     return isValid();
 }
 

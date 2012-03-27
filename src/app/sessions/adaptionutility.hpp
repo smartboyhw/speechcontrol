@@ -55,7 +55,7 @@ public:
         PhaseUndefined = -1,            ///< Represents an undefined Phase.
 
         PhaseInitialized,               ///< Represents the initialized phase of the AdaptationUtility.
-                                        ///  No real activity has taken place as of yet.
+        ///  No real activity has taken place as of yet.
 
         PhaseCopyAcousticModels,        ///< Represents the phase that of which the copying of the
                                         ///  base acoustic model to its new, cloned location occurs.
@@ -159,6 +159,17 @@ signals:
      * @param p_phase The phase that ended.
      **/
     void phaseEnded (const Phases& p_phase);
+
+    /**
+     * @brief Emitted when the AdaptionUtility has begun.
+     *
+     **/
+    void startedAdapting();
+
+    /**
+     * @brief Emitted when the AdaptionUtility has ended.
+     **/
+    void endedAdapting();
 
 private slots:
     void on_mPrcss_finished (const int& p_exitCode, QProcess::ExitStatus p_exitStatus);

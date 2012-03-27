@@ -72,6 +72,9 @@ AcousticModel* AdaptationUtility::adapt()
     if (!m_session || !m_modelBase)
         return 0;
 
+    if (m_prcss)
+        delete m_prcss;
+
     // set up the process.
     m_prcss = new QProcess (this);
     connect (m_prcss, SIGNAL (finished (int, QProcess::ExitStatus)), this, SLOT (on_mPrcss_finished (int, QProcess::ExitStatus)));
@@ -123,7 +126,7 @@ void AdaptationUtility::advanceNextPhase()
         break;
 
     case PhaseCompleteAdaption:
-        changePhase(PhaseDeinitialized);
+        changePhase (PhaseDeinitialized);
         break;
 
     case PhaseDeinitialized:
@@ -185,12 +188,14 @@ void AdaptationUtility::cleanupPhase (const Phases& phase = PhaseUndefined)
 
 void AdaptationUtility::completeAdaptation()
 {
-    changePhase(PhaseCompleteAdaption);
+    changePhase (PhaseCompleteAdaption);
+    advanceNextPhase();
 }
 
 void AdaptationUtility::haltPhasing()
 {
     changePhase (PhaseDeinitialized);
+    advanceNextPhase();
 }
 
 void AdaptationUtility::on_mPrcss_finished (const int& p_exitCode, QProcess::ExitStatus p_exitStatus)
@@ -219,14 +224,16 @@ AdaptationUtility::Phases AdaptationUtility::currentPhase()
 
 void AdaptationUtility::changePhase (const Phases& p_phase)
 {
-    if (m_phase != PhaseUndefined) {
-        emit phaseEnded (p_phase);
-        m_phase = PhaseUndefined;
-    }
+    emit phaseEnded (m_phase);
 
     m_phase = p_phase;
     qDebug() << "[AdaptationUtility::changePhase()] Set to phase" << obtainPhaseText (m_phase);
-    emit phaseStarted (p_phase);
+    emit phaseStarted (m_phase);
+
+    if (m_phase == PhaseCopyAcousticModels)
+        emit startedAdapting();
+    else if (m_phase == PhaseCompleteAdaption)
+        emit endedAdapting();
 }
 
 QString AdaptationUtility::obtainPhaseText (const Phases& p_phase) const

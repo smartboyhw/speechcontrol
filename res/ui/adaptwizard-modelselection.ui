@@ -25,10 +25,27 @@
      <x>4</x>
      <y>4</y>
      <width>445</width>
-     <height>257</height>
+     <height>261</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
+    <item row="2" column="1" rowspan="2" colspan="3">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QCheckBox" name="checkBoxNoiseDictionary">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Base acoustic model has noise dictionary</string>
+        </property>
+        <property name="checkable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
     <item row="0" column="0" colspan="5">
      <widget class="QLabel" name="labelStatus">
       <property name="minimumSize">
@@ -44,14 +61,14 @@
        </size>
       </property>
       <property name="text">
-       <string>Select a model that'd be used for the base of adaption.</string>
+       <string>Select the model you'd like to use for the basis of adaption.</string>
       </property>
       <property name="wordWrap">
        <bool>true</bool>
       </property>
      </widget>
     </item>
-    <item row="1" column="0" rowspan="2">
+    <item row="1" column="0" rowspan="3">
      <spacer name="horizontalSpacer">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -67,7 +84,7 @@
       </property>
      </spacer>
     </item>
-    <item row="1" column="4" rowspan="2">
+    <item row="1" column="4" rowspan="3">
      <spacer name="horizontalSpacer_2">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -92,33 +109,9 @@
        </sizepolicy>
       </property>
       <property name="text">
-       <string>Model:</string>
+       <string>Base Model:</string>
       </property>
      </widget>
-    </item>
-    <item row="2" column="1" colspan="3">
-     <layout class="QFormLayout" name="formLayout">
-      <property name="formAlignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-      <item row="0" column="0">
-       <widget class="QLabel" name="noiseDictionaryLabel">
-        <property name="text">
-         <string>Has Noise Dictionary</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QCheckBox" name="checkBoxNoiseDictionary">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     </layout>
     </item>
     <item row="1" column="2" colspan="2">
      <widget class="QComboBox" name="comboBoxModel">

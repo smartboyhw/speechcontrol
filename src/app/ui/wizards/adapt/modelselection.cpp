@@ -45,41 +45,37 @@ AcousticModel* ModelSelection::model()
 
 void ModelSelection::initializePage()
 {
-    ui->comboBoxModel->clear();
+    fillModelsForComboBox (ui->comboBoxModel);
+}
 
+void ModelSelection::fillModelsForComboBox (QComboBox* p_comboBox)
+{
+    p_comboBox->clear();
     AcousticModelList models = AcousticModel::allModels();
-    bool hasOnlyUserLocal = false;
-    bool hasOnlySystemLocal = false;
+    QStringList paths;
 
     Q_FOREACH (const AcousticModel * model, models) {
-        const bool isUserLocal = model->path().contains (QDir::homePath());
+        paths << model->path();
 
         if (!model->path().endsWith ("/.")) {
+            const bool isUserLocal = model->path().contains(QDir::homePath());
             const QString name = QString ("(") +
                                  QString (isUserLocal ? "user-specific" : "system-wide") +
                                  QString (") ") +
                                  QDir (model->path()).dirName();
-
-            qDebug() << model->path();
-            ui->comboBoxModel->addItem (name, model->path());
+            p_comboBox->addItem (name, model->path());
         }
-
-        if (isUserLocal && !hasOnlyUserLocal && !hasOnlySystemLocal)
-            hasOnlyUserLocal = true;
-
-        if (!isUserLocal && !hasOnlySystemLocal && !hasOnlyUserLocal)
-            hasOnlySystemLocal = true;
     }
 
-    if (hasOnlySystemLocal) {
-        ui->labelStatus->setText (tr ("Select a model that'd be used for the base of adaption.<br/>"
-                                      "<i>You only have system distributed models on your computer.</i>"
-                                     ));
-    }
-    else if (hasOnlyUserLocal) {
-        ui->labelStatus->setText (tr ("Select a model that'd be used for the base of adaption.<br/>"
-                                      "<i>You only have models that you've created on your computer.</i>"
-                                     ));
+    if (p_comboBox == ui->comboBoxModel) {
+        QRegExp regex (QDir::homePath() + "/*", Qt::CaseInsensitive, QRegExp::Wildcard);
+        qDebug() << regex;
+
+        if (paths.indexOf (regex) == -1) {
+            ui->labelStatus->setText (tr ("Select a model that'd be used for the base of adaption.<br/>"
+                                          "<i>You only have system distributed models on your computer.</i>"
+                                         ));
+        }
     }
 }
 
@@ -87,7 +83,6 @@ void ModelSelection::cleanupPage()
 {
     ui->comboBoxModel->clear();
 }
-
 
 bool ModelSelection::isComplete() const
 {
@@ -99,7 +94,7 @@ void ModelSelection::on_comboBoxModel_currentIndexChanged (const int index)
     QString path = ui->comboBoxModel->itemData (index).toString();
     m_model = new AcousticModel (path);
     const bool hasNoiseDictionary = m_model->noiseDictionary() != 0 && m_model->noiseDictionary()->isValid();
-    ui->checkBoxNoiseDictionary->setChecked(hasNoiseDictionary);
+    ui->checkBoxNoiseDictionary->setChecked (hasNoiseDictionary);
 }
 
 ModelSelection::~ModelSelection()

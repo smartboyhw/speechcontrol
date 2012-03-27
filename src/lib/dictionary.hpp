@@ -28,6 +28,7 @@
 #include <QObject>
 #include <QDateTime>
 
+#include <config.hpp>
 #include <export.hpp>
 
 class QUrl;

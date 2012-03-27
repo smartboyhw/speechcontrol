@@ -26,6 +26,8 @@
 #include <QObject>
 #include <QString>
 
+#include <config.hpp>
+
 namespace SpeechControl
 {
 class NoiseDictionary;

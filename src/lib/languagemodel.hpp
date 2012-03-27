@@ -25,6 +25,8 @@
 #include <QList>
 #include <QObject>
 
+#include <config.hpp>
+
 namespace SpeechControl
 {
 

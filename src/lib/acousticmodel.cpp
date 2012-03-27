@@ -252,9 +252,12 @@ AcousticModelList AcousticModel::allModels()
     // First, find the models imported by Sphinx. They're all stored under weird
     // folder names in MODELDIR.
 
-    QDir baseModelDir (POCKETSPHINX_MODELDIR);
-    baseModelDir.cd ("hmm");
-    QStringList dirs = findAllAcousticModels (baseModelDir);
+    QDir systemModelDir (POCKETSPHINX_MODELDIR);
+    QDir userModelDir (QDir::homePath() + "/.config/speechcontrol/models");
+    systemModelDir.cd ("hmm");
+
+    QStringList dirs = findAllAcousticModels (systemModelDir);
+    dirs.append (findAllAcousticModels(userModelDir));
 
     // Alright, we got the folders. Now, just build AcousticModel objects with it.
     AcousticModelList list;

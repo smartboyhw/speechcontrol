@@ -142,6 +142,12 @@ void Main::closeEvent (QCloseEvent* p_closeEvent)
 void Main::open()
 {
     if (DeviceAudioSource::allDevices().empty()) {
+        Indicator::presentMessage (tr ("No Microphone Found"),
+                                   tr ("No microphones were founds on your system."),
+                                   2000,
+                                   new Indicator::Message ("NoMicrophoneFound")
+                                  );
+
         QErrorMessage* l_msg = new QErrorMessage (this);
         l_msg->setModal (true);
         l_msg->setWindowTitle (tr ("No Microphones Found"));
@@ -175,30 +181,48 @@ void Main::setStatusMessage (const QString& p_message , const int p_timeout)
 
 void Main::desktopControlStateChanged()
 {
+    QString msg;
+
     switch (DesktopControl::Agent::instance()->state()) {
     case AbstractAgent::ActivityState::Enabled:
-        setStatusMessage (tr ("Desktop control activated."));
+        msg = tr ("Desktop control activated.");
         break;
-    case AbstractAgent::ActivityState::Disabled:
-        setStatusMessage (tr ("Desktop control deactivated."));
-        break;
+
     default:
+    case AbstractAgent::ActivityState::Disabled:
+        msg = tr ("Desktop control deactivated.");
         break;
     }
+
+    Indicator::presentMessage (tr ("Desktop Control State Changed"),
+                               msg,
+                               2000,
+                               new Indicator::Message ("DesktopControlStateChanged")
+                              );
+    setStatusMessage (msg);
 }
 
 void Main::dictationStateChanged()
 {
+    QString msg;
+
     switch (Dictation::Agent::instance()->state()) {
     case AbstractAgent::ActivityState::Enabled:
-        setStatusMessage (tr ("Dictation activated."));
+        msg = tr ("Dictation activated.");
         break;
-    case AbstractAgent::ActivityState::Disabled:
-        setStatusMessage (tr ("Dictation deactivated."));
-        break;
+
     default:
+    case AbstractAgent::ActivityState::Disabled:
+        msg = tr ("Dictation deactivated.");
         break;
     }
+
+    Indicator::presentMessage (tr ("Dictation State Changed"),
+                               msg,
+                               2000,
+                               new Indicator::Message ("DictationStateChanged")
+                              );
+    setStatusMessage (msg);
 }
 
 void Main::updateUi()
@@ -245,7 +269,7 @@ void Main::updateServiceListing()
         QListWidgetItem* item = new QListWidgetItem (widget);
         item->setText (module->name());
         item->setCheckState (module->isActive() ? Qt::Checked : Qt::Unchecked);
-        item->setHidden(!module->isEnabled());
+        item->setHidden (!module->isEnabled());
         item->setIcon (module->pixmap());
         item->setData (Qt::UserRole, module->id());
         widget->addItem (item);
@@ -280,7 +304,7 @@ void Main::setProgress (const double p_progress)
 
 void Main::on_btnAllServices_clicked()
 {
-    Settings::displayPane("srvcs");
+    Settings::displayPane ("srvcs");
     updateUi();
 }
 

@@ -80,6 +80,7 @@ void Indicator::Message::setEnabled (const bool& p_isEnabled)
 bool Indicator::Message::exists (const QString& p_keyName)
 {
     QVariant msgObj = Core::configuration ("Notifications/" + p_keyName);
+    qDebug() << "[Indicator::Message::exists()] Exists 'Notifications/" << p_keyName.toStdString().c_str() << "' ?" << msgObj.isValid();
     return (msgObj.isValid());
 }
 

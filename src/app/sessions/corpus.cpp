@@ -386,7 +386,8 @@ QFile* Corpus::fileIds() const
     return fileIds;
 }
 
-QFile* Corpus::transcription (const QString& p_silencePrefix, const QString& p_silenceSuffix) const
+QFile* Corpus::transcription (QString const& p_silencePrefix,
+                              QString const& p_silenceSuffix) const
 {
     QFile* transcription = new QFile (getPath (m_id) + "/transcription");
 

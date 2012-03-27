@@ -97,10 +97,10 @@ public:
 
     /**
      * @brief Generates a new, generic corpus from a list of strings.
-     * @param p_list The list of strings ( as a @c QStringList ) to be used.
+     * @param p_text The list of strings ( as a @c QStringList ) to be used.
      * @return A pointer to the generated @c Corpus .
      */
-    static Corpus* create (const QStringList& p_list);
+    static Corpus* create (const QStringList& p_text);
 
     /**
      * @brief Obtains a listing of all of the corpuses.
@@ -193,8 +193,18 @@ public:
      */
     bool isValid() const;
 
-    QFile* transcription (const QString& p_silencePrefix, const QString& p_silenceSuffix) const;
+    /**
+     * @brief Generates a transcription with the accompanying suffix and prefix for silence.
+     *
+     * @param p_silencePrefix The prefix for silence (Defaults to < s >).
+     * @param p_silenceSuffix The suffix for silence (Default to < /s >)
+     **/
+    QFile* transcription (QString const& p_silencePrefix = "<s>",
+                          QString const& p_silenceSuffix = "</s>") const;
 
+    /**
+     * @brief Generates a file ids file of all of the audio sources.
+     **/
     QFile* fileIds() const;
 
     /**

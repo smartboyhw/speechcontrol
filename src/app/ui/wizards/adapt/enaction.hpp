@@ -22,6 +22,7 @@
 
 #include <QWizardPage>
 #include <app/sessions/adaptionutility.hpp>
+#include <sessions/session.hpp>
 
 namespace Ui
 {
@@ -48,15 +49,22 @@ public:
     virtual void cleanupPage();
     virtual bool isComplete() const;
 
+public slots:
+    void on_mUtility_phaseStarted (const Phases& p_phase);
+    void on_mUtility_phaseEnded (const Phases& p_phase);
+    void on_mUtility_endedAdapting();
+    void on_mUtility_startedAdapting();
+
 private slots:
     void on_btnAdapt_clicked();
 
 private:
+    void invokeAdaption (Session* p_session);
     Ui::Enaction* ui;
     AdaptationUtility* m_utility;
-public slots:
-    void on_mUtility_phaseStarted (const Phases& p_phase);
-    void on_mUtility_phaseEnded (const Phases& p_phase);
+    SessionList m_sessions;
+    AcousticModel* m_model;
+
 };
 
 }

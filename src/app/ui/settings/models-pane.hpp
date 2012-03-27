@@ -52,6 +52,13 @@ protected:
     void updateUi();
     void changeEvent (QEvent* e);
 
+private slots:
+    void on_comboBoxAcousticModelView_currentIndexChanged(const int p_index);
+    void on_comboBoxLanguageModelView_currentIndexChanged(const int p_index);
+    void on_btnAdaptDelete_clicked();
+    void on_btnAdaptAcoustic_clicked();
+    void on_btnLanguageDelete_clicked();
+
 private:
     Ui::ModelSettingsPane* m_ui;
 };

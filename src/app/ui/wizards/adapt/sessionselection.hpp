@@ -21,6 +21,7 @@
 #define ADAPT_SESSIONSELECTION_HPP
 
 #include <QWizardPage>
+#include <sessions/session.hpp>
 
 namespace Ui
 {
@@ -42,20 +43,20 @@ class SessionSelection : public QWizardPage
 
 public:
     explicit SessionSelection (QWidget* parent = 0);
-    Session* session();
     virtual ~SessionSelection();
     virtual void initializePage();
     virtual void cleanupPage();
-    virtual bool isComplete() const;
-    Session* session() const;
+    virtual bool validatePage();
+    SessionList sessions() const;
     void setSession (Session* p_session);
+    void setSessions(SessionList p_sessionList);
 
 private slots:
-    void on_comboBoxSession_currentIndexChanged(const int index);
+    void on_listWidgetSession_itemSelectionChanged();
 
 private:
     Ui::SessionSelection* ui;
-    Session* m_session;
+    SessionList m_listSession;
 };
 
 }

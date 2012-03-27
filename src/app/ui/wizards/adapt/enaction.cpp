@@ -24,6 +24,7 @@
 #include "ui/adapt-wizard.hpp"
 #include "sessions/adaptionutility.hpp"
 #include "ui_adaptwizard-enaction.h"
+#include <QMessageBox>
 
 using namespace SpeechControl;
 using namespace SpeechControl::Wizards::Pages;
@@ -46,47 +47,71 @@ void Enaction::initalizePage()
 void Enaction::cleanupPage()
 {
     ui->progressBarStatus->setFormat (QString::null);
+    ui->progressBarOverall->setFormat (QString::null);
     ui->progressBarStatus->setValue (0);
+    ui->progressBarOverall->setValue (0);
     ui->lblStatus->setText (QString::null);
-    ui->btnAdapt->setEnabled(true);
+    ui->btnAdapt->setEnabled (true);
 }
 
 void Enaction::on_btnAdapt_clicked()
 {
     ui->btnAdapt->setEnabled (false);
 
-    Session* session = 0;
-    AcousticModel* model = 0;
-
     SessionSelection* sessionPage = (SessionSelection*) wizard()->page (Wizards::AdaptWizard::SessionSelectionPage);
     ModelSelection* modelPage = (ModelSelection*) wizard()->page (Wizards::AdaptWizard::ModelSelectionPage);
 
-    session = sessionPage->session();
-    model = modelPage->model();
+    m_sessions = sessionPage->sessions();
+    m_model = modelPage->model();
 
-    m_utility = new AdaptationUtility (session, model);
+    ui->progressBarOverall->setRange (0, m_sessions.length() * 2);
+    ui->progressBarOverall->setValue (0);
+
+    invokeAdaption (m_sessions.first());
+}
+
+void Enaction::invokeAdaption (Session* p_session)
+{
+    m_utility = new AdaptationUtility (p_session, m_model);
     connect (m_utility, SIGNAL (phaseStarted (Phases)), this, SLOT (on_mUtility_phaseStarted (Phases)));
     connect (m_utility, SIGNAL (phaseEnded (Phases)), this, SLOT (on_mUtility_phaseEnded (Phases)));
+    connect (m_utility, SIGNAL (endedAdapting()), this, SLOT (on_mUtility_endedAdapting()));
+    connect (m_utility, SIGNAL (startedAdapting()), this, SLOT (on_mUtility_startedAdapting()));
     m_utility->adapt();
+    m_model = m_utility->resultingModel();
+}
+
+void Enaction::on_mUtility_endedAdapting()
+{
+    ui->progressBarOverall->setFormat ("%p%: Adapted using session '" + m_utility->session()->name() + "'");
+    ui->progressBarOverall->setValue (ui->progressBarOverall->value() + 1);
+
+    if (m_utility->session() != m_sessions.last())
+        invokeAdaption(m_sessions.at(m_sessions.indexOf(m_utility->session()) + 1));
+}
+
+void Enaction::on_mUtility_startedAdapting()
+{
+    ui->progressBarOverall->setFormat ("%p%: Adapting using session '" + m_utility->session()->name() + "'");
+    ui->progressBarOverall->setValue (ui->progressBarOverall->value() + 1);
 }
 
 void Enaction::on_mUtility_phaseEnded (const Phases& p_phase)
 {
-    ui->progressBarStatus->setFormat ("Ended phase " + m_utility->obtainPhaseText(p_phase) + "(" + QString::number((int) p_phase) + ")");
+    ui->progressBarStatus->setFormat ("Ended phase " + m_utility->obtainPhaseText (p_phase) + "...");
+    emit completeChanged();
 }
 
 void Enaction::on_mUtility_phaseStarted (const Phases& p_phase)
 {
-    ui->progressBarStatus->setFormat ("Started phase " + m_utility->obtainPhaseText(p_phase) + "(" + QString::number((int) p_phase) + ")");
-    ui->progressBarStatus->setValue((int) p_phase);
-
-    if (p_phase == Phases::PhaseCompleteAdaption)
-        this->wizard()->next();
+    ui->progressBarStatus->setFormat ("Started phase " + m_utility->obtainPhaseText (p_phase) + "...");
+    ui->progressBarOverall->setFormat ("%p%: Adapting using session '" + m_utility->session()->name() + "'");
+    ui->progressBarStatus->setValue ( (int) p_phase);
 }
 
 bool Enaction::isComplete() const
 {
-    return m_utility && m_utility->currentPhase() == Phases::PhaseCompleteAdaption;
+    return m_utility && m_utility->currentPhase() == Phases::PhaseCompleteAdaption && m_utility->session() == m_sessions.last();
 }
 
 Enaction::~Enaction()

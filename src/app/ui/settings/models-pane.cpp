@@ -19,9 +19,11 @@
  */
 
 #include "models-pane.hpp"
+#include <ui/adapt-wizard.hpp>
 #include <lib/acousticmodel.hpp>
 #include <lib/languagemodel.hpp>
 #include "ui_settingspane-model.h"
+#include <QMessageBox>
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
@@ -31,9 +33,9 @@ ModelSettingsPane::ModelSettingsPane() :
 {
     qDebug() << "[ModelSettingsPane::{constructor}] Building models settings pane...";
     m_ui->setupUi (this);
-    this->setLayout(m_ui->gridLayout);
-    m_ui->tabLanguage->setLayout(m_ui->gridLayoutLanguage);
-    m_ui->tabAcoustic->setLayout(m_ui->gridLayoutAcoustic);
+    this->setLayout (m_ui->gridLayout);
+    m_ui->tabLanguage->setLayout (m_ui->gridLayoutLanguage);
+    m_ui->tabAcoustic->setLayout (m_ui->gridLayoutAcoustic);
     updateUi();
     qDebug() << "[ModelSettingsPane::{constructor}] Built models settings pane.";
 }
@@ -87,10 +89,21 @@ void ModelSettingsPane::updateAcousticTab()
     AcousticModelList models = AcousticModel::allModels();
     widget->clear();
 
-    Q_FOREACH(const AcousticModel* model, models){
-        QListWidgetItem* item = new QListWidgetItem(widget);
-        item->setText(model->name());
-        widget->addItem(item);
+    const uint index = m_ui->comboBoxAcousticModelView->currentIndex();
+    const bool showAll = index == 0;
+    const bool showUser = index == 1;
+    const bool showSystem = index == 2;
+
+    Q_FOREACH (const AcousticModel * model, models) {
+        if (model->isSystem() && ! (showSystem || showAll))
+            continue;
+        else if (model->isUser() && ! (showUser || showAll))
+            continue;
+
+        QListWidgetItem* item = new QListWidgetItem (widget);
+        item->setText (model->name());
+        item->setData (Qt::UserRole, model->path());
+        widget->addItem (item);
     }
 }
 
@@ -100,11 +113,84 @@ void ModelSettingsPane::updateLanguageTab()
     LanguageModelList models = LanguageModel::allModels();
     widget->clear();
 
-    Q_FOREACH(const LanguageModel* model, models){
-        QListWidgetItem* item = new QListWidgetItem(widget);
-        item->setText(model->name());
-        widget->addItem(item);
+    const uint index = m_ui->comboBoxLanguageModelView->currentIndex();
+    const bool showAll = index == 0;
+    const bool showUser = index == 1;
+    const bool showSystem = index == 2;
+
+    Q_FOREACH (const LanguageModel * model, models) {
+        if (model->isSystem() && ! (showSystem || showAll))
+            continue;
+        else if (model->isUser() && ! (showUser || showAll))
+            continue;
+
+        QListWidgetItem* item = new QListWidgetItem (widget);
+        item->setText (model->name());
+        item->setData (Qt::UserRole, model->path());
+        widget->addItem (item);
     }
+}
+
+void ModelSettingsPane::on_btnAdaptAcoustic_clicked()
+{
+    Wizards::AdaptWizard* wiz = new Wizards::AdaptWizard (this->window());
+    wiz->exec();
+}
+
+void ModelSettingsPane::on_btnAdaptDelete_clicked()
+{
+    QListWidgetItem* item = m_ui->listWidgetAcoustic->currentItem();
+
+    if (item) {
+        QString path = item->data (Qt::UserRole).toString();
+        AcousticModel* model = new AcousticModel (path);
+
+        if (model->isSystem()) {
+            QMessageBox::warning (this, tr ("Cannot Remove Model"),
+                                  tr ("SpeechControl is unable to delete system models.")
+                                 );
+            return;
+        }
+
+        if (QMessageBox::Yes == QMessageBox::question (this, tr ("Confirm Acoustic Model Deletion"),
+                tr ("Are you sure you want to delete %1? There's no un-doing this action.").arg (model->name())
+                , QMessageBox::Yes | QMessageBox::No)) {
+            model->erase();
+        }
+    }
+}
+
+void ModelSettingsPane::on_btnLanguageDelete_clicked()
+{
+    QListWidgetItem* item = m_ui->listWidgetAcoustic->currentItem();
+
+    if (item) {
+        QString path = item->data (Qt::UserRole).toString();
+        LanguageModel* model = LanguageModel::fromDirectory (path);
+
+        if (model->isSystem()) {
+            QMessageBox::warning (this, tr ("Cannot Remove Model"),
+                                  tr ("SpeechControl is unable to delete system models.")
+                                 );
+            return;
+        }
+
+        if (QMessageBox::Yes == QMessageBox::question (this, tr ("Confirm Acoustic Model Deletion"),
+                tr ("Are you sure you want to delete %1? There's no un-doing this action.").arg (model->name())
+                , QMessageBox::Yes | QMessageBox::No)) {
+            model->erase();
+        }
+    }
+}
+
+void ModelSettingsPane::on_comboBoxAcousticModelView_currentIndexChanged (const int p_index)
+{
+    updateAcousticTab();
+}
+
+void ModelSettingsPane::on_comboBoxLanguageModelView_currentIndexChanged (const int p_index)
+{
+    updateLanguageTab();
 }
 
 #include "models-pane.moc"

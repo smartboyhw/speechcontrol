@@ -32,58 +32,79 @@ using SpeechControl::Wizards::Pages::SessionSelection;
 
 SessionSelection::SessionSelection (QWidget* parent) :
     QWizardPage (parent),
-    ui (new Ui::SessionSelection), m_session (0)
+    ui (new Ui::SessionSelection)
 {
     ui->setupUi (this);
     this->setLayout (ui->gridLayout);
 }
 
-Session* SessionSelection::session()
+void SessionSelection::setSessions (SessionList p_sessionList)
 {
-    return m_session;
+    m_listSession = p_sessionList;
 }
 
 void SessionSelection::initializePage()
 {
     SessionList sessions = Session::allSessions();
+    QListWidget* widget = ui->listWidgetSession;
 
-    Q_FOREACH (const Session * session, sessions) {
+    Q_FOREACH (Session * session, sessions) {
         if (session->isCompleted()) {
             const QString name = session->name();
-            ui->comboBoxSession->addItem (name, session->id());
+            QListWidgetItem* item = new QListWidgetItem (name, widget);
+            item->setData (Qt::UserRole, session->id());
+            item->setSelected (m_listSession.contains (session));
         }
     }
 }
 
 void SessionSelection::cleanupPage()
 {
-    ui->comboBoxSession->clear();
+    ui->listWidgetSession->clear();
+    ui->lineEditUniqueWordCount->clear();
 }
 
-bool SessionSelection::isComplete() const
+bool SessionSelection::validatePage()
 {
-    return (m_session != 0);
+    if (!m_listSession.isEmpty())
+        this->setSubTitle("<b><font color=red>Please select at least one session for adapting.</font></b>");
+
+    return !m_listSession.isEmpty();
 }
 
-void SessionSelection::on_comboBoxSession_currentIndexChanged (const int index)
+void SessionSelection::on_listWidgetSession_itemSelectionChanged ()
 {
-    QString path = ui->comboBoxSession->itemData (index).toString();
-    m_session = Session::obtain (path);
+    QList<QListWidgetItem*> items = ui->listWidgetSession->selectedItems();
+    m_listSession.clear();
 
-    if (m_session->content())
-        ui->lineEditUniqueWordCount->setText (QString::number (m_session->content()->uniqueWords()));
-    else
-        ui->lineEditUniqueWordCount->setText ("unknown; missing content");
+    if (items.isEmpty()) {
+        ui->lineEditUniqueWordCount->setText ("no sessions selected");
+    }
+    else {
+        uint count = 0;
+        Q_FOREACH (QListWidgetItem * item, items) {
+            const QString id = item->data (Qt::UserRole).toString();
+            const Session* session = Session::obtain (id);
+
+            if (session->content()) {
+                count += session->content()->uniqueWords();
+            }
+
+            m_listSession << Session::obtain(id);
+        }
+        ui->lineEditUniqueWordCount->setText (QString::number (count));
+    }
 }
 
-Session* SessionSelection::session() const
+SessionList SessionSelection::sessions() const
 {
-    return m_session;
+    return m_listSession;
 }
 
 void SessionSelection::setSession (Session* p_session)
 {
-    m_session = p_session;
+    if (!m_listSession.contains (p_session))
+        m_listSession.append (p_session);
 }
 
 SessionSelection::~SessionSelection()

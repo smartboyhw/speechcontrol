@@ -32,7 +32,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidgetModels">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tabAcoustic">
        <attribute name="title">
@@ -48,17 +48,7 @@
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayoutAcoustic">
-         <item row="0" column="2">
-          <widget class="QPushButton" name="btnAdaptAcoustic">
-           <property name="text">
-            <string>Adapt</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="0" colspan="3">
-          <widget class="QListWidget" name="listWidgetAcoustic"/>
-         </item>
-         <item row="0" column="0">
+         <item row="0" column="1">
           <spacer name="horizontalSpacer">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -71,12 +61,47 @@
            </property>
           </spacer>
          </item>
-         <item row="0" column="1">
+         <item row="0" column="3">
+          <widget class="QPushButton" name="btnAdaptAcoustic">
+           <property name="text">
+            <string>Adapt</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
           <widget class="QPushButton" name="btnAdaptDelete">
            <property name="text">
             <string>Delete</string>
            </property>
           </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QComboBox" name="comboBoxAcousticModelView">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <item>
+            <property name="text">
+             <string>Show all models</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Show only your models</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Show only system models</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="4">
+          <widget class="QListWidget" name="listWidgetAcoustic"/>
          </item>
         </layout>
        </widget>
@@ -95,17 +120,14 @@
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayoutLanguage">
-         <item row="0" column="1">
+         <item row="0" column="2">
           <widget class="QPushButton" name="btnLanguageDelete">
            <property name="text">
             <string>Adapt</string>
            </property>
           </widget>
          </item>
-         <item row="1" column="0" colspan="2">
-          <widget class="QListWidget" name="listWidgetLanguage"/>
-         </item>
-         <item row="0" column="0">
+         <item row="0" column="1">
           <spacer name="horizontalSpacer_4">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -117,6 +139,34 @@
             </size>
            </property>
           </spacer>
+         </item>
+         <item row="0" column="0">
+          <widget class="QComboBox" name="comboBoxLanguageModelView">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <item>
+            <property name="text">
+             <string>Show all models</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Show only your models</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>Show only system models</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+         <item row="1" column="0" colspan="3">
+          <widget class="QListWidget" name="listWidgetLanguage"/>
          </item>
         </layout>
        </widget>

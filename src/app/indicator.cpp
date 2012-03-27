@@ -187,12 +187,12 @@ void Indicator::showMainWindow()
 }
 
 /// @todo Add an enumeration that allows the callee to specify the kind of message icon they'd  want to appear.
-void Indicator::presentMessage (const QString& p_title, const QString& p_message, const int& p_timeout, const Indicator::Message& p_messageIndicator)
+void Indicator::presentMessage (const QString& p_title, const QString& p_message, const int& p_timeout, const Indicator::Message* p_messageIndicator)
 {
-    if (!Indicator::Message::exists (p_messageIndicator.key()))
-        Indicator::Message::create (p_messageIndicator.key(), p_message, true);
+    if (!Indicator::Message::exists (p_messageIndicator->key()))
+        Indicator::Message::create (p_messageIndicator->key(), p_message, true);
 
-    if (p_messageIndicator.enabled())
+    if (p_messageIndicator->enabled())
         instance()->m_icon->showMessage (p_title, p_message, QSystemTrayIcon::Information, p_timeout);
 }
 

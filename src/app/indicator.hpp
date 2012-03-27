@@ -86,7 +86,7 @@ public:
      * @param p_message The message to present to the user.
      * @param p_timeout How long should be the message be displayed for.
      **/
-    static void presentMessage (const QString& p_title, const QString& p_message = QString::null, const int& p_timeout = 3000, const Message& p_messageIndicator = Message());
+    static void presentMessage (const QString& p_title, const QString& p_message = QString::null, const int& p_timeout = 3000, const Indicator::Message* p_messageIndicator = new Indicator::Message());
 
     /**
      * @brief Determines whether or not the Indicator's icon is visible.

@@ -125,29 +125,35 @@ void Agent::setDefaultAcousticModel (AcousticModel* acModel)
     Core::setConfiguration ("DesktopControl/DefaultAcousticModel", acModel->path());
 }
 
-/// @todo Since this returns more than one command, should we provide a UI that allows you to pick which command you might want?
 void Agent::invokeCommand (const QString& cmd)
 {
     qDebug() << "[DesktopControl::Agent::invokeCommand()] I heard " << cmd << "from the user.";
-    AbstractCategory* l_glbl = AbstractCategory::global();
-    CommandList l_cmds = l_glbl->matchAllCommands (cmd);
+    AbstractCategory* glbl = AbstractCategory::global();
+    CommandList cmds = glbl->matchAllCommands (cmd);
 
-    if (!l_cmds.isEmpty()) {
-        Q_FOREACH (AbstractCommand * l_cmd, l_cmds) {
-            qDebug() << "[DesktopControl::Agent::invokeCommand()] Command " << l_cmd->id() << "matched with statements" << l_cmd->statements();
-
-            if (l_cmd == l_cmds.first()) {
-                qDebug() << "[DesktopControl::Agent::invokeCommand()] Only invoking first command " << l_cmd->id();
-                l_cmd->invoke (cmd);
-            }
+    if (!cmds.isEmpty()) {
+        if (cmds.count() == 1) {
+            AbstractCommand* onlyCmd = cmds.first();
+            emit commandFound (cmd, onlyCmd);
+            onlyCmd->invoke (cmd);
         }
+        else {
+            emit multipleCommandsFound (cmd, cmds);
+        }
+
+        Q_FOREACH (AbstractCommand * cmd, cmds) {
+            qDebug() << "[DesktopControl::Agent::invokeCommand()] Command " << cmd->id() << "matched with statements" << cmd->statements();
+        }
+
     }
     else {
+        emit noCommandsFound (cmd);
         qDebug() << "[DesktopControl::Agent::invokeCommand()] I heard mumble-gumble, nothing useful. Tell me something I want to hear!";
     }
 }
 
 }
 }
+
 #include "services/desktopcontrol/agent.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -30,6 +30,7 @@
 #include <app/abstractagent.hpp>
 #include <app/macros.hpp>
 #include "sphinx.hpp"
+#include "command.hpp"
 
 namespace SpeechControl
 {
@@ -64,6 +65,11 @@ private:
     virtual ActivityState onStateChanged (const AbstractAgent::ActivityState p_state);
     Sphinx* m_sphinx;
 
+signals:
+    void multipleCommandsFound(QString const& p_text, CommandList p_commands);
+    void commandFound(QString const& p_text, AbstractCommand* p_command);
+    void noCommandsFound(QString const& p_text);
+
 public:
     /**
      * @brief Destructor
@@ -83,21 +89,21 @@ public:
      * @return TRUE if it has been enabled, FALSE if it's disabled.
      **/
     bool isEnabled();
-    
+
     /**
      * @brief Set an acoustic model to use.
-     * 
+     *
      * @param acModel An AcousticModel instance to use.
      */
-    void setAcousticModel(AcousticModel* acModel);
-    
+    void setAcousticModel (AcousticModel* acModel);
+
     /**
      * @brief Set the default acoustic model.
-     * 
+     *
      * @param acModel An AcousticModel instance to use.
      */
-    void setDefaultAcousticModel(AcousticModel* acModel);
-    
+    void setDefaultAcousticModel (AcousticModel* acModel);
+
     void start();
     void stop();
 
@@ -119,4 +125,4 @@ public slots:
 }
 
 #endif // DESKTOPCONTROL_AGENT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

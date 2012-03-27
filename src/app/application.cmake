@@ -28,7 +28,6 @@ include_directories(${SPCHCNTRL_APP_BUILD_INCLUDE_DIRS})
 add_executable(speechcontrol-frontend ${SPCHCNTRL_APP_SCPP})
 set_target_properties(speechcontrol-frontend PROPERTIES
     DEFINE_SYMBOL "SPCHCNTRL_APP"
-    COMPILE_DEFINITIONS "${SPCHCNTRL_APP_COMPILE_DEFINITIONS}"
     COMPILE_FLAGS "${SPCHCNTRL_APP_COMPILE_FLAGS}"
     PROJECT_LABEL "SpeechControl")
 add_dependencies(speechcontrol-frontend speechcontrol)

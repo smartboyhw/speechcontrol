@@ -24,6 +24,7 @@
 #include <QObject>
 #include <QVariant>
 
+#include <config.hpp>
 #include <export.hpp>
 
 class QFile;

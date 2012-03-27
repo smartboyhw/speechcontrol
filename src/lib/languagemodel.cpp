@@ -101,6 +101,14 @@ LanguageModelList LanguageModel::allModels()
     return list;
 }
 
+void LanguageModel::erase()
+{
+    if (isUser()){
+        QDir dir(m_path);
+        dir.rmpath(".");
+    }
+}
+
 LanguageModel::~LanguageModel()
 {
 

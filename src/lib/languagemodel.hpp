@@ -87,6 +87,7 @@ public:
      * @brief Destructor.
      **/
     virtual ~LanguageModel();
+    void erase();
 };
 
 }

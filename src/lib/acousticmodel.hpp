@@ -167,6 +167,7 @@ public:
     QFile* modelDefinitions() const;
     QFile* mixtureWeights();
     QFile* senDump();
+    void erase();
 };
 
 /**

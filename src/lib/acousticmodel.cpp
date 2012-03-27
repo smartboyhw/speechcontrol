@@ -268,5 +268,13 @@ AcousticModelList AcousticModel::allModels()
     return list;
 }
 
+void AcousticModel::erase()
+{
+    if (isUser()){
+        QDir dir(m_path);
+        dir.rmpath(".");
+    }
+}
+
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
 #include "acousticmodel.moc"

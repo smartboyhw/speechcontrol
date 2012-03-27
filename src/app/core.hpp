@@ -47,18 +47,11 @@ class Main;
  **/
 class Core : public QObject
 {
+    friend class Windows::Main;
+
     Q_OBJECT
     Q_DISABLE_COPY (Core)
     SC_SINGLETON (Core)
-
-    friend class Windows::Main;
-
-private:
-    /// @note It this pointer needed? Every piece of code can just use QApplication::instance() to get the instance...
-    QApplication* m_app;    /// Holds the Application instance.
-    Windows::Main* m_mw;    /// Holds the main window.
-    QSettings* m_settings;  /// Holds the application's global configuration.
-    QTranslator* m_trnsltr; /// Holds the translating agent.
 
 public:
     /**
@@ -160,6 +153,12 @@ public slots:
 private slots:
     void invokeAutoStart();
     void hookUpSignals();
+
+private:
+    QApplication* m_app;    ///< Holds the Application instance.
+    Windows::Main* m_mw;    ///< Holds the main window.
+    QSettings* m_settings;  ///< Holds the application's global configuration.
+    QTranslator* m_trnsltr; ///< Holds the translating agent.
 };
 
 }

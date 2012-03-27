@@ -38,6 +38,66 @@ using SpeechControl::Core;
 
 Indicator* Indicator::s_inst = 0;
 
+Indicator::Message::Message (const QString& p_keyName) : m_key (p_keyName)
+{
+
+}
+
+QString Indicator::Message::description() const
+{
+    if (Indicator::Message::exists (m_key)) {
+        QVariantMap map = Indicator::Message::objectData (m_key);
+        return map.value ("description").toString();
+    }
+
+    return QString::null;
+}
+
+bool Indicator::Message::enabled() const
+{
+    if (Indicator::Message::exists (m_key)) {
+        QVariantMap map = Indicator::Message::objectData (m_key);
+        return map.value ("enabled").toBool();
+    }
+
+    return true;
+}
+
+QString Indicator::Message::key() const
+{
+    return m_key;
+}
+
+void Indicator::Message::setEnabled (const bool& p_isEnabled)
+{
+    if (Indicator::Message::exists (m_key)) {
+        QVariantMap map = Indicator::Message::objectData (m_key);
+        map.insert ("enabled", p_isEnabled);
+        Core::setConfiguration ("Notifications/" + m_key, map);
+    }
+}
+
+bool Indicator::Message::exists (const QString& p_keyName)
+{
+    QVariant msgObj = Core::configuration ("Notifications/" + p_keyName);
+    return (msgObj.isValid());
+}
+
+Indicator::Message* Indicator::Message::create (const QString& p_keyName, const QString& p_keyDescription, const bool& p_isEnabled)
+{
+    QVariantMap map;
+    map.insert ("description", p_keyDescription);
+    map.insert ("enabled", p_isEnabled);
+
+    Core::setConfiguration ("Notifications/" + p_keyName, map);
+    return new Message (p_keyName);
+}
+
+QVariantMap Indicator::Message::objectData (const QString& p_keyName)
+{
+    return Core::configuration ("Notifications/" + p_keyName).toMap();
+}
+
 /// @todo Check for a configuration value to determine whether or not the indicator should be shown on initialization.
 Indicator::Indicator () : QObject (Core::instance()),
     m_icon (0)
@@ -51,16 +111,16 @@ Indicator::Indicator () : QObject (Core::instance()),
 void Indicator::on_mIcon_activated (QSystemTrayIcon::ActivationReason p_reason)
 {
     switch (p_reason) {
-        case QSystemTrayIcon::Trigger:
-            Core::mainWindow()->isVisible() ? Core::mainWindow()->hide() : Core::mainWindow()->show();
-            break;
+    case QSystemTrayIcon::Trigger:
+        Core::mainWindow()->isVisible() ? Core::mainWindow()->hide() : Core::mainWindow()->show();
+        break;
 
-        case QSystemTrayIcon::DoubleClick:
-        case QSystemTrayIcon::MiddleClick:
-        case QSystemTrayIcon::Context:
-        case QSystemTrayIcon::Unknown:
-        default:
-            break;
+    case QSystemTrayIcon::DoubleClick:
+    case QSystemTrayIcon::MiddleClick:
+    case QSystemTrayIcon::Context:
+    case QSystemTrayIcon::Unknown:
+    default:
+        break;
     }
 }
 
@@ -127,9 +187,13 @@ void Indicator::showMainWindow()
 }
 
 /// @todo Add an enumeration that allows the callee to specify the kind of message icon they'd  want to appear.
-void Indicator::presentMessage (const QString& p_title, const QString& p_message, const int& p_timeout)
+void Indicator::presentMessage (const QString& p_title, const QString& p_message, const int& p_timeout, const Indicator::Message& p_messageIndicator)
 {
-    instance()->m_icon->showMessage (p_title, p_message, QSystemTrayIcon::Information, p_timeout);
+    if (!Indicator::Message::exists (p_messageIndicator.key()))
+        Indicator::Message::create (p_messageIndicator.key(), p_message, true);
+
+    if (p_messageIndicator.enabled())
+        instance()->m_icon->showMessage (p_title, p_message, QSystemTrayIcon::Information, p_timeout);
 }
 
 bool Indicator::isVisible()

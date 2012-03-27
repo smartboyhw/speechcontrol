@@ -23,7 +23,9 @@
 
 #include <QObject>
 #include <QString>
+#include <QVariantMap>
 #include <QSystemTrayIcon>
+
 #include "macros.hpp"
 
 class QImage;
@@ -44,6 +46,25 @@ class Indicator : public QObject
     SC_SINGLETON (Indicator)
 
 public:
+
+    class Message
+    {
+    public:
+        Message (QString const& p_keyName = QString::null);
+        QString description() const;
+        QString key() const;
+        bool enabled() const;
+        void setEnabled (bool const& p_isEnabled);
+
+        static bool exists (QString const& p_keyName);
+        static Message* create (QString const& p_keyName, QString const& p_keyDescription, bool const& p_isEnabled);
+
+    private:
+        QString m_key;
+        static QVariantMap objectData(const QString& p_keyName);
+
+    };
+
     /**
      * @brief Destructor.
      **/
@@ -61,9 +82,11 @@ public:
 
     /**
      * @brief Raises a new message to the system.
+     * @param p_title The title of the message to present to the user.
      * @param p_message The message to present to the user.
+     * @param p_timeout How long should be the message be displayed for.
      **/
-    static void presentMessage (const QString& p_title, const QString& p_message = QString::null, const int& p_timeout = 3000);
+    static void presentMessage (const QString& p_title, const QString& p_message = QString::null, const int& p_timeout = 3000, const Message& p_messageIndicator = Message());
 
     /**
      * @brief Determines whether or not the Indicator's icon is visible.

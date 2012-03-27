@@ -294,7 +294,7 @@ void AdaptationUtility::copyAcousticModel()
 /*
  * <http://cmusphinx.sourceforge.net/wiki/tutorialadapt#generating_acoustic_feature_files>
  *
- * In order to run the adaptation tools, you must generate a set of acoustic
+ * In order to run the adaption tools, you must generate a set of acoustic
  * model feature files (AMFF) from these WAV audio recordings. This can be done
  * with the sphinx_fe tool from SphinxBase. It is imperative that you make sure
  * you are using the same acoustic parameters to extract these features as were
@@ -374,7 +374,7 @@ void AdaptationUtility::convertModelDefinitions()
 }
 
 /*
- * The next step in adaptation is to collect statistics from the adaptation data.
+ * The next step in adaption is to collect statistics from the adaption data.
  * This is done using the bw program from SphinxTrain.
  * Copy it to the working directory along with the map_adapt and mk_s2sendump
  * programs from the same directory. Now, to collect statistics, run:
@@ -431,17 +431,17 @@ void AdaptationUtility::collectAcousticStatistics()
 /*
  * Okay, this is a two-fold process here. According to a post on CMUSphinx's forums,
  * PocketSphinx can handle continuous models. If that's the case, then we can
- * use MLLR-style adaptations. Otherwise, MAP's the only right way.
+ * use MLLR-style adaptions. Otherwise, MAP's the only right way.
  *
  *
  * Creating transformation with MLLR
  * ----------------------------------
  * MLLR transforms are supported by pocketsphinx and sphinx4. MLLR is a cheap
- * adaptation method that is suitable when amount of data is limited.
- * It's a good idea to use MLLR for online adaptation. MLLR works best for
+ * adaption method that is suitable when amount of data is limited.
+ * It's a good idea to use MLLR for online adaption. MLLR works best for
  * continuous model. It's effect for semi-continuous models is very limited
  * since semi-continuous models mostly relies on mixture weights. If you want
- * best accuracy you can combine MLLR adaptation with MAP adaptation.
+ * best accuracy you can combine MLLR adaption with MAP adaption.
  *
  * Next we will generate an MLLR transformation which we will pass to the decoder
  * to adapt the acoustic model at run-time. This is done with the mllr_solve program:
@@ -451,20 +451,20 @@ void AdaptationUtility::collectAcousticStatistics()
             -outmllrfn mllr_matrix
             -accumdir . \
 
- * This command will create an adaptation data file called mllr_matrix.
+ * This command will create an adaption data file called mllr_matrix.
  * Now, if you wish to decode with the adapted model,
  * simply add -mllr mllr_matrix (or whatever the path to the mllr_matrix file
  * you created is) to your pocketsphinx command line.
  *
  * Updating the acoustic model files with MAP
  * ------------------------------------------
- * MAP is different adaptation method. In this case unlike for MLLR we don't
+ * MAP is different adaption method. In this case unlike for MLLR we don't
  * create a generic transform but update each parameter in the model. We will
  * now copy the acoustic model directory and overwrite the newly created
  * directory with adapted model files:
   cp -a hub4wsj_sc_8k hub4wsj_sc_8kadapt
  *
- * To do adaptation, use the map_adapt program:
+ * To do adaption, use the map_adapt program:
     map_adapt \
     -meanfn hub4wsj_sc_8k/means \
     -varfn hub4wsj_sc_8k/variances \
@@ -520,7 +520,7 @@ void AdaptationUtility::generateSendmap()
 
 /*
  * And for all of the jazz at:
- * http://cmusphinx.sourceforge.net/wiki/tutorialadapt#testing_the_adaptation
+ * http://cmusphinx.sourceforge.net/wiki/tutorialadapt#testing_the_adaption
  */
 void AdaptationUtility::generateAccuracyReport()
 {

@@ -30,16 +30,7 @@ set(SPCHCNTRL_LIB_BUILD_COMPILE_DEFINITIONS "")
 
 ## Test if we're going to make Python bindings.
 if(WITH_PYTHON_BINDINGS)
-    message(STATUS "Python bindings for libspeechcontrol enabled.")
-    find_package(PythonLibs 2.7 REQUIRED)
-    find_package(Boost 1.46 COMPONENTS python REQUIRED)
-
-    if (Boost_FOUND AND PYTHONLIBS_FOUND)
-        list(APPEND SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS ${Boost_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS})
-        list(APPEND SPCHCNTRL_LIB_LIBRARIES ${Boost_LIBRARIES} ${PYTHON_LIBRARIES})
-        list(APPEND SPCHCNTRL_LIB_COMPILE_DEFINITIONS BOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
-        list(APPEND SPCHCNTRL_LIB_BUILD_COMPILE_DEFINITIONS WITH_PYTHON_BINDINGS)
-    endif (Boost_FOUND AND PYTHONLIBS_FOUND)
+    message(STATUS "Python bindings for libspeechcontrol enabled; but not yet implemented.")
 else(WITH_PYTHON_BINDINGS)
     message(STATUS "Python bindings for libspeechcontrol disabled.")
 endif(WITH_PYTHON_BINDINGS)

@@ -19,8 +19,9 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef DESKTOPASR_HPP
-#define DESKTOPASR_HPP
+#ifndef DICTATIONASR_HPP
+#define DICTATIONASR_HPP
+
 
 #include <lib/abstractsphinx.hpp>
 
@@ -75,5 +76,5 @@ public slots:
 }
 }
 
-#endif // DESKTOPASR_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#endif // DICTATIONASR_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

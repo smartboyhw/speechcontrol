@@ -64,7 +64,6 @@ include_directories(${SPCHCNTRL_APP_BUILD_INCLUDE_DIRS}
 # Some important definitions.
 add_definitions(${SPCHCNTRL_APP_COMPILE_DEFINITIONS} -DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED)
 list(APPEND QT_DEFINITIONS "-DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED")
-## END Bug 46: Fails to build on Debian Sid.
 
 ## Add sub-directories.
 add_subdirectory(cmake)

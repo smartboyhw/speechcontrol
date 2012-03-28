@@ -19,9 +19,12 @@
  */
 
 #include <QtTest/QtTest>
-#include "corpus_test.h"
+
+#include <app/sessions/content.hpp>
 #include <app/sessions/corpus.hpp>
 #include <app/sessions/phrase.hpp>
+
+#include "corpus_test.h"
 
 using namespace SpeechControl;
 
@@ -40,6 +43,21 @@ void TestCorpus::initTestCase()
 void TestCorpus::generateCorpus()
 {
     m_crps = Corpus::create (s_strlist);
+}
+
+void TestCorpus::benchmarkCreateCorpus()
+{
+    TextContentSource* src = new TextContentSource (this);
+    qDebug() << TESTDATA;
+    src->setFile (new QFile (TESTDATA));
+    Content* cntt = src->generate();
+    QStringList pages = cntt->pages();
+    Corpus* corp = 0;
+
+    QBENCHMARK {
+        corp = Corpus::create (pages);
+        corp->erase();
+    }
 }
 
 void TestCorpus::createCorpus()

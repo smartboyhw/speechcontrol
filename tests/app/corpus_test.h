@@ -42,6 +42,7 @@ private slots:
     void cleanupTestCase();
     void createCorpus();
     void countPhrases();
+    void benchmarkCreateCorpus();
 };
 
 #endif

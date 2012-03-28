@@ -46,32 +46,31 @@ QuickStart::QuickStart (QWidget* parent) :
     setPage (QuickStart::MicrophoneCreationPage,
              (new Wizards::Pages::MicrophoneSelection));
     setPage (QuickStart::ConclusionPage,
-             NULL);
+             (new Wizards::Pages::ConclusionPage(tr("You've successfully set up SpeechControl to settings of your preference."))));
 }
 
 /// @todo The user's country could be automatically detected by QLocale.
 void QuickStart::accept()
 {
-    Core* l_core = Core::instance();
-    QVariantMap l_language;
-    QString l_gender;
+    Core* core = Core::instance();
+    QVariantMap language;
+    QString gender;
 
-    l_language["Spoken"] = field ("language-spoken");
-    l_language["Native"] = field ("language-native");
+    language["Spoken"] = field ("language-spoken");
+    language["Native"] = field ("language-native");
 
     if (field ("is-gender-male").toBool()) {
-        l_gender = "Male";
+        gender = "Male";
     }
     else {
-        l_gender = "Female";
+        gender = "Female";
     }
 
-    l_core->setConfiguration ("User/Gender", l_gender);
-    l_core->setConfiguration ("User/Language", l_language);
-    l_core->setConfiguration ("User/Age", property ("age"));
-    l_core->setConfiguration ("User/Country", property ("country"));
-
-    l_core->setConfiguration ("Microphone/Default", property ("mic-id"));
+    core->setConfiguration ("User/Gender", gender);
+    core->setConfiguration ("User/Language", language);
+    core->setConfiguration ("User/Age", property ("age"));
+    core->setConfiguration ("User/Country", property ("country"));
+    core->setConfiguration ("Microphone/Default", property ("mic-id"));
 
     this->QDialog::accept();
 }
@@ -81,4 +80,4 @@ QuickStart::~QuickStart()
 }
 
 #include "quickstart-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

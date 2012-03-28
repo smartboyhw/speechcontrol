@@ -52,21 +52,21 @@ void Dictionary::load (const QString& p_id)
 /// @todo The words should be separated by any non-alphanumeric symbol.
 Dictionary* Dictionary::create (QStringList p_wordlist, QString p_id)
 {
-    QFile* fileDictionary = new QFile(getPath(p_id));
-    fileDictionary->open(QIODevice::WriteOnly | QIODevice::Text);
-    QTextStream strm(fileDictionary);
+    QFile* fileDictionary = new QFile (getPath (p_id));
+    fileDictionary->open (QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream strm (fileDictionary);
 
-    Q_FOREACH(const QString& word, p_wordlist){
+    Q_FOREACH (const QString & word, p_wordlist) {
         QString phonemes;
         QString wordUpper = word.toUpper();
-        wordUpper = wordUpper.replace(QRegExp("\.\.+"),".");
+        wordUpper = wordUpper.replace (QRegExp ("\.\.+"), ".");
         wordUpper = wordUpper.trimmed().simplified();
         strm << wordUpper << "\t" << wordUpper << endl;
     }
 
     fileDictionary->close();
 
-    return Dictionary::obtain(p_id);
+    return Dictionary::obtain (p_id);
 }
 
 void Dictionary::load (QFile* p_device)
@@ -81,17 +81,23 @@ void Dictionary::load (QFile* p_device)
         return;
     }
 
-    QTextStream l_strm (m_device);
+    QTextStream strm (m_device);
 
-    while (!l_strm.atEnd()) {
-        const QString l_line = l_strm.readLine();
-        const QStringList l_tokens = l_line.split ("\t", QString::SkipEmptyParts);
-        addEntry (new DictionaryEntry (this, l_tokens[0], l_tokens[1]));
+    while (!strm.atEnd()) {
+        const QString line = strm.readLine();
+
+        if (!line.isEmpty() && !line.isNull() && line.length() >= 3) {
+            QStringList tokens = line.split ("\t", QString::SkipEmptyParts);
+            tokens.removeAll("\t");
+            const QString word = tokens.at (0);
+            const QString phoneme = tokens.at (1);
+            addEntry (new DictionaryEntry (this, word, phoneme));
+        }
     }
 
     m_device->close();
 
-    qDebug() << "[Dictionary::load()]"<< m_words.size() << "words found in this dictionary.";
+    qDebug() << "[Dictionary::load()]" << m_words.size() << "words found in this dictionary.";
 }
 
 

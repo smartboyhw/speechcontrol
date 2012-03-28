@@ -167,6 +167,7 @@ public:
 
 private:
     static QString getPath (const QUuid&);
+    static ContentList findAllContents (QString p_path);
     void parseText (const QString& p_text);
     static ContentMap s_lst;
     QStringList m_pages;

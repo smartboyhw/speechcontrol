@@ -28,8 +28,6 @@
 #include <QTextStream>
 #include <QUrl>
 
-#define CHUNK_SIZE 250
-
 using SpeechControl::Core;
 using SpeechControl::Content;
 using SpeechControl::ContentList;
@@ -140,7 +138,7 @@ void Content::parseText (const QString& p_text)
     uint l_count = 0;
 
     Q_FOREACH (const QChar l_chr, p_text) {
-        if (l_count == CHUNK_SIZE) {
+        if (l_count == CONTENT_CHUNK_SIZE) {
             if (l_chr.isLetterOrNumber()) {
                 l_count -= 1;
             }
@@ -253,7 +251,15 @@ QUuid Content::id() const
 ContentList Content::allContents()
 {
     ContentList lst;
-    QDir dir (Core::configurationPath().path() + "/contents/");
+    lst.append(findAllContents(Core::configurationPath().path() + "/contents/"));
+    lst.append(findAllContents(SPCHCNTRL_SYSTEM_CONTENT_DIR));
+
+    return lst;
+}
+
+ContentList Content::findAllContents(QString p_path){
+    ContentList lst;
+    QDir dir (p_path);
     dir.setFilter (QDir::Files);
     QStringList results = dir.entryList (QStringList() << "*");
 

@@ -33,5 +33,13 @@
 /// @see Factory
 #define SPCHCNTRL_PLUGINS_SPEC_DIR "@SPCHCNTRL_PLUGINS_SPEC_INSTALL_DIR@"
 
+/// Provides the location to the pre-packaged Content files.
+/// @see Content
+#define SPCHCNTRL_SYSTEM_CONTENT_DIR "@SPCHCNTRL_DATA_CONTENT_DIR@"
+
+/// Defines the default size of chunking Content, in a count of characters.
+/// @see Content
+#define CONTENT_CHUNK_SIZE 250
+
 #endif
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

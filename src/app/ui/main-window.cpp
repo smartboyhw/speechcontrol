@@ -184,12 +184,12 @@ void Main::desktopControlStateChanged()
     QString msg;
 
     switch (DesktopControl::Agent::instance()->state()) {
-    case AbstractAgent::ActivityState::Enabled:
+    case AbstractAgent::Enabled:
         msg = tr ("Desktop control activated.");
         break;
 
     default:
-    case AbstractAgent::ActivityState::Disabled:
+    case AbstractAgent::Disabled:
         msg = tr ("Desktop control deactivated.");
         break;
     }
@@ -207,12 +207,12 @@ void Main::dictationStateChanged()
     QString msg;
 
     switch (Dictation::Agent::instance()->state()) {
-    case AbstractAgent::ActivityState::Enabled:
+    case AbstractAgent::Enabled:
         msg = tr ("Dictation activated.");
         break;
 
     default:
-    case AbstractAgent::ActivityState::Disabled:
+    case AbstractAgent::Disabled:
         msg = tr ("Dictation deactivated.");
         break;
     }

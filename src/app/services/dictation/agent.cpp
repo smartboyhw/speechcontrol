@@ -23,10 +23,8 @@
 #include "xdo.hpp"
 #include "sphinx.hpp"
 
-namespace SpeechControl
-{
-namespace Dictation
-{
+using namespace SpeechControl;
+using namespace SpeechControl::Dictation;
 
 Agent* Agent::s_inst = 0;
 
@@ -46,13 +44,13 @@ AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::Activit
 
         if (!m_sphinx->start()) {
             qWarning() << "[Dictation::Agent::onStateChanged()] Start unsuccessful.";
-            return ActivityState::Disabled;
+            return AbstractAgent::Disabled;
         }
         else {
             qDebug() << "[Dictation::Agent::onStateChanged()] Enabled.";
         }
 
-        return ActivityState::Enabled;
+        return AbstractAgent::Enabled;
         break;
 
     case Disabled:
@@ -70,12 +68,12 @@ AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::Activit
         break;
     }
 
-    return ActivityState::Undefined;
+    return AbstractAgent::Undefined;
 }
 
 bool Agent::isActive() const
 {
-    return state() == ActivityState::Enabled;
+    return state() == AbstractAgent::Enabled;
 }
 
 bool Agent::isEnabled() const
@@ -124,10 +122,10 @@ void Agent::handleText (const QString& p_text)
     if (isSafetyModeEnabled()) {
         if (p_text == startWord || p_text == endWord) {
             if (p_text == startWord) {
-                m_mode = SafetyMode::Active;
+                m_mode = Agent::Active;
             }
             else if (p_text == endWord) {
-                m_mode = SafetyMode::Inactive;
+                m_mode = Agent::Inactive;
             }
         }
         else {
@@ -145,8 +143,6 @@ Agent::~Agent()
 {
 }
 
-}
-}
 
 #include "services/dictation/agent.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

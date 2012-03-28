@@ -31,13 +31,13 @@ class Enaction;
 
 namespace SpeechControl
 {
-
 namespace Wizards
 {
 namespace Pages
 {
 
 typedef SpeechControl::AdaptationUtility::Phases Phases;
+
 class Enaction : public QWizardPage
 {
     Q_OBJECT

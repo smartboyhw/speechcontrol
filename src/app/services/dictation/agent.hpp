@@ -24,7 +24,7 @@
 #include <QUuid>
 #include <QObject>
 
-#include "abstractagent.hpp"
+#include <app/abstractagent.hpp>
 #include <app/macros.hpp>
 
 namespace SpeechControl

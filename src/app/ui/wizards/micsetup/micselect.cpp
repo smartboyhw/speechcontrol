@@ -56,12 +56,13 @@ void SpeechControl::Wizards::Pages::MicrophoneSelection::initializePage()
         }
     }
 
-    on_comboBoxMicrophones_activated(ui->comboBoxMicrophones->currentIndex());
+    on_comboBoxMicrophones_activated (ui->comboBoxMicrophones->currentIndex());
 }
 
 bool SpeechControl::Wizards::Pages::MicrophoneSelection::validatePage()
 {
     device()->stop();
+
     if (device()) {
         wizard()->setProperty ("mic-id", device()->deviceName());
     }
@@ -90,11 +91,11 @@ void SpeechControl::Wizards::Pages::MicrophoneSelection::on_comboBoxMicrophones_
         device()->stop();
     }
 
-    setDevice(0);
+    setDevice (0);
 
     const QString deviceName = ui->comboBoxMicrophones->itemData (index).toString();
 
-    setDevice(DeviceAudioSource::obtain (deviceName));
+    setDevice (DeviceAudioSource::obtain (deviceName));
 
     device()->start();
     connect (device(), SIGNAL (bufferObtained (QByteArray)), this, SLOT (on_mic_bufferObtained (QByteArray)));
@@ -117,8 +118,14 @@ DeviceAudioSource* MicrophoneSelection::device()
 void MicrophoneSelection::setDevice (DeviceAudioSource* p_device)
 {
     m_mic = p_device;
-    if (p_device){
-        ((Wizards::MicrophoneSetup*)wizard())->m_src = m_mic->deviceName();
+
+    if (p_device) {
+        Wizards::MicrophoneSetup* wiz = ( (Wizards::MicrophoneSetup*) wizard());
+
+        if (wiz)
+            wiz->m_src = m_mic->deviceName();
+
+        wizard()->setField ("mic-id", m_mic->deviceName());
     }
 }
 

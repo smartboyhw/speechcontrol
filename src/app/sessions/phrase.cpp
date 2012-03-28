@@ -38,7 +38,6 @@ Phrase* Phrase::create (Corpus* p_corpus, const QString& p_text)
     elem->setAttribute ("index", p_corpus->phrases().count());
     elem->setAttribute ("text", p_text);
     p_corpus->m_dom->documentElement().namedItem ("Phrases").appendChild (*elem);
-    qDebug() << p_corpus->m_dom->toString();
     return p_corpus->addPhrase (new Phrase (p_corpus, elem));
 }
 

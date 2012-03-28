@@ -18,7 +18,6 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "config.hpp"
 #include "content.hpp"
 #include "core.hpp"
 
@@ -418,16 +417,16 @@ TextContentSource::~TextContentSource()
 }
 
 /// @todo Should make a schema for this file and check it against the file.
-bool TextContentSource::setFile (QFile& p_file)
+bool TextContentSource::setFile (QFile* p_file)
 {
-    if (!p_file.isOpen()) {
-        if (!p_file.open (QIODevice::ReadOnly | QIODevice::Text)) {
-            qDebug() << "[TextContentSource::setFile()] Unable to open file" << p_file.fileName() << p_file.errorString();
+    if (!p_file->isOpen()) {
+        if (!p_file->open (QIODevice::ReadOnly | QIODevice::Text)) {
+            qDebug() << "[TextContentSource::setFile()] Unable to open file" << p_file->fileName() << p_file->errorString();
             return false;
         }
 
-        if (!p_file.isReadable()) {
-            qDebug() << "[TextContentSource::setFile()] Unable to read file" << p_file.fileName() << p_file.errorString();
+        if (!p_file->isReadable()) {
+            qDebug() << "[TextContentSource::setFile()] Unable to read file" << p_file->fileName() << p_file->errorString();
             return false;
         }
     }
@@ -436,10 +435,10 @@ bool TextContentSource::setFile (QFile& p_file)
     QString errMsg;
     int errLn, errCol;
 
-    if (!document.setContent (&p_file, &errMsg, &errLn, &errCol)) {
+    if (!document.setContent (p_file, &errMsg, &errLn, &errCol)) {
         // Not a standard content file - prepare the text.
         /// @todo (Veles) Port the Python script here.
-        QByteArray rawText = p_file.readAll();
+        QByteArray rawText = p_file->readAll();
         QString text (rawText);
 
         setText(text);
@@ -479,8 +478,7 @@ bool TextContentSource::setUrl (const QUrl& p_url)
             return false;
         }
         else {
-            QFile l_file (p_url.toLocalFile());
-            return setFile (l_file);
+            return setFile (new QFile (p_url.toLocalFile()));
         }
     }
 

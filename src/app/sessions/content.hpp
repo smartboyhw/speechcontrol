@@ -31,6 +31,8 @@
 #include <QStringList>
 #include <QDomElement>
 
+#include <app/config.hpp>
+
 namespace SpeechControl
 {
 class Content;
@@ -283,7 +285,7 @@ public:
      * @param p_file A reference to the QFile in question.
      * @return TRUE if the data was loaded successfully, FALSE otherwise.
      **/
-    bool setFile (QFile& p_file);
+    bool setFile (QFile* p_file);
 
     /**
      * @brief Attempts to load data from the specified QUrl p_url to be used as the AbstractContentSource.

@@ -40,21 +40,13 @@ SessionSettingsPane::SessionSettingsPane() :
     qDebug() << "[SessionSettingsPane::{constructor}] Built session settings pane.";
 
     QList<QAction*> l_modifyActions;
-    QList<QAction*> l_archiveActions;
     QMenu* l_modifyMenu = new QMenu (m_ui->btnModify);
-    QMenu* l_archiveMenu = new QMenu (m_ui->btnArchive);
 
     l_modifyActions << m_ui->actionDelete
                     << m_ui->actionCopy;
 
-    l_archiveActions << m_ui->actionBackup
-                     << m_ui->actionRestoreBackup;
-
     l_modifyMenu->addActions (l_modifyActions);
-    l_archiveMenu->addActions (l_archiveActions);
-
     m_ui->btnModify->setMenu (l_modifyMenu);
-    m_ui->btnArchive->setMenu (l_archiveMenu);
 }
 
 SessionSettingsPane::~SessionSettingsPane()

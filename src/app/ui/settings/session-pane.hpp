@@ -33,6 +33,9 @@ namespace SpeechControl
 namespace Windows
 {
 
+/**
+ * @brief Represents the settings dialog's pane for Sessions.
+ **/
 class SessionSettingsPane : public AbstractSettingsPane
 {
     Q_OBJECT

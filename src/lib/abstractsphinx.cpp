@@ -87,8 +87,11 @@ QString AbstractSphinx::standardDescription()
 /// @todo Determine how to pull the pointer of the held data from the QGlib::Value (or GValue) and use that as the ps_decoder_t.
 QGlib::Value AbstractSphinx::decoder() const
 {
-    QGlib::Value l_glibPs = m_psphinx->property ("decoder");
-    return l_glibPs;
+    QGlib::Value glibPs = m_psphinx->property ("decoder");
+    bool ok;
+    void* pointer = glibPs.get<void*> (&ok);
+    qDebug() << "[AbstractSphinx::decoder()] Obtained successfully? " << ok << pointer;
+    return glibPs;
 }
 
 LanguageModel* AbstractSphinx::languageModel() const
@@ -99,14 +102,14 @@ LanguageModel* AbstractSphinx::languageModel() const
 
 Dictionary* AbstractSphinx::dictionary() const
 {
-    const QString l_dict = m_psphinx->property ("dict").toString();
-    return Dictionary::obtain (l_dict);
+    const QString dict = m_psphinx->property ("dict").toString();
+    return Dictionary::obtain (dict);
 }
 
 AcousticModel* AbstractSphinx::acousticModel() const
 {
-    const QString l_hmm = m_psphinx->property ("hmm").toString();
-    return new AcousticModel (l_hmm , parent());
+    const QString hmm = m_psphinx->property ("hmm").toString();
+    return new AcousticModel (hmm , parent());
 }
 
 const QGst::PipelinePtr AbstractSphinx::pipeline() const
@@ -161,7 +164,9 @@ void AbstractSphinx::setLanguageModel (const QString& p_path)
 
 void AbstractSphinx::setLanguageModel (const LanguageModel* p_languageModel)
 {
-    setPsProperty ("lm", p_languageModel->path());
+    if (p_languageModel) {
+        setLanguageModel (p_languageModel->path());
+    }
 }
 
 void AbstractSphinx::setDictionary (const QString& p_path)
@@ -176,7 +181,9 @@ void AbstractSphinx::setDictionary (const QString& p_path)
 
 void AbstractSphinx::setDictionary (const Dictionary* p_dictionary)
 {
-    return setDictionary (p_dictionary->path());
+    if (p_dictionary) {
+        setDictionary (p_dictionary->path());
+    }
 }
 
 void AbstractSphinx::setAcousticModel (const QString& p_path)
@@ -191,7 +198,9 @@ void AbstractSphinx::setAcousticModel (const QString& p_path)
 
 void AbstractSphinx::setAcousticModel (const AcousticModel* p_acousticModel)
 {
-    setAcousticModel (p_acousticModel->path());
+    if (p_acousticModel && p_acousticModel->isValid()) {
+        setAcousticModel (p_acousticModel->path());
+    }
 }
 
 bool AbstractSphinx::isReady() const
@@ -231,7 +240,7 @@ bool AbstractSphinx::start()
 
 bool AbstractSphinx::stop()
 {
-    if (m_pipeline->setState (QGst::StateNull) == QGst::StateChangeSuccess){
+    if (m_pipeline->setState (QGst::StateNull) == QGst::StateChangeSuccess) {
         m_running = NotPrepared;
         m_bus.clear();
     }
@@ -269,7 +278,7 @@ void AbstractSphinx::formResult (QString& p_text, QString& p_uttid)
 AbstractSphinx::~AbstractSphinx()
 {
     m_pipeline->setState (QGst::StateNull);
-    m_psphinx->setState(QGst::StateNull);
+    m_psphinx->setState (QGst::StateNull);
     m_bus.clear();
     m_psphinx.clear();
 }

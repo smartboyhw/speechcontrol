@@ -155,7 +155,7 @@ void AbstractSphinx::setLanguageModel (const QString& p_path)
         setPsProperty ("lm", p_path);
     }
     else {
-        qWarning() << "[ASR] Given language model path" << p_path << "does not exist.";
+        qWarning() << "[AbstractSphinx] Given language model path" << p_path << "does not exist.";
     }
 }
 
@@ -170,7 +170,7 @@ void AbstractSphinx::setDictionary (const QString& p_path)
         setPsProperty ("dict", p_path);
     }
     else {
-        qWarning() << "[ASR] Given dictionary path" << p_path << "does not exist.";
+        qWarning() << "[AbstractSphinx] Given dictionary path" << p_path << "does not exist.";
     }
 }
 
@@ -185,7 +185,7 @@ void AbstractSphinx::setAcousticModel (const QString& p_path)
         setPsProperty ("hmm", p_path);
     }
     else {
-        qWarning() << "[ASR] Given acoustic model path" << p_path << "does not exist.";
+        qWarning() << "[AbstractSphinx] Given acoustic model path" << p_path << "does not exist.";
     }
 }
 
@@ -207,7 +207,7 @@ bool AbstractSphinx::isRunning() const
 bool AbstractSphinx::start()
 {
     qDebug() << "[AbstractSphinx::start()] Starting...";
-    
+
     if (isRunning()) {
         qDebug() << "[AbstractSphinx::start()] Already started.";
         return true;

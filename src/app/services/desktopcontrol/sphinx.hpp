@@ -65,6 +65,7 @@ public:
 
 private slots:
     void applicationMessage (const QGst::MessagePtr& message);
+    void init();
 };
 
 }

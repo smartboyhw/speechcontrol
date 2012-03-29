@@ -18,24 +18,50 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <lib/acousticmodel.hpp>
+#include <lib/languagemodel.hpp>
+#include "app/core.hpp"
 #include "sphinx.hpp"
-#include <desktopcontrol/command.hpp>
+#include "command.hpp"
 
+using SpeechControl::Core;
+using SpeechControl::AcousticModel;
+using SpeechControl::LanguageModel;
 using namespace SpeechControl::DesktopControl;
 
 Sphinx::Sphinx (QObject* p_parent) : AbstractSphinx (p_parent)
 {
-
+    init();
 }
 
 Sphinx::Sphinx (const QString& p_description, QObject* p_parent) : AbstractSphinx (p_description, p_parent)
 {
-
+    init();
 }
 
 Sphinx::Sphinx (QGst::PipelinePtr p_pipeline, QObject* p_parent) : AbstractSphinx (p_pipeline, p_parent)
 {
+    init();
+}
 
+void Sphinx::init()
+{
+    QString aModelPath;
+    QString lModelPath;
+
+    QVariantMap models = Core::configuration ("DesktopControl/Models").toMap();
+
+    if (!models.empty()) {
+        aModelPath = models.value ("Acoustic").toString();
+        lModelPath = models.value ("Language").toString();
+    }
+    else {
+        aModelPath = Core::configuration ("Models/Acoustic").toString();
+        lModelPath = Core::configuration ("Models/Language").toString();
+    }
+
+    setAcousticModel (aModelPath);
+    setLanguageModel (lModelPath);
 }
 
 void Sphinx::applicationMessage (const QGst::MessagePtr& p_message)

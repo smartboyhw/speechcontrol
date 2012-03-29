@@ -43,6 +43,7 @@ class Sphinx : public AbstractSphinx
 {
     Q_OBJECT
     Q_DISABLE_COPY (Sphinx)
+    void init();
     friend class Agent;
 
 protected:

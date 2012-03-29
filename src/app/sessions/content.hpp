@@ -103,8 +103,8 @@ public:
     uint length() const;
 
     /**
-     * @brief Counts the alphanumber characters within this @c Content and returns that number.
-     * @return A unsigned integer representing the total number of alphanumber characters in the text.
+     * @brief Counts the alphanumerical characters within this @c Content and returns that number.
+     * @return A unsigned integer representing the total number of alphanumerical characters in the text.
      **/
     uint characters() const;
 

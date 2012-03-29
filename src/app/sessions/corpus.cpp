@@ -18,11 +18,13 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "corpus.hpp"
-#include "phrase.hpp"
-#include "dictionary.hpp"
+#include <stdexcept>
+
+#include "lib/dictionary.hpp"
+#include "app/sessions/corpus.hpp"
+#include "app/sessions/phrase.hpp"
 #include "app/core.hpp"
-#include "lib/config.hpp"
+#include "app/config.hpp"
 
 #include <QDir>
 #include <QUuid>
@@ -30,9 +32,6 @@
 #include <QFileInfo>
 #include <QDateTime>
 #include <QDomDocument>
-
-#define CHUNK_SIZE 5
-#include <stdexcept>
 
 using namespace SpeechControl;
 
@@ -134,7 +133,14 @@ Corpus* Corpus::create (const QStringList& p_text)
     uint wordCount = 0;
 
     Q_FOREACH (QString word, words) {
-        if (wordCount == CHUNK_SIZE) {
+        const bool reachedWordLimit = (wordCount == CORPUS_WORD_BLOCK);
+        const bool isAtEnd = (word == words.last());
+        word = word.simplified().trimmed();
+
+        if (isAtEnd || reachedWordLimit) {
+            if (isAtEnd)
+                phrase += " " + word;
+
             Phrase* phrs = corpus->addPhrase (phrase.trimmed().simplified(), 0);
             corpus->m_dom->documentElement().namedItem ("Phrases").appendChild (* (phrs->m_elem));
             qDebug() << "[Corpus::create()] Added phrase" << corpus->phrases().count() << phrase;
@@ -142,8 +148,6 @@ Corpus* Corpus::create (const QStringList& p_text)
             phrase = word.simplified().trimmed();
         }
         else {
-            word = word.simplified().trimmed();
-
             if (word.isEmpty() || word.isNull()) {
                 continue;
             }
@@ -154,6 +158,8 @@ Corpus* Corpus::create (const QStringList& p_text)
 
         wordCount++;
     }
+
+    qDebug() << "[Corpus::create()] Rendered" << words.count() << "into " << corpus->phrases().count() << "phrases.";
 
     // Create dictionary.
     corpus->m_dict = Dictionary::create (words, id);

@@ -18,19 +18,21 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "content.hpp"
-#include "core.hpp"
-
+#include <QUrl>
 #include <QDir>
 #include <QFile>
 #include <QDebug>
 #include <QTextStream>
-#include <QUrl>
+
+#include "content.hpp"
+#include "core.hpp"
 
 using SpeechControl::Core;
+
 using SpeechControl::Content;
-using SpeechControl::ContentList;
 using SpeechControl::ContentMap;
+using SpeechControl::ContentList;
+
 using SpeechControl::AbstractContentSource;
 using SpeechControl::TextContentSource;
 

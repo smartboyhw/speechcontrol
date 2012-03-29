@@ -103,9 +103,23 @@ public:
      **/
     void setName (const QString& p_name);
 
+    /**
+     * @brief Clones this entire Session's data.
+     *
+     * @return The cloned Session.
+     **/
     Session* clone() const;
+
+    /**
+     * @brief Obtains the Corpus used by this Session.
+     **/
     Corpus* corpus() const;
+
+    /**
+     * @brief Obtains the Content used by this Session.
+     **/
     Content* content() const;
+
     Phrase* firstIncompletePhrase() const;
     Phrase* lastIncompletePhrase() const;
     PhraseList incompletedPhrases() const;
@@ -129,13 +143,31 @@ signals:
 
 public slots:
     /**
-     * @brief Set Corpus for this Session.
+     * @brief Sets the Corpus for this Session.
      *
      * @param  p_corpus Corpus for this Session
      **/
     void setCorpus (Corpus* p_corpus);
+
+    /**
+     * @brief Sets the Content for this Session.
+     *
+     * @param p_content The Content to represent this session.
+     **/
     void setContent (Content* p_content);
+
+    /**
+     * @brief Loads a Session by its specified ID, p_id.
+     *
+     * @param p_id The ID to load the Session with.
+     **/
     void load (const QString& p_id);
+
+    /**
+     * @brief Assesses the progress completed by this Session.
+     *
+     * @return The progress completed of this Session.
+     **/
     double assessProgress() const;
 
 private:

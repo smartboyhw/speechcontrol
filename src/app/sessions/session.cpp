@@ -51,7 +51,7 @@ Corpus* Session::corpus() const
 /// @todo Invoke the progress of this session when loaded.
 void Session::setCorpus (Corpus* corpus)
 {
-    if (corpus == NULL)
+    if (corpus == 0)
         throw std::invalid_argument ("Null corpus error.");
 
     m_corpus = corpus;
@@ -65,7 +65,7 @@ Content* Session::content() const
 
 void Session::setContent (Content* p_content)
 {
-    if (p_content == NULL)
+    if (p_content == 0)
         throw std::invalid_argument ("Null content error.");
 
     m_content = p_content;
@@ -76,13 +76,18 @@ double Session::assessProgress() const
 {
     double progress = 0.0;
 
-    Q_FOREACH (const Phrase * phrase, corpus()->phrases()) {
-        progress += (phrase->isCompleted()) ? 1.0 : 0.0;
-    }
+    if (isValid()) {
+        Q_FOREACH (const Phrase * phrase, corpus()->phrases()) {
+            progress += (phrase->isCompleted()) ? 1.0 : 0.0;
+        }
 
-    double progressDelta = progress / (double) (corpus()->phrases().count());
-    emit progressChanged (progressDelta);
-    return progressDelta;
+        double progressDelta = progress / (double) (corpus()->phrases().count());
+        emit progressChanged (progressDelta);
+        return progressDelta;
+    }
+    else {
+        return -1.0;
+    }
 }
 
 void Session::init()
@@ -289,25 +294,28 @@ PhraseList Session::incompletedPhrases() const
 {
     PhraseList list;
 
-    Q_FOREACH (Phrase * phrase, m_corpus->phrases()) {
-        if (!phrase->isCompleted()) {
-            list << phrase;
-            qDebug() << "[Phrase::incompletedPhrases()] Incomplete: " << phrase->index() << phrase->text();
+    if (isValid()) {
+        Q_FOREACH (Phrase * phrase, m_corpus->phrases()) {
+            if (!phrase->isCompleted()) {
+                list << phrase;
+                qDebug() << "[Phrase::incompletedPhrases()] Incomplete: " << phrase->index() << phrase->text();
+            }
+            else
+                continue;
         }
-        else
-            continue;
-    }
 
-    qDebug() << "[Phrase::incompletedPhrases()] Number of incomplete sentences:" << list.length();
+        qDebug() << "[Phrase::incompletedPhrases()] Number of incomplete sentences:" << list.length();
 
-    if (list.length() > 0)
-        qDebug() << "[Phrase::incompletedPhrases()] First up at: " << list.first()->index();
-    else {
-        if (! (dateCompleted().isValid() && !dateCompleted().isNull())) {
-            m_elem->namedItem ("Date").toElement().setAttribute ("completed", QDateTime::currentDateTimeUtc().toString());
-            qDebug() << "[Phrase::incompletedPhrases()] No more phrases detected, setting Session to 'completed' state.";
-        } else {
-            qDebug() << "[Phrase::incompletedPhrases()] Completed on " << dateCompleted().toLocalTime();
+        if (list.length() > 0)
+            qDebug() << "[Phrase::incompletedPhrases()] First up at: " << list.first()->index();
+        else {
+            if (! (dateCompleted().isValid() && !dateCompleted().isNull())) {
+                m_elem->namedItem ("Date").toElement().setAttribute ("completed", QDateTime::currentDateTimeUtc().toString());
+                qDebug() << "[Phrase::incompletedPhrases()] No more phrases detected, setting Session to 'completed' state.";
+            }
+            else {
+                qDebug() << "[Phrase::incompletedPhrases()] Completed on " << dateCompleted().toLocalTime();
+            }
         }
     }
 
@@ -331,32 +339,38 @@ bool Session::isCompleted() const
 
 void Session::erase() const
 {
-    QString id (m_elem->attribute ("id"));
-    s_elems.remove (id);
-    m_corpus->erase();
-    s_dom->documentElement().removeChild (*m_elem);
+    if (isValid()) {
+        QString id (m_elem->attribute ("id"));
+        s_elems.remove (id);
+        m_corpus->erase();
+        s_dom->documentElement().removeChild (*m_elem);
 
-    save();
-    init();
+        save();
+        init();
 
-    qDebug() << "[Session::erase()] Session" << id << "removed.";
+        qDebug() << "[Session::erase()] Session" << id << "removed.";
+    }
 }
 
 void Session::setName (const QString& p_name)
 {
-    if (!p_name.isEmpty() && !p_name.isEmpty()){
-        m_elem->setAttribute ("Name", p_name);
-        save();
+    if (isValid()) {
+        if (!p_name.isEmpty() && !p_name.isEmpty()) {
+            m_elem->setAttribute ("Name", p_name);
+            save();
+        }
     }
 }
 
 QString Session::name() const
 {
-    if (m_elem->hasAttribute ("Name"))
-        return m_elem->attribute ("Name");
-    else {
-        if (content() && content()->isValid())
-            return content()->title();
+    if (isValid()) {
+        if (m_elem->hasAttribute ("Name"))
+            return m_elem->attribute ("Name");
+        else {
+            if (content() && content()->isValid())
+                return content()->title();
+        }
     }
 
     return QString::null;
@@ -365,15 +379,20 @@ QString Session::name() const
 
 Session* Session::clone() const
 {
-    const QString id = QUuid::createUuid().toString().split ("-") [0].replace ("{", "");
-    Corpus* corpus = m_corpus->clone();
-    QDomElement elem = m_elem->cloneNode (true).toElement();
-    elem.attribute ("id", id);
-    elem.attribute ("corpus", corpus->id());
-    elem.namedItem ("Date").toElement().setAttribute ("created", QDateTime::currentDateTimeUtc().toString (Qt::SystemLocaleDate));
-    s_dom->documentElement().appendChild (elem);
-    s_elems.insert (id, new QDomElement (elem));
-    return Session::obtain (id);
+    if (isValid()) {
+        const QString id = QUuid::createUuid().toString().split ("-") [0].replace ("{", "");
+        Corpus* corpus = m_corpus->clone();
+        QDomElement elem = m_elem->cloneNode (true).toElement();
+        elem.attribute ("id", id);
+        elem.attribute ("corpus", corpus->id());
+        elem.namedItem ("Date").toElement().setAttribute ("created", QDateTime::currentDateTimeUtc().toString (Qt::SystemLocaleDate));
+        s_dom->documentElement().appendChild (elem);
+        s_elems.insert (id, new QDomElement (elem));
+        return Session::obtain (id);
+    }
+    else {
+        return 0;
+    }
 }
 
 #include "session.moc"

@@ -177,7 +177,7 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionCopy_triggered()
     foreach (QListWidgetItem * l_itm, l_itms) {
         qDebug() << "[SessionSettingsPane::on_actionCopy_triggered()]" << l_itm->data (Qt::UserRole);
         const QString id = l_itm->data (Qt::UserRole).toString();
-        Session* l_ss = Session::obtain (id);
+        Session* ss = Session::obtain (id);
         ss->clone();
     }
 

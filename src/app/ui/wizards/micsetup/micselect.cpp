@@ -120,11 +120,6 @@ void MicrophoneSelection::setDevice (DeviceAudioSource* p_device)
     m_mic = p_device;
 
     if (p_device) {
-        Wizards::MicrophoneSetup* wiz = ( (Wizards::MicrophoneSetup*) wizard());
-
-        if (wiz)
-            wiz->m_src = m_mic->deviceName();
-
         wizard()->setField ("mic-id", m_mic->deviceName());
     }
 }

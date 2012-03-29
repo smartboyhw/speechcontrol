@@ -147,13 +147,6 @@ void Main::open()
                                    2000,
                                    new Indicator::Message ("NoMicrophoneFound")
                                   );
-
-        QErrorMessage* l_msg = new QErrorMessage (this);
-        l_msg->setModal (true);
-        l_msg->setWindowTitle (tr ("No Microphones Found"));
-        l_msg->showMessage (tr ("No microphones were found on your system. Please ensure that you have one installed and detectable by "
-                                "the audio system and make sure that <b>%1</b> is installed on your system.").arg ("gstreamer-plugins-good"),
-                            "NoMicrophonesFoundOnStart");
     }
 
     updateUi();
@@ -171,6 +164,16 @@ void Main::open()
     }
     else {
         QMainWindow::show();
+    }
+
+    if (Session::completedSessions().isEmpty() && !Session::allSessions().isEmpty()) {
+        Indicator::presentMessage (tr ("Improve Accuracy With Sessions"),
+                                   tr ("Train sessions and improve your accuracy in SpeechControl "
+                                       "by simply reading to your computer! Click 'Train' on a session to "
+                                       "learn more."
+                                      ), 4000,
+                                   new Indicator::Message ("ImproveAccuracyUpdate")
+                                  );
     }
 }
 

@@ -177,49 +177,19 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionDelete_triggered()
     updateUi();
 }
 
-/// @todo Add support for multiple session selection.
-/// @todo Implement a means of just clicking once for all to be affected by this action.
 void SpeechControl::Windows::SessionSettingsPane::on_actionCopy_triggered()
 {
     QListWidget* l_widget = m_ui->listWidgetSession;
-    QListWidgetItem* l_itm = l_widget->selectedItems().first();
-    Session* l_ss = Session::obtain (l_itm->data (Qt::UserRole).toString());
-    Session* l_newSs = l_ss->clone();
 
-    if (l_newSs) {
-        updateUi();
-    }
-}
-
-/// @todo Add support for multiple session selection.
-/// @todo Implement a means of just clicking once for all to be affected by this action.
-void SpeechControl::Windows::SessionSettingsPane::on_actionBackup_triggered()
-{
-    QListWidget* l_widget = m_ui->listWidgetSession;
-    QListWidgetItem* l_itm = l_widget->selectedItems().first();
-    Session* l_ss = Session::obtain (l_itm->data (Qt::UserRole).toString());
-    Session::Backup* l_bckpSs = l_ss->createBackup();
-
-    if (l_bckpSs) {
-        updateUi();
-    }
-}
-
-/// @todo Add support for multiple session selection.
-/// @todo Implement a means of just clicking once for all to be affected by this action.
-void SpeechControl::Windows::SessionSettingsPane::on_actionRestoreBackup_triggered()
-{
-#ifdef RESTORESESSIONWIZARD_HPP
-    QListWidget* l_widget = m_ui->listWidgetSession;
-    QListWidgetItem* l_itm = l_widget->selectedItems().first();
-    Session* l_ss = Session::obtain (l_itm->data (Qt::UserRole).toString());
-    Wizards::RestoreSessionWizard* l_wiz = new Wizards::RestoreSessionWizard (this, l_ss);
-
-    if (l_wiz->exec() == QWizard::Accepted) {
-        updateList();
+    QList<QListWidgetItem*> l_itms = l_widget->selectedItems();
+    foreach (QListWidgetItem * l_itm, l_itms) {
+        qDebug() << "[SessionSettingsPane::on_actionCopy_triggered()]" << l_itm->data (Qt::UserRole);
+        const QString id = l_itm->data (Qt::UserRole).toString();
+        Session* l_ss = Session::obtain (id);
+        ss->clone();
     }
 
-#endif //RESTORESESSIONWIZARD_HPP
+    updateUi();
 }
 
 #include "session-pane.moc"

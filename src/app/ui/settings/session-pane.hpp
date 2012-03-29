@@ -53,8 +53,6 @@ private slots:
     void on_btnInfo_clicked();
     void on_actionDelete_triggered();
     void on_actionCopy_triggered();
-    void on_actionBackup_triggered();
-    void on_actionRestoreBackup_triggered();
 
 private:
     Ui::SessionSettingsPane* m_ui;

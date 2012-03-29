@@ -265,11 +265,6 @@ Session* Session::create (const Content* p_content)
     return Session::obtain (id);
 }
 
-Session* Session::Backup::session()
-{
-    return 0;
-}
-
 Phrase* Session::firstIncompletePhrase() const
 {
     const PhraseList lst = incompletedPhrases();
@@ -334,11 +329,6 @@ bool Session::isCompleted() const
     return incompletedPhrases().isEmpty() == true;
 }
 
-Session::BackupList* Session::backups() const
-{
-    return 0;
-}
-
 void Session::erase() const
 {
     QString id (m_elem->attribute ("id"));
@@ -350,11 +340,6 @@ void Session::erase() const
     init();
 
     qDebug() << "[Session::erase()] Session" << id << "removed.";
-}
-
-Session::Backup* Session::createBackup() const
-{
-    return Backup::generate (*this);
 }
 
 void Session::setName (const QString& p_name)
@@ -389,61 +374,6 @@ Session* Session::clone() const
     s_dom->documentElement().appendChild (elem);
     s_elems.insert (id, new QDomElement (elem));
     return Session::obtain (id);
-}
-
-Session::Backup::Backup() : m_dom (0)
-{
-}
-
-Session::Backup::~Backup()
-{
-
-}
-
-QDateTime Session::Backup::created()
-{
-    QString l_time = m_dom->documentElement().attribute ("DateCreated");
-    return QDateTime::fromString (l_time);
-}
-
-const QString Session::Backup::getPath (const QString& p_id)
-{
-    return QDir::homePath() + "/.speechcontrol/backups/" + p_id + ".bckp";
-}
-
-/// @todo Implement a means of backing up a session's data to a compressed document.
-Session::Backup* Session::Backup::generate (const Session& p_sssn)
-{
-    QDomDocument dom ("Backup");
-    QDateTime tm = QDateTime::currentDateTimeUtc();
-    QString id = p_sssn.id() + "_" + QString::number (tm.toMSecsSinceEpoch());
-    QDomElement domElem = dom.appendChild (dom.createElement ("Backup")).toElement();
-    QFile* file = new QFile (getPath (id));
-    file->open (QIODevice::WriteOnly | QIODevice::Truncate);
-
-    // Obtain session data.
-    const QString sssnStr = p_sssn.m_elem->text();
-    const QByteArray sssnData = qCompress (sssnStr.toUtf8());
-
-    // Compress corpus data.
-    const Corpus* corpus = p_sssn.corpus();
-    QFile* corpusFile = new QFile (Corpus::getPath (corpus->id()));
-    QByteArray corpusData;
-    corpusData = qCompress (corpusFile->readAll());
-
-    QDomElement sssnElem = dom.createElement ("Session");
-    domElem.appendChild (sssnElem);
-    sssnElem.appendChild (dom.createTextNode (sssnData.toBase64()));
-
-    QDomElement crpsElem = dom.createElement ("Corpus");
-    domElem.appendChild (crpsElem);
-    crpsElem.appendChild (dom.createTextNode (corpusData.toBase64()));
-
-    qDebug() << "[Session::Backup::generate()] "
-             << domElem.text()
-             << corpusData
-             << sssnData;
-    return 0;
 }
 
 #include "session.moc"

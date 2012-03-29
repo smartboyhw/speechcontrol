@@ -56,31 +56,6 @@ class Session : public QObject
 
 public:
     /**
-     * @brief Backup class
-     **/
-    class Backup
-    {
-        friend class Session;
-
-    public:
-        virtual ~Backup();
-        Session* session();
-        QDateTime created();
-
-    private:
-        explicit Backup();
-
-        static const QString getPath (const QString&);
-        static Backup* generate (const Session&);
-        QDomDocument* m_dom;
-    };
-
-    /**
-     * @brief List of pointers to Backup objects.
-     **/
-    typedef QList<Backup*> BackupList;
-
-    /**
      * @brief New Session with ID
      *
      * @param  QString ID of the Session
@@ -129,8 +104,6 @@ public:
     void setName (const QString& p_name);
 
     Session* clone() const;
-    Backup* createBackup() const;
-    BackupList* backups() const;
     Corpus* corpus() const;
     Content* content() const;
     Phrase* firstIncompletePhrase() const;

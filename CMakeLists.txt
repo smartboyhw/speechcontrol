@@ -7,9 +7,10 @@ include(SpeechControlDefaults)
 include(SpeechControlMacros)
 
 ## Options to toggle components of SpeechControl.
-option(WITH_KDE_SUPPORT        "Build KDE specific features?"               ON)
-option(WITH_PYTHON_BINDINGS    "Generate Python support for SpeechControl?" ON)
-option(WITH_PLUGINS            "Build the included plug-ins?"               ON)
+## By default, they're all off, just to speed up build times :)
+option(WITH_KDE_SUPPORT        "Build KDE specific features?"               OFF)
+option(WITH_PYTHON_BINDINGS    "Generate Python support for SpeechControl?" OFF)
+option(WITH_PLUGINS            "Build the included plug-ins?"               OFF)
 option(WITH_DOCS               "Generate Doxygen-made documentation?"       OFF)
 option(WITH_TESTS              "Generate the test build system?"            OFF)
 

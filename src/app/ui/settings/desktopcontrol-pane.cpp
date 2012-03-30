@@ -27,6 +27,7 @@
 #include "desktopcontrol-pane.hpp"
 #include "ui/main-window.hpp"
 #include "dictation/agent.hpp"
+#include <acousticmodel.hpp>
 #include "ui_settingspane-desktopcontrol.h"
 
 using namespace SpeechControl;
@@ -87,6 +88,7 @@ void DesktopControlSettingsPane::updateUi()
 {
     m_ui->checkBoxEnable->setChecked (!Dictation::Agent::instance()->isEnabled() && DesktopControl::Agent::instance()->isEnabled());
     m_ui->checkBoxEnable->setEnabled (!Dictation::Agent::instance()->isEnabled());
+    m_ui->deftAcousticModel->setText(Core::configuration("DesktopControl/DefaultAcousticModel").toString());
 
     QTableWidget* widget = m_ui->tableWidget;
     widget->clear();
@@ -129,6 +131,15 @@ void DesktopControlSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
 void DesktopControlSettingsPane::on_checkBoxEnableStartup_toggled (bool p_checked)
 {
     Core::setConfiguration ("DesktopControl/AutoStart", p_checked);
+}
+
+void DesktopControlSettingsPane::on_deftAcousticModel_textEdited (const QString& text)
+{
+    if (QDir(text).exists()) {
+        AcousticModel* newModel = new AcousticModel(text);
+        DesktopControl::Agent::instance()->setAcousticModel(newModel);
+        Core::setConfiguration("DesktopControl/DefaultAcousticModel", text);
+    }
 }
 
 #include "desktopcontrol-pane.moc"

@@ -62,6 +62,7 @@ protected:
 private slots:
     void on_checkBoxEnable_toggled (bool p_checked);
     void on_checkBoxEnableStartup_toggled (bool p_checked);
+    void on_deftAcousticModel_textEdited (const QString& text);
 
 private:
     Ui::DesktopControlSettingsPane* m_ui;

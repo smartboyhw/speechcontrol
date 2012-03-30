@@ -20,8 +20,10 @@
  */
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
 
-#include <PythonQt.h>
+#ifndef SPCHCNTRL_PYTHON_PYTHON_HPP_
+#define SPCHCNTRL_PYTHON_PYTHON_HPP_
 
+#include <PythonQt.h>
 
 #include <app/macros.hpp>
 
@@ -48,3 +50,5 @@ private:
 }
 }
 }
+
+#endif

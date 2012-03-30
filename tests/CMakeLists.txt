@@ -21,9 +21,10 @@ if(WITH_TESTS)
     file(READ "template.build" TEST_BUILD_TEMPLATE)
 
     ## source files
-    file(GLOB SPCHCNTRL_APP_TEST_SRCS "app/*.cpp")
-    file(GLOB SPCHCNTRL_LIB_TEST_SRCS "lib/*.cpp")
-    file(GLOB SPCHCNTRL_PLUGINS_TEST_SRCS "plugins/*.cpp")
+    file(GLOB SPCHCNTRL_APP_TEST_SRCS "src/app/*.cpp")
+    file(GLOB SPCHCNTRL_LIB_TEST_SRCS "src/lib/*.cpp")
+    file(GLOB SPCHCNTRL_DBUS_TEST_SRCS "src/dbus/*.cpp")
+    file(GLOB SPCHCNTRL_PLUGINS_TEST_SRCS "src/plugins/*.cpp")
 
     macro(buildtest _test_mode _test_src)
         set(TEST_MODE "${_test_mode}")
@@ -52,6 +53,10 @@ if(WITH_TESTS)
 
     foreach(TEST_APP_SRC ${SPCHCNTRL_APP_TEST_SRCS})
         buildtest("APP" "${TEST_APP_SRC}")
+    endforeach()
+
+    foreach(TEST_DBUS_SRC ${SPCHCNTRL_DBUS_TEST_SRCS})
+        buildtest("DBUS" "${TEST_DBUS_SRC}")
     endforeach()
 
     foreach(TEST_PLUGINS_SRC ${SPCHCNTRL_PLUGINS_TEST_SRCS})

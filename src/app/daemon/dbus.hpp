@@ -21,7 +21,7 @@
 #ifndef DBUS_HPP
 #define DBUS_HPP
 
-#include <QtCore/QObject>
+#include <QObject>
 #include <QtDBus/QtDBus>
 #include "daemon.hpp"
 
@@ -74,4 +74,4 @@ Q_SIGNALS: // SIGNALS
 };
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

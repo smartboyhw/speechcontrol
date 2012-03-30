@@ -18,15 +18,17 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "dbus.hpp"
+#include <QMetaObject>
+#include <QByteArray>
+#include <QList>
+#include <QMap>
+#include <QString>
+#include <QStringList>
+#include <QVariant>
+
 #include "daemon.hpp"
-#include <QtCore/QMetaObject>
-#include <QtCore/QByteArray>
-#include <QtCore/QList>
-#include <QtCore/QMap>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QVariant>
+
+#include "dbus.hpp"
 
 DaemonAdaptor::DaemonAdaptor ()
     : QDBusAbstractAdaptor (SpeechControl::Daemon::Daemon::instance())
@@ -59,4 +61,4 @@ void DaemonAdaptor::stop()
 }
 
 #include "dbus.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

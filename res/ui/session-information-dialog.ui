@@ -218,49 +218,82 @@
         </layout>
        </widget>
       </widget>
-      <widget class="QWidget" name="tabBackups">
+      <widget class="QWidget" name="tabAudio">
        <attribute name="title">
-        <string>Backup</string>
+        <string>Audio</string>
        </attribute>
        <widget class="QWidget" name="gridLayoutWidget_3">
         <property name="geometry">
          <rect>
-          <x>0</x>
+          <x>4</x>
           <y>0</y>
-          <width>349</width>
+          <width>345</width>
           <height>205</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_3">
-         <item row="1" column="1">
-          <widget class="QPushButton" name="pushButton">
+         <item row="0" column="0" colspan="2">
+          <widget class="QLabel" name="lblPhraseText">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>16777215</width>
+             <height>100</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-color: #fff;
+color: #333;
+border: 1px solid #000;	</string>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::NoFrame</enum>
+           </property>
+           <property name="frameShadow">
+            <enum>QFrame::Plain</enum>
+           </property>
            <property name="text">
-            <string>Backup</string>
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QToolButton" name="btnPlayPhrase">
+           <property name="text">
+            <string>...</string>
            </property>
           </widget>
          </item>
          <item row="1" column="0">
-          <spacer name="horizontalSpacer_3">
+          <widget class="QSlider" name="horizontalSliderPhrase">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
+          </widget>
+         </item>
+         <item row="2" column="0" colspan="2">
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>40</width>
-             <height>20</height>
+             <width>20</width>
+             <height>40</height>
             </size>
            </property>
           </spacer>
-         </item>
-         <item row="1" column="2">
-          <widget class="QPushButton" name="pushButton_2">
-           <property name="text">
-            <string>Restore</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0" colspan="3">
-          <widget class="QTableWidget" name="tableWidget"/>
          </item>
         </layout>
        </widget>

@@ -3,7 +3,7 @@ Installing SpeechControl
 
 0. For the Impatient
 
-    # apt-get install cmake libqt4-dev libqtgstreamer-dev libpocketsphinx-dev libsphinxbase-dev libxdo-dev gstreamer0.10-pocketsphinx pkg-config libhunspell-dev
+    # apt-get install cmake libqt4-dev libqtgstreamer-dev libpocketsphinx-dev libsphinxbase-dev libxdo-dev gstreamer0.10-pocketsphinx pkg-config libhunspell-dev libphonon-dev
     $ mkdir build && cd build
     $ cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug
     $ make
@@ -20,8 +20,8 @@ SpeechControl's core requires that you have the following packages installed:
       # apt-get install cmake
       # apt-get install cmake-qt-gui        # Install for a graphical interfaces
 
-    * Qt 4.7.2 (or higher) and its development files
-      # apt-get install libqt4-dev
+    * Qt 4.7.2 (or higher), Phonon and its development files
+      # apt-get install libqt4-dev libphonon-dev
 
     * Qt bindings to GStreamer (0.10) and its development files
       # apt-get install libqtgstreamer-dev
@@ -39,6 +39,9 @@ SpeechControl's core requires that you have the following packages installed:
     * [Optional] Development files for kdelibs (4.7.2 or higher)
       # apt-get install kdelibs5-dev
 
+    * [Optional] Python Scripting Support via PythonQt
+      # apt-get install libpythonqt-dev
+
 2. Configuration
 
 In order to maintain cleanliness of the source code directory, we typically
@@ -52,11 +55,11 @@ By default, SpeechControl builds with the following configuration values:
 
     Configuration Value     :   Value
     ---------------------------------------------------------------------------
-    WITH_DBUS_SUPPORT           ON  (adds D-Bus support)
     WITH_PYTHON_BINDINGS        OFF (bindings for libspeechcontrol to Python)
     WITH_TESTS                  OFF (initializes the test build system)
-    WITH_API_DOCS               OFF (generates documentation about API)
+    WITH_DOCS                   OFF (generates documentation about API)
     WITH_KDE_SUPPORT            OFF (builds KDE-specific bindings)
+    WITH_PLUGINS                OFF (builds plug-ins)
 
 These values only recognize the values 'ON' and 'OFF'. You can change these
 values by doing the following:

@@ -18,12 +18,19 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <phonon/MediaObject>
+#include <phonon/AudioOutput>
+#include <phonon/AudioOutput>
+
 #include "core.hpp"
 #include "sessions/session.hpp"
+#include "sessions/corpus.hpp"
+#include "sessions/phrase.hpp"
 #include "training-dialog.hpp"
-#include "session-information-dialog.hpp"
-#include "content-information-dialog.hpp"
 #include "ui_session-information-dialog.h"
+#include "content-information-dialog.hpp"
+
+#include "session-information-dialog.hpp"
 
 using SpeechControl::Core;
 using SpeechControl::Windows::TrainingDialog;
@@ -63,6 +70,9 @@ void SessionInformationDialog::updateUi()
 
     m_ui->lblTitle->setText (m_session->name());
     m_ui->lineEditNickname->setText ( (m_session->name().isEmpty()) ? QString::null : m_session->name());
+    m_ui->lblPhraseText->clear();
+    m_ui->horizontalSliderPhrase->setRange (0, m_session->corpus()->phrases().count() - 1);
+    m_ui->horizontalSliderPhrase->setValue (0);
 }
 
 void SessionInformationDialog::on_btnOpenContent_clicked()
@@ -90,6 +100,22 @@ void SessionInformationDialog::on_lineEditNickname_textChanged (const QString& p
 void SessionInformationDialog::updateProgress (const double p_progress)
 {
     m_ui->progressBarCompletion->setValue ( (int) p_progress * 100);
+}
+
+void SessionInformationDialog::on_btnPhrasePlay_clicked()
+{
+    Phrase* phrase = m_session->corpus()->phraseAt (m_ui->horizontalSliderPhrase->value());
+    Phonon::MediaObject* media = new Phonon::MediaObject(this);
+    Phonon::createPath(media,(new Phonon::AudioOutput(Phonon::NoCategory,this)));
+    media->setCurrentSource(QUrl(phrase->audio()->fileName()));
+    media->play();
+}
+
+void SessionInformationDialog::on_horizontalSliderPhrase_valueChanged (const int p_value)
+{
+    Phrase* phrase = m_session->corpus()->phraseAt (p_value);
+    m_ui->btnPlayPhrase->setEnabled (phrase->isCompleted());
+    m_ui->lblPhraseText->setText (phrase->text());
 }
 
 SessionInformationDialog::~SessionInformationDialog()

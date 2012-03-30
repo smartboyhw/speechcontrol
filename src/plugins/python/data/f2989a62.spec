@@ -1,6 +1,6 @@
 [Plugin]
-Name=Python Support
-Description=Integrates Python support into SpeechControl and allows Python plug-ins to be implemented for SpeechControl and use SpeechControl.
+Name=Scripting Support (Python)
+Description=Allows the use of Python plug-ins for SpeechControl.
 ID=f2989a62
 URL=http://www.thesii.org
 Version=0.1

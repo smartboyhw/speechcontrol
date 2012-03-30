@@ -18,4 +18,33 @@
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+
+#include <PythonQt.h>
+
+
+#include <app/macros.hpp>
+
+namespace SpeechControl
+{
+namespace Plugins
+{
+namespace Python
+{
+
+class Instance  : public QObject
+{
+    Q_OBJECT
+    Q_DISABLE_COPY (Instance)
+    SC_SINGLETON (Instance)
+
+public slots:
+    void start();
+    void stop();
+
+private:
+    PythonQtObjectPtr obtainMainModule();
+};
+}
+}
+}

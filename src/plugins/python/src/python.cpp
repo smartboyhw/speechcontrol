@@ -19,4 +19,33 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+
+#include <app/core.hpp>
+
+#include "python.hpp"
+
+using namespace SpeechControl;
+using namespace SpeechControl::Plugins::Python;
+
+Instance::Instance() : QObject(Core::instance())
+{
+
+}
+
+void Instance::start()
+{
+    PythonQt::init();
+}
+
+void Instance::stop()
+{
+
+}
+
+PythonQtObjectPtr Instance::obtainMainModule()
+{
+    return PythonQt::self()->getMainModule();
+}
+
+#include "python.moc"

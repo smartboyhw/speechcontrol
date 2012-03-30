@@ -22,6 +22,8 @@
 #include <QIcon>
 
 #include "config.hpp"
+#include "python.hpp"
+
 #include "plugin.hpp"
 
 using namespace SpeechControl::Plugins::Python;
@@ -33,17 +35,17 @@ Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent)
 
 void Plugin::initialize()
 {
-
+    Instance::instance()->start();
 }
 
 void Plugin::deinitialize()
 {
-
+    Instance::instance()->stop();
 }
 
 QPixmap Plugin::pixmap() const
 {
-    return QIcon::fromTheme("python").pixmap(32,32);
+    return QIcon::fromTheme ("python").pixmap (32, 32);
 }
 
 Plugin::~Plugin()

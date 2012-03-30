@@ -1,1 +1,4 @@
- 
+Python Scripting for SpeechControl
+--------------------------------------------------------------------------------
+
+Provides scripting support for SpeechControl's application API by using PythonQt.

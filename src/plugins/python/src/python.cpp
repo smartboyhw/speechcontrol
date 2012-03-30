@@ -28,7 +28,7 @@
 using namespace SpeechControl;
 using namespace SpeechControl::Plugins::Python;
 
-Instance::Instance() : QObject(Core::instance())
+Instance::Instance() : QObject (Core::instance())
 {
 
 }
@@ -36,6 +36,7 @@ Instance::Instance() : QObject(Core::instance())
 void Instance::start()
 {
     PythonQt::init();
+    connect (PythonQt::self(), SIGNAL (destroyed (QObject*)), SLOT (stop()));
 }
 
 void Instance::stop()

@@ -24,19 +24,20 @@
 #include <QDir>
 #include <QObject>
 #include <QVariant>
-#include <QApplication>
 
 #include "macros.hpp"
 
 class QSettings;
+class QApplication;
+class QTranslator;
 
 namespace SpeechControl
 {
+
 namespace Windows
 {
 class Main;
 }
-
 
 /**
  * @brief Represents the entire heart of SpeechControl.
@@ -107,14 +108,21 @@ public:
      **/
     static void loadTranslations (const QLocale& p_locale);
 
-    static void setAutoStart(const bool p_toggle);
+    /**
+     * @brief Sets whether or not SpeechControl will invoke itself on user log-in.
+     *
+     * @param p_toggle The new state of the auto-start.
+     **/
+    static void setAutoStart (const bool p_toggle);
 
+    /**
+     * @brief Determines whether or not SpeechControl starts on user log-in.
+     *
+     **/
     static bool doesAutoStart();
 
     /**
-     * @brief ...
-     *
-     * @return QDir
+     * @brief Obtains the base QDir to the configuration data of SpeechControl.
      **/
     static QDir configurationPath();
 

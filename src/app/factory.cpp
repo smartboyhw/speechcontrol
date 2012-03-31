@@ -23,11 +23,12 @@
 #include <QDebug>
 #include <QSettings>
 #include <QPluginLoader>
-#include <QDebug>
+#include <QApplication>
 
 // Local
 #include "core.hpp"
 #include "config.hpp"
+#include "plugins.hpp"
 #include "factory.hpp"
 
 using namespace SpeechControl;

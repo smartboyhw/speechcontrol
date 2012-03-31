@@ -22,14 +22,16 @@
 #define FACTORY_HPP
 
 #include <QObject>
+
 #include "macros.hpp"
-#include "plugins.hpp"
 
 namespace SpeechControl
 {
 namespace Plugins
 {
-class Factory;
+
+    class Factory;
+    class AbstractPlugin;
 
 /**
  * @brief Represents a manipulative system to control plug-ins.
@@ -139,13 +141,13 @@ public:
      * @brief Obtains a list of loaded plug-ins.
      * @return A PluginList. length() == 0 if there's no loaded plug-ins.
      **/
-    static PluginList loadedPlugins();
+    static QList<AbstractPlugin*> loadedPlugins();
 
     /**
      * @brief Obtains a mapping of all of the plug-ins that can be loaded by SpeechControl.
      * @return A PluginMap of all of the discovered plug-ins for SpeechControl on the system.
      **/
-    static PluginMap availablePlugins();
+    static QMap<QString,AbstractPlugin*> availablePlugins();
 
     /**
      * @brief Obtains the configuration of a plug-in by its specified UUID.
@@ -168,7 +170,7 @@ public:
     static QStringList autoStart();
 
 private:
-    static PluginMap s_ldPlgns;  ///< The loaded plug-ins.
+    static QMap<QString,AbstractPlugin*> s_ldPlgns;  ///< The loaded plug-ins.
 };
 }
 }

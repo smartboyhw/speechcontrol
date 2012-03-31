@@ -54,7 +54,7 @@ void TestDevice::defaultDevice()
 {
     DeviceAudioSource* defaultDevice = DeviceAudioSource::defaultDevice();
     QCOMPARE (defaultDevice != 0 && !DeviceAudioSource::allDevices().isEmpty(), true);
-    QCOMPARE (defaultDevice->isNull() == true, true);
+    QCOMPARE (!defaultDevice->isNull() == true, true);
     qDebug() << "[TestDevice::defaultDevice()] Default mic is:" << defaultDevice->humanName() << defaultDevice->deviceName();
 }
 
@@ -62,7 +62,7 @@ void TestDevice::adjustVolume()
 {
     DeviceAudioSource* defaultDevice = DeviceAudioSource::defaultDevice();
     QCOMPARE (defaultDevice != 0 && !DeviceAudioSource::allDevices().isEmpty(), true);
-    QCOMPARE (defaultDevice->isNull() == true, true);
+    QCOMPARE (!defaultDevice->isNull() == true, true);
     defaultDevice->setVolume (0.8);
     QCOMPARE (defaultDevice->volume() == 0.8, true);
 }
@@ -71,9 +71,10 @@ void TestDevice::toggleMuteState()
 {
     DeviceAudioSource* defaultDevice = DeviceAudioSource::defaultDevice();
     QCOMPARE (defaultDevice != 0 && !DeviceAudioSource::allDevices().isEmpty(), true);
-    const bool l_muted = defaultDevice->isMuted();
-    defaultDevice->setMuted (!l_muted);
-    QCOMPARE (defaultDevice->isMuted(), !l_muted);
+    QCOMPARE (!defaultDevice->isNull() == true, true);
+    const bool muted = defaultDevice->isMuted();
+    defaultDevice->setMuted (!muted);
+    QCOMPARE (defaultDevice->isMuted(), !muted);
 }
 
 QTEST_MAIN (TestDevice)

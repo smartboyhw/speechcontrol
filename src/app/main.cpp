@@ -33,12 +33,14 @@
  * make %SpeechControl a fantastic, open-source tool.
  */
 
+#include <QIcon>
+#include <QApplication>
+
 // speechcontrol lib includes
 #include <lib/config.hpp>
 
 // local includes
 #include "core.hpp"
-#include <QIcon>
 
 // pretty simple, huh?
 int main (int argc, char** argv)
@@ -55,4 +57,4 @@ int main (int argc, char** argv)
     appCore.start();
     return app->exec();
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

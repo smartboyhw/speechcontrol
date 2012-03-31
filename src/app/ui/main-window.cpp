@@ -61,7 +61,6 @@ using namespace SpeechControl::Windows::Managers;
 
 using SpeechControl::Windows::Main;
 
-/// @todo Add icons to the QActions.
 Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0)
 {
     m_ui->setupUi (this);

@@ -22,11 +22,10 @@
 #ifndef MAIN_HPP
 #define MAIN_HPP
 
-#include <QTimer>
-#include <QObject>
-#include <QProgressBar>
 #include <QMainWindow>
 
+class QTimer;
+class QProgressBar;
 class QListWidgetItem;
 namespace Ui
 {

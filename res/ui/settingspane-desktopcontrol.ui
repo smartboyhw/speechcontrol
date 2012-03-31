@@ -88,13 +88,10 @@
       </property>
      </spacer>
     </item>
-    <item row="3" column="1">
-     <widget class="QLineEdit" name="deftAcousticModel"/>
-    </item>
     <item row="3" column="0">
      <widget class="QLabel" name="label">
       <property name="text">
-       <string>Default Acoustic Model</string>
+       <string>Acoustic Model</string>
       </property>
      </widget>
     </item>
@@ -136,6 +133,9 @@
       </column>
      </widget>
     </item>
+    <item row="3" column="1">
+     <widget class="QComboBox" name="comboBoxAcousticModel"/>
+    </item>
    </layout>
   </widget>
  </widget>
@@ -154,6 +154,38 @@
     <hint type="destinationlabel">
      <x>213</x>
      <y>40</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxEnable</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>comboBoxAcousticModel</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>226</x>
+     <y>15</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>226</x>
+     <y>68</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxEnable</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>tableWidget</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>226</x>
+     <y>15</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>180</x>
+     <y>182</y>
     </hint>
    </hints>
   </connection>

@@ -21,14 +21,16 @@
 #include <QTableWidget>
 #include <QLabel>
 
+#include <acousticmodel.hpp>
+
 #include "core.hpp"
 #include "desktopcontrol/agent.hpp"
 #include "desktopcontrol/command.hpp"
-#include "desktopcontrol-pane.hpp"
 #include "ui/main-window.hpp"
 #include "dictation/agent.hpp"
-#include <acousticmodel.hpp>
 #include "ui_settingspane-desktopcontrol.h"
+
+#include "desktopcontrol-pane.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
@@ -88,12 +90,11 @@ void DesktopControlSettingsPane::updateUi()
 {
     m_ui->checkBoxEnable->setChecked (!Dictation::Agent::instance()->isEnabled() && DesktopControl::Agent::instance()->isEnabled());
     m_ui->checkBoxEnable->setEnabled (!Dictation::Agent::instance()->isEnabled());
-    m_ui->deftAcousticModel->setText(Core::configuration("DesktopControl/DefaultAcousticModel").toString());
+    AcousticModelList models = AcousticModel::allModels();
 
     QTableWidget* widget = m_ui->tableWidget;
     widget->clear();
 
-    widget->setEnabled (DesktopControl::Agent::instance()->isEnabled());
     AbstractCategory* glbl = DesktopControl::AbstractCategory::global();
     CommandList cmds = glbl->commands();
     widget->setHorizontalHeaderLabels (QStringList() << tr ("Statement") << tr ("Command"));
@@ -115,6 +116,14 @@ void DesktopControlSettingsPane::updateUi()
             count--;
         }
     }
+
+    m_ui->comboBoxAcousticModel->clear();
+
+    Q_FOREACH (AcousticModel * model, models) {
+        m_ui->comboBoxAcousticModel->addItem (model->name(), model->path());
+    }
+
+    m_ui->comboBoxAcousticModel->setCurrentIndex (m_ui->comboBoxAcousticModel->findData (Core::configuration ("DesktopControl/DefaultAcousticModel")));
 }
 
 void DesktopControlSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
@@ -135,10 +144,10 @@ void DesktopControlSettingsPane::on_checkBoxEnableStartup_toggled (bool p_checke
 
 void DesktopControlSettingsPane::on_deftAcousticModel_textEdited (const QString& text)
 {
-    if (QDir(text).exists()) {
-        AcousticModel* newModel = new AcousticModel(text);
-        DesktopControl::Agent::instance()->setAcousticModel(newModel);
-        Core::setConfiguration("DesktopControl/DefaultAcousticModel", text);
+    if (QDir (text).exists()) {
+        AcousticModel* newModel = new AcousticModel (text);
+        DesktopControl::Agent::instance()->setAcousticModel (newModel);
+        Core::setConfiguration ("DesktopControl/DefaultAcousticModel", text);
     }
 }
 

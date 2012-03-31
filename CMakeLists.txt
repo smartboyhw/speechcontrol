@@ -25,6 +25,9 @@ find_package(Qt4 4.7 COMPONENTS
 find_package(QtGStreamer REQUIRED)
 find_package(SphinxBase 0.7 REQUIRED)
 find_package(PocketSphinx 0.7 REQUIRED)
+find_package(Xdo REQUIRED)
+find_package(Hunspell REQUIRED)
+find_package(Phonon REQUIRED)
 
 ## Now we'll add in the Qt stuff
 include("${QT_USE_FILE}")

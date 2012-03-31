@@ -2,11 +2,6 @@ project(SpeechControlApplication)
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-## Extra packages for the application
-find_package(Xdo REQUIRED)
-find_package(Hunspell REQUIRED)
-find_package(Phonon REQUIRED)
-
 ## Required files
 file(GLOB SPCHCNTRL_APP_SRCS "*.cpp")
 file(GLOB SPCHCNTRL_APP_HDRS "*.hpp")

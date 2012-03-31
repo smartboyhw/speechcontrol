@@ -6,7 +6,6 @@
 project(SpchCntrlTest-@TEST_ID@)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(TEST_MODE "@TEST_MODE@")
-set(TEST_INCLUDE_FILE "${CMAKE_SOURCE_DIR}/tests/CTestConfig.cmake")
 
 ## Add paths to find CMake information about the library and application.
 find_package(SpeechControlLibrary)
@@ -17,64 +16,34 @@ if (TEST_MODE STREQUAL "APP")
     find_package(SpeechControlApplication)
 endif (TEST_MODE STREQUAL "APP")
 
-set(TEST_BASE_SCPP "@TEST_SRC@")
-
-if (TEST_MODE STREQUAL "APP" OR TEST_MODE STREQUAL "PLUGIN")
-    file(GLOB TEST_APP_SRCS
-        "${CMAKE_SOURCE_DIR}/src/app/*.cpp"
-        "${CMAKE_SOURCE_DIR}/src/app/sessions/*.cpp")
-
-    file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/services")
-    file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/sessions")
-    file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/ui")
-    file (GLOB_RECURSE TEST_APP_WINDOW_SRCS
-                       "${CMAKE_SOURCE_DIR}/src/app/ui/*.cpp")
-    file (GLOB_RECURSE TEST_APP_SERVICES_SRCS
-                       "${CMAKE_SOURCE_DIR}/src/app/services/*.cpp")
-
-    list(APPEND TEST_APP_SRCS ${TEST_APP_WINDOW_SRCS})
-    list(APPEND TEST_APP_SRCS ${TEST_APP_SERVICES_SRCS})
-    list(REMOVE_ITEM TEST_APP_SRCS "${CMAKE_SOURCE_DIR}/src/app/main.cpp")
-endif (TEST_MODE STREQUAL "APP" OR TEST_MODE STREQUAL "PLUGIN")
+## Variables
+set(@TEST_ID@_SCPP "@TEST_SRC@")
+set(@TEST_ID@_LIBRARIES ${TEST_LIBRARIES})
+set(@TEST_ID@_INCLUDE_DIRS ${TEST_INCLUDE_DIRS})
+set(@TEST_ID@_COMPILE_DEFINTIONS ${TEST_COMPILE_DEFINITIONS})
+set(@TEST_ID@_COMPILE_FLAGS ${TEST_COMPILE_FLAGS})
 
 ## Qt-specific actions.
-QT4_AUTOMOC(${TEST_BASE_SCPP})
+QT4_AUTOMOC(${@TEST_ID@_SCPP})
 
 ## Variables
-set(TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS}
-                             BUILDING_TEST)
-set(TEST_COMPILE_FLAGS ${SPCHCNTRL_COMPILE_FLAGS})
-set(TEST_LIBRARIES ${QT_QTTEST_LIBRARY})
-set(TEST_INCLUDE_DIRS ${SPCHCNTRL_INCLUDE_DIRS}
-    ${SPCHCNTRL_LIB_INCLUDE_DIRS}
-    ${QT_INCLUDE_DIRS}
-    "${PROJECT_BINARY_DIR}"
-    "${CMAKE_BINARY_DIR}/src/lib"
-    "${CMAKE_SOURCE_DIR}/src"
-    "${CMAKE_SOURCE_DIR}/src/lib")
-
 if (TEST_MODE STREQUAL "APP" OR TEST_MODE STREQUAL "PLUGIN")
-    list(APPEND TEST_INCLUDE_DIRS ${SPCHCNTRL_APP_INCLUDE_DIRS}
+    list(APPEND @TEST_ID@_INCLUDE_DIRS ${SPCHCNTRL_APP_INCLUDE_DIRS}
                                  "${CMAKE_BINARY_DIR}/src/app"
                                  "${CMAKE_SOURCE_DIR}/src/app"
                                  "${CMAKE_SOURCE_DIR}/src/app/services")
-    list(APPEND TEST_LIBRARIES ${SPCHCNTRL_APP_LIBRARIES})
-    list(APPEND TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_APP_COMPILE_DEFINITIONS})
-    list(APPEND TEST_COMPILE_FLAGS ${SPCHCNTRL_APP_COMPILE_FLAGS})
-    list(APPEND TEST_BASE_SCPP ${TEST_APP_SRCS})
-elseif (TEST_MODE STREQUAL "LIB")
-    set(TEST_LIBRARIES ${SPCHCNTRL_LIBRARIES}
-                        speechcontrol
-                        ${QT_QTTEST_LIBRARY})
+    list(APPEND @TEST_ID@_LIBRARIES ${SPCHCNTRL_APP_LIBRARIES} test-appcore ${PHONON_LIBRARIES} ${XDO_LIBRARIES})
+    list(APPEND @TEST_ID@_COMPILE_DEFINITIONS ${SPCHCNTRL_APP_COMPILE_DEFINITIONS})
+    list(APPEND @TEST_ID@_COMPILE_FLAGS ${SPCHCNTRL_APP_COMPILE_FLAGS})
 endif()
 
 if (TEST_MODE STREQUAL "PLUGIN")
     message(STATUS "Building plug-in tests are not yet fully supported.")
-    list(APPEND TEST_INCLUDE_DIRS "${CMAKE_BINARY_DIR}/src/plugins"
-                                 "${CMAKE_SOURCE_DIR}/src/plugins")
+    list(APPEND @TEST_ID@_INCLUDE_DIRS "${CMAKE_BINARY_DIR}/src/plugins"
+                                       "${CMAKE_SOURCE_DIR}/src/plugins")
 endif (TEST_MODE STREQUAL "PLUGIN")
 
-include_directories(${TEST_INCLUDE_DIRS})
+include_directories(${@TEST_ID@_INCLUDE_DIRS})
 
 ## Begin included code.
 
@@ -83,17 +52,17 @@ include_directories(${TEST_INCLUDE_DIRS})
 ## End included code.
 
 ## Build test executable.
-add_executable(test@TEST_ID@ ${TEST_BASE_SCPP})
+add_executable(test@TEST_ID@ ${@TEST_ID@_SCPP})
 set_target_properties(test@TEST_ID@ PROPERTIES
-    COMPILE_DEFINITIONS "${TEST_COMPILE_DEFINITIONS}"
-    COMPILE_FLAGS "${TEST_COMPILE_FLAGS}"
+    COMPILE_DEFINITIONS "${@TEST_ID@_COMPILE_DEFINITIONS}"
+    COMPILE_FLAGS "${@TEST_ID@_COMPILE_FLAGS}"
     EchoString "Built test @TEST_ID@"
     EXCLUDE_FROM_ALL ON)
-target_link_libraries(test@TEST_ID@ ${TEST_LIBRARIES})
+target_link_libraries(test@TEST_ID@ ${@TEST_ID@_LIBRARIES})
 
 ## Add test.
 add_test(NAME test@TEST_ID@
          COMMAND $<TARGET_FILE:test@TEST_ID@>)
 add_dependencies(tests test@TEST_ID@)
 
-message(STATUS "Test '${TEST_ID}' configured; awaiting build [i.e.: 'make test${TEST_ID}']")
+message(STATUS "Test '@TEST_ID@' configured; awaiting build [i.e.: 'make test@TEST_ID@']")

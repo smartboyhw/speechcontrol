@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 2.8)
+
+## Set up tests to ignore for categories.
+set(CTEST_CUSTOM_MEMCHECK_IGNORE ${CTEST_CUSTOM_MEMCHECK_IGNORE})
+set(CTEST_CUSTOM_TESTS_IGNORE ${CTEST_CUSTOM_TESTS_IGNORE})
+
+set(CTEST_UPDATE_COMMAND "git")

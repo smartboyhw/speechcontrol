@@ -12,11 +12,16 @@ if(WITH_TESTS)
         set(SpeechControlApplication_DIR "${CMAKE_BINARY_DIR}/src/app/InstallFiles")
     endif (TARGET speechcontrol-frontend)
 
-    add_custom_target(tests ALL)
+    set(TEST_INCLUDE_FILE "${CMAKE_SOURCE_DIR}/tests/CTestConfig.cmake")
 
-    ## Variables
+    configure_file("${PROJECT_SOURCE_DIR}/CTestCustom.cmake.in"
+                   "${PROJECT_BINARY_DIR}/CTestCustom.cmake" @ONLY)
+
     include(CTest)
     enable_testing()
+
+    add_custom_target(tests ALL)
+    include(metapp.cmake)
 
     file(READ "template.build" TEST_BUILD_TEMPLATE)
 
@@ -24,14 +29,13 @@ if(WITH_TESTS)
     file(GLOB SPCHCNTRL_APP_TEST_SRCS "src/app/*.cpp")
     file(GLOB SPCHCNTRL_LIB_TEST_SRCS "src/lib/*.cpp")
     file(GLOB SPCHCNTRL_DBUS_TEST_SRCS "src/dbus/*.cpp")
-    file(GLOB SPCHCNTRL_PLUGINS_TEST_SRCS "src/plugins/*.cpp")
 
     macro(buildtest _test_mode _test_src)
         set(TEST_MODE "${_test_mode}")
         set(TEST_SRC "${_test_src}")
-        set(TEST_CONFIG_CODE "# Node provided.")
+        set(TEST_CONFIG_CODE "# None provided.")
         string(REPLACE ".cpp" "" TEST_ID "${_test_src}")
-        string(REPLACE "${PROJECT_SOURCE_DIR}/" "" TEST_ID ${TEST_ID})
+        string(REPLACE "${PROJECT_SOURCE_DIR}/src/" "" TEST_ID ${TEST_ID})
         string(REPLACE "/" "_" TEST_ID ${TEST_ID})
 
         ## Include test-specific data.
@@ -59,9 +63,13 @@ if(WITH_TESTS)
         buildtest("DBUS" "${TEST_DBUS_SRC}")
     endforeach()
 
-    foreach(TEST_PLUGINS_SRC ${SPCHCNTRL_PLUGINS_TEST_SRCS})
-        buildtest("PLUGIN" "${TEST_PLUGINS_SRC}")
-    endforeach()
+    if (WITH_PLUGINS)
+        file(GLOB SPCHCNTRL_PLUGINS_TEST_SRCS "src/plugins/*.cpp")
+        foreach(TEST_PLUGINS_SRC ${SPCHCNTRL_PLUGINS_TEST_SRCS})
+            buildtest("PLUGIN" "${TEST_PLUGINS_SRC}")
+        endforeach()
+    endif(WITH_PLUGINS)
+
 else(WITH_TESTS)
     message(STATUS "Not generating tests.")
 endif(WITH_TESTS)

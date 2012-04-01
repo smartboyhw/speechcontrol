@@ -35,9 +35,13 @@ using SpeechControl::DesktopControl::AbstractCategory;
 
 MPRIS_NAMESPACE_BEGIN
 
+/**
+ * @brief Represents the category of commands related to MPRIS.
+ **/
 class MprisCategory : public AbstractCategory
 {
     Q_OBJECT
+    Q_DISABLE_COPY(MprisCategory)
     SC_SINGLETON (MprisCategory)
     friend class Plugin;
 
@@ -56,6 +60,7 @@ public:
 class PlayStateCommand : public AbstractCommand
 {
     Q_OBJECT
+    Q_DISABLE_COPY(PlayStateCommand)
     friend class Plugin;
     friend class MprisCategory;
 
@@ -75,6 +80,7 @@ private:
  **/
 class LibraryCommand : public AbstractCommand {
     Q_OBJECT
+    Q_DISABLE_COPY(LibraryCommand)
     friend class Plugin;
     friend class MprisCategory;
 

@@ -29,7 +29,42 @@ Results::Results (QWidget* parent) :
     ui (new Ui::Results)
 {
     ui->setupUi (this);
-    this->setLayout (ui->gridLayout);
+    updateUi();
+}
+
+void Results::updateUi()
+{
+    setLayout (ui->gridLayoutResults);
+    ui->tabVerbose->setLayout (ui->verticalLayoutVerbose);
+    ui->tabOverview->setLayout (ui->gridLayoutOverview);
+}
+
+void Results::cleanupPage()
+{
+}
+
+void Results::initializePage()
+{
+    const bool accuracyRatingPassed = wizard()->property ("accuracy-rating") == "passed";
+    ui->lblSessionCount->setText (tr ("Trained %1 Session(s)").arg (wizard()->property ("trained-session-count").toString()));
+    ui->tabVerbose->setEnabled (accuracyRatingPassed);
+    ui->tabWidget->setTabEnabled (1, accuracyRatingPassed);
+
+    if (accuracyRatingPassed) {
+        QString accuracyReport = tr ("Using %1 words, the accuracy of model <b>%2</b> %3 %4%.")
+                                 .arg (wizard()->property ("total-word-count").toString())
+                                 .arg (wizard()->property ("base-acoustic-model").toString())
+                                 .arg (wizard()->property ("accuracy-value").toInt() > 0 ? "increased" : "decreased")
+                                 .arg (wizard()->property ("accuracy-value").toString());
+        ui->lblAdaptionReport->setText (accuracyReport);
+        ui->lblAccuracy->setText (QString ("%1%").arg (wizard()->property ("accuracy-value").toString()));
+        ui->lblAccuracyText->setPixmap (wizard()->property ("accuracy-value").toInt() > 0 ? QIcon::fromTheme ("arrow-up").pixmap (48, 48) : QIcon::fromTheme ("arrow-down").pixmap (48, 48));
+    }
+    else {
+        ui->lblAdaptionReport->setText (tr ("<font color='red'>Adaption failed due to a complication with generating an accuracy report.</font>"));
+        ui->lblAccuracy->setPixmap (QIcon::fromTheme ("dialog-error").pixmap (48, 48));
+        ui->lblAccuracyText->setText ("N/A");
+    }
 }
 
 Results::~Results()

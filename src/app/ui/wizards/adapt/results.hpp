@@ -38,14 +38,15 @@ namespace Pages
 class Results : public QWizardPage
 {
     Q_OBJECT
-    void updateUi();
 
 public:
     explicit Results (QWidget* parent = 0);
     virtual ~Results();
-
+    virtual void cleanupPage();
+    virtual void initializePage();
 
 private:
+    void updateUi();
     Ui::Results* ui;
 };
 

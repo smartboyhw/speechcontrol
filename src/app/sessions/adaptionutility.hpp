@@ -21,6 +21,7 @@
 #ifndef SPEECHCONTROL_ADAPTIONUTILITY_HPP
 #define SPEECHCONTROL_ADAPTIONUTILITY_HPP
 
+#include <QDir>
 #include <QObject>
 #include <QProcess>
 
@@ -53,39 +54,22 @@ class AdaptationUtility : public QObject
     Q_OBJECT
 
 public:
+
+    /**
+     * @brief Represents the phases of which the adaption process takes place.
+     **/
     typedef enum {
         PhaseUndefined = -1,                      ///< Represents an undefined Phase.
-
-        PhaseInitialized,                         ///< Represents the initialized phase of the AdaptationUtility.
-                                                  ///  No real activity has taken place as of yet.
-
-        PhaseCopyAcousticModels,                  ///< Represents the phase that of which the copying of the
-                                                  ///  base acoustic model to its new, cloned location occurs.
-
-        PhaseGenerateFeatures,                    ///< Represents the phase that of which that feature extraction
-                                                  ///  from the base acoustic model takes place.
-
-        PhaseGenerateMixtureWeights,              ///< Represents the phase that of which the generation or cloning (if existing)
-                                                  ///  of mixture weights occurs.
-
-        PhaseConvertModelDefinitions,             ///< Represents the act of converting the binary format of the
-                                                  ///  model definition file (mdef) into its text format (mdef.txt).
-
-        PhaseCollectAcousticStatistics,           ///< Represents the phase where the obtaining of statistical information
-                                                  ///  from the base acoustic model occurs.
-
-        PhasePerformAdaptation,                   ///< Represents the act of adaption upon the new templated model from
-                                                  ///  the speech corpus (@c Session) and its parent corpus.
-
-        PhaseGenerateSendmap,                     ///< Represents the space-conversing phase of generating sendmap information
-                                                  ///  data.
-
-        PhaseGenerateAccuracyReportHypothesis,    ///< Represents the act of generating accuracy information of the
-                                                  ///  newly adapted acoustic model.
-
-        PhaseCompleteAdaption,                    ///< Represents the phase that handles the final tier of adaption, tweaking
-                                                  ///  SpeechControl's internal listing and what-not to recognize the model.
-
+        PhaseInitialized,                         ///< Represents the initialized phase of the AdaptationUtility. No real activity has taken place as of yet.
+        PhaseCopyAcousticModels,                  ///< Represents the phase that of which the copying of the base acoustic model to its new, cloned location ccurs.
+        PhaseGenerateFeatures,                    ///< Represents the phase that of which that feature extraction from the base acoustic model takes place.
+        PhaseGenerateMixtureWeights,              ///< Represents the phase that of which the generation or cloning (if existing) of mixture weights occurs.
+        PhaseConvertModelDefinitions,             ///< Represents the act of converting the binary format of the model definition file (mdef) into its text format (mdef.txt).
+        PhaseCollectAcousticStatistics,           ///< Represents the phase where the obtaining of statistical information from the base acoustic model occurs.
+        PhasePerformAdaptation,                   ///< Represents the act of adaption upon the new templated model from the speech corpus (@c Session) and its parent corpus.
+        PhaseGenerateSendmap,                     ///< Represents the space-conversing phase of generating sendmap information data.
+        PhaseGenerateAccuracyReportHypothesis,    ///< Represents the act of generating accuracy information of the newly adapted acoustic model.
+        PhaseCompleteAdaption,                    ///< Represents the phase that handles the final tier of adaption, tweaking SpeechControl's internal listing and what-not to recognize the model.
         PhaseDeinitialized                        ///< Represents the de-initialized phase of the AdaptationUtility.
     } Phases;
 
@@ -149,6 +133,8 @@ public:
      **/
     QString obtainPhaseText (const SpeechControl::AdaptationUtility::Phases& p_phase) const;
 
+    QTemporaryFile* hypothesis();
+
 signals:
     /**
      * @brief Emitted when a phase has begun.
@@ -167,7 +153,7 @@ signals:
      * @param p_phase The phase that the error occurred in.
      * @param p_message The message reported by the phase.
      **/
-    void phaseError(const Phases& p_phase, const QString& p_message);
+    void phaseError (const Phases& p_phase, const QString& p_message);
 
     /**
      * @brief Emitted when the AdaptionUtility has begun.
@@ -187,7 +173,7 @@ private:
     // Phase-related.
     void changePhase (const Phases& p_phase);
     void startPhase (Phases p_phase);
-    void reportErrorInPhase(const QString& p_message);
+    void reportErrorInPhase (const QString& p_message);
     void cleanupPhase (const Phases& phase);
     void endPhase ();
     void advanceNextPhase();
@@ -206,7 +192,6 @@ private:
 
     // Miscellaneous.
     void executeProcess (const QString& p_program, const QStringList p_arguments);
-    QTemporaryFile* hypothesis();
 
     Session* m_session;
     AcousticModel* m_modelBase;
@@ -214,6 +199,7 @@ private:
     QProcess* m_prcss;
     QTemporaryFile* m_fileTmpHyp;
     Phases m_phase;
+    QDir m_dirAccum;
 };
 
 }

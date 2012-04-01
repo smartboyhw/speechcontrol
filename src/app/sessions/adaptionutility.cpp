@@ -18,10 +18,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <lib/acousticmodel.hpp>
-#include <lib/dictionary.hpp>
-
-#include <QDir>
+#include <QUuid>
 #include <QDebug>
 #include <QProcess>
 #include <QTemporaryFile>
@@ -29,6 +26,7 @@
 #include <lib/acousticmodel.hpp>
 #include <lib/dictionary.hpp>
 
+#include "sessions/session.hpp"
 #include "sessions/session.hpp"
 #include "sessions/corpus.hpp"
 #include "sessions/adaptionutility.hpp"
@@ -86,6 +84,7 @@ AcousticModel* AdaptationUtility::adapt()
 
     // set up the process.
     m_prcss = new QProcess (this);
+    m_prcss->setProcessChannelMode (QProcess::MergedChannels);
     connect (m_prcss, SIGNAL (finished (int, QProcess::ExitStatus)), this, SLOT (on_mPrcss_finished (int, QProcess::ExitStatus)));
 
     // invoke the cycle.
@@ -195,35 +194,10 @@ void AdaptationUtility::cleanupPhase (const Phases& phase = PhaseUndefined)
     }
 }
 
-void AdaptationUtility::completeAdaptation()
-{
-    changePhase (PhaseCompleteAdaption);
-    advanceNextPhase();
-}
-
 void AdaptationUtility::haltPhasing()
 {
     changePhase (PhaseDeinitialized);
     advanceNextPhase();
-}
-
-void AdaptationUtility::on_mPrcss_finished (const int& p_exitCode, QProcess::ExitStatus p_exitStatus)
-{
-    qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Exit code" << p_exitCode;
-    qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Output:" << m_prcss->readAll();
-
-    switch (p_exitStatus) {
-    case QProcess::NormalExit:
-        qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Normal exit experienced.";
-        advanceNextPhase();
-        break;
-
-    case QProcess::CrashExit:
-        qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Crash exit experienced!";
-        cleanupPhase();
-        haltPhasing();
-        break;
-    }
 }
 
 AdaptationUtility::Phases AdaptationUtility::currentPhase()
@@ -249,7 +223,6 @@ void AdaptationUtility::startPhase (AdaptationUtility::Phases p_phase)
         emit endedAdapting();
 }
 
-
 void AdaptationUtility::changePhase (const Phases& p_phase)
 {
     endPhase ();
@@ -261,6 +234,12 @@ void AdaptationUtility::reportErrorInPhase (const QString& p_message)
     const Phases erredPhase = m_phase;
     emit phaseError (erredPhase, p_message);
 
+}
+
+void AdaptationUtility::executeProcess (const QString& p_program, const QStringList p_arguments)
+{
+    m_prcss->start (p_program, p_arguments);
+    qDebug() << "[AdaptationUtility::executeProcess()] Invoking" << p_program << "with" << p_arguments << "..";
 }
 
 QString AdaptationUtility::obtainPhaseText (const Phases& p_phase) const
@@ -279,7 +258,7 @@ QString AdaptationUtility::obtainPhaseText (const Phases& p_phase) const
         break;
 
     case PhaseGenerateAccuracyReportHypothesis:
-        return "Generate Accuracy Report";
+        return "Generate Accuracy Report Hypothesis";
         break;
 
     case PhaseGenerateFeatures:
@@ -358,8 +337,8 @@ void AdaptationUtility::generateFeatures()
     // Build argument values.
     QDir dirInput (m_session->corpus()->audioPath());
     QDir dirOutput = QDir::temp();
-    QString suffixInput = ".raw";
-    QString suffiXOutput = ".mfc";
+    QString suffixInput = "raw";
+    QString suffiXOutput = "mfc";
     QFile* controlFile = m_session->corpus()->fileIds();
 
     QStringList args;
@@ -386,8 +365,12 @@ void AdaptationUtility::generateMixtureWeights()
     changePhase (PhaseGenerateMixtureWeights);
 
     QStringList args;
+    args << "/usr/lib/sphinxtrain/python/cmusphinx/sendump.py"
+         << m_modelBase->senDump()->fileName()
+         << m_modelResult->mixtureWeights()->fileName()
+         ;
 
-    executeProcess ("ls", args);
+    executeProcess ("python", args);
 }
 
 /*
@@ -444,7 +427,9 @@ void AdaptationUtility::convertModelDefinitions()
 void AdaptationUtility::collectAcousticStatistics()
 {
     changePhase (PhaseCollectAcousticStatistics);
-    QDir dirAccum;
+
+    m_dirAccum.setPath (QDir::tempPath() + QString ("/speechcontrol-") + m_session->id());
+    m_dirAccum.mkpath (m_dirAccum.path());
 
     QStringList args;
     args << "-hmmdir"    << m_modelResult->path()
@@ -457,7 +442,7 @@ void AdaptationUtility::collectAcousticStatistics()
          << "-dictfn"    << m_session->corpus()->dictionary()->path()
          << "-ctlfn"     << m_session->corpus()->fileIds()->fileName()
          << "-lsnfn"     << m_session->corpus()->transcription ("<s>", "</s>")->fileName()
-         << "-accumdir"  << dirAccum.absolutePath();
+         << "-accumdir"  << m_dirAccum.absolutePath();
     ;
 
     executeProcess ("bw", args);
@@ -516,15 +501,15 @@ void AdaptationUtility::performAdaptation ()
     changePhase (PhasePerformAdaptation);
 
     QStringList args;
-    args << "-meanfn"    << ""
+    args << "-meanfn"    << m_modelBase->means()->fileName()
          << "-varfn"     << m_modelBase->variances()->fileName()
          << "-mixwfn"    << m_modelBase->mixtureWeights()->fileName()
          << "-tmatfn"    << m_modelBase->transitionMatrices()->fileName()
-         << "-accumdir"  << ""
-         << "-mapmeanfn" << ""
-         << "-mapvarfn"  << ""
-         << "-mapmixwfn" << ""
-         << "-maptmatfn" << ""
+         << "-accumdir"  << "."
+         << "-mapmeanfn" << m_modelResult->means()->fileName()
+         << "-mapvarfn"  << m_modelResult->variances()->fileName()
+         << "-mapmixwfn" << m_modelResult->mixtureWeights()->fileName()
+         << "-maptmatfn" << m_modelResult->transitionMatrices()->fileName()
          ;
 
     executeProcess ("map_adapt", args);
@@ -575,6 +560,7 @@ void AdaptationUtility::generateAccuracyReportHypothesis()
     changePhase (PhaseGenerateAccuracyReportHypothesis);
 
     // Render the temporary file.
+    hypothesis()->setAutoRemove (false);
     hypothesis()->open();
 
     QStringList args;
@@ -592,10 +578,29 @@ void AdaptationUtility::generateAccuracyReportHypothesis()
     executeProcess ("pocketsphinx_batch", args);
 }
 
-void AdaptationUtility::executeProcess (const QString& p_program, const QStringList p_arguments)
+void AdaptationUtility::completeAdaptation()
 {
-    m_prcss->start (p_program, p_arguments);
-    qDebug() << "[AdaptationUtility::executeProcess()] Invoking" << p_program << "with" << p_arguments << "..";
+    changePhase (PhaseCompleteAdaption);
+    advanceNextPhase();
+}
+
+void AdaptationUtility::on_mPrcss_finished (const int& p_exitCode, QProcess::ExitStatus p_exitStatus)
+{
+    qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Exit code" << p_exitCode;
+    qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Output:" << m_prcss->readAll();
+
+    switch (p_exitStatus) {
+    case QProcess::NormalExit:
+        qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Normal exit experienced.";
+        advanceNextPhase();
+        break;
+
+    case QProcess::CrashExit:
+        qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Crash exit experienced!";
+        cleanupPhase();
+        haltPhasing();
+        break;
+    }
 }
 
 AdaptationUtility::~AdaptationUtility()

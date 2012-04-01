@@ -80,12 +80,17 @@ QFile* AcousticModel::mixtureWeights()
 
 QFile* AcousticModel::transitionMatrices()
 {
-    return 0;
+    return new QFile (path() + "/transition_matrices");
 }
 
 QFile* AcousticModel::variances()
 {
-    return 0;
+    return new QFile (path() + "/variances");
+}
+
+QFile* AcousticModel::means()
+{
+    return new QFile (path() + "/means");
 }
 
 QFile* AcousticModel::senDump()

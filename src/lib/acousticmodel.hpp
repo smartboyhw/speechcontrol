@@ -161,15 +161,17 @@ public:
 
     AcousticModel* clone();
 
-    NoiseDictionary* noiseDictionary() const;
-
     static AcousticModelList allModels();
+
+    NoiseDictionary* noiseDictionary() const;
     QString parameterPath() const;
     QFile* modelDefinitions() const;
     QFile* mixtureWeights();
     QFile* senDump();
     QFile* variances();
     QFile* transitionMatrices();
+    QFile* means();
+
     void erase();
 };
 

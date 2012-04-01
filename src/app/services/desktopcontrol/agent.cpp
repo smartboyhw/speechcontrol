@@ -18,16 +18,16 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <lib/acousticmodel.hpp>
+
 #include "core.hpp"
-#include "agent.hpp"
 #include "command.hpp"
 #include "sphinx.hpp"
-#include <acousticmodel.hpp>
 
-namespace SpeechControl
-{
-namespace DesktopControl
-{
+#include "agent.hpp"
+
+using namespace SpeechControl;
+using namespace SpeechControl::DesktopControl;
 
 Agent* Agent::s_inst = 0;
 
@@ -150,9 +150,6 @@ void Agent::invokeCommand (const QString& cmd)
         emit noCommandsFound (cmd);
         qDebug() << "[DesktopControl::Agent::invokeCommand()] I heard mumble-gumble, nothing useful. Tell me something I want to hear!";
     }
-}
-
-}
 }
 
 #include "services/desktopcontrol/agent.moc"

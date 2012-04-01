@@ -26,7 +26,7 @@
 #include <QObject>
 #include <QString>
 
-#include <config.hpp>
+#include <lib/config.hpp>
 
 namespace SpeechControl
 {

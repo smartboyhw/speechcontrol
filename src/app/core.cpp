@@ -32,17 +32,18 @@
 #include <lib/system.hpp>
 
 // local includes
-#include "app/core.hpp"
 #include "app/factory.hpp"
 #include "app/sessions/session.hpp"
 #include "app/ui/main-window.hpp"
 #include "app/ui/quickstart-wizard.hpp"
-#include "desktopcontrol/agent.hpp"
-#include "desktopcontrol/service.hpp"
-#include "dictation/agent.hpp"
-#include "dictation/service.hpp"
+#include "app/indicator.hpp"
 #include "services/engine.hpp"
-#include "indicator.hpp"
+#include "services/desktopcontrol/agent.hpp"
+#include "services/desktopcontrol/service.hpp"
+#include "services/dictation/agent.hpp"
+#include "services/dictation/service.hpp"
+
+#include "app/core.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Wizards;

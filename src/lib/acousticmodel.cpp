@@ -78,6 +78,16 @@ QFile* AcousticModel::mixtureWeights()
     return new QFile (path() + "/mixture_weights");
 }
 
+QFile* AcousticModel::transitionMatrices()
+{
+    return 0;
+}
+
+QFile* AcousticModel::variances()
+{
+    return 0;
+}
+
 QFile* AcousticModel::senDump()
 {
     return new QFile (path() + "/sendump");

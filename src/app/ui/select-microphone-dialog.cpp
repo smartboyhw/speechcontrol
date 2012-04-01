@@ -18,12 +18,14 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <abstractaudiosource.hpp>
-#include "select-microphone-dialog.hpp"
+#include <QIcon>
+
+#include <lib/abstractaudiosource.hpp>
+
+#include "app/core.hpp"
 #include "ui_select-microphone-dialog.h"
 
-#include <QIcon>
-#include <app/core.hpp>
+#include "select-microphone-dialog.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;

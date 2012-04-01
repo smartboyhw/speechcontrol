@@ -19,13 +19,8 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-
 #ifndef ABSTRACTSPHINX_HPP
 #define ABSTRACTSPHINX_HPP
-
-// local includes
-#include <config.hpp>
-#include <export.hpp>
 
 // Qt includes
 #include <QMap>
@@ -39,18 +34,23 @@
 #include <QGst/Pipeline>
 #include <QGst/Bus>
 #include <QGst/Message>
-#include <Utils/ApplicationSource>
 
+// local includes
+#include <lib/config.hpp>
+#include <lib/export.hpp>
+
+// There's a bug with this header so it's placed here, <lib/export.hpp> has a macro fix.
+#include <Utils/ApplicationSource>
 
 namespace SpeechControl
 {
 
 class LanguageModel;
-
 class AbstractAudioSource;
 class AudioSourceSphinx;
 class AcousticModel;
 class Dictionary;
+
 /**
  * @brief Implementation of automatic speech recognition.
  *

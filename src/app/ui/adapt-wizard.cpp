@@ -18,18 +18,19 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "adapt-wizard.hpp"
+#include <QIcon>
+#include <QMessageBox>
+
+#include "app/core.hpp"
+#include "lib/acousticmodel.hpp"
 #include "wizards/intro.hpp"
 #include "wizards/outro.hpp"
 #include "wizards/adapt/modelselection.hpp"
 #include "wizards/adapt/sessionselection.hpp"
 #include "wizards/adapt/enaction.hpp"
 #include "wizards/adapt/results.hpp"
-#include <core.hpp>
-#include <acousticmodel.hpp>
 
-#include <QIcon>
-#include <QMessageBox>
+#include "adapt-wizard.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Wizards;

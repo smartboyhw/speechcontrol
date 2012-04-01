@@ -24,8 +24,8 @@
 #include <QObject>
 #include <QVariant>
 
-#include <config.hpp>
-#include <export.hpp>
+#include <lib/config.hpp>
+#include <lib/export.hpp>
 
 class QFile;
 namespace SpeechControl
@@ -168,6 +168,8 @@ public:
     QFile* modelDefinitions() const;
     QFile* mixtureWeights();
     QFile* senDump();
+    QFile* variances();
+    QFile* transitionMatrices();
     void erase();
 };
 

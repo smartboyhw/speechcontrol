@@ -39,8 +39,8 @@
 #include <QGst/PropertyProbe>
 #include <QGst/StreamVolume>
 
-#include <config.hpp>
-#include <export.hpp>
+#include <lib/config.hpp>
+#include <lib/export.hpp>
 
 #include <QGst/Utils/ApplicationSource>
 #include <QGst/Utils/ApplicationSink>

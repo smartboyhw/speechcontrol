@@ -18,11 +18,13 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "micsample.hpp"
-#include "micselect.hpp"
+#include <lib/abstractaudiosource.hpp>
+
 #include "app/ui/micsetup-wizard.hpp"
-#include <abstractaudiosource.hpp>
+#include "micselect.hpp"
 #include "ui_micwizard-sample.h"
+
+#include "micsample.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Wizards::Pages;

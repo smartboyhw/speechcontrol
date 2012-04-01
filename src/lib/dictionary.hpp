@@ -28,8 +28,8 @@
 #include <QObject>
 #include <QDateTime>
 
-#include <config.hpp>
-#include <export.hpp>
+#include <lib/config.hpp>
+#include <lib/export.hpp>
 
 class QUrl;
 class QFile;

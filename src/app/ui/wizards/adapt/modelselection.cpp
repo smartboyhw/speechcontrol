@@ -18,13 +18,14 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <lib/acousticmodel.hpp>
-#include <noisedictionary.hpp>
-
 #include <QDir>
 #include <QDebug>
-#include "modelselection.hpp"
+
+#include <lib/acousticmodel.hpp>
+#include <lib/noisedictionary.hpp>
 #include "ui_adaptwizard-modelselection.h"
+
+#include "modelselection.hpp"
 
 using namespace SpeechControl;
 using SpeechControl::Wizards::Pages::ModelSelection;

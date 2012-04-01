@@ -21,27 +21,26 @@
 
 #include <QFile>
 #include <QUuid>
+#include <QMenu>
 #include <QDebug>
 #include <QVariant>
-#include <QSettings>
 #include <QProcess>
-#include <QErrorMessage>
+#include <QSettings>
 #include <QMessageBox>
 #include <QPushButton>
-#include <QTableWidget>
 #include <QCloseEvent>
-#include <QMenu>
+#include <QErrorMessage>
+#include <QTableWidget>
 
 #include <lib/abstractaudiosource.hpp>
 
 #include "core.hpp"
 #include "indicator.hpp"
-#include "dictation/agent.hpp"
-#include "desktopcontrol/agent.hpp"
-#include <engine.hpp>
+#include "services/engine.hpp"
+#include "services/dictation/agent.hpp"
+#include "services/desktopcontrol/agent.hpp"
 #include "sessions/session.hpp"
 #include "sessions/content.hpp"
-#include "ui/main-window.hpp"
 #include "ui/training-dialog.hpp"
 #include "ui/settings-dialog.hpp"
 #include "ui/content-manager.hpp"
@@ -51,8 +50,10 @@
 #include "ui/micsetup-wizard.hpp"
 #include "ui/contents-wizard.hpp"
 #include "ui/adapt-wizard.hpp"
-#include "session-information-dialog.hpp"
+#include "ui/session-information-dialog.hpp"
 #include "ui_main-window.h"
+
+#include "ui/main-window.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;

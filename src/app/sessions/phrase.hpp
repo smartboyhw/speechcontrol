@@ -21,11 +21,13 @@
 #ifndef PHRASE_HPP
 #define PHRASE_HPP
 
+#include <QList>
+#include <QString>
 #include <QObject>
-#include <QFile>
 
-#include <export.hpp>
+#include <lib/export.hpp>
 
+class QFile;
 class QDomElement;
 
 namespace SpeechControl

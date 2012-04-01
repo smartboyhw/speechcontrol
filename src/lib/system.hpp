@@ -23,8 +23,8 @@
 
 #include <QObject>
 
-#include <config.hpp>
-#include <export.hpp>
+#include <lib/config.hpp>
+#include <lib/export.hpp>
 
 namespace SpeechControl
 {

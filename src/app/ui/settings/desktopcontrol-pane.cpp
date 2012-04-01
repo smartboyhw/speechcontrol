@@ -21,13 +21,13 @@
 #include <QTableWidget>
 #include <QLabel>
 
-#include <acousticmodel.hpp>
+#include <lib/acousticmodel.hpp>
 
-#include "core.hpp"
-#include "desktopcontrol/agent.hpp"
-#include "desktopcontrol/command.hpp"
-#include "ui/main-window.hpp"
-#include "dictation/agent.hpp"
+#include "app/core.hpp"
+#include "app/services/desktopcontrol/agent.hpp"
+#include "app/services/desktopcontrol/command.hpp"
+#include "app/services/dictation/agent.hpp"
+#include "app/ui/main-window.hpp"
 #include "ui_settingspane-desktopcontrol.h"
 
 #include "desktopcontrol-pane.hpp"

@@ -17,11 +17,10 @@
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#include "base.hpp"
-#include "ui_wizardbase.h"
 
-#include <QDebug>
-#include <QWizardPage>
+#include "ui_wizardbase.h"
+#include "base.hpp"
+
 
 using SpeechControl::Wizards::WizardBase;
 
@@ -30,6 +29,7 @@ WizardBase::WizardBase (QWidget* parent) :
     ui (new Ui::WizardBase)
 {
     ui->setupUi (this);
+    this->setWizardStyle(ClassicStyle);
 }
 
 WizardBase::~WizardBase()

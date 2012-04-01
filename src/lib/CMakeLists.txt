@@ -1,8 +1,6 @@
 project(SpeechControlLibrary)
 cmake_minimum_required(VERSION 2.8)
 
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
 ## setting up sources
 file(GLOB SPCHCNTRL_LIB_SOURCES "*.cpp")
 file(GLOB SPCHCNTRL_LIB_HEADERS "*.hpp")
@@ -38,7 +36,7 @@ endif(WITH_PYTHON_BINDINGS)
 ## fill in build values
 list(APPEND SPCHCNTRL_LIB_BUILD_COMPILE_DEFINITIONS ${SPCHCNTRL_LIB_COMPILE_DEFINITIONS})
 list(APPEND SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS ${SPCHCNTRL_LIB_INCLUDE_DIRS}
-    "${PROJECT_SOURCE_DIR}")
+                                            "${CMAKE_SOURCE_DIR}/src")
 list(REMOVE_ITEM SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS ${SPCHCNTRL_LIB_INCLUDE_DIR})
 
 ## configures

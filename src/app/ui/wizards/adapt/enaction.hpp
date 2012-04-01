@@ -22,7 +22,7 @@
 
 #include <QWizardPage>
 #include <app/sessions/adaptionutility.hpp>
-#include <sessions/session.hpp>
+#include <app/sessions/accuracymeter.hpp>
 
 namespace Ui
 {
@@ -31,6 +31,8 @@ class Enaction;
 
 namespace SpeechControl
 {
+class Session;
+
 namespace Wizards
 {
 namespace Pages
@@ -57,6 +59,7 @@ public slots:
 
 private slots:
     void on_btnAdapt_clicked();
+    void on_mMeter_assessmentCompleted (const AccuracyMeter::Status& p_status, const QVariantMap& p_data);
 
 private:
     void invokeAdaption (Session* p_session);
@@ -64,7 +67,7 @@ private:
     AdaptationUtility* m_utility;
     SessionList m_sessions;
     AcousticModel* m_model;
-
+    AccuracyMeter* m_meter;
 };
 
 }

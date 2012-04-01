@@ -18,20 +18,26 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "enaction.hpp"
+#include <QDebug>
+#include <QMessageBox>
+#include <QTemporaryFile>
+
 #include "modelselection.hpp"
 #include "sessionselection.hpp"
 #include "ui/adapt-wizard.hpp"
+#include "app/sessions/accuracymeter.hpp"
+#include "app/sessions/adaptionutility.hpp"
 #include "sessions/adaptionutility.hpp"
 #include "ui_adaptwizard-enaction.h"
-#include <QMessageBox>
+
+#include "enaction.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Wizards::Pages;
 
 Enaction::Enaction (QWidget* parent) :
     QWizardPage (parent),
-    ui (new Ui::Enaction), m_utility (0)
+    ui (new Ui::Enaction), m_utility (0), m_model (0), m_meter (0)
 {
     ui->setupUi (this);
     this->setLayout (ui->gridLayout);
@@ -67,6 +73,8 @@ void Enaction::on_btnAdapt_clicked()
     ui->progressBarOverall->setRange (0, m_sessions.length() * 2);
     ui->progressBarOverall->setValue (0);
 
+    wizard()->setProperty ("trained-session-count", m_sessions.count());
+
     invokeAdaption (m_sessions.first());
 }
 
@@ -86,8 +94,50 @@ void Enaction::on_mUtility_endedAdapting()
     ui->progressBarOverall->setFormat ("%p%: Adapted using session '" + m_utility->session()->name() + "'");
     ui->progressBarOverall->setValue (ui->progressBarOverall->value() + 1);
 
-    if (m_utility->session() != m_sessions.last())
-        invokeAdaption(m_sessions.at(m_sessions.indexOf(m_utility->session()) + 1));
+    if (m_meter) {
+        m_meter->deleteLater();
+    }
+
+    m_meter = new AccuracyMeter (m_utility->resultingModel());
+    connect (m_meter, SIGNAL (assessmentCompleted (AccuracyMeter::Status, QVariantMap)), this, SLOT (on_mMeter_assessmentCompleted (AccuracyMeter::Status, QVariantMap)));
+    m_meter->setSession (m_utility->session());
+    m_meter->doAssessment (m_utility->hypothesis()->fileName());
+}
+
+void Enaction::on_mMeter_assessmentCompleted (const AccuracyMeter::Status& p_status, const QVariantMap& p_data)
+{
+    switch (p_status) {
+    case AccuracyMeter::Successful: {
+        QVariant accuracyData = wizard()->property ("accuracy-report");
+        QVariantList dataSets;
+
+        if (accuracyData.isValid()) {
+            dataSets = accuracyData.toList();
+        }
+
+        dataSets << p_data;
+        wizard()->setProperty ("accuracy-report", dataSets);
+
+        if (m_utility->session() != m_sessions.last())
+            invokeAdaption (m_sessions.at (m_sessions.indexOf (m_utility->session()) + 1));
+
+        qDebug() << "[Enaction::on_mMeter_assessmentCompleted()]" << p_data;
+        wizard()->setProperty("accuracy-rating","passed");
+    }
+    break;
+
+    case AccuracyMeter::Error : {
+        QMessageBox::critical(this,tr("Failed to Determine Accuracy"),
+                              tr("SpeechControl was unable to determine the accuracy "
+                                "of the adapted acoustic model.\n\n<b>Error message</b>: %1\nOutput:\n<pre>%2</pre>"
+                            ).arg(p_data["message"].toString()).arg(p_data["output"].toString()));
+        wizard()->setProperty("accuracy-rating","failed");
+        wizard()->next();
+    } break;
+
+    default:
+        break;
+    }
 }
 
 void Enaction::on_mUtility_startedAdapting()

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 set(SPCHCNTRL_COMPILE_FLAGS "${QTGSTREAMER_FLAGS} -feliminate-unused-debug-symbols")
-set(SPCHCNTRL_COMPILE_FLAGS_DEBUG "-Wall -Wextra -Wabi -Wctor-dtor-privacy -Wformat -Wunused")
+set(SPCHCNTRL_COMPILE_FLAGS_DEBUG "-Wall -Wextra -Wabi -Wctor-dtor-privacy -Wformat -Wunused -O0")
 set(SPCHCNTRL_COMPILE_DEFINITIONS ${QT_DEFINITIONS})
 set(SPCHCNTRL_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/share/cmake/SpeechControl")
 set(SPCHCNTRL_CMAKE_INSTALL_DIR "${CMAKE_MODULE_PATH}")

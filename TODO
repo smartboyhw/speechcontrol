@@ -16,6 +16,7 @@ Library
  * Get threshold of user's input for typical speaking volume.
  * Offset that result to determine background noise.
 * Implement the programmatic representation of the acoustic model. (bug #000029)
+* Consider adding a means of reading the binary data of acoustic models.
 
 Application (general)
 ----------------------------------------------------------

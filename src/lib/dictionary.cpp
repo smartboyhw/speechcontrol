@@ -59,7 +59,6 @@ Dictionary* Dictionary::create (QStringList p_wordlist, QString p_id)
     Q_FOREACH (const QString & word, p_wordlist) {
         QString phonemes;
         QString wordUpper = word.toUpper();
-        wordUpper = wordUpper.replace (QRegExp ("\.\.+"), ".");
         wordUpper = wordUpper.trimmed().simplified();
         strm << wordUpper << "\t" << wordUpper << endl;
     }

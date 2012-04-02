@@ -23,15 +23,15 @@
 
 #include <QMap>
 #include <QUrl>
-#include <QUuid>
 #include <QList>
-#include <QFile>
 #include <QObject>
 #include <QVariant>
 #include <QStringList>
-#include <QDomElement>
 
 #include <app/config.hpp>
+
+class QFile;
+class QDomDocument;
 
 namespace SpeechControl
 {
@@ -45,9 +45,9 @@ class TextContentSource;
 typedef QList<Content*> ContentList;
 
 /**
- * @brief Represents a @c QMap of @c Content objects, mapped by their @c QUuid keys.
+ * @brief Represents a @c QMap of @c Content objects, mapped by their @c QString keys.
  **/
-typedef QMap<QUuid, Content*> ContentMap;
+typedef QMap<QString, Content*> ContentMap;
 
 /**
  * @brief Represents a collection of text to be used for training by @c Sessions.
@@ -66,7 +66,7 @@ public:
      * @brief Default constructor.
      * @param p_uuid The uuid of the @c Content.
      **/
-    explicit Content (const QUuid& p_uuid);
+    explicit Content (const QString& p_uuid);
 
     virtual ~Content();
 
@@ -75,7 +75,7 @@ public:
      * @param p_uuid The uuid of the Content to load.
      * @note After loading, you should check to see if isValid() returns true. It's possible for the loading operation to fail.
      **/
-    void load (const QUuid& p_uuid);
+    void load (const QString& p_uuid);
 
     /**
      * @brief Erases the Content, wiping all of its information.
@@ -112,7 +112,7 @@ public:
      * @brief Obtains the UUID of this @c Content.
      * @return The UUID of this @c Content.
      **/
-    QUuid id() const;
+    QString id() const;
 
     /**
      * @brief Obtains the title of this @c Content, or if provided, the nickname of the Session.
@@ -155,11 +155,11 @@ public:
     static Content* create (const QString& p_author, const QString& p_title , const QString& p_text);
 
     /**
-     * @brief Obtains a specific @Content by its identifying @c QUuid.
+     * @brief Obtains a specific @Content by its identifying @c QString.
      * @param p_uuid The UUID to pick out the @c Content by.
      * @return
      **/
-    static Content* obtain (const QUuid& p_uuid);
+    static Content* obtain (const QString& p_uuid);
 
     /**
      * @brief
@@ -168,13 +168,13 @@ public:
     static ContentList allContents();
 
 private:
-    static QString getPath (const QUuid&);
+    static QString getPath (const QString& p_id);
     static ContentList findAllContents (QString p_path);
     void parseText (const QString& p_text);
     static ContentMap s_lst;
     QStringList m_pages;
     QDomDocument* m_dom;
-    QUuid m_uuid;
+    QString m_id;
 };
 
 /**

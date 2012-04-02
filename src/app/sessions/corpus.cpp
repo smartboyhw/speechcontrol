@@ -20,18 +20,18 @@
 
 #include <stdexcept>
 
-#include "lib/dictionary.hpp"
-#include "app/sessions/corpus.hpp"
-#include "app/sessions/phrase.hpp"
-#include "app/core.hpp"
-#include "app/config.hpp"
-
 #include <QDir>
-#include <QUuid>
 #include <QDebug>
 #include <QFileInfo>
 #include <QDateTime>
 #include <QDomDocument>
+
+#include "lib/dictionary.hpp"
+
+#include "app/sessions/corpus.hpp"
+#include "app/sessions/phrase.hpp"
+#include "app/core.hpp"
+#include "app/config.hpp"
 
 using namespace SpeechControl;
 
@@ -83,8 +83,7 @@ Corpus& Corpus::operator << (PhraseList& p_phraseList)
 /// @todo Find a way to keep the text in an ordinal fashion.
 Corpus* Corpus::create (const QStringList& p_text)
 {
-    QString id = QUuid::createUuid().toString().split ("-").at (0);
-    id = id.replace ("{", "");
+    QString id = QString::number(qrand());
     QDir dir (getPath (id));
 
     if (!dir.mkpath (dir.path())) {
@@ -323,8 +322,7 @@ void Corpus::erase()
 
 Corpus* Corpus::clone() const
 {
-    QString id = QUuid::createUuid().toString().split ("-").at (0);
-    id = id.replace ("{", "");
+    QString id = QString::number(qrand());
     QDir thisDir (getPath (m_id));
     QDir newDir (getPath (id));
     newDir.mkpath (newDir.absolutePath());
@@ -349,7 +347,9 @@ Phrase* Corpus::phraseAt (const int& p_index) const
 
 Dictionary* Corpus::dictionary() const
 {
-    return m_dict;
+    if (isValid()) {
+        return m_dict;
+    }
 }
 
 const QDateTime Corpus::timeStarted() const

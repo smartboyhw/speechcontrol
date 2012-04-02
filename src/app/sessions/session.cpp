@@ -165,8 +165,8 @@ void Session::load (const QString& p_id)
 bool Session::isValid() const
 {
     const bool l_valid = (
-                             m_elem && !m_elem->isNull()
-                             && m_corpus && m_corpus->isValid()
+                             m_elem && m_corpus
+                             && !m_elem->isNull() && m_corpus->isValid()
                          );
     return l_valid;
 }

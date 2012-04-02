@@ -73,6 +73,8 @@ void SessionInformationDialog::updateUi()
     m_ui->lblPhraseText->clear();
     m_ui->horizontalSliderPhrase->setRange (0, m_session->corpus()->phrases().count() - 1);
     m_ui->horizontalSliderPhrase->setValue (0);
+    m_ui->btnTrainSession->setEnabled(!m_session->isCompleted());
+    m_ui->btnAdaptSession->setEnabled(m_session->isCompleted());
 }
 
 void SessionInformationDialog::on_btnOpenContent_clicked()

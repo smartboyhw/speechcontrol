@@ -43,7 +43,6 @@ Phrase* Phrase::create (Corpus* p_corpus, const QString& p_text)
 
 bool Phrase::isCompleted() const
 {
-    //qDebug() << "[Phrase::isCompleted()] Audio exists?" << audio()->exists() << audio()->fileName();
     return audio()->exists();
 }
 
@@ -55,7 +54,6 @@ const QString Phrase::text() const
 QFile* Phrase::audio() const
 {
     const QString fileName = m_corpus->audioPath() + "/phrase" + QString::number (index()) + ".raw";
-    //qDebug() << "[Phrase::audio()]" << fileName;
     return new QFile (fileName);
 }
 

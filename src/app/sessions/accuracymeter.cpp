@@ -27,12 +27,14 @@
 
 using namespace SpeechControl;
 
-AccuracyMeter::AccuracyMeter (QObject* p_parent) : QObject (parent), m_prcss (0), m_model (0), m_session (0)
+AccuracyMeter::AccuracyMeter (QObject* p_parent) : QObject (parent),
+    m_prcss (0), m_model (0), m_session (0)
 {
 
 }
 
-AccuracyMeter::AccuracyMeter (AcousticModel* p_model) : QObject(), m_prcss (0), m_model (p_model), m_session (0)
+AccuracyMeter::AccuracyMeter (AcousticModel* p_model) : QObject(),
+    m_prcss (0), m_model (p_model), m_session (0)
 {
 
 }
@@ -44,8 +46,6 @@ void AccuracyMeter::setSession (Session* p_session)
 
 void AccuracyMeter::doAssessment (const QString& p_pathHyp)
 {
-    qDebug() << ! (m_prcss == 0);
-
     if (m_prcss && m_prcss->isOpen())
         return;
 
@@ -55,7 +55,6 @@ void AccuracyMeter::doAssessment (const QString& p_pathHyp)
          << p_pathHyp
          ;
 
-    qDebug() << args << (QFile (p_pathHyp)).readAll();
     m_prcss = new QProcess (this);
     m_prcss->setProcessChannelMode (QProcess::MergedChannels);
     connect (m_prcss, SIGNAL (finished (int, QProcess::ExitStatus)), this, SLOT (on_mPrcss_finished (int, QProcess::ExitStatus)));

@@ -20,6 +20,7 @@
 
 #include "models-pane.hpp"
 #include <ui/adapt-wizard.hpp>
+#include <core.hpp>
 #include <lib/acousticmodel.hpp>
 #include <lib/languagemodel.hpp>
 #include "ui_settingspane-model.h"
@@ -191,6 +192,46 @@ void ModelSettingsPane::on_comboBoxAcousticModelView_currentIndexChanged (const 
 void ModelSettingsPane::on_comboBoxLanguageModelView_currentIndexChanged (const int p_index)
 {
     updateLanguageTab();
+}
+
+void ModelSettingsPane::on_checkBoxDefaultAcousticModel_clicked (const bool p_checked)
+{
+    if (p_checked){
+        QString currentModel = m_ui->listWidgetAcoustic->currentItem()->data(Qt::UserRole).toString();
+        Core::setConfiguration("Model/Acoustic",currentModel);
+    } else {
+        Core::setConfiguration("Model/Acoustic",QString());
+    }
+
+    qDebug() << "[ModelSettingsPane::on_checkBoxDefaultAcousticModel_clicked()]" << Core::configuration("Model/Acoustic") << p_checked;
+}
+
+void ModelSettingsPane::on_checkBoxDefaultLanguageModel_clicked (const bool p_checked)
+{
+    if (p_checked){
+        QString currentModel = m_ui->listWidgetLanguage->currentItem()->data(Qt::UserRole).toString();
+        Core::setConfiguration("Model/Language",currentModel);
+    } else {
+        Core::setConfiguration("Model/Language",QString());
+    }
+
+    qDebug() << "[ModelSettingsPane::on_checkBoxDefaultLanguageModel_clicked()]" << Core::configuration("Model/Language") << p_checked;
+}
+
+void ModelSettingsPane::on_listWidgetAcoustic_currentRowChanged (const int p_index)
+{
+    QString defaultModel = Core::configuration ("Model/Acoustic").toString();
+    QString currentModel = m_ui->listWidgetAcoustic->item(p_index)->data(Qt::UserRole).toString();
+    m_ui->checkBoxDefaultAcousticModel->setChecked(defaultModel == currentModel);
+    qDebug() << "[ModelSettingsPane::on_listWidgetAcoustic_currentRowChanged()]" << defaultModel << currentModel;
+}
+
+void ModelSettingsPane::on_listWidgetLanguage_currentRowChanged (const int p_index)
+{
+    QString defaultModel = Core::configuration ("Model/Language").toString();
+    QString currentModel = m_ui->listWidgetLanguage->item(p_index)->data(Qt::UserRole).toString();
+    m_ui->checkBoxDefaultLanguageModel->setChecked(defaultModel == currentModel);
+    qDebug() << "[ModelSettingsPane::on_listWidgetLanguage_currentRowChanged()]" << defaultModel << currentModel;
 }
 
 #include "models-pane.moc"

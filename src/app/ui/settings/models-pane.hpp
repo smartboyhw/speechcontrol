@@ -55,6 +55,10 @@ protected:
 private slots:
     void on_comboBoxAcousticModelView_currentIndexChanged(const int p_index);
     void on_comboBoxLanguageModelView_currentIndexChanged(const int p_index);
+    void on_listWidgetAcoustic_currentRowChanged(const int p_index);
+    void on_listWidgetLanguage_currentRowChanged(const int p_index);
+    void on_checkBoxDefaultAcousticModel_clicked(const bool p_checked);
+    void on_checkBoxDefaultLanguageModel_clicked(const bool p_checked);
     void on_btnAdaptDelete_clicked();
     void on_btnAdaptAcoustic_clicked();
     void on_btnLanguageDelete_clicked();

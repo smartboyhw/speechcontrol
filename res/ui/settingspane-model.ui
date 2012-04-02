@@ -68,13 +68,6 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="btnAdaptDelete">
-           <property name="text">
-            <string>Delete</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <widget class="QComboBox" name="comboBoxAcousticModelView">
            <property name="sizePolicy">
@@ -100,8 +93,22 @@
            </item>
           </widget>
          </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="btnAdaptDelete">
+           <property name="text">
+            <string>Delete</string>
+           </property>
+          </widget>
+         </item>
          <item row="1" column="0" colspan="4">
           <widget class="QListWidget" name="listWidgetAcoustic"/>
+         </item>
+         <item row="2" column="0" colspan="4">
+          <widget class="QCheckBox" name="checkBoxDefaultAcousticModel">
+           <property name="text">
+            <string>Use as default acoustic model.</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>
@@ -120,25 +127,8 @@
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayoutLanguage">
-         <item row="0" column="2">
-          <widget class="QPushButton" name="btnLanguageDelete">
-           <property name="text">
-            <string>Adapt</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <spacer name="horizontalSpacer_4">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
+         <item row="1" column="0" colspan="3">
+          <widget class="QListWidget" name="listWidgetLanguage"/>
          </item>
          <item row="0" column="0">
           <widget class="QComboBox" name="comboBoxLanguageModelView">
@@ -165,8 +155,32 @@
            </item>
           </widget>
          </item>
-         <item row="1" column="0" colspan="3">
-          <widget class="QListWidget" name="listWidgetLanguage"/>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="btnLanguageDelete">
+           <property name="text">
+            <string>Adapt</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="2" column="0" colspan="3">
+          <widget class="QCheckBox" name="checkBoxDefaultLanguageModel">
+           <property name="text">
+            <string>Use as default language model.</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>

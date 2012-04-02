@@ -385,7 +385,7 @@ void Main::updateServiceListing()
     QListWidget* widget = m_ui->listWidgetService;
     widget->clear();
 
-    Services::AbstractModuleList list = Services::Engine::allModules();
+    Services::ModuleList list = Services::Engine::allModules();
 
     Q_FOREACH (const Services::AbstractModule * module, list) {
         QListWidgetItem* item = new QListWidgetItem (widget);

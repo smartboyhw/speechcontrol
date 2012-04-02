@@ -36,26 +36,68 @@ namespace Services
 class AbstractModule;
 class Engine;
 
-typedef QList<AbstractModule*> AbstractModuleList;
+/**
+ * @brief Represents a list of Modules.
+ **/
+typedef QList<AbstractModule*> ModuleList;
 
+/**
+ * @brief Represents  a service module.
+ *
+ * Modules serve as wrappers to the interfaces that internal and external components
+ * of SpeechControl can provide.
+ **/
 class AbstractModule : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY (AbstractModule)
 
 signals:
+    /**
+     * @brief Emitted when this AbstractModule's started.
+     **/
     void started();
+
+    /**
+     * @brief Emitted when this AbstractModule's stopped.
+     **/
     void stopped();
 
 public:
+    /**
+     * @brief Obtains the friendly name of this AbstractModule.
+     **/
     virtual QString name() const = 0;
+
+    /**
+     * @brief Obtains the ID of the AbstractModule.
+     **/
     virtual QString id() const = 0;
+
+    /**
+     * @brief Obtains the QPixmap to use with this AbstractModule.
+     **/
     virtual QPixmap pixmap() const = 0;
+
+    /**
+     * @brief Determines if this AbstractModule is enabled.
+     **/
     virtual bool isEnabled() const = 0;
+
+    /**
+     * @brief Determines if this AbstractModule is active.
+     **/
     virtual bool isActive() const = 0;
 
 public slots:
+    /**
+     * @brief Starts this AbstractModule.
+     **/
     void start();
+
+    /**
+     * @brief Stops this AbstractModule.
+     **/
     void stop();
 
 protected:
@@ -64,6 +106,12 @@ protected:
     AbstractModule (QObject* p_parent);
 };
 
+/**
+ * @brief Represents the core Service engine.
+ *
+ * Engine holds the integral part of dispatching the addition and removal of
+ * modules in SpeechControl.
+ **/
 class Engine : public QObject
 {
     Q_OBJECT
@@ -72,17 +120,55 @@ class Engine : public QObject
     friend class AbstractModule;
 
 signals:
+    /**
+     * @brief Emitted when the Engine's started.
+     **/
     void started();
+
+    /**
+     * @brief Emitted when the Engine's stopped.
+     **/
     void stopped();
 
 public:
+    /**
+     * @brief Searches for a AbstractModule.
+     *
+     * @param p_id The ID of the AbstractModule in question.
+     * @return A pointer to a AbstractModule if found, NULL otherwise.
+     **/
     static AbstractModule* findModule (const QString& p_id);
-    static AbstractModuleList allModules();
+
+    /**
+     * @brief Obtains all of the AbstractModules registered.
+     *
+     * @return :Services::ModuleList
+     **/
+    static ModuleList allModules();
+
+    /**
+     * @brief Registers a AbstractModule.
+     *
+     * @param p_module The Module to add to the Engine.
+     **/
     static void registerModule (AbstractModule* p_module);
+
+    /**
+     * @brief Unregisters a AbstractModule.
+     *
+     * @param p_module The Module to remove to the Engine.
+     **/
     static void unregisterModule (AbstractModule* p_module);
 
 public slots:
+    /**
+     * @brief Starts the Engine.
+     **/
     static void start();
+
+    /**
+     * @brief Stops the Engine.
+     **/
     static void stop();
 
 private:
@@ -91,6 +177,7 @@ private:
 
 }
 }
+
 
 #endif
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

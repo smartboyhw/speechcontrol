@@ -60,7 +60,7 @@ Engine::Engine (const Engine& p_other) : QObject (p_other.parent())
 
 }
 
-AbstractModuleList Engine::allModules()
+ModuleList Engine::allModules()
 {
     return s_list.values();
 }

@@ -290,7 +290,7 @@ Phrase* Session::lastIncompletePhrase() const
     return 0;
 }
 
-PhraseList Session::incompletedPhrases() const
+PhraseList Session::uncompletedPhrases() const
 {
     PhraseList list;
 

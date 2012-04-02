@@ -57,12 +57,12 @@ QFile* Phrase::audio() const
     return new QFile (fileName);
 }
 
-uint Phrase::index() const
+quint8 Phrase::index() const
 {
     return m_elem->attribute ("index").toInt();
 }
 
-uint Phrase::words() const
+quint8 Phrase::words() const
 {
     return text().split (" ").length();
 }

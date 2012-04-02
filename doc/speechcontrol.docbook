@@ -13,7 +13,6 @@
                     <surname>Alcine</surname>
                 </personname>
             </author>
-            <!-- TRANS:ROLES_OF_TRANSLATORS -->
         </authorgroup>
         <legalnotice>&FDLNotice;</legalnotice>
         <date>2012-26-02</date>
@@ -25,6 +24,11 @@
             <keyword>SpeechControl</keyword>
             <keyword>voice commands</keyword>
             <keyword>voice recognition</keyword>
+            <keyword>speech recognition</keyword>
+            <keyword>speech commands</keyword>
+            <keyword>PocketSphinx</keyword>
+            <keyword>Synthetic Intellect Institute</keyword>
+            <keyword>SII</keyword>
         </keywordset>
     </bookinfo>
     <chapter id="index">
@@ -46,7 +50,7 @@
                                         <screeninfo></screeninfo>
                                         <mediaobject>
                                             <imageobject>
-                                                <imagedata fileref="amarok2-4.png" format="PNG"/>
+                                                <imagedata fileref="" format="PNG"/>
                                             </imageobject>
                                             <textobject>
                                                 <phrase></phrase>
@@ -58,14 +62,14 @@
                         </row>
                         <row>
                             <entry>
-                                <para>Amarok 2.4, playing Free Music from Magnatunes</para>
+                                <para>Screenshot Caption</para>
                             </entry>
                         </row>
                     </tbody>
                 </tgroup>
             </informaltable>
         </para>
-        <para>&amarok; is the premier Free, Open Source Music application. More than simply a music player, &amarok; helps you rediscover your music. The innovative interface gives you unprecedented control over your collection, and extends your reach to music everywhere. Use our <link linkend="quick-start-guide">Quick Start Guide</link> to get going quickly, or search out more in-depth information in this handbook.</para>
+        <para>Text</para>
     </chapter>
     <chapter id="quick-start-guide">
         <title>Quick Start Guide</title>
@@ -104,16 +108,16 @@
         <title>Credits and License</title>
         <sect1 id="program-copyright">
             <title>Program copyright</title>
-            <para>Copyright 2010 - 2012 Jacky Alcine (jackyalcine@gmail.com) </para>
+            <para>Copyright 2010 - 2012 Jacky Alcine (jacky.alcine@thesii.org) </para>
             <para>Copyright 2011 - 2012 SpeechControl Developers (spchcntrl-devel@thesii.org)</para>
         </sect1>
         <sect1 id="documentation-copyright">
             <title>Documentation copyright</title>
-            <para>Copyright 2010 - 2012 Jacky Alcine (jackyalcine@gmail.com) </para>
+            <para>Copyright 2010 - 2012 Jacky Alcine (jacky.alcine@thesii.org) </para>
             <para>
                 <note>
                     <para>
-                        Please add your name here if you contribute to the handbook. Please respect alphabetical order
+                        Please add your name here if you contribute to the handbook. Please respect the alphabetical order.
                     </para>
                 </note>
             </para>

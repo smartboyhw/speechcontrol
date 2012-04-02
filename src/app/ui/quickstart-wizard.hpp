@@ -37,6 +37,7 @@ class QuickStart : public WizardBase
         IntroductionPage = 0,
         UserCreationPage,
         MicrophoneCreationPage,
+        AccuracySamplingPage,
         ContentAdditionPage,
         ConclusionPage
     };

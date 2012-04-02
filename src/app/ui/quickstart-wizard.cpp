@@ -18,16 +18,18 @@
 *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
+#include <QIcon>
+#include <QVariantMap>
 
 #include "core.hpp"
 #include "wizards/intro.hpp"
 #include "wizards/outro.hpp"
-#include "quickstart-wizard.hpp"
 #include "wizards/quickstart/userinfo.hpp"
 #include "wizards/micsetup/micselect.hpp"
+#include "wizards/micsetup/micsample.hpp"
+#include "wizards/contents/selection.hpp"
 
-#include <QIcon>
-#include <QVariantMap>
+#include "quickstart-wizard.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
@@ -45,8 +47,12 @@ QuickStart::QuickStart (QWidget* parent) :
              (new Wizards::Pages::UserInitialization));
     setPage (QuickStart::MicrophoneCreationPage,
              (new Wizards::Pages::MicrophoneSelection));
+    setPage (QuickStart::AccuracySamplingPage,
+             (new Wizards::Pages::MicrophoneSample));
+    setPage (QuickStart::ContentAdditionPage,
+             (new Wizards::Pages::SourceSelectionPage));
     setPage (QuickStart::ConclusionPage,
-             (new Wizards::Pages::ConclusionPage(tr("You've successfully set up SpeechControl to settings of your preference."))));
+             (new Wizards::Pages::ConclusionPage (tr ("You've successfully set up SpeechControl to settings of your preference."))));
 }
 
 /// @todo The user's country could be automatically detected by QLocale.

@@ -41,7 +41,8 @@ AccuracyMeter::AccuracyMeter (AcousticModel* p_model) : QObject(),
 
 void AccuracyMeter::setSession (Session* p_session)
 {
-    m_session = p_session;
+    if (p_session && p_session->isValid())
+        m_session = p_session;
 }
 
 void AccuracyMeter::doAssessment (const QString& p_pathHyp)
@@ -49,16 +50,18 @@ void AccuracyMeter::doAssessment (const QString& p_pathHyp)
     if (m_prcss && m_prcss->isOpen())
         return;
 
-    QStringList args;
-    args << "/usr/lib/sphinxtrain/scripts/decode/word_align.pl"
-         << m_session->corpus()->transcription()->fileName()
-         << p_pathHyp
-         ;
+    if (m_session && m_session->isValid()) {
+        QStringList args;
+        args << "/usr/lib/sphinxtrain/scripts/decode/word_align.pl"
+             << m_session->corpus()->transcription()->fileName()
+             << p_pathHyp
+             ;
 
-    m_prcss = new QProcess (this);
-    m_prcss->setProcessChannelMode (QProcess::MergedChannels);
-    connect (m_prcss, SIGNAL (finished (int, QProcess::ExitStatus)), this, SLOT (on_mPrcss_finished (int, QProcess::ExitStatus)));
-    m_prcss->start ("perl", args);
+        m_prcss = new QProcess (this);
+        m_prcss->setProcessChannelMode (QProcess::MergedChannels);
+        connect (m_prcss, SIGNAL (finished (int, QProcess::ExitStatus)), this, SLOT (on_mPrcss_finished (int, QProcess::ExitStatus)));
+        m_prcss->start ("perl", args);
+    }
 }
 
 void AccuracyMeter::on_mPrcss_finished (const int& p_exitCode , QProcess::ExitStatus p_status)

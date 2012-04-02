@@ -64,7 +64,7 @@ void ContentInformationDialog::goToPage (const int p_index)
     }
 
     m_indx = p_index;
-    m_ui->txtEdit->setPlainText (m_content->pageAt (p_index));
+    m_ui->txtEdit->setPlainText (m_content->pageAt (p_index).simplified().trimmed());
     m_ui->lblPageCounter->setText (tr ("Page %1 of %2").arg (p_index + 1).arg (m_content->pageCount()));
 
     const bool isAtLast = m_indx == m_content->pageCount() - 1;

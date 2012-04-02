@@ -30,8 +30,8 @@ namespace SpeechControl
 namespace Plugins
 {
 
-    class Factory;
-    class AbstractPlugin;
+class Factory;
+class AbstractPlugin;
 
 /**
  * @brief Represents a manipulative system to control plug-ins.
@@ -147,7 +147,7 @@ public:
      * @brief Obtains a mapping of all of the plug-ins that can be loaded by SpeechControl.
      * @return A PluginMap of all of the discovered plug-ins for SpeechControl on the system.
      **/
-    static QMap<QString,AbstractPlugin*> availablePlugins();
+    static QMap<QString, AbstractPlugin*> availablePlugins();
 
     /**
      * @brief Obtains the configuration of a plug-in by its specified UUID.
@@ -165,12 +165,32 @@ public:
      **/
     static QSettings* pluginSettings (const QString& p_id);
 
+    /**
+     * @brief Defines a specific plug-in to be loaded on start.
+     *
+     * Sets the plugin by its specific ID, p_id, to be loaded on initialization of
+     * SpeechControl if p_state == TRUE.
+     *
+     * @param p_id The ID of the Plugin.
+     * @param p_state The state of the plug-in's start-up load state.
+     **/
     static void setLoadOnStart (const QString& p_id, const bool p_state);
-    static bool doesLoadOnStart (const QString& id);
+
+    /**
+     * @brief Determines if a specific plug-in loads on start.
+     *
+     * @param p_id The plug-in in question.
+     * @return TRUE if the plug-in loads on start, FALSE otherwise.
+     **/
+    static bool doesLoadOnStart (const QString& p_id);
+
+    /**
+     * @brief Obtains a QStringList of the plug-ins loaded on start.
+     **/
     static QStringList autoStart();
 
 private:
-    static QMap<QString,AbstractPlugin*> s_ldPlgns;  ///< The loaded plug-ins.
+    static QMap<QString, AbstractPlugin*> s_ldPlgns; ///< The loaded plug-ins.
 };
 }
 }

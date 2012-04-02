@@ -19,8 +19,9 @@
  */
 
 #include <stdexcept>
-#include <QDebug>
+
 #include <QFile>
+#include <QDebug>
 
 #include "app/core.hpp"
 #include "sessions/phrase.hpp"
@@ -230,16 +231,19 @@ QString Session::id() const
 
 Session* Session::obtain (const QString& p_id)
 {
-    qDebug() << "[Session::obtain()] Obtaining session" << p_id;
-    return new Session (p_id);
+    if (!p_id.isEmpty() && !p_id.isNull()) {
+        qDebug() << "[Session::obtain()] Obtaining session" << p_id;
+        return new Session (p_id);
+    }
+
+    return 0;
 }
 
-/// @todo Create a new Corpus with this Session.
 Session* Session::create (const Content* p_content)
 {
     const QStringList lst = p_content->pages().join ("\n").simplified().trimmed().replace (".", ".\n").split ("\n", QString::SkipEmptyParts);
     qDebug() << "[Session::create()] Session has" << lst.length() << "sentences.";
-    const QString id = QString::number(qrand());
+    const QString id = QString::number (qrand());
     Corpus* corpus = Corpus::create (lst);
 
     if (!corpus) {
@@ -254,6 +258,7 @@ Session* Session::create (const Content* p_content)
     dateElem.setAttribute ("created", QDateTime::currentDateTimeUtc().toString (Qt::SystemLocaleDate));
     dateElem.setAttribute ("completed", "-1");
     sessElem.setAttribute ("id", id);
+    sessElem.setAttribute ("name", p_content->title());
     sessElem.setAttribute ("content", p_content->id());
     sessElem.setAttribute ("corpus", corpus->id());
 
@@ -356,7 +361,7 @@ void Session::setName (const QString& p_name)
 {
     if (isValid()) {
         if (!p_name.isEmpty() && !p_name.isEmpty()) {
-            m_elem->setAttribute ("Name", p_name);
+            m_elem->setAttribute ("name", p_name);
             save();
         }
     }
@@ -365,8 +370,8 @@ void Session::setName (const QString& p_name)
 QString Session::name() const
 {
     if (isValid()) {
-        if (m_elem->hasAttribute ("Name"))
-            return m_elem->attribute ("Name");
+        if (m_elem->hasAttribute ("name"))
+            return m_elem->attribute ("name");
         else {
             if (content() && content()->isValid())
                 return content()->title();
@@ -380,7 +385,7 @@ QString Session::name() const
 Session* Session::clone() const
 {
     if (isValid()) {
-        const QString id = QString::number(qrand());
+        const QString id = QString::number (qrand());
         Corpus* corpus = m_corpus->clone();
         QDomElement elem = m_elem->cloneNode (true).toElement();
         elem.attribute ("id", id);

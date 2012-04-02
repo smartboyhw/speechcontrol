@@ -65,30 +65,26 @@ Content* Content::obtain (const QString& p_id)
     return s_lst.value (p_id);
 }
 
-Content* Content::obtainFromFile (QString p_file)
+Content* Content::obtainFromFile (const QUrl& p_url)
 {
-    qDebug() << "[Content::obtainFromFile()] Potential Content ID:" << p_file;
+    qDebug() << "[Content::obtainFromFile()] Potential Content URL:" << p_url;
 
-    if (!s_lst.contains (p_file)) {
-        Content* content = new Content (QString::null);
-        QFile* file = new QFile (p_file);
+    Content* content = new Content (QString::null);
+    QFile* file = new QFile (p_url.toLocalFile());
 
-        if (file->open (QIODevice::ReadOnly | QIODevice::Text)) {
-            content->load (file);
-            qDebug() << "[Content::obtainFromFile()] Is content valid? " << content->isValid();
-            SC_ASSERT (content->isValid() , "Invalid Corpus was obtained.");
-
-            s_lst.insert (content->id(), (content));
-            qDebug() << "[Content::obtainFromFile()] Content" << p_file << "rendered.";
-            return content;
-        } else {
-            qDebug() << "[Content::obtainFromFile()] File could not be read." << file->errorString();
-            return 0;
-        }
+    if (file->open (QIODevice::ReadOnly | QIODevice::Text)) {
+        content->load (file);
+        qDebug() << "[Content::obtainFromFile()] Is content valid? " << content->isValid();
+        SC_ASSERT (content->isValid() , "Invalid Corpus was obtained.");
+        qDebug() << "[Content::obtainFromFile()] Content" << p_url << "rendered.";
+        return content;
+    }
+    else {
+        qDebug() << "[Content::obtainFromFile()] File could not be read." << file->errorString();
+        return 0;
     }
 
-    qDebug() << "[Content::obtainFromFile()] Pre-existing Content" << p_file << "obtained.";
-    return s_lst.value (p_file);
+    return content;
 }
 
 void Content::erase()
@@ -159,7 +155,7 @@ void Content::load (QFile* p_file)
 
     m_dom = dom;
     p_file->close();
-    m_id = QFileInfo(*p_file).baseName();
+    m_id = QFileInfo (*p_file).baseName();
     s_lst.insert (m_id, this);
 }
 

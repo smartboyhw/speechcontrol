@@ -54,8 +54,11 @@ typedef QMap<QString, Content*> ContentMap;
  * @brief Represents a collection of text to be used for training by @c Sessions.
  *
  * Contents are the pure-text representation of @c Corpus objects; @c Content objects
- * goes out to provide more specific data about the text being trained.
+ * goes out to provide more specific data about the text being trained. Information about
+ * authors, books and more can be injected into Content objects. AbstractContentSource
+ * provides a interface for rendering Content objects with ease.
  *
+ * @see AbstractContentSource
  **/
 class Content : public QObject
 {
@@ -69,6 +72,9 @@ public:
      **/
     explicit Content (const QString& p_id);
 
+    /**
+     * @brief Destructor.
+     **/
     virtual ~Content();
 
     /**
@@ -78,7 +84,12 @@ public:
      **/
     void load (const QString& p_id);
 
-    void load(QFile* p_file);
+    /**
+     * @brief Loads a Content object from a file.
+     *
+     * @param p_file The QFile to load the Content from.
+     **/
+    void load (QFile* p_file);
 
     /**
      * @brief Erases the Content, wiping all of its information.
@@ -97,6 +108,10 @@ public:
      **/
     uint words() const;
 
+    /**
+     * @brief Obtains a unique count of words in this @Content and returns that number.
+     * @return A unsigned integer representing the unique count of words in the text.
+     **/
     uint uniqueWords() const;
 
     /**
@@ -160,15 +175,18 @@ public:
     /**
      * @brief Obtains a specific @Content by its identifying @c QString.
      * @param p_id The ID to pick out the @c Content by.
-     * @return
      **/
     static Content* obtain (const QString& p_id);
 
-    static Content* obtainFromFile (QString p_id);
+    /**
+     * @brief Obtains a specific @Content from a URL.
+     *
+     * @param p_url The URL to the Content.
+     **/
+    static Content* obtainFromFile (const QUrl& p_url);
 
     /**
-     * @brief
-     * @return
+     * @brief Obtains a list of Contents object recognized by SpeechControl.
      **/
     static ContentList allContents();
 

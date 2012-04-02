@@ -58,3 +58,4 @@ int main (int argc, char** argv)
     return app->exec();
 }
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+

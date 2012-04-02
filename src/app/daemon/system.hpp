@@ -22,6 +22,7 @@
 #define SPEECHCONTROL_DAEMON_SYSTEM_HPP
 
 #include <QObject>
+#include <QtDBus/QDBusConnection>
 #include <QCoreApplication>
 #include "daemon.hpp"
 
@@ -36,6 +37,7 @@ namespace Daemon
 class System : public QObject
 {
     Q_OBJECT
+    void buildDBus();
 public:
     /**
      * @brief ...
@@ -68,10 +70,11 @@ public:
 private:
     static System* s_inst;
     QCoreApplication m_app;
+    QDBusConnection* m_cnntn;
 };
 
 }
 }
 
 #endif // SPEECHCONTROL_DAEMON_SYSTEM_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

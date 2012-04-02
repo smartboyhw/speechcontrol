@@ -21,6 +21,7 @@
 #include <lib/system.hpp>
 #include <lib/config.hpp>
 
+#include "dbus.hpp"
 #include "system.hpp"
 
 using namespace SpeechControl::Daemon;
@@ -28,7 +29,7 @@ using namespace SpeechControl::Daemon;
 System* System::s_inst = 0;
 
 System::System (int p_argc, char** p_argv) : QObject (qApp),
-    m_app (p_argc, p_argv)
+    m_app (p_argc, p_argv), m_cnntn(0)
 {
     m_app.setApplicationName ("SpeechControl");
     m_app.setApplicationVersion (SPCHCNTRL_BUILD_VERSION);
@@ -37,6 +38,15 @@ System::System (int p_argc, char** p_argv) : QObject (qApp),
 
     SpeechControl::System::start (&p_argc, &p_argv);
     connect (&m_app, SIGNAL (aboutToQuit()), Daemon::instance(), SLOT (stop()));
+
+    buildDBus();
+}
+
+void System::buildDBus()
+{
+    m_cnntn = new QDBusConnection(QDBusConnection::sessionBus().connectToBus(QDBusConnection::SessionBus,"SpeechControl"));
+    qDebug() << m_cnntn->registerObject ("/Daemon", (new DBus::DaemonAdaptor));
+    qDebug() << m_cnntn->registerService("org.thesii.SpeechControl.Daemon");
 }
 
 System* System::instance (int p_argc, char** p_argv)
@@ -55,9 +65,8 @@ Daemon* System::daemon()
 
 int System::exec()
 {
-    daemon()->start();
     return m_app.exec();
 }
 
 #include "system.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

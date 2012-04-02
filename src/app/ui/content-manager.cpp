@@ -20,6 +20,7 @@
 
 #include "core.hpp"
 #include "sessions/content.hpp"
+#include <sessions/session.hpp>
 #include "contents-wizard.hpp"
 #include "ui/main-window.hpp"
 #include "content-manager.hpp"
@@ -35,7 +36,8 @@ ContentManager::ContentManager (QWidget* parent) :
     m_content (0)
 {
     ui->setupUi (this);
-    this->setLayout(ui->gridLayout);
+    this->setLayout (ui->gridLayout);
+    ui->groupBox->setLayout (ui->gridLayout_2);
     updateList();
 }
 
@@ -46,18 +48,18 @@ ContentManager::~ContentManager()
 
 void ContentManager::updateList()
 {
-    ContentList l_lst = Content::allContents();
+    ContentList lst = Content::allContents();
     ui->lstContent->clear();
 
-    if (l_lst.empty()) {
+    if (lst.empty()) {
         ui->lblTitle->setText (tr ("No Content"));
     }
     else {
         ui->lblTitle->setText (tr ("No Selection"));
     }
 
-    if (!l_lst.empty()) {
-        Q_FOREACH (const Content * l_cnt, l_lst) {
+    if (!lst.empty()) {
+        Q_FOREACH (const Content * l_cnt, lst) {
             QListWidgetItem* l_item = new QListWidgetItem (l_cnt->title(), ui->lstContent);
             l_item->setData (Qt::UserRole, l_cnt->id());
             ui->lstContent->addItem (l_item);
@@ -75,10 +77,10 @@ void ContentManager::updateList()
 
 void ContentManager::on_btnSelect_clicked()
 {
-    QListWidgetItem* l_item = ui->lstContent->currentItem();
+    QListWidgetItem* item = ui->lstContent->currentItem();
 
-    if (l_item) {
-        m_content = Content::obtain (l_item->data (Qt::UserRole).toString());
+    if (item) {
+        m_content = Content::obtain (item->data (Qt::UserRole).toString());
         accept();
     }
     else {
@@ -89,15 +91,15 @@ void ContentManager::on_btnSelect_clicked()
 
 Content* ContentManager::pickContent()
 {
-    ContentManager* l_wiz = new ContentManager;
+    ContentManager* wiz = new ContentManager;
 
     if (Content::allContents().empty()) {
-        l_wiz->on_btnAdd_clicked();
-        return l_wiz->m_content;
+        wiz->on_btnAdd_clicked();
+        return wiz->m_content;
     }
     else {
-        if (l_wiz->exec() == QDialog::Accepted) {
-            return l_wiz->m_content;
+        if (wiz->exec() == QDialog::Accepted) {
+            return wiz->m_content;
         }
     }
 
@@ -107,9 +109,9 @@ Content* ContentManager::pickContent()
 /// @todo Invoke the Content addition wizard here.
 void ContentManager::on_btnAdd_clicked()
 {
-    ContentWizard* l_wiz = new ContentWizard;
+    ContentWizard* wiz = new ContentWizard;
 
-    if (l_wiz->exec() == QDialog::Accepted) {
+    if (wiz->exec() == QDialog::Accepted) {
         Core::mainWindow()->updateUi();
         updateList();
     }
@@ -123,18 +125,31 @@ void ContentManager::on_btnCancel_clicked()
 
 void ContentManager::on_lstContent_itemSelectionChanged()
 {
-    const QListWidgetItem* l_item = ui->lstContent->currentItem();
+    const QListWidgetItem* item = ui->lstContent->currentItem();
 
-    if (l_item) {
-        const QString id = l_item->data (Qt::UserRole).toString();
+    ui->btnSelect->setEnabled (! (item == 0));
+
+    if (item) {
+        const QString id = item->data (Qt::UserRole).toString();
         const Content* cnt = Content::obtain (id);
         ui->lblTitle->setText (cnt->title());
-        ui->lblWordCount->setText (QString::number (cnt->words()));
-        ui->btnSelect->setEnabled (true);
+        ui->lblAuthor->setText (cnt->author());
+        ui->lblWordCount->setText (tr ("%1 word(s)").arg (QString::number (cnt->words())));
+        uint sessionCount = 0;
+
+        SessionList lst = Session::allSessions();
+        Q_FOREACH(const Session* itm, lst){
+            if (itm->content()->id() == cnt->id())
+                sessionCount ++;
+        }
+
+        ui->lblSessionCount->setText(tr("Used by %1 session(s)").arg(sessionCount));
+
     }
     else {
         ui->lblTitle->setText (tr ("No Selection"));
-        ui->lblWordCount->setText (0);
+        ui->lblAuthor->clear();
+        ui->lblWordCount->clear();
         ui->btnSelect->setEnabled (false);
     }
 }

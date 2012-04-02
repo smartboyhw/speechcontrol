@@ -73,7 +73,7 @@ void SpeechControl::Wizards::Pages::MicrophoneSample::initializePage()
 
 bool SpeechControl::Wizards::Pages::MicrophoneSample::validatePage()
 {
-    return isAtFinalPrompt();
+    return isAtFinalPrompt() || m_index == 0;
 }
 
 bool SpeechControl::Wizards::Pages::MicrophoneSample::isComplete()
@@ -140,6 +140,7 @@ void MicrophoneSample::handleReceivedPrompt (QString p_str)
 
     qDebug() << "[MicrophoneSample::handleReceivedPrompt()] Accuracy of current phrase: " << (int) (percentEqual * 100) << "%";
     ui->progressBarRate->setValue (ui->progressBarRate->value() + increment);
+    emit completeChanged();
 }
 
 #include "micsample.moc"

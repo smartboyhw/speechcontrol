@@ -112,7 +112,7 @@
          <item row="1" column="3">
           <widget class="QPushButton" name="btnSessionInfo">
            <property name="text">
-            <string>Info</string>
+            <string>&amp;Info</string>
            </property>
           </widget>
          </item>
@@ -150,7 +150,7 @@
          <item row="0" column="1">
           <widget class="QPushButton" name="btnAllServices">
            <property name="text">
-            <string>All Services...</string>
+            <string>All Ser&amp;vices...</string>
            </property>
           </widget>
          </item>

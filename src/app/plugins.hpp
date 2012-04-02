@@ -30,8 +30,8 @@
 
 class QPixmap;
 class QAction;
-class QPluginLoader;
 class QSettings;
+class QPluginLoader;
 
 namespace SpeechControl
 {
@@ -270,14 +270,30 @@ private:
     QList<QAction*> m_acts;   ///< The QActions used to add the 'Plugins' menu.
 };
 
+/**
+ * @brief Represents a generic, empty plug-in.
+ *
+ * Generic plug-ins are used to load information about a specific plug-in without
+ * having to load the library for it into memory.
+ **/
 class GenericPlugin : public AbstractPlugin
 {
     Q_OBJECT
     Q_DISABLE_COPY (GenericPlugin)
 
 public:
+    /**
+     * @brief Constructor.
+     *
+     * @param p_id The ID of the plug-in to load.
+     **/
     GenericPlugin (const QString& p_id);
 
+    /**
+     * @brief Obtains the pixmap of a Generic plugin.
+     *
+     * @return The SpeechControl's  application icon.
+     **/
     QPixmap pixmap() const;
 
 protected:

@@ -239,7 +239,7 @@ Session* Session::create (const Content* p_content)
 {
     const QStringList lst = p_content->pages().join ("\n").simplified().trimmed().replace (".", ".\n").split ("\n", QString::SkipEmptyParts);
     qDebug() << "[Session::create()] Session has" << lst.length() << "sentences.";
-    const QString id = QUuid::createUuid().toString().split ("-") [0].replace ("{", "");
+    const QString id = QString::number(qrand());
     Corpus* corpus = Corpus::create (lst);
 
     if (!corpus) {
@@ -380,7 +380,7 @@ QString Session::name() const
 Session* Session::clone() const
 {
     if (isValid()) {
-        const QString id = QUuid::createUuid().toString().split ("-") [0].replace ("{", "");
+        const QString id = QString::number(qrand());
         Corpus* corpus = m_corpus->clone();
         QDomElement elem = m_elem->cloneNode (true).toElement();
         elem.attribute ("id", id);

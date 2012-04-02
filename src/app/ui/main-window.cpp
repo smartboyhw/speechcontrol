@@ -129,9 +129,14 @@ Session* AccuracyUpdaterThread::session() const
 
     QString ssnID = Core::configuration ("Model/BaseCorpus").toString();
 
-    if (ssnID.isNull() && !Session::completedSessions().isEmpty()) {
-        Core::setConfiguration ("Model/BaseCorpus", Session::completedSessions().first()->id());
-        return Session::obtain (Core::configuration ("Model/BaseCorpus").toString());
+    if (ssnID.isNull() || ssnID.isEmpty()) {
+        if (!Session::completedSessions().isEmpty()) {
+            ssnID = Session::completedSessions().first()->id();
+            Core::setConfiguration ("Model/BaseCorpus", ssnID);
+        }
+        else {
+            return 0;
+        }
     }
 
     return Session::obtain (ssnID);
@@ -276,9 +281,9 @@ void Main::doAccuracyCheck()
     m_ui->lblRating->setPixmap (QIcon::fromTheme ("media-playback-play").pixmap (48, 48));
     m_ui->progressBarEstimatedEffort->setRange (0, 1);
     m_ui->progressBarAccuracy->setRange (0, 1);
-    m_ui->progressBarEstimatedEffort->setValue(0);
-    m_ui->progressBarAccuracy->setValue(0);
-    setStatusMessage(tr("Calculating accuracy..."));
+    m_ui->progressBarEstimatedEffort->setValue (0);
+    m_ui->progressBarAccuracy->setValue (0);
+    setStatusMessage (tr ("Calculating accuracy..."));
 
     m_acrcyThrd->start ();
     qDebug() << "[Main::on_acrcyThrd_finished()] Thread invoked.";
@@ -287,9 +292,9 @@ void Main::doAccuracyCheck()
 void Main::on_acrcyThrd_foundNoData()
 {
     m_ui->lblRating->setPixmap (QIcon::fromTheme ("media-playback-stop").pixmap (48, 48));
-    m_ui->progressBarAccuracy->setFormat("No data available.");
-    m_ui->progressBarEstimatedEffort->setFormat("Unable to determine remaining effort.");
-    setStatusMessage(tr("No data found for determining the accuracy of SpeechControl."));
+    m_ui->progressBarAccuracy->setFormat ("No data available.");
+    m_ui->progressBarEstimatedEffort->setFormat ("Unable to determine remaining effort.");
+    setStatusMessage (tr ("No data found for determining the accuracy of SpeechControl."));
 }
 
 void Main::on_acrcyThrd_foundSuccess()

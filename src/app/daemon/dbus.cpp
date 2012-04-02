@@ -18,46 +18,51 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QMetaObject>
-#include <QByteArray>
-#include <QList>
 #include <QMap>
+#include <QList>
 #include <QString>
-#include <QStringList>
 #include <QVariant>
+#include <QByteArray>
+#include <QMetaObject>
+#include <QStringList>
 
 #include "daemon.hpp"
-
 #include "dbus.hpp"
 
+using namespace SpeechControl::Daemon;
+using namespace SpeechControl::Daemon::DBus;
+
 DaemonAdaptor::DaemonAdaptor ()
-    : QDBusAbstractAdaptor (SpeechControl::Daemon::Daemon::instance())
+    : QDBusAbstractAdaptor (Daemon::instance())
 {
     setAutoRelaySignals (true);
+    qDebug() << "[SpeechControl::Daemon::DBus::DaemonAdaptor::{constructor}] Created daemon's core adaptor.";
 }
 
 DaemonAdaptor::~DaemonAdaptor()
 {
+    qDebug() << "[SpeechControl::Daemon::DBus::DaemonAdaptor::{destructor}] Destroyed.";
 }
 
 bool DaemonAdaptor::active() const
 {
+    qDebug() << "[SpeechControl::Daemon::DBus::DaemonAdaptor::active] Is active?" << Daemon::instance()->isActive();
     return qvariant_cast< bool > (parent()->property ("Active"));
 }
 
 QString DaemonAdaptor::listen()
 {
-    return parent()->listen();
+    return Daemon::instance()->listen();
 }
 
 void DaemonAdaptor::start()
 {
-    parent()->start();
+    Daemon::instance()->start();
 }
 
 void DaemonAdaptor::stop()
 {
-    parent()->stop();
+    Daemon::instance()->stop();
 }
 
 #include "dbus.moc"

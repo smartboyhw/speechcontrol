@@ -18,23 +18,32 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef DBUS_HPP
-#define DBUS_HPP
+#ifndef SPCHCNTRL_DAEMON_DBUS_HPP
+#define SPCHCNTRL_DAEMON_DBUS_HPP
 
 #include <QObject>
 #include <QtDBus/QtDBus>
+
 #include "daemon.hpp"
 
+class QString;
+class QVariant;
 class QByteArray;
+class QStringList;
 template<class T> class QList;
 template<class Key, class Value> class QMap;
-class QString;
-class QStringList;
-class QVariant;
+
+namespace SpeechControl
+{
+namespace Daemon
+{
+namespace DBus
+{
 
 class DaemonAdaptor: public QDBusAbstractAdaptor
 {
     Q_OBJECT
+    Q_PROPERTY (bool Active READ active)
     Q_CLASSINFO ("D-Bus Interface", "org.thesii.SpeechControl.Daemon")
     Q_CLASSINFO ("D-Bus Introspection", ""
                  "  <interface name=\"org.thesii.SpeechControl.Daemon\">\n"
@@ -52,26 +61,27 @@ class DaemonAdaptor: public QDBusAbstractAdaptor
                  "    </method>\n"
                  "  </interface>\n"
                  "")
+
 public:
     DaemonAdaptor ();
     virtual ~DaemonAdaptor();
 
-    inline SpeechControl::Daemon::Daemon* parent() const {
-        return static_cast<SpeechControl::Daemon::Daemon*> (QObject::parent());
-    }
-
-public: // PROPERTIES
-    Q_PROPERTY (bool Active READ active)
+public:
     bool active() const;
 
-public Q_SLOTS: // METHODS
+public slots:
     QString listen();
     Q_NOREPLY void start();
     Q_NOREPLY void stop();
-Q_SIGNALS: // SIGNALS
+
+signals:
     void started();
     void stopped();
 };
+
+}
+}
+}
 
 #endif
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

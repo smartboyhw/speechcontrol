@@ -59,7 +59,7 @@ public slots:
 
 private slots:
     void on_btnAdapt_clicked();
-    void on_mMeter_assessmentCompleted (const AccuracyMeter::Status& p_status, const QVariantMap& p_data);
+    void on_mMeter_assessmentCompleted ();
 
 private:
     void invokeAdaption (Session* p_session);

@@ -99,14 +99,14 @@ void Enaction::on_mUtility_endedAdapting()
     }
 
     m_meter = new AccuracyMeter (m_utility->resultingModel());
-    connect (m_meter, SIGNAL (assessmentCompleted (AccuracyMeter::Status, QVariantMap)), this, SLOT (on_mMeter_assessmentCompleted (AccuracyMeter::Status, QVariantMap)));
+    connect (m_meter, SIGNAL (assessmentCompleted ()), this, SLOT (on_mMeter_assessmentCompleted ()));
     m_meter->setSession (m_utility->session());
     m_meter->doAssessment (m_utility->hypothesis()->fileName());
 }
 
-void Enaction::on_mMeter_assessmentCompleted (const AccuracyMeter::Status& p_status, const QVariantMap& p_data)
+void Enaction::on_mMeter_assessmentCompleted ()
 {
-    switch (p_status) {
+    switch (m_meter->status()) {
     case AccuracyMeter::Successful: {
         QVariant accuracyData = wizard()->property ("accuracy-report");
         QVariantList dataSets;
@@ -115,13 +115,13 @@ void Enaction::on_mMeter_assessmentCompleted (const AccuracyMeter::Status& p_sta
             dataSets = accuracyData.toList();
         }
 
-        dataSets << p_data;
+        dataSets << m_meter->data();
         wizard()->setProperty ("accuracy-report", dataSets);
 
         if (m_utility->session() != m_sessions.last())
             invokeAdaption (m_sessions.at (m_sessions.indexOf (m_utility->session()) + 1));
 
-        qDebug() << "[Enaction::on_mMeter_assessmentCompleted()]" << p_data;
+        qDebug() << "[Enaction::on_mMeter_assessmentCompleted()]" << m_meter->data();
         wizard()->setProperty("accuracy-rating","passed");
     }
     break;
@@ -130,7 +130,7 @@ void Enaction::on_mMeter_assessmentCompleted (const AccuracyMeter::Status& p_sta
         QMessageBox::critical(this,tr("Failed to Determine Accuracy"),
                               tr("SpeechControl was unable to determine the accuracy "
                                 "of the adapted acoustic model.\n\n<b>Error message</b>: %1\nOutput:\n<pre>%2</pre>"
-                            ).arg(p_data["message"].toString()).arg(p_data["output"].toString()));
+                              ).arg(m_meter->data()["message"].toString()).arg(m_meter->data()["output"].toString()));
         wizard()->setProperty("accuracy-rating","failed");
         wizard()->next();
     } break;

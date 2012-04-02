@@ -59,7 +59,7 @@ void ContentManager::updateList()
     if (!l_lst.empty()) {
         Q_FOREACH (const Content * l_cnt, l_lst) {
             QListWidgetItem* l_item = new QListWidgetItem (l_cnt->title(), ui->lstContent);
-            l_item->setData (Qt::UserRole, l_cnt->id().toString());
+            l_item->setData (Qt::UserRole, l_cnt->id());
             ui->lstContent->addItem (l_item);
 
             if (m_content && m_content->id() == l_cnt->id()) {
@@ -78,7 +78,7 @@ void ContentManager::on_btnSelect_clicked()
     QListWidgetItem* l_item = ui->lstContent->currentItem();
 
     if (l_item) {
-        m_content = Content::obtain (QUuid (l_item->data (Qt::UserRole).toString()));
+        m_content = Content::obtain (l_item->data (Qt::UserRole).toString());
         accept();
     }
     else {
@@ -126,10 +126,10 @@ void ContentManager::on_lstContent_itemSelectionChanged()
     const QListWidgetItem* l_item = ui->lstContent->currentItem();
 
     if (l_item) {
-        const QUuid l_uuid (l_item->data (Qt::UserRole).toString());
-        const Content* l_cnt = Content::obtain (l_uuid);
-        ui->lblTitle->setText (l_cnt->title());
-        ui->lblWordCount->setText (QString::number (l_cnt->words()));
+        const QString id = l_item->data (Qt::UserRole).toString();
+        const Content* cnt = Content::obtain (id);
+        ui->lblTitle->setText (cnt->title());
+        ui->lblWordCount->setText (QString::number (cnt->words()));
         ui->btnSelect->setEnabled (true);
     }
     else {

@@ -90,7 +90,7 @@ void ContentSettingsPane::updateUi()
         Q_FOREACH (const Content * cnt, lst) {
             const QString lbl = cnt->title();
             QListWidgetItem* item = new QListWidgetItem (widget);
-            item->setData (Qt::UserRole, cnt->id().toString());
+            item->setData (Qt::UserRole, cnt->id());
             widget->addItem (item);
 
             if (lbl.isEmpty()) {

@@ -49,17 +49,18 @@ void Dictionary::load (const QString& p_id)
     load (getPath (p_id));
 }
 
-/// @todo The words should be separated by any non-alphanumeric symbol.
 Dictionary* Dictionary::create (QStringList p_wordlist, QString p_id)
 {
     QFile* fileDictionary = new QFile (getPath (p_id));
-    fileDictionary->open (QIODevice::WriteOnly | QIODevice::Text);
+    fileDictionary->open (QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
     QTextStream strm (fileDictionary);
+    qDebug() << "[Dictionary::create()] Removed " << p_wordlist.removeDuplicates() << "extra words.";
 
-    Q_FOREACH (const QString & word, p_wordlist) {
+    Q_FOREACH (const QString& word, p_wordlist) {
         QString phonemes;
         QString wordUpper = word.toUpper();
-        wordUpper = wordUpper.trimmed().simplified();
+        wordUpper = wordUpper.trimmed().simplified().toAscii();
+        qDebug() << wordUpper << word;
         strm << wordUpper << "\t" << wordUpper << endl;
     }
 

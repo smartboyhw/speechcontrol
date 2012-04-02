@@ -30,6 +30,7 @@ Application (general)
 * Generate icons for Voxforge.
 * Determine if adding icons to /usr/share/icons/hicolor/*x* would make icon detection better.
 * Segment the core of the application into an external component that can be used by other programming languages.
+* Consider merging the AbstractAgent class into the Services::AbstractModule class.
 
 Application (daemon)
 ----------------------------------------------------------

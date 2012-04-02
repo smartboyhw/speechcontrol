@@ -272,7 +272,7 @@ Session* Session::create (const Content* p_content)
 
 Phrase* Session::firstIncompletePhrase() const
 {
-    const PhraseList lst = incompletedPhrases();
+    const PhraseList lst = uncompletedPhrases();
 
     if (!lst.isEmpty())
         return lst.first();
@@ -282,7 +282,7 @@ Phrase* Session::firstIncompletePhrase() const
 
 Phrase* Session::lastIncompletePhrase() const
 {
-    const PhraseList lst = incompletedPhrases();
+    const PhraseList lst = uncompletedPhrases();
 
     if (!lst.isEmpty())
         return lst.last();
@@ -334,7 +334,7 @@ QDateTime Session::dateCreated() const
 
 bool Session::isCompleted() const
 {
-    return incompletedPhrases().isEmpty() == true;
+    return uncompletedPhrases().isEmpty() == true;
 }
 
 void Session::erase() const

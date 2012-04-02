@@ -119,6 +119,9 @@ public:
      **/
     AcousticModel* resultingModel();
 
+    /**
+     * @brief Obtains the current phase of the AdaptionUtility.
+     **/
     Phases currentPhase();
 
     /**
@@ -133,6 +136,9 @@ public:
      **/
     QString obtainPhaseText (const SpeechControl::AdaptationUtility::Phases& p_phase) const;
 
+    /**
+     * @brief Obtains the temporary file used for rendering the hypothesis.
+     **/
     QTemporaryFile* hypothesis();
 
 signals:
@@ -157,7 +163,6 @@ signals:
 
     /**
      * @brief Emitted when the AdaptionUtility has begun.
-     *
      **/
     void startedAdapting();
 

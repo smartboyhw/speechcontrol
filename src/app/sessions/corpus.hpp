@@ -86,8 +86,8 @@ public:
      * @brief Destructor.
      *
      **/
-
     virtual ~Corpus();
+
     /**
      * @brief Obtains an existing Corpus from its specified ID.
      * @param p_id The ID of the corpus to be found.

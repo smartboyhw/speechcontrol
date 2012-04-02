@@ -35,7 +35,8 @@
 
 using namespace SpeechControl;
 
-Corpus::Corpus (const QString& p_id) : QObject(), m_dom (new QDomDocument), m_dict (0), m_phraseList()
+Corpus::Corpus (const QString& p_id) : QObject(), m_id (p_id),
+    m_dom (new QDomDocument), m_dict (0), m_phraseList()
 {
     load (p_id);
 }
@@ -368,59 +369,67 @@ const QDateTime Corpus::timeCompleted() const
 
 QFile* Corpus::fileIds() const
 {
-    QFile* fileIds = new QFile (getPath (m_id) + "/fileids");
+    if (isValid()) {
+        QFile* fileIds = new QFile (getPath (m_id) + "/fileids");
 
-    if (!fileIds->exists()) {
-        fileIds->open (QIODevice::WriteOnly | QIODevice::Truncate);
+        if (!fileIds->exists()) {
+            fileIds->open (QIODevice::WriteOnly | QIODevice::Truncate);
 
-        if (!fileIds->isOpen() || !fileIds->isWritable()) {
-            qDebug() << "[Corpus::fileIds()] Can't open fileids for writing:" << fileIds->errorString();
-            return 0;
+            if (!fileIds->isOpen() || !fileIds->isWritable()) {
+                qDebug() << "[Corpus::fileIds()] Can't open fileids for writing:" << fileIds->errorString();
+                return 0;
+            }
+
+            QTextStream strm (fileIds);
+
+            Q_FOREACH (const Phrase * phrase, phrases()) {
+                QFileInfo currentFile (phrase->audio()->fileName());
+                const QString fileid = currentFile.baseName();
+                strm << fileid << endl;
+            }
+
+            fileIds->close();
         }
 
-        QTextStream strm (fileIds);
-
-        Q_FOREACH (const Phrase * phrase, phrases()) {
-            QFileInfo currentFile (phrase->audio()->fileName());
-            const QString fileid = currentFile.baseName();
-            strm << fileid << endl;
-        }
-
-        fileIds->close();
+        return fileIds;
     }
 
-    return fileIds;
+    return 0;
 }
 
 QFile* Corpus::transcription (QString const& p_silencePrefix,
                               QString const& p_silenceSuffix) const
 {
-    QFile* transcription = new QFile (getPath (m_id) + "/transcription");
+    if (isValid()) {
+        QFile* transcription = new QFile (getPath (m_id) + "/transcription");
 
-    if (!transcription->exists()) {
-        transcription->open (QIODevice::WriteOnly | QIODevice::Truncate);
+        if (!transcription->exists()) {
+            transcription->open (QIODevice::WriteOnly | QIODevice::Truncate);
 
-        if (!transcription->isOpen() || !transcription->isWritable()) {
-            qDebug() << "[Corpus::transcription()] Can't open transcription for writing:" << transcription->errorString();
-            return 0;
+            if (!transcription->isOpen() || !transcription->isWritable()) {
+                qDebug() << "[Corpus::transcription()] Can't open transcription for writing:" << transcription->errorString();
+                return 0;
+            }
+
+            QTextStream strm (transcription);
+
+            Q_FOREACH (const Phrase * phrase, phrases()) {
+                QFileInfo currentFile (phrase->audio()->fileName());
+                const QString fileid = currentFile.baseName();
+                const QString phraseText = phrase->text().toUpper();
+                strm << p_silencePrefix << " "
+                     << phraseText << " "
+                     << p_silenceSuffix << " "
+                     << "(" << fileid << ")" << endl;
+            }
+
+            transcription->close();
         }
 
-        QTextStream strm (transcription);
-
-        Q_FOREACH (const Phrase * phrase, phrases()) {
-            QFileInfo currentFile (phrase->audio()->fileName());
-            const QString fileid = currentFile.baseName();
-            const QString phraseText = phrase->text().toUpper();
-            strm << p_silencePrefix << " "
-                 << phraseText << " "
-                 << p_silenceSuffix << " "
-                 << "(" << fileid << ")" << endl;
-        }
-
-        transcription->close();
+        return transcription;
     }
 
-    return transcription;
+    return 0;
 }
 
 /// @todo What to clean-up?

@@ -23,6 +23,7 @@
 
 #include <QDebug>
 
+/// @brief Allows a class to be used as a singleton.
 #define SC_SINGLETON(Type) \
     private:\
         static Type* s_inst;\
@@ -37,7 +38,7 @@
             }\
             return s_inst;\
         }\
- 
+
 #ifndef QT_NO_DEBUG
 # define SC_ASSERT(condition,message) ((!(#condition)) ? qt_assert("condition##message",__FILE__,__LINE__) : qt_noop())
 #else
@@ -45,4 +46,4 @@
 #endif
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

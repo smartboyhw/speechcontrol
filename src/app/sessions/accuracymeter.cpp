@@ -27,7 +27,7 @@
 
 using namespace SpeechControl;
 
-AccuracyMeter::AccuracyMeter (QObject* parent) : QObject (parent), m_prcss (0), m_model (0), m_session (0)
+AccuracyMeter::AccuracyMeter (QObject* p_parent) : QObject (parent), m_prcss (0), m_model (0), m_session (0)
 {
 
 }
@@ -64,7 +64,6 @@ void AccuracyMeter::doAssessment (const QString& p_pathHyp)
 
 void AccuracyMeter::on_mPrcss_finished (const int& p_exitCode , QProcess::ExitStatus p_status)
 {
-    qDebug() << p_exitCode << p_status;
     parseOutput (m_prcss->readAllStandardOutput());
 }
 

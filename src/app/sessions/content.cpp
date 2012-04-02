@@ -70,7 +70,7 @@ Content* Content::obtainFromFile (const QUrl& p_url)
     qDebug() << "[Content::obtainFromFile()] Potential Content URL:" << p_url;
 
     Content* content = new Content (QString::null);
-    QFile* file = new QFile (p_url.toLocalFile());
+    QFile* file = new QFile (p_url.toString());
 
     if (file->open (QIODevice::ReadOnly | QIODevice::Text)) {
         content->load (file);

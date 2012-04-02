@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>365</width>
-    <height>298</height>
+    <width>406</width>
+    <height>355</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,8 +22,8 @@
     <rect>
      <x>4</x>
      <y>4</y>
-     <width>361</width>
-     <height>293</height>
+     <width>401</width>
+     <height>349</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -47,6 +47,9 @@
       <property name="text">
        <string>Session Title</string>
       </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
     <item row="1" column="0">
@@ -55,7 +58,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="usesScrollButtons">
        <bool>false</bool>
@@ -69,8 +72,8 @@
          <rect>
           <x>2</x>
           <y>1</y>
-          <width>345</width>
-          <height>205</height>
+          <width>389</width>
+          <height>261</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_2">
@@ -194,7 +197,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_3">
+            <widget class="QPushButton" name="btnAdaptSession">
              <property name="text">
               <string>Adapt</string>
              </property>
@@ -227,8 +230,8 @@
          <rect>
           <x>4</x>
           <y>0</y>
-          <width>345</width>
-          <height>205</height>
+          <width>385</width>
+          <height>261</height>
          </rect>
         </property>
         <layout class="QGridLayout" name="gridLayout_3">

@@ -336,7 +336,8 @@ void AdaptationUtility::generateFeatures()
 
     // Build argument values.
     QDir dirInput (m_session->corpus()->audioPath());
-    QDir dirOutput = QDir::temp();
+    QDir dirOutput(QDir::tempPath() + "/" + m_session->id() + "-" + QString::number(qrand()));
+    dirOutput.mkpath(dirOutput.path());
     QString suffixInput = "raw";
     QString suffiXOutput = "mfc";
     QFile* controlFile = m_session->corpus()->fileIds();

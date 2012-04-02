@@ -31,6 +31,7 @@
 #include <app/config.hpp>
 
 class QFile;
+class QFile;
 class QDomDocument;
 
 namespace SpeechControl
@@ -64,18 +65,20 @@ class Content : public QObject
 public:
     /**
      * @brief Default constructor.
-     * @param p_uuid The uuid of the @c Content.
+     * @param p_id The uuid of the @c Content.
      **/
-    explicit Content (const QString& p_uuid);
+    explicit Content (const QString& p_id);
 
     virtual ~Content();
 
     /**
-     * @brief Loads a @c Content object by a specified UUID.
-     * @param p_uuid The uuid of the Content to load.
+     * @brief Loads a @c Content object by a specified ID.
+     * @param p_id The uuid of the Content to load.
      * @note After loading, you should check to see if isValid() returns true. It's possible for the loading operation to fail.
      **/
-    void load (const QString& p_uuid);
+    void load (const QString& p_id);
+
+    void load(QFile* p_file);
 
     /**
      * @brief Erases the Content, wiping all of its information.
@@ -109,8 +112,8 @@ public:
     uint characters() const;
 
     /**
-     * @brief Obtains the UUID of this @c Content.
-     * @return The UUID of this @c Content.
+     * @brief Obtains the ID of this @c Content.
+     * @return The ID of this @c Content.
      **/
     QString id() const;
 
@@ -156,10 +159,12 @@ public:
 
     /**
      * @brief Obtains a specific @Content by its identifying @c QString.
-     * @param p_uuid The UUID to pick out the @c Content by.
+     * @param p_id The ID to pick out the @c Content by.
      * @return
      **/
-    static Content* obtain (const QString& p_uuid);
+    static Content* obtain (const QString& p_id);
+
+    static Content* obtainFromFile (QString p_id);
 
     /**
      * @brief

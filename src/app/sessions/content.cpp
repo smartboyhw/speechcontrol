@@ -65,6 +65,32 @@ Content* Content::obtain (const QString& p_id)
     return s_lst.value (p_id);
 }
 
+Content* Content::obtainFromFile (QString p_file)
+{
+    qDebug() << "[Content::obtainFromFile()] Potential Content ID:" << p_file;
+
+    if (!s_lst.contains (p_file)) {
+        Content* content = new Content (QString::null);
+        QFile* file = new QFile (p_file);
+
+        if (file->open (QIODevice::ReadOnly | QIODevice::Text)) {
+            content->load (file);
+            qDebug() << "[Content::obtainFromFile()] Is content valid? " << content->isValid();
+            SC_ASSERT (content->isValid() , "Invalid Corpus was obtained.");
+
+            s_lst.insert (content->id(), (content));
+            qDebug() << "[Content::obtainFromFile()] Content" << p_file << "rendered.";
+            return content;
+        } else {
+            qDebug() << "[Content::obtainFromFile()] File could not be read." << file->errorString();
+            return 0;
+        }
+    }
+
+    qDebug() << "[Content::obtainFromFile()] Pre-existing Content" << p_file << "obtained.";
+    return s_lst.value (p_file);
+}
+
 void Content::erase()
 {
     QFile* file = new QFile (getPath (m_id));
@@ -82,7 +108,6 @@ void Content::load (const QString& p_id)
 {
     m_id = p_id;
     QFile* file = new QFile (getPath (m_id));
-    QDomDocument* dom = new QDomDocument ("Content");
 
     if (!file->exists()) {
         qWarning() << "[Content::load()] Content" << m_id << "doesn't exist.";
@@ -100,15 +125,21 @@ void Content::load (const QString& p_id)
         return;
     }
 
-    QTextStream strm (file);
+    load (file);
+}
+
+void Content::load (QFile* p_file)
+{
+    QDomDocument* dom = new QDomDocument ("Content");
+    QTextStream strm (p_file);
     strm.setCodec ("UTF-8");
 
     {
         QString errorMsg;
-        int errorLine, l_errorColumn;
+        int errorLine, errorColumn;
 
-        if (!dom->setContent (strm.readAll() , &errorMsg , &errorLine , &l_errorColumn)) {
-            qWarning() << "[Content::load()] Couldn't parse Content;" << errorMsg << "on l." << errorLine << "; col." << l_errorColumn;
+        if (!dom->setContent (strm.readAll() , &errorMsg , &errorLine , &errorColumn)) {
+            qWarning() << "[Content::load()] Couldn't parse Content;" << errorMsg << "on l." << errorLine << "; col." << errorColumn;
             m_id = QString();
             return;
         }
@@ -127,7 +158,8 @@ void Content::load (const QString& p_id)
     }
 
     m_dom = dom;
-    file->close();
+    p_file->close();
+    m_id = QFileInfo(*p_file).baseName();
     s_lst.insert (m_id, this);
 }
 
@@ -156,12 +188,8 @@ void Content::parseText (const QString& p_text)
 
 bool Content::isValid() const
 {
-    if (m_id.isNull()) {
-        qDebug() << "[Content::isValid()] ID of Content is null.";
-        return false;
-    }
-    else if (!QFile::exists (getPath (m_id))) {
-        qDebug() << "[Content::isValid()] Content's data file doesn't exists." << getPath (m_id);
+    if (m_id.isNull() || m_id.isEmpty()) {
+        qDebug() << "[Content::isValid()] ID of Content is null." << m_id;
         return false;
     }
     else if (m_pages.isEmpty()) {
@@ -212,8 +240,8 @@ QString Content::title() const
 {
     if (isValid()) {
         QDomElement domElem = m_dom->documentElement();
-        QDomElement bilboElem = domElem.namedItem ("Bibliography").toElement();
-        return bilboElem.attribute ("Title");
+        QDomElement bilboElem = domElem.namedItem ("Book").toElement();
+        return bilboElem.attribute ("title");
     }
     else {
         qWarning() << "[Content::title()] Core DOM element is null.";
@@ -225,8 +253,8 @@ QString Content::author() const
 {
     if (isValid()) {
         QDomElement domElem = m_dom->documentElement();
-        QDomElement bilboElem = domElem.namedItem ("Bibliography").toElement();
-        return bilboElem.attribute ("Author");
+        QDomElement bilboElem = domElem.namedItem ("Book").toElement();
+        return bilboElem.attribute ("author");
     }
     else {
         qWarning() << "[Content::title()] Core DOM element is null.";
@@ -247,13 +275,14 @@ QString Content::id() const
 ContentList Content::allContents()
 {
     ContentList lst;
-    lst.append(findAllContents(Core::configurationPath().path() + "/contents/"));
-    lst.append(findAllContents(SPCHCNTRL_SYSTEM_CONTENT_DIR));
+    lst.append (findAllContents (Core::configurationPath().path() + "/contents/"));
+    lst.append (findAllContents (SPCHCNTRL_SYSTEM_CONTENT_DIR));
 
     return lst;
 }
 
-ContentList Content::findAllContents(QString p_path){
+ContentList Content::findAllContents (QString p_path)
+{
     ContentList lst;
     QDir dir (p_path);
     dir.setFilter (QDir::Files);
@@ -269,7 +298,7 @@ ContentList Content::findAllContents(QString p_path){
             continue;
         }
 
-        Content* content = Content::obtain (id);
+        Content* content = Content::obtainFromFile (dir.absoluteFilePath (id));
         qDebug () << "[Content::allContents()] Is content null?" << (content == 0);
         qDebug () << "[Content::allContents()] Is content" << id << "valid?" << content->isValid();
 
@@ -301,17 +330,17 @@ QString Content::pageAt (const int& p_index) const
 
 Content* Content::create (const QString& p_author, const QString& p_title, const QString& p_content)
 {
-    QString id = QString::number(qrand());
+    QString id = QString::number (qrand());
     qDebug() << "[Content::create()] Creating content with ID" << id << "...";
 
     QDomDocument dom ("Content");
     QDomElement domElem = dom.createElement ("Content");
-    domElem.setAttribute ("Uuid", id);
+    domElem.setAttribute ("Id", id);
     dom.appendChild (domElem);
 
-    QDomElement bilboElem = dom.createElement ("Bibliography");
-    bilboElem.setAttribute ("Author", p_author);
-    bilboElem.setAttribute ("Title", p_title);
+    QDomElement bilboElem = dom.createElement ("Book");
+    bilboElem.setAttribute ("author", p_author);
+    bilboElem.setAttribute ("title", p_title);
     domElem.appendChild (bilboElem);
 
     QDomElement textElem = dom.createElement ("Text");
@@ -438,10 +467,11 @@ bool TextContentSource::setFile (QFile* p_file)
         QByteArray rawText = p_file->readAll();
         QString text (rawText);
 
-        setText(text);
-        setTitle("Unknown Title");
-        setAuthor("Unknown Author");
-    } else {
+        setText (text);
+        setTitle ("Unknown Title");
+        setAuthor ("Unknown Author");
+    }
+    else {
 
         const QDomElement book = document.documentElement().namedItem ("Book").toElement();
         const QString author = book.attribute ("author");

@@ -85,7 +85,7 @@ void AccuracyUpdaterThread::assessmentCompleted ()
         break;
     }
 
-    qDebug() << "[AccuracyUpdaterThread::assessmentCompleted()]" << m_meter->status();
+    qDebug() << "[AccuracyUpdaterThread::assessmentCompleted()] Status: " << m_meter->status();
 
     this->quit();
 }

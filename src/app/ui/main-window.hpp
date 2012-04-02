@@ -22,11 +22,16 @@
 #ifndef MAIN_HPP
 #define MAIN_HPP
 
+#include <QThread>
+#include <QVariant>
+#include <QVariantMap>
 #include <QMainWindow>
 
-class QTimer;
+#include <app/sessions/accuracymeter.hpp>
+
 class QProgressBar;
 class QListWidgetItem;
+
 namespace Ui
 {
 class MainWindow;
@@ -34,6 +39,30 @@ class MainWindow;
 
 namespace SpeechControl
 {
+
+class AccuracyUpdaterThread : public QThread
+{
+    Q_OBJECT
+    AccuracyMeter* m_meter;
+
+signals:
+    void foundError();
+    void foundSuccess();
+    void foundNoData();
+
+public:
+    explicit AccuracyUpdaterThread (QObject* p_parent = 0) ;
+    virtual ~AccuracyUpdaterThread();
+    QVariantMap data();
+    AccuracyMeter::Status status();
+
+private:
+    virtual void run();
+    Session* session() const;
+
+private slots:
+    void assessmentCompleted();
+};
 
 class Indicator;
 namespace Plugins
@@ -50,7 +79,6 @@ namespace Windows
 {
 
 class DictationSettingsPane;
-
 class DesktopControlSettingsPane;
 
 /**
@@ -65,6 +93,7 @@ class Main : public QMainWindow
     friend class SpeechControl::Core;
     friend class SpeechControl::Indicator;
     friend class Plugins::AbstractPlugin;
+    friend class SpeechControl::AccuracyUpdaterThread;
 
 public:
     /**
@@ -104,7 +133,7 @@ public slots:
      * @param p_value The value of the progress on a scale of 0.0 to 1.0
      **/
     void setProgress (const double p_value);
-
+    void on_acrcyThrd_foundNoData();
 private slots:
     // desktop control
     void on_actionDesktopControlOptions_triggered();
@@ -136,8 +165,14 @@ private slots:
     void on_listWidgetSessions_itemSelectionChanged();
 
     // services pane
-    void on_listWidgetService_itemClicked(QListWidgetItem* p_item);
+    void on_listWidgetService_itemClicked (QListWidgetItem* p_item);
     void on_btnAllServices_clicked();
+
+    // recognition pane
+    void on_acrcyThrd_foundError();
+    void on_acrcyThrd_foundSuccess();
+    void on_acrcyThrd_finished();
+    void doAccuracyCheck();
 
     // misc.
     void on_actionPluginOptions_triggered();
@@ -151,10 +186,9 @@ private:
     virtual void closeEvent (QCloseEvent* p_closeEvent);
     void updateSessionListing();
     void updateServiceListing();
-    void updateRecognitionInfo();
     Ui::MainWindow* m_ui;
     QProgressBar* m_prgStatusbar;
-    QTimer* m_tckr;
+    AccuracyUpdaterThread* m_acrcyThrd;
 };
 }
 }

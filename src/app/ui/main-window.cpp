@@ -23,7 +23,7 @@
 #include <QUuid>
 #include <QMenu>
 #include <QDebug>
-#include <QVariant>
+#include <QTimer>
 #include <QProcess>
 #include <QSettings>
 #include <QMessageBox>
@@ -33,6 +33,7 @@
 #include <QTableWidget>
 
 #include <lib/abstractaudiosource.hpp>
+#include <lib/acousticmodel.hpp>
 
 #include "core.hpp"
 #include "indicator.hpp"
@@ -62,11 +63,91 @@ using namespace SpeechControl::Windows::Managers;
 
 using SpeechControl::Windows::Main;
 
-Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0)
+AccuracyUpdaterThread::AccuracyUpdaterThread (QObject* p_parent) : QThread (p_parent)
+{
+}
+
+AccuracyUpdaterThread::~AccuracyUpdaterThread()
+{
+
+}
+
+void AccuracyUpdaterThread::assessmentCompleted ()
+{
+    switch (m_meter->status()) {
+    case AccuracyMeter::Successful:
+        emit foundSuccess();
+        break;
+
+    default:
+    case AccuracyMeter::Error:
+        emit foundError();
+        break;
+    }
+
+    qDebug() << "[AccuracyUpdaterThread::assessmentCompleted()]" << m_meter->status();
+
+    this->quit();
+}
+
+QVariantMap AccuracyUpdaterThread::data()
+{
+    return m_meter->data();
+}
+
+AccuracyMeter::Status AccuracyUpdaterThread::status()
+{
+    return m_meter->status();
+}
+
+void AccuracyUpdaterThread::run()
+{
+    qDebug() << "[AccuracyUpdaterThread::run()] Preparing for accuracy check...";
+
+    if (session()) {
+        AcousticModel* model = new AcousticModel (Core::configuration ("Model/Acoustic").toString());
+        m_meter = new AccuracyMeter (model);
+        m_meter->setSession (session());
+        connect (m_meter, SIGNAL (assessmentCompleted()), this, SLOT (assessmentCompleted()));
+        m_meter->doAssessment (QString::null);
+
+        qDebug() << "[AccuracyUpdaterThread::run()] Initializing accuracy check...";
+        this->exec();
+        qDebug() << "[AccuracyUpdaterThread::run()] Check completed.";
+    }
+    else {
+        qDebug() << "[AccuracyUpdaterThread::run()] No session to use; queuing check in 5 seconds...";
+        emit foundNoData();
+        this->exit();
+    }
+}
+
+Session* AccuracyUpdaterThread::session() const
+{
+    if (Session::allSessions().empty())
+        return 0;
+
+    QString ssnID = Core::configuration ("Model/BaseCorpus").toString();
+
+    if (ssnID.isNull() && !Session::completedSessions().isEmpty()) {
+        Core::setConfiguration ("Model/BaseCorpus", Session::completedSessions().first()->id());
+        return Session::obtain (Core::configuration ("Model/BaseCorpus").toString());
+    }
+
+    return Session::obtain (ssnID);
+}
+
+Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0), m_acrcyThrd (0)
 {
     m_ui->setupUi (this);
     m_ui->retranslateUi (this);
     m_prgStatusbar = new QProgressBar (this);
+    m_acrcyThrd = new AccuracyUpdaterThread (this);
+
+    connect (m_acrcyThrd, SIGNAL (foundError()),   this, SLOT (on_acrcyThrd_foundError()));
+    connect (m_acrcyThrd, SIGNAL (foundSuccess()), this, SLOT (on_acrcyThrd_foundSuccess()));
+    connect (m_acrcyThrd, SIGNAL (finished()),     this, SLOT (on_acrcyThrd_finished()));
+    connect (m_acrcyThrd, SIGNAL (foundNoData()),  this, SLOT (on_acrcyThrd_foundNoData()));
 
     // Redo layout
     m_ui->centralwidget->setLayout (m_ui->gLayoutMain);
@@ -103,6 +184,7 @@ Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0)
 
     // Greet the user :)
     setStatusMessage (tr ("Welcome to %1, speech recognition for Linux.").arg (QApplication::applicationName()), 4000);
+    doAccuracyCheck();
 }
 
 void Main::closeEvent (QCloseEvent* p_closeEvent)
@@ -182,6 +264,49 @@ void Main::setStatusMessage (const QString& p_message , const int p_timeout)
     m_ui->statusBar->showMessage (p_message, p_timeout);
 }
 
+void Main::on_acrcyThrd_finished()
+{
+    QTimer::singleShot (1000 * 5, Core::mainWindow(), SLOT (doAccuracyCheck()));
+}
+
+void Main::doAccuracyCheck()
+{
+    qDebug() << "[Main::on_acrcyThrd_finished()] Invoking accuracy check thread...";
+
+    m_ui->lblRating->setPixmap (QIcon::fromTheme ("media-playback-play").pixmap (48, 48));
+    m_ui->progressBarEstimatedEffort->setRange (0, 1);
+    m_ui->progressBarAccuracy->setRange (0, 1);
+    m_ui->progressBarEstimatedEffort->setValue(0);
+    m_ui->progressBarAccuracy->setValue(0);
+    setStatusMessage(tr("Calculating accuracy..."));
+
+    m_acrcyThrd->start ();
+    qDebug() << "[Main::on_acrcyThrd_finished()] Thread invoked.";
+}
+
+void Main::on_acrcyThrd_foundNoData()
+{
+    m_ui->lblRating->setPixmap (QIcon::fromTheme ("media-playback-stop").pixmap (48, 48));
+    m_ui->progressBarAccuracy->setFormat("No data available.");
+    m_ui->progressBarEstimatedEffort->setFormat("Unable to determine remaining effort.");
+    setStatusMessage(tr("No data found for determining the accuracy of SpeechControl."));
+}
+
+void Main::on_acrcyThrd_foundSuccess()
+{
+
+}
+
+void Main::on_acrcyThrd_foundError()
+{
+    m_ui->lblRating->setPixmap (QIcon::fromTheme ("dialog-error").pixmap (48, 48));
+    m_ui->progressBarAccuracy->setRange (0, 1);
+    m_ui->progressBarAccuracy->setFormat (tr ("Error determining accuracy."));
+    m_ui->progressBarEstimatedEffort->setRange (0, 1);
+    m_ui->progressBarEstimatedEffort->setFormat (tr ("Unknown required effort."));
+    setStatusMessage (tr ("Unable to obtain accuracy report; \"%1\"").arg (m_acrcyThrd->data() ["message"].toString()));
+}
+
 void Main::desktopControlStateChanged()
 {
     QString msg;
@@ -230,14 +355,8 @@ void Main::dictationStateChanged()
 
 void Main::updateUi()
 {
-    updateRecognitionInfo();
     updateSessionListing();
     updateServiceListing();
-}
-
-void Main::updateRecognitionInfo()
-{
-
 }
 
 void Main::updateSessionListing()

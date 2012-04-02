@@ -1,5 +1,6 @@
 ﻿<Content>
-    <Book title="A Tale of Two Cities: A Story of the French Revolution"
+    <Book title="A Tale of Two Cities (Part 3 of 3)"
+          subtitle="A Story of the French Revolution"
           author="Charles Dickens" />
     <Source type="link">http://www.gutenberg.org/</Source>
     <License>

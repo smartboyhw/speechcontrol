@@ -37,11 +37,6 @@ AccuracyMeter::AccuracyMeter (AcousticModel* p_model) : QObject(), m_prcss (0), 
 
 }
 
-Session* AccuracyMeter::session() const
-{
-    return m_session;
-}
-
 void AccuracyMeter::setSession (Session* p_session)
 {
     m_session = p_session;
@@ -69,14 +64,8 @@ void AccuracyMeter::doAssessment (const QString& p_pathHyp)
 
 void AccuracyMeter::on_mPrcss_finished (const int& p_exitCode , QProcess::ExitStatus p_status)
 {
-    switch (p_status) {
-    case QProcess::NormalExit:
-        parseOutput (m_prcss->readAllStandardOutput());
-        break;
-
-    default:
-        break;
-    }
+    qDebug() << p_exitCode << p_status;
+    parseOutput (m_prcss->readAllStandardOutput());
 }
 
 /*
@@ -95,7 +84,7 @@ void AccuracyMeter::parseOutput (const QString& p_output)
      */
 
     QVariantMap data;
-    qDebug() << p_output;
+    qDebug() << "[AccuracyMeter::parseOutput()] Output:" << p_output;
 
     if (p_output.startsWith ("TOTAL ")) {
         QRegExp obtainWordCount ("Words: (\\d+)");
@@ -105,12 +94,17 @@ void AccuracyMeter::parseOutput (const QString& p_output)
         qDebug() << obtainWordCount.indexIn (lines.at (0)) << obtainWordCount.capturedTexts() << lines.at (0);
         data["total-word-count"] = obtainWordCount.cap (1);
 
-        emit assessmentCompleted (Successful, data);
-    } else {
+        m_status = Successful;
+        m_data = data;
+    }
+    else {
         data["message"] = "Output provided was malformed.";
         data["output"] = p_output;
-        emit assessmentCompleted(Error,data);
+        m_status = Error;
+        m_data = data;
     }
+
+    emit assessmentCompleted();
 }
 
 AccuracyMeter::~AccuracyMeter()

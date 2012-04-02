@@ -34,6 +34,10 @@ class Session;
 class AccuracyMeter : public QObject
 {
     Q_OBJECT
+    Q_ENUMS (Status)
+
+signals:
+    void assessmentCompleted ();
 
 public:
     enum Status {
@@ -42,21 +46,31 @@ public:
         Error
     };
 
-    explicit AccuracyMeter (QObject* parent = 0);
-    AccuracyMeter (AcousticModel* p_model);
-    Session* session() const;
-    void setSession (Session* p_session);
-    void doAssessment (const QString& p_pathHyp);
-    virtual ~AccuracyMeter();
-
-signals:
-    void assessmentCompleted (const AccuracyMeter::Status& p_status, const QVariantMap p_data = QVariantMap());
-
 private:
     void parseOutput (const QString& p_output);
     QProcess* m_prcss;
     AcousticModel* m_model;
     Session* m_session;
+    Status m_status;
+    QVariantMap m_data;
+
+public:
+    explicit AccuracyMeter (QObject* parent = 0);
+    AccuracyMeter (AcousticModel* p_model);
+    void setSession (Session* p_session);
+    void doAssessment (const QString& p_pathHyp);
+    virtual ~AccuracyMeter();
+
+    inline Session* session() const {
+        return m_session;
+    }
+
+    inline AccuracyMeter::Status status() {
+        return m_status;
+    }
+    inline QVariantMap data() {
+        return m_data;
+    }
 
 public slots:
     void on_mPrcss_finished (const int& p_exitCode, QProcess::ExitStatus p_status);

@@ -6,152 +6,170 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>323</width>
-    <height>361</height>
+    <width>347</width>
+    <height>385</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Speech Control</string>
   </property>
-  <widget class="QTabWidget" name="tabWidget">
-   <property name="geometry">
-    <rect>
-     <x>4</x>
-     <y>68</y>
-     <width>317</width>
-     <height>261</height>
-    </rect>
-   </property>
-   <property name="currentIndex">
-    <number>0</number>
-   </property>
-   <widget class="QWidget" name="tabAbout">
-    <attribute name="title">
-     <string>About</string>
-    </attribute>
-    <widget class="QLabel" name="label">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>309</width>
-       <height>233</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;©2010 - 2012 by the &lt;a href=&quot;http://www.thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Synthetic Intellect Institute&lt;/span&gt;&lt;/a&gt;&lt;img src=&quot;:/logo/sii&quot; width=&quot;64&quot; height=&quot;64&quot; style=&quot;float: right;&quot;/&gt;&lt;br/&gt;&lt;a href=&quot;http://wiki.thesii.org/SpeechControl&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://wiki.thesii.org/SpeechControl&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;&lt;a href=&quot;irc://irc.freenode.net/sii-speechcontrol&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;#sii-speechcontrol&lt;/span&gt;&lt;/a&gt; on &lt;a href=&quot;http://www.freenode.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Freenode&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;SpeechControl is licensed under &lt;a href=&quot;http://www.gnu.org/licenses/gpl-3.0.txt&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;GPLv3&lt;/span&gt;&lt;/a&gt;.&lt;br/&gt;Please use &lt;a href=&quot;http://tasks.thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://tasks.thesii.org&lt;/span&gt;&lt;/a&gt; to report bugs. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;One Vision. One Purpose.&lt;br/&gt;We Are The SII.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="scaledContents">
-      <bool>true</bool>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-     </property>
-     <property name="wordWrap">
-      <bool>true</bool>
-     </property>
-     <property name="margin">
-      <number>10</number>
-     </property>
-    </widget>
-   </widget>
-   <widget class="QWidget" name="tabAuthors">
-    <attribute name="title">
-     <string>Authors</string>
-    </attribute>
-    <widget class="QLabel" name="label_2">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>309</width>
-       <height>233</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Jacky Alcine&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;mailto:jacky.alcine@thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;jacky.alcine@thesii.org&lt;/span&gt;&lt;/a&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;a href=&quot;http://jackyalcine.co.cc&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;website&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;Core Developer, Packager, Maintainer, Designer &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Adrian Borucki&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;mailto:adrian@thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;adrian@thesii.org&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;Core Developer, Packager, Maintainer, Idea Man&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="alignment">
-      <set>Qt::AlignHCenter|Qt::AlignTop</set>
-     </property>
-     <property name="margin">
-      <number>5</number>
-     </property>
-    </widget>
-   </widget>
-  </widget>
-  <widget class="QDialogButtonBox" name="buttonBox">
-   <property name="geometry">
-    <rect>
-     <x>11</x>
-     <y>332</y>
-     <width>309</width>
-     <height>25</height>
-    </rect>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-   </property>
-  </widget>
-  <widget class="QFrame" name="frame">
+  <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
      <x>4</x>
      <y>4</y>
-     <width>313</width>
-     <height>65</height>
+     <width>341</width>
+     <height>377</height>
     </rect>
    </property>
-   <property name="frameShape">
-    <enum>QFrame::StyledPanel</enum>
-   </property>
-   <property name="frameShadow">
-    <enum>QFrame::Sunken</enum>
-   </property>
-   <widget class="QWidget" name="horizontalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>4</x>
-      <y>0</y>
-      <width>309</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="lblIcon">
-       <property name="minimumSize">
-        <size>
-         <width>56</width>
-         <height>56</height>
-        </size>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QFrame" name="frame">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>68</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>68</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Sunken</enum>
+      </property>
+      <widget class="QWidget" name="horizontalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>4</x>
+         <y>0</y>
+         <width>309</width>
+         <height>61</height>
+        </rect>
        </property>
-       <property name="maximumSize">
-        <size>
-         <width>56</width>
-         <height>56</height>
-        </size>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="pixmap">
-        <pixmap resource="../res.qrc">:/logo/sc-large</pixmap>
-       </property>
-       <property name="scaledContents">
-        <bool>true</bool>
-       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QLabel" name="lblIcon">
+          <property name="minimumSize">
+           <size>
+            <width>56</width>
+            <height>56</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>56</width>
+            <height>56</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="pixmap">
+           <pixmap resource="../res.qrc">:/logo/sc-large</pixmap>
+          </property>
+          <property name="scaledContents">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLabel" name="lblHeader">
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;SpeechControl&lt;/span&gt; v%1build %2&lt;/p&gt;&lt;p&gt;Providing speech recognition for Linux.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="lblHeader">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:600;&quot;&gt;SpeechControl&lt;/span&gt; v%1build %2&lt;/p&gt;&lt;p&gt;Providing speech recognition for Linux.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="tabAbout">
+       <attribute name="title">
+        <string>About</string>
+       </attribute>
+       <widget class="QWidget" name="verticalLayoutWidget_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>329</width>
+          <height>241</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="layoutAbout">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;©2010 - 2012 by the &lt;a href=&quot;http://www.thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Synthetic Intellect Institute&lt;/span&gt;&lt;/a&gt;&lt;img src=&quot;:/logo/sii&quot; width=&quot;96&quot; height=&quot;96&quot; style=&quot;float: right;&quot;/&gt;&lt;br/&gt;&lt;a href=&quot;http://wiki.thesii.org/SpeechControl&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://wiki.thesii.org/SpeechControl&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;&lt;a href=&quot;irc://irc.freenode.net/sii-speechcontrol&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;#sii-speechcontrol&lt;/span&gt;&lt;/a&gt; on &lt;a href=&quot;http://www.freenode.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Freenode&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;SpeechControl is licensed under &lt;a href=&quot;http://www.gnu.org/licenses/gpl-3.0.txt&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;GPLv3&lt;/span&gt;&lt;/a&gt;.&lt;br/&gt;Please use &lt;a href=&quot;http://tasks.thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://tasks.thesii.org&lt;/span&gt;&lt;/a&gt; to report bugs. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;One Vision. One Purpose.&lt;br/&gt;We Are The SII.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="scaledContents">
+            <bool>true</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <property name="margin">
+            <number>10</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
       </widget>
-     </item>
-    </layout>
-   </widget>
+      <widget class="QWidget" name="tabAuthors">
+       <attribute name="title">
+        <string>Authors</string>
+       </attribute>
+       <widget class="QWidget" name="verticalLayoutWidget_3">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>329</width>
+          <height>241</height>
+         </rect>
+        </property>
+        <layout class="QVBoxLayout" name="layoutAuthors">
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Jacky Alcine&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;mailto:jacky.alcine@thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;jacky.alcine@thesii.org&lt;/span&gt;&lt;/a&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;a href=&quot;http://jackyalcine.co.cc&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;website&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;Core Developer, Packager, Maintainer, Designer &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Adrian Borucki&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;mailto:adrian@thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;adrian@thesii.org&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;Core Developer, Packager, Maintainer, Idea Man&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignHCenter|Qt::AlignTop</set>
+           </property>
+           <property name="margin">
+            <number>5</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QDialogButtonBox" name="buttonBox">
+      <property name="standardButtons">
+       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources>

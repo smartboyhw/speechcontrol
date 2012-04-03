@@ -82,15 +82,21 @@ bool AbstractCommand::isValidStatement (const QString& p_statement) const
     return false;
 }
 
-QString AbstractCommand::santizeStatement (const QString p_statement) const
+QString AbstractCommand::obtainArgumentFromStatement (const QString p_statement) const
 {
     Q_FOREACH (const QString command, m_commands) {
         if (p_statement.contains (command)) {
-            return QString (p_statement).remove (command);
+            return QString (p_statement).remove (command).trimmed().simplified();
         }
     }
 
     return p_statement;
+}
+
+QString AbstractCommand::obtainCommandFromStatement (const QString p_statement) const
+{
+    const QString argument = obtainArgumentFromStatement(p_statement);
+    return QString(p_statement).remove(argument).trimmed().simplified();
 }
 
 const QStringList AbstractCommand::statements() const

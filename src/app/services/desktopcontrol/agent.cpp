@@ -36,10 +36,14 @@ Agent::Agent() : AbstractAgent (AbstractCategory::global())
     m_sphinx = new Sphinx (Sphinx::standardDescription(), parent());
     connect (m_sphinx, SIGNAL (finished (QString)), this, SLOT (invokeCommand (QString)));
 
-    QString defAcousticModel = Core::configuration ("DesktopControl/DefaultAcousticModel").toString();
+    QString defAcousticModel = Core::configuration ("DesktopControl/AcousticModel").toString();
+    QString defLanguageModel = Core::configuration ("DesktopControl/LanguageModel").toString();
 
     if (!defAcousticModel.isEmpty())
         m_sphinx->setAcousticModel (defAcousticModel);
+
+    if (!defLanguageModel.isEmpty())
+        m_sphinx->setLanguageModel (defLanguageModel);
 }
 
 Agent::~Agent()
@@ -50,51 +54,38 @@ Agent::~Agent()
 void Agent::start()
 {
     if (!m_sphinx->start()) {
-        qWarning() << "[DesktopControl::Agent::onStateChanged()] Start unsuccessful.";
-//         return Disabled;
+        qWarning() << "[DesktopControl::Agent::start()] Start unsuccessful.";
     }
 
-    qDebug() << "[DesktopControl::Agent::onStateChanged()] Enabled.";
-//     return Enabled;
+    qDebug() << "[DesktopControl::Agent::start()] Enabled.";
 }
 
 void Agent::stop()
 {
     if (!m_sphinx->stop()) {
-        qWarning() << "[DesktopControl::Agent::onStateChanged()] Stop unsuccessful.";
-//         return Enabled;
+        qWarning() << "[DesktopControl::Agent::stop()] Stop unsuccessful.";
     }
 
-    qDebug() << "[DesktopControl::Agent::onStateChanged()] Stopped desktop control agent.";
-//     return Disabled;
+    qDebug() << "[DesktopControl::Agent::stop()] Stopped desktop control agent.";
 }
 
 AbstractAgent::ActivityState Agent::onStateChanged (const AbstractAgent::ActivityState p_state)
 {
     switch (p_state) {
     case Enabled:
+        instance()->start();
 
-        if (!m_sphinx->start()) {
-            qWarning() << "[DesktopControl::Agent::onStateChanged()] Start unsuccessful.";
+        if (!m_sphinx->isRunning())
             return Disabled;
-        }
-        else {
-            qDebug() << "[DesktopControl::Agent::onStateChanged()] Enabled.";
-        }
 
         return Enabled;
         break;
 
     case Disabled:
+        instance()->stop();
 
-        if (m_sphinx) {
-            if (!m_sphinx->stop()) {
-                qWarning() << "[DesktopControl::Agent::onStateChanged()] Stop unsuccessful.";
-                return Enabled;
-            }
-
-            qDebug() << "[DesktopControl::Agent::onStateChanged()] Stopped desktop control agent.";
-        }
+        if (m_sphinx->isRunning() || m_sphinx->isReady())
+            return Enabled;
 
         return Disabled;
         break;
@@ -122,12 +113,12 @@ void Agent::setAcousticModel (AcousticModel* acModel)
 
 void Agent::setDefaultAcousticModel (AcousticModel* acModel)
 {
-    Core::setConfiguration ("DesktopControl/DefaultAcousticModel", acModel->path());
+    Core::setConfiguration ("DesktopControl/AcousticModel", acModel->path());
 }
 
 void Agent::invokeCommand (const QString& cmd)
 {
-    qDebug() << "[DesktopControl::Agent::invokeCommand()] I heard " << cmd << "from the user.";
+    qDebug() << "[DesktopControl::Agent::invokeCommand()] Heard " << cmd << "from the user.";
     AbstractCategory* glbl = AbstractCategory::global();
     CommandList cmds = glbl->matchAllCommands (cmd);
 
@@ -148,7 +139,7 @@ void Agent::invokeCommand (const QString& cmd)
     }
     else {
         emit noCommandsFound (cmd);
-        qDebug() << "[DesktopControl::Agent::invokeCommand()] I heard mumble-gumble, nothing useful. Tell me something I want to hear!";
+        qDebug() << "[DesktopControl::Agent::invokeCommand()] Heard mumble-gumble, nothing useful.";
     }
 }
 

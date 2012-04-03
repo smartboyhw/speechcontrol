@@ -65,7 +65,8 @@ public slots:
 
 protected:
     explicit AbstractCommand (AbstractCategory* p_parentCategory , QStringList p_commands);
-    QString santizeStatement (const QString p_statement) const;
+    QString obtainArgumentFromStatement (const QString p_statement) const;
+    QString obtainCommandFromStatement(const QString p_statement) const;
     bool areStatementsEquivalent (const QString p_command, const QString p_statement) const;
     QStringList m_commands;     ///< The commands defined by this AbstractCommand.
 };

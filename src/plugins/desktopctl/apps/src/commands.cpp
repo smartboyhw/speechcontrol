@@ -68,7 +68,7 @@ bool StartCommand::invoke (const QString& p_statement) const
         return false;
     }
 
-    const QString tokenArgument = AbstractCommand::santizeStatement (p_statement);
+    const QString tokenArgument = AbstractCommand::obtainArgumentFromStatement (p_statement);
 
     return true;
 }

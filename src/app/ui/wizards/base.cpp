@@ -29,7 +29,13 @@ WizardBase::WizardBase (QWidget* parent) :
     ui (new Ui::WizardBase)
 {
     ui->setupUi (this);
-    this->setWizardStyle(ClassicStyle);
+    this->setWizardStyle (ClassicStyle);
+}
+
+void WizardBase::setPage (const int p_pageIndex, QWizardPage* p_page)
+{
+    p_page->setMinimumSize (450, 275);
+    QWizard::setPage (p_pageIndex, p_page);
 }
 
 WizardBase::~WizardBase()

@@ -41,6 +41,7 @@ class WizardBase : public QWizard
 public:
     explicit WizardBase (QWidget* parent = 0);
     virtual ~WizardBase();
+    virtual void setPage(const int p_pageIndex, QWizardPage* p_page);
 
 private:
     Ui::WizardBase* ui;
@@ -50,4 +51,4 @@ private:
 }
 
 #endif // BASE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -21,8 +21,9 @@
 
 // local includes
 #include "commands.hpp"
+#include "mpris.hpp"
 
-MPRIS_NAMESPACE_BEGIN
+USING_NAMESPACE_MPRIS
 
 MprisCategory* MprisCategory::s_inst = 0;
 
@@ -40,28 +41,62 @@ const QString MprisCategory::title()
     return "MPRIS";
 }
 
-QString PlayStateCommand::id()
+QString PlayerCommand::id()
 {
-    return "mpris-playstate";
+    return "mpris-player";
 }
 
-PlayStateCommand::PlayStateCommand () : AbstractCommand (MprisCategory::instance() ,
+PlayerCommand::PlayerCommand () : AbstractCommand (MprisCategory::instance() ,
             QStringList() << tr ("Play music")
             << tr ("Pause music")
+            << tr ("Resume playing music")
             << tr ("Stop playing music")
+            << tr ("Stop music")
+            << tr ("Set volume to")
             << tr ("Next track")
+            << tr ("Repeat tracks")
+            << tr ("Stop repeating tracks")
             << tr ("Previous track"))
 {
 }
 
 /// @todo Detect the arguments.
-bool PlayStateCommand::invoke (const QString& p_statement) const
+bool PlayerCommand::invoke (const QString& p_statement) const
 {
     if (!isValidStatement (p_statement)) {
         return false;
     }
 
-    const QString l_tokenArgument = AbstractCommand::santizeStatement (p_statement);
+    const QString tokenArgument = AbstractCommand::obtainArgumentFromStatement (p_statement);
+    const QString command = AbstractCommand::obtainCommandFromStatement (p_statement).toLower();
+
+    if (command == "play music" || command == "resume playing music") {
+        DBus::Player::instance()->play();
+    }
+    else if (command == "pause music") {
+        DBus::Player::instance()->pause();
+    }
+    else if (command == "stop playing music" || command == "stop music") {
+        DBus::Player::instance()->stop();
+    }
+    else if (command == "set volume to") {
+        /// @todo Sanitize the argument to check if they said a percentage or some weird value.
+        DBus::Player::instance()->setVolume (tokenArgument.toUInt());
+    }
+    else if (command == "next track") {
+        DBus::Player::instance()->nextTrack();
+    }
+    else if (command == "previous track") {
+        DBus::Player::instance()->previousTrack();
+    }
+    else if (command == "stop repeating tracks") {
+        DBus::Player::instance()->setRepeat (false);
+    }
+    else if (command == "repeat tracks") {
+        DBus::Player::instance()->setRepeat (true);
+    } else {
+        return false;
+    }
 
     return true;
 }
@@ -86,13 +121,11 @@ bool LibraryCommand::invoke (const QString& p_statement) const
         return false;
     }
 
-    const QString l_tokenArgument = AbstractCommand::santizeStatement (p_statement);
+    const QString tokenArgument = AbstractCommand::obtainArgumentFromStatement (p_statement);
 
     return true;
 }
 
 #include "commands.moc"
-
-MPRIS_NAMESPACE_END
 
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

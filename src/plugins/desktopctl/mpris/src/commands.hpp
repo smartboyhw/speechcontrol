@@ -57,10 +57,10 @@ public:
  * This command is based partly on the D-Bus specification for MPRIS
  * defined at http://www.mpris.org/2.1/spec/Player_Node.html.
  **/
-class PlayStateCommand : public AbstractCommand
+class PlayerCommand : public AbstractCommand
 {
     Q_OBJECT
-    Q_DISABLE_COPY(PlayStateCommand)
+    Q_DISABLE_COPY(PlayerCommand)
     friend class Plugin;
     friend class MprisCategory;
 
@@ -69,7 +69,7 @@ public:
     virtual bool invoke (const QString& p_statement = QString::null) const;
 
 private:
-    explicit PlayStateCommand ();
+    explicit PlayerCommand ();
 };
 
 /**

@@ -123,7 +123,7 @@ void DesktopControlSettingsPane::updateUi()
         m_ui->comboBoxAcousticModel->addItem (model->name(), model->path());
     }
 
-    m_ui->comboBoxAcousticModel->setCurrentIndex (m_ui->comboBoxAcousticModel->findData (Core::configuration ("DesktopControl/DefaultAcousticModel")));
+    m_ui->comboBoxAcousticModel->setCurrentIndex (m_ui->comboBoxAcousticModel->findData (Core::configuration ("DesktopControl/AcousticModel")));
 }
 
 void DesktopControlSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
@@ -146,8 +146,8 @@ void DesktopControlSettingsPane::on_deftAcousticModel_textEdited (const QString&
 {
     if (QDir (text).exists()) {
         AcousticModel* newModel = new AcousticModel (text);
+        DesktopControl::Agent::instance()->setDefaultAcousticModel(newModel);
         DesktopControl::Agent::instance()->setAcousticModel (newModel);
-        Core::setConfiguration ("DesktopControl/DefaultAcousticModel", text);
     }
 }
 

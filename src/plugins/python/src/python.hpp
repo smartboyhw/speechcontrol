@@ -18,12 +18,11 @@
  *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
 
 #ifndef SPCHCNTRL_PYTHON_PYTHON_HPP_
 #define SPCHCNTRL_PYTHON_PYTHON_HPP_
 
-#include <PythonQt.h>
+#include <PythonQt/PythonQt.h>
 
 #include <app/macros.hpp>
 
@@ -52,3 +51,4 @@ private:
 }
 
 #endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

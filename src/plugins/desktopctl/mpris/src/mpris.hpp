@@ -30,15 +30,15 @@
 class QDBusInterface;
 
 MPRIS_NAMESPACE_BEGIN
-
-class Mpris : public QObject
+namespace DBus {
+class Player : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY(Mpris)
-    SC_SINGLETON(Mpris)
+    Q_DISABLE_COPY(Player)
+    SC_SINGLETON(Player)
 
 public:
-    virtual ~Mpris();
+    virtual ~Player();
     void play();
     void pause();
     void stop();
@@ -53,6 +53,8 @@ public:
 private:
     QDBusInterface* m_interface;
 };
+
+}
 
 MPRIS_NAMESPACE_END
 #endif // MPRIS_HPP

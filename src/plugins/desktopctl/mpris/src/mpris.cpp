@@ -26,61 +26,68 @@
 using namespace SpeechControl;
 USING_NAMESPACE_MPRIS
 
-Mpris* Mpris::s_inst = 0;
+using DBus::Player;
 
-Mpris::Mpris() : QObject (Core::instance()), m_interface (0)
+Player* Player::s_inst = 0;
+
+Player::Player() : QObject (Core::instance()), m_interface (0)
 {
     m_interface = new QDBusInterface ("org.mpris.MediaPlayer2",
-                                      "/Player",
-                                      "org.freedesktop.MediaPlayer"
+                                      "/org/mpris/MediaPlayer2",
+                                      "org.mpris.MediaPlayer2"
                                      );
+    play();
+    pause();
+    setVolume(100);
+    setVolume(40);
 }
 
-void Mpris::play()
+void Player::play()
 {
-    m_interface->call ("Pause");
+    m_interface->call (QDBus::BlockWithGui,"Pause");
 }
 
-void Mpris::nextTrack()
+void Player::nextTrack()
 {
-    m_interface->call ("Next");
+    m_interface->call (QDBus::BlockWithGui,"Next");
 }
 
-void Mpris::pause()
+void Player::pause()
 {
-    m_interface->call ("Pause");
+    m_interface->call (QDBus::BlockWithGui,"Pause");
 }
 
-void Mpris::previousTrack()
+void Player::previousTrack()
 {
-    m_interface->call ("Prev");
+    m_interface->call (QDBus::BlockWithGui,"Prev");
 }
 
-void Mpris::stop()
+void Player::stop()
 {
-    m_interface->call ("Stop");
+    m_interface->call (QDBus::BlockWithGui,"Stop");
 }
 
-void Mpris::setRepeat (const bool p_repeatState)
+void Player::setRepeat (const bool p_repeatState)
 {
-    m_interface->call ("Repeat", p_repeatState);
+    m_interface->call (QDBus::BlockWithGui,"Repeat", p_repeatState);
 }
 
-void Mpris::setVolume (const quint8 p_volume)
+void Player::setVolume (const quint8 p_volume)
 {
-    m_interface->call ("VolumeSet", p_volume);
+    m_interface->call (QDBus::BlockWithGui,"VolumeSet", p_volume);
 }
 
-quint8 Mpris::volume()
+quint8 Player::volume()
 {
     QDBusReply<quint8> reply = m_interface->call (QDBus::BlockWithGui, "VolumeGet");
     return reply.value();
 }
 
-Mpris::~Mpris()
+Player::~Player()
 {
     m_interface->deleteLater();
 }
 
 #include "mpris.moc"
+
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -25,8 +25,12 @@
 
 #include <app/macros.hpp>
 
-namespace SpeechControl
-{
+#include "config.hpp"
+
+class QDBusInterface;
+
+MPRIS_NAMESPACE_BEGIN
+
 class Mpris : public QObject
 {
     Q_OBJECT
@@ -35,8 +39,21 @@ class Mpris : public QObject
 
 public:
     virtual ~Mpris();
+    void play();
+    void pause();
+    void stop();
+    void nextTrack();
+    void previousTrack();
+
+    void setRepeat(const bool p_repeatState);
+    void setVolume(const quint8 p_volume);
+
+    quint8 volume();
+
+private:
+    QDBusInterface* m_interface;
 };
 
-}
+MPRIS_NAMESPACE_END
 #endif // MPRIS_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -19,17 +19,67 @@
  */
 
 #include "mpris.hpp"
+#include <app/core.hpp>
+#include <QDBusInterface>
+#include <qdbusreply.h>
 
 using namespace SpeechControl;
+USING_NAMESPACE_MPRIS
 
-Mpris::Mpris()
+Mpris* Mpris::s_inst = 0;
+
+Mpris::Mpris() : QObject (Core::instance()), m_interface (0)
 {
+    m_interface = new QDBusInterface ("org.mpris.MediaPlayer2",
+                                      "/Player",
+                                      "org.freedesktop.MediaPlayer"
+                                     );
+}
 
+void Mpris::play()
+{
+    m_interface->call ("Pause");
+}
+
+void Mpris::nextTrack()
+{
+    m_interface->call ("Next");
+}
+
+void Mpris::pause()
+{
+    m_interface->call ("Pause");
+}
+
+void Mpris::previousTrack()
+{
+    m_interface->call ("Prev");
+}
+
+void Mpris::stop()
+{
+    m_interface->call ("Stop");
+}
+
+void Mpris::setRepeat (const bool p_repeatState)
+{
+    m_interface->call ("Repeat", p_repeatState);
+}
+
+void Mpris::setVolume (const quint8 p_volume)
+{
+    m_interface->call ("VolumeSet", p_volume);
+}
+
+quint8 Mpris::volume()
+{
+    QDBusReply<quint8> reply = m_interface->call (QDBus::BlockWithGui, "VolumeGet");
+    return reply.value();
 }
 
 Mpris::~Mpris()
 {
-
+    m_interface->deleteLater();
 }
 
 #include "mpris.moc"

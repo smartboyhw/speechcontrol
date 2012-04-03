@@ -184,12 +184,12 @@ void ModelSettingsPane::on_btnLanguageDelete_clicked()
     }
 }
 
-void ModelSettingsPane::on_comboBoxAcousticModelView_currentIndexChanged (const int p_index)
+void ModelSettingsPane::on_comboBoxAcousticModelView_currentIndexChanged ()
 {
     updateAcousticTab();
 }
 
-void ModelSettingsPane::on_comboBoxLanguageModelView_currentIndexChanged (const int p_index)
+void ModelSettingsPane::on_comboBoxLanguageModelView_currentIndexChanged ()
 {
     updateLanguageTab();
 }

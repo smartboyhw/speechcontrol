@@ -350,6 +350,8 @@ Dictionary* Corpus::dictionary() const
     if (isValid()) {
         return m_dict;
     }
+
+    return 0;
 }
 
 const QDateTime Corpus::timeStarted() const

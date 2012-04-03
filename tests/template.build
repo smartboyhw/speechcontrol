@@ -62,7 +62,7 @@ target_link_libraries(test@TEST_ID@ ${@TEST_ID@_LIBRARIES})
 
 ## Add test.
 add_test(NAME test@TEST_ID@
-         COMMAND "$<TARGET_FILE:test@TEST_ID@> -xunitxml")
+         COMMAND $<TARGET_FILE:test@TEST_ID@>)
 add_dependencies(tests test@TEST_ID@)
 
 message(STATUS "Test '@TEST_ID@' configured; awaiting build [i.e.: 'make test@TEST_ID@']")

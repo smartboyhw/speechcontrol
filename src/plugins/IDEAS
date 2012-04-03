@@ -33,7 +33,7 @@ built for SpeechControl.
   the end of the statement to skip confirmation.
 
 ** {{ Accessibility Management }}
-  Perhaps another cobblestone of efficency, SpeechControl, with the
+  Perhaps another cobblestone of efficiency, SpeechControl, with the
   help of AT-SPI tech, could manage and manipulate certain accessibility
   features on the computer like MouseKeys, StickyKeys, etc. Such a setup
   would be useful for users that can't use the keyboard. It'd need to

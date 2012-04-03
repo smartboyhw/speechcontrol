@@ -55,6 +55,7 @@
 #include "ui_main-window.h"
 
 #include "ui/main-window.hpp"
+#include "voxforge-wizard.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
@@ -516,7 +517,7 @@ void Main::on_actionAboutSpeechControl_triggered()
 
 void Main::on_actionPluginOptions_triggered()
 {
-    Settings::displayPane ("plgns");
+    Settings::displayPane ("plgn");
     updateUi();
 }
 
@@ -548,7 +549,9 @@ void Main::on_actionWizardContent_triggered()
 
 void Main::on_actionWizardVoxForge_triggered()
 {
-
+    VoxforgeWizard wiz(this);
+    wiz.exec();
+    updateUi();
 }
 
 void Main::on_actionWizardQuickStart_triggered()

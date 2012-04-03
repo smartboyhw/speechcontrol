@@ -7,6 +7,7 @@
 #  PYTHONQT_INCLUDE_DIRS        - path to where PythonQt.h is found
 #
 # It has one dependency on PythonLibs, which is pulled in automatically.
+#
 #=============================================================================
 # Copyright (c) 2012 Jacky Alcine <jacky.alcine@thesii.org>
 #
@@ -19,11 +20,9 @@
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
-
 find_package(PythonLibs 2.7 REQUIRED)
-find_path(PYTHONQT_INCLUDE_DIRS "PythonQt.h"
-          HINTS "${CMAKE_INSTALL_PREFIX}/include/PythonQt")
-
+find_path(PYTHONQT_INCLUDE_DIRS "PythonQt/PythonQt.h"
+                                PATH_SUFFIXES "PythonQt")
 find_library(PYTHONQT_LIBRARIES "PythonQt")
 
 include(FindPackageHandleStandardArgs)

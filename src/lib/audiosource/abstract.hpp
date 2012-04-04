@@ -164,6 +164,14 @@ protected:
     AbstractAudioSource (const QObject& p_other);
 
     /**
+     * @brief Copy constructor of private data.
+     *
+     * @param dd Private data to copy.
+     * @param parent Parent to inherit from. Defaults to 0.
+     **/
+    AbstractAudioSource (AbstractAudioSourcePrivate* p_dPtr, QObject* p_parent = 0);
+
+    /**
      * @brief Obtains the portion of a pipeline needed for a derived AbstractAudioSource to use.
      *
      * This method is implemented in derived classes to define specifically what

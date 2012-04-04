@@ -29,7 +29,9 @@ class GenericSink;
 class GenericSource;
 struct AbstractAudioSourcePrivate;
 
-struct AbstractAudioSourcePrivate {
+class AbstractAudioSourcePrivate
+{
+public:
     AbstractAudioSourcePrivate() : m_appSink (0), m_appSrc (0), m_binPtr (),
         m_pipeline (), m_sinkPtr (), m_srcPtr (), m_volumePtr (), m_levelPtr () {
         m_binPtr.clear();

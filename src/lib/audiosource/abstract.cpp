@@ -42,6 +42,10 @@ AbstractAudioSource::AbstractAudioSource (QObject* p_parent) : QObject (p_parent
 {
 }
 
+AbstractAudioSource::AbstractAudioSource (AbstractAudioSourcePrivate* p_dPtr, QObject* p_parent) : QObject(p_parent), d_ptr(p_dPtr) {
+
+}
+
 QString AbstractAudioSource::caps() const
 {
     return "audio/x-raw-int,channels=1,rate=8000,"

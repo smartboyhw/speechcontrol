@@ -31,6 +31,7 @@ namespace SpeechControl
 {
 
 class LanguageModel;
+class LanguageModelPrivate;
 
 typedef QList<LanguageModel*> LanguageModelList;
 /**
@@ -40,9 +41,10 @@ class LanguageModel : public QObject
 {
     Q_OBJECT
     Q_PROPERTY (QString Path READ path)     ///< The path to the language mode, be it a directory or file.
+    Q_DECLARE_PRIVATE(LanguageModel)
 
 private:
-    QString m_path;
+    QScopedPointer<LanguageModelPrivate> d_ptr;
 
 public:
     /**
@@ -51,6 +53,10 @@ public:
      **/
     explicit LanguageModel (QObject* p_parent = 0);
 
+    /**
+     * @brief Destructor.
+     **/
+    virtual ~LanguageModel();
 
     /**
      * @brief Obtains a language model from a directory.
@@ -86,9 +92,8 @@ public:
     QString name() const;
 
     /**
-     * @brief Destructor.
+     * @brief Erases this LanguageModel.
      **/
-    virtual ~LanguageModel();
     void erase();
 };
 

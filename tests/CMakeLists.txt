@@ -20,7 +20,7 @@ if(WITH_TESTS)
     include(CTest)
     enable_testing()
 
-    add_custom_target(tests ALL)
+    add_custom_target(tests)
     include(metapp.cmake)
 
     file(READ "template.build" TEST_BUILD_TEMPLATE)

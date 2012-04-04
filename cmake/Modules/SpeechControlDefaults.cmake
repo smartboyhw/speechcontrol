@@ -24,3 +24,8 @@ if (NOT TARGET uninstall)
     ADD_CUSTOM_TARGET(uninstall
                       "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake/cmake_uninstall.cmake")
 endif(NOT TARGET uninstall)
+
+########### Some automatics ###################
+set(CMAKE_USE_RELATIVE_PATHS ON)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_VERBOSE_MAKEFILE OFF)

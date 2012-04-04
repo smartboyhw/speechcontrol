@@ -31,32 +31,41 @@ namespace SpeechControl
 {
 
 class GenericSource;
+class GenericSink;
+class GenericSinkPrivate;
+class StreamSink;
 class StreamAudioSource;
+class StreamSinkPrivate;
 
 class SPCH_EXPORT GenericSink : public QObject, public QGst::Utils::ApplicationSink
 {
     Q_OBJECT
 public:
-    explicit GenericSink();
+    explicit GenericSink(QObject* p_parent = 0);
     virtual ~GenericSink();
     GenericSource* source();
     void setSource (GenericSource* p_source);
 
 protected:
     Q_DISABLE_COPY (GenericSink)
+    Q_DECLARE_PRIVATE (GenericSink)
     virtual void eos();
     virtual QGst::FlowReturn newBuffer();
-    GenericSource* m_src;
+
+private:
+    QScopedPointer<GenericSinkPrivate> d_ptr;
+
 };
 
 class SPCH_EXPORT StreamSink : public GenericSink
 {
     Q_OBJECT
     Q_DISABLE_COPY (StreamSink)
+    Q_DECLARE_PRIVATE (StreamSink)
 
 public:
     explicit StreamSink (StreamAudioSource* p_audioSrc);
-    StreamSink (const GenericSink&);
+    StreamSink (const GenericSink& p_other);
     virtual ~StreamSink();
     virtual void eos();
     virtual QGst::BufferPtr pullBuffer();
@@ -64,7 +73,7 @@ public:
     void setBufferSize (const uint& p_bufferSize);
 
 private:
-    StreamAudioSource* m_audioSrc;
+    QScopedPointer<StreamSinkPrivate> d_ptr;
 };
 
 }

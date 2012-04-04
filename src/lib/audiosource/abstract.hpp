@@ -26,18 +26,7 @@
 #include <QUuid>
 #include <QObject>
 
-#include <QGlib/Value>
-#include <QGst/Bin>
-#include <QGst/Pad>
-#include <QGst/Global>
-#include <QGst/Bus>
 #include <QGst/Message>
-#include <QGst/Element>
-#include <QGst/Pipeline>
-#include <QGst/ChildProxy>
-#include <QGst/ElementFactory>
-#include <QGst/PropertyProbe>
-#include <QGst/StreamVolume>
 
 #include <lib/export.hpp>
 
@@ -46,8 +35,8 @@ namespace SpeechControl
 
 class GenericSink;
 class GenericSource;
-
 class AbstractAudioSource;
+struct AbstractAudioSourcePrivate;
 
 /**
  * @brief Represents a shorthand for denoting a list of AbstractAudioSource objects.
@@ -139,10 +128,8 @@ signals:
 
     /**
      * @brief Emitted whenever a new buffer has been generated within this AbstractAudioSource.
-     *
      * @param p_buffer A buffer representing a single quint8 (unsigned 8-bit integer or unsigned char).
      **/
-
     void bufferObtained (const QByteArray& p_buffer);
 
 public slots:
@@ -160,6 +147,7 @@ public slots:
 
 protected:
     Q_DISABLE_COPY (AbstractAudioSource)
+    Q_DECLARE_PRIVATE(AbstractAudioSource)
 
     /**
      * @brief Null constructor.
@@ -205,14 +193,7 @@ protected:
      **/
     virtual void buildPipeline();
 
-    GenericSink* m_appSink;         ///< A pointer to the GenericSink used by the AbstractAudioSource.
-    GenericSource* m_appSrc;        ///< A pointer to the GenericSource used by the AbstractAudioSource.
-    QGst::BinPtr m_binPtr;          ///< A shared pointer to the bin that handles the elements of this AbstractAudioSource.
-    QGst::PipelinePtr m_pipeline;   ///< A shared pointer to the pipeline that manipulates the activity state of this AbstractAudioSource.
-    QGst::ElementPtr m_sinkPtr;     ///< A shared pointer to the application sink element.
-    QGst::ElementPtr m_srcPtr;      ///< A shared pointer to the application source element.
-    QGst::ElementPtr m_volumePtr;   ///< A shared pointer to the volume element.
-    QGst::ElementPtr m_levelPtr;    ///< A shared pointer to the level element.
+    QScopedPointer<AbstractAudioSourcePrivate> d_ptr;
 
 private slots:
     void onPipelineBusmessage (const QGst::MessagePtr& message);

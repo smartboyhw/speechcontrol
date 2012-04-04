@@ -63,7 +63,7 @@ Dictionary::Dictionary (const Dictionary& p_other) : QObject (p_other.parent()),
 {
 }
 
-Dictionary::Dictionary (const QString& p_id)
+Dictionary::Dictionary (const QString& p_id) : QObject(0), d_ptr(new DictionaryPrivate)
 {
     load (new QFile (DictionaryPrivate::getPathFromId (p_id)));
 }

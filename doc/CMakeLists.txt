@@ -35,4 +35,14 @@ if(WITH_DOCS)
         install(DIRECTORY ${SPCHCNTRL_APP_DOC_BUILD_DIR}/html/
                 DESTINATION ${SPCHCNTRL_DOC_INSTALL_DIR}/speechcontrol/api)
     endif(DOXYGEN_FOUND)
+
+    if (WITH_KDE_SUPPORT)
+        find_package(KDE4 QUIET)
+        list(APPEND CMAKE_MODULE_PATH ${KDE4_MODULE_DIR})
+        include (KDE4Defaults)
+        include (KDE4Macros)
+        kde4_create_handbook("docbook/index.docbook"
+                             INSTALL_DESTINATION "${HTML_INSTALL_DIR}/en"
+                             SUBDIR speechcontrol)
+    endif (WITH_KDE_SUPPORT)
 endif(WITH_DOCS)

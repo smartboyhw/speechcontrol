@@ -18,31 +18,31 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "lib/audiosource/abstract.hpp"
 #include "lib/audiosource/sink.hpp"
+#include "lib/audiosource/abstract.hpp"
 #include "lib/audiosource/stream.hxx"
 #include "lib/audiosource/stream.hpp"
 
 using namespace SpeechControl;
 
-StreamAudioSource::StreamAudioSource() : AbstractAudioSource(), d_ptr(new StreamAudioSourcePrivate)
+StreamAudioSource::StreamAudioSource() : AbstractAudioSource(new StreamAudioSourcePrivate)
 {
 
 }
 
-StreamAudioSource::StreamAudioSource (const AbstractAudioSource& p_other) : AbstractAudioSource (p_other), d_ptr(new StreamAudioSourcePrivate)
+StreamAudioSource::StreamAudioSource (const AbstractAudioSource& p_other) : AbstractAudioSource (p_other)
 {
 
 }
 
-StreamAudioSource::StreamAudioSource (const StreamAudioSource& p_other) : AbstractAudioSource (p_other), d_ptr(const_cast<StreamAudioSourcePrivate*>(p_other.d_ptr.data()))
+StreamAudioSource::StreamAudioSource (const StreamAudioSource& p_other) : AbstractAudioSource (p_other)
 {
-
 }
 
-StreamAudioSource::StreamAudioSource (QDataStream* p_stream) : AbstractAudioSource (0), d_ptr(new StreamAudioSourcePrivate)
+StreamAudioSource::StreamAudioSource (QDataStream* p_stream) : AbstractAudioSource (new StreamAudioSourcePrivate)
 {
-    d_func()->m_strm = p_stream;
+    Q_D(StreamAudioSource);
+    ((StreamAudioSourcePrivate*)d_func())->m_strm = p_stream;
 }
 
 void StreamAudioSource::buildPipeline()
@@ -70,7 +70,8 @@ QString StreamAudioSource::pipelineDescription() const
 
 QDataStream* StreamAudioSource::stream() const
 {
-    return d_func()->m_strm;
+    Q_D(const StreamAudioSource);
+    return d->m_strm;
 }
 
 StreamAudioSource::~StreamAudioSource()

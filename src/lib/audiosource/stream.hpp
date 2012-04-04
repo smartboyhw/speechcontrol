@@ -39,7 +39,6 @@ class SPCH_EXPORT StreamAudioSource : public AbstractAudioSource
 {
     Q_OBJECT
     Q_DISABLE_COPY (StreamAudioSource)
-    Q_DECLARE_PRIVATE(StreamAudioSource)
     friend class StreamSink;
     friend class StreamSource;
 
@@ -53,9 +52,6 @@ public:
 protected:
     virtual QString pipelineDescription() const;
     virtual void buildPipeline();
-
-private:
-    QScopedPointer<StreamAudioSourcePrivate> d_ptr;
 };
 
 }

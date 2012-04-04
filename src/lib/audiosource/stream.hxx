@@ -27,9 +27,11 @@
 namespace SpeechControl
 {
 
-struct StreamAudioSourcePrivate;
+class StreamAudioSourcePrivate;
 
-struct StreamAudioSourcePrivate : public AbstractAudioSourcePrivate {
+class StreamAudioSourcePrivate : public AbstractAudioSourcePrivate
+{
+public:
     StreamAudioSourcePrivate() : AbstractAudioSourcePrivate(), m_strm (0) { }
     StreamAudioSourcePrivate (const AbstractAudioSourcePrivate& p_other) : AbstractAudioSourcePrivate (p_other), m_strm (0) { }
     virtual ~StreamAudioSourcePrivate() {

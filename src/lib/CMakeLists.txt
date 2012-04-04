@@ -79,6 +79,5 @@ install(FILES ${SPCHCNTRL_LIB_HEADERS}
 include_directories(${SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS})
 
 add_subdirectory(cmake)
-add_subdirectory(python)
 add_subdirectory(sphinx)
 add_subdirectory(audiosource)

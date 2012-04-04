@@ -27,7 +27,7 @@
 #include <QDebug>
 
 // Hunspell
-//#include <hunspell.hxx>
+#include <hunspell.hxx>
 
 using SpeechControl::Core;
 using SpeechControl::Dictation::KeyboardEmulator;
@@ -38,13 +38,9 @@ KeyboardEmulator::KeyboardEmulator() : QObject (Core::instance()), m_xdo (0),
     m_win (0), m_spllchk (0)
 {
     m_xdo = xdo_new (0);
-    int x = 0;
-    int y = 0;
-
     SC_ASSERT (m_xdo != 0, "Failed to create 'xdo' instance.");
-    qDebug() << "[KeyboardEmulator::{constructor}] Mouse location" << xdo_mouselocation (m_xdo, &x, &y, 0) << x << "," << y;
 
-    //m_spllchk = new Hunspell (0, 0);
+    m_spllchk = new Hunspell("","");
 }
 
 /// @todo Allow the value of the delay to be adjustable.

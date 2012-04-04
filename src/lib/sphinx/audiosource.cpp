@@ -20,53 +20,62 @@
 
 #include "lib/audiosource/abstract.hpp"
 #include "lib/audiosource/source.hpp"
+#include "lib/sphinx/audiosource.hxx"
 #include "lib/sphinx/audiosource.hpp"
 
 using namespace SpeechControl;
 
-AudioSourceSphinx::AudioSourceSphinx (QObject* p_parent) : AbstractSphinx (p_parent), m_audioSrc (0), m_appSrc (0)
+void AudioSourceSphinxPrivate::linkSource ()
+{
+    Q_Q (AudioSourceSphinx);
+    QString description = q->standardDescription();
+    description = description.replace ("autoaudiosrc name=src", "appsrc name=src");
+    q->buildPipeline (description);
+    m_appSrc = new AudioSourceSphinxSource (q);
+    qDebug() << "[AudioSourceSphinx::linkSource()] Linked up sources.";
+}
+
+AudioSourceSphinx::AudioSourceSphinx (QObject* p_parent) :
+    AbstractSphinx (new AudioSourceSphinxPrivate(this), p_parent)
 {
 }
 
-AudioSourceSphinx::AudioSourceSphinx (AbstractAudioSource* p_source, QObject* p_parent) : AbstractSphinx (p_parent), m_audioSrc(p_source) {
+AudioSourceSphinx::AudioSourceSphinx (AbstractAudioSource* p_source, QObject* p_parent) :
+    AbstractSphinx (new AudioSourceSphinxPrivate (this), p_parent)
+{
     setSource (p_source);
 }
 
-
-AudioSourceSphinx::AudioSourceSphinx (const AudioSourceSphinx& p_other) : AbstractSphinx (p_other.parent()), m_audioSrc (0) {
-    setSource (p_other.m_audioSrc);
-}
-
-
-void AudioSourceSphinx::linkSource ()
+AudioSourceSphinx::AudioSourceSphinx (const AudioSourceSphinx& p_other) :
+    AbstractSphinx (new AudioSourceSphinxPrivate (this), p_other.parent())
 {
-    QString description = standardDescription();
-    description = description.replace ("autoaudiosrc name=src", "appsrc name=src");
-    buildPipeline (description);
-    m_appSrc = new AudioSourceSphinxSource (this);
-    qDebug() << "[AudioSourceSphinx::linkSource()] Linked up sources.";
+    setSource (p_other.d_func()->m_audioSrc);
 }
 
 void AudioSourceSphinx::setSource (AbstractAudioSource* p_source)
 {
-    m_audioSrc = p_source;
-    linkSource();
+    Q_D (AudioSourceSphinx);
+    d->m_audioSrc = p_source;
+    d->linkSource();
 }
 
 AbstractAudioSource* AudioSourceSphinx::source()
 {
-    return m_audioSrc;
+    Q_D (AudioSourceSphinx);
+    return d->m_audioSrc;
 }
 
 bool AudioSourceSphinx::start()
 {
-    m_audioSrc->start();
+    Q_D (AudioSourceSphinx);
+    d->m_audioSrc->start();
     return SpeechControl::AbstractSphinx::start();
 }
 
 bool AudioSourceSphinx::stop()
 {
-    m_audioSrc->stop();
+    Q_D (AudioSourceSphinx);
+    d->m_audioSrc->stop();
     return SpeechControl::AbstractSphinx::stop();
 }
 

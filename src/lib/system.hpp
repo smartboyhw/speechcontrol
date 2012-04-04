@@ -33,7 +33,6 @@ class SPCH_EXPORT System : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY (System)
-    Q_DECLARE_PRIVATE (System)
 
 signals:
     void started();
@@ -48,6 +47,7 @@ public slots:
     static void stop();
 
 private:
+    explicit System (int* argc, char** argv[]);
     static System* s_inst;
 };
 

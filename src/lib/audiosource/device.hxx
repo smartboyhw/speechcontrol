@@ -27,9 +27,10 @@ namespace SpeechControl
 {
 
 class DeviceAudioSource;
-struct DeviceAudioSourcePrivate;
+class DeviceAudioSourcePrivate;
 
-struct DeviceAudioSourcePrivate : public AbstractAudioSourcePrivate {
+class DeviceAudioSourcePrivate : public AbstractAudioSourcePrivate {
+public:
     explicit DeviceAudioSourcePrivate(DeviceAudioSource* p_obj) : AbstractAudioSourcePrivate(), m_device(),
         m_devicePtr (), m_deviceObj(p_obj) {
         m_devicePtr.clear();

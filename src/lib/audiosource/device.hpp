@@ -42,8 +42,7 @@ class SPCH_EXPORT DeviceAudioSource : public AbstractAudioSource
     Q_PROPERTY (QString DeviceName READ deviceName) ///< The internal name of this DeviceAudioSource.
     Q_PROPERTY (QString HumanName READ humanName)   ///< The presentable name of this DeviceAudioSource.
     Q_DISABLE_COPY (DeviceAudioSource)
-    Q_DECLARE_PRIVATE(DeviceAudioSource)
-    friend class AbstractAudioSource;
+    friend class DeviceAudioSourcePrivate;
 
 public:
     explicit DeviceAudioSource();
@@ -59,9 +58,6 @@ protected:
     DeviceAudioSource (const QString& p_deviceName);
     virtual QString pipelineDescription() const;
     virtual void buildPipeline();
-
-private:
-    QScopedPointer<DeviceAudioSourcePrivate> d_ptr;
 };
 
 }

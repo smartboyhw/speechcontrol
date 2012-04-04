@@ -22,11 +22,12 @@
 #include <QDirIterator>
 
 #include "config.hpp"
+#include "languagemodel.hxx"
 #include "languagemodel.hpp"
 
 using namespace SpeechControl;
 
-LanguageModel::LanguageModel (QObject* p_parent) : QObject (p_parent), m_path()
+LanguageModel::LanguageModel (QObject* p_parent) : QObject (p_parent), d_ptr(new LanguageModelPrivate)
 {
 
 }
@@ -34,13 +35,13 @@ LanguageModel::LanguageModel (QObject* p_parent) : QObject (p_parent), m_path()
 LanguageModel* LanguageModel::fromDirectory (const QDir& p_directory)
 {
     LanguageModel* lm = new LanguageModel;
-    lm->m_path = p_directory.absolutePath();
+    lm->d_func()->m_path = p_directory.absolutePath();
     return lm;
 }
 
 QString LanguageModel::path() const
 {
-    return m_path;
+    return d_func()->m_path;
 }
 
 QString LanguageModel::name() const
@@ -56,7 +57,7 @@ bool LanguageModel::isSystem() const
 
 bool LanguageModel::isUser() const
 {
-    return m_path.contains (QDir::homePath());
+    return path().contains (QDir::homePath());
 }
 
 /// @note This assumes that the LM file is the same name as the directory.
@@ -104,14 +105,13 @@ LanguageModelList LanguageModel::allModels()
 void LanguageModel::erase()
 {
     if (isUser()){
-        QDir dir(m_path);
+        QDir dir(path());
         dir.rmpath(".");
     }
 }
 
 LanguageModel::~LanguageModel()
 {
-
 }
 
 #include "languagemodel.moc"

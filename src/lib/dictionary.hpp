@@ -26,6 +26,7 @@
 #include <QList>
 #include <QString>
 #include <QObject>
+#include <QScopedPointer>
 #include <QDateTime>
 
 #include <lib/config.hpp>
@@ -42,7 +43,9 @@ namespace SpeechControl
 class Phrase;
 class Sentence;
 class Dictionary;
+class DictionaryPrivate;
 class DictionaryEntry;
+class DictionaryEntryPrivate;
 
 /**
  * @brief Represents a list of Dictionary objects.
@@ -77,6 +80,7 @@ class SPCH_EXPORT DictionaryEntry : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY (DictionaryEntry)
+    Q_DECLARE_PRIVATE (DictionaryEntry)
     Q_PROPERTY (QString Word READ word)
     Q_PROPERTY (QString Phoneme READ phoneme)
     friend class Dictionary;
@@ -84,31 +88,35 @@ class SPCH_EXPORT DictionaryEntry : public QObject
 public:
     /**
      * @brief Constructor.
+     *
      * Creates the representation of an entry for a Dictionary p_dictionary with the specified
      * word p_word and the phoneme p_phoneme.
-     * @param p_dictionary Dictionary
-     * @param p_word QString
-     * @param p_phoneme QString
+     *
+     * @param p_dictionary A pointer to a Dictionary object.
+     * @param p_word A string of the word being represented.
+     * @param p_phoneme A string of the phoneme used by this word.
      **/
     DictionaryEntry (Dictionary* p_dictionary , const QString& p_word, const QString& p_phoneme);
+
+    /**
+     * @brief Destructor.
+     **/
     virtual ~DictionaryEntry();
 
     /**
      * @brief Obtains the word represented.
-     * @return QString
+     * @return A string of the word being represented by this dictionary entry.
      **/
     QString word() const;
 
     /**
      * @brief Obtains the phoneme represented.
-     * @return QString
+     * @return A string of the phoneme represented by this dictionary entry.
      **/
     QString phoneme() const;
 
 private:
-    Dictionary* m_dict;     ///< The Dictionary that owns this object.
-    QString m_word;         ///< The word of this entry.
-    QString m_phnm;         ///< The phoneme of this entry.
+    QScopedPointer<DictionaryEntryPrivate> d_ptr;
 };
 
 /**
@@ -122,6 +130,7 @@ class SPCH_EXPORT Dictionary : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY (Dictionary)
+    Q_DECLARE_PRIVATE (Dictionary)
     friend class Corpus;
 
 public:
@@ -166,7 +175,7 @@ public:
      * @param p_id The dictionary's path.
      * @return Dictionary* A pointer to the newly formed Dictionary.
      **/
-    static Dictionary* create(QStringList p_text, QString p_id);
+    static Dictionary* create (QStringList p_text, QString p_id);
 
     /**
      * @brief Obtains the list of entries representing this Dictionary.
@@ -176,7 +185,10 @@ public:
 
     /**
      * @brief Adds an entry into this Dictionary.
-     * @param  p_entry The DictionaryEntry to add.
+     *
+     * Appends a new DictionaryEntry, p_entry, into this Dictionary object.
+     *
+     * @param p_entry The DictionaryEntry to add.
      **/
     void addEntry (DictionaryEntry* p_entry);
 
@@ -226,10 +238,7 @@ public:
     QString path() const;
 
 private:
-    static QString getPath (const QString& p_id);
-    static DictionaryMap s_lst;
-    DictionaryEntryMap m_words;
-    QFile* m_device;
+    QScopedPointer<DictionaryPrivate> d_ptr;
 };
 }
 #endif // DICTIONARY_HPP

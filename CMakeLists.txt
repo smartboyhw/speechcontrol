@@ -53,6 +53,7 @@ set(SPCHCNTRL_QRESC "${CMAKE_SOURCE_DIR}/res/res.qrc")
 file(GLOB SPCHCNTRL_UI "res/ui/*.ui")
 
 ## The subdirectories, order's vital here.
+add_subdirectory(po)
 add_subdirectory(res)
 add_subdirectory(src)
 add_subdirectory(cmake)

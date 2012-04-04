@@ -20,11 +20,16 @@
 
 #ifndef SPCHCNTRL_LIB_AUDIOSOURCE_DEVICE_HPP_
 #define SPCHCNTRL_LIB_AUDIOSOURCE_DEVICE_HPP_
+
+#include <QObject>
 #include <lib/audiosource/abstract.hpp>
 
 namespace SpeechControl
 {
+
 class DeviceAudioSource;
+struct DeviceAudioSourcePrivate;
+
 /**
  * @brief Represents a device used as an audio source on the user's system.
  *
@@ -37,6 +42,7 @@ class SPCH_EXPORT DeviceAudioSource : public AbstractAudioSource
     Q_PROPERTY (QString DeviceName READ deviceName) ///< The internal name of this DeviceAudioSource.
     Q_PROPERTY (QString HumanName READ humanName)   ///< The presentable name of this DeviceAudioSource.
     Q_DISABLE_COPY (DeviceAudioSource)
+    Q_DECLARE_PRIVATE(DeviceAudioSource)
     friend class AbstractAudioSource;
 
 public:
@@ -55,10 +61,7 @@ protected:
     virtual void buildPipeline();
 
 private:
-    void obtainDevice (const QString& p_deviceName);
-    QGlib::Value m_device;
-    QGst::ElementPtr m_devicePtr;
-    static QMap<QString, DeviceAudioSource*> s_map;
+    QScopedPointer<DeviceAudioSourcePrivate> d_ptr;
 };
 
 }

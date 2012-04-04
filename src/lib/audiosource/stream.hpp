@@ -24,6 +24,8 @@
 
 namespace SpeechControl
 {
+class StreamAudioSource;
+struct StreamAudioSourcePrivate;
 
 /**
  * @brief Represents an audio source coming from data from a data stream.
@@ -37,6 +39,7 @@ class SPCH_EXPORT StreamAudioSource : public AbstractAudioSource
 {
     Q_OBJECT
     Q_DISABLE_COPY (StreamAudioSource)
+    Q_DECLARE_PRIVATE(StreamAudioSource)
     friend class StreamSink;
     friend class StreamSource;
 
@@ -52,7 +55,7 @@ protected:
     virtual void buildPipeline();
 
 private:
-    QDataStream* m_strm;
+    QScopedPointer<StreamAudioSourcePrivate> d_ptr;
 };
 
 }

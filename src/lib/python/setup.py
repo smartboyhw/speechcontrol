@@ -11,8 +11,9 @@ from Cython.Distutils import build_ext
 
 # Is this right?
 setup(ext_modules=[Extension(
-                    "SpeechControl.System",
-                    ["system.pyx", "../system.cpp"],
-                    language = "c++")
+                    "SpeechControl.Dictionary",
+                    ["system.pxd", "../dictionary.cpp"],
+                    language = "c++",
+		    flags = "-I/usr/include/qt4")
     ],
     cmdclass={'build_ext': build_ext})

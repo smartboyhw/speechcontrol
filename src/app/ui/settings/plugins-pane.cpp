@@ -64,7 +64,6 @@ void PluginsSettingsPane::updateUi()
     Q_FOREACH (QString id, plgnLst) {
         GenericPlugin* plgn = new GenericPlugin (id);
         QListWidgetItem* item = new QListWidgetItem (plgn->name(), list);
-        //item->setHidden (!plgn->isSupported());
 
         if (plgn->isLoaded())
             item->setIcon (Factory::plugin (plgn->id())->pixmap());
@@ -132,7 +131,7 @@ void PluginsSettingsPane::on_checkBoxEnabled_toggled (const bool p_checked)
     QListWidgetItem* item = ui->lstPlugins->currentItem();
     GenericPlugin* plgn = new GenericPlugin (item->data (Qt::UserRole).toString());
     ui->checkBoxAutoStart->setEnabled (plgn->isEnabled());
-    Factory::pluginConfiguration (plgn->id())->setValue ("Plugin/Enabled", p_checked);
+    Factory::pluginSettings (plgn->id())->setValue ("Plugin/Enabled", p_checked);
     qDebug() << "[PluginsSettingsPane::on_table_cellClicked()]" << plgn->name() << "is now enabled?" << plgn->isEnabled() << p_checked;
 }
 
@@ -153,7 +152,7 @@ QPixmap PluginsSettingsPane::pixmap() const
 
 void PluginsSettingsPane::restoreDefaults()
 {
-
+    // herp derp.
 }
 
 void PluginsSettingsPane::on_btnInfo_clicked()

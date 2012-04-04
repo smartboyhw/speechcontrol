@@ -62,10 +62,10 @@ bool AbstractPlugin::hasLoaded() const
 
 bool AbstractPlugin::isSupported() const
 {
-    qDebug() << "[AbstractPlugin::isSupported()] Is enabled?" << configuration()->value("Plugin/Enabled").toBool();
+    qDebug() << "[AbstractPlugin::isSupported()] Is enabled?" << settings()->value("Plugin/Enabled").toBool();
 
-    if (configuration())
-        return configuration()->value("Plugin/Enabled").toBool();
+    if (settings())
+        return settings()->value("Plugin/Enabled").toBool();
 
     return false;
 }
@@ -170,9 +170,9 @@ bool AbstractPlugin::loadLibrary()
 
 bool AbstractPlugin::loadPlugins()
 {
-    Q_FOREACH (AbstractPlugin * l_plgn, plugins()) {
-        if (! (l_plgn->isSupported() && Factory::isPluginLoaded (l_plgn->id()))) {
-            qDebug() << "[AbstractPlugin::loadPlugins()] Plugin" << name() << "is missing a dependency:" << l_plgn->name();
+    Q_FOREACH (AbstractPlugin * plgn, plugins()) {
+        if (! (plgn->isSupported() && Factory::isPluginLoaded (plgn->id()))) {
+            qDebug() << "[AbstractPlugin::loadPlugins()] Plugin" << name() << "is missing a dependency:" << plgn->name();
             return false;
         }
     }
@@ -188,11 +188,11 @@ void AbstractPlugin::start()
 
 void AbstractPlugin::stop()
 {
-    Q_FOREACH (QAction * l_action, actions()) {
-        if (!l_action)
+    Q_FOREACH (QAction * action, actions()) {
+        if (!action)
             continue;
 
-        Core::mainWindow()->m_ui->menuPlugins->removeAction (l_action);
+        Core::mainWindow()->m_ui->menuPlugins->removeAction (action);
     }
     deinitialize();
     emit stopped();
@@ -231,14 +231,14 @@ void AbstractPlugin::addAction (QAction* p_action)
 
 void AbstractPlugin::addActions (QList< QAction* > p_actions)
 {
-    Q_FOREACH (QAction * l_action, p_actions) {
-        addAction (l_action);
+    Q_FOREACH (QAction * action, p_actions) {
+        addAction (action);
     }
 }
 
 bool AbstractPlugin::isEnabled() const
 {
-    return configuration()->value ("Plugin/Enabled").toBool();
+    return settings()->value ("Plugin/Enabled").toBool();
 }
 
 bool AbstractPlugin::isLoaded() const

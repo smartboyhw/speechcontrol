@@ -202,7 +202,7 @@ void DeviceAudioSource::buildPipeline()
             }
         }
 
-        d_func()->m_devicePtr = d_func()->m_binPtr->getElementByName ("src");
+        d_func()->m_devicePtr = AbstractAudioSource::d_func()->m_binPtr->getElementByName ("src");
 
         if (d_func()->m_devicePtr.isNull())
             qDebug() << "[DeviceAudioSource::obtain()] Warning! The obtained device pointer is NULL!" << d_func()->m_device.toString();

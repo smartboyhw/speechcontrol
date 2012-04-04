@@ -62,14 +62,14 @@ void System::start (int* argc, char** argv[])
         s_inst = new System (argc, argv);
 }
 
-System* System::instance()
+System* System::self()
 {
     return s_inst;
 }
 
 void System::stop()
 {
-    s_inst->deleteLater();
+    self()->deleteLater();
 }
 
 #include "system.moc"

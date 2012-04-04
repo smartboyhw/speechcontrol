@@ -29,13 +29,7 @@
 
 using namespace SpeechControl;
 
-DictionaryPrivate::DictionaryPrivate (QObject* p_parent) : QObject (p_parent), m_words(), m_device (0)
-{
-
-}
-
-DictionaryPrivate::DictionaryPrivate (const DictionaryPrivate& p_other) : QObject (p_other.parent()),
-    m_words (p_other.m_words), m_device (p_other.m_device)
+DictionaryPrivate::DictionaryPrivate () : m_words(), m_device (0)
 {
 
 }
@@ -50,13 +44,7 @@ QString DictionaryPrivate::getPathFromId (const QString& p_id)
     return QDir::homePath() + "/.config/speechcontrol/dictionaries/" + p_id + ".dict";
 }
 
-DictionaryEntryPrivate::DictionaryEntryPrivate (const DictionaryEntryPrivate& p_other) : QObject (p_other.parent()),
-    m_dict (p_other.m_dict), m_word (p_other.m_word), m_phnm (p_other.m_phnm)
-{
-
-}
-
-DictionaryEntryPrivate::DictionaryEntryPrivate (Dictionary* p_dictionary, const QString& p_word, const QString& p_phoneme) : QObject (p_dictionary),
+DictionaryEntryPrivate::DictionaryEntryPrivate (Dictionary* p_dictionary, const QString& p_word, const QString& p_phoneme) :
     m_dict (p_dictionary), m_word (p_word), m_phnm (p_phoneme)
 {
 

@@ -22,7 +22,6 @@
 #define MS_MICSAMPLE_HPP
 
 #include <QWizardPage>
-#include <lib/abstractsphinx.hpp>
 
 namespace Ui
 {
@@ -31,7 +30,7 @@ class MicrophoneSample;
 
 namespace SpeechControl
 {
-class DeviceAudioSource;
+class AudioSourceSphinx;
 namespace Wizards
 {
 namespace Pages

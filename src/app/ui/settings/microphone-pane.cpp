@@ -20,7 +20,7 @@
 
 #include <QDebug>
 
-#include <lib/abstractaudiosource.hpp>
+#include <lib/audiosource/device.hpp>
 
 #include "core.hpp"
 #include "microphone-pane.hpp"
@@ -81,7 +81,7 @@ void MicrophoneSettingsPane::updateUi()
 {
     ui->comboBoxDevices->clear();
 
-    AbstractAudioSourceList devices = DeviceAudioSource::allDevices();
+    AudioSourceList devices = DeviceAudioSource::allDevices();
     qDebug() << "[MicrophoneSettingsPane::updateUi()]" << Core::configuration ("Microphone/Default");
     Q_FOREACH (const AbstractAudioSource * device, devices) {
         const DeviceAudioSource* mic = (DeviceAudioSource*) device;

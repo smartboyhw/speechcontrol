@@ -22,7 +22,7 @@
 #define TEST_LIB_SPHINX_HPP
 #include <QObject>
 
-#include <lib/abstractsphinx.hpp>
+#include <lib/sphinx/abstract.hpp>
 
 class TestAbstractSphinx : public SpeechControl::AbstractSphinx
 {

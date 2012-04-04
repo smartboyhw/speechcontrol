@@ -46,3 +46,4 @@ Miscellaneous
 ! Work on the theming for the documentation. (bug #000021) [jalcine]
 ! Add more test-cases for the library, application and daemon. [jalcine]
 ! For Sphinx-related libraries create CMake modules instead of using pkg-config. -- [gentoolx]
+* Produce more informative documentation (see TODO.docs on branch 'docs')

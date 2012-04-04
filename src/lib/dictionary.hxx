@@ -19,7 +19,6 @@
  */
 
 #include <QMap>
-#include <QObject>
 #include <QString>
 
 class QFile;
@@ -28,17 +27,13 @@ namespace SpeechControl
 {
 class Dictionary;
 class DictionaryEntry;
-class DictionaryPrivate;
-class DictionaryEntryPrivate;
+struct DictionaryPrivate;
+struct DictionaryEntryPrivate;
 typedef QMap<QString, Dictionary* > DictionaryMap;
 typedef QMap<QString, DictionaryEntry* > DictionaryEntryMap;
 
-class DictionaryEntryPrivate : public QObject
+struct DictionaryEntryPrivate
 {
-    Q_OBJECT
-    Q_DISABLE_COPY (DictionaryEntryPrivate)
-
-public:
     explicit DictionaryEntryPrivate (Dictionary* p_dictionary,
                                      const QString& p_word,
                                      const QString& p_phoneme);
@@ -49,19 +44,14 @@ public:
     QString m_phnm;         ///< The phoneme of this entry.
 };
 
-class DictionaryPrivate : public QObject
+struct DictionaryPrivate
 {
-    Q_OBJECT
-    Q_DISABLE_COPY (DictionaryPrivate)
-
-public:
-    explicit DictionaryPrivate (QObject* parent = 0);
+    DictionaryPrivate ();
     virtual ~DictionaryPrivate();
     static QString getPathFromId (const QString& p_id);
     static DictionaryMap s_lst;
     DictionaryEntryMap m_words;
     QFile* m_device;
-
 };
 
 }

@@ -28,13 +28,16 @@
 
 namespace SpeechControl
 {
+class AudioSourceSphinx;
 class AudioSourceSphinxSource;
+class AudioSourceSphinxPrivate;
 class AbstractAudioSource;
 
 class SPCH_EXPORT AudioSourceSphinx : public AbstractSphinx
 {
     Q_OBJECT
     Q_DISABLE_COPY (AudioSourceSphinx)
+    Q_DECLARE_PRIVATE (AudioSourceSphinx)
     friend class AudioSourceSphinxSource;
 
 public:
@@ -46,11 +49,8 @@ public:
     virtual bool start();
     virtual bool stop();
 
-private:
-    AbstractAudioSource* m_audioSrc;
-    AudioSourceSphinxSource* m_appSrc;
+protected slots:
     virtual void applicationMessage (const QGst::MessagePtr& p_message);
-    void linkSource ();
 };
 
 }

@@ -4,14 +4,14 @@
  *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Library General Public
+ *  d_func()->modify it under the terms of the GNU Library General Public
  *  License as published by the Free Software Foundation; either
  *  version 2 of the License, or (at your option) any later version.
  *
  *  SpeechControl is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Library General Public License for more details.
+ *  Library General Public License for d_func()->more details.
  *
  *  You should have received a copy of the GNU Library General Public License
  *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
@@ -22,29 +22,27 @@
 #include <QDebug>
 #include <QTextStream>
 
+#include "noisedictionary.hxx"
 #include "noisedictionary.hpp"
 
 using namespace SpeechControl;
 
-NoiseDictionary::NoiseDictionary (QObject* p_parent) : QObject (p_parent)
+NoiseDictionary::NoiseDictionary (QObject* p_parent) : QObject (p_parent), d_ptr (new NoiseDictionaryPrivate)
 {
-
 }
 
-NoiseDictionary::NoiseDictionary (const NoiseDictionary& p_other) : QObject (p_other.parent()), m_entries (p_other.m_entries),
-    m_device (p_other.m_device)
+NoiseDictionary::NoiseDictionary (const NoiseDictionary& p_other) : QObject (p_other.parent()), d_ptr (const_cast<NoiseDictionaryPrivate*> (p_other.d_ptr.data()))
 {
-
 }
 
 void NoiseDictionary::addEntry (const QString& p_entry, const QString& p_value)
 {
-    m_entries.insert (p_entry, p_value);
+    d_func()->m_entries.insert (p_entry, p_value);
 }
 
 QStringMap NoiseDictionary::entries()
 {
-    return m_entries;
+    return d_func()->m_entries;
 }
 
 NoiseDictionary* NoiseDictionary::fromFile (QFile* p_file)
@@ -59,31 +57,31 @@ NoiseDictionary* NoiseDictionary::fromFile (QFile* p_file)
 
 bool NoiseDictionary::hasEntry (const QString& p_entry)
 {
-    return m_entries.contains (p_entry);
+    return entries().contains (p_entry);
 }
 
-/// @todo Populate m_entries with the data from the noise dictionary.
+/// @todo Populate d_func()->m_entries with the data from the noise dictionary.
 bool NoiseDictionary::load (QIODevice* p_device)
 {
     p_device->open (QIODevice::ReadOnly | QIODevice::Text);
 
     if (!p_device->isOpen()) {
         qDebug() << "[NoiseDictionary::load()] Can't open noise dictionary for reading:" << p_device->errorString();
-        m_device = 0;
-        m_entries.clear();
+        d_func()->m_device = 0;
+        d_func()->m_entries.clear();
         return false;
     }
 
     if (!p_device->isReadable()) {
         qDebug() << "[NoiseDictionary::load()] Can't read noise dictionary file for loading:" << p_device->errorString();
-        m_device = 0;
-        m_entries.clear();
+        d_func()->m_device = 0;
+        d_func()->m_entries.clear();
         return false;
     }
 
-    m_device = p_device;
+    d_func()->m_device = p_device;
 
-    QTextStream strm (m_device);
+    QTextStream strm (d_func()->m_device);
 
     while (!strm.atEnd()) {
         QString line = strm.readLine();
@@ -92,7 +90,7 @@ bool NoiseDictionary::load (QIODevice* p_device)
         bool isInSpace = false;
         QChar lastChar;
 
-        Q_FOREACH(const QChar charVal, line){
+        Q_FOREACH (const QChar charVal, line) {
             const bool isBeginningKey = key.isEmpty() && value.isEmpty() && !charVal.isSpace();
             const bool isBeginningValue = !key.isEmpty() && value.isEmpty() && !charVal.isSpace() && lastChar.isSpace();
 
@@ -101,13 +99,14 @@ bool NoiseDictionary::load (QIODevice* p_device)
             else if (isBeginningValue)
                 value += charVal;
             else {
-                if (charVal.isSpace()){
+                if (charVal.isSpace()) {
                     isInSpace = true;
                 }
                 else {
-                    if (isInSpace){
+                    if (isInSpace) {
                         value += charVal;
-                    } else {
+                    }
+                    else {
                         key += charVal;
                     }
                 }
@@ -116,55 +115,54 @@ bool NoiseDictionary::load (QIODevice* p_device)
             lastChar = charVal;
         }
 
-        m_entries.insert(key,value);
+        d_func()->m_entries.insert (key, value);
     }
 
-    m_device->close();
+    d_func()->m_device->close();
     return true;
 }
 
 void NoiseDictionary::mergeEntries (const QStringMap& p_entries)
 {
-    m_entries = m_entries.unite (p_entries);
+    d_func()->m_entries = entries().unite (p_entries);
 }
 
 void NoiseDictionary::save()
 {
-    m_device->open (QIODevice::WriteOnly | QIODevice::Truncate);
+    d_func()->m_device->open (QIODevice::WriteOnly | QIODevice::Truncate);
 
-    if (!m_device->isOpen()) {
-        qDebug() << "[NoiseDictionary::save()] Can't open noise dictionary for saving:" << m_device->errorString();
+    if (!d_func()->m_device->isOpen()) {
+        qDebug() << "[NoiseDictionary::save()] Can't open noise dictionary for saving:" << d_func()->m_device->errorString();
         return;
     }
 
-    if (!m_device->isWritable()) {
-        qDebug() << "[NoiseDictionary::save()] Can't write to noise dictionary file" << m_device->errorString();
+    if (!d_func()->m_device->isWritable()) {
+        qDebug() << "[NoiseDictionary::save()] Can't write to noise dictionary file" << d_func()->m_device->errorString();
         return;
     }
 
     int size = 1;
 
-    for (QStringMap::iterator l_itr = m_entries.begin();
-            l_itr != m_entries.end(); l_itr++) {
-        if (size < l_itr.key().size())
-            size = l_itr.key().size() + 5;
+    Q_FOREACH (const QString key, entries().values()) {
+        if (size < key.size())
+            size = key.size() + 5;
     }
 
-    QTextStream strm (m_device);
+    QTextStream strm (d_func()->m_device);
     const QString padSpace = QString (size, ' ');
 
-    for (QStringMap::iterator itr = m_entries.begin();
-            itr != m_entries.end(); itr++) {
+    for (QStringMap::iterator itr = d_func()->m_entries.begin();
+         itr != d_func()->m_entries.end(); itr++) {
         strm << itr.key() << padSpace << itr.value() << "\n";
-    qDebug() << "[NoiseDictionary::load()] Saving entry" << itr.key() << "with the value" << itr.value();
+        qDebug() << "[NoiseDictionary::load()] Saving entry" << itr.key() << "with the value" << itr.value();
     }
 
-    m_device->close();
+    d_func()->m_device->close();
 }
 
 bool NoiseDictionary::isValid() const
 {
-    return m_device && !m_entries.isEmpty();
+    return d_func()->m_device && !d_func()->m_entries.isEmpty();
 }
 
 #include "noisedictionary.moc"

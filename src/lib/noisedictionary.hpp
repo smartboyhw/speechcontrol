@@ -30,6 +30,8 @@
 
 namespace SpeechControl
 {
+
+class NoiseDictionaryPrivate;
 class NoiseDictionary;
 
 typedef QMap<QString, QString> QStringMap;
@@ -44,6 +46,7 @@ typedef QMap<QString, QString> QStringMap;
 class NoiseDictionary : public QObject
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(NoiseDictionary)
 
 public:
     /**
@@ -105,11 +108,14 @@ public:
      * @see load();
      **/
     void save();
+
+    /**
+     * @brief Determines if the NoiseDictionary is valid.
+     **/
     bool isValid() const;
 
 private:
-    QStringMap m_entries;       ///< Holds the entries.
-    QIODevice* m_device;        ///< Holds the device for saving purposes.
+    QScopedPointer<NoiseDictionaryPrivate> d_ptr;
 };
 
 }

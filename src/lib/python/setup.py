@@ -1,5 +1,7 @@
 #
 # Setup of Cython usage for libspeechcontrol.
+# 
+# @todo Add other extensions here.
 #
 # @author SpeechControl Developement <spchcntrl-devel@thesii.org>
 #         Jacky Alcine <jacky.alcine@thesii.org>

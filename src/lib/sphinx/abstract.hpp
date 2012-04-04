@@ -49,6 +49,9 @@ class Dictionary;
 class LanguageModel;
 
 class AbstractAudioSource;
+class AbstractAudioSourcePrivate;
+class AbstractSphinx;
+class AbstractSphinxPrivate;
 
 /**
  * @brief Implementation of automatic speech recognition.
@@ -60,10 +63,13 @@ class AbstractAudioSource;
 class SPCH_EXPORT AbstractSphinx : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY (AbstractSphinx)
-    friend class AudioSourceSphinx;
 
 protected:
+    Q_DECLARE_PRIVATE (AbstractSphinx)
+    Q_DISABLE_COPY (AbstractSphinx)
+
+    AbstractSphinx (AbstractSphinxPrivate* p_private, QObject* p_parent = 0);
+
     /**
      * @brief Represents the possible states of the AbstractSphinx.
      * @internal
@@ -76,18 +82,29 @@ protected:
 
     States m_running;
     States m_ready;
-
-    // GStreamer objects
-    QGst::PipelinePtr   m_pipeline;     ///< Holds the pipeline for GStreamer.
-    QGst::ElementPtr    m_psphinx;      ///< Holds our lucky PocketSphinx object.
-    QGst::ElementPtr    m_vader;        ///< Holds the Vader element.
-    QGst::BusPtr        m_bus;          ///< Holds the executing bus for GStreamer.
+    QScopedPointer<AbstractSphinxPrivate> d_ptr;
 
     /**
      * @brief Enacts all of the preparation steps.
      * @internal
      */
     void prepare();
+
+    /**
+     * @brief Builds a pipeline from a description p_description.
+     *
+     * @param p_description The description to be used to build a pipeline.
+     **/
+    virtual void buildPipeline (QString p_description);
+
+protected slots:
+
+    /**
+     * @brief Invokes an application-wide message to be raised.
+     *
+     * @param p_message The message to be passed.
+     **/
+    virtual void applicationMessage (const QGst::MessagePtr& p_message) = 0;
 
 public:
     /**
@@ -287,23 +304,6 @@ public slots:
      * @param p_uttid The utterance to be passed.
      **/
     virtual void formResult (QString& p_text, QString& p_uttid);
-
-protected slots:
-
-    /**
-     * @brief Invokes an application-wide message to be raised.
-     *
-     * @param p_message The message to be passed.
-     **/
-    virtual void applicationMessage (const QGst::MessagePtr& p_message) = 0;
-
-protected:
-    /**
-     * @brief Builds a pipeline from a description p_description.
-     *
-     * @param p_description The description to be used to build a pipeline.
-     **/
-    virtual void buildPipeline (QString p_description);
 };
 
 }

@@ -34,22 +34,21 @@ class SPCH_EXPORT System : public QObject
     Q_OBJECT
     Q_DISABLE_COPY (System)
 
-public:
-    explicit System (int* argc, char** []);
-    static System* instance();
-    static void start (int*, char** []);
-
 signals:
     void started();
     void stopped();
+
+public:
+    static System* self();
+    static void start (int*, char** []);
 
 public slots:
     static void start();
     static void stop();
 
 private:
+    explicit System (int* argc, char** argv[]);
     static System* s_inst;
-
 };
 
 }

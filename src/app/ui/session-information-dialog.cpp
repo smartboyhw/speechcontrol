@@ -73,8 +73,9 @@ void SessionInformationDialog::updateUi()
     m_ui->lblPhraseText->clear();
     m_ui->horizontalSliderPhrase->setRange (0, m_session->corpus()->phrases().count() - 1);
     m_ui->horizontalSliderPhrase->setValue (0);
-    m_ui->btnTrainSession->setEnabled(!m_session->isCompleted());
-    m_ui->btnAdaptSession->setEnabled(m_session->isCompleted());
+    on_horizontalSliderPhrase_valueChanged (0);
+    m_ui->btnTrainSession->setEnabled (!m_session->isCompleted());
+    m_ui->btnAdaptSession->setEnabled (m_session->isCompleted());
 }
 
 void SessionInformationDialog::on_btnOpenContent_clicked()
@@ -107,9 +108,9 @@ void SessionInformationDialog::updateProgress (const double p_progress)
 void SessionInformationDialog::on_btnPhrasePlay_clicked()
 {
     Phrase* phrase = m_session->corpus()->phraseAt (m_ui->horizontalSliderPhrase->value());
-    Phonon::MediaObject* media = new Phonon::MediaObject(this);
-    Phonon::createPath(media,(new Phonon::AudioOutput(Phonon::NoCategory,this)));
-    media->setCurrentSource(QUrl(phrase->audio()->fileName()));
+    Phonon::MediaObject* media = new Phonon::MediaObject (this);
+    Phonon::createPath (media, (new Phonon::AudioOutput (Phonon::NoCategory, this)));
+    media->setCurrentSource (QUrl (phrase->audio()->fileName()));
     media->play();
 }
 

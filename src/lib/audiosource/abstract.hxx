@@ -25,9 +25,12 @@
 namespace SpeechControl
 {
 
+class AbstractSphinx;
+
 class GenericSink;
 class GenericSource;
-struct AbstractAudioSourcePrivate;
+class AbstractAudioSource;
+class AbstractAudioSourcePrivate;
 
 class AbstractAudioSourcePrivate
 {

@@ -21,6 +21,7 @@
 #include <QtTest/QtTest>
 
 #include <lib/audiosource/abstract.hpp>
+#include <lib/audiosource/device.hpp>
 #include <lib/system.hpp>
 
 #include "device.h"

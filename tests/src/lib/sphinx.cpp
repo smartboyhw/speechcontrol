@@ -23,7 +23,7 @@
 #include <QtGStreamer/QGlib/refpointer.h>
 #include <QtGStreamer/QGst/Element>
 #include <lib/system.hpp>
-#include <lib/audiosource/abstract.hpp>
+#include <lib/audiosource/device.hpp>
 
 #include "sphinx.h"
 #include "config_sphinx.hpp"

@@ -30,9 +30,14 @@
 class QFile;
 namespace SpeechControl
 {
+
 class AcousticModel;
+struct AcousticModelPrivate;
 class NoiseDictionary;
 
+/**
+ * @brief Represents a list of acoustic models.
+ **/
 typedef QList<AcousticModel*> AcousticModelList;
 
 /**
@@ -65,15 +70,9 @@ class SPCH_EXPORT AcousticModel : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY (AcousticModel)
+    Q_DECLARE_PRIVATE (AcousticModel)
     Q_PROPERTY (const QVariantMap Parameters READ parameters WRITE setParameters)
     Q_PROPERTY (const quint16 SampleRate READ sampleRate)
-
-private:
-    QVariantMap m_params;         ///< Holds the properties of the model.
-    QString m_path;               ///< Holds the path to the base directory of the acoustic model.
-    NoiseDictionary* m_noisedict;  ///< Holds information about the noise dictionary.
-    void loadFeatureParameters();
-    void loadNoiseDictionary();
 
 public:
     /**
@@ -147,38 +146,96 @@ public:
 
     /**
      * @brief Determines if the acoustic model is valid.
-     *
-     * @return boolean
      **/
     bool isValid() const;
 
+    /**
+     * @brief Determines if this AcousticModel is a system-wide model.
+     **/
     bool isSystem() const;
+
+    /**
+     * @brief Determines if this AcousticModel is a user-wide model.
+     **/
     bool isUser() const;
 
+    /**
+     * @brief Obtains the name of this AcousticModel.
+     **/
     QString name() const;
 
+    /**
+     * @brief Loads an AcousticModel from a specific path, p_path.
+     * @param p_path The path in question.
+     **/
     void load (QString p_path);
 
+    /**
+     * @brief Duplicates the data of this AcousticModel.
+     **/
     AcousticModel* clone();
 
+    /**
+     * @brief Obtains a listing of all AcousticModels.
+     *
+     * Obtains a list of all of the system-wide and user-wide AcousticModels
+     * known to SpeechControl.
+     **/
     static AcousticModelList allModels();
 
+    /**
+     * @brief Obtains a file to the NoiseDictionary of this AcousticModel.
+     **/
     NoiseDictionary* noiseDictionary() const;
+
+    /**
+     * @brief Obtains the path to this AcousticModel's parameters (feat.params).
+     **/
     QString parameterPath() const;
+
+    /**
+     * @brief Obtains the QFile representing the binary model definitions.
+     * @note This is typically found at path() + "/mdef".
+     **/
     QFile* modelDefinitions() const;
+
+    /**
+     * @brief Obtains the QFile representing the mixture weights.
+     * @note This is typically found at path() + "/mixture_weights".
+     **/
     QFile* mixtureWeights();
+
+    /**
+     * @brief Obtains the QFile representing the sentence dump of the AcousticModel.
+     * @note This is typically found at path() + "/sendump".
+     **/
     QFile* senDump();
+
+    /**
+     * @brief Obtains the QFile representing the variances of the AcousticModel.
+     * @note This is typically found at path() + "/variances".
+     **/
     QFile* variances();
+    /**
+     * @brief Obtains the QFile representing the transition matrices of the AcousticModel.
+     * @note This is typically found at path() + "/transition_matrices".
+     **/
     QFile* transitionMatrices();
+
+    /**
+     * @brief Obtains the QFile representing the mean data of the AcousticModel.
+     * @note This is typically found at path() + "/means".
+     **/
     QFile* means();
 
+    /**
+     * @brief Erases this AcousticModel from disk.
+     **/
     void erase();
-};
 
-/**
- * @brief Represents a list of acoustic models.
- **/
-typedef QList<AcousticModel*> AcousticModelList;
+private:
+    QScopedPointer<AcousticModelPrivate> d_ptr;
+};
 
 }
 

@@ -23,7 +23,7 @@
 #include <QProgressBar>
 #include <QMessageBox>
 
-#include <lib/abstractaudiosource.hpp>
+#include <lib/audiosource/device.hpp>
 
 #include "core.hpp"
 #include "sessions/session.hpp"

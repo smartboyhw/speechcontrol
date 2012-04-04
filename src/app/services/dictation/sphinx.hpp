@@ -23,12 +23,14 @@
 #define DICTATIONASR_HPP
 
 
-#include <lib/abstractsphinx.hpp>
+#include <lib/sphinx/abstract.hpp>
 
 namespace SpeechControl
 {
 namespace Dictation
 {
+
+    class Agent;
 
 /**
  * @brief Represents the AbstractSphinx object for Dictation.
@@ -43,10 +45,10 @@ class Sphinx : public AbstractSphinx
 {
     Q_OBJECT
     Q_DISABLE_COPY (Sphinx)
-    void init();
     friend class Agent;
 
-protected:
+private:
+    void init();
     /**
      * @brief Null constructor.
      *

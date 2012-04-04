@@ -23,8 +23,6 @@
 #define TRANSCRIBERDIALOG_HPP
 
 #include <QDialog>
-#include <lib/abstractaudiosource.hpp>
-#include <lib/abstractsphinx.hpp>
 
 namespace Ui
 {
@@ -33,6 +31,8 @@ class TranscriberDialog;
 
 namespace SpeechControl
 {
+    class StreamAudioSource;
+    class AudioSourceSphinx;
 namespace Windows
 {
 

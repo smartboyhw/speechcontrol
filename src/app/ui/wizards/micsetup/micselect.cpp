@@ -18,8 +18,9 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <QDebug>
 // libspchcntrl includes
-#include <lib/abstractaudiosource.hpp>
+#include <lib/audiosource/device.hpp>
 
 #include "micselect.hpp"
 #include "app/ui/micsetup-wizard.hpp"
@@ -47,7 +48,7 @@ MicrophoneSelection::~MicrophoneSelection()
 /// @todo Fill the combo box with all of the mics.
 void SpeechControl::Wizards::Pages::MicrophoneSelection::initializePage()
 {
-    AbstractAudioSourceList l_allMics = DeviceAudioSource::allDevices();
+    AudioSourceList l_allMics = DeviceAudioSource::allDevices();
 
     if (!l_allMics.empty()) {
         Q_FOREACH (AbstractAudioSource * src, l_allMics) {

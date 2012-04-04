@@ -32,7 +32,7 @@
 #include <QErrorMessage>
 #include <QTableWidget>
 
-#include <lib/abstractaudiosource.hpp>
+#include <lib/audiosource/device.hpp>
 #include <lib/acousticmodel.hpp>
 
 #include "core.hpp"

@@ -21,12 +21,14 @@
 #ifndef DESKTOPASR_HPP
 #define DESKTOPASR_HPP
 
-#include <lib/abstractsphinx.hpp>
+#include <lib/sphinx/abstract.hpp>
 
 namespace SpeechControl
 {
 namespace DesktopControl
 {
+
+    class Agent;
 
 /**
  * @brief Represents the Sphinx instance for DesktopControl.
@@ -38,8 +40,9 @@ class Sphinx : public AbstractSphinx
 {
     Q_OBJECT
     Q_DISABLE_COPY (Sphinx)
+    friend class Agent;
 
-public:
+private:
     /**
      * @brief Null constructor.
      *
@@ -72,4 +75,4 @@ private slots:
 }
 
 #endif // DESKTOPASR_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

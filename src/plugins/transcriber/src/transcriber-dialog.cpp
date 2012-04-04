@@ -21,6 +21,10 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
+#include <lib/audiosource/abstract.hpp>
+#include <lib/audiosource/stream.hpp>
+#include <lib/sphinx/audiosource.hpp>
+
 #include "plugin.hpp"
 #include "transcriber-dialog.hpp"
 #include "ui_transcriber-dialog.h"

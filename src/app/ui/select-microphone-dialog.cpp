@@ -20,11 +20,10 @@
 
 #include <QIcon>
 
-#include <lib/abstractaudiosource.hpp>
+#include <lib/audiosource/device.hpp>
 
 #include "app/core.hpp"
 #include "ui_select-microphone-dialog.h"
-
 #include "select-microphone-dialog.hpp"
 
 using namespace SpeechControl;
@@ -40,7 +39,7 @@ MicrophoneSelectionDialog::MicrophoneSelectionDialog (QWidget* parent) :
 
 void MicrophoneSelectionDialog::updateUi()
 {
-    AbstractAudioSourceList devices = DeviceAudioSource::allDevices();
+    AudioSourceList devices = DeviceAudioSource::allDevices();
     ui->comboBoxDevices->clear();
 
     Q_FOREACH (AbstractAudioSource * abstractDevice, devices) {

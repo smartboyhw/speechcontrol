@@ -20,7 +20,7 @@
 
 #include <QtTest/QtTest>
 
-#include <lib/abstractaudiosource.hpp>
+#include <lib/audiosource/abstract.hpp>
 #include <lib/system.hpp>
 
 #include "device.h"
@@ -42,7 +42,7 @@ void TestDevice::cleanup()
 
 void TestDevice::listDevices()
 {
-    AbstractAudioSourceList devices = DeviceAudioSource::allDevices();
+    AudioSourceList devices = DeviceAudioSource::allDevices();
 
     Q_FOREACH (const AbstractAudioSource * device, devices) {
         DeviceAudioSource* mic = (DeviceAudioSource*) device;

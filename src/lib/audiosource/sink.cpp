@@ -23,16 +23,18 @@
 #include "lib/audiosource/abstract.hpp"
 #include "lib/audiosource/stream.hpp"
 #include "lib/audiosource/source.hpp"
+#include "lib/audiosource/sink.hxx"
 #include "lib/audiosource/sink.hpp"
+#include "stream.hxx"
 
 using namespace SpeechControl;
 
-GenericSink::GenericSink() : m_src (0)
+GenericSink::GenericSink (QObject* p_parent) : QObject (p_parent), ApplicationSink(), d_ptr (new GenericSinkPrivate)
 {
 
 }
 
-GenericSink::GenericSink (const GenericSink& p_other) : QObject (p_other.parent()), ApplicationSink(), m_src (p_other.m_src)
+GenericSink::GenericSink (const GenericSink& p_other) : QObject (p_other.parent()), ApplicationSink(), d_ptr (new GenericSinkPrivate)
 {
 
 }
@@ -40,7 +42,7 @@ GenericSink::GenericSink (const GenericSink& p_other) : QObject (p_other.parent(
 void GenericSink::eos()
 {
     qDebug() << "[GenericSink::eos()] End of stream in generic sink.";
-    m_src->endOfStream();
+    d_func()->m_src->endOfStream();
     QGst::Utils::ApplicationSink::eos();
 }
 
@@ -50,18 +52,18 @@ QGst::FlowReturn GenericSink::newBuffer()
 
     //qDebug() << "[GenericSink::newBuffer()] Buffer: " << * (buffer->data());
 
-    return m_src->pushBuffer (buffer);
+    return d_func()->m_src->pushBuffer (buffer);
 }
 
 void GenericSink::setSource (GenericSource* p_source)
 {
     qDebug() << "[GenericSink::setSource()] Set a new source." << p_source->caps()->toString();
-    m_src = p_source;
+    d_func()->m_src = p_source;
 }
 
 GenericSource* GenericSink::source()
 {
-    return m_src;
+    return d_func()->m_src;
 }
 
 GenericSink::~GenericSink()
@@ -70,17 +72,17 @@ GenericSink::~GenericSink()
         element()->setState (QGst::StateNull);
 }
 
-StreamSink::StreamSink (StreamAudioSource* p_audioSrc) : GenericSink(), m_audioSrc (p_audioSrc)
+StreamSink::StreamSink (StreamAudioSource* p_audioSrc) : GenericSink(), d_ptr (new StreamSinkPrivate)
+{
+    d_func()->m_audioSrc = p_audioSrc;
+}
+
+StreamSink::StreamSink (const StreamSink& p_other) : GenericSink (p_other), d_ptr (const_cast<StreamSinkPrivate*> (p_other.d_func()))
 {
 
 }
 
-StreamSink::StreamSink (const StreamSink& p_other) : GenericSink (p_other)
-{
-
-}
-
-StreamSink::StreamSink (const GenericSink& p_other) : GenericSink (p_other)
+StreamSink::StreamSink (const GenericSink& p_other) : GenericSink (p_other), d_ptr(new StreamSinkPrivate)
 {
 
 }
@@ -94,9 +96,25 @@ void StreamSink::eos()
 QGst::BufferPtr StreamSink::pullBuffer()
 {
     quint8 data = 0;
-    *(m_audioSrc->stream()) >> data;
+    * (d_func()->m_audioSrc->stream()) >> data;
     qDebug() << "[StreamSink::pullBuffer()] Obtained buffer from stream: " << data;
     return QGst::Buffer::create (data);
+}
+
+uint StreamSink::bufferSize() const
+{
+    QGlib::Value bufferSizeVal = d_func()->m_audioSrc->d_func()->m_srcPtr->property ("blocksize");
+    const int bufferSize = bufferSizeVal.toUInt();
+
+    if (bufferSize == -1)
+        return 4096;
+    else
+        return (const uint) bufferSize;
+}
+
+void StreamSink::setBufferSize (const uint& p_bufferSize)
+{
+    d_func()->m_audioSrc->d_func()->m_srcPtr->setProperty ("blocksize", p_bufferSize);
 }
 
 StreamSink::~StreamSink()

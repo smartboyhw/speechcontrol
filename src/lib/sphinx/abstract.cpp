@@ -18,18 +18,18 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-
-#include "abstractsphinx.hpp"
-#include "acousticmodel.hpp"
-#include "dictionary.hpp"
-#include "abstractaudiosource.hpp"
-#include "languagemodel.hpp"
-
 #include <QGlib/Connect>
 
 #include <QGst/enums.h>
 #include <QGst/ElementFactory>
 #include <pocketsphinx.h>
+
+#include "acousticmodel.hpp"
+#include "dictionary.hpp"
+#include "languagemodel.hpp"
+
+#include "sphinx/abstract.hpp"
+#include "audiosource/abstract.hpp"
 
 using namespace SpeechControl;
 
@@ -283,75 +283,5 @@ AbstractSphinx::~AbstractSphinx()
     m_psphinx.clear();
 }
 
-AudioSourceSphinxSource::AudioSourceSphinxSource (AudioSourceSphinx* p_sphinx) : QObject(), m_sphinx (p_sphinx)
-{
-
-}
-
-AudioSourceSphinx::AudioSourceSphinx (QObject* p_parent) : AbstractSphinx (p_parent), m_audioSrc (0), m_appSrc (0)
-{
-
-}
-
-AudioSourceSphinx::AudioSourceSphinx (AbstractAudioSource* p_source, QObject* p_parent) : AbstractSphinx (p_parent), m_audioSrc (0), m_appSrc (0)
-{
-    setSource (p_source);
-}
-
-AudioSourceSphinx::AudioSourceSphinx (const AudioSourceSphinx& p_other) : AbstractSphinx (p_other.parent()), m_audioSrc (0), m_appSrc (0)
-{
-    setSource (p_other.m_audioSrc);
-}
-
-void AudioSourceSphinx::linkSource ()
-{
-    QString description = standardDescription();
-    description = description.replace ("autoaudiosrc name=src", "appsrc name=src");
-    buildPipeline (description);
-
-    m_appSrc = new AudioSourceSphinxSource (this);
-    qDebug() << "[AudioSourceSphinx::linkSource()] Linked up sources.";
-}
-
-void AudioSourceSphinx::setSource (AbstractAudioSource* p_source)
-{
-    m_audioSrc = p_source;
-    linkSource();
-}
-
-AbstractAudioSource* AudioSourceSphinx::source()
-{
-    return m_audioSrc;
-}
-
-bool AudioSourceSphinx::start()
-{
-    m_audioSrc->start();
-    return SpeechControl::AbstractSphinx::start();
-}
-
-bool AudioSourceSphinx::stop()
-{
-    m_audioSrc->stop();
-    return SpeechControl::AbstractSphinx::stop();
-}
-
-void AudioSourceSphinx::applicationMessage (const QGst::MessagePtr& p_message)
-{
-    QString msgType    = p_message->internalStructure()->name();
-    QString hypothesis = p_message->internalStructure()->value ("hyp").toString();
-    QString uttid      = p_message->internalStructure()->value ("uttid").toString();
-
-    if (msgType == "result") {
-        qDebug() << "[DesktopControl::Sphinx::applicationMessage()] Obtained hypothesis" << hypothesis << "from user of a utterance" << uttid << ".";
-        emit finished (hypothesis);
-    }
-}
-
-AudioSourceSphinx::~AudioSourceSphinx()
-{
-
-}
-
-#include "abstractsphinx.moc"
+#include "sphinx/abstract.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

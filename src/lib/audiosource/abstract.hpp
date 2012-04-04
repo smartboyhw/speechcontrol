@@ -18,8 +18,8 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef ABSTRACTAUDIOSOURCE_HPP
-#define ABSTRACTAUDIOSOURCE_HPP
+#ifndef SPCHCNTRL_LIB_AUDIOSOURCE_ABSTRACT_HPP_
+#define SPCHCNTRL_LIB_AUDIOSOURCE_ABSTRACT_HPP_
 
 #include <QMap>
 #include <QList>
@@ -39,63 +39,25 @@
 #include <QGst/PropertyProbe>
 #include <QGst/StreamVolume>
 
-#include <lib/config.hpp>
 #include <lib/export.hpp>
-
-#include <QGst/Utils/ApplicationSource>
-#include <QGst/Utils/ApplicationSink>
 
 namespace SpeechControl
 {
+
 class GenericSink;
 class GenericSource;
+
 class AbstractAudioSource;
-class DeviceAudioSource;
-class StreamAudioSource;
 
 /**
- * @brief Represents a shorthand for denoating a list of @see AbstractAudioSource.
+ * @brief Represents a shorthand for denoting a list of AbstractAudioSource objects.
  **/
-typedef QList<AbstractAudioSource*> AbstractAudioSourceList;
+typedef QList<AbstractAudioSource*> AudioSourceList;
 
 /**
  * @brief Represents a named mapping of AbstractAudioSources.
  **/
-typedef QMap<QUuid, AbstractAudioSource*> AbstractAudioSourceMap;
-
-class SPCH_EXPORT GenericSink : public QObject, public QGst::Utils::ApplicationSink
-{
-    Q_OBJECT
-public:
-    explicit GenericSink();
-    virtual ~GenericSink();
-    GenericSource* source();
-    void setSource (GenericSource* p_source);
-
-protected:
-    Q_DISABLE_COPY (GenericSink)
-    virtual void eos();
-    virtual QGst::FlowReturn newBuffer();
-    GenericSource* m_src;
-};
-
-class SPCH_EXPORT GenericSource : public QObject, public QGst::Utils::ApplicationSource
-{
-    Q_OBJECT
-
-signals:
-    void bufferObtained (const QByteArray p_bufferData);
-
-public:
-    explicit GenericSource (AbstractAudioSource* p_audioSource);
-    virtual ~GenericSource();
-    virtual QGst::FlowReturn endOfStream();
-    virtual QGst::FlowReturn pushBuffer (const QGst::BufferPtr& p_buffer);
-
-protected:
-    Q_DISABLE_COPY (GenericSource)
-    AbstractAudioSource* m_audioSrc;
-};
+typedef QMap<QUuid, AbstractAudioSource*> AudioSourceMap;
 
 /**
  * @brief Represents a handle of an audio input device on this computer.
@@ -256,105 +218,9 @@ private slots:
     void onPipelineBusmessage (const QGst::MessagePtr& message);
 };
 
-/**
- * @brief Represents a device used as an audio source on the user's system.
- *
- * DeviceAudioSource objects are more commonly used to represent input devices
- * on a user's system to obtain audio directly from the device.
- **/
-class SPCH_EXPORT DeviceAudioSource : public AbstractAudioSource
-{
-    Q_OBJECT
-    Q_PROPERTY (QString DeviceName READ deviceName) ///< The internal name of this DeviceAudioSource.
-    Q_PROPERTY (QString HumanName READ humanName)   ///< The presentable name of this DeviceAudioSource.
-    Q_DISABLE_COPY (DeviceAudioSource)
-    friend class AbstractAudioSource;
-
-public:
-    explicit DeviceAudioSource();
-    DeviceAudioSource (const AbstractAudioSource& p_other);
-    virtual ~DeviceAudioSource();
-    QString deviceName() const;
-    QString humanName() const;
-    static AbstractAudioSourceList allDevices();
-    static DeviceAudioSource* defaultDevice();
-    static DeviceAudioSource* obtain (const QString& p_deviceName);
-
-protected:
-    DeviceAudioSource (const QString& p_deviceName);
-    virtual QString pipelineDescription() const;
-    virtual void buildPipeline();
-
-private:
-    void obtainDevice (const QString& p_deviceName);
-    QGlib::Value m_device;
-    QGst::ElementPtr m_devicePtr;
-    static QMap<QString, DeviceAudioSource*> s_map;
-};
-
-class SPCH_EXPORT StreamSource : public GenericSource
-{
-    Q_OBJECT
-    Q_DISABLE_COPY (StreamSource)
-
-public:
-    explicit StreamSource (StreamAudioSource* p_audioSource);
-    virtual ~StreamSource();
-    virtual QGst::FlowReturn endOfStream();
-    virtual QGst::FlowReturn pushBuffer (const QGst::BufferPtr& p_buffer);
-};
-
-class SPCH_EXPORT StreamSink : public GenericSink
-{
-    Q_OBJECT
-    Q_DISABLE_COPY (StreamSink)
-
-public:
-    explicit StreamSink (StreamAudioSource* p_audioSrc);
-    StreamSink (const GenericSink&);
-    virtual ~StreamSink();
-    virtual void eos();
-    virtual QGst::BufferPtr pullBuffer();
-    uint bufferSize() const;
-    void setBufferSize (const uint& p_bufferSize);
-
-private:
-    StreamAudioSource* m_audioSrc;
-};
-
-/**
- * @brief Represents an audio source coming from data from a data stream.
- *
- * At times, developers might find it convenient to use arbitrary data streams
- * to pipe data to a listening source as if it were to be a local device providing
- * said audio. StreamAudioSource allows the piping of data from a QDataStream into
- * whatever chooses to listen.
- **/
-class SPCH_EXPORT StreamAudioSource : public AbstractAudioSource
-{
-    Q_OBJECT
-    Q_DISABLE_COPY (StreamAudioSource)
-    friend class StreamSink;
-    friend class StreamSource;
-
-public:
-    explicit StreamAudioSource ();
-    StreamAudioSource (QDataStream* p_stream);
-    StreamAudioSource (const AbstractAudioSource& p_other);
-    virtual ~StreamAudioSource();
-    QDataStream* stream() const;
-
-protected:
-    virtual QString pipelineDescription() const;
-    virtual void buildPipeline();
-
-private:
-    QDataStream* m_strm;
-};
-
 }
 
-#endif // ABSTRACTAUDIOSOURCE_HPP
+#endif // SPCHCNTRL_LIB_AUDIOSOURCE_ABSTRACT_HPP_
 
 
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

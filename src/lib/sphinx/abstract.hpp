@@ -39,17 +39,16 @@
 #include <lib/config.hpp>
 #include <lib/export.hpp>
 
-// There's a bug with this header so it's placed here, <lib/export.hpp> has a macro fix.
 #include <Utils/ApplicationSource>
 
 namespace SpeechControl
 {
 
-class LanguageModel;
-class AbstractAudioSource;
-class AudioSourceSphinx;
 class AcousticModel;
 class Dictionary;
+class LanguageModel;
+
+class AbstractAudioSource;
 
 /**
  * @brief Implementation of automatic speech recognition.
@@ -305,39 +304,6 @@ protected:
      * @param p_description The description to be used to build a pipeline.
      **/
     virtual void buildPipeline (QString p_description);
-};
-
-class AudioSourceSphinxSource : public QObject, public QGst::Utils::ApplicationSource {
-    Q_OBJECT
-    Q_DISABLE_COPY(AudioSourceSphinxSource)
-
-public:
-    AudioSourceSphinxSource(AudioSourceSphinx* p_sphinx);
-
-private:
-    AudioSourceSphinx* m_sphinx;
-};
-
-class SPCH_EXPORT AudioSourceSphinx : public AbstractSphinx
-{
-    Q_OBJECT
-    Q_DISABLE_COPY(AudioSourceSphinx)
-    friend class AudioSourceSphinxSource;
-
-public:
-    explicit AudioSourceSphinx (QObject* p_parent = 0);
-    AudioSourceSphinx (AbstractAudioSource* p_source, QObject* p_parent = 0);
-    virtual ~AudioSourceSphinx();
-    AbstractAudioSource* source();
-    void setSource(AbstractAudioSource* p_source);
-    virtual bool start();
-    virtual bool stop();
-
-private:
-    AbstractAudioSource* m_audioSrc;
-    AudioSourceSphinxSource* m_appSrc;
-    virtual void applicationMessage (const QGst::MessagePtr& p_message);
-    void linkSource ();
 };
 
 }

@@ -2,7 +2,13 @@ project(SpeechControlLibrary)
 cmake_minimum_required(VERSION 2.8)
 
 ## setting up sources
-file(GLOB SPCHCNTRL_LIB_SOURCES "*.cpp")
+file(GLOB SPCHCNTRL_LIB_SRCS "*.cpp")
+file(GLOB SPCHCNTRL_LIB_AUDIOSOURCE_SRCS "audiosource/*.cpp")
+file(GLOB SPCHCNTRL_LIB_SPHINX_SRCS "sphinx/*.cpp")
+
+set(SPCHCNTRL_LIB_SOURCES ${SPCHCNTRL_LIB_SRCS}
+    ${SPCHCNTRL_LIB_AUDIOSOURCE_SRCS}
+    ${SPCHCNTRL_LIB_SPHINX_SRCS})
 file(GLOB SPCHCNTRL_LIB_HEADERS "*.hpp")
 
 ## variables
@@ -74,3 +80,5 @@ include_directories(${SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS})
 
 add_subdirectory(cmake)
 add_subdirectory(python)
+add_subdirectory(sphinx)
+add_subdirectory(audiosource)

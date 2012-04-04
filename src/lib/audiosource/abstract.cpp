@@ -95,6 +95,7 @@ void AbstractAudioSource::buildPipeline()
         }
 
         // build our magical sink and sources.
+        d_func()->m_appSink = new GenericSink(this);
         d_func()->m_appSink->setCaps (QGst::Caps::fromString (caps()));
         d_func()->m_appSink->setElement (d_func()->m_sinkPtr);
 

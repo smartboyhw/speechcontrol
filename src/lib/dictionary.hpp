@@ -21,8 +21,8 @@
 #ifndef DICTIONARY_HPP
 #define DICTIONARY_HPP
 
-#include <QMap>
 #include <QDir>
+#include <QMap>
 #include <QList>
 #include <QString>
 #include <QObject>
@@ -85,7 +85,6 @@ class SPCH_EXPORT DictionaryEntry : public QObject
     Q_PROPERTY (QString Phoneme READ phoneme)
     friend class Dictionary;
 
-public:
     /**
      * @brief Constructor.
      *
@@ -97,6 +96,8 @@ public:
      * @param p_phoneme A string of the phoneme used by this word.
      **/
     DictionaryEntry (Dictionary* p_dictionary , const QString& p_word, const QString& p_phoneme);
+
+private:
 
     /**
      * @brief Destructor.

@@ -245,8 +245,10 @@ void Main::open()
         const bool isIndicatorVisible = Indicator::isVisible() && Indicator::isEnabled();
         const bool isMainWindowVisible = Core::configuration ("MainWindow/Visible").toBool() == true;
 
-        if (isIndicatorVisible || isMainWindowVisible)
+        if (!isIndicatorVisible || isMainWindowVisible || (!isIndicatorVisible && isMainWindowVisible)){
+            Core::setConfiguration ("MainWindow/Visible",true);
             QMainWindow::show();
+        }
         else
             QMainWindow::hide();
     }

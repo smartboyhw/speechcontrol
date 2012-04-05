@@ -42,7 +42,7 @@ StreamAudioSource::StreamAudioSource (const StreamAudioSource& p_other) : Abstra
 StreamAudioSource::StreamAudioSource (QDataStream* p_stream) : AbstractAudioSource (new StreamAudioSourcePrivate)
 {
     Q_D(StreamAudioSource);
-    ((StreamAudioSourcePrivate*)d_func())->m_strm = p_stream;
+    d->m_strm = p_stream;
 }
 
 void StreamAudioSource::buildPipeline()

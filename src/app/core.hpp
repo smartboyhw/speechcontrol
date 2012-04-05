@@ -161,6 +161,7 @@ public slots:
 private slots:
     void invokeAutoStart();
     void hookUpSignals();
+    void bootServices();
 
 private:
     QApplication* m_app;    ///< Holds the Application instance.

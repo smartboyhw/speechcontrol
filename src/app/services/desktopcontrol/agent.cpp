@@ -61,7 +61,7 @@ void Agent::start()
     }
 
     QDeclarativeEngine* engine = new QDeclarativeEngine (this);
-    QDeclarativeComponent* component = new QDeclarativeComponent (&engine, QUrl (":/qml/dsktpctlui"), this);
+    QDeclarativeComponent* component = new QDeclarativeComponent (engine, QUrl (":/qml/dsktpctlui"), this);
     QObject* instance = component->create();
 
     qDebug() << "[DesktopControl::Agent::start()] Enabled.";

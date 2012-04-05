@@ -126,9 +126,8 @@ void Factory::unloadPlugin (const QString& p_id)
         AbstractPlugin* plgn = s_ldPlgns.value (p_id);
         plgn->stop();
         s_ldPlgns.remove (p_id);
-        qDebug() << "[Factory::unloadPlugin()] Plugin" << plgn->name() << "unloaded.";
-        delete plgn;
         emit instance()->pluginUnloaded (p_id);
+        qDebug() << "[Factory::unloadPlugin()] Plugin" << Factory::pluginConfiguration(p_id)->value("Plugin/Name").toString() << "unloaded.";
     }
 }
 

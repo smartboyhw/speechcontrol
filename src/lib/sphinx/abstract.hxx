@@ -49,6 +49,11 @@ public:
 
 private:
     void clear() {
+        m_pipeline->setState (QGst::StateNull);
+        m_bus->setState (QGst::StateNull);
+        m_psphinx->setState (QGst::StateNull);
+        m_vader->setState (QGst::StateNull);
+
         m_pipeline.clear();
         m_bus.clear();
         m_psphinx.clear();

@@ -112,31 +112,42 @@ void Agent::setSafetyMode (const Agent::SafetyMode& p_mode)
     m_mode = p_mode;
 }
 
-/// @todo Detect the use of safety words.
 void Agent::handleText (const QString& p_text)
 {
     qDebug() << "[Dictation::Agent::handleText()] Got text from Sphinx:" << p_text;
-    const QString startWord = Core::configuration ("Dictation/StartWord").toString();
-    const QString endWord = Core::configuration ("Dictation/EndWord").toString();
 
-    if (isSafetyModeEnabled()) {
-        if (p_text == startWord || p_text == endWord) {
-            if (p_text == startWord) {
-                m_mode = Agent::Active;
-            }
-            else if (p_text == endWord) {
-                m_mode = Agent::Inactive;
-            }
+    if (!handleSafetyMode (p_text))
+        return;
+
+    KeyboardEmulator::instance()->sendPhrase (p_text);
+}
+
+bool Agent::handleSafetyMode (const QString& p_text) const
+{
+    if (!isSafetyModeEnabled())
+        return true;
+
+    const QString startWord = Core::configuration ("Dictation/StartWord").toString();
+    const QString endWord   = Core::configuration ("Dictation/EndWord").toString();
+
+    if (p_text == startWord || p_text == endWord) {
+        if (p_text == startWord) {
+            m_mode = Agent::Active;
         }
-        else {
-            if (isSafetyModeActive()) {
-                qDebug() << "[Dictation::Agent::handleText()] Text " << p_text << "ignored since safety mode is active.";
-                return;
-            }
+        else if (p_text == endWord) {
+            m_mode = Agent::Inactive;
+        }
+
+        return false;
+    }
+    else {
+        if (isSafetyModeActive()) {
+            qDebug() << "[Dictation::Agent::handleText()] Text " << p_text << "ignored since safety mode is active.";
+            return false;
         }
     }
 
-    KeyboardEmulator::instance()->sendPhrase (p_text);
+    return true;
 }
 
 Agent::~Agent()

@@ -122,8 +122,17 @@ void Core::start()
         }
     }
 
-    emit instance()->started();
     mainWindow()->open();
+    emit instance()->started();
+}
+
+void Core::stop()
+{
+    if (Core::configuration ("MainWindow/RememberState").toBool()) {
+        Core::setConfiguration ("MainWindow/Visible", mainWindow()->isVisible());
+    }
+
+    emit instance()->stopped();
 }
 
 Windows::Main* Core::mainWindow()
@@ -132,15 +141,6 @@ Windows::Main* Core::mainWindow()
         instance()->m_mw = new Windows::Main;
 
     return instance()->m_mw;
-}
-
-void Core::stop()
-{
-    emit instance()->stopped();
-
-    if (Core::configuration ("MainWindow/RememberState").toBool()) {
-        Core::setConfiguration ("MainWindow/Visible", mainWindow()->isVisible());
-    }
 }
 
 QVariant Core::configuration (const QString& p_attrName, QVariant p_attrDefValue)

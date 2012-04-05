@@ -40,12 +40,17 @@ class LoginPortal : public QWizardPage
 public:
     LoginPortal (QWidget* parent = 0);
     virtual ~LoginPortal();
+    virtual bool isComplete() const;
 
 private slots:
     void on_btnLogin_clicked();
+    void on_checkBoxRemeberCreds_toggled(const bool& p_checked);
+    void on_lineEditUsername_textChanged(const QString& p_text);
+    void on_lineEditPassword_textChanged(const QString& p_text);
 
 private:
     Ui::LoginPortal* ui;
+    bool m_successLogin;
 };
 }
 }

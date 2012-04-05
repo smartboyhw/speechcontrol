@@ -59,7 +59,7 @@ private:
     virtual ActivityState onStateChanged (const AbstractAgent::ActivityState p_stt);
     bool handleSafetyMode (const QString& p_text) const;
     Sphinx* m_sphinx;
-    SafetyMode m_mode;
+    mutable SafetyMode m_mode;
 };
 }
 }

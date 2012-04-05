@@ -32,6 +32,8 @@
 #include "sphinx.hpp"
 #include "command.hpp"
 
+class QDeclarativeView;
+
 namespace SpeechControl
 {
 /**
@@ -64,6 +66,7 @@ class Agent : public AbstractAgent
 private:
     virtual ActivityState onStateChanged (const AbstractAgent::ActivityState p_state);
     Sphinx* m_sphinx;
+    QDeclarativeView* m_view;
 
 signals:
     void multipleCommandsFound(QString const& p_text, CommandList p_commands);

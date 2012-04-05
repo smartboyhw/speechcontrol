@@ -22,8 +22,9 @@
 #define PLUGINS_SETTINGS_HPP
 
 #include <QFrame>
-#include <QListWidgetItem>
 #include <app/ui/settings-dialog.hpp>
+
+class QListWidgetItem;
 
 namespace Ui
 {

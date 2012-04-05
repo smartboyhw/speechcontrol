@@ -111,9 +111,8 @@ void PluginsSettingsPane::on_btnLoadPlugin_clicked()
     QListWidgetItem* item = ui->lstPlugins->currentItem();
     const QString id (item->data (Qt::UserRole).toString());
 
-    if (!Factory::isPluginLoaded (id)){
-        Factory::loadPlugin (id);
-        item->setIcon (Factory::plugin (plgn->id())->pixmap());
+    if (!Factory::isPluginLoaded (id) && Factory::loadPlugin (id)) {
+        item->setIcon (Factory::plugin (id)->pixmap());
     }
     else {
         Factory::unloadPlugin (id);

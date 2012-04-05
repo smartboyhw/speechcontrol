@@ -57,6 +57,7 @@ public slots:
 
 private:
     virtual ActivityState onStateChanged (const SpeechControl::AbstractAgent::ActivityState p_stt);
+    bool handleSafetyMode (const QString& p_text) const;
     Sphinx* m_sphinx;
     SafetyMode m_mode;
 };

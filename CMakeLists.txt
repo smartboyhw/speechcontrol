@@ -21,6 +21,7 @@ find_package(Qt4 4.7 COMPONENTS
   QtGui
   QtDBus
   QtXml
+  QtDeclarative
   REQUIRED)
 find_package(QtGStreamer REQUIRED)
 find_package(SphinxBase 0.7 REQUIRED)

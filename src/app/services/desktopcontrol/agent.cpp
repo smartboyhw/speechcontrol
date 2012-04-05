@@ -18,6 +18,9 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <QDeclarativeEngine>
+#include <QDeclarativeComponent>
+
 #include <lib/acousticmodel.hpp>
 
 #include "core.hpp"
@@ -56,6 +59,10 @@ void Agent::start()
     if (!m_sphinx->start()) {
         qWarning() << "[DesktopControl::Agent::start()] Start unsuccessful.";
     }
+
+    QDeclarativeEngine* engine = new QDeclarativeEngine (this);
+    QDeclarativeComponent* component = new QDeclarativeComponent (&engine, QUrl (":/qml/dsktpctlui"), this);
+    QObject* instance = component->create();
 
     qDebug() << "[DesktopControl::Agent::start()] Enabled.";
 }

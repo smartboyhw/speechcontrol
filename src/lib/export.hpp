@@ -31,5 +31,12 @@
 // This define fixes a nasty compile bug. Don't believe me? Comment it out and see what happens.
 #define QTGSTREAMERUTILS_EXPORT Q_DECL_IMPORT
 
+// The following is a nifty fix to avoid the need to pass -fpermissive.
+#undef Q_Q
+#undef Q_D
+
+#define Q_D(Class) Class##Private *d = (Class##Private *) &(*d_ptr)
+#define Q_Q(Class) Class *q = (Class *) &(*q_ptr)
+
 #endif
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

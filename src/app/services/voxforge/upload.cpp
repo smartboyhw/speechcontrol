@@ -22,7 +22,43 @@
 
 using namespace SpeechControl::Voxforge;
 
-UploadHandler::UploadHandler (QObject* parent) : QObject(parent)
+UploadHandler::UploadHandler (QObject* parent) : QObject (parent)
+{
+
+}
+
+void UploadHandler::addPackage (Package* p_package)
+{
+    if (!m_pckgs.contains (p_package)) {
+        m_pckgs.append (p_package);
+    }
+}
+
+QList< Package* > UploadHandler::packages() const
+{
+    return m_pckgs;
+}
+
+void UploadHandler::setPassword (const QString& p_password)
+{
+    if (!p_password.isEmpty() && !p_password.isNull()) {
+        m_pssWord = p_password;
+    }
+}
+
+void UploadHandler::setUsername (const QString& p_username)
+{
+    if (!p_username.isEmpty() && !p_username.isNull()){
+        m_usrName = p_username;
+    }
+}
+
+void UploadHandler::cancelUpload()
+{
+
+}
+
+void UploadHandler::upload()
 {
 
 }

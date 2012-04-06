@@ -18,41 +18,29 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtGlobal>
-#include <QScopedPointer>
-#include <app/services/module.hpp>
+#include <app/services/module.hxx>
 
-using SpeechControl::Services::AbstractModule;
-
+class QDeclarativeView;
 namespace SpeechControl
 {
-namespace Services
+namespace DesktopControl
 {
 
-class AbstractModulePrivate
+class Service;
+
+class Sphinx;
+class ServicePrivate : public Services::AbstractModulePrivate
 {
-public:
-    AbstractModulePrivate (AbstractModule* p_qPtr) : q_ptr (p_qPtr) {}
-    virtual ~AbstractModulePrivate() { }
-    Q_DECLARE_PUBLIC (AbstractModule)
-    void changeState (AbstractModule::ActivityState p_state) {
-        Q_Q(AbstractModule);
-        if (p_state == m_state)
-            return;
+    friend class Service;
 
-        m_state = handleStateChange (p_state);
-        emit q->stateChanged (m_state);
-    }
-
-protected:
-    virtual AbstractModule::ActivityState handleStateChange (const AbstractModule::ActivityState p_state) {
-        return p_state;
-    }
-    AbstractModule* q_ptr;
-    AbstractModule::ActivityState m_state;
-
+private:
+    explicit ServicePrivate (Service* parent = 0);
+    ServicePrivate (const Services::AbstractModulePrivate& p_other);
+    virtual Services::AbstractModule::ActivityState handleStateChange (const Services::AbstractModule::ActivityState p_state);
+    virtual ~ServicePrivate();
+    Sphinx* m_sphinx;
+    QDeclarativeView* m_view;
 };
-
 }
 }
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

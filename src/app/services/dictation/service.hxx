@@ -18,41 +18,28 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QtGlobal>
-#include <QScopedPointer>
-#include <app/services/module.hpp>
-
-using SpeechControl::Services::AbstractModule;
+#include "service.hpp"
+#include "app/services/module.hxx"
+#include "app/services/dictation/sphinx.hpp"
 
 namespace SpeechControl
 {
-namespace Services
+namespace Dictation
 {
 
-class AbstractModulePrivate
+class Service;
+class ServicePrivate : public Services::AbstractModulePrivate
 {
-public:
-    AbstractModulePrivate (AbstractModule* p_qPtr) : q_ptr (p_qPtr) {}
-    virtual ~AbstractModulePrivate() { }
-    Q_DECLARE_PUBLIC (AbstractModule)
-    void changeState (AbstractModule::ActivityState p_state) {
-        Q_Q(AbstractModule);
-        if (p_state == m_state)
-            return;
-
-        m_state = handleStateChange (p_state);
-        emit q->stateChanged (m_state);
-    }
-
-protected:
-    virtual AbstractModule::ActivityState handleStateChange (const AbstractModule::ActivityState p_state) {
-        return p_state;
-    }
-    AbstractModule* q_ptr;
-    AbstractModule::ActivityState m_state;
-
+friend class Service;
+private:
+    Service::SafetyMode m_safetyMode;
+    Sphinx* m_sphinx;
+    ServicePrivate (Service* p_qPtr);
+    virtual ~ServicePrivate();
+    void setSafetyMode(const Service::SafetyMode& p_mode);
+    Service::SafetyMode safetyMode() const;
+    virtual AbstractModule::ActivityState handleStateChange (const AbstractModule::ActivityState& p_stt);
 };
-
 }
 }
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

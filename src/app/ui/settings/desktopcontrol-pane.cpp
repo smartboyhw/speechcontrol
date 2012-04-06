@@ -24,9 +24,9 @@
 #include <acousticmodel.hpp>
 
 #include "core.hpp"
-#include "services/desktopcontrol/agent.hpp"
+#include "services/dictation/service.hpp"
+#include "services/desktopcontrol/service.hpp"
 #include "services/desktopcontrol/command.hpp"
-#include "services/dictation/agent.hpp"
 #include "ui/main-window.hpp"
 #include "ui_settingspane-desktopcontrol.h"
 
@@ -88,8 +88,8 @@ void DesktopControlSettingsPane::restoreDefaults()
 
 void DesktopControlSettingsPane::updateUi()
 {
-    m_ui->checkBoxEnable->setChecked (!Dictation::Agent::instance()->isEnabled() && DesktopControl::Agent::instance()->isEnabled());
-    m_ui->checkBoxEnable->setEnabled (!Dictation::Agent::instance()->isEnabled());
+    m_ui->checkBoxEnable->setChecked (!Dictation::Service::instance()->isEnabled() && DesktopControl::Service::instance()->isEnabled());
+    m_ui->checkBoxEnable->setEnabled (!Dictation::Service::instance()->isEnabled());
     AcousticModelList models = AcousticModel::allModels();
 
     QTableWidget* widget = m_ui->tableWidget;
@@ -130,8 +130,8 @@ void DesktopControlSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
 {
     Core::setConfiguration ("DesktopControl/Enabled", p_checked);
 
-    if (!p_checked && DesktopControl::Agent::instance()->isActive())
-        DesktopControl::Agent::instance()->stop();
+    if (!p_checked && DesktopControl::Service::instance()->isActive())
+        DesktopControl::Service::instance()->stop();
 
     Core::mainWindow()->updateUi();
     updateUi();
@@ -145,9 +145,9 @@ void DesktopControlSettingsPane::on_checkBoxEnableStartup_toggled (bool p_checke
 void DesktopControlSettingsPane::on_deftAcousticModel_textEdited (const QString& text)
 {
     if (QDir (text).exists()) {
-        AcousticModel* newModel = new AcousticModel (text);
-        DesktopControl::Agent::instance()->setDefaultAcousticModel(newModel);
-        DesktopControl::Agent::instance()->setAcousticModel (newModel);
+        AcousticModel newModel (text);
+        DesktopControl::Service::instance()->setDefaultAcousticModel (newModel);
+        DesktopControl::Service::instance()->setAcousticModel (newModel);
     }
 }
 

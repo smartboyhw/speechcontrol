@@ -21,8 +21,8 @@
 #ifndef SPEECHCONTROL_DICTATION_SERVICE_HPP
 #define SPEECHCONTROL_DICTATION_SERVICE_HPP
 
-#include <services/engine.hpp>
 #include <macros.hpp>
+#include <services/module.hpp>
 
 namespace SpeechControl
 {
@@ -33,8 +33,8 @@ namespace Dictation
 class Service : public SpeechControl::Services::AbstractModule
 {
     Q_OBJECT
-    Q_DISABLE_COPY(Service)
-    SC_SINGLETON(Service)
+    Q_DISABLE_COPY (Service)
+    SC_SINGLETON (Service)
 protected:
     virtual void deinitialize();
     virtual void initialize();

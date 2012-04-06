@@ -32,26 +32,27 @@
 #include <QErrorMessage>
 #include <QTableWidget>
 
-#include <audiosource/device.hpp>
-#include <acousticmodel.hpp>
+#include <lib/audiosource/device.hpp>
+#include <lib/acousticmodel.hpp>
 
-#include "core.hpp"
-#include "indicator.hpp"
-#include "services/engine.hpp"
-#include "services/dictation/agent.hpp"
-#include "services/desktopcontrol/agent.hpp"
-#include "sessions/session.hpp"
-#include "sessions/content.hpp"
-#include "ui/training-dialog.hpp"
-#include "ui/settings-dialog.hpp"
-#include "ui/content-manager.hpp"
-#include "ui/session-manager.hpp"
-#include "ui/about-dialog.hpp"
-#include "ui/quickstart-wizard.hpp"
-#include "ui/micsetup-wizard.hpp"
-#include "ui/contents-wizard.hpp"
-#include "ui/adapt-wizard.hpp"
-#include "ui/session-information-dialog.hpp"
+#include "app/core.hpp"
+#include "app/indicator.hpp"
+#include "app/services/engine.hpp"
+#include "app/services/module.hpp"
+#include "app/services/dictation/agent.hpp"
+#include "app/services/desktopcontrol/agent.hpp"
+#include "app/sessions/session.hpp"
+#include "app/sessions/content.hpp"
+#include "app/ui/training-dialog.hpp"
+#include "app/ui/settings-dialog.hpp"
+#include "app/ui/content-manager.hpp"
+#include "app/ui/session-manager.hpp"
+#include "app/ui/about-dialog.hpp"
+#include "app/ui/quickstart-wizard.hpp"
+#include "app/ui/micsetup-wizard.hpp"
+#include "app/ui/contents-wizard.hpp"
+#include "app/ui/adapt-wizard.hpp"
+#include "app/ui/session-information-dialog.hpp"
 #include "ui_main-window.h"
 
 #include "ui/main-window.hpp"

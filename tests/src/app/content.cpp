@@ -1,7 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -14,26 +14,20 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "backup-wizard.hpp"
-#include "wizards/intro.hpp"
-#include "wizards/outro.hpp"
+#include "content_test.h"
+#include "app/sessions/wikipediacontentsource.hpp"
 
-using namespace SpeechControl::Wizards;
+using namespace SpeechControl;
 
-Backup::Backup (QWidget* parent) :
-    WizardBase (parent)
+void TestContent::buildWikipediaContent()
 {
-    setPage (Backup::IntroductionPage,
-             NULL);
+    WikipediaContentSource wiki ("test");
+    Content* test = wiki.generate();
 }
 
-Backup::~Backup()
-{
-}
-
-#include "backup-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "content_test.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

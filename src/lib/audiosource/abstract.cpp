@@ -24,10 +24,10 @@
 #include <QGlib/Error>
 #include <QGlib/Connect>
 
-#include "lib/audiosource/sink.hpp"
-#include "lib/audiosource/source.hpp"
-#include "lib/audiosource/abstract.hxx"
-#include "lib/audiosource/abstract.hpp"
+#include "audiosource/sink.hpp"
+#include "audiosource/source.hpp"
+#include "audiosource/abstract.hxx"
+#include "audiosource/abstract.hpp"
 
 using namespace SpeechControl;
 

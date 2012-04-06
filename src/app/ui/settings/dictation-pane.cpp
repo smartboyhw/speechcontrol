@@ -18,10 +18,10 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "app/core.hpp"
-#include "app/ui/main-window.hpp"
-#include "app/services/dictation/agent.hpp"
-#include "app/services/desktopcontrol/agent.hpp"
+#include "core.hpp"
+#include "ui/main-window.hpp"
+#include "services/dictation/agent.hpp"
+#include "services/desktopcontrol/agent.hpp"
 #include "ui_settingspane-dictation.h"
 
 #include "dictation-pane.hpp"
@@ -116,5 +116,5 @@ void DictationSettingsPane::on_checkBoxEnableStartup_toggled (bool p_checked)
     }
 }
 
-#include "dictation-pane.moc"
+#include "ui/dictation-pane.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

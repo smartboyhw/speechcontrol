@@ -25,8 +25,8 @@
 #include "modelselection.hpp"
 #include "sessionselection.hpp"
 #include "ui/adapt-wizard.hpp"
-#include "app/sessions/accuracymeter.hpp"
-#include "app/sessions/adaptionutility.hpp"
+#include "sessions/accuracymeter.hpp"
+#include "sessions/adaptionutility.hpp"
 #include "sessions/adaptionutility.hpp"
 #include "ui_adaptwizard-enaction.h"
 
@@ -169,7 +169,5 @@ Enaction::~Enaction()
     delete ui;
 }
 
-#include "enaction.moc"
+#include "ui/enaction.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
-
-

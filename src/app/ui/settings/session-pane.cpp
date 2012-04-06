@@ -184,5 +184,5 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionCopy_triggered()
     updateUi();
 }
 
-#include "session-pane.moc"
+#include "ui/session-pane.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

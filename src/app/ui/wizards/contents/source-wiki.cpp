@@ -18,50 +18,40 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef MICROPHONE_SETTINGS_HPP
-#define MICROPHONE_SETTINGS_HPP
+#include "app/ui/contents-wizard.hpp"
+#include "app/sessions/content.hpp"
+#include "app/sessions/wikicontentsource.hpp"
+#include "ui_contentwizard-source-wiki.h"
+#include "source-wiki.hpp"
 
-#include <QFrame>
-#include <ui/settings-dialog.hpp>
+#include <QDebug>
+#include <QDomDocument>
+#include <QFileDialog>
+#include <QMessageBox>
 
-namespace Ui
+using SpeechControl::Content;
+using SpeechControl::WikiContentSource;
+using SpeechControl::WikiContentSourceWidget;
+
+WikiContentSourceWidget::WikiContentSourceWidget (QWidget* parent) :
+    QWidget (parent),
+    m_ui (new Ui::WikiContentSourceWidget)
 {
-class MicrophoneSettingsPane;
+    m_ui->setupUi (this);
+    this->setLayout (m_ui->gridLayout);
+    setProperty ("id", "wiki");
+    setProperty ("title", "Wikipedia");
 }
 
-namespace SpeechControl
+void WikiContentSourceWidget::updateView()
 {
-namespace Windows
-{
-
-class MicrophoneSettingsPane : public AbstractSettingsPane
-{
-    Q_OBJECT
-
-public:
-    explicit MicrophoneSettingsPane ();
-    virtual ~MicrophoneSettingsPane();
-    virtual QString id() const;
-    virtual QString title() const;
-    virtual QPixmap pixmap() const;
-    virtual void restoreDefaults();
-
-protected:
-    void changeEvent (QEvent* e);
-
-private slots:
-    virtual void updateUi();
-
-private:
-    Ui::MicrophoneSettingsPane* ui;
-public slots:
-    void on_checkBoxMute_toggled(const bool p_checked);
-    void on_comboBoxDevices_currentIndexChanged (const int p_index);
-    void on_horizontialSliderVolume_valueChanged (const int p_value);
-};
-
-}
+    WikiContentSource* src = new WikiContentSource;
 }
 
-#endif // MICROPHONE_HPP
+WikiContentSourceWidget::~WikiContentSourceWidget()
+{
+    delete m_ui;
+}
+
+#include "ui/source-wiki.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

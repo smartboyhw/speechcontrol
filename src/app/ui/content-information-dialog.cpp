@@ -79,5 +79,5 @@ ContentInformationDialog::~ContentInformationDialog()
     delete m_ui;
 }
 
-#include "content-information-dialog.moc"
+#include "ui/content-information-dialog.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -22,7 +22,7 @@
 #define XDO_HPP
 
 #include <QObject>
-#include <app/macros.hpp>
+#include <macros.hpp>
 
 struct xdo;
 class Hunspell;

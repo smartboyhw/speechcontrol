@@ -20,7 +20,7 @@
 
 #ifndef SPEECHCONTROL_PLUGINS_TRANSCRIBER_SPHINX_HPP
 #define SPEECHCONTROL_PLUGINS_TRANSCRIBER_SPHINX_HPP
-#include <lib/sphinx/abstract.hpp>
+#include <sphinx/abstract.hpp>
 
 namespace SpeechControl
 {

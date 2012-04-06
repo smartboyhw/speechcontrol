@@ -72,5 +72,5 @@ Results::~Results()
     delete ui;
 }
 
-#include "results.moc"
+#include "ui/results.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

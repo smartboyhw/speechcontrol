@@ -23,7 +23,7 @@
 #define DICTATIONASR_HPP
 
 
-#include <lib/sphinx/abstract.hpp>
+#include <sphinx/abstract.hpp>
 
 namespace SpeechControl
 {

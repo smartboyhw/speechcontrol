@@ -126,5 +126,5 @@ SessionInformationDialog::~SessionInformationDialog()
     delete m_ui;
 }
 
-#include "session-information-dialog.moc"
+#include "ui/session-information-dialog.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

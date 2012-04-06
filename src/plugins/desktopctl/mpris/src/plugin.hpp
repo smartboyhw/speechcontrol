@@ -23,7 +23,7 @@
 #define PLUGIN_HPP
 
 #include "config.hpp"
-#include <app/plugins.hpp>
+#include <plugins.hpp>
 
 MPRIS_NAMESPACE_BEGIN
 

@@ -18,7 +18,10 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <lib/acousticmodel.hpp>
+#include <QDeclarativeView>
+
+#include <acousticmodel.hpp>
+#include <ui/main-window.hpp>
 
 #include "core.hpp"
 #include "command.hpp"
@@ -31,7 +34,7 @@ using namespace SpeechControl::DesktopControl;
 
 Agent* Agent::s_inst = 0;
 
-Agent::Agent() : AbstractAgent (AbstractCategory::global())
+Agent::Agent() : AbstractAgent (AbstractCategory::global()), m_view(new QDeclarativeView)
 {
     m_sphinx = new Sphinx (Sphinx::standardDescription(), parent());
     connect (m_sphinx, SIGNAL (finished (QString)), this, SLOT (invokeCommand (QString)));
@@ -44,6 +47,8 @@ Agent::Agent() : AbstractAgent (AbstractCategory::global())
 
     if (!defLanguageModel.isEmpty())
         m_sphinx->setLanguageModel (defLanguageModel);
+
+    m_view->setSource(QUrl ("qrc:///qml/dskptctlui"));
 }
 
 Agent::~Agent()
@@ -57,6 +62,8 @@ void Agent::start()
         qWarning() << "[DesktopControl::Agent::start()] Start unsuccessful.";
     }
 
+    m_view->show();
+
     qDebug() << "[DesktopControl::Agent::start()] Enabled.";
 }
 
@@ -65,6 +72,8 @@ void Agent::stop()
     if (!m_sphinx->stop()) {
         qWarning() << "[DesktopControl::Agent::stop()] Stop unsuccessful.";
     }
+
+    m_view->hide();
 
     qDebug() << "[DesktopControl::Agent::stop()] Stopped desktop control agent.";
 }

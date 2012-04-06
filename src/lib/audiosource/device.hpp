@@ -22,7 +22,7 @@
 #define SPCHCNTRL_LIB_AUDIOSOURCE_DEVICE_HPP_
 
 #include <QObject>
-#include <lib/audiosource/abstract.hpp>
+#include <audiosource/abstract.hpp>
 
 namespace SpeechControl
 {

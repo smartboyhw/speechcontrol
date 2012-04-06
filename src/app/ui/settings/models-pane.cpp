@@ -21,8 +21,8 @@
 #include "models-pane.hpp"
 #include <ui/adapt-wizard.hpp>
 #include <core.hpp>
-#include <lib/acousticmodel.hpp>
-#include <lib/languagemodel.hpp>
+#include <acousticmodel.hpp>
+#include <languagemodel.hpp>
 #include "ui_settingspane-model.h"
 #include <QMessageBox>
 
@@ -234,5 +234,5 @@ void ModelSettingsPane::on_listWidgetLanguage_currentRowChanged (const int p_ind
     qDebug() << "[ModelSettingsPane::on_listWidgetLanguage_currentRowChanged()]" << defaultModel << currentModel;
 }
 
-#include "models-pane.moc"
+#include "ui/models-pane.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

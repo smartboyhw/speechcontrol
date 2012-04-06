@@ -23,7 +23,7 @@
 
 #include <QDialog>
 #include <QUuid>
-#include <app/plugins.hpp>
+#include <plugins.hpp>
 
 namespace Ui
 {

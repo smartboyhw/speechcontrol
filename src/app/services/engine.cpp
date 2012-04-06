@@ -73,5 +73,5 @@ void Engine::stop()
 }
 
 
-#include "engine.moc"
+#include "services/engine.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

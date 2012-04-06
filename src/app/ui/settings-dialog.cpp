@@ -238,5 +238,6 @@ AbstractSettingsPane::~AbstractSettingsPane()
 {
 
 }
-#include "settings-dialog.moc"
+
+#include "ui/settings-dialog.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

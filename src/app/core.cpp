@@ -28,21 +28,20 @@
 #include <QMessageBox>
 
 // libspchcntrl includes
-#include <lib/config.hpp>
-#include <lib/system.hpp>
+#include <config.hpp>
+#include <system.hpp>
 
 // local includes
 #include "app/factory.hpp"
+#include "app/indicator.hpp"
 #include "app/sessions/session.hpp"
+#include "app/services/engine.hpp"
+#include "app/services/dictation/agent.hpp"
+#include "app/services/dictation/service.hpp"
+#include "app/services/desktopcontrol/agent.hpp"
+#include "app/services/desktopcontrol/service.hpp"
 #include "app/ui/main-window.hpp"
 #include "app/ui/quickstart-wizard.hpp"
-#include "app/indicator.hpp"
-#include "services/engine.hpp"
-#include "services/desktopcontrol/agent.hpp"
-#include "services/desktopcontrol/service.hpp"
-#include "services/dictation/agent.hpp"
-#include "services/dictation/service.hpp"
-
 #include "app/core.hpp"
 
 using namespace SpeechControl;
@@ -122,8 +121,17 @@ void Core::start()
         }
     }
 
-    emit instance()->started();
     mainWindow()->open();
+    emit instance()->started();
+}
+
+void Core::stop()
+{
+    if (Core::configuration ("MainWindow/RememberState").toBool()) {
+        Core::setConfiguration ("MainWindow/Visible", mainWindow()->isVisible());
+    }
+
+    emit instance()->stopped();
 }
 
 Windows::Main* Core::mainWindow()
@@ -132,15 +140,6 @@ Windows::Main* Core::mainWindow()
         instance()->m_mw = new Windows::Main;
 
     return instance()->m_mw;
-}
-
-void Core::stop()
-{
-    emit instance()->stopped();
-
-    if (Core::configuration ("MainWindow/RememberState").toBool()) {
-        Core::setConfiguration ("MainWindow/Visible", mainWindow()->isVisible());
-    }
 }
 
 QVariant Core::configuration (const QString& p_attrName, QVariant p_attrDefValue)

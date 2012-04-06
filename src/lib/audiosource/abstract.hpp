@@ -28,7 +28,7 @@
 
 #include <QGst/Message>
 
-#include <lib/export.hpp>
+#include <export.hpp>
 
 namespace SpeechControl
 {

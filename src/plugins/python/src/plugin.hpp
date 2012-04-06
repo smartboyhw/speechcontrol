@@ -22,7 +22,7 @@
 #ifndef PLUGIN_HPP
 #define PLUGIN_HPP
 
-#include <app/plugins.hpp>
+#include <plugins.hpp>
 
 namespace SpeechControl
 {

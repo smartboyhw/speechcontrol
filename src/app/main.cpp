@@ -37,7 +37,7 @@
 #include <QApplication>
 
 // speechcontrol lib includes
-#include <lib/config.hpp>
+#include <config.hpp>
 
 // local includes
 #include "core.hpp"

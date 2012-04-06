@@ -23,7 +23,7 @@
 #include <QProgressBar>
 #include <QMessageBox>
 
-#include <lib/audiosource/device.hpp>
+#include <audiosource/device.hpp>
 
 #include "core.hpp"
 #include "sessions/session.hpp"
@@ -327,5 +327,5 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonNext_clicked()
     }
 }
 
-#include "training-dialog.moc"
+#include "ui/training-dialog.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

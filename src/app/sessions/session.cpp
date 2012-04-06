@@ -23,7 +23,7 @@
 #include <QFile>
 #include <QDebug>
 
-#include "app/core.hpp"
+#include "core.hpp"
 #include "sessions/phrase.hpp"
 #include "sessions/corpus.hpp"
 #include "sessions/content.hpp"
@@ -400,5 +400,5 @@ Session* Session::clone() const
     }
 }
 
-#include "session.moc"
+#include "sessions/session.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

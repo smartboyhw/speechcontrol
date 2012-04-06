@@ -113,5 +113,5 @@ ContentWizard::~ContentWizard()
 {
 }
 
-#include "contents-wizard.moc"
+#include "ui/contents-wizard.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

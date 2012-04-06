@@ -22,8 +22,8 @@
 
 #include <QObject>
 
-#include <lib/config.hpp>
-#include <lib/export.hpp>
+#include <config.hpp>
+#include <export.hpp>
 
 #include <QGst/Utils/ApplicationSink>
 

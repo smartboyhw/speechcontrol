@@ -20,9 +20,9 @@
 
 #include <QtTest/QtTest>
 
-#include <lib/audiosource/abstract.hpp>
-#include <lib/audiosource/device.hpp>
-#include <lib/system.hpp>
+#include <audiosource/abstract.hpp>
+#include <audiosource/device.hpp>
+#include <system.hpp>
 
 #include "device.h"
 

@@ -21,7 +21,7 @@
 
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
 
-#include <app/core.hpp>
+#include <core.hpp>
 
 #include "python.hpp"
 

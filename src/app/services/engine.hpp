@@ -22,6 +22,7 @@
 #define SERVICES_ENGINE_HPP
 
 #include <QMap>
+#include <QScopedPointer>
 
 #include <macros.hpp>
 
@@ -33,6 +34,7 @@ namespace Services
 {
 class AbstractModule;
 class Engine;
+class EnginePrivate;
 
 typedef QList<AbstractModule*> ModuleList;
 
@@ -102,7 +104,7 @@ public slots:
     static void stop();
 
 private:
-    static QMap<QString, AbstractModule*> s_list;
+    QScopedPointer<EnginePrivate> d_ptr;
 };
 
 }

@@ -32,7 +32,7 @@ namespace Voxforge
 
 class Package : public QObject
 {
-
+    Q_OBJECT
 public:
     explicit Package (QObject* parent = 0);
     Package();
@@ -45,4 +45,4 @@ public:
 }
 
 #endif // SPEECHCONTROL_VOXFORGE_PACKAGE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -30,10 +30,10 @@
 #include "voxforge-wizard.hpp"
 
 using namespace SpeechControl;
-using namespace SpeechControl::Wizards;
+using namespace SpeechControl::Windows::Wizards;
 
 VoxforgeWizard::VoxforgeWizard (QWidget* parent) :
-    WizardBase (parent)
+    AbstractWizard (parent)
 {
     // http://wiki.thesii.org/SpeechControl/UserGuides/Voxforge
     QIcon icon = QIcon::fromTheme ("internet-web-browser");

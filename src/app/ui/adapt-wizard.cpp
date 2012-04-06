@@ -33,10 +33,10 @@
 #include "adapt-wizard.hpp"
 
 using namespace SpeechControl;
-using namespace SpeechControl::Wizards;
+using namespace SpeechControl::Windows::Wizards;
 
 AdaptWizard::AdaptWizard (QWidget* parent) :
-    WizardBase (parent)
+    AbstractWizard (parent)
 {
     // http://wiki.thesii.org/SpeechControl/UserGuides/AdaptAcousticModels
     QIcon icon = QIcon::fromTheme ("configure");

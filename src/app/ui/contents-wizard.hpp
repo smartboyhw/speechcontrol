@@ -28,10 +28,10 @@ namespace SpeechControl
 {
 class Content;
 class AbstractContentSource;
-namespace Wizards
+namespace Windows { namespace Wizards
 {
 
-class ContentWizard : public WizardBase
+class ContentWizard : public AbstractWizard
 {
     Q_OBJECT
 public:
@@ -54,6 +54,7 @@ private:
     mutable AbstractContentSource* m_src;
 };
 
+}
 }
 }
 #endif // WIZARD_HPP

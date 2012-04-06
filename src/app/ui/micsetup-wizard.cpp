@@ -18,21 +18,21 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-
-#include "core.hpp"
-#include "wizards/intro.hpp"
-#include "wizards/outro.hpp"
-#include "micsetup-wizard.hpp"
-#include "wizards/micsetup/micselect.hpp"
-#include "wizards/micsetup/micsample.hpp"
-
 #include <QIcon>
 
+#include "app/core.hpp"
+#include "app/ui/wizards/intro.hpp"
+#include "app/ui/wizards/outro.hpp"
+#include "app/ui/micsetup-wizard.hpp"
+#include "app/ui/wizards/micsetup/micselect.hpp"
+#include "app/ui/wizards/micsetup/micsample.hpp"
+
 using namespace SpeechControl;
-using namespace SpeechControl::Wizards;
+using namespace SpeechControl::Windows::Wizards;
+using namespace SpeechControl::Windows::Wizards::Pages;
 
 MicrophoneSetup::MicrophoneSetup (QWidget* parent) :
-    WizardBase (parent)
+    AbstractWizard (parent)
 {
     // http://wiki.thesii.org/SpeechControl/UserGuides/Microphones
     QIcon l_icon = QIcon::fromTheme ("audio-headset");

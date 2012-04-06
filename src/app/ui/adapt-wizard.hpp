@@ -27,7 +27,7 @@
 namespace SpeechControl
 {
 class Session;
-namespace Wizards
+namespace Windows { namespace Wizards
 {
 namespace Pages
 {
@@ -35,7 +35,7 @@ class Enaction;
 class Results;
 }
 
-class AdaptWizard : public WizardBase
+class AdaptWizard : public AbstractWizard
 {
     Q_OBJECT
     Q_DISABLE_COPY (AdaptWizard)
@@ -61,6 +61,7 @@ public slots:
     virtual void accept();
 };
 
+}
 }
 }
 #endif // WIZARD_HPP

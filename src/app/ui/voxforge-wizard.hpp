@@ -26,10 +26,12 @@
 
 namespace SpeechControl
 {
+namespace Windows
+{
 namespace Wizards
 {
 
-class VoxforgeWizard : public WizardBase
+class VoxforgeWizard : public AbstractWizard
 {
     Q_OBJECT
     Q_DISABLE_COPY (VoxforgeWizard)
@@ -50,6 +52,6 @@ public:
 
 }
 }
-
+}
 #endif // SPCHCNTRL_VOXFORGE_WIZARD_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

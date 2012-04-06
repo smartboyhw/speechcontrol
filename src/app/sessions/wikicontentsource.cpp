@@ -18,37 +18,36 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-
-#include "wikipediacontentsource.hpp"
-
 #include <QDebug>
 #include <QtWebKit/QWebPage>
 #include <QtWebKit/QWebFrame>
 #include <QtWebKit/QWebElement>
 
+#include "wikicontentsource.hpp"
+
 using namespace SpeechControl;
 
-WikipediaContentSource::WikipediaContentSource (QObject* p_parent) : AbstractContentSource(p_parent)
+WikiContentSource::WikiContentSource (QObject* p_parent) : AbstractContentSource (p_parent)
 {
 
 }
 
-WikipediaContentSource::WikipediaContentSource (const QString& id, QObject* p_parent) : AbstractContentSource (id, p_parent)
+WikiContentSource::WikiContentSource (const QString& id, QObject* p_parent) : AbstractContentSource (id, p_parent)
 {
 
 }
 
-WikipediaContentSource::~WikipediaContentSource()
+WikiContentSource::~WikiContentSource()
 {
 
 }
 
-bool WikipediaContentSource::ready() const
+bool WikiContentSource::ready() const
 {
     return !wikiFrames.empty();
 }
 
-void WikipediaContentSource::order()
+void WikiContentSource::order()
 {
     // Cleanups
     portalPages.clear();
@@ -64,31 +63,31 @@ void WikipediaContentSource::order()
     portalPhase();
 }
 
-void WikipediaContentSource::portalPhase()
+void WikiContentSource::portalPhase()
 {
     // Let's use featured articles from Technology, Society and History portals.
-    QUrl tech("http://en.wikipedia.org/wiki/Portal:Technology"),
-         society("http://en.wikipedia.org/wiki/Portal:Society"),
-         history("http://en.wikipedia.org/wiki/Portal:History");
+    QUrl tech ("http://en.wikipedia.org/wiki/Portal:Technology"),
+         society ("http://en.wikipedia.org/wiki/Portal:Society"),
+         history ("http://en.wikipedia.org/wiki/Portal:History");
 
     QList<QUrl> portalUrls;
-    portalUrls.append(tech);
-    portalUrls.append(society);
-    portalUrls.append(history);
+    portalUrls.append (tech);
+    portalUrls.append (society);
+    portalUrls.append (history);
 
     Q_FOREACH (QUrl url, portalUrls) {
-        QWebPage *page = new QWebPage;
-        QWebFrame *fr = page->mainFrame();
+        QWebPage* page = new QWebPage;
+        QWebFrame* fr = page->mainFrame();
 
-        connect(fr, SIGNAL(loadFinished(bool)), this, SLOT(wikiPhase(bool)));
-        fr->load(url);
+        connect (fr, SIGNAL (loadFinished (bool)), this, SLOT (wikiPhase (bool)));
+        fr->load (url);
 
-        portalPages.append(page);
-        portalFrames.append(fr);
+        portalPages.append (page);
+        portalFrames.append (fr);
     }
 }
 
-void WikipediaContentSource::wikiPhase(bool ok)
+void WikiContentSource::wikiPhase (bool ok)
 {
     if (ok)
         ++portalSuccess;
@@ -100,16 +99,16 @@ void WikipediaContentSource::wikiPhase(bool ok)
 
     // Get featured articles' URLs.
     QList<QUrl> featuredUrls;
-    Q_FOREACH (QWebFrame *portal, portalFrames) {
+    Q_FOREACH (QWebFrame * portal, portalFrames) {
         qDebug() << "URL:" << portal->url();
         QWebElement document = portal->documentElement();
-        QWebElementCollection links = document.findAll("p b a");
+        QWebElementCollection links = document.findAll ("p b a");
 
 //         qDebug() << "Document has" << document.toPlainText();
 
         Q_FOREACH (QWebElement link, links) {
             if (link.toPlainText() == "Read more...") {
-                featuredUrls.append(QUrl(link.attribute("href")));
+                featuredUrls.append (QUrl (link.attribute ("href")));
                 break;
             }
         }
@@ -117,18 +116,18 @@ void WikipediaContentSource::wikiPhase(bool ok)
 
     // Start loading featured arcticles.
     Q_FOREACH (QUrl url, featuredUrls) {
-        QWebPage *page = new QWebPage;
-        QWebFrame *frame = page->mainFrame();
+        QWebPage* page = new QWebPage;
+        QWebFrame* frame = page->mainFrame();
 
-        connect(frame, SIGNAL(loadFinished(bool)), this, SLOT(parsingPhase(bool)));
-        frame->load(url);
+        connect (frame, SIGNAL (loadFinished (bool)), this, SLOT (parsingPhase (bool)));
+        frame->load (url);
 
-        wikiPages.append(page);
-        wikiFrames.append(frame);
+        wikiPages.append (page);
+        wikiFrames.append (frame);
     }
 }
 
-void WikipediaContentSource::parsingPhase(bool ok)
+void WikiContentSource::parsingPhase (bool ok)
 {
     if (ok)
         ++wikiSuccess;
@@ -141,19 +140,20 @@ void WikipediaContentSource::parsingPhase(bool ok)
     emit generateReady();
 }
 
-Content* WikipediaContentSource::generate()
+Content* WikiContentSource::generate()
 {
     if (!ready()) {
-        qWarning() << "[WikipediaContentSource] Not ready for generation.";
+        qWarning() << "[WikiContentSource] Not ready for generation.";
         return NULL;
     }
 
     qDebug() << "We have" << wikiFrames.size() << "frames.";
-    Q_FOREACH (QWebFrame *frame, wikiFrames) {
+    Q_FOREACH (QWebFrame * frame, wikiFrames) {
         qDebug() << "Text of the featured frame is:" << frame->toPlainText();
     }
 
-    return Content::create("Unimplemented yet", "Unimplemented yet", "Unimplemented yet");
+    return Content::create ("Unimplemented yet", "Unimplemented yet", "Unimplemented yet");
 }
 
-#include "wikipediacontentsource.moc"
+#include "wikicontentsource.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -17,8 +17,8 @@
  *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#ifndef WIKIPEDIACONTENTSOURCE_HPP
-#define WIKIPEDIACONTENTSOURCE_HPP
+#ifndef WIKICONTENTSOURCE_HPP
+#define WIKICONTENTSOURCE_HPP
 
 #include <QList>
 #include <QObject>
@@ -32,22 +32,22 @@ class QString;
 namespace SpeechControl
 {
 
-class WikipediaContentSource : public AbstractContentSource
+class WikiContentSource : public AbstractContentSource
 {
     Q_OBJECT
 
 public:
-    explicit WikipediaContentSource (QObject* parent = 0);
-    WikipediaContentSource(QString const& id, QObject* parent = 0);
+    explicit WikiContentSource (QObject* parent = 0);
+    WikiContentSource (QString const& id, QObject* parent = 0);
 
-    virtual ~WikipediaContentSource();
+    virtual ~WikiContentSource();
 
     bool ready() const;
 
     /**
-     * @brief Order new sample of Wikipedia content.
+     * @brief Order new sample of Wiki content.
      *
-     * This method enqueues fetch of new Wikipedia sample replacing the current one.
+     * This method enqueues fetch of new Wiki sample replacing the current one.
      */
     void order();
 
@@ -56,7 +56,7 @@ signals:
 
 public slots:
     /**
-     * @brief Generate a new Content using Wikipedia articles.
+     * @brief Generate a new Content using Wiki articles.
      *
      * Use this method only after checking whether the object is ready to generate.
      * Usually you can connect @c generateReady() signal to this slot.
@@ -66,22 +66,23 @@ public slots:
     Content* generate();
 
 private:
-    QList<QWebPage *> portalPages;
-    QList<QWebFrame *> portalFrames;
+    QList<QWebPage*> portalPages;
+    QList<QWebFrame*> portalFrames;
     int portalSuccess;
     int portalFail;
 
-    QList<QWebPage *> wikiPages;
-    QList<QWebFrame *> wikiFrames;
+    QList<QWebPage*> wikiPages;
+    QList<QWebFrame*> wikiFrames;
     int wikiSuccess;
     int wikiFail;
 
 private slots:
     void portalPhase();
-    void wikiPhase(bool ok);
-    void parsingPhase(bool ok);
+    void wikiPhase (bool ok);
+    void parsingPhase (bool ok);
 
 };
 
 }
-#endif // WIKIPEDIACONTENTSOURCE_HPP
+#endif // WIKICONTENTSOURCE_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

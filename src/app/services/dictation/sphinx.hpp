@@ -30,7 +30,7 @@ namespace SpeechControl
 namespace Dictation
 {
 
-    class Agent;
+class ServicePrivate;
 
 /**
  * @brief Represents the AbstractSphinx object for Dictation.
@@ -45,7 +45,7 @@ class Sphinx : public AbstractSphinx
 {
     Q_OBJECT
     Q_DISABLE_COPY (Sphinx)
-    friend class Agent;
+    friend class ServicePrivate;
 
 private:
     void init();

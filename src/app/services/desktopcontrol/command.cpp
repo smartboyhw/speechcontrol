@@ -23,7 +23,6 @@
 #include <QDebug>
 
 #include "core.hpp"
-#include "agent.hpp"
 #include "command.hpp"
 
 using namespace std;

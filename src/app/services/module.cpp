@@ -24,13 +24,18 @@
 using namespace SpeechControl::Services;
 
 AbstractModule::AbstractModule (QObject* p_parent) : QObject (p_parent),
-    d_ptr (new AbstractModulePrivate(this))
+    d_ptr (new AbstractModulePrivate (this))
 {
 
 }
 
 AbstractModule::AbstractModule (AbstractModulePrivate& p_dd, QObject* p_parent) :
     QObject (p_parent), d_ptr (&p_dd)
+{
+
+}
+
+AbstractModule::~AbstractModule()
 {
 
 }

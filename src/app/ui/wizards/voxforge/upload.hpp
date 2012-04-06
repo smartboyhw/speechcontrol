@@ -30,7 +30,9 @@ class UploadEnaction;
 
 namespace SpeechControl
 {
-namespace Windows { namespace Wizards 
+namespace Windows
+{
+namespace Wizards
 {
 namespace Pages
 {
@@ -49,6 +51,6 @@ private:
 }
 }
 }
-
+}
 #endif //SPCHCNTRL_WIZARDS_VOXFORGE_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

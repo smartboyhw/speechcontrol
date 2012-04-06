@@ -29,7 +29,7 @@ OptinConfirmation::OptinConfirmation (QWidget* parent) : QWizardPage (parent),
     ui->setupUi (this);
     this->setLayout (ui->verticalLayout);
     registerField ("optin.enabled", ui->checkBoxVoxforge);
-    connect(ui->checkBoxVoxforge,SIGNAL(stateChanged(int)),this,SIGNAL(completeChanged()));
+    connect (ui->checkBoxVoxforge, SIGNAL (stateChanged (int)), this, SIGNAL (completeChanged()));
 }
 
 bool OptinConfirmation::validatePage()

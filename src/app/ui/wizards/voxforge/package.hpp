@@ -30,7 +30,9 @@ class PackageSelection;
 
 namespace SpeechControl
 {
-namespace Windows { namespace Wizards 
+namespace Windows
+{
+namespace Wizards
 {
 namespace Pages
 {
@@ -46,6 +48,7 @@ public:
 private:
     Ui::PackageSelection* ui;
 };
+}
 }
 }
 }

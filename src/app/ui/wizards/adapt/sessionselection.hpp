@@ -32,7 +32,9 @@ namespace SpeechControl
 {
 
 class Session;
-namespace Windows { namespace Wizards 
+namespace Windows
+{
+namespace Wizards
 {
 namespace Pages
 {
@@ -49,7 +51,7 @@ public:
     virtual bool validatePage();
     SessionList sessions() const;
     void setSession (Session* p_session);
-    void setSessions(SessionList p_sessionList);
+    void setSessions (SessionList p_sessionList);
 
 private slots:
     void on_listWidgetSession_itemSelectionChanged();
@@ -62,6 +64,6 @@ private:
 }
 }
 }
-
+}
 #endif // ADAPT_SESSIONSELECTION_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

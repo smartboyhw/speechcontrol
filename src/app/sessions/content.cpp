@@ -18,165 +18,203 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "config.hpp"
-#include "content.hpp"
-
+#include <QUrl>
 #include <QDir>
 #include <QFile>
 #include <QDebug>
 #include <QTextStream>
-#include <QUrl>
+#include <QDomDocument>
 
-#define CHUNK_SIZE 250
+#include "core.hpp"
+#include "content.hpp"
+
+using SpeechControl::Core;
 
 using SpeechControl::Content;
-using SpeechControl::ContentList;
 using SpeechControl::ContentMap;
+using SpeechControl::ContentList;
+
 using SpeechControl::AbstractContentSource;
 using SpeechControl::TextContentSource;
 
-Content::Content (const QUuid& p_uuid)
+Content::Content (const QString& p_id)
 {
-    load (p_uuid);
+    load (p_id);
 }
 
 Content::Content (const Content& p_other) : QObject(),
-    m_pages (p_other.m_pages), m_dom (p_other.m_dom), m_uuid (p_other.m_uuid)
+    m_pages (p_other.m_pages), m_dom (p_other.m_dom), m_id (p_other.m_id)
 {
 }
 
-Content* Content::obtain (const QUuid& p_uuid)
+Content* Content::obtain (const QString& p_id)
 {
-    qDebug() << p_uuid;
-    Q_ASSERT (!p_uuid.isNull());
+    qDebug() << "[Content::obtain()] Potential Content ID:" << p_id;
 
-    if (p_uuid.isNull()) {
-        qDebug() << "Null UUID passed.";
+    if (!s_lst.contains (p_id)) {
+        Content* content = new Content (p_id);
+        qDebug() << "[Content::obtain()] Is content valid? " << content->isValid();
+        SC_ASSERT (content->isValid() , "Invalid Corpus was obtained.");
+
+        s_lst.insert (p_id, (content));
+        qDebug() << "[Content::obtain()] Content" << p_id << "rendered.";
+        return content;
+    }
+
+    qDebug() << "[Content::obtain()] Pre-existing Content" << p_id << "obtained.";
+    return s_lst.value (p_id);
+}
+
+Content* Content::obtainFromFile (const QUrl& p_url)
+{
+    qDebug() << "[Content::obtainFromFile()] Potential Content URL:" << p_url;
+
+    Content* content = new Content (QString::null);
+    QFile* file = new QFile (p_url.toString());
+
+    if (file->open (QIODevice::ReadOnly | QIODevice::Text)) {
+        content->load (file);
+        qDebug() << "[Content::obtainFromFile()] Is content valid? " << content->isValid();
+        SC_ASSERT (content->isValid() , "Invalid Corpus was obtained.");
+        qDebug() << "[Content::obtainFromFile()] Content" << p_url << "rendered.";
+        return content;
+    }
+    else {
+        qDebug() << "[Content::obtainFromFile()] File could not be read." << file->errorString();
         return 0;
     }
 
-    if (!s_lst.contains (p_uuid)) {
-        Content* l_content = new Content (p_uuid);
-        qDebug() << "Is content valid? " << l_content->isValid();
-
-        if (!l_content->isValid()) {
-            return 0;
-        }
-
-        s_lst.insert (p_uuid, (l_content));
-    }
-
-    return s_lst.value (p_uuid);
+    return content;
 }
 
 void Content::erase()
 {
-    QFile* l_file = new QFile (getPath (m_uuid));
+    QFile* file = new QFile (getPath (m_id));
 
-    if (l_file->remove()) {
+    if (file->remove()) {
         this->deleteLater();
+        qDebug() << "[Content::erase()] Erased content" << m_id;
+    }
+    else {
+        qWarning() << "[Content::erase()] Error erasing Content" << m_id << file->errorString();
     }
 }
 
-void Content::load (const QUuid& p_uuid)
+void Content::load (const QString& p_id)
 {
-    m_uuid = p_uuid;
-    QFile* l_file = new QFile (getPath (m_uuid));
-    QDomDocument* l_dom = new QDomDocument ("Content");
+    m_id = p_id;
+    QFile* file = new QFile (getPath (m_id));
 
-    if (!l_file->exists()) {
-        qDebug() << "Content" << m_uuid << "doesn't exist.";
-        m_uuid = QUuid();
+    if (!file->exists()) {
+        qWarning() << "[Content::load()] Content" << m_id << "doesn't exist.";
+        m_id = QString();
+        m_dom = 0;
+        m_pages = QStringList();
         return;
     }
 
-    if (!l_file->open (QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Couldn't open Content" << m_uuid << ";" << l_file->errorString();
-        m_uuid = QUuid();
+    if (!file->open (QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning() << "[Content::load()] Couldn't open Content" << m_id << ";" << file->errorString();
+        m_id = QString();
+        m_dom = 0;
+        m_pages = QStringList();
         return;
     }
 
-    QTextStream l_strm (l_file);
-    l_strm.setCodec ("UTF-8");
+    load (file);
+}
+
+void Content::load (QFile* p_file)
+{
+    QDomDocument* dom = new QDomDocument ("Content");
+    QTextStream strm (p_file);
+    strm.setCodec ("UTF-8");
 
     {
-        QString l_errorMsg;
-        int l_errorLine, l_errorColumn;
+        QString errorMsg;
+        int errorLine, errorColumn;
 
-        if (!l_dom->setContent (l_strm.readAll() , &l_errorMsg , &l_errorLine , &l_errorColumn)) {
-            qDebug() << "Couldn't parse Content;" << l_errorMsg << "on l." << l_errorLine << "; col." << l_errorColumn;
-            m_uuid = QUuid();
+        if (!dom->setContent (strm.readAll() , &errorMsg , &errorLine , &errorColumn)) {
+            qWarning() << "[Content::load()] Couldn't parse Content;" << errorMsg << "on l." << errorLine << "; col." << errorColumn;
+            m_id = QString();
             return;
         }
     }
 
-    //qDebug() << "DOM:" << l_dom->toString();
-    QDomElement l_domElem = l_dom->documentElement();
-    QDomElement l_textElem = l_domElem.namedItem ("Text").toElement();
-    const QString l_textBase (l_textElem.text());
-    parseText (l_textBase);
+    qDebug() << "[Content::load()] DOM:" << dom->toString();
+    QDomElement domElem = dom->documentElement();
+    QDomElement textElem = domElem.namedItem ("Text").toElement();
+    const QString textBase (textElem.text());
+    parseText (textBase);
 
     if (m_pages.length() == 0) {
-        m_uuid = QUuid();
-        qDebug() << "No text was found from" << l_textBase;
+        m_id = QString();
+        qWarning() << "[Content::load()] No text was found from" << textBase;
         return;
     }
 
-    m_dom = l_dom;
-    l_file->close();
+    m_dom = dom;
+    p_file->close();
+    m_id = QFileInfo (*p_file).baseName();
+    s_lst.insert (m_id, this);
 }
 
-/// @todo Implement a proper means of segmenting text into chunks.
 void Content::parseText (const QString& p_text)
 {
-    QString l_tmpText;
-    uint l_count = 0;
+    QString tmpText;
+    uint count = 0;
 
-    Q_FOREACH (const QChar l_chr, p_text) {
-        if (l_count == CHUNK_SIZE) {
-            if (l_chr.isLetterOrNumber()) {
-                l_count -= 1;
-            } else {
-                m_pages << l_tmpText;
-                l_tmpText.clear();
-                l_count = -1;
+    Q_FOREACH (const QChar chr, p_text) {
+        if (count == CONTENT_CHUNK_SIZE) {
+            if (chr.isLetterOrNumber()) {
+                count -= 1;
+            }
+            else {
+                m_pages << tmpText;
+                tmpText.clear();
+                count = -1;
             }
         }
 
-        l_tmpText.append (l_chr);
+        tmpText.append (chr);
 
-        ++l_count;
+        ++count;
     }
 }
 
 bool Content::isValid() const
 {
-    if (!QFile::exists (getPath (m_uuid))) {
-        qDebug() << "Content's data file doesn't exists." << getPath (m_uuid);
-        //Q_ASSERT ( QFile::exists ( getPath ( m_uuid ) ) == true );
+    if (m_id.isNull() || m_id.isEmpty()) {
+        qDebug() << "[Content::isValid()] ID of Content is null." << m_id;
         return false;
     }
-
-    if (m_pages.isEmpty()) {
-        qDebug() << "Content has no pages." << m_uuid;
-        //Q_ASSERT ( m_pages.isEmpty() == true );
+    else if (m_pages.isEmpty()) {
+        qDebug() << "[Content::isValid()] Content has no pages." << m_id;
+        return false;
+    }
+    else if (!m_dom || m_dom->isNull()) {
+        qDebug() << "[Content::isValid()] DOM element of Corpus is null." << m_id;
         return false;
     }
 
     return true;
 }
 
-/// @todo Determine a means of finding the page count.
-/// @todo Define the size of one page.
 uint Content::pageCount() const
 {
     return m_pages.count();
 }
 
-/// @todo Determine a means of finding the words in the text.
 uint Content::words() const
 {
     return m_pages.join ("\n").split (" ").count();
+}
+
+uint Content::uniqueWords() const
+{
+    QStringList words = m_pages.join ("\n").split (" ");
+    words.removeDuplicates();
+    return words.count();
 }
 
 uint Content::length() const
@@ -184,71 +222,103 @@ uint Content::length() const
     return m_pages.join ("\n").length();
 }
 
-/// @todo Determine a means of finding the count of alpha-numeric characters.
 uint Content::characters() const
 {
     return m_pages.join ("\n").length();
 }
 
-QString Content::getPath (const QUuid& p_uuid)
+QString Content::getPath (const QString& p_id)
 {
-    return QDir::homePath() + "/.speechcontrol/contents/" + p_uuid.toString() + ".xml";
+    return Core::configurationPath().path() + "/contents/" + p_id + ".xml";
 }
 
-const QString Content::title() const
+QString Content::title() const
 {
-    QDomElement l_domElem = m_dom->documentElement();
-    QDomElement l_bilboElem = l_domElem.namedItem ("Bibliography").toElement();
-    return l_bilboElem.attribute ("Title");
+    if (isValid()) {
+        QDomElement domElem = m_dom->documentElement();
+        QDomElement bilboElem = domElem.namedItem ("Book").toElement();
+        return bilboElem.attribute ("title");
+    }
+    else {
+        qWarning() << "[Content::title()] Core DOM element is null.";
+        return QString::null;
+    }
 }
 
-const QString Content::author() const
+QString Content::author() const
 {
-    QDomElement l_domElem = m_dom->documentElement();
-    QDomElement l_bilboElem = l_domElem.namedItem ("Bibliography").toElement();
-    return l_bilboElem.attribute ("Author");
+    if (isValid()) {
+        QDomElement domElem = m_dom->documentElement();
+        QDomElement bilboElem = domElem.namedItem ("Book").toElement();
+        return bilboElem.attribute ("author");
+    }
+    else {
+        qWarning() << "[Content::title()] Core DOM element is null.";
+        return QString::null;
+    }
+
 }
 
 Content::~Content()
 {
 }
 
-const QUuid Content::uuid() const
+QString Content::id() const
 {
-    return m_uuid;
+    return m_id;
 }
 
 ContentList Content::allContents()
 {
-    ContentList l_lst;
-    QDir l_dir (QDir::homePath() + "/.speechcontrol/contents/");
-    l_dir.setFilter (QDir::Files);
-    QStringList l_results = l_dir.entryList (QStringList() << "*");
+    ContentList lst;
+    lst.append (findAllContents (Core::configurationPath().path() + "/contents/"));
+    lst.append (findAllContents (SPCHCNTRL_SYSTEM_CONTENT_DIR));
 
-    Q_FOREACH (const QString l_uuid, l_results) {
-        Content* l_content = Content::obtain (QUuid (l_uuid));
-        qDebug () << "Is content null?" << (l_content == 0);
-        qDebug () << "Is content" << l_uuid << "valid?" << l_content->isValid();
+    return lst;
+}
 
-        if (l_content && l_content->isValid()) {
-            l_lst << l_content;
-        } else {
-            QFile::remove (l_dir.absoluteFilePath (l_uuid));
+ContentList Content::findAllContents (QString p_path)
+{
+    ContentList lst;
+    QDir dir (p_path);
+    dir.setFilter (QDir::Files);
+    QStringList results = dir.entryList (QStringList() << "*");
+
+    qDebug () << "[Content::allContents()] Iterating over " << results.length() << "results in " << p_path;
+
+    Q_FOREACH (const QString id, results) {
+        qDebug () << "[Content::allContents()] Parsing potential Content " << id;
+
+        if (id.isNull() || id.isEmpty()) {
+            qDebug () << "[Content::allContents()] Invalid Content found at" << id;
+            continue;
+        }
+
+        Content* content = Content::obtainFromFile (dir.absoluteFilePath (id));
+        qDebug () << "[Content::allContents()] Is content null?" << (content == 0);
+        qDebug () << "[Content::allContents()] Is content" << id << "valid?" << content->isValid();
+
+        if (content && content->isValid()) {
+            lst << content;
+        }
+        else {
+            QFile::remove (dir.absoluteFilePath (id));
         }
     }
 
-    return l_lst;
+    qDebug () << "[Content::allContents()]" << lst.length() << " Content objects discovered.";
+    return lst;
 }
 
-const QStringList Content::pages() const
+QStringList Content::pages() const
 {
     return m_pages;
 }
 
-const QString Content::pageAt (const int& l_index) const
+QString Content::pageAt (const int& p_index) const
 {
-    if (l_index < m_pages.count()) {
-        return m_pages.at (l_index).trimmed();
+    if (p_index < m_pages.count()) {
+        return m_pages.at (p_index).trimmed();
     }
 
     return QString::null;
@@ -256,41 +326,44 @@ const QString Content::pageAt (const int& l_index) const
 
 Content* Content::create (const QString& p_author, const QString& p_title, const QString& p_content)
 {
-    QUuid l_uuid = QUuid::createUuid();
-    qDebug() << "Creating content with UUID" << l_uuid << "...";
+    QString id = QString::number (qrand());
+    qDebug() << "[Content::create()] Creating content with ID" << id << "...";
 
-    QDomDocument l_dom ("Content");
-    QDomElement l_domElem = l_dom.createElement ("Content");
-    l_domElem.setAttribute ("Uuid", l_uuid);
-    l_dom.appendChild (l_domElem);
+    QDomDocument dom ("Content");
+    QDomElement domElem = dom.createElement ("Content");
+    domElem.setAttribute ("Id", id);
+    dom.appendChild (domElem);
 
-    QDomElement l_bilboElem = l_dom.createElement ("Bibliography");
-    l_bilboElem.setAttribute ("Author", p_author);
-    l_bilboElem.setAttribute ("Title", p_title);
-    l_domElem.appendChild (l_bilboElem);
+    QDomElement bilboElem = dom.createElement ("Book");
+    bilboElem.setAttribute ("author", p_author);
+    bilboElem.setAttribute ("title", p_title);
+    domElem.appendChild (bilboElem);
 
-    QDomElement l_textElem = l_dom.createElement ("Text");
-    QDomText l_textNode = l_dom.createTextNode (p_content);
-    l_textElem.appendChild (l_textNode);
-    l_domElem.appendChild (l_textElem);
+    QDomElement textElem = dom.createElement ("Text");
+    QDomText textNode = dom.createTextNode (p_content);
+    textElem.appendChild (textNode);
+    domElem.appendChild (textElem);
 
-    QFile l_file (Content::getPath (l_uuid));
-    l_file.open (QIODevice::WriteOnly | QIODevice::Truncate);
-    QTextStream l_strm (&l_file);
-    l_strm.setCodec ("UTF-8");
-    l_dom.save (l_strm, 4);
-    l_file.close();
+    QFile file (Content::getPath (id));
 
-    //qDebug() << "Content XML:" << l_dom->toString();
-    return Content::obtain (l_uuid);
+    if (!file.open (QIODevice::WriteOnly | QIODevice::Truncate)) {
+        qDebug() << "[Content::create()] Failed to open file for new Content creation.";
+        return 0;
+    }
+
+    QTextStream strm (&file);
+    strm.setCodec ("UTF-8");
+    dom.save (strm, 4);
+    file.close();
+
+    qDebug() << "[Content::create()] Content XML:" << dom.toString();
+    Content* nabbedContent = Content::obtain (id);
+    SC_ASSERT (nabbedContent != 0, "The generated Content doesn't exist!");
+
+    return nabbedContent;
 }
 
-AbstractContentSource::AbstractContentSource (QObject* parent) : QObject (parent)
-{
-
-}
-
-AbstractContentSource::AbstractContentSource (const QString& p_id, QObject* p_parent) : QObject (p_parent),
+AbstractContentSource::AbstractContentSource (QString p_id, QObject* p_parent) : QObject (p_parent),
     m_id (p_id)
 {
 
@@ -300,11 +373,6 @@ AbstractContentSource::AbstractContentSource (const AbstractContentSource& p_oth
     m_id (p_other.id()), m_author (p_other.author()), m_text (p_other.text()), m_title (p_other.title())
 {
 
-}
-
-AbstractContentSource::~AbstractContentSource()
-{
-    
 }
 
 QString AbstractContentSource::id() const
@@ -344,7 +412,20 @@ void AbstractContentSource::setTitle (const QString& p_title)
 
 Content* AbstractContentSource::generate()
 {
-    return Content::create (m_author, m_title, m_text);
+    Content* content = Content::create (m_author, m_title, m_text);
+    SC_ASSERT (content != 0, "Failed to generate Content from AbstractContentSource.");
+
+    return content;
+}
+
+bool AbstractContentSource::isValid()
+{
+    return (!m_author.isNull() && !m_author.isEmpty()) &&
+           (!m_text.isNull() && !m_text.isEmpty()) &&
+           (!m_title.isNull() && !m_title.isEmpty());
+}
+AbstractContentSource::~AbstractContentSource()
+{
 }
 
 TextContentSource::TextContentSource (QObject* p_parent) : AbstractContentSource ("text", p_parent)
@@ -352,73 +433,75 @@ TextContentSource::TextContentSource (QObject* p_parent) : AbstractContentSource
 
 }
 
-/// @todo Should make a schema for this file and check it against the file.
-bool TextContentSource::setFile (QFile& p_file)
-{
-    if (!p_file.isOpen()) {
-        if (!p_file.open (QIODevice::ReadOnly | QIODevice::Text)) {
-            qDebug() << "Unable to open file" << p_file.fileName() << p_file.errorString();
-            return false;
-        }
-
-        if (!p_file.isReadable()) {
-            qDebug() << "Unable to read file" << p_file.fileName() << p_file.errorString();
-            return false;
-        }
-    }
-
-    QDomDocument l_dom ("Content");
-    QString l_errMsg;
-    int l_errLn, l_errCol;
-
-    if (!l_dom.setContent (&p_file, &l_errMsg, &l_errLn, &l_errCol)) {
-        qDebug() << "Unable to parse content XML:" << l_errMsg << l_errLn << l_errCol;
-        return false;
-    }
-
-    const QDomElement l_book = l_dom.documentElement().namedItem ("Book").toElement();
-
-    const QString l_author = l_book.attribute ("author");
-
-    const QString l_title = l_book.attribute ("title");
-
-    const QString l_text = l_dom.documentElement().namedItem ("Text").toElement().text();
-
-    setText (l_text);
-
-    setTitle (l_title);
-
-    setAuthor (l_author);
-
-    return true;
-}
-
-/// @todo Implement support for pulling information from a HTTP(S) server (hosted file).
-/// @todo Implement support for pulling information from a FTP server (hosted file).
-bool TextContentSource::setUrl (const QUrl& p_url)
-{
-    if (!p_url.isValid()) {
-        qDebug() << "Invalid URL" << p_url;
-        return false;
-    }
-
-    if (p_url.scheme() == "http" || p_url.scheme() == "https") {
-        qDebug() << "HTTP(S) addresses not yet supported." << p_url;
-        return false;
-    } else {
-        QFile l_file (p_url.toLocalFile());
-        return setFile (l_file);
-    }
-
-    // Won't be reached.
-    qDebug() << "Unknown failure.";
-    return false;
-}
-
 TextContentSource::~TextContentSource()
 {
 
 }
 
-#include "content.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+/// @todo Should make a schema for this file and check it against the file.
+bool TextContentSource::setFile (QFile* p_file)
+{
+    if (!p_file->isOpen()) {
+        if (!p_file->open (QIODevice::ReadOnly | QIODevice::Text)) {
+            qDebug() << "[TextContentSource::setFile()] Unable to open file" << p_file->fileName() << p_file->errorString();
+            return false;
+        }
+
+        if (!p_file->isReadable()) {
+            qDebug() << "[TextContentSource::setFile()] Unable to read file" << p_file->fileName() << p_file->errorString();
+            return false;
+        }
+    }
+
+    QDomDocument document ("Content");
+    QString errMsg;
+    int errLn, errCol;
+
+    if (!document.setContent (p_file, &errMsg, &errLn, &errCol)) {
+        // Not a standard content file - prepare the text.
+        /// @todo (Veles) Port the Python script here.
+        QByteArray rawText = p_file->readAll();
+        QString text (rawText);
+
+        setText (text);
+        setTitle ("Unknown Title");
+        setAuthor ("Unknown Author");
+    }
+    else {
+
+        const QDomElement book = document.documentElement().namedItem ("Book").toElement();
+        const QString author = book.attribute ("author");
+        const QString title = book.attribute ("title");
+        const QString text = document.documentElement().namedItem ("Text").toElement().text();
+
+        setText (text);
+        setTitle (title);
+        setAuthor (author);
+    }
+
+    return isValid();
+}
+
+bool TextContentSource::setUrl (const QUrl& p_url)
+{
+    if (!p_url.isValid()) {
+        qDebug() << "[TextContentSource::setUrl()] Invalid URL" << p_url;
+        return false;
+    }
+    else {
+        if (p_url.scheme() == "http" || p_url.scheme() == "https") {
+            qDebug() << "[TextContentSource::setUrl()] HTTP(S) addresses not yet supported." << p_url;
+            return false;
+        }
+        else {
+            return setFile (new QFile (p_url.toLocalFile()));
+        }
+    }
+
+    // Won't be reached.
+    qDebug() << "[TextContentSource::setUrl()] Unknown failure.";
+    return false;
+}
+
+#include "sessions/content.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

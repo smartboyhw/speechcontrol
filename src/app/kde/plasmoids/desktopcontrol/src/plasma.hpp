@@ -27,15 +27,16 @@
 
 class QSizeF;
 
-class DesktopControlPlasmoid : public Plasma::Applet {
+class DesktopControlPlasmoid : public Plasma::Applet
+{
     Q_OBJECT
 public:
-    DesktopControlPlasmoid ( QObject *parent, const QVariantList &args );
+    DesktopControlPlasmoid (QObject* parent, const QVariantList& args);
     ~DesktopControlPlasmoid();
 
-    void paintInterface ( QPainter *painter,
-                          const QStyleOptionGraphicsItem *option,
-                          const QRect& contentsRect );
+    void paintInterface (QPainter* painter,
+                         const QStyleOptionGraphicsItem* option,
+                         const QRect& contentsRect);
     void init();
 
 private:
@@ -43,6 +44,6 @@ private:
     KIcon m_icon;
 };
 
-K_EXPORT_PLASMA_APPLET ( desktopcontrolplasmoid, DesktopControlPlasmoid )
+K_EXPORT_PLASMA_APPLET (desktopcontrolplasmoid, DesktopControlPlasmoid)
 #endif
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -20,20 +20,24 @@
 
 #ifndef SPEECHCONTROL_PLUGINS_TRANSCRIBER_SPHINX_HPP
 #define SPEECHCONTROL_PLUGINS_TRANSCRIBER_SPHINX_HPP
-#include <lib/abstractsphinx.hpp>
+#include <sphinx/abstract.hpp>
 
-namespace SpeechControl {
-namespace Plugins {
-namespace Transcriber {
-class Sphinx : public SpeechControl::AbstractSphinx {
-
+namespace SpeechControl
+{
+namespace Plugins
+{
+namespace Transcriber
+{
+class Sphinx : public SpeechControl::AbstractSphinx
+{
+    Q_OBJECT
 public:
     Sphinx();
-    void prepareForFile( const QString& p_path );
-    virtual void applicationMessage ( const QGst::MessagePtr& p_message );
+    void prepareForFile (const QString& p_path);
+    virtual void applicationMessage (const QGst::MessagePtr& p_message);
     virtual ~Sphinx();
 private:
-    void onUnknownTypeEncountered(QGst::PadPtr p_pad, QGst::CapsPtr p_caps);
+    void onUnknownTypeEncountered (QGst::PadPtr p_pad, QGst::CapsPtr p_caps);
 };
 
 }

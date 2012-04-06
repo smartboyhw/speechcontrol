@@ -19,7 +19,6 @@
  */
 
 // Qt includes
-#include <QDir>
 #include <QFile>
 #include <QDebug>
 #include <QLibraryInfo>
@@ -29,12 +28,10 @@
 #include <QMessageBox>
 
 // libspchcntrl includes
-#include <lib/config.hpp>
-#include <lib/system.hpp>
-#include <lib/microphone.hpp>
+#include <config.hpp>
+#include <system.hpp>
 
 // local includes
-#include "app/core.hpp"
 #include "app/factory.hpp"
 #include "app/sessions/session.hpp"
 #include "app/windows/main-window.hpp"
@@ -42,6 +39,7 @@
 #include "desktopcontrol/agent.hpp"
 #include "dictation/agent.hpp"
 #include "sessions/wikipediacontentsource.hpp"
+#include "app/core.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Wizards;
@@ -49,10 +47,13 @@ using namespace SpeechControl::Wizards;
 Core* Core::s_inst = 0;
 
 /// @todo Add a check for the default microphone (if provided by the user).
-Core::Core ( int p_argc, char** p_argv, QApplication* app ) {
+Core::Core (int p_argc, char** p_argv, QApplication* app) : QObject (app),
+    m_app (app), m_mw (0), m_settings (0), m_trnsltr (0)
+{
     m_app = app;
-    if ( s_inst ) {
-        qFatal ( "The Core instance of SpeechControl was being invoked again. This is a fatal and funny error." );
+
+    if (s_inst) {
+        qFatal ("The Core instance of SpeechControl was being invoked again. This is a fatal and funny error.");
     }
 
     s_inst = this;
@@ -66,71 +67,88 @@ Core::Core ( int p_argc, char** p_argv, QApplication* app ) {
 
     // Create application's configuration directory.
     QDir configDir;
-    configDir.mkdir (QDir::homePath() + "/.config/speechcontrol/contents");
-
-    // Settings
-    m_settings = new QSettings (QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", this);
+    configDir.mkdir (configurationPath().path() + "/contents");
 
     // build settings
     m_settings = new QSettings (QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", this);
-    connect (m_app, SIGNAL (aboutToQuit()), this, SLOT (stop()));
-    connect (this, SIGNAL (started()), this, SLOT (invokeAutoStart()));
-    connect (this, SIGNAL (started()), Plugins::Factory::instance(), SLOT (start()));
-    connect (this, SIGNAL (stopped()), Plugins::Factory::instance(), SLOT (stop()));
+
+    hookUpSignals();
     loadTranslations (QLocale::system());
+
+    // Set up indicator.
+    qDebug() << "[Core::${constructor}] Show indicator on start? " << configuration ("Indicator/Show").toBool();
+
+    if (configuration ("Indicator/Show").toBool())
+        Indicator::show();
 }
 
-Core::Core (const Core& p_other) : QObject (p_other.parent())
+Core::Core() : QObject()
+{
+    qFatal ("This constructor shouldn't ever be called.");
+}
+
+Core::Core (const Core& p_other) : QObject (p_other.parent()), m_app (p_other.m_app),
+    m_mw (p_other.m_mw), m_settings (p_other.m_settings), m_trnsltr (p_other.m_trnsltr)
 {
 
+}
+
+void Core::hookUpSignals()
+{
+    connect (m_app, SIGNAL (aboutToQuit()), this, SLOT (stop()));
+    connect (this, SIGNAL (started()), this, SLOT (invokeAutoStart()));
+    connect (this, SIGNAL (started()), Services::Engine::instance(), SLOT (start()));
+    connect (this, SIGNAL (started()), Plugins::Factory::instance(), SLOT (start()));
+    connect (this, SIGNAL (stopped()), Services::Engine::instance(), SLOT (stop()));
+    connect (this, SIGNAL (stopped()), Plugins::Factory::instance(), SLOT (stop()));
+
+    DesktopControl::Service::instance();
+    Dictation::Service::instance();
 }
 
 void Core::start()
 {
-    instance()->s_mw = new Windows::Main;
-
     // Detect if a first-run wizard should be run.
     if (!QFile::exists (s_inst->m_settings->fileName())) {
-        if (QMessageBox::question (instance()->s_mw, QMessageBox::tr ("First Run"),
+        if (QMessageBox::question (mainWindow(), QMessageBox::tr ("First Run"),
                                    QMessageBox::tr ("This seems to be the first time you've run SpeechControl on this system. "
                                            "A wizard allowing you to start SpeechControl will appear."), QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
-            QuickStart* l_win = new QuickStart (instance()->s_mw);
+            QuickStart* l_win = new QuickStart (mainWindow());
             l_win->exec();
         }
     }
 
+    mainWindow()->open();
     emit instance()->started();
-
-    instance()->s_mw->show();
-    
-    // Experiment
-    WikipediaContentSource wiki("test");
-    Content *test = wiki.generate();
-}
-
-Windows::Main* Core::mainWindow()
-{
-    return instance()->s_mw;
 }
 
 void Core::stop()
 {
+    if (Core::configuration ("MainWindow/RememberState").toBool()) {
+        Core::setConfiguration ("MainWindow/Visible", mainWindow()->isVisible());
+    }
+
     emit instance()->stopped();
+}
+
+Windows::Main* Core::mainWindow()
+{
+    if (instance()->m_mw == 0)
+        instance()->m_mw = new Windows::Main;
+
+    return instance()->m_mw;
 }
 
 QVariant Core::configuration (const QString& p_attrName, QVariant p_attrDefValue)
 {
+    instance()->m_settings->sync();
     return instance()->m_settings->value (p_attrName, p_attrDefValue);
 }
 
 void Core::setConfiguration (const QString& p_attrName, const QVariant& p_attrValue)
 {
     instance()->m_settings->setValue (p_attrName, p_attrValue);
-}
-
-Core* SpeechControl::Core::instance()
-{
-    return Core::s_inst;
+    instance()->m_settings->sync();
 }
 
 int Core::exec()
@@ -145,10 +163,10 @@ void Core::quit (const int& p_exitCode)
 
 void Core::invokeAutoStart()
 {
-    const bool l_dsktpCntrlState = configuration ("DesktopControl/AutoStart").toBool();
-    const bool l_dctnState = configuration ("Dictation/AutoStart").toBool();
-    DesktopControl::Agent::instance()->setState ( (l_dsktpCntrlState) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled);
-    Dictation::Agent::instance()->setState ( (l_dctnState) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled);
+    const bool dsktpCntrlState = configuration ("DesktopControl/AutoStart").toBool();
+    const bool dctnState = configuration ("Dictation/AutoStart").toBool();
+    DesktopControl::Agent::instance()->setState ( (dsktpCntrlState) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled);
+    Dictation::Agent::instance()->setState ( (dctnState) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled);
 }
 
 void Core::loadTranslations (const QLocale& p_locale)
@@ -157,9 +175,46 @@ void Core::loadTranslations (const QLocale& p_locale)
     instance()->m_trnsltr->load ("speechcontrol_" + p_locale.name());
 }
 
+QDir Core::configurationPath()
+{
+    return QDir (QDir::homePath().append ("/.config/speechcontrol"));
+}
+
+void Core::setAutoStart (const bool p_toggle)
+{
+    QFile* autoStartFile = new QFile (QDir::homePath().append ("/.config/autostart/SpeechControl.desktop"));
+
+    if (p_toggle) {
+        if (autoStartFile->open (QIODevice::WriteOnly | QIODevice::Truncate)) {
+            QTextStream desktopFile (autoStartFile);
+            desktopFile << "[Desktop Entry]" << endl
+                        << "Name=Start SpeechControl on Launch" << endl
+                        << "Icon=speechcontrol" << endl
+                        << "Exec=speechcontrol-frontend" << endl
+                        << "Terminal=false" << endl
+                        << "Type=Application" << endl
+                        << "X-GNOME-Autostart-enabled=true" << endl
+                        << "X-GNOME-Autostart-Delay=30" << endl;
+            autoStartFile->close();
+            autoStartFile->setPermissions (autoStartFile->permissions() | QFile::ExeUser | QFile::ExeOwner | QFile::ExeGroup);
+        }
+    }
+    else {
+        if (autoStartFile->exists()) {
+            autoStartFile->remove();
+        }
+    }
+}
+
+bool Core::doesAutoStart()
+{
+    QFile* autoStartFile = new QFile (QDir::homePath().append ("/.config/autostart/SpeechControl.desktop"));
+    return autoStartFile->exists();
+}
+
 Core::~Core ()
 {
     m_settings->sync();
 }
 #include "core.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

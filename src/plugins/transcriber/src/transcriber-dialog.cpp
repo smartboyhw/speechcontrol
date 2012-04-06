@@ -21,61 +21,72 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-#include "sphinx.hpp"
+#include <audiosource/abstract.hpp>
+#include <audiosource/stream.hpp>
+#include <sphinx/audiosource.hpp>
+
+#include "plugin.hpp"
 #include "transcriber-dialog.hpp"
 #include "ui_transcriber-dialog.h"
 
+using namespace SpeechControl;
 using namespace SpeechControl::Plugins::Transcriber;
 using namespace SpeechControl::Windows;
 
-TranscriberDialog::TranscriberDialog ( QWidget *parent ) :
-    QDialog ( parent ),
-    m_ui ( new Ui::TranscriberDialog ),
-    m_sphnx(0) {
-    m_ui->setupUi ( this );
-    m_sphnx = new Sphinx;
-    connect ( m_sphnx,SIGNAL ( finished ( QString ) ),this,SLOT ( outputValue ( QString ) ) );
+TranscriberDialog::TranscriberDialog (QWidget* parent) :
+    QDialog (parent),
+    m_ui (new Ui::TranscriberDialog),
+    m_streamSrc(0), m_audioSrcSphnx(0), m_strm(0)
+{
+    m_ui->setupUi (this);
 }
 
 /// @todo Fix this to have an approved list of audio files that can read by GStreamer.
-void TranscriberDialog::on_btnOpen_clicked() {
-    const QString l_filePath = QFileDialog::getOpenFileName ( this,tr ( "Obtain Audio File for Transcribing" ),
+void TranscriberDialog::on_btnOpen_clicked()
+{
+    const QString l_filePath = QFileDialog::getOpenFileName (this, tr ("Obtain Audio File for Transcribing"),
                                QDir::homePath());
 
-    QMessageBox::information ( this, l_filePath ,l_filePath );
-    m_ui->lineEditPath->setText ( l_filePath );
+    QMessageBox::information (this, l_filePath , l_filePath);
+    m_ui->lineEditPath->setText (l_filePath);
 }
 
-void TranscriberDialog::on_btnTranscribe_clicked() {
-    QFile* l_file = new QFile ( m_ui->lineEditPath->text() );
-    if ( !l_file->exists() ) {
+void TranscriberDialog::on_btnTranscribe_clicked()
+{
+    QFile* file = new QFile (m_ui->lineEditPath->text());
+
+    if (!file->exists()) {
         m_ui->lineEditPath->clear();
-        qDebug() << "File doesn't exist.";
+        qDebug() << "[TranscriberDialog::on_btnTranscribe_clicked()] File doesn't exist.";
         return;
     }
 
-    while (m_sphnx->isRunning())
-        m_sphnx->stop();
+    if (!file->open(QIODevice::ReadOnly)){
+        qDebug() << "[TranscriberDialog::on_btnTranscribe_clicked()] File can't open.";
+        return;
+    }
 
-    m_sphnx->prepareForFile ( l_file->fileName() );
-    if (m_sphnx->start()){
-        m_ui->textBrowserTranscription->setText(tr("Transcribing..."));
-        QString l_text, l_uttid;
-        m_sphnx->formPartialResult(l_text,l_uttid);
-        qDebug() << l_text << l_uttid;
-    } else {
-        m_ui->textBrowserTranscription->setText(tr("Initialization of transcribing service failed."));
+    m_strm = new QDataStream(file);
+    m_streamSrc = new StreamAudioSource(m_strm);
+    m_audioSrcSphnx = new AudioSourceSphinx(m_streamSrc,this);
+
+    connect(m_audioSrcSphnx,SIGNAL(finished(QString)),this,SLOT(outputValue(QString)));
+
+    if (!m_audioSrcSphnx->start()){
+        qDebug() << "[TranscriberDialog::on_btnTranscribe_clicked()] Transcriber's Sphinx failed to start.";
     }
 }
 
-void TranscriberDialog::outputValue ( const QString& p_value ) {
+void TranscriberDialog::outputValue (const QString& p_value)
+{
     if (!p_value.isEmpty())
-        m_ui->textBrowserTranscription->setText ( p_value );
+        m_ui->textBrowserTranscription->setText (p_value);
     else
-        m_ui->textBrowserTranscription->setText(tr("Unable to transcribe any text in %1.").arg(m_ui->lineEditPath->text()));
+        m_ui->textBrowserTranscription->setText (tr ("Unable to transcribe any text in %1.").arg (m_ui->lineEditPath->text()));
 }
 
-TranscriberDialog::~TranscriberDialog() {
+TranscriberDialog::~TranscriberDialog()
+{
     delete m_ui;
 }
 

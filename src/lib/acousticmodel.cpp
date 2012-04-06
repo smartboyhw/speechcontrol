@@ -19,96 +19,278 @@
  */
 
 #include <QDir>
-#include <QString>
+#include <QUuid>
 #include <QDebug>
+#include <QString>
 #include <QTextStream>
 #include <QStringList>
+#include <QDirIterator>
 
+#include <algorithm>
+
+#include "config.hpp"
 #include "noisedictionary.hpp"
+#include "acousticmodel.hxx"
 #include "acousticmodel.hpp"
 
+using namespace std;
 using SpeechControl::AcousticModel;
+using SpeechControl::AcousticModelPrivate;
 using SpeechControl::NoiseDictionary;
+using SpeechControl::AcousticModelList;
 
-AcousticModel::AcousticModel ( const AcousticModel &p_mdl ) :
-    QObject ( p_mdl.parent() ), m_params ( p_mdl.m_params ), m_path ( p_mdl.m_path ) {
+void cloneDirectory (QDir p_base, QDir p_newDir)
+{
+    QStringList entries = p_base.entryList (QDir::NoDotAndDotDot | QDir::Dirs | QDir::Files);
+
+    Q_FOREACH (const QString entry, entries) {
+        QFileInfo entryInfo (entry);
+
+        if (entryInfo.isDir()) {
+            p_base.mkpath (p_newDir.absolutePath() + "/" + entryInfo.baseName());
+            qDebug() << "[cloneDirectory()] Descending into " << entryInfo.absolutePath();
+            cloneDirectory (QDir (entryInfo.absolutePath()), QDir (p_newDir.absolutePath() + "/" + entryInfo.baseName()));
+        }
+        else {
+            QString fileBase = p_base.absoluteFilePath (entry);
+            QString fileNew = p_newDir.absoluteFilePath (entryInfo.fileName());
+            qDebug() << "[cloneDirectory()] Copying" << fileBase << "to" << fileNew << "..";
+            QFile::copy (fileBase, fileNew);
+        }
+    }
 }
-AcousticModel::AcousticModel ( const QString& p_path, QObject* p_parent ) : QObject ( p_parent ) {
-    load ( p_path );
+
+void AcousticModelPrivate::loadFeatureParameters()
+{
+    QFile* file = new QFile (m_mdl->parameterPath());
+    file->open (QIODevice::ReadOnly | QIODevice::Text);
+
+    QTextStream strm (file);
+
+    while (!strm.atEnd()) {
+        const QStringList tokens = strm.readLine().split (" ");
+        QString paramName = tokens[0];
+
+        if (paramName.startsWith ("-"))
+            paramName = paramName.remove (0, 1);
+
+        QString paramValue = tokens[1];
+        qDebug() << "[AcousticModel::loadFeatureParameters()] Parsing parameter" << paramName << "=" << paramValue;
+        m_mdl->setParameter (paramName, paramValue);
+    }
+
+    file->close();
 }
 
-AcousticModel::AcousticModel ( QObject* p_parent ) : QObject ( p_parent ) {
+void AcousticModelPrivate::loadNoiseDictionary()
+{
+    QFile* noiseDictFile = new QFile (m_path +  "/noisedict");
+    m_noisedict = NoiseDictionary::fromFile (noiseDictFile);
+}
+
+
+AcousticModel::AcousticModel (const AcousticModel& p_other) :
+    QObject (p_other.parent()), d_ptr (const_cast<AcousticModelPrivate*> (p_other.d_ptr.data()))
+{
+}
+
+AcousticModel::AcousticModel (const QString& p_path, QObject* p_parent) : QObject (p_parent),
+    d_ptr (new AcousticModelPrivate(this))
+{
+    load (p_path);
+}
+
+AcousticModel::AcousticModel (QObject* p_parent) : QObject (p_parent), d_ptr (new AcousticModelPrivate(this))
+{
 
 }
 
-AcousticModel::~AcousticModel() {
+AcousticModel::~AcousticModel()
+{
 }
 
-void AcousticModel::load ( QString p_path ) {
-    QDir l_dir ( p_path );
-    if ( !l_dir.exists() )
+void AcousticModel::load (QString p_path)
+{
+    QDir dir (p_path);
+
+    if (!dir.exists())
         return;
 
-    m_path = p_path;
+    d_func()->m_path = p_path;
 
-    loadFeatureParameters();
-    loadNoiseDictionary();
+    d_func()->loadFeatureParameters();
+    d_func()->loadNoiseDictionary();
 }
 
-void AcousticModel::loadFeatureParameters() {
-    QFile* l_file = new QFile ( m_path + "/feat.params" );
-    l_file->open ( QIODevice::ReadOnly | QIODevice::Text );
+QFile* AcousticModel::modelDefinitions() const
+{
+    return new QFile (path() + "/mdef");
+}
 
-    QTextStream l_strm ( l_file );
+QFile* AcousticModel::mixtureWeights()
+{
+    return new QFile (path() + "/mixture_weights");
+}
 
-    while ( !l_strm.atEnd() ) {
-        const QStringList l_tokens = l_strm.readLine().split ( " " );
-        qDebug() << "Parsing parameter" << l_tokens[0] << "=" << l_tokens[1];
-        setParameter ( l_tokens[0],l_tokens[1] );
+QFile* AcousticModel::transitionMatrices()
+{
+    return new QFile (path() + "/transition_matrices");
+}
+
+QFile* AcousticModel::variances()
+{
+    return new QFile (path() + "/variances");
+}
+
+QFile* AcousticModel::means()
+{
+    return new QFile (path() + "/means");
+}
+
+QFile* AcousticModel::senDump()
+{
+    return new QFile (path() + "/sendump");
+}
+
+QString AcousticModel::parameterPath() const
+{
+    return path() + "/feat.params";
+}
+
+void AcousticModel::setParameter (const QString& p_key, const QVariant& p_value)
+{
+    d_func()->m_params.insert (p_key, p_value);
+}
+
+void AcousticModel::setParameters (QVariantMap const& p_params)
+{
+    d_func()->m_params = p_params;
+}
+
+void AcousticModel::mergeParameters (QVariantMap const& p_params)
+{
+    for (QMap< QString, QVariant >::const_iterator it = p_params.constBegin();
+            it != p_params.constEnd(); ++it) {
+
+        d_func()->m_params.insert (it.key(), it.value());
     }
-
-    l_file->close();
 }
 
-void AcousticModel::loadNoiseDictionary() {
-    QFile* l_noiseDictFile = new QFile ( m_path +  "/noisedict" );
-    m_noisedict = NoiseDictionary::fromFile ( l_noiseDictFile );
+QVariant AcousticModel::parameter (const QString& p_key) const
+{
+    return d_func()->m_params.value (p_key);
 }
 
-void AcousticModel::setParameter ( const QString &p_key, const QVariant &p_value ) {
-    m_params.insert ( p_key, p_value );
+QVariantMap AcousticModel::parameters() const
+{
+    return d_func()->m_params;
 }
 
-void AcousticModel::setParameters ( QVariantMap const& p_params ) {
-    m_params = p_params;
-}
-
-void AcousticModel::mergeParameters ( QVariantMap const& p_params ) {
-    for ( QMap< QString, QVariant >::const_iterator it = p_params.constBegin();
-            it != p_params.constEnd(); ++it ) {
-
-        m_params.insert ( it.key(), it.value() );
-    }
-}
-
-QVariant AcousticModel::parameter ( const QString &p_key ) const {
-    return m_params.value ( p_key );
-}
-
-QVariantMap AcousticModel::parameters() const {
-    return m_params;
-}
-
-quint16 AcousticModel::sampleRate() const {
+quint16 AcousticModel::sampleRate() const
+{
     return 16000;
 }
 
-QString AcousticModel::path() const {
-    return m_path;
+QString AcousticModel::name() const
+{
+    QDir dir (path());
+    return dir.dirName();
 }
 
-bool AcousticModel::isValid() const {
-    return ( QDir ( m_path ) ).exists();
+bool AcousticModel::isSystem() const
+{
+    return !isUser();
+}
+
+bool AcousticModel::isUser() const
+{
+    return path().contains (QDir::homePath());
+}
+
+QString AcousticModel::path() const
+{
+    return d_func()->m_path;
+}
+
+bool AcousticModel::isValid() const
+{
+    return (QDir (path())).exists();
+}
+
+NoiseDictionary* AcousticModel::noiseDictionary() const
+{
+    return d_func()->m_noisedict;
+}
+
+AcousticModel* AcousticModel::clone()
+{
+    // obtain directory info.
+    QDir model (path());
+    QDir newDir (QDir::homePath() + "/.config/speechcontrol/models");
+    newDir.mkpath (newDir.absolutePath());
+
+    QString randomID = QString::number (qrand());
+    const QString newModelName = model.dirName() + "-" + randomID;
+    newDir.mkdir (newModelName);
+    newDir.cd (newModelName);
+
+    // create directory.
+    cloneDirectory (model, newDir);
+
+    qDebug() << "[AcousticModel::clone()] Cloned" << path() << "to" << newDir;
+    return new AcousticModel (newDir.path());
+}
+
+QStringList findAllAcousticModels (const QDir p_dir)
+{
+    QDirIterator itr (p_dir.absolutePath(), QDir::NoDotAndDotDot | QDir::AllDirs, QDirIterator::Subdirectories);
+    QStringList aList;
+
+    while (itr.hasNext()) {
+        const QString listing = itr.next();
+        QFileInfo featParams (listing + "/feat.params");
+
+        if (featParams.exists()) {
+            aList << listing;
+        }
+
+        else continue;
+    }
+
+    qDebug() << "[findAllAcousticModels()] Removed" << aList.removeDuplicates() << "duplicates.";
+    aList.removeAll (".");
+
+    return aList;
+}
+
+/// @todo This should find the models installed automagically installed by the user's package management system.
+AcousticModelList AcousticModel::allModels()
+{
+    // First, find the models imported by Sphinx. They're all stored under weird
+    // folder names in MODELDIR.
+
+    QDir systemModelDir (POCKETSPHINX_MODELDIR);
+    QDir userModelDir (QDir::homePath() + "/.config/speechcontrol/models");
+    systemModelDir.cd ("hmm");
+
+    QStringList dirs = findAllAcousticModels (systemModelDir);
+    dirs.append (findAllAcousticModels (userModelDir));
+
+    // Alright, we got the folders. Now, just build AcousticModel objects with it.
+    AcousticModelList list;
+    Q_FOREACH (const QString directory, dirs) {
+        list << new AcousticModel (directory);
+    }
+
+    return list;
+}
+
+void AcousticModel::erase()
+{
+    if (isUser()) {
+        QDir dir (path());
+        dir.rmpath (".");
+    }
 }
 
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

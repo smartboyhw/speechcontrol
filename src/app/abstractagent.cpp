@@ -38,7 +38,21 @@ void AbstractAgent::setState (const AbstractAgent::ActivityState p_state)
         return;
 
     m_state = onStateChanged (p_state);
+//     if (p_state == Enabled)
+//         start();
+//     else
+//         stop();
     emit stateChanged (m_state);
+}
+
+void AbstractAgent::start()
+{
+    setState (Enabled);
+}
+
+void AbstractAgent::stop()
+{
+    setState (Disabled);
 }
 
 AbstractAgent::ActivityState AbstractAgent::state() const

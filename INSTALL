@@ -3,7 +3,7 @@ Installing SpeechControl
 
 0. For the Impatient
 
-    # apt-get install cmake libqt4-dev libqtgstreamer-dev libpocketsphinx-dev libsphinxbase-dev libxdo-dev python-dev libboost-python-dev libindicate-qt-dev
+    # apt-get install cmake libqt4-dev libqtgstreamer-dev libpocketsphinx-dev libsphinxbase-dev libxdo-dev gstreamer0.10-pocketsphinx pkg-config libhunspell-dev libphonon-dev
     $ mkdir build && cd build
     $ cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug
     $ make
@@ -20,8 +20,8 @@ SpeechControl's core requires that you have the following packages installed:
       # apt-get install cmake
       # apt-get install cmake-qt-gui        # Install for a graphical interfaces
 
-    * Qt 4.7.2 (or higher) and its development files
-      # apt-get install libqt4-dev
+    * Qt 4.7.2 (or higher), Phonon and its development files
+      # apt-get install libqt4-dev libphonon-dev
 
     * Qt bindings to GStreamer (0.10) and its development files
       # apt-get install libqtgstreamer-dev
@@ -30,20 +30,17 @@ SpeechControl's core requires that you have the following packages installed:
       files as well as the needed GStreamer elements
       # apt-get install libpocketsphinx-dev libsphinxbase-dev gstreamer0.10-pocketsphinx
 
-    * Qt bindings for the AppIndicator library and development files
-      # apt-get install libindicate-qt-dev
-
     * XDO library and development files (for dictation functionality)
       # apt-get install libxdo-dev
 
-    * [Optional] Development files for Python 2.7 (or higher)
-      # apt-get install python-dev
-
-    * [Optional] Boost's Python module 1.46
-      # apt-get install libboost-python-dev
+    * Hunspell spell-checking development files and library (for spell-checking dictation input)
+      # apt-get install libhunspell-dev
 
     * [Optional] Development files for kdelibs (4.7.2 or higher)
       # apt-get install kdelibs5-dev
+
+    * [Optional] Python Scripting Support via PythonQt
+      # apt-get install libpythonqt-dev
 
 2. Configuration
 
@@ -58,18 +55,18 @@ By default, SpeechControl builds with the following configuration values:
 
     Configuration Value     :   Value
     ---------------------------------------------------------------------------
-    WITH_PYTHON_BINDINGS        ON  (bindings for libspeechcontrol)
-    WITH_TESTS                  ON  (initializes the test build system)
-    WITH_API_DOCS               ON  (generates documentation about API)
-    WITH_DBUS_SUPPORT           ON  (adds D-Bus support)
-    WITH_KDE_SUPPORT            OFF (builds another KApplication-based binary)
+    WITH_PYTHON_BINDINGS        OFF (bindings for libspeechcontrol to Python)
+    WITH_TESTS                  OFF (initializes the test build system)
+    WITH_DOCS                   OFF (generates documentation about API)
+    WITH_KDE_SUPPORT            OFF (builds KDE-specific bindings)
+    WITH_PLUGINS                OFF (builds plug-ins)
 
 These values only recognize the values 'ON' and 'OFF'. You can change these
 values by doing the following:
 
-    $ cmake -DWITH_TESTS=OFF        # disable tests
-    $ cmake -DWITH_KDE_SUPPORT=ON   # enable KDE support and generates another
-                                    # target
+    $ cmake .. -DWITH_TESTS=OFF        # disable tests
+    $ cmake .. -DWITH_KDE_SUPPORT=ON   # enable KDE support and generates another
+                                       # target
 
 It's possible to produce more specific information about your configuration
 process and provide more direct information for troubleshooting. See the
@@ -101,7 +98,14 @@ From the build directory, you can invoke SpeechControl by:
         $ src/app/speechcontrol-frontend
 
 It's possible to produce more verbose information during execution.
-See the "Testing" section for more information.
+See the "Testing" section for more information. You can install SpeechControl
+into your system by invoking:
+
+    # make install
+
+and un-installing by invoking:
+
+    # make uninstall
 
 5. Testing
 

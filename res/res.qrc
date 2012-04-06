@@ -1,6 +1,14 @@
 <RCC>
     <qresource prefix="/logo">
+        <file alias="sii">img/sii.png</file>
         <file alias="sc">img/speechcontrol.png</file>
         <file alias="sc-large">img/speechcontrol.svg</file>
+    </qresource>
+    <qresource prefix="/indicator">
+        <file alias="white">img/SClogonobackground.png</file>
+        <file alias="black">img/SClogonobackgroundblack.png</file>
+    </qresource>
+    <qresource prefix="/qml">
+        <file alias="dskptctlui">qml/dsktpctlui.qml</file>
     </qresource>
 </RCC>

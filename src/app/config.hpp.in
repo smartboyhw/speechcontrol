@@ -21,6 +21,9 @@
 #ifndef SPCHCNTRL_APP_CONFIG_HPP
 #define SPCHCNTRL_APP_CONFIG_HPP
 
+#include <lib/config.hpp>
+#include "macros.hpp"
+
 /// Provides the location to the libraries to be used as plug-ins.
 /// @see AbstractPlugin
 /// @see Factory
@@ -31,5 +34,20 @@
 /// @see Factory
 #define SPCHCNTRL_PLUGINS_SPEC_DIR "@SPCHCNTRL_PLUGINS_SPEC_INSTALL_DIR@"
 
+/// Provides the location to the pre-packaged Content files.
+/// @see Content
+#define SPCHCNTRL_SYSTEM_CONTENT_DIR "@SPCHCNTRL_DATA_CONTENT_DIR@"
+
+/// Defines the default size of a phrase when rendering in a corpus.
+/// @see Corpus::create()
+/// @see Corpus
+#define CORPUS_WORD_BLOCK 8
+
+/// Defines the default count of alphanumerical characters to be considered one page in a Content.
+/// @see Content::create()
+/// @see Content
+#define CONTENT_CHUNK_SIZE 250
+
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

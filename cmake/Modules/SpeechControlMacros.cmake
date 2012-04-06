@@ -34,10 +34,12 @@ macro(dbus_add_activation_service _sources)
     endforeach (_i ${ARGN})
 endmacro(dbus_add_activation_service _sources)
 
-macro(speechcontrol_install_plugin _plugin_target)
+macro(speechcontrol_install_plugin _plugin_target _plugin_id)
     install(TARGETS ${_plugin_target}
             DESTINATION ${SPCHCNTRL_PLUGINS_LIB_INSTALL_DIR})
 
+    install(FILES "${PROJECT_SOURCE_DIR}/data/${_plugin_id}.spec"
+            DESTINATION ${SPCHCNTRL_PLUGINS_SPEC_INSTALL_DIR})
     if (KDE4_FOUND)
         install(TARGETS ${_plugin_target}
                 DESTINATION "${PLUGIN_INSTALL_DIR}/plugins/speechcontrol")

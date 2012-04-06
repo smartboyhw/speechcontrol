@@ -21,17 +21,23 @@
 #ifndef CORE_HPP
 #define CORE_HPP
 
+#include <QDir>
 #include <QObject>
 #include <QVariant>
-#include <QApplication>
+
+#include "macros.hpp"
 
 class QSettings;
+class QApplication;
+class QTranslator;
 
-namespace SpeechControl {
-namespace Windows {
+namespace SpeechControl
+{
+
+namespace Windows
+{
 class Main;
 }
-
 
 /**
  * @brief Represents the entire heart of SpeechControl.
@@ -42,19 +48,12 @@ class Main;
  **/
 class Core : public QObject
 {
-    Q_OBJECT
-    Q_DISABLE_COPY ( Core );
-
     friend class Windows::Main;
 
-private:
-    /// @note It this pointer needed? Every piece of code can just use QApplication::instance() to get the instance...
-    QApplication* m_app;    /// Holds the Application instance.
-    Windows::Main* s_mw;    /// Holds the main window.
-    QSettings* m_settings;  /// Holds the application's global configuration.
-    QTranslator* m_trnsltr; /// Holds the translating agent.
-    static Core* s_inst;    /// Holds the instance.
-    
+    Q_OBJECT
+    Q_DISABLE_COPY (Core)
+    SC_SINGLETON (Core)
+
 public:
     /**
      * @brief Constructor.
@@ -63,7 +62,7 @@ public:
      * @param p_app The QApplication instance.
      * @internal
      **/
-    Core ( int p_argc, char** p_argv, QApplication* app );
+    Core (int p_argc, char** p_argv, QApplication* app);
 
     /**
      * @brief Destructor.
@@ -79,7 +78,7 @@ public:
      * @param  p_attrDefValue The default value to return. Defaults to QVariant().
      * @return QVariant
      **/
-    static QVariant configuration ( const QString& p_attrName, QVariant p_attrDefValue = QVariant() );
+    static QVariant configuration (const QString& p_attrName, QVariant p_attrDefValue = QVariant());
 
     /**
      * @brief Sets a core configuration option of SpeechControl.
@@ -90,17 +89,10 @@ public:
      * @param  p_attrValue The value to be set.
      *
      **/
-    static void setConfiguration ( const QString& p_attrName, const QVariant& p_attrValue );
-
-    /**
-     * @brief Obtains a pointer to the @c Core object, the singleton representing the application.
-     * @return A pointer to the @c Core object.
-     **/
-    static Core* instance();
+    static void setConfiguration (const QString& p_attrName, const QVariant& p_attrValue);
 
     /**
      * @brief Provides a pointer to the Main Window instance.
-     * @return KMainWindow*
      **/
     static Windows::Main* mainWindow();
 
@@ -114,13 +106,31 @@ public:
      *
      * @param p_locale The locale to load.
      **/
-    static void loadTranslations ( const QLocale& p_locale );
+    static void loadTranslations (const QLocale& p_locale);
+
+    /**
+     * @brief Sets whether or not SpeechControl will invoke itself on user log-in.
+     *
+     * @param p_toggle The new state of the auto-start.
+     **/
+    static void setAutoStart (const bool p_toggle);
+
+    /**
+     * @brief Determines whether or not SpeechControl starts on user log-in.
+     *
+     **/
+    static bool doesAutoStart();
+
+    /**
+     * @brief Obtains the base QDir to the configuration data of SpeechControl.
+     **/
+    static QDir configurationPath();
 
     /**
      * @brief Quits the application's main execution loop.
      * @param p_exitCode The exit code for the application to use.
      */
-    void quit ( const int& p_exitCode = 0 );
+    void quit (const int& p_exitCode = 0);
 
 signals:
     /**
@@ -150,6 +160,13 @@ public slots:
 
 private slots:
     void invokeAutoStart();
+    void hookUpSignals();
+
+private:
+    QApplication* m_app;    ///< Holds the Application instance.
+    Windows::Main* m_mw;    ///< Holds the main window.
+    QSettings* m_settings;  ///< Holds the application's global configuration.
+    QTranslator* m_trnsltr; ///< Holds the translating agent.
 };
 
 }

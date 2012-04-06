@@ -1,25 +1,35 @@
-# Searches for the XDO library.
-# If found, provides the following:
+# - Find XDO on the development system.
+# This module finds if XDO is installed and determines where the
+# include files and libraries are. It also determines what the name of
+# the library is. This code sets the following variables:
 #
-# - XDO_INCLUDE_DIRS : The include directories (typically just one) to find the headers for XDO.
-# - XDO_LIBRARIES : The libraries needed to link to XDO.
+#  XDO_LIBRARIES           - path to the XDO library
+#  XDO_INCLUDE_DIRS        - path to where xdo.h is found
+#
+#=============================================================================
+# Copyright (c) 2012 Jacky Alcine <jacky.alcine@thesii.org>
+#
+# This module is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Library General Public
+# License as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+#
+#=============================================================================
+# (To distribute this file outside of CMake, substitute the full
+#  License text for the above reference.)
 
-find_path(XDO_INCLUDE_DIRS "xdo.h")
+find_package(PkgConfig QUIET)
+pkg_check_modules(_XDO xdo QUIET)
 
-if(XDO_INCLUDE_DIRS STREQUAL "XDO_INCLUDE_DIRS-NOTFOUND")
-    set(XDO_INCLUDE_DIRS "")
-else(XDO_INCLUDE_DIRS STREQUAL "XDO_INCLUDE_DIRS-NOTFOUND")
+find_path(XDO_INCLUDE_DIRS "xdo.h"
+          HINTS ${_XDO_INCLUDEDIR} ${_XDO_INCLUDE_DIRS})
+find_library(XDO_LIBRARIES "xdo"
+    HINTS ${_XDO_LIBRARY_DIRS} ${_XDO_LIBDIR})
 
-    find_library(XDO_LIBRARIES "xdo")
-    if(XDO_LIBRARIES STREQUAL "XDO_LIBRARIES-NOTFOUND")
-        set(XDO_LIBRARIES "")
-        message(WARNING "XDO library not found.")
-    else(XDO_LIBRARIES STREQUAL "XDO_LIBRARIES-NOTFOUND")
-        message(STATUS "Found XDO: ${XDO_LIBRARIES}")
-    endif(XDO_LIBRARIES STREQUAL "XDO_LIBRARIES-NOTFOUND")
-endif(XDO_INCLUDE_DIRS STREQUAL "XDO_INCLUDE_DIRS-NOTFOUND")
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(XDO DEFAULT_MSG
+    XDO_LIBRARIES XDO_INCLUDE_DIRS)
 
-if (NOT XDO-NOTFOUND)
-    set(XDO_LIBRARIES ${XDO})
-    set(XDO_INCLUDE_DIRS "${CMAKE_INSTALL_PREFIX}/include")
-endif(NOT XDO-NOTFOUND)
+list(APPEND XDO_INCLUDE_DIRS ${_XDO_INCLUDE_DIRS})
+
+mark_as_advanced(XDO_INCLUDE_DIRS XDO_LIBRARIES)

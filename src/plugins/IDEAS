@@ -12,7 +12,7 @@ built for SpeechControl.
   For one, we *definitely* need the indicator to be implemented so that
   SpeechControl can run in the background.
 
-* {{ Menu Listing }} [Implementation in Progress]
+* {{ Menu Listing }}
   By using dbusmenu-qt, we could obtain the current menubar of
   an application (the top-most) and provide those actions as
   possible matches for the result. If possible, we could also
@@ -25,7 +25,7 @@ built for SpeechControl.
   by manipulating lists of windows. Commands like 'Show window Chrome'
   or 'Hide all windows' could be used.
 
-** {{ Session Management }}
+** {{ Session Management }} [Implementation in Progress]
   Another D-Bus based plug-in (since it rocks :D), we could allow
   the user to implement specific terms for logging out, logging in,
   locking sessions, shut-down, restarting and suspending their computers.
@@ -33,7 +33,7 @@ built for SpeechControl.
   the end of the statement to skip confirmation.
 
 ** {{ Accessibility Management }}
-  Perhaps another cobblestone of efficency, SpeechControl, with the
+  Perhaps another cobblestone of efficiency, SpeechControl, with the
   help of AT-SPI tech, could manage and manipulate certain accessibility
   features on the computer like MouseKeys, StickyKeys, etc. Such a setup
   would be useful for users that can't use the keyboard. It'd need to

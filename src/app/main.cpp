@@ -33,8 +33,11 @@
  * make %SpeechControl a fantastic, open-source tool.
  */
 
+#include <QIcon>
+#include <QApplication>
+
 // speechcontrol lib includes
-#include <lib/config.hpp>
+#include <config.hpp>
 
 // local includes
 #include "core.hpp"
@@ -43,12 +46,16 @@
 int main (int argc, char** argv)
 {
     QApplication* app = new QApplication (argc, argv);
-    app->setApplicationName ( "SpeechControl" );
-    app->setOrganizationDomain ( "thesii.org" );
-    app->setOrganizationName ( "Synthetic Intellect Institute" );
-    app->setApplicationVersion ( SPCHCNTRL_BUILD_VERSION );
+    app->setApplicationName ("SpeechControl");
+    app->setOrganizationDomain ("thesii.org");
+    app->setOrganizationName ("Synthetic Intellect Institute");
+    app->setWindowIcon (QIcon (":/logo/sc-large"));
+    app->setApplicationVersion (SPCHCNTRL_BUILD_VERSION);
+    app->setQuitOnLastWindowClosed (false);
+
     SpeechControl::Core appCore (argc, argv, app);
     appCore.start();
     return app->exec();
 }
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+

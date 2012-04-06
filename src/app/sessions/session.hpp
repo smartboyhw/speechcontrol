@@ -27,246 +27,222 @@
 #include <QDateTime>
 #include <QDomDocument>
 
-// libspchcntrl includes
-#include <corpus.hpp>
-// speechcontrol includes
-#include <app/sessions/content.hpp>
-
-namespace SpeechControl {
+namespace SpeechControl
+{
+class Phrase;
+class Corpus;
+class Content;
 class Session;
+
+typedef QList<Phrase*> PhraseList;
+
 /**
  * @brief Represents a @c QList of @c Session objects.
  **/
 typedef QList<Session*> SessionList;
 
 /**
- * @brief Represents a @c QMap of @c Session objects, mapped by their @c QUuid keys.
+ * @brief Represents a @c QMap of @c Session objects, mapped by their @c QString keys.
  **/
-typedef QMap<QUuid, Session*> SessionMap;
+typedef QMap<QString, Session*> SessionMap;
 
 /**
  * @brief Represents data to be used for adaption.
+ *
+ * Session objects provide a simple means of representing speech corpora, content
+ * for transcription and other bits of data needed for the adaption or training
+ * process in one place.
  **/
-class Session : public QObject {
+class Session : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( Session )
+    Q_DISABLE_COPY (Session)
 
 public:
     /**
-     * @brief ...
-     **/
-    class Backup {
-        friend class Session;
-    public:
-        virtual ~Backup();
-        /**
-         * @brief ...
-         *
-         * @return :Session*
-         **/
-        Session* session();
-        /**
-         * @brief ...
-         *
-         * @return QDateTime
-         **/
-        QDateTime created();
-
-    private:
-        static const QString getPath ( const QString& );
-        static Backup* generate ( const Session& );
-        explicit Backup();
-        QDomDocument* m_dom;
-    };
-
-    /**
-     * @brief ...
-     **/
-    typedef QList<Backup*> BackupList;
-
-    /**
-     * @brief ...
+     * @brief Constructor.
      *
-     * @param  ...
+     * Loads a session from disk from it's specific Session.
+     *
+     * @param  QString The ID of the Session.
      **/
-    explicit Session ( const QUuid& );
+    explicit Session (const QString& p_id);
 
     /**
-     * @brief ...
-     *
+     * @brief Destructor
      **/
     virtual ~Session();
-    /**
-     * @brief ...
-     *
-     * @return const QUuid
-     **/
-    const QUuid uuid() const;
 
     /**
-     * @brief ...
-     *
-     * @return const QString
+     * @brief Obtains the ID of the Session.
      **/
-    const QString name() const;
+    QString id() const;
 
     /**
-     * @brief ...
-     *
-     * @return const bool
+     * @brief Obtains the nickname assigned to the Session.
+     **/
+    QString name() const;
+
+    /**
+     * @brief Determines if the Session has been completed.
      **/
     bool isCompleted() const;
+
     /**
-     * @brief ...
-     *
-     * @return const bool
+     * @brief Determines if the Session's valid.
      **/
     bool isValid() const;
+
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Erases the Session and its data from disk.
      **/
     void erase() const;
 
     /**
      * @brief Sets the name of this @c Session.
-     * @param  p_name The new name of the @c Session.
-     * @return void
+     * @param p_name The new name of the @c Session.
      **/
-    void setName ( const QString& p_name );
+    void setName (const QString& p_name);
 
     /**
-     * @brief ...
+     * @brief Clones this entire Session's data.
      *
-     * @return :Session*
+     * @return A pointer to the cloned Session.
      **/
     Session* clone() const;
+
     /**
-     * @brief ...
-     *
-     * @return :Session::Backup*
-     **/
-    Backup* createBackup() const;
-    /**
-     * @brief ...
-     *
-     * @return :Session::BackupList*
-     **/
-    BackupList* backups() const;
-    /**
-     * @brief ...
-     *
-     * @return Corpus*
+     * @brief Obtains the Corpus used by this Session.
      **/
     Corpus* corpus() const;
+
     /**
-     * @brief ...
-     *
-     * @return Content*
+     * @brief Obtains the Content used by this Session.
      **/
     Content* content() const;
-    /**
-     * @brief ...
-     *
-     * @return :Sentence*
-     **/
-    Sentence* firstIncompleteSentence() const;
-    /**
-     * @brief ...
-     *
-     * @return :Sentence*
-     **/
-    Sentence* lastIncompleteSentence() const;
-    /**
-     * @brief ...
-     *
-     * @return :SentenceList
-     **/
-    SentenceList incompletedSentences() const;
 
     /**
-     * @brief ...
+     * @brief Obtains the first uncompleted phrase.
      *
-     * @return void
+     * @return A pointer to a phrase if uncompletedPhrases().empty() != false, else NULL.
+     **/
+    Phrase* firstIncompletePhrase() const;
+
+    /**
+     * @brief Obtains the last uncompleted phrase.
+     *
+     * @return A pointer to a phrase if uncompletedPhrases().empty() != false, else NULL.
+     **/
+    Phrase* lastIncompletePhrase() const;
+
+    /**
+     * @brief Obtains a list of uncompleted phrases.
+     *
+     * @return A PhraseList.
+     **/
+    PhraseList uncompletedPhrases() const;
+
+    /**
+     * @brief Obtains the date and time this Session was created.
+     **/
+    QDateTime dateCompleted() const;
+
+    /**
+     * @brief Obtains the date and time this Session was completed.
+     **/
+    QDateTime dateCreated() const;
+
+    /**
+     * @brief Initializes the Session repositories.
+     *
+     * Loads data about all of the Sessions and builds the internal cache of
+     * the Session listing.
+     *
+     * @note It's important to invoke this method at least ONCE when using Sessions.
      **/
     static void init();
-    /**
-     * @brief ...
-     *
-     * @param  ...
-     * @return :Session*
-     **/
-    static Session* obtain ( const QUuid& p_uuid );
-    /**
-     * @brief ...
-     *
-     * @param  ...
-     * @return :Session*
-     **/
-    static Session* create ( const Content* );
 
     /**
-     * @brief ...
-     *
-     * @return void
+     * @brief Saves information about the Session's cache to disc.
      **/
     static void save();
 
     /**
-     * @brief ...
+     * @brief Obtains a Session by its specific ID.
      *
-     * @return :SessionList
+     * @param p_id The ID in question.
+     * @return A pointer to a Session object if it exists, NULL otherwise.
+     **/
+    static Session* obtain (const QString& p_id);
+
+    /**
+     * @brief Creates a new Session.
+     *
+     * Creates a new Session by using the text provided in its Content, p_content.
+     *
+     * @param p_content The Content to use for this Session's text.
+     * @return A pointer to a Session object if the process succeeded, NULL otherwise.
+     **/
+    static Session* create (const Content* p_content);
+
+    /**
+     * @brief Obtains a list of all of the Sessions.
      **/
     static SessionList allSessions();
 
+    /**
+     * @brief Obtains a SessionList of all of the completed Sessions.
+     **/
+    static SessionList completedSessions();
+
+    /**
+     * @brief Obtains a SessionList of all of the incomplete Sessions.
+     **/
+    static SessionList incompleteSessions();
+
 signals:
     /**
-     * @brief ...
+     * @brief Signal emitted when the Session progress changes.
      *
-     * @param  ...
-     * @return void
+     * @param  progress Amount of progress changed
      **/
-    void progressChanged ( const double& p_progress ) const;
+    void progressChanged (const double& p_progress) const;
 
 public slots:
     /**
-     * @brief ...
+     * @brief Sets the Corpus for this Session.
      *
-     * @param  ...
-     * @return void
+     * @param  p_corpus Corpus for this Session
      **/
-    void setCorpus ( Corpus* p_corpus );
+    void setCorpus (Corpus* p_corpus);
 
     /**
-     * @brief ...
+     * @brief Sets the Content for this Session.
      *
-     * @param  ...
-     * @return void
+     * @param p_content The Content to represent this session.
      **/
-    void setContent ( Content* p_content );
+    void setContent (Content* p_content);
 
     /**
-     * @brief ...
+     * @brief Loads a Session by its specified ID, p_id.
      *
-     * @param  ...
-     * @return void
+     * @param p_id The ID to load the Session with.
      **/
-    void load ( const QUuid& p_uuid );
+    void load (const QString& p_id);
 
     /**
-     * @brief ...
+     * @brief Assesses the progress completed by this Session.
      *
-     * @return void
+     * @return The progress completed of this Session.
      **/
     double assessProgress() const;
 
 private:
-    static QDomDocument* s_dom;
-    static QMap<QUuid, QDomElement*> s_elems;
-    Corpus* m_corpus;
-    Content* m_content;
-    QDomElement* m_elem;
+    static QDomDocument* s_dom;                   ///< The DOM cache.
+    static QMap<QString, QDomElement*> s_elems;   ///< The listing of already initialized Session object.
+    Corpus* m_corpus;                             ///< Pointer to the Corpus data.
+    Content* m_content;                           ///< The Content element of this Session.
+    QDomElement* m_elem;                          ///< The accompanying XML data of the Session.
 };
 }
 

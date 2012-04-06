@@ -24,12 +24,20 @@
 #include <QObject>
 #include <QVariant>
 
+#include <config.hpp>
 #include <export.hpp>
 
-namespace SpeechControl {
+class QFile;
+namespace SpeechControl
+{
+
 class AcousticModel;
+struct AcousticModelPrivate;
 class NoiseDictionary;
 
+/**
+ * @brief Represents a list of acoustic models.
+ **/
 typedef QList<AcousticModel*> AcousticModelList;
 
 /**
@@ -58,18 +66,13 @@ typedef QList<AcousticModel*> AcousticModelList;
  * and update its value (the value to the right). The properties supported are
  * all of the ones recognized by PocketSphinx.
  */
-class SPCH_EXPORT AcousticModel : public QObject {
+class SPCH_EXPORT AcousticModel : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( AcousticModel )
-    Q_PROPERTY ( const QVariantMap Parameters READ parameters WRITE setParameters )
-    Q_PROPERTY ( const quint16 SampleRate READ sampleRate )
-
-private:
-    QVariantMap m_params;         ///< Holds the properties of the model.
-    QString m_path;               ///< Holds the path to the base directory of the acoustic model.
-    NoiseDictionary* m_noisedict;  ///< Holds information about the noise dictionary.
-    void loadFeatureParameters();
-    void loadNoiseDictionary();
+    Q_DISABLE_COPY (AcousticModel)
+    Q_DECLARE_PRIVATE (AcousticModel)
+    Q_PROPERTY (const QVariantMap Parameters READ parameters WRITE setParameters)
+    Q_PROPERTY (const quint16 SampleRate READ sampleRate)
 
 public:
     /**
@@ -81,14 +84,14 @@ public:
      * @brief Constructor.
      * @param p_parent Defaults to 0.
      **/
-    explicit AcousticModel ( QObject* p_parent = 0 );
+    explicit AcousticModel (QObject* p_parent = 0);
 
     /**
      * @brief Constructor.
      * @param p_path The path to the acoustic model.
      * @param p_parent Defaults to 0.
      **/
-    AcousticModel ( QString const& p_path, QObject* p_parent = 0 );
+    AcousticModel (QString const& p_path, QObject* p_parent = 0);
 
     /**
      * @brief Sets a paramater within the acoustic model.
@@ -96,21 +99,21 @@ public:
      * @param p_key The key to change.
      * @param p_value The new value of the key to change.
      **/
-    void setParameter ( const QString& p_key , const QVariant& p_value );
+    void setParameter (const QString& p_key , const QVariant& p_value);
 
     /**
      * @brief Sets an array of parameters within the acoustic model.
      *
      * @param p_values The values and their corresponding keys to change.
      **/
-    void setParameters ( const QVariantMap& p_values );
+    void setParameters (const QVariantMap& p_values);
 
     /**
      * @brief Merges the passed parameters p_params with the one of this model.
      *
      * @param p_params The parameters to merge.
      **/
-    void mergeParameters ( const QVariantMap& p_params );
+    void mergeParameters (const QVariantMap& p_params);
 
     /**
      * @brief Obtains the value of the key.
@@ -118,7 +121,7 @@ public:
      * @param p_key The key of the desired value.
      * @return A QVariant of the value. If the key wasn't found, then the returned QVariant is invalid.
      **/
-    QVariant parameter ( const QString& p_key ) const;
+    QVariant parameter (const QString& p_key) const;
 
     /**
      * @brief Obtains all of the parameters of the acoustic model.
@@ -143,21 +146,98 @@ public:
 
     /**
      * @brief Determines if the acoustic model is valid.
-     *
-     * @return boolean
      **/
     bool isValid() const;
 
-    void load ( QString p_path );
+    /**
+     * @brief Determines if this AcousticModel is a system-wide model.
+     **/
+    bool isSystem() const;
 
+    /**
+     * @brief Determines if this AcousticModel is a user-wide model.
+     **/
+    bool isUser() const;
+
+    /**
+     * @brief Obtains the name of this AcousticModel.
+     **/
+    QString name() const;
+
+    /**
+     * @brief Loads an AcousticModel from a specific path, p_path.
+     * @param p_path The path in question.
+     **/
+    void load (QString p_path);
+
+    /**
+     * @brief Duplicates the data of this AcousticModel.
+     **/
+    AcousticModel* clone();
+
+    /**
+     * @brief Obtains a listing of all AcousticModels.
+     *
+     * Obtains a list of all of the system-wide and user-wide AcousticModels
+     * known to SpeechControl.
+     **/
+    static AcousticModelList allModels();
+
+    /**
+     * @brief Obtains a file to the NoiseDictionary of this AcousticModel.
+     **/
+    NoiseDictionary* noiseDictionary() const;
+
+    /**
+     * @brief Obtains the path to this AcousticModel's parameters (feat.params).
+     **/
+    QString parameterPath() const;
+
+    /**
+     * @brief Obtains the QFile representing the binary model definitions.
+     * @note This is typically found at path() + "/mdef".
+     **/
+    QFile* modelDefinitions() const;
+
+    /**
+     * @brief Obtains the QFile representing the mixture weights.
+     * @note This is typically found at path() + "/mixture_weights".
+     **/
+    QFile* mixtureWeights();
+
+    /**
+     * @brief Obtains the QFile representing the sentence dump of the AcousticModel.
+     * @note This is typically found at path() + "/sendump".
+     **/
+    QFile* senDump();
+
+    /**
+     * @brief Obtains the QFile representing the variances of the AcousticModel.
+     * @note This is typically found at path() + "/variances".
+     **/
+    QFile* variances();
+    /**
+     * @brief Obtains the QFile representing the transition matrices of the AcousticModel.
+     * @note This is typically found at path() + "/transition_matrices".
+     **/
+    QFile* transitionMatrices();
+
+    /**
+     * @brief Obtains the QFile representing the mean data of the AcousticModel.
+     * @note This is typically found at path() + "/means".
+     **/
+    QFile* means();
+
+    /**
+     * @brief Erases this AcousticModel from disk.
+     **/
+    void erase();
+
+private:
+    QScopedPointer<AcousticModelPrivate> d_ptr;
 };
-
-/**
- * @brief Represents a list of acoustic models.
- **/
-typedef QList<AcousticModel*> AcousticModelList;
 
 }
 
 #endif // ACOUSTICMODEL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -23,13 +23,15 @@
 
 #include <QObject>
 #include <QString>
+#include <QVariantMap>
+#include <QSystemTrayIcon>
 
-#include <qindicateindicator.h>
-#include <qindicateserver.h>
+#include "macros.hpp"
 
 class QImage;
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 class Indicator;
 
 /**
@@ -38,10 +40,75 @@ class Indicator;
  * In an attempt to ensure ABI support with any plug-in or future linkages of SpeechControl's code;
  * the Indicator singleton class is provided to permit the raising and using of indicators.
  **/
-class Indicator : public QObject {
+class Indicator : public QObject
+{
     Q_OBJECT
+    SC_SINGLETON (Indicator)
 
 public:
+
+    /**
+     * @brief Represents an indicator message.
+     *
+     * Indicator messages allow SpeechControl to determine if a message has been
+     * used already and to prevent the "spamming" of notifications to the user.
+     **/
+    class Message
+    {
+    public:
+        /**
+         * @brief Constructor.
+         *
+         * @param p_keyName The key of the notification. Defaults to QString::null.
+         **/
+        explicit Message (QString const& p_keyName = QString::null);
+
+        /**
+         * @brief Obtains the description of the Message.
+         **/
+        QString description() const;
+
+        /**
+         * @brief Obtains the key of the Message.
+         **/
+        QString key() const;
+
+        /**
+         * @brief Determines if the Message's enabled.
+         **/
+        bool enabled() const;
+
+        /**
+         * @brief Sets the enabled state of the Message.
+         *
+         * @param p_isEnabled The new state of the Message.
+         **/
+        void setEnabled (bool const& p_isEnabled);
+
+        /**
+         * @brief Determines if the specific message exists.
+         *
+         * @param p_keyName The key of the Message.
+         * @return TRUE if the Message exists, FALSE otherwise.
+         **/
+        static bool exists (QString const& p_keyName);
+
+        /**
+         * @brief Creates a new Message.
+         *
+         * @param p_keyName The key of the Message.
+         * @param p_keyDescription The description of the Message.
+         * @param p_isEnabled The enabled state of the Message.
+         * @return A pointer to the newly created Message.
+         **/
+        static Message* create (QString const& p_keyName, QString const& p_keyDescription, bool const& p_isEnabled);
+
+    private:
+        QString m_key;
+        static QVariantMap objectData (const QString& p_keyName);
+
+    };
+
     /**
      * @brief Destructor.
      **/
@@ -59,25 +126,34 @@ public:
 
     /**
      * @brief Raises a new message to the system.
+     * @param p_title The title of the message to present to the user.
      * @param p_message The message to present to the user.
+     * @param p_timeout How long should be the message be displayed for.
      **/
-    static void presentMessage ( const QString& p_message );
+    static void presentMessage (const QString& p_title, const QString& p_message = QString::null, const int& p_timeout = 3000, const Indicator::Message* p_messageIndicator = new Indicator::Message());
 
     /**
-     * @brief Obtains a pointer to the Indicator instance.
-     * @return Indicator* The instance of the class.
+     * @brief Determines whether or not the Indicator's icon is visible.
      **/
-    static Indicator* instance();
+    static QIcon icon();
+
+    /**
+     * @brief Determines if the Indicator is visible.
+     **/
+    static bool isVisible();
+
+    /**
+     * @brief Determines if the Indicator is enabled.
+     **/
+    static bool isEnabled();
 
 private slots:
+    void on_mIcon_activated (QSystemTrayIcon::ActivationReason p_reason);
     void showMainWindow();
-    void displayIndicator ( QIndicate::Indicator* p_indctr );
+    void buildMenu();
 
 private:
-    explicit Indicator ( QObject* parent = 0 );
-    QIndicate::Indicator* m_indctr;     ///< Indicator instance.
-    QIndicate::Server* m_indctrSvr;
-    static Indicator* s_inst;           ///< Singleton instance.
+    QSystemTrayIcon* m_icon;            ///< The tray icon.
 };
 }
 

@@ -18,6 +18,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include "dictionary.hxx"
 #include "dictionary.hpp"
 
 #include <QDir>
@@ -28,130 +29,197 @@
 
 using namespace SpeechControl;
 
-Dictionary::Dictionary ( QObject* p_parent ) : QObject ( p_parent ) {
+DictionaryPrivate::DictionaryPrivate () : m_words(), m_device (0)
+{
 
 }
 
-Dictionary::Dictionary ( const Dictionary& p_other ) : QObject ( p_other.parent() ), m_words ( p_other.m_words ),
-    m_device ( p_other.m_device ) {
+DictionaryPrivate::~DictionaryPrivate()
+{
 
 }
 
-Dictionary::Dictionary ( const QUuid &p_uuid ) {
-    load ( new QFile ( getPathFromUuid ( p_uuid ) ) );
+QString DictionaryPrivate::getPathFromId (const QString& p_id)
+{
+    return QDir::homePath() + "/.config/speechcontrol/dictionaries/" + p_id + ".dict";
 }
 
-void Dictionary::load ( const QUuid& p_uuid ) {
-    load ( getPathFromUuid ( p_uuid ) );
+DictionaryEntryPrivate::DictionaryEntryPrivate (Dictionary* p_dictionary, const QString& p_word, const QString& p_phoneme) :
+    m_dict (p_dictionary), m_word (p_word), m_phnm (p_phoneme)
+{
+
 }
 
-void Dictionary::load ( QIODevice* p_device ) {
-    Q_ASSERT ( m_device != 0 || p_device != 0 );
+DictionaryEntryPrivate::~DictionaryEntryPrivate()
+{
 
-    if ( p_device )
-        m_device = p_device;
+}
 
-    if ( !m_device->open ( QIODevice::ReadOnly | QIODevice::Text ) ) {
-        qWarning() << "Failed to open dictionary" << m_device->errorString();
+Dictionary::Dictionary (QObject* p_parent) : QObject (p_parent), d_ptr (new DictionaryPrivate)
+{
+}
+
+Dictionary::Dictionary (const Dictionary& p_other) : QObject (p_other.parent()), d_ptr (const_cast<DictionaryPrivate*> (p_other.d_ptr.data()))
+{
+}
+
+Dictionary::Dictionary (const QString& p_id) : QObject(0), d_ptr(new DictionaryPrivate)
+{
+    load (new QFile (DictionaryPrivate::getPathFromId (p_id)));
+}
+
+void Dictionary::load (const QString& p_id)
+{
+    load (DictionaryPrivate::getPathFromId (p_id));
+}
+
+Dictionary* Dictionary::create (QStringList p_wordlist, QString p_id)
+{
+    QFile* fileDictionary = new QFile (DictionaryPrivate::getPathFromId (p_id));
+    fileDictionary->open (QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+    QTextStream strm (fileDictionary);
+    qDebug() << "[Dictionary::create()] Removed " << p_wordlist.removeDuplicates() << "extra words.";
+
+    Q_FOREACH (const QString & word, p_wordlist) {
+        QString phonemes;
+        QString wordUpper = word.toUpper();
+        wordUpper = wordUpper.trimmed().simplified().toAscii();
+        qDebug() << wordUpper << word;
+        strm << wordUpper << "\t" << wordUpper << endl;
+    }
+
+    fileDictionary->close();
+
+    return Dictionary::obtain (p_id);
+}
+
+void Dictionary::load (QFile* p_device)
+{
+    Q_ASSERT (d_func()->m_device != 0 || p_device != 0);
+
+    if (p_device)
+        d_func()->m_device = p_device;
+
+    if (!d_func()->m_device->open (QIODevice::ReadOnly | QIODevice::Text)) {
+        qWarning() << "[Dictionary::load()] Failed to open dictionary" << d_func()->m_device->errorString();
         return;
     }
 
-    QTextStream l_strm ( m_device );
+    QTextStream strm (d_func()->m_device);
 
-    while ( !l_strm.atEnd() ) {
-        const QString l_line = l_strm.readLine();
-        const QStringList l_tokens = l_line.split ( "\t",QString::SkipEmptyParts );
-        addEntry ( new DictionaryEntry ( this,l_tokens[0],l_tokens[1] ) );
+    while (!strm.atEnd()) {
+        const QString line = strm.readLine();
+
+        if (!line.isEmpty() && !line.isNull() && line.length() >= 3) {
+            QStringList tokens = line.split ("\t", QString::SkipEmptyParts);
+            tokens.removeAll ("\t");
+            const QString word = tokens.at (0);
+            const QString phoneme = tokens.at (1);
+            addEntry (new DictionaryEntry (this, word, phoneme));
+        }
     }
 
-    m_device->close();
+    d_func()->m_device->close();
 
-    qDebug() << m_words.size() << "words found in this dictionary.";
+    qDebug() << "[Dictionary::load()]" << d_func()->m_words.size() << "words found in this dictionary.";
 }
 
-QString Dictionary::getPathFromUuid ( const QUuid& p_uuid ) {
-    return QDir::homePath() + "/.speechcontrol/dictionaries/" + p_uuid.toString() + ".dic";
-}
-
-Dictionary* Dictionary::obtain ( const QUuid &p_uuid ) {
-    if ( !QFile::exists ( getPathFromUuid ( p_uuid ) ) )
+Dictionary* Dictionary::obtain (const QString& p_id)
+{
+    if (!QFile::exists (DictionaryPrivate::getPathFromId (p_id)))
         return 0;
 
-    Dictionary* l_dict = new Dictionary ( p_uuid );
+    Dictionary* l_dict = new Dictionary (p_id);
     return l_dict;
 }
 
-Dictionary* Dictionary::obtain ( const QString& p_path ) {
-    QFile* l_file = new QFile ( p_path );
+Dictionary* Dictionary::obtainFromPath (const QString& p_path)
+{
+    QFile* l_file = new QFile (p_path);
     Dictionary* l_dict = new Dictionary;
-    if ( !l_file->exists() )
+
+    if (!l_file->exists())
         return 0;
 
-    l_dict->load ( l_file );
+    l_dict->load (l_file);
     return l_dict;
 }
 
-DictionaryEntryList Dictionary::entries() const {
-    return m_words.values();
+DictionaryEntryList Dictionary::entries() const
+{
+    return d_func()->m_words.values();
 }
 
-void Dictionary::addEntry ( DictionaryEntry *p_entry ) {
-    m_words.insert ( p_entry->word(),p_entry );
+void Dictionary::addEntry (DictionaryEntry* p_entry)
+{
+    d_func()->m_words.insert (p_entry->word(), p_entry);
 }
 
-DictionaryEntry * Dictionary::removeEntry ( const QString& p_word ) {
-    return m_words.take ( p_word );
+DictionaryEntry* Dictionary::removeEntry (const QString& p_word)
+{
+    return d_func()->m_words.take (p_word);
 }
 
-Dictionary& Dictionary::operator << ( DictionaryEntry *p_entry ) {
-    addEntry ( p_entry );
+Dictionary& Dictionary::operator << (DictionaryEntry* p_entry)
+{
+    addEntry (p_entry);
     return *this;
 }
 
-Dictionary& Dictionary::operator << ( DictionaryEntryList& p_list ) {
-    Q_FOREACH ( DictionaryEntry* l_entry, p_list )
-    addEntry ( l_entry );
+Dictionary& Dictionary::operator << (DictionaryEntryList& p_list)
+{
+    Q_FOREACH (DictionaryEntry * entry, p_list) {
+        addEntry (entry);
+    }
 
     return *this;
 }
 
 /// @todo Implement the saving ability.
-void Dictionary::save() {
-    m_device->open ( QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text );
-    QTextStream l_strm ( m_device );
+void Dictionary::save()
+{
+    d_func()->m_device->open (QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
+    QTextStream strm (d_func()->m_device);
 
-    Q_FOREACH ( const DictionaryEntry* l_entry, entries() ) {
-        l_strm << l_entry->word() << "\t" << l_entry->phoneme();
+    Q_FOREACH (const DictionaryEntry * entry, entries()) {
+        strm << entry->word() << "\t" << entry->phoneme();
     }
 
-    m_device->close();
+    d_func()->m_device->close();
 }
 
-QString Dictionary::path() const {
-    return m_device->property("fileName").toString();
+QString Dictionary::path() const
+{
+    return d_func()->m_device->fileName();
 }
 
-Dictionary::~Dictionary() {
+Dictionary::~Dictionary()
+{
 }
 
-DictionaryEntry::DictionaryEntry ( Dictionary* p_dictionary, const QString& p_word, const QString& p_phoneme ) :
-    QObject ( p_dictionary ), m_dict ( p_dictionary ), m_word ( p_word ), m_phnm ( p_phoneme ) {
+DictionaryEntry::DictionaryEntry (Dictionary* p_dictionary, const QString& p_word, const QString& p_phoneme) :
+    QObject (p_dictionary), d_ptr (new DictionaryEntryPrivate (p_dictionary, p_word, p_phoneme))
+{
 }
 
-DictionaryEntry::DictionaryEntry ( const DictionaryEntry& p_other ) : QObject(),
-    m_dict ( p_other.m_dict ), m_word ( p_other.m_word ), m_phnm ( p_other.m_phnm ) {
+DictionaryEntry::DictionaryEntry (const DictionaryEntry& p_other) : QObject (p_other.parent()),
+    d_ptr (const_cast<DictionaryEntryPrivate*> (p_other.d_ptr.data()))
+{
 
 }
 
-QString DictionaryEntry::word() const {
-    return m_word;
+QString DictionaryEntry::word() const
+{
+    return d_func()->m_word;
 }
 
-QString DictionaryEntry::phoneme() const {
-    return m_phnm;
+QString DictionaryEntry::phoneme() const
+{
+    return d_func()->m_phnm;
 }
 
-DictionaryEntry::~DictionaryEntry() {
+DictionaryEntry::~DictionaryEntry()
+{
 
 }
 

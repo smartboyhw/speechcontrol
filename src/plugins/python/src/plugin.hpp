@@ -22,17 +22,22 @@
 #ifndef PLUGIN_HPP
 #define PLUGIN_HPP
 
-#include <app/plugins.hpp>
+#include <plugins.hpp>
 
-namespace SpeechControl {
-namespace Plugins {
-namespace Python {
-class Plugin : public AbstractPlugin {
+namespace SpeechControl
+{
+namespace Plugins
+{
+namespace Python
+{
+class Plugin : public AbstractPlugin
+{
     Q_OBJECT
 
 public:
-    explicit Plugin ( QObject* parent = 0 );
+    explicit Plugin (QObject* parent = 0);
     virtual ~Plugin();
+    virtual QPixmap pixmap() const;
 
 protected:
     virtual void initialize();
@@ -43,4 +48,4 @@ protected:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

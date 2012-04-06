@@ -3,15 +3,12 @@
  <author>Jacky Alcine &lt;jacky.alcine@thesii.org&gt;</author>
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
-  <property name="windowModality">
-   <enum>Qt::ApplicationModal</enum>
-  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>422</width>
-    <height>226</height>
+    <width>594</width>
+    <height>347</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,358 +21,294 @@
   <property name="statusTip">
    <string>Ready.</string>
   </property>
-  <property name="tabShape">
-   <enum>QTabWidget::Rounded</enum>
-  </property>
-  <property name="unifiedTitleAndToolBarOnMac">
-   <bool>true</bool>
-  </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="formLayoutWidget">
+   <widget class="QWidget" name="gridLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>5</x>
-      <y>5</y>
-      <width>413</width>
-      <height>169</height>
+      <x>4</x>
+      <y>0</y>
+      <width>589</width>
+      <height>305</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout_2">
-     <item row="2" column="2">
-      <widget class="QLabel" name="lblBooks">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
+    <layout class="QGridLayout" name="gLayoutMain">
+     <property name="spacing">
+      <number>4</number>
+     </property>
+     <item row="0" column="0" rowspan="2">
+      <widget class="QGroupBox" name="groupBoxSessions">
        <property name="minimumSize">
         <size>
-         <width>0</width>
-         <height>30</height>
+         <width>248</width>
+         <height>215</height>
         </size>
        </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgba(255, 255, 255, 209);
-color: rgb(0, 0, 0);
-padding-right: 4px; border: 1px solid black;</string>
-       </property>
-       <property name="text">
-        <string>%s</string>
-       </property>
-       <property name="scaledContents">
-        <bool>true</bool>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0" colspan="3">
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btnTrain">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Train</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="btnAdapt">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Maximum">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>Adapt</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item row="1" column="2">
-      <widget class="QLabel" name="lblSessions">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgba(255, 255, 255, 209);
-color: rgb(0, 0, 0);
-padding-right: 4px; border: 1px solid black;</string>
-       </property>
-       <property name="text">
-        <string>%s</string>
-       </property>
-       <property name="scaledContents">
-        <bool>true</bool>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QLabel" name="__">
-       <property name="text">
-        <string>Accuracy</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="2">
-      <widget class="QLabel" name="lblAccuracy">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgba(255, 255, 255, 209);
-color: rgb(0, 0, 0);
-padding-right: 4px; border: 1px solid black;</string>
-       </property>
-       <property name="text">
-        <string>%p</string>
-       </property>
-       <property name="scaledContents">
-        <bool>true</bool>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="__1">
-       <property name="text">
-        <string>Speech Index</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="_">
-       <property name="text">
+       <property name="title">
         <string>Sessions</string>
        </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QLabel" name="___">
-       <property name="text">
-        <string>Books</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="2">
-      <widget class="QLabel" name="lblSpeechIndex">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>30</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="toolTip">
-        <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Ubuntu'; font-size:9pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;Your &lt;span style=&quot; font-weight:600;&quot;&gt;speech index&lt;/span&gt; is a rating of how effective speech recognition has been due to training with Speech Control. It's on a scale of &lt;span style=&quot; font-weight:600;&quot;&gt;1&lt;/span&gt; to &lt;span style=&quot; font-weight:600;&quot;&gt;20&lt;/span&gt;. The higher the rating, the greater the chance of accuracy improvement when training.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">background-color: rgb(85, 85, 85);
-color: rgb(221, 221, 221);
-padding-right: 4px;</string>
-       </property>
-       <property name="text">
-        <string>%p</string>
-       </property>
-       <property name="scaledContents">
-        <bool>true</bool>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1" rowspan="4">
-      <spacer name="horizontalSpacer_2">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeType">
-        <enum>QSizePolicy::Preferred</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>10</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item row="0" column="3" rowspan="5">
-      <layout class="QGridLayout" name="gridLayout_3">
-       <item row="1" column="1">
-        <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-          <widget class="QPushButton" name="btnDsktpCntrl">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+       <widget class="QWidget" name="gridLayoutWidget_2">
+        <property name="geometry">
+         <rect>
+          <x>4</x>
+          <y>20</y>
+          <width>325</width>
+          <height>277</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayoutSessions">
+         <item row="1" column="2">
+          <widget class="QPushButton" name="btnSessionAdapt">
+           <property name="statusTip">
+            <string>Adapt the selected model.</string>
            </property>
            <property name="text">
-            <string>Desktop Control</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
+            <string>Ada&amp;pt</string>
            </property>
           </widget>
          </item>
-         <item>
-          <widget class="QPushButton" name="btnDctn">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+         <item row="1" column="5">
+          <widget class="QPushButton" name="btnSessionAdd">
+           <property name="statusTip">
+            <string>Adds a new session.</string>
            </property>
            <property name="text">
-            <string>Dictation</string>
+            <string>Ad&amp;d</string>
            </property>
-           <property name="checkable">
-            <bool>true</bool>
+          </widget>
+         </item>
+         <item row="0" column="0" colspan="6">
+          <widget class="QListWidget" name="listWidgetSessions">
+           <property name="minimumSize">
+            <size>
+             <width>215</width>
+             <height>163</height>
+            </size>
            </property>
-           <property name="checked">
-            <bool>false</bool>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QPushButton" name="btnSessionTrain">
+           <property name="statusTip">
+            <string>Train a model with the selected session.</string>
+           </property>
+           <property name="text">
+            <string>T&amp;rain</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="4">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="3">
+          <widget class="QPushButton" name="btnSessionInfo">
+           <property name="statusTip">
+            <string>Shows information about the selected session.</string>
+           </property>
+           <property name="text">
+            <string>&amp;Info</string>
            </property>
           </widget>
          </item>
         </layout>
-       </item>
-       <item row="1" column="0">
-        <spacer name="horizontalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+       </widget>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QGroupBox" name="groupBoxServices">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>247</width>
+         <height>105</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Enabled Services</string>
+       </property>
+       <widget class="QWidget" name="horizontalLayoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>4</x>
+          <y>20</y>
+          <width>241</width>
+          <height>173</height>
+         </rect>
+        </property>
+        <layout class="QGridLayout" name="gridLayoutServices">
+         <item row="0" column="1">
+          <widget class="QPushButton" name="btnAllServices">
+           <property name="statusTip">
+            <string>Opens the preferences pane about the Services.</string>
+           </property>
+           <property name="text">
+            <string>All Ser&amp;vices...</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="1" column="0" colspan="2">
+          <widget class="QListWidget" name="listWidgetService">
+           <property name="minimumSize">
+            <size>
+             <width>239</width>
+             <height>79</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QGroupBox" name="groupBoxRecognition">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>247</width>
+         <height>106</height>
+        </size>
+       </property>
+       <property name="title">
+        <string>Recognition</string>
+       </property>
+       <widget class="QWidget" name="horizontalLayoutWidget_2">
+        <property name="geometry">
+         <rect>
+          <x>4</x>
+          <y>20</y>
+          <width>241</width>
+          <height>98</height>
+         </rect>
+        </property>
+        <layout class="QHBoxLayout" name="hLayoutRecognition">
+         <property name="sizeConstraint">
+          <enum>QLayout::SetMaximumSize</enum>
          </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Maximum</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>35</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="2">
-        <spacer name="horizontalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Maximum</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>35</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="0" colspan="3">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::MinimumExpanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeType">
+              <enum>QSizePolicy::MinimumExpanding</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QProgressBar" name="progressBarAccuracy">
+             <property name="minimumSize">
+              <size>
+               <width>169</width>
+               <height>23</height>
+              </size>
+             </property>
+             <property name="value">
+              <number>0</number>
+             </property>
+             <property name="format">
+              <string>Accuracy: %p%</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QProgressBar" name="progressBarEstimatedEffort">
+             <property name="minimumSize">
+              <size>
+               <width>169</width>
+               <height>23</height>
+              </size>
+             </property>
+             <property name="value">
+              <number>0</number>
+             </property>
+             <property name="format">
+              <string>Est. Effort: NaN</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QLabel" name="lblRating">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>64</width>
+             <height>64</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="scaledContents">
+            <bool>false</bool>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignBottom|Qt::AlignHCenter</set>
+           </property>
+           <property name="margin">
+            <number>2</number>
+           </property>
+           <property name="indent">
+            <number>2</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -402,7 +335,7 @@ padding-right: 4px;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>422</width>
+     <width>594</width>
      <height>21</height>
     </rect>
    </property>
@@ -411,7 +344,7 @@ padding-right: 4px;</string>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
-     <string>File</string>
+     <string>&amp;File</string>
     </property>
     <addaction name="actionQuit"/>
    </widget>
@@ -419,6 +352,7 @@ padding-right: 4px;</string>
     <property name="title">
      <string>&amp;Help</string>
     </property>
+    <addaction name="actionHelp"/>
     <addaction name="actionReportBug"/>
     <addaction name="separator"/>
     <addaction name="actionAboutQt"/>
@@ -430,7 +364,7 @@ padding-right: 4px;</string>
     </property>
     <widget class="QMenu" name="menuDesktopControl">
      <property name="title">
-      <string>Desktop Control</string>
+      <string>&amp;Desktop Control</string>
      </property>
      <addaction name="actionDesktopControlActive"/>
      <addaction name="actionDesktopControlCommands"/>
@@ -439,7 +373,7 @@ padding-right: 4px;</string>
     </widget>
     <widget class="QMenu" name="menuDictation">
      <property name="title">
-      <string>Dictation</string>
+      <string>D&amp;ictation</string>
      </property>
      <addaction name="actionDictationActive"/>
      <addaction name="separator"/>
@@ -447,25 +381,26 @@ padding-right: 4px;</string>
     </widget>
     <widget class="QMenu" name="menuTraining">
      <property name="title">
-      <string>Training</string>
+      <string>T&amp;raining</string>
      </property>
      <addaction name="actionStartTraining"/>
      <addaction name="actionAdaptModels"/>
      <addaction name="separator"/>
-     <addaction name="actionOptions_2"/>
+     <addaction name="actionTrainingOptions"/>
     </widget>
     <widget class="QMenu" name="menuWizards">
      <property name="title">
-      <string>Wizards</string>
+      <string>&amp;Wizards</string>
      </property>
+     <addaction name="actionWizardQuickStart"/>
      <addaction name="actionWizardMicrophone"/>
-     <addaction name="actionWizardBooks"/>
-     <addaction name="actionWizardSessions"/>
+     <addaction name="actionWizardContent"/>
      <addaction name="actionWizardVoxForge"/>
+     <addaction name="actionWizardAdaption"/>
     </widget>
     <widget class="QMenu" name="menuPlugins">
      <property name="title">
-      <string>Plugins</string>
+      <string>&amp;Plugins</string>
      </property>
      <addaction name="actionPluginOptions"/>
      <addaction name="separator"/>
@@ -518,12 +453,12 @@ padding-right: 4px;</string>
   </action>
   <action name="actionReportBug">
    <property name="text">
-    <string>Report Bug</string>
+    <string>&amp;Report Bug</string>
    </property>
   </action>
   <action name="actionOptions">
    <property name="text">
-    <string>Options</string>
+    <string>&amp;Options</string>
    </property>
    <property name="shortcut">
     <string>F12</string>
@@ -534,22 +469,20 @@ padding-right: 4px;</string>
   </action>
   <action name="actionWizardMicrophone">
    <property name="text">
-    <string>Microphone...</string>
+    <string>&amp;Microphone...</string>
    </property>
   </action>
-  <action name="actionWizardBooks">
+  <action name="actionWizardContent">
    <property name="text">
-    <string>Books...</string>
+    <string>&amp;Content</string>
    </property>
-  </action>
-  <action name="actionWizardSessions">
-   <property name="text">
-    <string>Sessions...</string>
+   <property name="toolTip">
+    <string>Start the Content addition wizard.</string>
    </property>
   </action>
   <action name="actionWizardVoxForge">
    <property name="text">
-    <string>Vox Forge...</string>
+    <string>&amp;Vox Forge...</string>
    </property>
    <property name="toolTip">
     <string>Starts the Vox Forge configuration wizard.</string>
@@ -560,7 +493,7 @@ padding-right: 4px;</string>
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Active</string>
+    <string>&amp;Active</string>
    </property>
    <property name="toolTip">
     <string>Toggles the state of the desktop control feature.</string>
@@ -574,7 +507,7 @@ padding-right: 4px;</string>
   </action>
   <action name="actionDesktopControlCommands">
    <property name="text">
-    <string>Commands...</string>
+    <string>&amp;Commands...</string>
    </property>
    <property name="toolTip">
     <string>Show all of the commands recognized by the deskop control feature.</string>
@@ -585,7 +518,10 @@ padding-right: 4px;</string>
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>Enabled</string>
+    <string>Act&amp;ive</string>
+   </property>
+   <property name="toolTip">
+    <string>Activates Dictation.</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+Shift+D</string>
@@ -596,35 +532,88 @@ padding-right: 4px;</string>
   </action>
   <action name="actionDesktopControlOptions">
    <property name="text">
-    <string>Options</string>
+    <string>&amp;Options</string>
+   </property>
+   <property name="toolTip">
+    <string>Opens the settings pane for desktop control.</string>
    </property>
   </action>
   <action name="actionStartTraining">
    <property name="text">
-    <string>Start Training...</string>
+    <string>Start Trainin&amp;g...</string>
    </property>
    <property name="toolTip">
-    <string>Start</string>
+    <string>Start the training process.</string>
    </property>
   </action>
   <action name="actionAdaptModels">
    <property name="text">
-    <string>Adapt Models</string>
+    <string>A&amp;dapt Models</string>
+   </property>
+   <property name="toolTip">
+    <string>Opens the Adaption wizard to adapt acoustic models.</string>
    </property>
   </action>
   <action name="actionDictationOptions">
    <property name="text">
-    <string>Options</string>
+    <string>Optio&amp;ns</string>
+   </property>
+   <property name="toolTip">
+    <string>Opens the settings pane for dictation.</string>
    </property>
   </action>
-  <action name="actionOptions_2">
+  <action name="actionTrainingOptions">
    <property name="text">
-    <string>Options</string>
+    <string>O&amp;ptions</string>
+   </property>
+   <property name="toolTip">
+    <string>Opens the settings pane for training.</string>
    </property>
   </action>
   <action name="actionPluginOptions">
    <property name="text">
     <string>Options</string>
+   </property>
+   <property name="toolTip">
+    <string>Opens the settings pane for plug-ins.</string>
+   </property>
+  </action>
+  <action name="actionWizardQuickStart">
+   <property name="text">
+    <string>&amp;Quick Start..</string>
+   </property>
+   <property name="toolTip">
+    <string>Starts the 'Quick Start' wizard.</string>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="text">
+    <string>Hel&amp;p</string>
+   </property>
+   <property name="toolTip">
+    <string>Opens your web browser to point to user guides for SpeechControl.</string>
+   </property>
+   <property name="shortcut">
+    <string>F1</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::ApplicationShortcut</enum>
+   </property>
+  </action>
+  <action name="actionWizardAdaption">
+   <property name="text">
+    <string>Adaption...</string>
+   </property>
+   <property name="toolTip">
+    <string>Opens the Adaption wizard.</string>
+   </property>
+  </action>
+  <action name="actionCreateSession">
+   <property name="text">
+    <string>Create Session...</string>
+   </property>
+   <property name="toolTip">
+    <string>Creates a new Session for training.</string>
    </property>
   </action>
  </widget>
@@ -637,7 +626,7 @@ padding-right: 4px;</string>
    <sender>actionQuit</sender>
    <signal>activated()</signal>
    <receiver>MainWindow</receiver>
-   <slot>hide()</slot>
+   <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -646,6 +635,22 @@ padding-right: 4px;</string>
     <hint type="destinationlabel">
      <x>213</x>
      <y>158</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btnSessionAdd</sender>
+   <signal>pressed()</signal>
+   <receiver>actionCreateSession</receiver>
+   <slot>trigger()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>193</x>
+     <y>197</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-1</x>
+     <y>-1</y>
     </hint>
    </hints>
   </connection>

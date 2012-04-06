@@ -23,74 +23,36 @@
 
 #include <QObject>
 
+#include <config.hpp>
 #include <export.hpp>
 
-namespace SpeechControl {
+namespace SpeechControl
+{
 
-/**
- * @brief ...
- **/
-class SPCH_EXPORT System : public QObject {
+class SPCH_EXPORT System : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( System )
-
-public:
-    /**
-     * @brief ...
-     *
-     * @param argc ...
-     * @param  ...
-     **/
-    explicit System ( int* argc, char**[] );
-    /**
-     * @brief ...
-     *
-     * @return :System*
-     **/
-    static System* instance();
+    Q_DISABLE_COPY (System)
 
 signals:
-    /**
-     * @brief ...
-     *
-     * @return void
-     **/
     void started();
-    /**
-     * @brief ...
-     *
-     * @return void
-     **/
     void stopped();
 
+public:
+    static System* self();
+    static void start (int*, char** []);
+
 public slots:
-    /**
-     * @brief ...
-     *
-     * @param  ...
-     * @param  ...
-     * @return void
-     **/
-    static void start ( int*, char**[] );
-    /**
-     * @brief ...
-     *
-     * @return void
-     **/
     static void start();
-    /**
-     * @brief ...
-     *
-     * @return void
-     **/
     static void stop();
 
 private:
+    explicit System (int* argc, char** argv[]);
     static System* s_inst;
-
 };
 
 }
 
 #endif // SYSTEM_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+

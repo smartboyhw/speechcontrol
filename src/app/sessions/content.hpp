@@ -23,13 +23,15 @@
 
 #include <QMap>
 #include <QUrl>
-#include <QUuid>
 #include <QList>
-#include <QFile>
 #include <QObject>
 #include <QVariant>
 #include <QStringList>
-#include <QDomElement>
+
+#include <config.hpp>
+
+class QFile;
+class QDomDocument;
 
 namespace SpeechControl
 {
@@ -43,16 +45,19 @@ class TextContentSource;
 typedef QList<Content*> ContentList;
 
 /**
- * @brief Represents a @c QMap of @c Content objects, mapped by their @c QUuid keys.
+ * @brief Represents a @c QMap of @c Content objects, mapped by their @c QString keys.
  **/
-typedef QMap<QUuid, Content*> ContentMap;
+typedef QMap<QString, Content*> ContentMap;
 
 /**
  * @brief Represents a collection of text to be used for training by @c Sessions.
  *
  * Contents are the pure-text representation of @c Corpus objects; @c Content objects
- * goes out to provide more specific data about the text being trained.
+ * goes out to provide more specific data about the text being trained. Information about
+ * authors, books and more can be injected into Content objects. AbstractContentSource
+ * provides a interface for rendering Content objects with ease.
  *
+ * @see AbstractContentSource
  **/
 class Content : public QObject
 {
@@ -62,18 +67,28 @@ class Content : public QObject
 public:
     /**
      * @brief Default constructor.
-     * @param p_uuid The uuid of the @c Content.
+     * @param p_id The uuid of the @c Content.
      **/
-    explicit Content (const QUuid& p_uuid);
+    explicit Content (const QString& p_id);
 
+    /**
+     * @brief Destructor.
+     **/
     virtual ~Content();
 
     /**
-     * @brief Loads a @c Content object by a specified UUID.
-     * @param p_uuid The uuid of the Content to load.
+     * @brief Loads a @c Content object by a specified ID.
+     * @param p_id The uuid of the Content to load.
      * @note After loading, you should check to see if isValid() returns true. It's possible for the loading operation to fail.
      **/
-    void load (const QUuid& p_uuid);
+    void load (const QString& p_id);
+
+    /**
+     * @brief Loads a Content object from a file.
+     *
+     * @param p_file The QFile to load the Content from.
+     **/
+    void load (QFile* p_file);
 
     /**
      * @brief Erases the Content, wiping all of its information.
@@ -93,47 +108,53 @@ public:
     uint words() const;
 
     /**
+     * @brief Obtains a unique count of words in this @Content and returns that number.
+     * @return A unsigned integer representing the unique count of words in the text.
+     **/
+    uint uniqueWords() const;
+
+    /**
      * @brief Counts the characters within this @c Content and returns that number.
      * @return A unsigned integer representing the total number of characters in the text.
      **/
     uint length() const;
 
     /**
-     * @brief Counts the alphanumber characters within this @c Content and returns that number.
-     * @return A unsigned integer representing the total number of alphanumber characters in the text.
+     * @brief Counts the alphanumerical characters within this @c Content and returns that number.
+     * @return A unsigned integer representing the total number of alphanumerical characters in the text.
      **/
     uint characters() const;
 
     /**
-     * @brief Obtains the UUID of this @c Content.
-     * @return The UUID of this @c Content.
+     * @brief Obtains the ID of this @c Content.
+     * @return The ID of this @c Content.
      **/
-    const QUuid uuid() const;
+    QString id() const;
 
     /**
      * @brief Obtains the title of this @c Content, or if provided, the nickname of the Session.
      * @return A string holding the title of this @c Content, or the nickname if provided.
      **/
-    const QString title() const;
+    QString title() const;
 
     /**
      * @brief Obtains the author of this @c Content.
      * @return A string holding the name of the author of this @c Content.
      **/
-    const QString author() const;
+    QString author() const;
 
     /**
      * @brief Obtains a list representing all of the pages contained by this @c Content.
      * @return A @c QStringList of all of the pages.
      **/
-    const QStringList pages() const;
+    QStringList pages() const;
 
     /**
      * @brief Obtains a specified page at index p_indx.
      * @param p_indx The index at which the page is to be found.
      * @return A string with the page's text, or QString::null if not found.
      **/
-    const QString pageAt (const int& p_indx) const;
+    QString pageAt (const int& p_index) const;
 
     /**
      * @brief Determines if this @c Session is valid.
@@ -151,24 +172,31 @@ public:
     static Content* create (const QString& p_author, const QString& p_title , const QString& p_text);
 
     /**
-     * @brief Obtains a specific @Content by its identifying @c QUuid.
-     * @param p_uuid The UUID to pick out the @c Content by.
-     * @return
+     * @brief Obtains a specific @Content by its identifying @c QString.
+     * @param p_id The ID to pick out the @c Content by.
      **/
-    static Content* obtain (const QUuid& p_uuid);
+    static Content* obtain (const QString& p_id);
 
     /**
-     * @brief
-     * @return
+     * @brief Obtains a specific @Content from a URL.
+     *
+     * @param p_url The URL to the Content.
+     **/
+    static Content* obtainFromFile (const QUrl& p_url);
+
+    /**
+     * @brief Obtains a list of Contents object recognized by SpeechControl.
      **/
     static ContentList allContents();
+
 private:
-    static QString getPath (const QUuid&);
+    static QString getPath (const QString& p_id);
+    static ContentList findAllContents (QString p_path);
     void parseText (const QString& p_text);
     static ContentMap s_lst;
     QStringList m_pages;
     QDomDocument* m_dom;
-    QUuid m_uuid;
+    QString m_id;
 };
 
 /**
@@ -186,33 +214,80 @@ class AbstractContentSource : public QObject
     Q_OBJECT
 
 public:
-    explicit AbstractContentSource (QObject* parent = 0);
-    AbstractContentSource (QString const& p_id, QObject* p_parent = 0);
     AbstractContentSource (const AbstractContentSource& p_other);
-    
+
     virtual ~AbstractContentSource();
-    
+
+    /**
+     * @brief Sets the author of the Content to be generated.
+     *
+     * @param p_author The name of the author.
+     **/
     void setAuthor (const QString& p_author);
-    void setTitle (const QString& p_title);
-    void setText (const QString& p_text);
-    
+
+    /**
+     * @brief Sets the title of the Content to be generated.
+     *
+     * @param p_title The title of the content.
+     **/
+    void setTitle (const QString p_title);
+
+    /**
+     * @brief Sets the text of the Content.
+     *
+     * @param p_text The text of the Content.
+     **/
+    void setText (const QString p_text);
+
+    /**
+     * @brief Obtains the ID of this AbstractContentSource.
+     **/
     QString id() const;
+
+    /**
+     * @brief Obtains the author of this AbstractContentSource.
+     **/
     QString author() const;
+
+    /**
+     * @brief Obtains the title of this AbstractContentSource.
+     **/
     QString title() const;
+
+    /**
+     * @brief Obtains the text of this AbstractContentSource.
+     **/
     QString text() const;
-    
+
+    /**
+     * @brief Determines if the data stored by this AbstractContentSource is valid.
+     *
+     * The data of the AbstractContentSource is considered to be valid when the
+     * title, author and text are all set to valid, non-empty values.
+     *
+     * @return TRUE if the data's valid, FALSE otherwise.
+     **/
+    bool isValid();
+
+    /**
+     * @brief Generates a Content from the information stored by this AbstractContentSource.
+     **/
     Content* generate();
 
+protected:
+    explicit AbstractContentSource (QObject* p_parent = 0);
+    explicit AbstractContentSource (QString p_id, QObject* p_parent = 0);
+
 private:
-    QString m_id;
-    QString m_author;
-    QString m_text;
-    QString m_title;
+    QString m_id;           ///< The ID of the AbstractContentSource.
+    QString m_author;       ///< The author of the AbstractContentSource.
+    QString m_text;         ///< The text of the AbstractContentSource.
+    QString m_title;        ///< The title of the AbstractContentSource.
 };
 
 /**
  * @brief A content source that allows content generation from XML-formatted text sources.
- * 
+ *
  * Sources that are formatted in the XML format for SpeechControl (typically end in the *.spch
  * extension) can be used to render content for SpeechControl for corpus training. This format
  * is typically the local and distributional format as it's usable for sharing.
@@ -226,11 +301,24 @@ class TextContentSource : public AbstractContentSource
 public:
     explicit TextContentSource (QObject* p_parent = 0);
     virtual ~TextContentSource();
-    bool setFile (QFile& p_file);
+    /**
+     * @brief Sets the QFile to be used to load the Content data.
+     *
+     * @param p_file A reference to the QFile in question.
+     * @return TRUE if the data was loaded successfully, FALSE otherwise.
+     **/
+    bool setFile (QFile* p_file);
+
+    /**
+     * @brief Attempts to load data from the specified QUrl p_url to be used as the AbstractContentSource.
+     *
+     * @param p_url A constant reference to the QUrl of the potential data.
+     * @return TRUE if the data was loaded successfully, FALSE otherwise.
+     **/
     bool setUrl (const QUrl& p_url);
 };
 
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

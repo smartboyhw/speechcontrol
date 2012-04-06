@@ -21,13 +21,15 @@
 #ifndef DICTIONARY_HPP
 #define DICTIONARY_HPP
 
-#include <QMap>
 #include <QDir>
+#include <QMap>
 #include <QList>
-#include <QUuid>
+#include <QString>
 #include <QObject>
+#include <QScopedPointer>
 #include <QDateTime>
 
+#include <config.hpp>
 #include <export.hpp>
 
 class QUrl;
@@ -35,12 +37,15 @@ class QFile;
 class QDomDocument;
 class QDomElement;
 
-namespace SpeechControl {
-class Corpus;
+namespace SpeechControl
+{
+
 class Phrase;
 class Sentence;
 class Dictionary;
+class DictionaryPrivate;
 class DictionaryEntry;
+class DictionaryEntryPrivate;
 
 /**
  * @brief Represents a list of Dictionary objects.
@@ -53,9 +58,9 @@ typedef QList<Dictionary*> DictionaryList;
 typedef QList<DictionaryEntry*> DictionaryEntryList;
 
 /**
- * @brief Represents a mapping of QUuids to Dictionary objects.
+ * @brief Represents a mapping of QStrings to Dictionary objects.
  **/
-typedef QMap<QUuid, Dictionary*> DictionaryMap;
+typedef QMap<QString, Dictionary*> DictionaryMap;
 
 /**
  * @brief Represents a mapping of QStrings to DictionaryEntry objects.
@@ -71,41 +76,48 @@ typedef QMap<QString, DictionaryEntry*> DictionaryEntryMap;
  *
  * @see Dictionary
  **/
-class SPCH_EXPORT DictionaryEntry : public QObject {
+class SPCH_EXPORT DictionaryEntry : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( DictionaryEntry )
-    Q_PROPERTY ( QString Word READ word )
-    Q_PROPERTY ( QString Phoneme READ phoneme )
+    Q_DISABLE_COPY (DictionaryEntry)
+    Q_DECLARE_PRIVATE (DictionaryEntry)
+    Q_PROPERTY (QString Word READ word)
+    Q_PROPERTY (QString Phoneme READ phoneme)
     friend class Dictionary;
 
-public:
     /**
      * @brief Constructor.
+     *
      * Creates the representation of an entry for a Dictionary p_dictionary with the specified
      * word p_word and the phoneme p_phoneme.
-     * @param p_dictionary Dictionary
-     * @param p_word QString
-     * @param p_phoneme QString
+     *
+     * @param p_dictionary A pointer to a Dictionary object.
+     * @param p_word A string of the word being represented.
+     * @param p_phoneme A string of the phoneme used by this word.
      **/
-    DictionaryEntry ( Dictionary* p_dictionary , const QString& p_word, const QString& p_phoneme );
+    DictionaryEntry (Dictionary* p_dictionary , const QString& p_word, const QString& p_phoneme);
+
+private:
+
+    /**
+     * @brief Destructor.
+     **/
     virtual ~DictionaryEntry();
 
     /**
      * @brief Obtains the word represented.
-     * @return QString
+     * @return A string of the word being represented by this dictionary entry.
      **/
     QString word() const;
 
     /**
      * @brief Obtains the phoneme represented.
-     * @return QString
+     * @return A string of the phoneme represented by this dictionary entry.
      **/
     QString phoneme() const;
 
 private:
-    Dictionary* m_dict;     ///< The Dictionary that owns this object.
-    QString m_word;         ///< The word of this entry.
-    QString m_phnm;         ///< The phoneme of this entry.
+    QScopedPointer<DictionaryEntryPrivate> d_ptr;
 };
 
 /**
@@ -115,9 +127,11 @@ private:
  * in order to provide the appropriate linkages with the word and their corresponding
  * phonemes.
  **/
-class SPCH_EXPORT Dictionary : public QObject {
+class SPCH_EXPORT Dictionary : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( Dictionary )
+    Q_DISABLE_COPY (Dictionary)
+    Q_DECLARE_PRIVATE (Dictionary)
     friend class Corpus;
 
 public:
@@ -127,13 +141,13 @@ public:
      *
      * @param p_parent Defaults to 0.
      **/
-    explicit Dictionary ( QObject* p_parent = 0 );
+    explicit Dictionary (QObject* p_parent = 0);
 
     /**
      * @brief Constructor.
-     * @param p_uuid The UUID to obtain this dictionary with.
+     * @param p_id The ID to obtain this dictionary with.
      **/
-    Dictionary ( const QUuid& p_uuid );
+    Dictionary (const QString& p_id);
 
     /**
      * @brief Destructor.
@@ -141,11 +155,11 @@ public:
     virtual ~Dictionary();
 
     /**
-     * @brief Obtains a Dictionary by its UUID.
-     * @param p_uuid The UUID to obtain the dictionary with.
+     * @brief Obtains a Dictionary by its ID.
+     * @param p_id The ID to obtain the dictionary with.
      * @return A pointer to a Dictionary object if found, NULL otherwise.
      **/
-    static Dictionary* obtain ( const QUuid& p_uuid );
+    static Dictionary* obtain (const QString& p_id);
 
     /**
      * @brief Obtains a Dictionary from a path.
@@ -153,7 +167,16 @@ public:
      * @param p_path The path of which the dictionary resides.
      * @return A pointer to a Dictionary object if found, NULL otherwise.
      **/
-    static Dictionary* obtain ( const QString& p_path );
+    static Dictionary* obtainFromPath (const QString& p_path);
+
+    /**
+     * @brief Creates a new Dictionary from the specified text.
+     *
+     * @param p_text The text to use.
+     * @param p_id The dictionary's path.
+     * @return Dictionary* A pointer to the newly formed Dictionary.
+     **/
+    static Dictionary* create (QStringList p_text, QString p_id);
 
     /**
      * @brief Obtains the list of entries representing this Dictionary.
@@ -163,9 +186,12 @@ public:
 
     /**
      * @brief Adds an entry into this Dictionary.
-     * @param  p_entry The DictionaryEntry to add.
+     *
+     * Appends a new DictionaryEntry, p_entry, into this Dictionary object.
+     *
+     * @param p_entry The DictionaryEntry to add.
      **/
-    void addEntry ( DictionaryEntry* p_entry );
+    void addEntry (DictionaryEntry* p_entry);
 
     /**
      * @brief Removes an entry by the word specifying it.
@@ -173,33 +199,33 @@ public:
      * @param p_word The word to add into the entry.
      * @return A DictionaryEntry from the formed action, or returns the existing entry.
      **/
-    DictionaryEntry* removeEntry ( const QString& p_word );
+    DictionaryEntry* removeEntry (const QString& p_word);
 
     /**
      * @brief Adds a DictionaryEntry to the Dictionary.
      *
      * @param p_entry The DictionaryEntry to add.
      **/
-    Dictionary& operator<< ( DictionaryEntry* p_entry );
+    Dictionary& operator<< (DictionaryEntry* p_entry);
 
     /**
      * @brief Adds a DictionaryEntryList into this Dictionary.
      *
      * @param p_list The DictionaryEntryList to add.
      **/
-    Dictionary& operator<< ( DictionaryEntryList& p_list );
+    Dictionary& operator<< (DictionaryEntryList& p_list);
 
     /**
      * @brief Loads the Dictionary from the specified QIODevice p_device.
      **/
-    void load ( QIODevice* p_device );
+    void load (QFile* p_device);
 
     /**
-     * @brief Loads the Dictionary from a specified UUID.
+     * @brief Loads the Dictionary from a specified ID.
      *
-     * @param p_uuid The UUID of the Dictionary to load.
+     * @param p_id The ID of the Dictionary to load.
      **/
-    void load ( const QUuid& p_uuid );
+    void load (const QString& p_id);
 
     /**
      * @brief Saves the Dictionary.
@@ -213,10 +239,7 @@ public:
     QString path() const;
 
 private:
-    static QString getPathFromUuid ( const QUuid& p_uuid );
-    static DictionaryMap s_lst;
-    DictionaryEntryMap m_words;
-    QIODevice* m_device;
+    QScopedPointer<DictionaryPrivate> d_ptr;
 };
 }
 #endif // DICTIONARY_HPP

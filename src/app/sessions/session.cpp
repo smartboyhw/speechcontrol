@@ -18,342 +18,387 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "session.hpp"
+#include <stdexcept>
 
-#include <QDebug>
 #include <QFile>
+#include <QDebug>
+
+#include "core.hpp"
+#include "sessions/phrase.hpp"
+#include "sessions/corpus.hpp"
+#include "sessions/content.hpp"
+#include "sessions/session.hpp"
 
 using namespace SpeechControl;
 
-QMap<QUuid, QDomElement*> Session::s_elems;
+QMap<QString, QDomElement*> Session::s_elems;
 QDomDocument* Session::s_dom = 0;
 ContentMap Content::s_lst;
 
-Session::Session ( const QUuid& p_uuid ) : m_corpus ( 0 ), m_content ( 0 ), m_elem ( 0 ) {
-    load ( p_uuid );
+Session::Session (const QString& p_id) : m_corpus (0), m_content (0), m_elem (0)
+{
+    load (p_id);
 }
 
-Session::Session ( const Session& p_other ) : QObject ( p_other.parent() ),
-    m_corpus ( p_other.m_corpus ), m_content ( p_other.m_content ), m_elem ( p_other.m_elem ) {
-
+Session::~Session()
+{
 }
 
-Session::~Session() {
-}
-
-Corpus* Session::corpus() const {
+Corpus* Session::corpus() const
+{
     return m_corpus;
 }
 
 /// @todo Invoke the progress of this session when loaded.
-void Session::setCorpus ( Corpus* l_corpus ) {
-    if ( l_corpus ) {
-        m_corpus = l_corpus;
-        assessProgress();
-    } else {
-        qDebug() << "Null corpus not added.";
-    }
+void Session::setCorpus (Corpus* corpus)
+{
+    if (corpus == 0)
+        throw std::invalid_argument ("Null corpus error.");
+
+    m_corpus = corpus;
+    assessProgress();
 }
 
-Content* Session::content() const {
+Content* Session::content() const
+{
     return m_content;
 }
 
-void Session::setContent ( Content* p_content ) {
+void Session::setContent (Content* p_content)
+{
+    if (p_content == 0)
+        throw std::invalid_argument ("Null content error.");
+
     m_content = p_content;
     assessProgress();
 }
 
-double Session::assessProgress() const {
-    double l_progress = 0.0;
+double Session::assessProgress() const
+{
+    double progress = 0.0;
 
-    Q_FOREACH ( const Sentence * l_snt, corpus()->sentences() ) {
-        l_progress += l_snt->completedProgress();
+    if (isValid()) {
+        Q_FOREACH (const Phrase * phrase, corpus()->phrases()) {
+            progress += (phrase->isCompleted()) ? 1.0 : 0.0;
+        }
+
+        double progressDelta = progress / (double) (corpus()->phrases().count());
+        emit progressChanged (progressDelta);
+        return progressDelta;
     }
-
-    emit progressChanged ( l_progress / ( double ) ( corpus()->sentences().count() ) );
-    return l_progress;
+    else {
+        return -1.0;
+    }
 }
 
-void Session::init() {
-    qDebug() << "Loading sessions...";
-    QFile* configFile = new QFile ( QDir::homePath() + "/.config/speechcontrol/sessions.xml" );
+void Session::init()
+{
+    qDebug() << "[Session::init()] Loading sessions...";
+    QFile* configFile = new QFile (Core::configurationPath().absolutePath() + "/sessions.xml");
     s_elems.clear();
 
-    if ( s_dom ) {
-        s_dom->clear();
+    if (s_dom) {
         delete s_dom;
     }
 
-    s_dom = new QDomDocument ( "Sessions" );
+    s_dom = new QDomDocument ("Sessions");
 
-    if ( configFile->exists() ) {
-        configFile->open ( QIODevice::ReadOnly );
-        s_dom->setContent ( configFile );
+    if (configFile->exists()) {
+        configFile->open (QIODevice::ReadOnly);
+        s_dom->setContent (configFile);
 
         const QDomElement documentElem = s_dom->documentElement();
-        const QDomNodeList l_domList = documentElem.elementsByTagName ( "Session" );
 
-        for ( int i = 0; i < l_domList.count(); i++ ) {
-            QDomElement l_node = l_domList.at ( i ).toElement();
-            const QUuid l_uuid ( l_node.attribute ( "uuid" ) );
-            s_elems.insert ( l_uuid, new QDomElement ( l_domList.at ( i ).toElement() ) );
+        if (documentElem.isNull()) {
+            qDebug() << "[Session:init()] Core Session XML is null; resetting...";
+            configFile->remove();
+            init();
+            qDebug() << "[Session:init()] Core Session XML has been reset.";
+        }
+        else {
+
+            const QDomNodeList domList = documentElem.elementsByTagName ("Session");
+
+            for (int i = 0; i < domList.count(); i++) {
+                QDomElement node = domList.at (i).toElement();
+                const QString id (node.attribute ("id"));
+                s_elems.insert (id, new QDomElement (domList.at (i).toElement()));
+            }
+
+            qDebug() << "[Session::init()] " << domList.count() << "sessions loaded.";
+        }
+    }
+    else {
+        qDebug() << "[Session::init()] Creating session listing...";
+        QDomElement elem = s_dom->createElement ("Sessions");
+
+        if (s_dom->appendChild (elem).isNull()) {
+            qFatal ("[Session::init()] The internal Session XML is corrupt.");
         }
 
-        qDebug() << l_domList.count() << "sessions loaded.";
-    } else {
-        configFile->open ( QIODevice::WriteOnly | QIODevice::Truncate );
-        QDomElement l_elem = s_dom->createElement ( "Sessions" );
-        s_dom->appendChild ( l_elem );
-        configFile->write ( s_dom->toString ( 4 ).toLocal8Bit() );
-        qDebug() << "Created session listing.";
+        save();
+        qDebug() << "[Session::init()] Created session listing.";
     }
 
+    qDebug() << s_dom->toString (4);
     configFile->close();
 }
 
-void Session::load ( const QUuid& p_uuid ) {
-    m_elem = s_elems.value ( p_uuid );
+void Session::load (const QString& p_id)
+{
+    m_elem = s_elems.value (p_id);
 
-    if ( m_elem && !m_elem->isNull() ) {
-        setCorpus ( Corpus::obtain ( m_elem->attribute ( "corpus" ) ) );
-        setContent ( Content::obtain ( m_elem->attribute ( "content" ) ) );
-    } else {
-        s_elems.remove ( p_uuid );
+    if (m_elem && !m_elem->isNull()) {
+        setCorpus (Corpus::obtain (m_elem->attribute ("corpus")));
+        setContent (Content::obtain (m_elem->attribute ("content")));
+    }
+    else {
+        s_elems.remove (p_id);
         m_content = 0;
         m_corpus = 0;
         m_elem = 0;
     }
 
-    qDebug() << "Is Session" << p_uuid << "valid?" << isValid();
+    qDebug() << "[Session::load()] Is Session" << p_id << "valid?" << isValid();
 }
 
-bool Session::isValid() const {
+bool Session::isValid() const
+{
     const bool l_valid = (
-                             m_elem && !m_elem->isNull()
-                             && m_corpus && m_corpus->isValid()
-                             && m_content && m_content->isValid()
+                             m_elem && m_corpus
+                             && !m_elem->isNull() && m_corpus->isValid()
                          );
-    //Q_ASSERT ( l_valid == true );
     return l_valid;
 }
 
-SessionList Session::allSessions() {
-    SessionList l_lst;
-    Q_FOREACH ( const QUuid l_uuid, s_elems.keys() ) {
-        Session* l_session = Session::obtain ( l_uuid );
+SessionList Session::allSessions()
+{
+    SessionList lst;
+    Q_FOREACH (const QString id, s_elems.keys()) {
+        Session* session = Session::obtain (id);
 
-        if ( l_session && l_session->isValid() )
-            l_lst << l_session;
+        if (session && session->isValid())
+            lst << session;
     }
 
-    return l_lst;
+    return lst;
 }
 
-const QUuid Session::uuid() const {
-    return m_elem->attribute ( "uuid" );
+SessionList Session::completedSessions()
+{
+    SessionList lst = allSessions();
+    SessionList completedLst;
+
+    Q_FOREACH (Session * session, lst) {
+        if (session->isCompleted())
+            completedLst << session;
+    }
+
+    return completedLst;
 }
 
-Session* Session::obtain ( const QUuid& p_uuid ) {
-    //qDebug() << "Obtaining session" << p_uuid;
-    return new Session ( p_uuid );
+SessionList Session::incompleteSessions()
+{
+    SessionList lst = allSessions();
+    SessionList incompletedLst;
+
+    Q_FOREACH (Session * session, lst) {
+        if (!session->isCompleted())
+            incompletedLst << session;
+    }
+
+    return incompletedLst;
+
 }
 
-/// @todo Create a new Corpus with this Session.
-Session* Session::create ( const Content* p_content ) {
-    const QStringList l_lst = p_content->pages().join ( "\n" ).simplified().trimmed().replace ( ".", ".\n" ).split ( "\n", QString::SkipEmptyParts );
-    qDebug () << "Session has " << l_lst.length() << "potential sentences.";
-    const QUuid l_uuid = QUuid::createUuid();
-    Corpus* l_corpus = Corpus::create ( l_lst );
+void Session::save()
+{
+    QFile* configFile = new QFile (Core::configurationPath().absolutePath() + "/sessions.xml");
 
-    if ( !l_corpus ) {
-        qDebug() << "Failed to create corpus for session.";
+    if (!configFile->open (QIODevice::WriteOnly | QIODevice::Truncate)) {
+        qDebug() << "[Session::save()] Unable to open session data for saving." << configFile->errorString();
+        return;
+    }
+
+    configFile->write (s_dom->toByteArray (4));
+    configFile->close();
+}
+
+QString Session::id() const
+{
+    return m_elem->attribute ("id");
+}
+
+Session* Session::obtain (const QString& p_id)
+{
+    if (!p_id.isEmpty() && !p_id.isNull()) {
+        qDebug() << "[Session::obtain()] Obtaining session" << p_id;
+        return new Session (p_id);
+    }
+
+    return 0;
+}
+
+Session* Session::create (const Content* p_content)
+{
+    const QStringList lst = p_content->pages().join ("\n").simplified().trimmed().replace (".", ".\n").split ("\n", QString::SkipEmptyParts);
+    qDebug() << "[Session::create()] Session has" << lst.length() << "sentences.";
+    const QString id = QString::number (qrand());
+    Corpus* corpus = Corpus::create (lst);
+
+    if (!corpus) {
+        qDebug() << "[Session::create()] Failed to create corpus for session.";
         return 0;
     }
 
     // create element data
-    QDomElement l_sessElem = s_dom->createElement ( "Session" );
-    QDomElement l_dateElem = s_dom->createElement ( "Date" );
+    QDomElement sessElem = s_dom->createElement ("Session");
+    QDomElement dateElem = s_dom->createElement ("Date");
 
-    l_dateElem.setAttribute ( "created", QDateTime::currentDateTimeUtc().toString ( Qt::SystemLocaleDate ) );
-    l_dateElem.setAttribute ( "completed", "-1" );
-    l_sessElem.setAttribute ( "uuid", l_uuid.toString() );
-    l_sessElem.setAttribute ( "content", p_content->uuid().toString() );
-    l_sessElem.setAttribute ( "corpus", l_corpus->uuid() );
+    dateElem.setAttribute ("created", QDateTime::currentDateTimeUtc().toString (Qt::SystemLocaleDate));
+    dateElem.setAttribute ("completed", "-1");
+    sessElem.setAttribute ("id", id);
+    sessElem.setAttribute ("name", p_content->title());
+    sessElem.setAttribute ("content", p_content->id());
+    sessElem.setAttribute ("corpus", corpus->id());
 
-    s_dom->documentElement().appendChild ( l_sessElem );
-    s_dom->documentElement().appendChild ( l_dateElem );
+    sessElem = s_dom->documentElement().appendChild (sessElem).toElement();
+    dateElem = sessElem.appendChild (dateElem).toElement();
 
-    QFile* l_file = new QFile ( QDir::homePath() + "/.config/speechcontrol/sessions.xml" );
-    l_file->open ( QIODevice::WriteOnly | QIODevice::Truncate );
-    QTextStream l_str ( l_file );
-    s_dom->save ( l_str, 4 );
-    l_file->close();
+    if (dateElem.isNull() || sessElem.isNull()) {
+        qDebug() << "[Session::create()] Error creating Session, invalid DOM used.";
+        return 0;
+    }
 
+    save();
     init();
-
-    return Session::obtain ( l_uuid );
+    return Session::obtain (id);
 }
 
-Session* Session::Backup::session() {
+Phrase* Session::firstIncompletePhrase() const
+{
+    const PhraseList lst = uncompletedPhrases();
+
+    if (!lst.isEmpty())
+        return lst.first();
+
     return 0;
 }
 
-Sentence* Session::firstIncompleteSentence() const {
-    const SentenceList l_lst = m_corpus->sentences();
+Phrase* Session::lastIncompletePhrase() const
+{
+    const PhraseList lst = uncompletedPhrases();
 
-    for ( int i = 0; i < l_lst.count(); i++ ) {
-        Sentence* l_sent = l_lst.at ( i );
+    if (!lst.isEmpty())
+        return lst.last();
 
-        if ( !l_sent->allPhrasesCompleted() )
-            return l_sent;
+    return 0;
+}
+
+PhraseList Session::uncompletedPhrases() const
+{
+    PhraseList list;
+
+    if (isValid()) {
+        Q_FOREACH (Phrase * phrase, m_corpus->phrases()) {
+            if (!phrase->isCompleted()) {
+                list << phrase;
+                qDebug() << "[Phrase::incompletedPhrases()] Incomplete: " << phrase->index() << phrase->text();
+            }
+            else
+                continue;
+        }
+
+        qDebug() << "[Phrase::incompletedPhrases()] Number of incomplete sentences:" << list.length();
+
+        if (list.length() > 0)
+            qDebug() << "[Phrase::incompletedPhrases()] First up at: " << list.first()->index();
         else {
-            qDebug() << l_sent->text() << "already completed @" << l_sent->audioPath().absolutePath();
-            continue;
+            if (! (dateCompleted().isValid() && !dateCompleted().isNull())) {
+                m_elem->namedItem ("Date").toElement().setAttribute ("completed", QDateTime::currentDateTimeUtc().toString());
+                qDebug() << "[Phrase::incompletedPhrases()] No more phrases detected, setting Session to 'completed' state.";
+            }
+            else {
+                qDebug() << "[Phrase::incompletedPhrases()] Completed on " << dateCompleted().toLocalTime();
+            }
         }
     }
 
-    return 0;
+    return list;
 }
 
-Sentence* Session::lastIncompleteSentence() const {
-    const SentenceList l_lst = m_corpus->sentences();
-    SentenceList::ConstIterator l_endItr = l_lst.begin();
+QDateTime Session::dateCompleted() const
+{
+    return QDateTime::fromString (m_elem->namedItem ("Date").toElement().attribute ("completed"));
+}
 
-    for ( SentenceList::ConstIterator l_itr = l_lst.end(); l_itr != l_endItr; l_itr-- ) {
-        const Sentence* l_sent = ( *l_itr );
+QDateTime Session::dateCreated() const
+{
+    return QDateTime::fromString (m_elem->namedItem ("Date").toElement().attribute ("created"));
+}
 
-        if ( !l_sent->allPhrasesCompleted() )
-            return *l_itr;
+bool Session::isCompleted() const
+{
+    return uncompletedPhrases().isEmpty() == true;
+}
+
+void Session::erase() const
+{
+    if (isValid()) {
+        QString id (m_elem->attribute ("id"));
+        s_elems.remove (id);
+        m_corpus->erase();
+        s_dom->documentElement().removeChild (*m_elem);
+
+        save();
+        init();
+
+        qDebug() << "[Session::erase()] Session" << id << "removed.";
+    }
+}
+
+void Session::setName (const QString& p_name)
+{
+    if (isValid()) {
+        if (!p_name.isEmpty() && !p_name.isEmpty()) {
+            m_elem->setAttribute ("name", p_name);
+            save();
+        }
+    }
+}
+
+QString Session::name() const
+{
+    if (isValid()) {
+        if (m_elem->hasAttribute ("name"))
+            return m_elem->attribute ("name");
         else {
-            continue;
+            if (content() && content()->isValid())
+                return content()->title();
         }
     }
 
-    return 0;
+    return QString::null;
 }
 
-SentenceList Session::incompletedSentences() const {
-    SentenceList l_baseLst = m_corpus->sentences();
-    SentenceList l_lst;
 
-    for ( SentenceList::Iterator l_itr = l_baseLst.begin(); l_itr != l_baseLst.end(); l_itr++ ) {
-        Sentence* l_sent = ( *l_itr );
-
-        if ( !l_sent->allPhrasesCompleted() )
-            l_lst << l_sent;
-        continue;
+Session* Session::clone() const
+{
+    if (isValid()) {
+        const QString id = QString::number (qrand());
+        Corpus* corpus = m_corpus->clone();
+        QDomElement elem = m_elem->cloneNode (true).toElement();
+        elem.attribute ("id", id);
+        elem.attribute ("corpus", corpus->id());
+        elem.namedItem ("Date").toElement().setAttribute ("created", QDateTime::currentDateTimeUtc().toString (Qt::SystemLocaleDate));
+        s_dom->documentElement().appendChild (elem);
+        s_elems.insert (id, new QDomElement (elem));
+        return Session::obtain (id);
     }
-
-    //qDebug() << l_lst;
-
-    return l_lst;
+    else {
+        return 0;
+    }
 }
 
-bool Session::isCompleted() const {
-    return ( incompletedSentences().empty() );
-}
-
-Session::BackupList* Session::backups() const {
-    return 0;
-}
-
-void Session::erase() const {
-    QUuid l_uuid ( m_elem->attribute ( "uuid" ) );
-    s_elems.remove ( l_uuid );
-    m_corpus->erase();
-    s_dom->documentElement().removeChild ( *m_elem );
-
-    Session::save();
-
-    qDebug() << "Session" << l_uuid << "removed.";
-}
-
-void Session::save() {
-    QFile* l_file = new QFile ( QDir::homePath() + "/.speechcontrol/sessions.xml" );
-    l_file->open ( QIODevice::WriteOnly | QIODevice::Truncate );
-    QTextStream l_strm ( l_file );
-
-    s_dom->save ( l_strm,4 );
-}
-
-Session::Backup* Session::createBackup() const {
-    return Backup::generate ( *this );
-}
-
-void Session::setName ( const QString& p_name ) {
-    if ( !p_name.isEmpty() && !p_name.isEmpty() )
-        m_elem->setAttribute ( "Name", p_name );
-}
-
-const QString Session::name() const {
-    if ( m_elem->hasAttribute ( "Name" ) )
-        return m_elem->attribute ( "Name" );
-
-    return content()->title();
-}
-
-
-Session* Session::clone() const {
-    QUuid l_uuid = QUuid::createUuid();
-    Corpus* l_corpus = m_corpus->clone();
-    QDomElement l_elem = m_elem->cloneNode ( true ).toElement();
-    l_elem.attribute ( "uuid", l_uuid.toString() );
-    l_elem.attribute ( "corpus", l_corpus->uuid() );
-    l_elem.namedItem ( "Date" ).toElement().setAttribute ( "created", QDateTime::currentDateTimeUtc().toString ( Qt::SystemLocaleDate ) );
-    s_dom->documentElement().appendChild ( l_elem );
-    s_elems.insert ( l_uuid, &l_elem );
-    return Session::obtain ( l_uuid );
-}
-
-Session::Backup::Backup() : m_dom ( 0 ) {
-}
-
-Session::Backup::~Backup() {
-
-}
-
-QDateTime Session::Backup::created() {
-    QString l_time = m_dom->documentElement().attribute ( "DateCreated" );
-    return QDateTime::fromString ( l_time );
-}
-
-const QString Session::Backup::getPath ( const QString& p_id ) {
-    return QDir::homePath() + "/.speechcontrol/backups/" + p_id + ".bckp";
-}
-
-/// @todo Implement a means of backing up a session's data to a compressed document.
-Session::Backup* Session::Backup::generate ( const Session& p_sssn ) {
-    QDomDocument l_dom ( "Backup" );
-    QDateTime l_tm = QDateTime::currentDateTimeUtc();
-    QString l_id = p_sssn.uuid().toString() + "_" + QString::number ( l_tm.toMSecsSinceEpoch() );
-    QDomElement l_domElem = l_dom.appendChild ( l_dom.createElement ( "Backup" ) ).toElement();
-    QFile* l_file = new QFile ( getPath ( l_id ) );
-    l_file->open ( QIODevice::WriteOnly | QIODevice::Truncate );
-
-    // Obtain session data.
-    const QString l_sssnStr = p_sssn.m_elem->text();
-    const QByteArray l_sssnData = qCompress ( l_sssnStr.toUtf8() );
-
-    // Compress corpus data.
-    const Corpus* l_corpus = p_sssn.corpus();
-    QFile* l_corpusFile = new QFile ( Corpus::getPath ( l_corpus->uuid() ).toLocalFile() );
-    QByteArray l_corpusData;
-    l_corpusData = qCompress ( l_corpusFile->readAll() );
-
-    QDomElement l_sssnElem = l_dom.createElement ( "Session" );
-    l_domElem.appendChild ( l_sssnElem );
-    l_sssnElem.appendChild ( l_dom.createTextNode ( l_sssnData.toBase64() ) );
-
-    QDomElement l_crpsElem = l_dom.createElement ( "Corpus" );
-    l_domElem.appendChild ( l_crpsElem );
-    l_crpsElem.appendChild ( l_dom.createTextNode ( l_corpusData.toBase64() ) );
-
-    qDebug() << l_domElem.text()
-             << l_corpusData
-             << l_sssnData;
-    return 0;
-}
-
-#include "session.moc"
+#include "sessions/session.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

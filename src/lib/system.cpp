@@ -24,7 +24,7 @@
  */
 
 #include "system.hpp"
-#include "microphone.hpp"
+#include "audiosource/device.hpp"
 
 #include <QDir>
 #include <QGst/Init>
@@ -42,9 +42,9 @@ System::System (int* argc, char** argv[])
     else
         QGst::init();
 
-    Microphone::init();
-
     QDir configDir;
+
+    DeviceAudioSource::allDevices();
 
     configDir.mkpath (QDir::homePath() + "/.config/speechcontrol/corpus");
     configDir.mkpath (QDir::homePath() + "/.config/speechcontrol/dictionaries");
@@ -62,12 +62,14 @@ void System::start (int* argc, char** argv[])
         s_inst = new System (argc, argv);
 }
 
-System* System::instance() {
+System* System::self()
+{
     return s_inst;
 }
 
-void System::stop() {
-    s_inst->deleteLater();
+void System::stop()
+{
+    self()->deleteLater();
 }
 
 #include "system.moc"

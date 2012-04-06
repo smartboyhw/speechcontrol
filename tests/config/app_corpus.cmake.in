@@ -1,0 +1,4 @@
+## Unique definitions.
+
+set(TEST_FILE "${CMAKE_SOURCE_DIR}/res/data/contents/musketeers6.spch")
+add_definitions(-DTESTDATA="${TEST_FILE}")

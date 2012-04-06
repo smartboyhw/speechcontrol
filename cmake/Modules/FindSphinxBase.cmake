@@ -1,27 +1,38 @@
-# Try to find SphinxBase
-# SPHINXBASE_FOUND
-# SPHINXBASE_INCLUDE_DIRS
-# SPHINXBASE_LIBRARIES
-# SPHINXBASE_DEFINITIONS
+# - Find SphinxBase on the development system.
+# This module finds if SphinxBase is installed and determines where the
+# include files and libraries are. It also determines what the name of
+# the library is. This code sets the following variables:
+#
+#  SPHINXBASE_LIBRARIES           - path to the SphinxBase library
+#  SPHINXBASE_INCLUDE_DIRS        - path to where sphinxbase.h is found
+#
+#=============================================================================
+# Copyright (c) 2012 Jacky Alcine <jacky.alcine@thesii.org>
+#
+# This module is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Library General Public
+# License as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+#
+#=============================================================================
+# (To distribute this file outside of CMake, substitute the full
+#  License text for the above reference.)
 
-find_package(PkgConfig)
-pkg_check_modules(PC_SPHINXBASE QUIET sphinxbase)
-set(SPHINXBASE_DEFINITIONS ${PC_SPHINXBASE_CFLAGS_OTHER})
+find_package(PkgConfig QUIET)
 
-find_path(SPHINXBASE_INCLUDE_DIR cmd_ln.h
+pkg_check_modules(PC_SPHINXBASE sphinxbase)
+
+find_path(SPHINXBASE_INCLUDE_DIRS cmd_ln.h
     HINTS ${PC_SPHINXBASE_INCLUDEDIR} ${PC_SPHINXBASE_INCLUDE_DIRS})
-
-find_library(SPHINXBASE_LIBRARY NAMES sphinxbase
-    HINTS ${PC_SPHINXBASE_LIBDIR} ${PC_SPHINXBASE_LIBRARY_DIRS})
-
-set(SPHINXBASE_INCLUDE_DIRS ${SPHINXBASE_INCLUDE_DIR})
-set(SPHINXBASE_LIBRARIES ${SPHINXBASE_LIBRARY})
+find_library(SPHINXBASE_LIBRARIES sphinxbase
+    HINTS ${PC_SPHINXBASE_LIBRARY_DIRS} ${PC_SPHINXBASE_LIBDIR})
 
 include(FindPackageHandleStandardArgs)
-# handle the QUIETLY and REQUIRED arguments and set LIBXML2_FOUND to TRUE
-# if all listed variables are TRUE
 find_package_handle_standard_args(SphinxBase DEFAULT_MSG
-    SPHINXBASE_LIBRARY SPHINXBASE_INCLUDE_DIR)
+    SPHINXBASE_LIBRARIES SPHINXBASE_INCLUDE_DIRS)
 
-mark_as_advanced(SPHINXBASE_INCLUDE_DIR SPHINXBASE_LIBRARY)
+list(APPEND SPHINXBASE_INCLUDE_DIRS ${PC_SPHINXBASE_INCLUDE_DIRS})
 
+set(SPHINXBASE_VERSION ${PC_SPHINXBASE_VERSION})
+
+mark_as_advanced(SPHINXBASE_INCLUDE_DIRS SPHINXBASE_LIBRARIES)

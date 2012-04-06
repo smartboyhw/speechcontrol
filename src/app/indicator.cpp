@@ -25,10 +25,12 @@
 // Local
 #include "core.hpp"
 #include "indicator.hpp"
-#include "windows/main-window.hpp"
+#include "ui/main-window.hpp"
+#include <ui_main-window.h>
 
 // Qt
 #include <QImage>
+#include <QMenu>
 #include <QDebug>
 
 using SpeechControl::Indicator;
@@ -36,62 +38,177 @@ using SpeechControl::Core;
 
 Indicator* Indicator::s_inst = 0;
 
-/// @todo Check for a configuration value to determine whether or not the indicator should be shown on initialization.
-Indicator::Indicator ( QObject* parent ) : QObject ( parent ),
-    m_indctr ( 0 ), m_indctrSvr ( 0 ) {
-    s_inst = this;
+Indicator::Message::Message (const QString& p_keyName) : m_key (p_keyName)
+{
 
-    m_indctrSvr = QIndicate::Server::defaultInstance();
-    m_indctrSvr->setType ( "speechcontrol" );
-    //m_indicateServer->setDesktopFile();
-    m_indctrSvr->show();
-
-    m_indctr = new QIndicate::Indicator ( m_indctrSvr );
-    m_indctr->setNameProperty ( "SpeechControl" );
-    m_indctr->setTimeProperty ( QDateTime::currentDateTime() );
-    m_indctr->setDrawAttentionProperty ( true );
-    m_indctr->show();
-
-    connect ( m_indctr, SIGNAL ( display ( QIndicate::Indicator* ) ), SLOT ( displayIndicator ( QIndicate::Indicator* ) ) );
-    connect ( m_indctrSvr, SIGNAL ( serverDisplay() ), SLOT ( showMainWindow() ) );
-
-    presentMessage ( "Test message!" );
 }
 
-/// @todo Implement the appropriate code using QtIndicate to hide the indicator.
-void Indicator::hide() {
-    instance()->m_indctr->hide();
-}
-
-/// @todo Implement the appropriate code using QtIndicate to show the indicator.
-void Indicator::show() {
-    instance()->m_indctr->show();
-    instance()->m_indctr->emitDisplay();
-}
-
-void Indicator::showMainWindow() {
-    Core::mainWindow()->show();
-}
-
-void Indicator::displayIndicator ( QIndicate::Indicator* p_indctr ) {
-    p_indctr->show();
-}
-
-Indicator* Indicator::instance() {
-    if ( s_inst == 0 ) {
-        s_inst = new Indicator ( Core::instance() );
+QString Indicator::Message::description() const
+{
+    if (Indicator::Message::exists (m_key)) {
+        QVariantMap map = Indicator::Message::objectData (m_key);
+        return map.value ("description").toString();
     }
 
-    return s_inst;
+    return QString::null;
 }
 
-/// @todo Implement the appropriate code using QtIndicate to present a non-blocking message to the user.
-void Indicator::presentMessage ( const QString& p_message ) {
-    qDebug() << "Indicator message:" << p_message;
-    instance()->m_indctr->emitDisplay();
+bool Indicator::Message::enabled() const
+{
+    if (Indicator::Message::exists (m_key)) {
+        QVariantMap map = Indicator::Message::objectData (m_key);
+        return map.value ("enabled").toBool();
+    }
+
+    return true;
 }
 
-Indicator::~Indicator() {
+QString Indicator::Message::key() const
+{
+    return m_key;
+}
+
+void Indicator::Message::setEnabled (const bool& p_isEnabled)
+{
+    if (Indicator::Message::exists (m_key)) {
+        QVariantMap map = Indicator::Message::objectData (m_key);
+        map.insert ("enabled", p_isEnabled);
+        Core::setConfiguration ("Notifications/" + m_key, map);
+    }
+}
+
+bool Indicator::Message::exists (const QString& p_keyName)
+{
+    QVariant msgObj = Core::configuration ("Notifications/" + p_keyName);
+    qDebug() << "[Indicator::Message::exists()] Exists 'Notifications/" << p_keyName.toStdString().c_str() << "' ?" << msgObj.isValid();
+    return (msgObj.isValid());
+}
+
+Indicator::Message* Indicator::Message::create (const QString& p_keyName, const QString& p_keyDescription, const bool& p_isEnabled)
+{
+    QVariantMap map;
+    map.insert ("description", p_keyDescription);
+    map.insert ("enabled", p_isEnabled);
+
+    Core::setConfiguration ("Notifications/" + p_keyName, map);
+    return new Message (p_keyName);
+}
+
+QVariantMap Indicator::Message::objectData (const QString& p_keyName)
+{
+    return Core::configuration ("Notifications/" + p_keyName).toMap();
+}
+
+/// @todo Check for a configuration value to determine whether or not the indicator should be shown on initialization.
+Indicator::Indicator () : QObject (Core::instance()),
+    m_icon (0)
+{
+    s_inst = this;
+    m_icon = new QSystemTrayIcon (icon(), this);
+    connect (m_icon, SIGNAL (activated (QSystemTrayIcon::ActivationReason)), this, SLOT (on_mIcon_activated (QSystemTrayIcon::ActivationReason)));
+    buildMenu();
+}
+
+void Indicator::on_mIcon_activated (QSystemTrayIcon::ActivationReason p_reason)
+{
+    switch (p_reason) {
+    case QSystemTrayIcon::Trigger:
+        Core::mainWindow()->isVisible() ? Core::mainWindow()->hide() : Core::mainWindow()->show();
+        break;
+
+    case QSystemTrayIcon::DoubleClick:
+    case QSystemTrayIcon::MiddleClick:
+    case QSystemTrayIcon::Context:
+    case QSystemTrayIcon::Unknown:
+    default:
+        break;
+    }
+}
+
+void Indicator::buildMenu()
+{
+    QMenu* menu = new QMenu;
+    QMenu* menuDesktopControl = menu->addMenu (Core::mainWindow()->m_ui->menuDesktopControl->icon(),
+                                Core::mainWindow()->m_ui->menuDesktopControl->title());
+    QMenu* menuDictation      = menu->addMenu (Core::mainWindow()->m_ui->menuDictation->icon(),
+                                Core::mainWindow()->m_ui->menuDictation->title());
+    QMenu* menuPlugins        = menu->addMenu (Core::mainWindow()->m_ui->menuPlugins->icon(),
+                                Core::mainWindow()->m_ui->menuPlugins->title());
+    QMenu* menuHelp           = menu->addMenu (Core::mainWindow()->m_ui->menuHelp->icon(),
+                                Core::mainWindow()->m_ui->menuHelp->title());
+
+    menuDesktopControl->addActions (Core::mainWindow()->m_ui->menuDesktopControl->actions());
+    menuDictation->addActions (Core::mainWindow()->m_ui->menuDictation->actions());
+    menuPlugins->addActions (Core::mainWindow()->m_ui->menuPlugins->actions());
+    menuHelp->addActions (Core::mainWindow()->m_ui->menuHelp->actions());
+
+    menu->addMenu (menuDesktopControl);
+    menu->addMenu (menuDictation);
+    menu->addMenu (menuPlugins);
+    menu->addSeparator();
+    menu->addMenu (menuHelp);
+    menu->addAction (Core::mainWindow()->m_ui->actionOptions);
+    menu->addSeparator();
+    menu->addAction ("Restore", Core::mainWindow(), SLOT (open()));
+    menu->addAction (QIcon::fromTheme ("application-exit"), "Quit", QApplication::instance(), SLOT (quit()));
+
+    m_icon->setContextMenu (menu);
+}
+
+
+QIcon Indicator::icon()
+{
+    const QString state = Core::configuration ("Indicator/Icon").toString();
+    qDebug() << "[Indicator::icon] " << state;
+
+    if (state == "White")
+        return QIcon (":/indicator/white");
+    else if (state == "Black")
+        return QIcon (":/indicator/black");
+    else if (state == "Default")
+        return QIcon (":/logo/sc");
+
+    return QApplication::windowIcon();
+}
+
+void Indicator::hide()
+{
+    instance()->m_icon->hide();
+}
+
+void Indicator::show()
+{
+    instance()->m_icon->setIcon (icon().pixmap (48, 48));
+    instance()->m_icon->show();
+}
+
+void Indicator::showMainWindow()
+{
+    Core::mainWindow()->open();
+}
+
+/// @todo Add an enumeration that allows the callee to specify the kind of message icon they'd  want to appear.
+void Indicator::presentMessage (const QString& p_title, const QString& p_message, const int& p_timeout, const Indicator::Message* p_messageIndicator)
+{
+    if (!Indicator::Message::exists (p_messageIndicator->key()))
+        Indicator::Message::create (p_messageIndicator->key(), p_message, true);
+
+    if (p_messageIndicator->enabled())
+        instance()->m_icon->showMessage (p_title, p_message, QSystemTrayIcon::Information, p_timeout);
+}
+
+bool Indicator::isVisible()
+{
+    return instance()->m_icon->isVisible();
+}
+
+bool Indicator::isEnabled()
+{
+    return Core::configuration ("Indicator/Show").toBool();
+}
+
+Indicator::~Indicator()
+{
 
 }
 

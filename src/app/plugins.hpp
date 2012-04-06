@@ -21,21 +21,22 @@
 #ifndef PLUGINS_HPP
 #define PLUGINS_HPP
 
-#define SPCHCNTRL_PLUGINS_DIR "@SPCHCNTRL_PLUGINS_DIR@"
-#define SPCHCNTRL_PLUGINS_CONFIG_DIR "@SPCHCNTRL_PLUGINS_CONFIG_DIR@"
-
 #include <QUrl>
-#include <QUuid>
 #include <QList>
 #include <QObject>
 #include <QStringList>
 
-class QAction;
-class QPluginLoader;
-class QSettings;
+#include <lib/export.hpp>
 
-namespace SpeechControl {
-namespace Plugins {
+class QPixmap;
+class QAction;
+class QSettings;
+class QPluginLoader;
+
+namespace SpeechControl
+{
+namespace Plugins
+{
 class Factory;
 class AbstractHandle;
 class AbstractPlugin;
@@ -46,9 +47,9 @@ class AbstractPlugin;
 typedef QList<AbstractPlugin*> PluginList;
 
 /**
- * @brief Represents a mapping of UUIDs and plug-ins.
+ * @brief Represents a mapping of IDs and plug-ins.
  **/
-typedef QMap<QUuid, AbstractPlugin*> PluginMap;
+typedef QMap<QString, AbstractPlugin*> PluginMap;
 
 /**
  * @brief An abstract base for plug-ins to define their entry class.
@@ -63,9 +64,10 @@ typedef QMap<QUuid, AbstractPlugin*> PluginMap;
  *
  * @see Factory
  **/
-class AbstractPlugin : public QObject {
+class SPCH_EXPORT AbstractPlugin : public QObject
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( AbstractPlugin )
+    Q_DISABLE_COPY (AbstractPlugin)
     friend class Factory;
     friend class GenericPlugin;
 
@@ -85,17 +87,17 @@ public:
      * @brief Default constructor.
      * @param p_parent The parent of this QObject.
      **/
-    explicit AbstractPlugin ( QObject* p_parent = 0 );
+    explicit AbstractPlugin (QObject* p_parent = 0);
 
     /**
      * @brief Initializing constructor.
      *
      * Builds an AbstractPlugin and loads the configuration.
      *
-     * @param p_uuid The UUID of the plug-in to build.
+     * @param p_id The ID of the plug-in to build.
      * @param p_parent The parent of this QObject.
      **/
-    AbstractPlugin ( const QUuid& p_uuid, QObject* p_parent = 0 );
+    AbstractPlugin (const QString& p_id, QObject* p_parent = 0);
 
     /**
      * @brief Destructor.
@@ -127,16 +129,24 @@ public:
     const QString description() const;
 
     /**
+     * @brief ...
+     *
+     * @return const QString
+     **/
+    const QString author() const;
+
+    /**
      * @brief Obtains a URL to a page that provides more information about the plug-in.
      * @return An invalid QUrl if it couldn't be determined, a QUrl otherwise.
      **/
     const QUrl url() const;
 
     /**
-     * @brief Obtains the QUuid of the plug-in.
-     * @return A invalid QUuid if it couldn't be determined, a QUuid otherwise.
+     * @brief Obtains the id of the plug-in.
      **/
-    const QUuid uuid() const;
+    const QString id() const;
+
+    virtual QPixmap pixmap() const = 0;
 
     /**
      * @brief Obtains a list of dependency plug-ins.
@@ -150,11 +160,22 @@ public:
      **/
     bool isSupported() const;
 
+    /**
+     * @brief Determines if the plug-in has been enabled.
+     * @return TRUE if the plug-in is enabled, FALSE otherwise.
+     **/
+    bool isEnabled() const;
+
+    /**
+     * @brief Determines if the plug-in has been loaded.
+     * @return TRUE if the plug-in is loaded, FALSE otherwise.
+     **/
+    bool isLoaded() const;
+
 public slots:
 
     /**
      * @brief Loads the required components of the plug-in to SpeechControl.
-     *
      * @return TRUE if the load was successful, FALSE otherwise.
      **/
     bool load();
@@ -194,10 +215,26 @@ protected:
      **/
     QSettings* configuration() const;
 
+    /**
+     * @brief Obtains the list of QActions used by this plug-in.
+     *
+     * @return A QList< QAction* > of actions. It'll be empty if no QActions have been added.
+     **/
     QList<QAction*> actions();
 
-    void addAction(QAction* p_action);
-    void addActions(QList<QAction*> p_actions);
+    /**
+     * @brief Adds a QAction for this plug-in to the Main window.
+     *
+     * @param p_action The QAction to be added.
+     **/
+    void addAction (QAction* p_action);
+
+    /**
+     * @brief Adds a list of QActions for the plug-in to the Main window.
+     *
+     * @param p_actions A list of QActions to be added.
+     **/
+    void addActions (QList<QAction*> p_actions);
 
 private slots:
 
@@ -228,39 +265,39 @@ private:
      **/
     bool loadPlugins();
 
-    QPluginLoader* m_ldr;   ///< The magical QPluginLoader!
-    QSettings* m_cfg;       ///< Holds the configuration of the plug-in.
-    QSettings* m_sttgs;     ///< Holds the settings of the plug-in.
-    QList<QAction*> m_acts;
+    QPluginLoader* m_ldr;     ///< The magical QPluginLoader!
+    QString m_id;             ///< The ID of the plug-in.
+    QList<QAction*> m_acts;   ///< The QActions used to add the 'Plugins' menu.
 };
 
 /**
- * @brief ...
+ * @brief Represents a generic, empty plug-in.
+ *
+ * Generic plug-ins are used to load information about a specific plug-in without
+ * having to load the library for it into memory.
  **/
-class GenericPlugin : public AbstractPlugin {
+class GenericPlugin : public AbstractPlugin
+{
     Q_OBJECT
-    Q_DISABLE_COPY ( GenericPlugin )
+    Q_DISABLE_COPY (GenericPlugin)
 
 public:
     /**
-     * @brief ...
+     * @brief Constructor.
      *
-     * @param  ...
+     * @param p_id The ID of the plug-in to load.
      **/
-    GenericPlugin ( const QUuid& );
+    GenericPlugin (const QString& p_id);
+
+    /**
+     * @brief Obtains the pixmap of a Generic plugin.
+     *
+     * @return The SpeechControl's  application icon.
+     **/
+    QPixmap pixmap() const;
 
 protected:
-    /**
-     * @brief ...
-     *
-
-     **/
     virtual void initialize() { };
-    /**
-     * @brief ...
-     *
-
-     **/
     virtual void deinitialize() { };
 };
 

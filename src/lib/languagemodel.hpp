@@ -21,75 +21,83 @@
 #ifndef SPEECHCONTROL_LANGUAGEMODEL_HPP
 #define SPEECHCONTROL_LANGUAGEMODEL_HPP
 
-#include <QObject>
 #include <QDir>
-#include <QUuid>
+#include <QList>
+#include <QObject>
 
-namespace SpeechControl {
+#include <config.hpp>
 
+namespace SpeechControl
+{
+
+class LanguageModel;
+class LanguageModelPrivate;
+
+typedef QList<LanguageModel*> LanguageModelList;
 /**
  * @brief Represents a language model in its programmatic format.
  **/
-class LanguageModel : public QObject {
+class LanguageModel : public QObject
+{
     Q_OBJECT
-    Q_PROPERTY ( QString Path READ path )   ///< The path to the language mode, be it a directory or file.
+    Q_PROPERTY (QString Path READ path)     ///< The path to the language mode, be it a directory or file.
+    Q_DECLARE_PRIVATE(LanguageModel)
+
+private:
+    QScopedPointer<LanguageModelPrivate> d_ptr;
 
 public:
     /**
      * @brief Null constructor.
      * @param p_parent Defaults to 0.
      **/
-    explicit LanguageModel ( QObject* p_parent = 0 );
+    explicit LanguageModel (QObject* p_parent = 0);
 
     /**
-     * @brief ...
-     *
-     * @param p_uuid ...
-     **/
-    LanguageModel ( const QUuid& p_uuid );
-    /**
-     * @brief ...
-     *
-     **/
-    LanguageModel();
-
-    /**
-     * @brief ...
-     *
-     * @param p_directory ...
-     * @return LanguageModel*
-     **/
-    static LanguageModel* fromDirectory ( const QDir& p_directory );
-
-    /**
-     * @brief ...
-     *
-     * @param p_archiveFile ...
-     * @return LanguageModel*
-     **/
-    static LanguageModel* fromCompressedFile ( const QFile* p_archiveFile );
-
-    /**
-     * @brief ...
-     *
-     * @param p_path ...
-     * @return LanguageModel*
-     **/
-    static LanguageModel* fromPath ( const QString& p_path );
-    /**
-     * @brief ...
-     *
-     * @return QDir
-     **/
-    QString path() const;
-    /**
-     * @brief ...
-     *
+     * @brief Destructor.
      **/
     virtual ~LanguageModel();
+
+    /**
+     * @brief Obtains a language model from a directory.
+     *
+     * @param p_directory Path to the language model.
+     **/
+    static LanguageModel* fromDirectory (const QDir& p_directory);
+
+    /**
+     * @brief Obtains all of the known language models.
+     **/
+    static LanguageModelList allModels();
+
+    /**
+     * @brief Obtains the directory that holds this language model.
+     **/
+    QString path() const;
+
+    /**
+     * @brief Determines if this model is a system language model.
+     **/
+    bool isSystem() const;
+
+    /**
+     * @brief Determines if this model is a user language model.
+     **/
+    bool isUser() const;
+
+    /**
+     * @brief Obtains the name of this language model.
+     * @note This value is not human-friendly.
+     **/
+    QString name() const;
+
+    /**
+     * @brief Erases this LanguageModel.
+     **/
+    void erase();
 };
 
 }
 
 #endif // SPEECHCONTROL_LANGUAGEMODEL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -27,8 +27,19 @@ when it comes to SpeechControl is <http://tasks.thesii.org/enter_bug.cgi?product
 It's recommended that you first test if SpeechControl works on your system
 and then try debugging SpeechControl. To produce meaningful information
 for SpeechControl bug reporting, try building SpeechControl with
-CMAKE_BUILD_TYPE set to 'RelWithDebInfo' or 'Debugfull'. Check the INSTALL
+CMAKE_BUILD_TYPE set to 'RelWithDebInfo' or 'Debug'. Check the INSTALL
 file for more information about the build and execution cycle of SpeechControl.
+
+It's also recommended that if you're testing or building SpeechControl and would
+like to produce a useful report that you run SpeechControl under a debugger like
+the GNU Debugger (gdb). To do so, from the terminal, invoke the following:
+
+    $ gdb 'src/app/speechcontrol'
+
+You should then re-run the same procedure you invoked to cause that error to
+occur and provide this information in a bug report on the Institute's tracker at
+http://tasks.thesii.org. You can provide more information by taking a look at
+README.tests.
 
 3. Contact
 You can reach the development team behind SpeechControl at their

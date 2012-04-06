@@ -97,6 +97,16 @@ public slots:
      **/
     void setState (const ActivityState p_state);
 
+    /**
+     * @brief Sets the state of this Agent to Enabled.
+     **/
+    virtual void start();
+
+    /**
+     * @brief Sets the state of this Agent to Disabled.
+     **/
+    virtual void stop();
+
 signals:
     /**
      * Emitted when the state of this Agent is set to the Enabled state.
@@ -126,8 +136,6 @@ protected:
      * @see ActivityState
      **/
     virtual ActivityState onStateChanged (const ActivityState p_state) = 0;
-
-private:
     ActivityState m_state; ///< The state of the agent.
 };
 }

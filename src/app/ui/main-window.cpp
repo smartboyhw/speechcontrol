@@ -39,8 +39,8 @@
 #include "app/indicator.hpp"
 #include "app/services/engine.hpp"
 #include "app/services/module.hpp"
-#include "app/services/dictation/agent.hpp"
-#include "app/services/desktopcontrol/agent.hpp"
+#include "app/services/dictation/service.hpp"
+#include "app/services/desktopcontrol/service.hpp"
 #include "app/sessions/session.hpp"
 #include "app/sessions/content.hpp"
 #include "app/ui/training-dialog.hpp"
@@ -59,9 +59,9 @@
 #include "voxforge-wizard.hpp"
 
 using namespace SpeechControl;
+using namespace SpeechControl::Services;
 using namespace SpeechControl::Windows;
 using namespace SpeechControl::Wizards;
-using namespace SpeechControl::Windows::Managers;
 
 using SpeechControl::Windows::Main;
 
@@ -182,12 +182,12 @@ Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0), m_acrcyThrd (0)
     m_ui->actionHelp->setIcon (QIcon::fromTheme ("help"));
 
     // Update the actions and buttons.
-    connect (DesktopControl::Agent::instance(), SIGNAL (stateChanged (ActivityState)), this, SLOT (desktopControlStateChanged()));
-    connect (Dictation::Agent::instance(), SIGNAL (stateChanged (ActivityState)), this, SLOT (dictationStateChanged()));
+    connect (DesktopControl::Service::instance(), SIGNAL (stateChanged (ActivityState)), this, SLOT (desktopControlStateChanged()));
+    connect (Dictation::Service::instance(), SIGNAL (stateChanged (ActivityState)), this, SLOT (dictationStateChanged()));
     desktopControlStateChanged();
     dictationStateChanged();
-    on_actionDesktopControlActive_triggered (DesktopControl::Agent::instance()->isActive());
-    on_actionDictationActive_triggered (Dictation::Agent::instance()->isActive());
+    on_actionDesktopControlActive_triggered (DesktopControl::Service::instance()->isActive());
+    on_actionDictationActive_triggered (Dictation::Service::instance()->isActive());
 
     // Greet the user :)
     setStatusMessage (tr ("Welcome to %1, speech recognition for Linux.").arg (QApplication::applicationName()), 4000);
@@ -320,13 +320,13 @@ void Main::desktopControlStateChanged()
 {
     QString msg;
 
-    switch (DesktopControl::Agent::instance()->state()) {
-    case AbstractAgent::Enabled:
+    switch (DesktopControl::Service::instance()->state()) {
+    case AbstractModule::Enabled:
         msg = tr ("Desktop control activated.");
         break;
 
     default:
-    case AbstractAgent::Disabled:
+    case AbstractModule::Disabled:
         msg = tr ("Desktop control deactivated.");
         break;
     }
@@ -343,13 +343,13 @@ void Main::dictationStateChanged()
 {
     QString msg;
 
-    switch (Dictation::Agent::instance()->state()) {
-    case AbstractAgent::Enabled:
+    switch (Dictation::Service::instance()->state()) {
+    case AbstractModule::Enabled:
         msg = tr ("Dictation activated.");
         break;
 
     default:
-    case AbstractAgent::Disabled:
+    case AbstractModule::Disabled:
         msg = tr ("Dictation deactivated.");
         break;
     }
@@ -475,10 +475,10 @@ void Main::on_actionStartTraining_triggered ()
 /// @todo Allow configuration option to show specific notifications to prevent noise.
 void Main::on_actionDesktopControlActive_triggered (bool p_checked)
 {
-    if (p_checked && Dictation::Agent::instance()->isActive())
+    if (p_checked && Dictation::Service::instance()->isActive())
         return;
 
-    DesktopControl::Agent::instance()->setState (p_checked ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled);
+    DesktopControl::Service::instance()->setState (p_checked ? SpeechControl::AbstractModule::Enabled : SpeechControl::AbstractModule::Disabled);
     setStatusMessage ( (p_checked ? tr ("Desktop control activated.") : tr ("Desktop control deactivated.")) , 3000);
     Indicator::presentMessage ("Desktop Control");
     updateUi();
@@ -487,10 +487,10 @@ void Main::on_actionDesktopControlActive_triggered (bool p_checked)
 /// @todo Allow configuration option to show specific notifications to prevent noise.
 void Main::on_actionDictationActive_triggered (const bool p_checked)
 {
-    if (p_checked && DesktopControl::Agent::instance()->isActive())
+    if (p_checked && DesktopControl::Service::instance()->isActive())
         return;
 
-    Dictation::Agent::instance()->setState ( (p_checked) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled);
+    Dictation::Service::instance()->setState ( (p_checked) ? SpeechControl::AbstractModule::Enabled : SpeechControl::AbstractModule::Disabled);
     setStatusMessage ( ( (p_checked) ? tr ("Dictation activated.") : tr ("Dictation deactivated."))  , 3000);
     updateUi();
 }

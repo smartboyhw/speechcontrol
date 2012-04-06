@@ -31,6 +31,7 @@ class AbstractModulePrivate
 {
 public:
     AbstractModulePrivate (AbstractModule* p_qPtr) : q_ptr (p_qPtr) {}
+    virtual ~AbstractModulePrivate() { }
     Q_DECLARE_PUBLIC (AbstractModule)
 
 private:

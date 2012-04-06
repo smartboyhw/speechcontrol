@@ -67,11 +67,11 @@ void TextContentSourceWidget::updateView()
 
     if (src->isValid()) {
         m_ui->lblInfo->setText (tr ("<h2>%1</h2>by <b>%2</b>").arg (src->title()).arg (src->author()));
-        ( (SpeechControl::Wizards::ContentWizard*) this->window())->setSource (src);
+        ( (SpeechControl::Windows::Wizards::ContentWizard*) this->window())->setSource (src);
     }
     else {
         m_ui->lblInfo->setText (tr ("<h2>Invalid Content</h2>"));
-        ( (SpeechControl::Wizards::ContentWizard*) this->window())->setSource (0);
+        ( (SpeechControl::Windows::Wizards::ContentWizard*) this->window())->setSource (0);
     }
 }
 

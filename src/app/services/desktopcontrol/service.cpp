@@ -18,15 +18,17 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "services/engine.hpp"
-#include "service.hpp"
-#include "agent.hpp"
 #include <QIcon>
+
+#include "services/module.hpp"
+#include "services/engine.hpp"
+#include "agent.hpp"
+#include "service.hpp"
 
 using namespace SpeechControl::DesktopControl;
 Service* Service::s_inst = 0;
 
-Service::Service() : AbstractModule (Agent::instance())
+Service::Service() : AbstractModule()
 {
     Services::Engine::registerModule (this);
 }

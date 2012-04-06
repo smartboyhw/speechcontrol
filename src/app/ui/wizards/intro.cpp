@@ -37,5 +37,5 @@ IntroductionPage::~IntroductionPage()
     delete ui;
 }
 
-#include "intro.moc"
+#include "ui/intro.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

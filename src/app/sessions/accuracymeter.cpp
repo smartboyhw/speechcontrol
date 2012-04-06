@@ -21,8 +21,8 @@
 #include <QFile>
 #include <QDebug>
 
-#include "app/sessions/session.hpp"
-#include "app/sessions/corpus.hpp"
+#include "sessions/session.hpp"
+#include "sessions/corpus.hpp"
 #include "accuracymeter.hpp"
 
 using namespace SpeechControl;
@@ -118,5 +118,5 @@ AccuracyMeter::~AccuracyMeter()
 
 }
 
-#include "accuracymeter.moc"
+#include "sessions/accuracymeter.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

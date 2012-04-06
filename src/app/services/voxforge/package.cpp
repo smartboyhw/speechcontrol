@@ -41,5 +41,5 @@ Package::~Package()
 
 }
 
-#include "package.moc"
+#include "services/voxforge/package.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

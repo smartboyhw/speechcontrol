@@ -20,8 +20,8 @@
 
 #include <QDeclarativeView>
 
-#include <lib/acousticmodel.hpp>
-#include <app/ui/main-window.hpp>
+#include <acousticmodel.hpp>
+#include <ui/main-window.hpp>
 
 #include "core.hpp"
 #include "command.hpp"

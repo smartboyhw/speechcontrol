@@ -27,7 +27,7 @@
 #include <QVariantMap>
 #include <QMainWindow>
 
-#include <app/sessions/accuracymeter.hpp>
+#include <sessions/accuracymeter.hpp>
 
 class QProgressBar;
 class QListWidgetItem;

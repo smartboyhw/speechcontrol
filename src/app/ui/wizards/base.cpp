@@ -43,5 +43,5 @@ WizardBase::~WizardBase()
     delete ui;
 }
 
-#include "base.moc"
+#include "ui/base.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -21,7 +21,7 @@
 #include <QIcon>
 #include <QDateTime>
 #include <QApplication>
-#include <lib/config.hpp>
+#include <config.hpp>
 
 #include "about-dialog.hpp"
 #include "ui_about-dialog.h"
@@ -39,5 +39,5 @@ AboutDialog::AboutDialog (QWidget* parent) : QDialog (parent), ui (new Ui::About
     ui->tabAuthors->setLayout(ui->layoutAuthors);
 }
 
-#include "about-dialog.moc"
+#include "ui/about-dialog.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

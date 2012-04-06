@@ -23,8 +23,8 @@
  *
  */
 
-#include "lib/system.hpp"
-#include "lib/audiosource/device.hpp"
+#include "system.hpp"
+#include "audiosource/device.hpp"
 
 #include <QDir>
 #include <QGst/Init>

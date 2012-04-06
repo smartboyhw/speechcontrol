@@ -19,9 +19,9 @@
  */
 
 #include <QMap>
-#include "lib/audiosource/sink.hxx"
-#include "lib/audiosource/source.hxx"
-#include "lib/audiosource/abstract.hxx"
+#include "audiosource/sink.hxx"
+#include "audiosource/source.hxx"
+#include "audiosource/abstract.hxx"
 
 namespace SpeechControl
 {

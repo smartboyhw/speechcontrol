@@ -32,8 +32,8 @@
 #include <QErrorMessage>
 #include <QTableWidget>
 
-#include <lib/audiosource/device.hpp>
-#include <lib/acousticmodel.hpp>
+#include <audiosource/device.hpp>
+#include <acousticmodel.hpp>
 
 #include "core.hpp"
 #include "indicator.hpp"
@@ -245,8 +245,8 @@ void Main::open()
         const bool isIndicatorVisible = Indicator::isVisible() && Indicator::isEnabled();
         const bool isMainWindowVisible = Core::configuration ("MainWindow/Visible").toBool() == true;
 
-        if (!isIndicatorVisible || isMainWindowVisible || (!isIndicatorVisible && isMainWindowVisible)){
-            Core::setConfiguration ("MainWindow/Visible",true);
+        if (!isIndicatorVisible || isMainWindowVisible || (!isIndicatorVisible && isMainWindowVisible)) {
+            Core::setConfiguration ("MainWindow/Visible", true);
             QMainWindow::show();
         }
         else
@@ -551,7 +551,7 @@ void Main::on_actionWizardContent_triggered()
 
 void Main::on_actionWizardVoxForge_triggered()
 {
-    VoxforgeWizard wiz(this);
+    VoxforgeWizard wiz (this);
     wiz.exec();
     updateUi();
 }
@@ -625,6 +625,5 @@ Main::~Main()
     delete m_ui;
 }
 
-#include "main-window.moc"
+#include "ui/main-window.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
-

@@ -21,13 +21,13 @@
 #include <QTableWidget>
 #include <QLabel>
 
-#include <lib/acousticmodel.hpp>
+#include <acousticmodel.hpp>
 
-#include "app/core.hpp"
-#include "app/services/desktopcontrol/agent.hpp"
-#include "app/services/desktopcontrol/command.hpp"
-#include "app/services/dictation/agent.hpp"
-#include "app/ui/main-window.hpp"
+#include "core.hpp"
+#include "services/desktopcontrol/agent.hpp"
+#include "services/desktopcontrol/command.hpp"
+#include "services/dictation/agent.hpp"
+#include "ui/main-window.hpp"
 #include "ui_settingspane-desktopcontrol.h"
 
 #include "desktopcontrol-pane.hpp"
@@ -151,5 +151,5 @@ void DesktopControlSettingsPane::on_deftAcousticModel_textEdited (const QString&
     }
 }
 
-#include "desktopcontrol-pane.moc"
+#include "ui/desktopcontrol-pane.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

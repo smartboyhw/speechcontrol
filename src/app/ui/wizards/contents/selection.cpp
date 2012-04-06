@@ -20,8 +20,8 @@
 
 #include "selection.hpp"
 #include "source-text.hpp"
-#include "app/sessions/content.hpp"
-#include "app/ui/contents-wizard.hpp"
+#include "sessions/content.hpp"
+#include "ui/contents-wizard.hpp"
 #include "ui_contentwizard-sourceselect.h"
 
 using namespace SpeechControl;
@@ -83,5 +83,5 @@ SourceSelectionPage::~SourceSelectionPage()
     delete m_ui;
 }
 
-#include "selection.moc"
+#include "ui/selection.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

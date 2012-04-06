@@ -20,9 +20,9 @@
 
 #include <QtTest/QtTest>
 
-#include <app/sessions/content.hpp>
-#include <app/sessions/corpus.hpp>
-#include <app/sessions/phrase.hpp>
+#include <sessions/content.hpp>
+#include <sessions/corpus.hpp>
+#include <sessions/phrase.hpp>
 
 #include "corpus_test.h"
 

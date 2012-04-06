@@ -154,5 +154,5 @@ void ContentManager::on_lstContent_itemSelectionChanged()
     }
 }
 
-#include "content-manager.moc"
+#include "ui/content-manager.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

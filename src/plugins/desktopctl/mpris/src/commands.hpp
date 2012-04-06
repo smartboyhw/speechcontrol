@@ -25,7 +25,7 @@
 #include <QStringList>
 #include <config.hpp>
 #include "plugin.hpp"
-#include <app/macros.hpp>
+#include <macros.hpp>
 #include <desktopcontrol/agent.hpp>
 #include <desktopcontrol/command.hpp>
 

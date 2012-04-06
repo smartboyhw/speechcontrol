@@ -21,8 +21,8 @@
 #include <QIcon>
 #include <QMessageBox>
 
-#include "app/core.hpp"
-#include "lib/acousticmodel.hpp"
+#include "core.hpp"
+#include "acousticmodel.hpp"
 #include "wizards/intro.hpp"
 #include "wizards/outro.hpp"
 #include "wizards/adapt/modelselection.hpp"
@@ -116,5 +116,5 @@ AdaptWizard::~AdaptWizard()
 
 }
 
-#include "adapt-wizard.moc"
+#include "ui/adapt-wizard.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

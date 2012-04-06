@@ -23,7 +23,7 @@
 
 #include <QObject>
 
-#include <app/macros.hpp>
+#include <macros.hpp>
 
 #include "config.hpp"
 

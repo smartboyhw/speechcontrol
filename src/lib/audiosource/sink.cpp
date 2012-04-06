@@ -20,11 +20,11 @@
 
 #include <QDebug>
 
-#include "lib/audiosource/abstract.hpp"
-#include "lib/audiosource/stream.hpp"
-#include "lib/audiosource/source.hpp"
-#include "lib/audiosource/sink.hxx"
-#include "lib/audiosource/sink.hpp"
+#include "audiosource/abstract.hpp"
+#include "audiosource/stream.hpp"
+#include "audiosource/source.hpp"
+#include "audiosource/sink.hxx"
+#include "audiosource/sink.hpp"
 #include "stream.hxx"
 
 using namespace SpeechControl;

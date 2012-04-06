@@ -21,9 +21,9 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-#include <lib/audiosource/abstract.hpp>
-#include <lib/audiosource/stream.hpp>
-#include <lib/sphinx/audiosource.hpp>
+#include <audiosource/abstract.hpp>
+#include <audiosource/stream.hpp>
+#include <sphinx/audiosource.hpp>
 
 #include "plugin.hpp"
 #include "transcriber-dialog.hpp"
@@ -57,12 +57,13 @@ void TranscriberDialog::on_btnTranscribe_clicked()
 
     if (!file->exists()) {
         m_ui->lineEditPath->clear();
-        qDebug() << "File doesn't exist.";
+        qDebug() << "[TranscriberDialog::on_btnTranscribe_clicked()] File doesn't exist.";
         return;
     }
 
     if (!file->open(QIODevice::ReadOnly)){
-        qDebug() << "File can't open.";
+        qDebug() << "[TranscriberDialog::on_btnTranscribe_clicked()] File can't open.";
+        return;
     }
 
     m_strm = new QDataStream(file);
@@ -72,7 +73,7 @@ void TranscriberDialog::on_btnTranscribe_clicked()
     connect(m_audioSrcSphnx,SIGNAL(finished(QString)),this,SLOT(outputValue(QString)));
 
     if (!m_audioSrcSphnx->start()){
-        qDebug() << "CANT STARERETE";
+        qDebug() << "[TranscriberDialog::on_btnTranscribe_clicked()] Transcriber's Sphinx failed to start.";
     }
 }
 

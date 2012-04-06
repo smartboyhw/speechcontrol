@@ -35,5 +35,5 @@ Backup::~Backup()
 {
 }
 
-#include "backup-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/backup-wizard.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

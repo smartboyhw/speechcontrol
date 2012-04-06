@@ -28,7 +28,7 @@
 #include <QVariant>
 #include <QStringList>
 
-#include <app/config.hpp>
+#include <config.hpp>
 
 class QFile;
 class QFile;

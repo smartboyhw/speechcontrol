@@ -40,5 +40,5 @@ LoginPortal::~LoginPortal()
 
 }
 
-#include "login.moc"
+#include "ui/login.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

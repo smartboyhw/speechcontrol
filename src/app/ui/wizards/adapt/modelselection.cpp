@@ -21,8 +21,8 @@
 #include <QDir>
 #include <QDebug>
 
-#include <lib/acousticmodel.hpp>
-#include <lib/noisedictionary.hpp>
+#include <acousticmodel.hpp>
+#include <noisedictionary.hpp>
 #include "ui_adaptwizard-modelselection.h"
 
 #include "modelselection.hpp"
@@ -103,5 +103,5 @@ ModelSelection::~ModelSelection()
     delete ui;
 }
 
-#include "modelselection.moc"
+#include "ui/modelselection.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

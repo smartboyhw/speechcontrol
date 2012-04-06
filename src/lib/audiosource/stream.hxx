@@ -20,9 +20,9 @@
 
 #include <QDataStream>
 
-#include "lib/audiosource/sink.hpp"
-#include "lib/audiosource/source.hpp"
-#include "lib/audiosource/abstract.hxx"
+#include "audiosource/sink.hpp"
+#include "audiosource/source.hpp"
+#include "audiosource/abstract.hxx"
 
 namespace SpeechControl
 {

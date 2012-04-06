@@ -29,8 +29,8 @@
 #include <QScopedPointer>
 #include <QDateTime>
 
-#include <lib/config.hpp>
-#include <lib/export.hpp>
+#include <config.hpp>
+#include <export.hpp>
 
 class QUrl;
 class QFile;

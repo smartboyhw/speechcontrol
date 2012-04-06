@@ -21,8 +21,8 @@
 #include <QDir>
 #include <QDebug>
 
-#include "app/sessions/session.hpp"
-#include "app/sessions/content.hpp"
+#include "sessions/session.hpp"
+#include "sessions/content.hpp"
 
 #include "sessionselection.hpp"
 #include "ui_adaptwizard-sessionselection.h"
@@ -112,5 +112,5 @@ SessionSelection::~SessionSelection()
     delete ui;
 }
 
-#include "sessionselection.moc"
+#include "ui/sessionselection.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

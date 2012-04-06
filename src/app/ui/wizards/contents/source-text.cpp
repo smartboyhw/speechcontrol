@@ -19,8 +19,8 @@
  */
 
 #include "source-text.hpp"
-#include "app/ui/contents-wizard.hpp"
-#include "app/sessions/content.hpp"
+#include "ui/contents-wizard.hpp"
+#include "sessions/content.hpp"
 #include "ui_contentwizard-source-text.h"
 
 #include <QDebug>
@@ -80,5 +80,5 @@ TextContentSourceWidget::~TextContentSourceWidget()
     delete m_ui;
 }
 
-#include "source-text.moc"
+#include "ui/source-text.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

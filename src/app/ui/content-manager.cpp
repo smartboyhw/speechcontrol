@@ -27,7 +27,7 @@
 #include "ui_manager-content.h"
 
 using namespace SpeechControl;
-using namespace SpeechControl::Wizards;
+using namespace SpeechControl::Windows::Wizards;
 using namespace SpeechControl::Windows::Managers;
 
 ContentManager::ContentManager (QWidget* parent) :

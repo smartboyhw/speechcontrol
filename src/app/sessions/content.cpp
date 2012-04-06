@@ -363,8 +363,15 @@ Content* Content::create (const QString& p_author, const QString& p_title, const
     return nabbedContent;
 }
 
+
+AbstractContentSource::AbstractContentSource (QObject* p_parent) : QObject (p_parent), m_id(),
+    m_author(), m_text(), m_title()
+{
+
+}
+
 AbstractContentSource::AbstractContentSource (QString p_id, QObject* p_parent) : QObject (p_parent),
-    m_id (p_id)
+    m_id (p_id), m_author(), m_text(), m_title()
 {
 
 }

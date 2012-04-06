@@ -230,14 +230,14 @@ public:
      *
      * @param p_title The title of the content.
      **/
-    void setTitle (const QString p_title);
+    void setTitle (const QString& p_title);
 
     /**
      * @brief Sets the text of the Content.
      *
      * @param p_text The text of the Content.
      **/
-    void setText (const QString p_text);
+    void setText (const QString& p_text);
 
     /**
      * @brief Obtains the ID of this AbstractContentSource.

@@ -33,16 +33,30 @@ namespace Dictation
 class Service : public SpeechControl::Services::AbstractModule
 {
     Q_OBJECT
+    Q_ENUMS (SafetyMode)
     Q_DISABLE_COPY (Service)
     SC_SINGLETON (Service)
+
 protected:
     virtual void deinitialize();
     virtual void initialize();
 
 public:
+    enum SafetyMode {
+        Undefined = -1,
+        Enabled,
+        Active,
+        Inactive,
+        Disabled
+    };
+
+    void setSafetyMode (const SafetyMode& p_mode);
+    bool isSafetyModeActive() const;
+    bool isSafetyModeEnabled() const;
+    SafetyMode safetyMode() const;
+    void handleText (const QString& p_text);
     virtual bool isEnabled() const;
     virtual QString id() const;
-    virtual bool isActive() const;
     virtual QPixmap pixmap() const;
     virtual QString name() const;
     virtual ~Service();

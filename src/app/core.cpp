@@ -36,16 +36,15 @@
 #include "app/indicator.hpp"
 #include "app/sessions/session.hpp"
 #include "app/services/engine.hpp"
-#include "app/services/dictation/agent.hpp"
 #include "app/services/dictation/service.hpp"
-#include "app/services/desktopcontrol/agent.hpp"
 #include "app/services/desktopcontrol/service.hpp"
 #include "app/ui/main-window.hpp"
 #include "app/ui/quickstart-wizard.hpp"
 #include "app/core.hpp"
 
 using namespace SpeechControl;
-using namespace SpeechControl::Wizards;
+using namespace SpeechControl::Windows::Wizards;
+using SpeechControl::Services::AbstractModule;
 
 Core* Core::s_inst = 0;
 
@@ -168,8 +167,8 @@ void Core::invokeAutoStart()
 {
     const bool dsktpCntrlState = configuration ("DesktopControl/AutoStart").toBool();
     const bool dctnState = configuration ("Dictation/AutoStart").toBool();
-    DesktopControl::Agent::instance()->setState ( (dsktpCntrlState) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled);
-    Dictation::Agent::instance()->setState ( (dctnState) ? SpeechControl::AbstractAgent::Enabled  : SpeechControl::AbstractAgent::Disabled);
+    DesktopControl::Service::instance()->setState( (dsktpCntrlState) ? AbstractModule::Enabled  : AbstractModule::Disabled);
+    Dictation::Service::instance()->setState ( (dctnState) ? AbstractModule::Enabled  : AbstractModule::Disabled);
 }
 
 void Core::loadTranslations (const QLocale& p_locale)

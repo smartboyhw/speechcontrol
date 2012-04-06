@@ -22,9 +22,7 @@
 #define SERVICES_ENGINE_HPP
 
 #include <QMap>
-#include <QList>
-#include <QObject>
-#include <QString>
+
 #include <macros.hpp>
 
 class QPixmap;

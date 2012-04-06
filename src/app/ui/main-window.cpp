@@ -61,7 +61,8 @@
 using namespace SpeechControl;
 using namespace SpeechControl::Services;
 using namespace SpeechControl::Windows;
-using namespace SpeechControl::Wizards;
+using namespace SpeechControl::Windows::Managers;
+using namespace SpeechControl::Windows::Wizards;
 
 using SpeechControl::Windows::Main;
 
@@ -478,7 +479,7 @@ void Main::on_actionDesktopControlActive_triggered (bool p_checked)
     if (p_checked && Dictation::Service::instance()->isActive())
         return;
 
-    DesktopControl::Service::instance()->setState (p_checked ? SpeechControl::AbstractModule::Enabled : SpeechControl::AbstractModule::Disabled);
+    DesktopControl::Service::instance()->setState (p_checked ? AbstractModule::Enabled : AbstractModule::Disabled);
     setStatusMessage ( (p_checked ? tr ("Desktop control activated.") : tr ("Desktop control deactivated.")) , 3000);
     Indicator::presentMessage ("Desktop Control");
     updateUi();
@@ -490,7 +491,7 @@ void Main::on_actionDictationActive_triggered (const bool p_checked)
     if (p_checked && DesktopControl::Service::instance()->isActive())
         return;
 
-    Dictation::Service::instance()->setState ( (p_checked) ? SpeechControl::AbstractModule::Enabled : SpeechControl::AbstractModule::Disabled);
+    Dictation::Service::instance()->setState ( (p_checked) ? AbstractModule::Enabled : AbstractModule::Disabled);
     setStatusMessage ( ( (p_checked) ? tr ("Dictation activated.") : tr ("Dictation deactivated."))  , 3000);
     updateUi();
 }

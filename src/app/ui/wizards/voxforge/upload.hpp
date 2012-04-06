@@ -30,7 +30,7 @@ class UploadEnaction;
 
 namespace SpeechControl
 {
-namespace Wizards
+namespace Windows { namespace Wizards 
 {
 namespace Pages
 {

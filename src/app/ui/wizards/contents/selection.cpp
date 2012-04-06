@@ -26,7 +26,7 @@
 #include "ui_contentwizard-sourceselect.h"
 
 using namespace SpeechControl;
-using SpeechControl::Wizards::Pages::SourceSelectionPage;
+using SpeechControl::Windows::Wizards::Pages::SourceSelectionPage;
 
 QMap<QString, QWidget*> SourceSelectionPage::s_lst;
 
@@ -71,7 +71,7 @@ void SourceSelectionPage::on_comboBoxSource_currentIndexChanged (const int& p_in
 
 bool SourceSelectionPage::validatePage()
 {
-    AbstractContentSource* src = ( (SpeechControl::Wizards::ContentWizard*) window())->source();
+    AbstractContentSource* src = ( (SpeechControl::Windows::Wizards::ContentWizard*) window())->source();
 
     if (!src)
         setSubTitle ("<b><font color='red'>Please select a source to generate content from.</font></b>");

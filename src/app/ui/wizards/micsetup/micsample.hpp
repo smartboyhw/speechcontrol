@@ -31,6 +31,8 @@ class MicrophoneSample;
 namespace SpeechControl
 {
 class AudioSourceSphinx;
+namespace Windows
+{
 namespace Wizards
 {
 namespace Pages
@@ -61,6 +63,7 @@ private:
     QStringList m_prompts;
 };
 
+}
 }
 }
 }

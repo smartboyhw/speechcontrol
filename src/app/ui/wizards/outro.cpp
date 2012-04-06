@@ -21,7 +21,7 @@
 #include "outro.hpp"
 #include "ui_wizardbase-outro.h"
 
-using namespace SpeechControl::Wizards::Pages;
+using namespace SpeechControl::Windows::Wizards::Pages;
 
 ConclusionPage::ConclusionPage (const QString& summary) :
     QWizardPage(),

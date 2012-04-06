@@ -33,7 +33,7 @@
 #include "enaction.hpp"
 
 using namespace SpeechControl;
-using namespace SpeechControl::Wizards::Pages;
+using namespace SpeechControl::Windows::Wizards::Pages;
 
 Enaction::Enaction (QWidget* parent) :
     QWizardPage (parent),
@@ -64,8 +64,8 @@ void Enaction::on_btnAdapt_clicked()
 {
     ui->btnAdapt->setEnabled (false);
 
-    SessionSelection* sessionPage = (SessionSelection*) wizard()->page (Wizards::AdaptWizard::SessionSelectionPage);
-    ModelSelection* modelPage = (ModelSelection*) wizard()->page (Wizards::AdaptWizard::ModelSelectionPage);
+    SessionSelection* sessionPage = (SessionSelection*) wizard()->page (Windows::Wizards::AdaptWizard::SessionSelectionPage);
+    ModelSelection* modelPage = (ModelSelection*) wizard()->page (Windows::Wizards::AdaptWizard::ModelSelectionPage);
 
     m_sessions = sessionPage->sessions();
     m_model = modelPage->model();

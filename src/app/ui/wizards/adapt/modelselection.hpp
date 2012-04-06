@@ -33,7 +33,7 @@ namespace SpeechControl
 {
 
 class AcousticModel;
-namespace Wizards
+namespace Windows { namespace Wizards 
 {
 namespace Pages
 {

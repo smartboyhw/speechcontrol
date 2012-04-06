@@ -21,7 +21,7 @@
 #include "optin.hpp"
 #include "ui_voxforgewizard-optin.h"
 
-using namespace SpeechControl::Wizards::Pages;
+using namespace SpeechControl::Windows::Wizards::Pages;
 
 OptinConfirmation::OptinConfirmation (QWidget* parent) : QWizardPage (parent),
     ui (new Ui::OptinConfirmation)

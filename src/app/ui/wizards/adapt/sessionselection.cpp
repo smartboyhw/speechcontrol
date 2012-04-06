@@ -28,7 +28,7 @@
 #include "ui_adaptwizard-sessionselection.h"
 
 using namespace SpeechControl;
-using SpeechControl::Wizards::Pages::SessionSelection;
+using SpeechControl::Windows::Wizards::Pages::SessionSelection;
 
 SessionSelection::SessionSelection (QWidget* parent) :
     QWizardPage (parent),

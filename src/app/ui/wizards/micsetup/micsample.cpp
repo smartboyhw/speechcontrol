@@ -28,8 +28,8 @@
 #include "micsample.hpp"
 
 using namespace SpeechControl;
-using namespace SpeechControl::Wizards::Pages;
-using SpeechControl::Wizards::Pages::MicrophoneSample;
+using namespace SpeechControl::Windows::Wizards::Pages;
+using SpeechControl::Windows::Wizards::Pages::MicrophoneSample;
 
 /// @todo The loudness of the content spoken should begin detection here.
 MicrophoneSample::MicrophoneSample (QWidget* parent) :
@@ -63,7 +63,7 @@ void MicrophoneSample::on_btnBeginPrompt_clicked()
 }
 
 /// @todo Fill the combo box with all of the mics.
-void SpeechControl::Wizards::Pages::MicrophoneSample::initializePage()
+void SpeechControl::Windows::Wizards::Pages::MicrophoneSample::initializePage()
 {
     DeviceAudioSource* device = DeviceAudioSource::obtain(wizard()->field("mic-id").toString());
     qDebug() << "[MicrophoneSample::initializePage()]" << device->humanName() << device->deviceName();
@@ -72,12 +72,12 @@ void SpeechControl::Wizards::Pages::MicrophoneSample::initializePage()
     ui->lblPrompt->setText (QString::null);
 }
 
-bool SpeechControl::Wizards::Pages::MicrophoneSample::validatePage()
+bool SpeechControl::Windows::Wizards::Pages::MicrophoneSample::validatePage()
 {
     return isAtFinalPrompt() || m_index == 0;
 }
 
-bool SpeechControl::Wizards::Pages::MicrophoneSample::isComplete()
+bool SpeechControl::Windows::Wizards::Pages::MicrophoneSample::isComplete()
 {
     return hasCompletedPrompts();
 }

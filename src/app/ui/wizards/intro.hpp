@@ -30,6 +30,8 @@ class Introduction;
 
 namespace SpeechControl
 {
+namespace Windows
+{
 namespace Wizards
 {
 namespace Pages
@@ -50,6 +52,6 @@ private:
 }
 }
 }
-
+}
 #endif // INTRO_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

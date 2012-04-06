@@ -21,7 +21,7 @@
 #include "intro.hpp"
 #include "ui_wizardbase-intro.h"
 
-using namespace SpeechControl::Wizards::Pages;
+using namespace SpeechControl::Windows::Wizards::Pages;
 
 IntroductionPage::IntroductionPage (const QString& summary) :
     QWizardPage(),

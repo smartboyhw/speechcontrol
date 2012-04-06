@@ -33,7 +33,7 @@ class SourceSelectionPage;
 namespace SpeechControl
 {
 class AbstractContentSource;
-namespace Wizards
+namespace Windows { namespace Wizards 
 {
 namespace Pages
 {

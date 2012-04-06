@@ -28,7 +28,7 @@
 #include "modelselection.hpp"
 
 using namespace SpeechControl;
-using SpeechControl::Wizards::Pages::ModelSelection;
+using SpeechControl::Windows::Wizards::Pages::ModelSelection;
 
 ModelSelection::ModelSelection (QWidget* parent) :
     QWizardPage (parent),

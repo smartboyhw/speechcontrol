@@ -24,7 +24,7 @@
 #include <QObject>
 #include <QGst/Message>
 
-#include <lib/sphinx/abstract.hpp>
+#include <sphinx/abstract.hpp>
 
 namespace SpeechControl
 {

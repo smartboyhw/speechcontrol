@@ -24,7 +24,7 @@
 
 #include <PythonQt/PythonQt.h>
 
-#include <app/macros.hpp>
+#include <macros.hpp>
 
 namespace SpeechControl
 {

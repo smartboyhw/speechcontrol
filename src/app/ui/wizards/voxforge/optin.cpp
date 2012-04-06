@@ -43,5 +43,5 @@ OptinConfirmation::~OptinConfirmation()
 
 }
 
-#include "optin.moc"
+#include "ui/optin.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

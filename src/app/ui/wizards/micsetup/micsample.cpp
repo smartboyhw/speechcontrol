@@ -19,10 +19,10 @@
  */
 
 
-#include <lib/sphinx/audiosource.hpp>
-#include <lib/audiosource/device.hpp>
+#include <sphinx/audiosource.hpp>
+#include <audiosource/device.hpp>
 
-#include "app/ui/micsetup-wizard.hpp"
+#include "ui/micsetup-wizard.hpp"
 #include "micselect.hpp"
 #include "ui_micwizard-sample.h"
 #include "micsample.hpp"
@@ -144,5 +144,5 @@ void MicrophoneSample::handleReceivedPrompt (QString p_str)
     emit completeChanged();
 }
 
-#include "micsample.moc"
+#include "ui/micsample.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

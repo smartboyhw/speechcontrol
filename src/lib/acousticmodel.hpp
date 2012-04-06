@@ -24,8 +24,8 @@
 #include <QObject>
 #include <QVariant>
 
-#include <lib/config.hpp>
-#include <lib/export.hpp>
+#include <config.hpp>
+#include <export.hpp>
 
 class QFile;
 namespace SpeechControl

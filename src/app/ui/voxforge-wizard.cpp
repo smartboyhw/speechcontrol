@@ -20,7 +20,7 @@
 
 #include <QIcon>
 
-#include "app/core.hpp"
+#include "core.hpp"
 #include "wizards/intro.hpp"
 #include "wizards/outro.hpp"
 #include "wizards/voxforge/optin.hpp"
@@ -60,5 +60,5 @@ VoxforgeWizard::~VoxforgeWizard()
 
 }
 
-#include "voxforge-wizard.moc"
+#include "ui/voxforge-wizard.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

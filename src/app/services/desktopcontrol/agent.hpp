@@ -27,8 +27,8 @@
 #include <QObject>
 
 // Local
-#include <app/abstractagent.hpp>
-#include <app/macros.hpp>
+#include <abstractagent.hpp>
+#include <macros.hpp>
 #include "sphinx.hpp"
 #include "command.hpp"
 

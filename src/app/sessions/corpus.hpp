@@ -27,7 +27,7 @@
 #include <QDateTime>
 #include <QStringList>
 
-#include <app/sessions/phrase.hpp>
+#include <sessions/phrase.hpp>
 
 class QDomDocument;
 

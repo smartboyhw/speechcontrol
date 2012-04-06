@@ -20,9 +20,9 @@
 
 #include <QIcon>
 
-#include <lib/audiosource/device.hpp>
+#include <audiosource/device.hpp>
 
-#include "app/core.hpp"
+#include "core.hpp"
 #include "ui_select-microphone-dialog.h"
 #include "select-microphone-dialog.hpp"
 
@@ -103,5 +103,5 @@ MicrophoneSelectionDialog::~MicrophoneSelectionDialog()
 
 }
 
-#include "select-microphone-dialog.moc"
+#include "ui/select-microphone-dialog.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

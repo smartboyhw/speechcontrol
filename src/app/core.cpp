@@ -28,22 +28,22 @@
 #include <QMessageBox>
 
 // libspchcntrl includes
-#include <lib/config.hpp>
-#include <lib/system.hpp>
+#include <config.hpp>
+#include <system.hpp>
 
 // local includes
-#include "app/factory.hpp"
-#include "app/sessions/session.hpp"
-#include "app/ui/main-window.hpp"
-#include "app/ui/quickstart-wizard.hpp"
-#include "app/indicator.hpp"
+#include "factory.hpp"
+#include "sessions/session.hpp"
+#include "ui/main-window.hpp"
+#include "ui/quickstart-wizard.hpp"
+#include "indicator.hpp"
 #include "services/engine.hpp"
 #include "services/desktopcontrol/agent.hpp"
 #include "services/desktopcontrol/service.hpp"
 #include "services/dictation/agent.hpp"
 #include "services/dictation/service.hpp"
 
-#include "app/core.hpp"
+#include "core.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Wizards;

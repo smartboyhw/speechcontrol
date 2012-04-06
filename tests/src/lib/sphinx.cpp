@@ -22,8 +22,8 @@
 #include <QtTest/QTest>
 #include <QtGStreamer/QGlib/refpointer.h>
 #include <QtGStreamer/QGst/Element>
-#include <lib/system.hpp>
-#include <lib/audiosource/device.hpp>
+#include <system.hpp>
+#include <audiosource/device.hpp>
 
 #include "sphinx.h"
 #include "config_sphinx.hpp"

@@ -38,5 +38,5 @@ ConclusionPage::~ConclusionPage()
     delete ui;
 }
 
-#include "outro.moc"
+#include "ui/outro.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

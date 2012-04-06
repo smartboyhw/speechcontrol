@@ -21,8 +21,8 @@
 #define ADAPT_ENACTIONSELECTION_HPP
 
 #include <QWizardPage>
-#include <app/sessions/adaptionutility.hpp>
-#include <app/sessions/accuracymeter.hpp>
+#include <sessions/adaptionutility.hpp>
+#include <sessions/accuracymeter.hpp>
 
 namespace Ui
 {

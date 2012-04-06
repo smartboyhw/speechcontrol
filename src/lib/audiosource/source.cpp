@@ -18,10 +18,10 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "lib/audiosource/abstract.hpp"
-#include "lib/audiosource/sink.hpp"
-#include "lib/audiosource/source.hpp"
-#include "lib/audiosource/stream.hpp"
+#include "audiosource/abstract.hpp"
+#include "audiosource/sink.hpp"
+#include "audiosource/source.hpp"
+#include "audiosource/stream.hpp"
 
 using namespace SpeechControl;
 

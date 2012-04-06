@@ -27,7 +27,7 @@
 #include <QPixmap>
 #include <QTreeWidgetItem>
 #include <QAbstractButton>
-#include <app/macros.hpp>
+#include <macros.hpp>
 
 
 namespace Ui

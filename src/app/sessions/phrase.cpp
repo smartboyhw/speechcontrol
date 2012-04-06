@@ -72,5 +72,5 @@ Phrase::~Phrase()
 
 }
 
-#include "phrase.moc"
+#include "sessions/phrase.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -25,7 +25,7 @@
 #include <QString>
 #include <QObject>
 
-#include <lib/export.hpp>
+#include <export.hpp>
 
 class QFile;
 class QDomElement;

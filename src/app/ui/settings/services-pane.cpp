@@ -83,7 +83,5 @@ void ServicesSettingsPane::updateUi()
 
 }
 
-#include "services-pane.moc"
+#include "ui/services-pane.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
-
-

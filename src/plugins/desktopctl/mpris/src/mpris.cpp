@@ -19,7 +19,7 @@
  */
 
 #include "mpris.hpp"
-#include <app/core.hpp>
+#include <core.hpp>
 #include <QDBusInterface>
 #include <qdbusreply.h>
 

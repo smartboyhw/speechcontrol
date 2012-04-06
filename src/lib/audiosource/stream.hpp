@@ -20,7 +20,7 @@
 #ifndef SPCHCNTRL_LIB_AUDIOSOURCE_STREAM_HPP_
 #define SPCHCNTRL_LIB_AUDIOSOURCE_STREAM_HPP_
 
-#include <lib/audiosource/source.hpp>
+#include <audiosource/source.hpp>
 
 namespace SpeechControl
 {

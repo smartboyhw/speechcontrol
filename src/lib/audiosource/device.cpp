@@ -21,8 +21,8 @@
 #include <QGst/PropertyProbe>
 #include <QGst/ElementFactory>
 
-#include "lib/audiosource/device.hxx"
-#include "lib/audiosource/device.hpp"
+#include "audiosource/device.hxx"
+#include "audiosource/device.hpp"
 
 using namespace SpeechControl;
 

@@ -21,7 +21,7 @@
 #ifndef DESKTOPASR_HPP
 #define DESKTOPASR_HPP
 
-#include <lib/sphinx/abstract.hpp>
+#include <sphinx/abstract.hpp>
 
 namespace SpeechControl
 {

@@ -21,9 +21,9 @@
 #ifndef SPEECHCONTROL_DESKTOPCONTROL_SERVICE_HPP
 #define SPEECHCONTROL_DESKTOPCONTROL_SERVICE_HPP
 
-#include <services/engine.hpp>
-#include <macros.hpp>
-#include "command.hpp"
+#include <app/macros.hpp>
+#include <app/services/engine.hpp>
+#include <app/services/desktopcontrol/command.hpp>
 
 namespace SpeechControl
 {

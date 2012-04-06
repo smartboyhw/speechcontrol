@@ -21,8 +21,8 @@
 #ifndef SPEECHCONTROL_DICTATION_SERVICE_HPP
 #define SPEECHCONTROL_DICTATION_SERVICE_HPP
 
-#include <macros.hpp>
-#include <services/module.hpp>
+#include <app/macros.hpp>
+#include <app/services/module.hpp>
 
 namespace SpeechControl
 {

@@ -29,22 +29,28 @@ AbstractModule::AbstractModule (QObject* p_parent) : QObject (p_parent),
 
 }
 
-AbstractModule::AbstractModule (AbstractModulePrivate& p_dd, QObject* p_parent) :
-    QObject (p_parent), d_ptr (&p_dd)
+AbstractModule::AbstractModule (AbstractModulePrivate* p_dd, QObject* p_parent) :
+    QObject (p_parent), d_ptr (p_dd)
 {
 
 }
 
-AbstractModule::~AbstractModule()
+void AbstractModule::setState (const AbstractModule::ActivityState p_state)
 {
+    Q_D (AbstractModule);
+    d->changeState (p_state);
+}
 
+bool AbstractModule::isActive() const
+{
+    return state() == Enabled;
 }
 
 void AbstractModule::start()
 {
     if (!isActive()) {
         initialize();
-        emit started();
+        setState (Enabled);
     }
 }
 
@@ -52,8 +58,20 @@ void AbstractModule::stop()
 {
     if (isActive()) {
         deinitialize();
-        emit stopped();
+        setState (Disabled);
     }
+}
+
+AbstractModule::ActivityState AbstractModule::state() const
+{
+    Q_D (const AbstractModule);
+    return d->m_state;
+}
+
+
+AbstractModule::~AbstractModule()
+{
+
 }
 
 #include "services/module.moc"

@@ -38,7 +38,7 @@ class AbstractModulePrivate;
 typedef QList<AbstractModule*> ModuleList;
 
 /**
- * @brief Represents  a service module.
+ * @brief Represents a service module.
  *
  * Modules serve as wrappers to the interfaces that internal and external components
  * of SpeechControl can provide.
@@ -46,19 +46,38 @@ typedef QList<AbstractModule*> ModuleList;
 class AbstractModule : public QObject
 {
     Q_OBJECT
-
-signals:
-    /**
-     * @brief Emitted when this AbstractModule's started.
-     **/
-    void started();
-
-    /**
-     * @brief Emitted when this AbstractModule's stopped.
-     **/
-    void stopped();
+    Q_ENUMS (ActivityState)
 
 public:
+    /**
+     * @brief Defines the possible operational states of an AbstractAgent.
+     *
+     * States allow agents to publicly express what mode of activity that
+     * the agent is currently in. They can be either in the Enabled or Disabled
+     * state. The Undefined state is provided for mediation purposes and may be
+     * removed in a future release.
+     **/
+    enum ActivityState {
+
+        Undefined = -1, /** Defines the state of the agent as undefined.
+        */
+
+        Disabled,       /** Defines the state of the agent as disabled.
+        *  All activity defined by the agent should be halted if active.
+        */
+
+        Enabled         /** Defines the state of the agent as enabled.
+        *  All activity defined by the agent should be activated.
+        */
+    };
+
+    /**
+     * Obtains the current state of the Agent.
+     * @return ActivityState
+     * @see ActivityState
+     **/
+    ActivityState state() const;
+
     /**
      * @brief Obtains the friendly name of this AbstractModule.
      **/
@@ -82,7 +101,29 @@ public:
     /**
      * @brief Determines if this AbstractModule is active.
      **/
-    virtual bool isActive() const = 0;
+    virtual bool isActive() const;
+
+signals:
+    /**
+     * Emitted when the state of this Agent is set to the Enabled state.
+     * @return void
+     * @see ActivityState::Enabled
+     **/
+    void enabled();
+
+    /**
+     * Emitted when the state of this Agent is set to the Disabled state.
+     * @return void
+     * @see ActivityState::Disabled
+     **/
+    void disabled();
+
+    /**
+     * Emitted when the state of this Agent has changed to an arbitrary state.
+     * @return void
+     * @see ActivityState
+     **/
+    void stateChanged (const ActivityState& p_state);
 
 public slots:
     /**
@@ -95,14 +136,21 @@ public slots:
      **/
     void stop();
 
+    /**
+     * Changes the state of this Agent to the specified state.
+     * @return void
+     * @see ActivityState
+     **/
+    void setState (const ActivityState p_state);
 protected:
     QScopedPointer<AbstractModulePrivate> d_ptr;
     Q_DISABLE_COPY (AbstractModule)
     Q_DECLARE_PRIVATE (AbstractModule)
+
     virtual void initialize() = 0;
     virtual void deinitialize() = 0;
     explicit AbstractModule (QObject* parent = 0);
-    AbstractModule (AbstractModulePrivate& p_dd, QObject* p_parent = 0);
+    AbstractModule (AbstractModulePrivate* p_dd, QObject* p_parent = 0);
     virtual ~AbstractModule();
 };
 

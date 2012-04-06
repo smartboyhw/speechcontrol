@@ -18,38 +18,13 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include "module.hpp"
 #include "engine.hpp"
 
 using namespace SpeechControl::Services;
 
 QMap<QString, AbstractModule*> Engine::s_list;
 Engine* Engine::s_inst = 0;
-
-AbstractModule::AbstractModule (const AbstractModule& p_other) : QObject (p_other.parent())
-{
-
-}
-
-AbstractModule::AbstractModule (QObject* p_parent) : QObject (p_parent)
-{
-}
-
-
-void AbstractModule::start()
-{
-    if (!isActive()) {
-        initialize();
-        emit started();
-    }
-}
-
-void AbstractModule::stop()
-{
-    if (isActive()) {
-        deinitialize();
-        emit stopped();
-    }
-}
 
 Engine::Engine() : QObject()
 {

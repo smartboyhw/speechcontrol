@@ -29,20 +29,11 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 ## set up build variables
-set(SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS "")
-set(SPCHCNTRL_LIB_BUILD_COMPILE_DEFINITIONS "")
-
-## Test if we're going to make Python bindings.
-if(WITH_PYTHON_BINDINGS)
-    message(STATUS "Python bindings for libspeechcontrol enabled; but not yet implemented.")
-else(WITH_PYTHON_BINDINGS)
-    message(STATUS "Python bindings for libspeechcontrol disabled.")
-endif(WITH_PYTHON_BINDINGS)
-
-## fill in build values
-list(APPEND SPCHCNTRL_LIB_BUILD_COMPILE_DEFINITIONS ${SPCHCNTRL_LIB_COMPILE_DEFINITIONS})
-list(APPEND SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS ${SPCHCNTRL_LIB_INCLUDE_DIRS}
-                                            "${CMAKE_SOURCE_DIR}/src")
+set(SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS ${SPCHCNTRL_BUILD_INCLUDE_DIRS}
+    ${SPCHCNTRL_LIB_INCLUDE_DIRS}
+    ${PROJECT_SOURCE_DIR}
+    ${PROJECT_BINARY_DIR})
+set(SPCHCNTRL_LIB_BUILD_COMPILE_DEFINITIONS ${SPCHCNTRL_LIB_COMPILE_DEFINITIONS})
 list(REMOVE_ITEM SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS ${SPCHCNTRL_LIB_INCLUDE_DIR})
 
 ## configures

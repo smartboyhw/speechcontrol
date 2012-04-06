@@ -33,12 +33,15 @@
 
 // local includes
 #include "app/factory.hpp"
+#include "app/indicator.hpp"
 #include "app/sessions/session.hpp"
-#include "app/windows/main-window.hpp"
-#include "app/windows/quickstart-wizard.hpp"
-#include "desktopcontrol/agent.hpp"
-#include "dictation/agent.hpp"
-#include "sessions/wikipediacontentsource.hpp"
+#include "app/services/engine.hpp"
+#include "app/services/dictation/agent.hpp"
+#include "app/services/dictation/service.hpp"
+#include "app/services/desktopcontrol/agent.hpp"
+#include "app/services/desktopcontrol/service.hpp"
+#include "app/ui/main-window.hpp"
+#include "app/ui/quickstart-wizard.hpp"
 #include "app/core.hpp"
 
 using namespace SpeechControl;

@@ -21,9 +21,9 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-#include <audiosource/abstract.hpp>
-#include <audiosource/stream.hpp>
-#include <sphinx/audiosource.hpp>
+#include <lib/audiosource/abstract.hpp>
+#include <lib/audiosource/stream.hpp>
+#include <lib/sphinx/audiosource.hpp>
 
 #include "plugin.hpp"
 #include "transcriber-dialog.hpp"
@@ -91,4 +91,4 @@ TranscriberDialog::~TranscriberDialog()
 }
 
 #include "transcriber-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -25,6 +25,7 @@
 namespace SpeechControl
 {
 
+struct StreamAudioSourcePrivate;
 /**
  * @brief Represents an audio source coming from data from a data stream.
  *
@@ -56,4 +57,4 @@ protected:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

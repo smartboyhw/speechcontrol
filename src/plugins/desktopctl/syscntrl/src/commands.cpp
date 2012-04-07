@@ -22,7 +22,7 @@
 // local includes
 #include "commands.hpp"
 
-APPLIST_NAMESPACE_BEGIN
+SYSCTLIST_NAMESPACE_BEGIN
 
 ApplicationListCategory* ApplicationListCategory::s_inst = 0;
 
@@ -76,6 +76,6 @@ bool StartCommand::invoke (const QString& p_statement) const
 
 #include "commands.moc"
 
-APPLIST_NAMESPACE_END
+SYSCTLIST_NAMESPACE_END
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

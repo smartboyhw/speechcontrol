@@ -104,9 +104,6 @@ void Core::hookUpSignals()
     connect (this, SIGNAL (started()), Plugins::Factory::instance(), SLOT (start()));
     connect (this, SIGNAL (stopped()), Services::Engine::instance(), SLOT (stop()));
     connect (this, SIGNAL (stopped()), Plugins::Factory::instance(), SLOT (stop()));
-
-    DesktopControl::Service::instance();
-    Dictation::Service::instance();
 }
 
 void Core::start()
@@ -217,8 +214,8 @@ bool Core::doesAutoStart()
 
 Core::~Core ()
 {
-    Q_D(Core);
+    Q_D (Core);
     d->m_settings->sync();
 }
 #include "core.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

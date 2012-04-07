@@ -22,18 +22,18 @@
 #include <QGst/Element>
 #include <QGst/Pipeline>
 
+#include <lib/sphinx/abstract.hpp>
+
 namespace SpeechControl
 {
 
-class AbstractSphinx;
-
-class AbstractSphinxPrivate;
-
-class AbstractSphinxPrivate
-{
+struct AbstractSphinxPrivate {
 public:
     Q_DECLARE_PUBLIC (AbstractSphinx)
-    explicit AbstractSphinxPrivate (AbstractSphinx* p_qPtr) : q_ptr (p_qPtr) {
+    explicit AbstractSphinxPrivate (AbstractSphinx* p_qPtr) :
+        m_running (AbstractSphinx::NotPrepared),
+        m_ready (AbstractSphinx::NotPrepared),
+        q_ptr (p_qPtr) {
         clear();
     }
 
@@ -41,10 +41,12 @@ public:
         clear();
     }
 
-    QGst::PipelinePtr   m_pipeline;     ///< Holds the pipeline for GStreamer.
-    QGst::ElementPtr    m_psphinx;      ///< Holds our lucky PocketSphinx object.
-    QGst::ElementPtr    m_vader;        ///< Holds the Vader element.
-    QGst::BusPtr        m_bus;          ///< Holds the executing bus for GStreamer.
+    QGst::PipelinePtr      m_pipeline;
+    QGst::ElementPtr       m_psphinx;
+    QGst::ElementPtr       m_vader;
+    QGst::BusPtr           m_bus;
+    AbstractSphinx::States m_running;
+    AbstractSphinx::States m_ready;
     AbstractSphinx* q_ptr;
 
 private:

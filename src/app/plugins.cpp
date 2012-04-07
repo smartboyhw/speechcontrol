@@ -62,10 +62,10 @@ bool AbstractPlugin::hasLoaded() const
 
 bool AbstractPlugin::isSupported() const
 {
-    qDebug() << "[AbstractPlugin::isSupported()] Is enabled?" << settings()->value ("Plugin/Enabled").toBool();
+    qDebug() << "[AbstractPlugin::isSupported()] Is enabled?" << settings()->value ("Plugin/Enabled", false).toBool();
 
     if (settings())
-        return settings()->value ("Plugin/Enabled").toBool();
+        return settings()->value ("Plugin/Enabled", false).toBool();
 
     return false;
 }
@@ -266,4 +266,4 @@ QPixmap Plugins::GenericPlugin::pixmap() const
 }
 
 #include "plugins.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

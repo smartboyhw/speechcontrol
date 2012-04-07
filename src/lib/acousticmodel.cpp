@@ -95,12 +95,12 @@ AcousticModel::AcousticModel (const AcousticModel& p_other) :
 }
 
 AcousticModel::AcousticModel (const QString& p_path, QObject* p_parent) : QObject (p_parent),
-    d_ptr (new AcousticModelPrivate(this))
+    d_ptr (new AcousticModelPrivate (this))
 {
     load (p_path);
 }
 
-AcousticModel::AcousticModel (QObject* p_parent) : QObject (p_parent), d_ptr (new AcousticModelPrivate(this))
+AcousticModel::AcousticModel (QObject* p_parent) : QObject (p_parent), d_ptr (new AcousticModelPrivate (this))
 {
 
 }
@@ -293,5 +293,5 @@ void AcousticModel::erase()
     }
 }
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
 #include "acousticmodel.moc"

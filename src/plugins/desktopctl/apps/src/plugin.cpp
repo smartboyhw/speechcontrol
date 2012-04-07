@@ -46,7 +46,7 @@ void Plugin::deinitialize()
 
 QPixmap Plugin::pixmap() const
 {
-    return QIcon::fromTheme("applications-internet").pixmap(64,64);
+    return QIcon::fromTheme ("applications-internet").pixmap (64, 64);
 }
 
 Plugin::~Plugin()

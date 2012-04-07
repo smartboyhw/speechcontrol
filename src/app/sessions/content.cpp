@@ -25,8 +25,9 @@
 #include <QTextStream>
 #include <QDomDocument>
 
-#include "core.hpp"
-#include "content.hpp"
+#include "app/core.hpp"
+#include "app/config.hpp"
+#include "app/sessions/content.hpp"
 
 using SpeechControl::Core;
 
@@ -511,4 +512,4 @@ bool TextContentSource::setUrl (const QUrl& p_url)
 }
 
 #include "sessions/content.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

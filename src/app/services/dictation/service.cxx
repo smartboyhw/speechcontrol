@@ -25,7 +25,7 @@
 using SpeechControl::Core;
 using namespace SpeechControl::Dictation;
 
-Service::ServicePrivate (Service* p_qPtr) :
+ServicePrivate::ServicePrivate (Service* p_qPtr) :
     AbstractModulePrivate (p_qPtr), m_safetyMode (Service::Active),
     m_sphinx (0)
 {

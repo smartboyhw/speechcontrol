@@ -32,11 +32,11 @@
 using SpeechControl::Core;
 using namespace SpeechControl::DesktopControl;
 
-ServicePrivate::ServicePrivate (Service* p_qPtr) : AbstractModulePrivate (p_qPtr),
+ServicePrivate::ServicePrivate (Service* p_parent) : AbstractModulePrivate (p_parent),
     m_sphinx (0),
     m_view (new QDeclarativeView (QUrl ("qrc:///qml/dskptctlui")))
 {
-    m_sphinx = new Sphinx (Sphinx::standardDescription());
+    m_sphinx = new Sphinx (Sphinx::standardDescription(), p_parent);
 
     QString defAcousticModel = Core::configuration ("DesktopControl/AcousticModel").toString();
     QString defLanguageModel = Core::configuration ("DesktopControl/LanguageModel").toString();
@@ -88,8 +88,13 @@ AbstractModule::ActivityState ServicePrivate::handleStateChange (const AbstractM
 
 }
 
+void ServicePrivate::changeState (AbstractModule::ActivityState p_state)
+{
+
+}
+
 ServicePrivate::~ServicePrivate()
 {
 
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

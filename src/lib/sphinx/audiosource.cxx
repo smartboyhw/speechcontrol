@@ -26,7 +26,7 @@
 using namespace SpeechControl;
 
 AudioSourceSphinxPrivate::AudioSourceSphinxPrivate (AudioSourceSphinx* p_qPtr) :
-    AbstractSphinxPrivate (*new AudioSourceSphinxPrivate (p_qPtr)), m_appSrc (0)
+    AbstractSphinxPrivate (p_qPtr), m_appSrc (0)
 {
 
 }

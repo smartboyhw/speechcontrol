@@ -79,7 +79,6 @@ void ServicePrivate::changeState (AbstractModule::ActivityState p_state)
 
 }
 
-
 Service::SafetyMode ServicePrivate::safetyMode() const
 {
     return m_safetyMode;

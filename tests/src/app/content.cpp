@@ -18,16 +18,20 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <QtTest/QtTest>
+
 #include "content_test.h"
-#include "app/sessions/wikipediacontentsource.hpp"
+#include "app/sessions/wikicontentsource.hpp"
 
 using namespace SpeechControl;
 
-void TestContent::buildWikipediaContent()
+void TestContent::buildWikiContent()
 {
-    WikipediaContentSource wiki ("test");
+    WikiContentSource wiki ("test");
     Content* test = wiki.generate();
 }
 
 #include "content_test.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+
+QTEST_APPLESS_MAIN(TestContent)
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

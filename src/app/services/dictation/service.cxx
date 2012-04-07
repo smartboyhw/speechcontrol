@@ -36,7 +36,7 @@ AbstractModule::ActivityState ServicePrivate::handleStateChange (const AbstractM
 {
     Q_Q (Service);
 
-    switch (p_stt) {
+    switch (p_state) {
     case AbstractModule::Enabled:
 
         if (!m_sphinx) {

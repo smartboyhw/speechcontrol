@@ -63,21 +63,27 @@ AbstractCommand::AbstractCommand (AbstractCategory* p_parentCategory, QStringLis
 
 bool AbstractCommand::areStatementsEquivalent (const QString p_command, const QString p_statement) const
 {
-    qDebug() << "[AbstractCommand::areStatementsEquivalent()]" << p_statement << "~=" << p_command;
+    qDebug() << "[AbstractCommand::areStatementsEquivalent()]"
+             << p_statement << "~=" << p_command
+             << p_statement.toLower().startsWith (p_command.toLower());
     /*
      * If we were going to use a regular expression, this would have been appropriate.
      * ^\b(p_command)\b{1,1}
      */
-    return p_statement.startsWith (p_command);
+    return p_statement.toLower().startsWith (p_command.toLower());
 }
 
 bool AbstractCommand::isValidStatement (const QString& p_statement) const
 {
+    qDebug() << "[AbstractCommand::isValidStatement()] Determing validity of statement" << p_statement;
     Q_FOREACH (const QString command, m_commands) {
         if (AbstractCommand::areStatementsEquivalent (command.toLower(), p_statement.toLower())) {
+            qDebug() << "[AbstractCommand::isValidStatement()] Statement valid for " << command;
             return true;
         }
     }
+
+    qDebug() << "[AbstractCommand::isValidStatement()] Statement is invalid.";
     return false;
 }
 
@@ -203,4 +209,4 @@ AbstractCategory::~AbstractCategory()
 }
 
 #include "services/desktopcontrol/command.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

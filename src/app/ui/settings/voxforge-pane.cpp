@@ -18,9 +18,15 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <QVariant>
+#include <QVariantMap>
+
+#include "app/core.hpp"
+#include "app/ui/main-window.hpp"
 #include "voxforge-pane.hpp"
 #include "ui_settingspane-voxforge.h"
 
+using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 
 VoxforgeSettingsPane::VoxforgeSettingsPane() :
@@ -67,18 +73,55 @@ QPixmap VoxforgeSettingsPane::pixmap() const
 
 void VoxforgeSettingsPane::restoreDefaults()
 {
-
+    Core::setConfiguration("Voxforge/Enabled",false);
+    Core::setConfiguration("Voxforge/ProvideAuthentication",false);
+    Core::setConfiguration("Voxforge/Authentication",QVariantMap());
 }
 
 void VoxforgeSettingsPane::updateUi()
 {
+    const bool isEnabled = Core::configuration ("Voxforge/Enabled").toBool();
+    const bool withAuth  = Core::configuration ("Voxforge/ProvideAuthentication").toBool();
 
+    ui->lineEditUserName->setText (Core::configuration ("Voxforge/Authentication").toMap().value ("Username").toString());
+
+    if (withAuth)
+        ui->lineEditPassWord->setText (Core::configuration ("Voxforge/Authentication").toMap().value ("Password").toString());
+
+    ui->checkBoxEnabled->setChecked (isEnabled);
+    ui->groupBoxAuthentication->setChecked (withAuth);
 }
 
-/// @todo Toggle the ability to upload content up to VoxForge.
-void SpeechControl::Windows::VoxforgeSettingsPane::on_checkBox_clicked()
+/// @todo Test the validity of the passed username and password.
+void VoxforgeSettingsPane::on_btnTestLogin_clicked()
 {
+    const QString username = ui->lineEditUserName->text();
+    const QString password = ui->lineEditPassWord->text();
+}
 
+void SpeechControl::Windows::VoxforgeSettingsPane::on_checkBoxEnabled_toggled (const bool& p_checked)
+{
+    Core::setConfiguration ("Voxforge/Enabled", p_checked);
+    Core::mainWindow()->updateUi();
+}
+
+void VoxforgeSettingsPane::on_groupBoxAuthenticated_toggled (const bool& p_checked)
+{
+    Core::setConfiguration ("Voxforge/ProvideAuthentication", p_checked);
+}
+
+void VoxforgeSettingsPane::on_lineEditPassWord_textChanged (const QString& p_text)
+{
+    QVariantMap map = Core::configuration ("Voxforge/Authentication").toMap();
+    map["Password"] = p_text;
+    Core::setConfiguration ("Voxforge/Authentication", map);
+}
+
+void VoxforgeSettingsPane::on_lineEditUserName_textChanged (const QString& p_text)
+{
+    QVariantMap map = Core::configuration ("Voxforge/Authentication").toMap();
+    map["Username"] = p_text;
+    Core::setConfiguration ("Voxforge/Authentication", map);
 }
 
 #include "ui/voxforge-pane.moc"

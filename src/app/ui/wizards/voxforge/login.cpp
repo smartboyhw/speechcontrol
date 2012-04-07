@@ -18,21 +18,61 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <QVariantMap>
+
+#include "app/core.hpp"
 #include "login.hpp"
 #include "ui_voxforgewizard-login.h"
 
 using namespace SpeechControl::Windows::Wizards::Pages;
 
-LoginPortal::LoginPortal (QWidget* parent) : QWizardPage (parent), ui (new Ui::LoginPortal)
+LoginPortal::LoginPortal (QWidget* parent) : QWizardPage (parent),
+    ui (new Ui::LoginPortal), m_successLogin (false)
 {
     ui->setupUi (this);
     this->setWindowIcon (QIcon::fromTheme ("encrypted"));
     this->setLayout (ui->gridLayout);
+
+    QVariantMap map = Core::configuration ("Voxforge/Authentication").toMap();
+    const bool withAuth = Core::configuration ("Voxforge/ProvideAuthentication").toBool();
+
+    if (withAuth) {
+        ui->lineEditUsername->setText (map.value ("Username").toString());
+        ui->lineEditPassword->setText (map.value ("Password").toString());
+    }
+
+    ui->progressBarLogin->setVisible (false);
+}
+
+void LoginPortal::on_checkBoxRemeberCreds_toggled (const bool& p_checked)
+{
+    if (p_checked) {
+        QVariantMap map = Core::configuration ("Voxforge/Authentication").toMap();
+        map["Username"] = ui->lineEditUsername->text();
+        map["Password"] = ui->lineEditPassword->text();
+        Core::setConfiguration ("Voxforge/Authentication", map);
+    }
+}
+
+void LoginPortal::on_lineEditUsername_textChanged (const QString& p_text)
+{
+    emit completeChanged();
+}
+
+void LoginPortal::on_lineEditPassword_textChanged (const QString& p_text)
+{
+    emit completeChanged();
+}
+
+bool LoginPortal::isComplete() const
+{
+    return !ui->lineEditPassword->text().isEmpty() && !ui->lineEditUsername->text().isEmpty() && m_successLogin;
 }
 
 void LoginPortal::on_btnLogin_clicked()
 {
-
+    ui->progressBarLogin->setVisible (true);
+    emit completeChanged();
 }
 
 LoginPortal::~LoginPortal()

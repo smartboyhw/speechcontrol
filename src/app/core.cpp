@@ -38,6 +38,7 @@
 #include "app/services/engine.hpp"
 #include "app/services/dictation/service.hpp"
 #include "app/services/desktopcontrol/service.hpp"
+#include "app/services/voxforge/service.hpp"
 #include "app/ui/main-window.hpp"
 #include "app/ui/quickstart-wizard.hpp"
 #include "app/core.hxx"
@@ -102,8 +103,18 @@ void Core::hookUpSignals()
     connect (this, SIGNAL (started()), this, SLOT (invokeAutoStart()));
     connect (this, SIGNAL (started()), Services::Engine::instance(), SLOT (start()));
     connect (this, SIGNAL (started()), Plugins::Factory::instance(), SLOT (start()));
+
     connect (this, SIGNAL (stopped()), Services::Engine::instance(), SLOT (stop()));
     connect (this, SIGNAL (stopped()), Plugins::Factory::instance(), SLOT (stop()));
+
+    bootServices();
+}
+
+void Core::bootServices()
+{
+    DesktopControl::Service::instance();
+    Dictation::Service::instance();
+    Voxforge::Service::instance();
 }
 
 void Core::start()
@@ -218,4 +229,4 @@ Core::~Core ()
     d->m_settings->sync();
 }
 #include "core.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

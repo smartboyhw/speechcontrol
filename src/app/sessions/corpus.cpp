@@ -83,7 +83,7 @@ Corpus& Corpus::operator << (PhraseList& p_phraseList)
 /// @todo Find a way to keep the text in an ordinal fashion.
 Corpus* Corpus::create (const QStringList& p_text)
 {
-    QString id = QString::number(qrand());
+    QString id = QString::number (qrand());
     QDir dir (getPath (id));
 
     if (!dir.mkpath (dir.path())) {
@@ -322,7 +322,7 @@ void Corpus::erase()
 
 Corpus* Corpus::clone() const
 {
-    QString id = QString::number(qrand());
+    QString id = QString::number (qrand());
     QDir thisDir (getPath (m_id));
     QDir newDir (getPath (id));
     newDir.mkpath (newDir.absolutePath());
@@ -441,4 +441,4 @@ Corpus::~Corpus()
 }
 
 #include "sessions/corpus.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

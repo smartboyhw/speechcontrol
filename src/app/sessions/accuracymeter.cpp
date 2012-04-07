@@ -28,13 +28,13 @@
 using namespace SpeechControl;
 
 AccuracyMeter::AccuracyMeter (QObject* p_parent) : QObject (p_parent),
-    m_prcss (0), m_model (0), m_session (0), m_status(Undefined)
+    m_prcss (0), m_model (0), m_session (0), m_status (Undefined)
 {
 
 }
 
 AccuracyMeter::AccuracyMeter (AcousticModel* p_model) : QObject(),
-    m_prcss (0), m_model (p_model), m_session (0), m_status(Undefined)
+    m_prcss (0), m_model (p_model), m_session (0), m_status (Undefined)
 {
 
 }
@@ -61,7 +61,8 @@ void AccuracyMeter::doAssessment (const QString& p_pathHyp)
         m_prcss->setProcessChannelMode (QProcess::MergedChannels);
         connect (m_prcss, SIGNAL (finished (int, QProcess::ExitStatus)), this, SLOT (on_mPrcss_finished (int, QProcess::ExitStatus)));
         m_prcss->start ("perl", args);
-    } else {
+    }
+    else {
         m_data["message"] = "No session was defined.";
         emit assessmentCompleted();
     }
@@ -119,4 +120,4 @@ AccuracyMeter::~AccuracyMeter()
 }
 
 #include "sessions/accuracymeter.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

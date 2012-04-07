@@ -34,8 +34,8 @@ struct AbstractModulePrivate {
     Q_DECLARE_PUBLIC (AbstractModule)
     AbstractModulePrivate (AbstractModule* p_qPtr);
     virtual ~AbstractModulePrivate();
-    void changeState (AbstractModule::ActivityState p_state);
-    virtual AbstractModule::ActivityState handleStateChange (const AbstractModule::ActivityState p_state);
+    virtual void changeState (AbstractModule::ActivityState p_state) = 0;
+    virtual AbstractModule::ActivityState handleStateChange (const AbstractModule::ActivityState p_state) = 0;
 
     AbstractModule* q_ptr;
     AbstractModule::ActivityState m_state;
@@ -43,4 +43,4 @@ struct AbstractModulePrivate {
 
 }
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

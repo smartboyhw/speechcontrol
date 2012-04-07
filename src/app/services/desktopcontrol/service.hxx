@@ -1,7 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -14,41 +14,31 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#ifndef BCKP_MODESELECT_HPP
-#define BCKP_MODESELECT_HPP
 
-#include <QWizardPage>
+#include <app/services/module.hxx>
 
-namespace Ui
-{
-class BackupSelection;
-}
-
+class QDeclarativeView;
 namespace SpeechControl
 {
-namespace Wizards
-{
-namespace Pages
+namespace DesktopControl
 {
 
-class BackupSelection : public QWizardPage
-{
-    Q_OBJECT
+class Service;
+class Sphinx;
 
-public:
-    explicit BackupSelection (QWidget* parent = 0);
-    ~BackupSelection();
-
-private:
-    Ui::BackupSelection* ui;
+struct ServicePrivate : public Services::AbstractModulePrivate {
+    virtual ~ServicePrivate();
+    explicit ServicePrivate (Service* parent = 0);
+    ServicePrivate (const Services::AbstractModulePrivate& p_other);
+    virtual Services::AbstractModule::ActivityState handleStateChange (const Services::AbstractModule::ActivityState p_state);
+    Sphinx* m_sphinx;
+    QDeclarativeView* m_view;
 };
 
 }
 }
-}
-
-#endif // BCKP_MODESELECT_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+

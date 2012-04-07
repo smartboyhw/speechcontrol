@@ -27,7 +27,7 @@
 #include "ui_manager-content.h"
 
 using namespace SpeechControl;
-using namespace SpeechControl::Wizards;
+using namespace SpeechControl::Windows::Wizards;
 using namespace SpeechControl::Windows::Managers;
 
 ContentManager::ContentManager (QWidget* parent) :
@@ -138,12 +138,12 @@ void ContentManager::on_lstContent_itemSelectionChanged()
         uint sessionCount = 0;
 
         SessionList lst = Session::allSessions();
-        Q_FOREACH(const Session* itm, lst){
+        Q_FOREACH (const Session * itm, lst) {
             if (itm->content()->id() == cnt->id())
                 sessionCount ++;
         }
 
-        ui->lblSessionCount->setText(tr("Used by %1 session(s)").arg(sessionCount));
+        ui->lblSessionCount->setText (tr ("Used by %1 session(s)").arg (sessionCount));
 
     }
     else {
@@ -154,5 +154,5 @@ void ContentManager::on_lstContent_itemSelectionChanged()
     }
 }
 
-#include "content-manager.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/content-manager.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

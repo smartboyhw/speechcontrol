@@ -19,12 +19,12 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#define APPLIST_NAMESPACE_BEGIN namespace SpeechControl {\
+#define SYSCTLIST_NAMESPACE_BEGIN namespace SpeechControl {\
     namespace Plugins {\
         namespace DesktopControl {\
             namespace ApplicationListing {\
- 
-#define APPLIST_NAMESPACE_END } } } }
 
-#define PLUGIN_ID "@SPDSKAPP_PLUGIN_ID@"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#define SYSCTLIST_NAMESPACE_END } } } }
+
+#define PLUGIN_ID "@SPDSKSYSCNTRL_PLUGIN_ID@"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -1,7 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -14,48 +14,32 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef BACKUP_WIZARD_HPP
-#define BACKUP_WIZARD_HPP
-
-#include "wizards/base.hpp"
+#include "service.hpp"
+#include "app/services/module.hxx"
+#include "app/services/dictation/sphinx.hpp"
 
 namespace SpeechControl
 {
-
-namespace Wizards
+namespace Dictation
 {
 
-class Backup : public WizardBase
+class Service;
+class ServicePrivate : public Services::AbstractModulePrivate
 {
-    Q_OBJECT
-    enum Pages {
-        IntroductionPage = 0,
-        BackupModePage,
-
-        // for backups
-        SessionSelectionPage,
-        MetadataAdditionPage,
-        BackupInvokationPage,
-
-        // for restores
-        BackupSelectionPage,
-        ConfirmationPage,
-        RestoreInvokationPage,
-
-        ConclusionPage
-    };
-
-public:
-    explicit Backup (QWidget* parent = 0);
-    ~Backup();
-
+    friend class Service;
+private:
+    Service::SafetyMode m_safetyMode;
+    Sphinx* m_sphinx;
+    ServicePrivate (Service* p_qPtr);
+    virtual ~ServicePrivate();
+    void setSafetyMode (const Service::SafetyMode& p_mode);
+    Service::SafetyMode safetyMode() const;
+    virtual AbstractModule::ActivityState handleStateChange (const AbstractModule::ActivityState& p_stt);
 };
-
 }
 }
-#endif // WIZARD_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

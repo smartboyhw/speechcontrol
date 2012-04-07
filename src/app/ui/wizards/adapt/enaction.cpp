@@ -25,15 +25,15 @@
 #include "modelselection.hpp"
 #include "sessionselection.hpp"
 #include "ui/adapt-wizard.hpp"
-#include "app/sessions/accuracymeter.hpp"
-#include "app/sessions/adaptionutility.hpp"
+#include "sessions/accuracymeter.hpp"
+#include "sessions/adaptionutility.hpp"
 #include "sessions/adaptionutility.hpp"
 #include "ui_adaptwizard-enaction.h"
 
 #include "enaction.hpp"
 
 using namespace SpeechControl;
-using namespace SpeechControl::Wizards::Pages;
+using namespace SpeechControl::Windows::Wizards::Pages;
 
 Enaction::Enaction (QWidget* parent) :
     QWizardPage (parent),
@@ -64,8 +64,8 @@ void Enaction::on_btnAdapt_clicked()
 {
     ui->btnAdapt->setEnabled (false);
 
-    SessionSelection* sessionPage = (SessionSelection*) wizard()->page (Wizards::AdaptWizard::SessionSelectionPage);
-    ModelSelection* modelPage = (ModelSelection*) wizard()->page (Wizards::AdaptWizard::ModelSelectionPage);
+    SessionSelection* sessionPage = (SessionSelection*) wizard()->page (Windows::Wizards::AdaptWizard::SessionSelectionPage);
+    ModelSelection* modelPage = (ModelSelection*) wizard()->page (Windows::Wizards::AdaptWizard::ModelSelectionPage);
 
     m_sessions = sessionPage->sessions();
     m_model = modelPage->model();
@@ -122,18 +122,19 @@ void Enaction::on_mMeter_assessmentCompleted ()
             invokeAdaption (m_sessions.at (m_sessions.indexOf (m_utility->session()) + 1));
 
         qDebug() << "[Enaction::on_mMeter_assessmentCompleted()]" << m_meter->data();
-        wizard()->setProperty("accuracy-rating","passed");
+        wizard()->setProperty ("accuracy-rating", "passed");
     }
     break;
 
     case AccuracyMeter::Error : {
-        QMessageBox::critical(this,tr("Failed to Determine Accuracy"),
-                              tr("SpeechControl was unable to determine the accuracy "
-                                "of the adapted acoustic model.\n\n<b>Error message</b>: %1\nOutput:\n<pre>%2</pre>"
-                              ).arg(m_meter->data()["message"].toString()).arg(m_meter->data()["output"].toString()));
-        wizard()->setProperty("accuracy-rating","failed");
+        QMessageBox::critical (this, tr ("Failed to Determine Accuracy"),
+                               tr ("SpeechControl was unable to determine the accuracy "
+                                   "of the adapted acoustic model.\n\n<b>Error message</b>: %1\nOutput:\n<pre>%2</pre>"
+                                  ).arg (m_meter->data() ["message"].toString()).arg (m_meter->data() ["output"].toString()));
+        wizard()->setProperty ("accuracy-rating", "failed");
         wizard()->next();
-    } break;
+    }
+    break;
 
     default:
         break;
@@ -169,7 +170,5 @@ Enaction::~Enaction()
     delete ui;
 }
 
-#include "enaction.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
-
-
+#include "ui/enaction.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -41,7 +41,7 @@ Factory::Factory() : QObject (Core::instance())
 {
     s_inst = this;
     QApplication::addLibraryPath (SPCHCNTRL_PLUGINS_LIB_DIR);
-    QDir::home().mkpath(Core::configurationPath().absolutePath() + "/plugins");
+    QDir::home().mkpath (Core::configurationPath().absolutePath() + "/plugins");
 }
 
 PluginMap Factory::availablePlugins()
@@ -127,7 +127,7 @@ void Factory::unloadPlugin (const QString& p_id)
         plgn->stop();
         s_ldPlgns.remove (p_id);
         emit instance()->pluginUnloaded (p_id);
-        qDebug() << "[Factory::unloadPlugin()] Plugin" << Factory::pluginConfiguration(p_id)->value("Plugin/Name").toString() << "unloaded.";
+        qDebug() << "[Factory::unloadPlugin()] Plugin" << Factory::pluginConfiguration (p_id)->value ("Plugin/Name").toString() << "unloaded.";
     }
 }
 
@@ -171,8 +171,9 @@ void Factory::start()
     qDebug() << "[Factory::start()] Loading auto-start plug-ins..." << endl
              << autoStart();
     Q_FOREACH (const QString plgn, autoStart()) {
-        qDebug() << "[Factory::start()] Attempting to load plug-in" << Factory::pluginConfiguration (plgn)->value("Plugin/Name").toString()
+        qDebug() << "[Factory::start()] Attempting to load plug-in" << Factory::pluginConfiguration (plgn)->value ("Plugin/Name").toString()
                  << "...";
+
         if (Factory::pluginSettings (plgn)->value ("Plugin/Enabled").toBool())
             Plugins::Factory::loadPlugin (plgn);
     }
@@ -192,4 +193,4 @@ Factory::~Factory()
 }
 
 #include "factory.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

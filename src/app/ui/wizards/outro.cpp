@@ -21,14 +21,14 @@
 #include "outro.hpp"
 #include "ui_wizardbase-outro.h"
 
-using namespace SpeechControl::Wizards::Pages;
+using namespace SpeechControl::Windows::Wizards::Pages;
 
 ConclusionPage::ConclusionPage (const QString& summary) :
     QWizardPage(),
     ui (new Ui::Conclusion)
 {
     ui->setupUi (this);
-    this->setLayout(ui->verticalLayout);
+    this->setLayout (ui->verticalLayout);
     this->setTitle ("Wizard Complete");
     ui->labelSummary->setText (summary);
 }
@@ -38,5 +38,5 @@ ConclusionPage::~ConclusionPage()
     delete ui;
 }
 
-#include "outro.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/outro.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

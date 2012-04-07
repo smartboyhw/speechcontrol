@@ -33,6 +33,8 @@ namespace SpeechControl
 {
 
 class AcousticModel;
+namespace Windows
+{
 namespace Wizards
 {
 namespace Pages
@@ -78,6 +80,6 @@ private:
 }
 }
 }
-
+}
 #endif // ADAPT_MODELSELECTION_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

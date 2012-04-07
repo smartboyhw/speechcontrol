@@ -22,7 +22,7 @@
 #ifndef PLUGIN_HPP
 #define PLUGIN_HPP
 
-#include <app/plugins.hpp>
+#include <plugins.hpp>
 
 namespace SpeechControl
 {
@@ -48,4 +48,4 @@ protected:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -19,8 +19,8 @@
  */
 
 #include "source-text.hpp"
-#include "app/ui/contents-wizard.hpp"
-#include "app/sessions/content.hpp"
+#include "ui/contents-wizard.hpp"
+#include "sessions/content.hpp"
 #include "ui_contentwizard-source-text.h"
 
 #include <QDebug>
@@ -67,11 +67,11 @@ void TextContentSourceWidget::updateView()
 
     if (src->isValid()) {
         m_ui->lblInfo->setText (tr ("<h2>%1</h2>by <b>%2</b>").arg (src->title()).arg (src->author()));
-        ( (SpeechControl::Wizards::ContentWizard*) this->window())->setSource (src);
+        ( (SpeechControl::Windows::Wizards::ContentWizard*) this->window())->setSource (src);
     }
     else {
         m_ui->lblInfo->setText (tr ("<h2>Invalid Content</h2>"));
-        ( (SpeechControl::Wizards::ContentWizard*) this->window())->setSource (0);
+        ( (SpeechControl::Windows::Wizards::ContentWizard*) this->window())->setSource (0);
     }
 }
 
@@ -80,5 +80,5 @@ TextContentSourceWidget::~TextContentSourceWidget()
     delete m_ui;
 }
 
-#include "source-text.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/source-text.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

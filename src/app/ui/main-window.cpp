@@ -35,32 +35,34 @@
 #include <lib/audiosource/device.hpp>
 #include <lib/acousticmodel.hpp>
 
-#include "core.hpp"
-#include "indicator.hpp"
-#include "services/engine.hpp"
-#include "services/dictation/agent.hpp"
-#include "services/desktopcontrol/agent.hpp"
-#include "sessions/session.hpp"
-#include "sessions/content.hpp"
-#include "ui/training-dialog.hpp"
-#include "ui/settings-dialog.hpp"
-#include "ui/content-manager.hpp"
-#include "ui/session-manager.hpp"
-#include "ui/about-dialog.hpp"
-#include "ui/quickstart-wizard.hpp"
-#include "ui/micsetup-wizard.hpp"
-#include "ui/contents-wizard.hpp"
-#include "ui/adapt-wizard.hpp"
-#include "ui/session-information-dialog.hpp"
+#include "app/core.hpp"
+#include "app/indicator.hpp"
+#include "app/services/engine.hpp"
+#include "app/services/module.hpp"
+#include "app/services/dictation/service.hpp"
+#include "app/services/desktopcontrol/service.hpp"
+#include "app/sessions/session.hpp"
+#include "app/sessions/content.hpp"
+#include "app/ui/training-dialog.hpp"
+#include "app/ui/settings-dialog.hpp"
+#include "app/ui/content-manager.hpp"
+#include "app/ui/session-manager.hpp"
+#include "app/ui/about-dialog.hpp"
+#include "app/ui/quickstart-wizard.hpp"
+#include "app/ui/micsetup-wizard.hpp"
+#include "app/ui/contents-wizard.hpp"
+#include "app/ui/adapt-wizard.hpp"
+#include "app/ui/session-information-dialog.hpp"
 #include "ui_main-window.h"
 
 #include "ui/main-window.hpp"
 #include "voxforge-wizard.hpp"
 
 using namespace SpeechControl;
+using namespace SpeechControl::Services;
 using namespace SpeechControl::Windows;
-using namespace SpeechControl::Wizards;
 using namespace SpeechControl::Windows::Managers;
+using namespace SpeechControl::Windows::Wizards;
 
 using SpeechControl::Windows::Main;
 
@@ -150,10 +152,10 @@ Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0), m_acrcyThrd (0)
     m_prgStatusbar = new QProgressBar (this);
     m_acrcyThrd = new AccuracyUpdaterThread (this);
 
-    connect (m_acrcyThrd, SIGNAL (foundError()),   this, SLOT (on_acrcyThrd_foundError()));
-    connect (m_acrcyThrd, SIGNAL (foundSuccess()), this, SLOT (on_acrcyThrd_foundSuccess()));
-    connect (m_acrcyThrd, SIGNAL (finished()),     this, SLOT (on_acrcyThrd_finished()));
-    connect (m_acrcyThrd, SIGNAL (foundNoData()),  this, SLOT (on_acrcyThrd_foundNoData()));
+    connect (m_acrcyThrd, SIGNAL (foundError()),   this, SLOT (onAcrcyThrd_foundError()));
+    connect (m_acrcyThrd, SIGNAL (foundSuccess()), this, SLOT (onAcrcyThrd_foundSuccess()));
+    connect (m_acrcyThrd, SIGNAL (finished()),     this, SLOT (onAcrcyThrd_finished()));
+    connect (m_acrcyThrd, SIGNAL (foundNoData()),  this, SLOT (onAcrcyThrd_foundNoData()));
 
     // Redo layout
     m_ui->centralwidget->setLayout (m_ui->gLayoutMain);
@@ -181,12 +183,12 @@ Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0), m_acrcyThrd (0)
     m_ui->actionHelp->setIcon (QIcon::fromTheme ("help"));
 
     // Update the actions and buttons.
-    connect (DesktopControl::Agent::instance(), SIGNAL (stateChanged (ActivityState)), this, SLOT (desktopControlStateChanged()));
-    connect (Dictation::Agent::instance(), SIGNAL (stateChanged (ActivityState)), this, SLOT (dictationStateChanged()));
+    connect (DesktopControl::Service::instance(), SIGNAL (stateChanged (ActivityState)), this, SLOT (desktopControlStateChanged()));
+    connect (Dictation::Service::instance(), SIGNAL (stateChanged (ActivityState)), this, SLOT (dictationStateChanged()));
     desktopControlStateChanged();
     dictationStateChanged();
-    on_actionDesktopControlActive_triggered (DesktopControl::Agent::instance()->isActive());
-    on_actionDictationActive_triggered (Dictation::Agent::instance()->isActive());
+    on_actionDesktopControlActive_triggered (DesktopControl::Service::instance()->isActive());
+    on_actionDictationActive_triggered (Dictation::Service::instance()->isActive());
 
     // Greet the user :)
     setStatusMessage (tr ("Welcome to %1, speech recognition for Linux.").arg (QApplication::applicationName()), 4000);
@@ -245,8 +247,8 @@ void Main::open()
         const bool isIndicatorVisible = Indicator::isVisible() && Indicator::isEnabled();
         const bool isMainWindowVisible = Core::configuration ("MainWindow/Visible").toBool() == true;
 
-        if (!isIndicatorVisible || isMainWindowVisible || (!isIndicatorVisible && isMainWindowVisible)){
-            Core::setConfiguration ("MainWindow/Visible",true);
+        if (!isIndicatorVisible || isMainWindowVisible || (!isIndicatorVisible && isMainWindowVisible)) {
+            Core::setConfiguration ("MainWindow/Visible", true);
             QMainWindow::show();
         }
         else
@@ -272,11 +274,6 @@ void Main::setStatusMessage (const QString& p_message , const int p_timeout)
     m_ui->statusBar->showMessage (p_message, p_timeout);
 }
 
-void Main::on_acrcyThrd_finished()
-{
-    QTimer::singleShot (1000 * 5, Core::mainWindow(), SLOT (doAccuracyCheck()));
-}
-
 void Main::doAccuracyCheck()
 {
     qDebug() << "[Main::on_acrcyThrd_finished()] Invoking accuracy check thread...";
@@ -292,7 +289,12 @@ void Main::doAccuracyCheck()
     qDebug() << "[Main::on_acrcyThrd_finished()] Thread invoked.";
 }
 
-void Main::on_acrcyThrd_foundNoData()
+void Main::onAcrcyThrd_finished()
+{
+    QTimer::singleShot (1000 * 5, Core::mainWindow(), SLOT (doAccuracyCheck()));
+}
+
+void Main::onAcrcyThrd_foundNoData()
 {
     m_ui->lblRating->setPixmap (QIcon::fromTheme ("media-playback-stop").pixmap (48, 48));
     m_ui->progressBarAccuracy->setFormat ("No data available.");
@@ -300,12 +302,12 @@ void Main::on_acrcyThrd_foundNoData()
     setStatusMessage (tr ("No data found for determining the accuracy of SpeechControl."));
 }
 
-void Main::on_acrcyThrd_foundSuccess()
+void Main::onAcrcyThrd_foundSuccess()
 {
 
 }
 
-void Main::on_acrcyThrd_foundError()
+void Main::onAcrcyThrd_foundError()
 {
     m_ui->lblRating->setPixmap (QIcon::fromTheme ("dialog-error").pixmap (48, 48));
     m_ui->progressBarAccuracy->setRange (0, 1);
@@ -319,13 +321,13 @@ void Main::desktopControlStateChanged()
 {
     QString msg;
 
-    switch (DesktopControl::Agent::instance()->state()) {
-    case AbstractAgent::Enabled:
+    switch (DesktopControl::Service::instance()->state()) {
+    case AbstractModule::Enabled:
         msg = tr ("Desktop control activated.");
         break;
 
     default:
-    case AbstractAgent::Disabled:
+    case AbstractModule::Disabled:
         msg = tr ("Desktop control deactivated.");
         break;
     }
@@ -342,13 +344,13 @@ void Main::dictationStateChanged()
 {
     QString msg;
 
-    switch (Dictation::Agent::instance()->state()) {
-    case AbstractAgent::Enabled:
+    switch (Dictation::Service::instance()->state()) {
+    case AbstractModule::Enabled:
         msg = tr ("Dictation activated.");
         break;
 
     default:
-    case AbstractAgent::Disabled:
+    case AbstractModule::Disabled:
         msg = tr ("Dictation deactivated.");
         break;
     }
@@ -474,10 +476,10 @@ void Main::on_actionStartTraining_triggered ()
 /// @todo Allow configuration option to show specific notifications to prevent noise.
 void Main::on_actionDesktopControlActive_triggered (bool p_checked)
 {
-    if (p_checked && Dictation::Agent::instance()->isActive())
+    if (p_checked && Dictation::Service::instance()->isActive())
         return;
 
-    DesktopControl::Agent::instance()->setState (p_checked ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled);
+    DesktopControl::Service::instance()->setState (p_checked ? AbstractModule::Enabled : AbstractModule::Disabled);
     setStatusMessage ( (p_checked ? tr ("Desktop control activated.") : tr ("Desktop control deactivated.")) , 3000);
     Indicator::presentMessage ("Desktop Control");
     updateUi();
@@ -486,10 +488,10 @@ void Main::on_actionDesktopControlActive_triggered (bool p_checked)
 /// @todo Allow configuration option to show specific notifications to prevent noise.
 void Main::on_actionDictationActive_triggered (const bool p_checked)
 {
-    if (p_checked && DesktopControl::Agent::instance()->isActive())
+    if (p_checked && DesktopControl::Service::instance()->isActive())
         return;
 
-    Dictation::Agent::instance()->setState ( (p_checked) ? SpeechControl::AbstractAgent::Enabled : SpeechControl::AbstractAgent::Disabled);
+    Dictation::Service::instance()->setState ( (p_checked) ? AbstractModule::Enabled : AbstractModule::Disabled);
     setStatusMessage ( ( (p_checked) ? tr ("Dictation activated.") : tr ("Dictation deactivated."))  , 3000);
     updateUi();
 }
@@ -551,7 +553,7 @@ void Main::on_actionWizardContent_triggered()
 
 void Main::on_actionWizardVoxForge_triggered()
 {
-    VoxforgeWizard wiz(this);
+    VoxforgeWizard wiz (this);
     wiz.exec();
     updateUi();
 }
@@ -625,6 +627,5 @@ Main::~Main()
     delete m_ui;
 }
 
-#include "main-window.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
-
+#include "ui/main-window.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

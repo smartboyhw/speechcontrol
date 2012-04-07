@@ -1,7 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -14,26 +14,25 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "select-mode.hpp"
-#include "ui_backupwizard-modeselect.h"
+#include <QList>
 
-using SpeechControl::Wizards::Pages::BackupSelection;
-
-BackupSelection::BackupSelection (QWidget* parent) :
-    QWizardPage (parent),
-    ui (new Ui::BackupSelection)
+namespace SpeechControl
 {
-    ui->setupUi (this);
-}
-
-BackupSelection::~BackupSelection()
+namespace Services
 {
-    delete ui;
-}
+class AbstractModule;
+class EnginePrivate
+{
+public:
+    EnginePrivate() { }
+    virtual ~EnginePrivate() { }
+    static QMap<QString, AbstractModule*> s_list;
+};
 
-#include "select-mode.moc"
+}
+}
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

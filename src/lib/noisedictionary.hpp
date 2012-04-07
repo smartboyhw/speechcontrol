@@ -26,7 +26,7 @@
 #include <QObject>
 #include <QString>
 
-#include <lib/config.hpp>
+#include <config.hpp>
 
 namespace SpeechControl
 {
@@ -46,7 +46,7 @@ typedef QMap<QString, QString> QStringMap;
 class NoiseDictionary : public QObject
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(NoiseDictionary)
+    Q_DECLARE_PRIVATE (NoiseDictionary)
 
 public:
     /**
@@ -121,4 +121,4 @@ private:
 }
 
 #endif // SPEECHCONTROL_NOISEDICTIONARY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

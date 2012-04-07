@@ -20,15 +20,15 @@
 
 #include <QDebug>
 // libspchcntrl includes
-#include <lib/audiosource/device.hpp>
+#include <audiosource/device.hpp>
 
 #include "micselect.hpp"
-#include "app/ui/micsetup-wizard.hpp"
+#include "ui/micsetup-wizard.hpp"
 #include "ui_micwizard-select.h"
 
 using namespace SpeechControl;
-using namespace SpeechControl::Wizards::Pages;
-using SpeechControl::Wizards::Pages::MicrophoneSelection;
+using namespace SpeechControl::Windows::Wizards::Pages;
+using SpeechControl::Windows::Wizards::Pages::MicrophoneSelection;
 
 /// @todo The loudness of the content spoken should begin detection here.
 MicrophoneSelection::MicrophoneSelection (QWidget* parent) :
@@ -46,7 +46,7 @@ MicrophoneSelection::~MicrophoneSelection()
 }
 
 /// @todo Fill the combo box with all of the mics.
-void SpeechControl::Wizards::Pages::MicrophoneSelection::initializePage()
+void SpeechControl::Windows::Wizards::Pages::MicrophoneSelection::initializePage()
 {
     AudioSourceList l_allMics = DeviceAudioSource::allDevices();
 
@@ -60,7 +60,7 @@ void SpeechControl::Wizards::Pages::MicrophoneSelection::initializePage()
     on_comboBoxMicrophones_activated (ui->comboBoxMicrophones->currentIndex());
 }
 
-bool SpeechControl::Wizards::Pages::MicrophoneSelection::validatePage()
+bool SpeechControl::Windows::Wizards::Pages::MicrophoneSelection::validatePage()
 {
     device()->stop();
 
@@ -71,7 +71,7 @@ bool SpeechControl::Wizards::Pages::MicrophoneSelection::validatePage()
     return ui->progressBarFeedback->isEnabled();
 }
 
-void SpeechControl::Wizards::Pages::MicrophoneSelection::cleanupPage()
+void SpeechControl::Windows::Wizards::Pages::MicrophoneSelection::cleanupPage()
 {
     device()->stop();
     ui->comboBoxMicrophones->clear();
@@ -79,14 +79,14 @@ void SpeechControl::Wizards::Pages::MicrophoneSelection::cleanupPage()
     ui->progressBarFeedback->setFormat ("inactive");
 }
 
-bool SpeechControl::Wizards::Pages::MicrophoneSelection::isComplete()
+bool SpeechControl::Windows::Wizards::Pages::MicrophoneSelection::isComplete()
 {
     return device() != 0;
 }
 
 /// @todo Set the device to be detected for volume detection here.
 /// @todo Set this page's value to this field.
-void SpeechControl::Wizards::Pages::MicrophoneSelection::on_comboBoxMicrophones_activated (int index)
+void SpeechControl::Windows::Wizards::Pages::MicrophoneSelection::on_comboBoxMicrophones_activated (int index)
 {
     if (device()) {
         device()->stop();
@@ -125,5 +125,5 @@ void MicrophoneSelection::setDevice (DeviceAudioSource* p_device)
     }
 }
 
-#include "micselect.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/micselect.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

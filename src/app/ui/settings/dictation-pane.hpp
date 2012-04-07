@@ -21,7 +21,7 @@
 #ifndef DICTATION_SETTINGS_HPP
 #define DICTATION_SETTINGS_HPP
 
-#include <app/ui/settings-dialog.hpp>
+#include <ui/settings-dialog.hpp>
 
 namespace Ui
 {
@@ -63,8 +63,8 @@ protected:
 private slots:
     void on_checkBoxEnable_toggled (bool p_checked);
     void on_checkBoxEnableStartup_toggled (bool p_checked);
-    void on_lineEditStart_textChanged(QString p_text);
-    void on_lineEditEnd_textChanged(QString p_text);
+    void on_lineEditStart_textChanged (QString p_text);
+    void on_lineEditEnd_textChanged (QString p_text);
 
 private:
     Ui::DictationSettingsPane* m_ui;
@@ -74,4 +74,4 @@ private:
 }
 
 #endif // GENERAL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

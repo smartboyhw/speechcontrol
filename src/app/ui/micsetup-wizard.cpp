@@ -18,21 +18,21 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-
-#include "app/core.hpp"
-#include "wizards/intro.hpp"
-#include "wizards/outro.hpp"
-#include "micsetup-wizard.hpp"
-#include "wizards/micsetup/micselect.hpp"
-#include "wizards/micsetup/micsample.hpp"
-
 #include <QIcon>
 
+#include "app/core.hpp"
+#include "app/ui/wizards/intro.hpp"
+#include "app/ui/wizards/outro.hpp"
+#include "app/ui/micsetup-wizard.hpp"
+#include "app/ui/wizards/micsetup/micselect.hpp"
+#include "app/ui/wizards/micsetup/micsample.hpp"
+
 using namespace SpeechControl;
-using namespace SpeechControl::Wizards;
+using namespace SpeechControl::Windows::Wizards;
+using namespace SpeechControl::Windows::Wizards::Pages;
 
 MicrophoneSetup::MicrophoneSetup (QWidget* parent) :
-    WizardBase (parent)
+    AbstractWizard (parent)
 {
     // http://wiki.thesii.org/SpeechControl/UserGuides/Microphones
     QIcon l_icon = QIcon::fromTheme ("audio-headset");
@@ -40,10 +40,10 @@ MicrophoneSetup::MicrophoneSetup (QWidget* parent) :
     setWindowTitle (tr ("Microphone Setup Wizard - SpeechControl"));
     setPage (MicrophoneSetup::IntroductionPage,
              new Pages::IntroductionPage (tr ("This wizard will help you configure your microphone for optimal performance in SpeechControl."
-                                              " If this is the first time you've used a microphone or an alternative audio input device, please "
-                                              "visit <a href=\"http://wiki.thesii.org/SpeechControl/UserGuides/Microphones\">http://wiki.thesii.org/SpeechControl/UserGuides/Microphones</a> "
-                                              "for more detialed information about correct and recommended use of the microphone whilst using SpeechControl."
-            )));
+                                          " If this is the first time you've used a microphone or an alternative audio input device, please "
+                                          "visit <a href=\"http://wiki.thesii.org/SpeechControl/UserGuides/Microphones\">http://wiki.thesii.org/SpeechControl/UserGuides/Microphones</a> "
+                                          "for more detialed information about correct and recommended use of the microphone whilst using SpeechControl."
+                                             )));
     setPage (MicrophoneSetup::SelectionPage, new Pages::MicrophoneSelection);
     setPage (MicrophoneSetup::SamplingPage, new Pages::MicrophoneSample);
     setPage (MicrophoneSetup::ConclusionPage,
@@ -52,7 +52,7 @@ MicrophoneSetup::MicrophoneSetup (QWidget* parent) :
                                             "If your accuracy is poor, consider training your acoustic models by using the Adaption Wizard."
                                             "Visit <a href=\"http://wiki.thesii.org/SpeechControl/UserGuides/Microphones\">http://wiki.thesii.org/SpeechControl/UserGuides/Microphones</a> "
                                             "for more detialed information about correct and recommended use of the microphone whilst using SpeechControl."
-            )));
+                                           )));
 }
 
 void MicrophoneSetup::accept()
@@ -66,5 +66,5 @@ MicrophoneSetup::~MicrophoneSetup()
 
 }
 
-#include "micsetup-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/micsetup-wizard.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

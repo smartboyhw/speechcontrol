@@ -28,10 +28,12 @@ namespace SpeechControl
 {
 class Content;
 class AbstractContentSource;
+namespace Windows
+{
 namespace Wizards
 {
 
-class ContentWizard : public WizardBase
+class ContentWizard : public AbstractWizard
 {
     Q_OBJECT
 public:
@@ -56,5 +58,6 @@ private:
 
 }
 }
+}
 #endif // WIZARD_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

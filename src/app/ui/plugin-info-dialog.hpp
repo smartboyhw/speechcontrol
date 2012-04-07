@@ -23,7 +23,7 @@
 
 #include <QDialog>
 #include <QUuid>
-#include <app/plugins.hpp>
+#include <plugins.hpp>
 
 namespace Ui
 {
@@ -52,4 +52,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

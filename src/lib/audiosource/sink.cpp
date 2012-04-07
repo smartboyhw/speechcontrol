@@ -20,12 +20,12 @@
 
 #include <QDebug>
 
-#include "lib/audiosource/abstract.hpp"
-#include "lib/audiosource/stream.hpp"
-#include "lib/audiosource/source.hpp"
-#include "lib/audiosource/sink.hxx"
-#include "lib/audiosource/sink.hpp"
-#include "stream.hxx"
+#include "audiosource/stream.hxx"
+#include "audiosource/abstract.hpp"
+#include "audiosource/stream.hpp"
+#include "audiosource/source.hpp"
+#include "audiosource/sink.hxx"
+#include "audiosource/sink.hpp"
 
 using namespace SpeechControl;
 
@@ -82,7 +82,7 @@ StreamSink::StreamSink (const StreamSink& p_other) : GenericSink (p_other), d_pt
 
 }
 
-StreamSink::StreamSink (const GenericSink& p_other) : GenericSink (p_other), d_ptr(new StreamSinkPrivate)
+StreamSink::StreamSink (const GenericSink& p_other) : GenericSink (p_other), d_ptr (new StreamSinkPrivate)
 {
 
 }
@@ -123,4 +123,4 @@ StreamSink::~StreamSink()
 }
 
 #include "audiosource/sink.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

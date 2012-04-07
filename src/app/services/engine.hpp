@@ -22,9 +22,8 @@
 #define SERVICES_ENGINE_HPP
 
 #include <QMap>
-#include <QList>
-#include <QObject>
-#include <QString>
+#include <QScopedPointer>
+
 #include <macros.hpp>
 
 class QPixmap;
@@ -35,76 +34,9 @@ namespace Services
 {
 class AbstractModule;
 class Engine;
+class EnginePrivate;
 
-/**
- * @brief Represents a list of Modules.
- **/
 typedef QList<AbstractModule*> ModuleList;
-
-/**
- * @brief Represents  a service module.
- *
- * Modules serve as wrappers to the interfaces that internal and external components
- * of SpeechControl can provide.
- **/
-class AbstractModule : public QObject
-{
-    Q_OBJECT
-    Q_DISABLE_COPY (AbstractModule)
-
-signals:
-    /**
-     * @brief Emitted when this AbstractModule's started.
-     **/
-    void started();
-
-    /**
-     * @brief Emitted when this AbstractModule's stopped.
-     **/
-    void stopped();
-
-public:
-    /**
-     * @brief Obtains the friendly name of this AbstractModule.
-     **/
-    virtual QString name() const = 0;
-
-    /**
-     * @brief Obtains the ID of the AbstractModule.
-     **/
-    virtual QString id() const = 0;
-
-    /**
-     * @brief Obtains the QPixmap to use with this AbstractModule.
-     **/
-    virtual QPixmap pixmap() const = 0;
-
-    /**
-     * @brief Determines if this AbstractModule is enabled.
-     **/
-    virtual bool isEnabled() const = 0;
-
-    /**
-     * @brief Determines if this AbstractModule is active.
-     **/
-    virtual bool isActive() const = 0;
-
-public slots:
-    /**
-     * @brief Starts this AbstractModule.
-     **/
-    void start();
-
-    /**
-     * @brief Stops this AbstractModule.
-     **/
-    void stop();
-
-protected:
-    virtual void initialize() = 0;
-    virtual void deinitialize() = 0;
-    AbstractModule (QObject* p_parent);
-};
 
 /**
  * @brief Represents the core Service engine.
@@ -172,7 +104,7 @@ public slots:
     static void stop();
 
 private:
-    static QMap<QString, AbstractModule*> s_list;
+    QScopedPointer<EnginePrivate> d_ptr;
 };
 
 }
@@ -180,4 +112,4 @@ private:
 
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -32,7 +32,7 @@ ServicePrivate::ServicePrivate (Service* p_qPtr) :
 
 }
 
-AbstractModule::ActivityState ServicePrivate::handleStateChange (const AbstractModule::ActivityState& p_state)
+AbstractModule::ActivityState ServicePrivate::handleStateChange (const AbstractModule::ActivityState p_state)
 {
     Q_Q (Service);
 

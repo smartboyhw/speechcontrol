@@ -39,7 +39,7 @@ private:
     void setSafetyMode (const Service::SafetyMode& p_mode);
     Service::SafetyMode safetyMode() const;
     virtual void changeState (AbstractModule::ActivityState p_state);
-    virtual AbstractModule::ActivityState handleStateChange (const AbstractModule::ActivityState& p_state);
+    virtual AbstractModule::ActivityState handleStateChange (const AbstractModule::ActivityState p_state);
 };
 }
 }

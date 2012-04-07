@@ -50,16 +50,18 @@ public:
         Disabled
     };
 
-    void setSafetyMode (const SafetyMode& p_mode);
     bool isSafetyModeActive() const;
     bool isSafetyModeEnabled() const;
     SafetyMode safetyMode() const;
-    void handleText (const QString& p_text);
     virtual bool isEnabled() const;
     virtual QString id() const;
     virtual QPixmap pixmap() const;
     virtual QString name() const;
     virtual ~Service();
+
+public slots:
+    void handleText (const QString& p_text);
+    void setSafetyMode (const SafetyMode& p_mode);
 };
 
 }
@@ -67,4 +69,4 @@ public:
 }
 
 #endif // SPEECHCONTROL_DICTATION_SERVICE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

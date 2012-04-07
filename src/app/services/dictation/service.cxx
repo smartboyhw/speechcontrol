@@ -76,7 +76,7 @@ AbstractModule::ActivityState ServicePrivate::handleStateChange (const AbstractM
 
 void ServicePrivate::changeState (AbstractModule::ActivityState p_state)
 {
-
+    m_state = handleStateChange(p_state);
 }
 
 Service::SafetyMode ServicePrivate::safetyMode() const

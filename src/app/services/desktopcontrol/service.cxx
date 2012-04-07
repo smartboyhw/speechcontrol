@@ -36,7 +36,7 @@ ServicePrivate::ServicePrivate (Service* p_parent) : AbstractModulePrivate (p_pa
     m_sphinx (0),
     m_view (new QDeclarativeView (QUrl ("qrc:///qml/dskptctlui")))
 {
-    m_sphinx = new Sphinx (Sphinx::standardDescription(), p_parent);
+    m_sphinx = new Sphinx (Sphinx::standardDescription());
 
     QString defAcousticModel = Core::configuration ("DesktopControl/AcousticModel").toString();
     QString defLanguageModel = Core::configuration ("DesktopControl/LanguageModel").toString();

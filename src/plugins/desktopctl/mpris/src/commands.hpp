@@ -41,7 +41,7 @@ MPRIS_NAMESPACE_BEGIN
 class MprisCategory : public AbstractCategory
 {
     Q_OBJECT
-    Q_DISABLE_COPY(MprisCategory)
+    Q_DISABLE_COPY (MprisCategory)
     SC_SINGLETON (MprisCategory)
     friend class Plugin;
 
@@ -60,7 +60,7 @@ public:
 class PlayerCommand : public AbstractCommand
 {
     Q_OBJECT
-    Q_DISABLE_COPY(PlayerCommand)
+    Q_DISABLE_COPY (PlayerCommand)
     friend class Plugin;
     friend class MprisCategory;
 
@@ -78,9 +78,10 @@ private:
  * This command is based partly on the D-Bus specification for MPRIS
  * defined at http://www.mpris.org/2.1/spec/Player_Node.html.
  **/
-class LibraryCommand : public AbstractCommand {
+class LibraryCommand : public AbstractCommand
+{
     Q_OBJECT
-    Q_DISABLE_COPY(LibraryCommand)
+    Q_DISABLE_COPY (LibraryCommand)
     friend class Plugin;
     friend class MprisCategory;
 
@@ -95,4 +96,4 @@ private:
 MPRIS_NAMESPACE_END
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

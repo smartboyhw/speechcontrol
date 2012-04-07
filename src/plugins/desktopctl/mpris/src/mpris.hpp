@@ -30,12 +30,13 @@
 class QDBusInterface;
 
 MPRIS_NAMESPACE_BEGIN
-namespace DBus {
+namespace DBus
+{
 class Player : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY(Player)
-    SC_SINGLETON(Player)
+    Q_DISABLE_COPY (Player)
+    SC_SINGLETON (Player)
 
 public:
     virtual ~Player();
@@ -45,8 +46,8 @@ public:
     void nextTrack();
     void previousTrack();
 
-    void setRepeat(const bool p_repeatState);
-    void setVolume(const quint8 p_volume);
+    void setRepeat (const bool p_repeatState);
+    void setVolume (const quint8 p_volume);
 
     quint8 volume();
 
@@ -58,4 +59,4 @@ private:
 
 MPRIS_NAMESPACE_END
 #endif // MPRIS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -82,27 +82,29 @@ void Service::setAcousticModel (const AcousticModel& p_acModel)
 void Service::setDefaultAcousticModel (const AcousticModel& p_acModel)
 {
     Core::setConfiguration ("DesktopControl/AcousticModel", p_acModel.path());
-    setAcousticModel(p_acModel);
+    setAcousticModel (p_acModel);
 }
 
 void Service::invokeCommand (const QString& cmd)
 {
     qDebug() << "[DesktopControl::Service::invokeCommand()] Heard " << cmd << "from the user.";
     AbstractCategory* glbl = AbstractCategory::global();
-    CommandList cmds = glbl->matchAllCommands (cmd);
+    CommandList commands = glbl->matchAllCommands (cmd);
 
-    if (!cmds.isEmpty()) {
-        if (cmds.count() == 1) {
-            AbstractCommand* onlyCmd = cmds.first();
-            emit commandFound (cmd, onlyCmd);
-            onlyCmd->invoke (cmd);
+    if (!commands.isEmpty()) {
+        if (commands.count() == 1) {
+            AbstractCommand* onlyCommand = commands.first();
+            qDebug() << "[DesktopControl::Service::invokeCommand()] Only matched a command " << onlyCommand->id() << "matched with statements" << onlyCommand->statements();
+            emit commandFound (cmd, onlyCommand);
+            onlyCommand->invoke (cmd);
+            return;
         }
         else {
-            emit multipleCommandsFound (cmd, cmds);
-        }
+            emit multipleCommandsFound (cmd, commands);
 
-        Q_FOREACH (AbstractCommand * cmd, cmds) {
-            qDebug() << "[DesktopControl::Service::invokeCommand()] Command " << cmd->id() << "matched with statements" << cmd->statements();
+            Q_FOREACH (AbstractCommand * command, commands) {
+                qDebug() << "[DesktopControl::Service::invokeCommand()] Command " << command->id() << "matched with statements" << command->statements();
+            }
         }
 
     }

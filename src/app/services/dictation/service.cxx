@@ -32,7 +32,7 @@ ServicePrivate::ServicePrivate (Service* p_qPtr) :
 
 }
 
-AbstractModule::ActivityState ServicePrivate::handleStateChange (const AbstractModule::ActivityState& p_stt)
+AbstractModule::ActivityState ServicePrivate::handleStateChange (const AbstractModule::ActivityState& p_state)
 {
     Q_Q (Service);
 
@@ -50,6 +50,7 @@ AbstractModule::ActivityState ServicePrivate::handleStateChange (const AbstractM
         }
         else {
             qDebug() << "[DictationPrivate::Service::onStateChanged()] Enabled.";
+            q->handleText("This is Jacky messing around with SpeechControl.");
         }
 
         return AbstractModule::Enabled;

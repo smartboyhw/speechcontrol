@@ -38,8 +38,9 @@ private:
     virtual ~ServicePrivate();
     void setSafetyMode (const Service::SafetyMode& p_mode);
     Service::SafetyMode safetyMode() const;
-    virtual AbstractModule::ActivityState handleStateChange (const AbstractModule::ActivityState& p_stt);
+    virtual void changeState (AbstractModule::ActivityState p_state);
+    virtual AbstractModule::ActivityState handleStateChange (const AbstractModule::ActivityState& p_state);
 };
 }
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

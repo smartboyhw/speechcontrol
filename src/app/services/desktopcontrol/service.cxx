@@ -59,11 +59,9 @@ AbstractModule::ActivityState ServicePrivate::handleStateChange (const AbstractM
     case AbstractModule::Enabled:
 
         if (!m_sphinx->start()) {
-            qWarning() << "[DesktopControl::Agent::start()] Start unsuccessful.";
+            qWarning() << "[DesktopControl::ServicePrivate::start()] Start unsuccessful.";
             return AbstractModule::Disabled;
         }
-
-        m_view->show();
 
         qDebug() << "[DesktopControl::ServicePrivate::start()] Enabled.";
 
@@ -72,12 +70,10 @@ AbstractModule::ActivityState ServicePrivate::handleStateChange (const AbstractM
 
     case AbstractModule::Disabled:
 
-        if (m_sphinx->isRunning() || m_sphinx->isReady()) {
+        if (!m_sphinx->stop()) {
             qWarning() << "[DesktopControl::ServicePrivate::stop()] Stop unsuccessful.";
             return AbstractModule::Enabled;
         }
-
-        m_view->hide();
 
         return AbstractModule::Disabled;
         break;
@@ -86,11 +82,12 @@ AbstractModule::ActivityState ServicePrivate::handleStateChange (const AbstractM
         return AbstractModule::Undefined;
     }
 
+    m_view->setVisible(m_sphinx->isRunning());
 }
 
 void ServicePrivate::changeState (AbstractModule::ActivityState p_state)
 {
-
+    m_state = handleStateChange(p_state);
 }
 
 ServicePrivate::~ServicePrivate()

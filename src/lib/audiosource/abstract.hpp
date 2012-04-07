@@ -28,7 +28,7 @@
 
 #include <QGst/Message>
 
-#include <export.hpp>
+#include <lib/export.hpp>
 
 namespace SpeechControl
 {
@@ -147,7 +147,9 @@ public slots:
 
 protected:
     Q_DISABLE_COPY (AbstractAudioSource)
-    Q_DECLARE_PRIVATE(AbstractAudioSource)
+    Q_DECLARE_PRIVATE (AbstractAudioSource)
+
+    QSharedPointer<AbstractAudioSourcePrivate> d_ptr;
 
     /**
      * @brief Null constructor.
@@ -200,8 +202,6 @@ protected:
      *
      **/
     virtual void buildPipeline();
-
-    QScopedPointer<AbstractAudioSourcePrivate> d_ptr;
 
 private slots:
     void onPipelineBusmessage (const QGst::MessagePtr& message);

@@ -63,40 +63,50 @@ PlayerCommand::PlayerCommand () : AbstractCommand (MprisCategory::instance() ,
 /// @todo Detect the arguments.
 bool PlayerCommand::invoke (const QString& p_statement) const
 {
+    qDebug() << "[PlayerCommand::invoke()] Invoking" << p_statement;
     if (!isValidStatement (p_statement)) {
+        qDebug() << "[PlayerCommand::invoke()] Invalid statement" << p_statement;
         return false;
     }
 
     const QString tokenArgument = AbstractCommand::obtainArgumentFromStatement (p_statement);
-
     const QString command = AbstractCommand::obtainCommandFromStatement (p_statement).toLower();
 
     if (command == "play music" || command == "resume playing music") {
+        qDebug() << "[PlayerCommand::invoke()] Playing music...";
         DBus::Player::instance()->play();
     }
     else if (command == "pause music") {
+        qDebug() << "[PlayerCommand::invoke()] Pausing music...";
         DBus::Player::instance()->pause();
     }
     else if (command == "stop playing music" || command == "stop music") {
+        qDebug() << "[PlayerCommand::invoke()] Stopping music...";
         DBus::Player::instance()->stop();
     }
     else if (command == "set volume to") {
         /// @todo Sanitize the argument to check if they said a percentage or some weird value.
+        qDebug() << "[PlayerCommand::invoke()] Set volume of music to " << tokenArgument << "...";
         DBus::Player::instance()->setVolume (tokenArgument.toUInt());
     }
     else if (command == "next track") {
+        qDebug() << "[PlayerCommand::invoke()] Advancing to next track...";
         DBus::Player::instance()->nextTrack();
     }
     else if (command == "previous track") {
+        qDebug() << "[PlayerCommand::invoke()] Going back a track...";
         DBus::Player::instance()->previousTrack();
     }
     else if (command == "stop repeating tracks") {
+        qDebug() << "[PlayerCommand::invoke()] Disabling repeat...";
         DBus::Player::instance()->setRepeat (false);
     }
     else if (command == "repeat tracks") {
+        qDebug() << "[PlayerCommand::invoke()] Enabling repeat...";
         DBus::Player::instance()->setRepeat (true);
     }
     else {
+        qDebug() << "[PlayerCommand::invoke()] No matching commands found.";
         return false;
     }
 
@@ -130,4 +140,4 @@ bool LibraryCommand::invoke (const QString& p_statement) const
 
 #include "commands.moc"
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -18,27 +18,31 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef SPCHCNTRL_LIB_SPHINX_AUDIOSOURCE_HXX_
-#define SPCHCNTRL_LIB_SPHINX_AUDIOSOURCE_HXX_
+#include "lib/audiosource/source.hpp"
+#include "lib/sphinx/abstract.hpp"
+#include "lib/sphinx/audiosource.hpp"
+#include "lib/sphinx/audiosource.hxx"
 
-#include <lib/sphinx/abstract.hxx>
+using namespace SpeechControl;
 
-namespace SpeechControl
+AudioSourceSphinxPrivate::AudioSourceSphinxPrivate (AudioSourceSphinx* p_qPtr) :
+    AbstractSphinxPrivate (*new AudioSourceSphinxPrivate (p_qPtr)), m_appSrc (0)
 {
-
-class AbstractAudioSource;
-class AudioSourceSphinx;
-class AudioSourceSphinxSource;
-
-struct AudioSourceSphinxPrivate : public AbstractSphinxPrivate {
-    explicit AudioSourceSphinxPrivate (AudioSourceSphinx* p_qPtr);
-    virtual ~AudioSourceSphinxPrivate();
-    void linkSource ();
-    AbstractAudioSource* m_audioSrc;
-    AudioSourceSphinxSource* m_appSrc;
-};
 
 }
 
-#endif
+void AudioSourceSphinxPrivate::linkSource ()
+{
+    Q_Q (AudioSourceSphinx);
+    QString description = q->standardDescription();
+    description = description.replace ("autoaudiosrc name=src", "appsrc name=src");
+    q->buildPipeline (description);
+    m_appSrc = new AudioSourceSphinxSource (q);
+    qDebug() << "[AudioSourceSphinx::linkSource()] Linked up sources.";
+}
+
+AudioSourceSphinxPrivate::~AudioSourceSphinxPrivate()
+{
+
+}
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

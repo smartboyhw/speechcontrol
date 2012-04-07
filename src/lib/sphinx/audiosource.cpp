@@ -18,25 +18,15 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "audiosource/abstract.hpp"
-#include "audiosource/source.hpp"
-#include "sphinx/audiosource.hxx"
-#include "sphinx/audiosource.hpp"
+#include "lib/sphinx/abstract.hpp"
+#include "lib/sphinx/audiosource.hpp"
+#include "lib/sphinx/audiosource.hxx"
+#include "lib/audiosource/abstract.hpp"
 
 using namespace SpeechControl;
 
-void AudioSourceSphinxPrivate::linkSource ()
-{
-    Q_Q (AudioSourceSphinx);
-    QString description = q->standardDescription();
-    description = description.replace ("autoaudiosrc name=src", "appsrc name=src");
-    q->buildPipeline (description);
-    m_appSrc = new AudioSourceSphinxSource (q);
-    qDebug() << "[AudioSourceSphinx::linkSource()] Linked up sources.";
-}
-
 AudioSourceSphinx::AudioSourceSphinx (QObject* p_parent) :
-    AbstractSphinx (new AudioSourceSphinxPrivate(this), p_parent)
+    AbstractSphinx (new AudioSourceSphinxPrivate (this), p_parent)
 {
 }
 
@@ -47,9 +37,14 @@ AudioSourceSphinx::AudioSourceSphinx (AbstractAudioSource* p_source, QObject* p_
 }
 
 AudioSourceSphinx::AudioSourceSphinx (const AudioSourceSphinx& p_other) :
-    AbstractSphinx (new AudioSourceSphinxPrivate (this), p_other.parent())
+    AbstractSphinx (const_cast<AbstractSphinxPrivate*> (p_other.d_func()), p_other.parent())
 {
-    setSource (p_other.d_func()->m_audioSrc);
+}
+
+AudioSourceSphinx::AudioSourceSphinx (const AbstractSphinx& p_base) :
+    AbstractSphinx (p_base)
+{
+
 }
 
 void AudioSourceSphinx::setSource (AbstractAudioSource* p_source)
@@ -73,14 +68,15 @@ bool AudioSourceSphinx::start()
     if (!d->m_audioSrc->isActive())
         return false;
 
-    return SpeechControl::AbstractSphinx::start();
+    return AbstractSphinx::start();
 }
 
 bool AudioSourceSphinx::stop()
 {
     Q_D (AudioSourceSphinx);
     d->m_audioSrc->stop();
-    return SpeechControl::AbstractSphinx::stop();
+
+    return AbstractSphinx::stop();
 }
 
 void AudioSourceSphinx::applicationMessage (const QGst::MessagePtr& p_message)

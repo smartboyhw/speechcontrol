@@ -41,6 +41,9 @@ void AbstractModule::setState (const AbstractModule::ActivityState p_state)
     Q_D (AbstractModule);
     qDebug() << "[AbstractModule::setState()] State changing to " << p_state << "...";
     d->changeState (p_state);
+
+    if (p_state == state())
+        emit stateChanged (p_state);
 }
 
 bool AbstractModule::isActive() const

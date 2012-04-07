@@ -25,7 +25,7 @@
 using SpeechControl::Core;
 using namespace SpeechControl::Dictation;
 
-ServicePrivate::ServicePrivate (Service* p_qPtr) :
+Service::ServicePrivatePrivate (Service* p_qPtr) :
     AbstractModulePrivate (p_qPtr), m_safetyMode (Service::Active),
     m_sphinx (0)
 {
@@ -45,23 +45,21 @@ AbstractModule::ActivityState ServicePrivate::handleStateChange (const AbstractM
         }
 
         if (!m_sphinx->start()) {
-            qWarning() << "[DictationPrivate::Service::onStateChanged()] Start unsuccessful.";
+            qWarning() << "[Dictation::ServicePrivate::onStateChanged()] Start unsuccessful.";
             return AbstractModule::Disabled;
         }
         else {
-            qDebug() << "[DictationPrivate::Service::onStateChanged()] Enabled.";
-            q->handleText("This is Jacky messing around with SpeechControl.");
+            qDebug() << "[Dictation::ServicePrivate::onStateChanged()] Enabled.";
         }
 
         return AbstractModule::Enabled;
         break;
 
     case AbstractModule::Disabled:
-
         if (m_sphinx) {
             m_sphinx->stop();
-            delete m_sphinx;
-            qDebug() << "[DictationPrivate::Service::onStateChanged()] Disabled.";
+            m_sphinx = 0;
+            qDebug() << "[Dictation::ServicePrivate::onStateChanged()] Disabled.";
         }
 
         break;

@@ -46,6 +46,7 @@ WikiContentSourceWidget::WikiContentSourceWidget (QWidget* parent) :
 void WikiContentSourceWidget::updateView()
 {
     WikiContentSource* src = new WikiContentSource;
+    Content* aContent = src->generate();
 }
 
 WikiContentSourceWidget::~WikiContentSourceWidget()
@@ -54,4 +55,4 @@ WikiContentSourceWidget::~WikiContentSourceWidget()
 }
 
 #include "ui/source-wiki.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

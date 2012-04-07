@@ -18,55 +18,61 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "upload.hpp"
+#include <QIcon>
 
+#include "app/core.hpp"
+#include "app/services/engine.hpp"
+#include "service.hpp"
+
+using namespace SpeechControl;
 using namespace SpeechControl::Voxforge;
+Service* Service::s_inst = 0;
 
-UploadHandler::UploadHandler (QObject* parent) : QObject (parent)
+Service::Service() : AbstractModule (Core::instance())
+{
+    Services::Engine::registerModule (this);
+}
+
+void Service::deinitialize()
 {
 
 }
 
-void UploadHandler::addPackage (Package* p_package)
-{
-    if (!m_pckgs.contains (p_package)) {
-        m_pckgs.append (p_package);
-    }
-}
-
-QList< Package* > UploadHandler::packages() const
-{
-    return m_pckgs;
-}
-
-void UploadHandler::setPassword (const QString& p_password)
-{
-    if (!p_password.isEmpty() && !p_password.isNull()) {
-        m_pssWord = p_password;
-    }
-}
-
-void UploadHandler::setUsername (const QString& p_username)
-{
-    if (!p_username.isEmpty() && !p_username.isNull()){
-        m_usrName = p_username;
-    }
-}
-
-void UploadHandler::cancelUpload()
+void Service::initialize()
 {
 
 }
 
-void UploadHandler::upload()
+bool Service::isEnabled() const
+{
+    return Core::configuration ("Voxforge/Enabled").toBool();
+}
+
+QString Service::id() const
+{
+    return "vxfrg";
+}
+
+QPixmap Service::pixmap() const
+{
+    return QIcon::fromTheme ("audio-input").pixmap (64, 64);
+}
+
+QString Service::name() const
+{
+    return "Voxforge";
+}
+
+/// @todo This should return TRUE whenever an upload's in progress or underway.
+bool Service::isActive() const
+{
+    return isEnabled();
+}
+
+Service::~Service()
 {
 
 }
 
-UploadHandler::~UploadHandler()
-{
-
-}
-
-#include "services/voxforge/upload.moc"
+#include "services/voxforge/service.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

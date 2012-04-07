@@ -26,7 +26,7 @@ using SpeechControl::Core;
 using namespace SpeechControl::Dictation;
 
 ServicePrivate::ServicePrivate (Service* p_qPtr) :
-    AbstractModulePrivate (p_qPtr), m_safetyMode (Service::SafetyMode::Active),
+    AbstractModulePrivate (p_qPtr), m_safetyMode (Service::Active),
     m_sphinx (0)
 {
 
@@ -87,4 +87,4 @@ ServicePrivate::~ServicePrivate()
 {
 
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

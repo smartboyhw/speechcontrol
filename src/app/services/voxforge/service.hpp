@@ -18,46 +18,40 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef SPCHCNTRL_VOXFORGE_LOGIN_HPP
-#define SPCHCNTRL_VOXFORGE_LOGIN_HPP
-#include <QWizardPage>
+#ifndef SPEECHCONTROL_VOXFORGE_SERVICE_HPP
+#define SPEECHCONTROL_VOXFORGE_SERVICE_HPP
 
-namespace Ui
-{
-class LoginPortal;
-}
+#include <app/macros.hpp>
+#include <app/services/module.hpp>
+#include <app/services/engine.hpp>
 
 namespace SpeechControl
 {
-namespace Windows
+
+namespace Voxforge
 {
-namespace Wizards
-{
-namespace Pages
-{
-class LoginPortal : public QWizardPage
+
+class Service : public SpeechControl::Services::AbstractModule
 {
     Q_OBJECT
+    Q_DISABLE_COPY(Service)
+    SC_SINGLETON(Service)
+protected:
+    virtual void deinitialize();
+    virtual void initialize();
 
 public:
-    LoginPortal (QWidget* parent = 0);
-    virtual ~LoginPortal();
-    virtual bool isComplete() const;
-
-private slots:
-    void on_btnLogin_clicked();
-    void on_checkBoxRemeberCreds_toggled(const bool& p_checked);
-    void on_lineEditUsername_textChanged(const QString& p_text);
-    void on_lineEditPassword_textChanged(const QString& p_text);
-
-private:
-    Ui::LoginPortal* ui;
-    bool m_successLogin;
+    virtual bool isEnabled() const;
+    virtual QString id() const;
+    virtual bool isActive() const;
+    virtual QPixmap pixmap() const;
+    virtual QString name() const;
+    virtual ~Service();
 };
-}
-}
-}
+
 }
 
-#endif //SPCHCNTRL_VOXFORGE_LOGIN_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+}
+
+#endif // SPEECHCONTROL_VOXFORGE_SERVICE_HPP
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -1,18 +1,20 @@
 ## Make the meta-library for the application to prevent HUGE builds.
 file(GLOB_RECURSE TEST_APP_SRCS
-    "${CMAKE_SOURCE_DIR}/src/app/ui/*.cpp"
-    "${CMAKE_SOURCE_DIR}/src/app/services/*.cpp"
-    "${CMAKE_SOURCE_DIR}/src/app/sessions/*.cpp")
+    "${CMAKE_SOURCE_DIR}/src/app/ui/*.c*"
+    "${CMAKE_SOURCE_DIR}/src/app/services/*.c*"
+    "${CMAKE_SOURCE_DIR}/src/app/sessions/*.c*")
 file (GLOB TEST_APP_BASE_SRCS
-    "${CMAKE_SOURCE_DIR}/src/app/*.cpp")
+    "${CMAKE_SOURCE_DIR}/src/app/*.c*")
 
 list(APPEND TEST_APP_SRCS ${TEST_APP_BASE_SRCS})
 list(REMOVE_ITEM TEST_APP_SRCS "${CMAKE_SOURCE_DIR}/src/app/main.cpp")
 
 set(TEST_COMPILE_DEFINITIONS ${SPCHCNTRL_COMPILE_DEFINITIONS} BUILDING_TEST)
 set(TEST_COMPILE_FLAGS ${SPCHCNTRL_COMPILE_FLAGS})
-set(TEST_LIBRARIES ${SPCHCNTRL_LIBRARIES}
+set(TEST_LIBRARIES ${SPCHCNTRL_APP_LIBRARIES}
                     speechcontrol
+                    ${QT_QTWEBKIT_LIBRARY}
+                    ${QT_QTDECLARATIVE_LIBRARY}
                     ${QT_QTTEST_LIBRARY})
 set(TEST_INCLUDE_DIRS ${SPCHCNTRL_INCLUDE_DIRS}
     ${SPCHCNTRL_LIB_INCLUDE_DIRS}

@@ -28,10 +28,10 @@
 
 #include "dictionary.hpp"
 
-#include "sessions/corpus.hpp"
-#include "sessions/phrase.hpp"
-#include "core.hpp"
-#include "config.hpp"
+#include "app/core.hpp"
+#include "app/config.hpp"
+#include "app/sessions/corpus.hpp"
+#include "app/sessions/phrase.hpp"
 
 using namespace SpeechControl;
 
@@ -441,4 +441,4 @@ Corpus::~Corpus()
 }
 
 #include "sessions/corpus.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

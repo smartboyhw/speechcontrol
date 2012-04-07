@@ -18,6 +18,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <QDebug>
 #include "module.hxx"
 #include "module.hpp"
 
@@ -38,6 +39,7 @@ AbstractModule::AbstractModule (AbstractModulePrivate* p_dd, QObject* p_parent) 
 void AbstractModule::setState (const AbstractModule::ActivityState p_state)
 {
     Q_D (AbstractModule);
+    qDebug() << "[AbstractModule::setState()] State changing to " << p_state << "...";
     d->changeState (p_state);
 }
 
@@ -49,16 +51,34 @@ bool AbstractModule::isActive() const
 void AbstractModule::start()
 {
     if (!isActive()) {
+        qDebug() << "[AbstractModule::start()] Initializing...";
         initialize();
+        qDebug() << "[AbstractModule::start()] Enabling module...";
         setState (Enabled);
+
+        if (state() == Enabled) {
+            qDebug() << "[AbstractModule::start()] Module enabled.";
+        }
+        else {
+            qDebug() << "[AbstractModule::start()] Failed to enable module.";
+        }
     }
 }
 
 void AbstractModule::stop()
 {
     if (isActive()) {
+        qDebug() << "[AbstractModule::stop()] Initializing...";
         deinitialize();
+        qDebug() << "[AbstractModule::stop()] Disabling module...";
         setState (Disabled);
+
+        if (state() == Disabled) {
+            qDebug() << "[AbstractModule::stop()] Module disabled.";
+        }
+        else {
+            qDebug() << "[AbstractModule::stop()] Failed to disable module.";
+        }
     }
 }
 
@@ -75,4 +95,4 @@ AbstractModule::~AbstractModule()
 }
 
 #include "services/module.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

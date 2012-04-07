@@ -23,16 +23,16 @@
 #define COMMANDS_HPP
 
 #include <QStringList>
+
+#include <app/services/desktopcontrol/command.hpp>
 #include <config.hpp>
-#include "plugin.hpp"
-#include <desktopcontrol/agent.hpp>
-#include <desktopcontrol/command.hpp>
+#include <plugin.hpp>
 
 using SpeechControl::DesktopControl::AbstractCommand;
 using SpeechControl::DesktopControl::AbstractCategory;
 
 
-APPLIST_NAMESPACE_BEGIN
+SYSCTLIST_NAMESPACE_BEGIN
 
 /**
  * @brief ...
@@ -103,7 +103,7 @@ private:
     QStringList m_cmds;
 };
 
-APPLIST_NAMESPACE_END
+SYSCTLIST_NAMESPACE_END
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

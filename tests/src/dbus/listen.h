@@ -18,13 +18,18 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#ifndef TEST_LISTEN_H_
+#define TEST_LISTEN_H_
+
 #include <QObject>
 
 namespace SpeechControl
 {
 class TestDBusListen : public QObject
 {
-
+    Q_OBJECT
 };
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+
+#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

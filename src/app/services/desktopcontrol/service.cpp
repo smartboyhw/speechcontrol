@@ -31,11 +31,15 @@
 #include "app/services/desktopcontrol/service.hpp"
 
 using SpeechControl::Core;
+using namespace SpeechControl::Services;
 using namespace SpeechControl::DesktopControl;
 Service* Service::s_inst = 0;
 
-Service::Service() : AbstractModule(new ServicePrivate(this),Core::instance())
+Service::Service() : AbstractModule (new ServicePrivate (this))
 {
+    Q_D (Service);
+    connect (d->m_sphinx, SIGNAL (finished (QString)), this, SLOT (invokeCommand (QString)));
+
     Services::Engine::registerModule (this);
 }
 
@@ -50,7 +54,7 @@ bool Service::isEnabled() const
 
 QString Service::id() const
 {
-    return "dsktp-cntrl";
+    return "dsktpctl";
 }
 
 QPixmap Service::pixmap() const
@@ -65,19 +69,20 @@ QString Service::name() const
 
 bool Service::isActive() const
 {
-    Q_D(const Service);
+    Q_D (const Service);
     return d->m_sphinx && d->m_sphinx->isRunning();
 }
 
 void Service::setAcousticModel (const AcousticModel& p_acModel)
 {
-    Q_D(Service);
+    Q_D (Service);
     d->m_sphinx->setAcousticModel (p_acModel.path());
 }
 
 void Service::setDefaultAcousticModel (const AcousticModel& p_acModel)
 {
     Core::setConfiguration ("DesktopControl/AcousticModel", p_acModel.path());
+    setAcousticModel(p_acModel);
 }
 
 void Service::invokeCommand (const QString& cmd)

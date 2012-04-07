@@ -35,8 +35,8 @@ void Sphinx::prepareForFile (const QString& p_path)
 {
     QString desc = standardDescription();
     desc.replace ("autoaudiosrc name=audiosrc ! audioconvert"
-                    " ! audioresample ! audiorate ",
-                    "filesrc name=audiosrc ! decodebin name=decoder ");
+                  " ! audioresample ! audiorate ",
+                  "filesrc name=audiosrc ! decodebin name=decoder ");
     buildPipeline (desc);
     audioSrcElement()->setProperty<const char*> ("location", p_path.toStdString().c_str());
     QGst::ElementPtr decodebin = pipeline()->getElementByName ("decoder");
@@ -75,4 +75,4 @@ Sphinx::~Sphinx()
 }
 
 #include "sphinx.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

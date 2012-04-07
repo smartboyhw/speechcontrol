@@ -48,7 +48,7 @@ void Plugin::deinitialize()
 
 QPixmap Plugin::pixmap() const
 {
-    return QIcon::fromTheme("audio-x-wav").pixmap(64,64);
+    return QIcon::fromTheme ("audio-x-wav").pixmap (64, 64);
 }
 
 void Plugin::showTranscriberDialog ()

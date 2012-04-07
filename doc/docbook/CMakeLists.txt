@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 if (WITH_KDE_SUPPORT)
+    message(STATUS "Building KDE-specific documentation enabled.")
     find_package(KDE4 QUIET)
     list(APPEND CMAKE_MODULE_PATH ${KDE4_MODULE_DIR})
 
@@ -10,4 +11,6 @@ if (WITH_KDE_SUPPORT)
     kde4_create_handbook("index.docbook"
                          INSTALL_DESTINATION "${HTML_INSTALL_DIR}/en"
                          SUBDIR speechcontrol)
+
+    add_dependencies(docs docbook-handbook)
 endif (WITH_KDE_SUPPORT)

@@ -29,6 +29,8 @@ class LoginPortal;
 
 namespace SpeechControl
 {
+namespace Windows
+{
 namespace Wizards
 {
 namespace Pages
@@ -55,7 +57,7 @@ private:
 }
 }
 }
-
+}
 
 #endif //SPCHCNTRL_VOXFORGE_LOGIN_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

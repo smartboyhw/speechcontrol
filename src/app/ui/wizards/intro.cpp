@@ -21,14 +21,14 @@
 #include "intro.hpp"
 #include "ui_wizardbase-intro.h"
 
-using namespace SpeechControl::Wizards::Pages;
+using namespace SpeechControl::Windows::Wizards::Pages;
 
 IntroductionPage::IntroductionPage (const QString& summary) :
     QWizardPage(),
     ui (new Ui::Introduction)
 {
     ui->setupUi (this);
-    this->setLayout(ui->verticalLayout);
+    this->setLayout (ui->verticalLayout);
     ui->labelSummary->setText (summary);
 }
 
@@ -37,5 +37,5 @@ IntroductionPage::~IntroductionPage()
     delete ui;
 }
 
-#include "intro.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/intro.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

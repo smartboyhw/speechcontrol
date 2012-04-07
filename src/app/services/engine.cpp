@@ -18,57 +18,35 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "engine.hpp"
+#include "app/core.hpp"
+#include "app/services/module.hpp"
+#include "app/services/engine.hxx"
+#include "app/services/engine.hpp"
 
+using SpeechControl::Core;
 using namespace SpeechControl::Services;
 
-QMap<QString, AbstractModule*> Engine::s_list;
+QMap<QString, AbstractModule*> EnginePrivate::s_list;
 Engine* Engine::s_inst = 0;
 
-AbstractModule::AbstractModule (const AbstractModule& p_other) : QObject (p_other.parent())
-{
-
-}
-
-AbstractModule::AbstractModule (QObject* p_parent) : QObject (p_parent)
+Engine::Engine() : QObject (Core::instance()), d_ptr (new EnginePrivate)
 {
 }
 
-
-void AbstractModule::start()
-{
-    if (!isActive()) {
-        initialize();
-        emit started();
-    }
-}
-
-void AbstractModule::stop()
-{
-    if (isActive()) {
-        deinitialize();
-        emit stopped();
-    }
-}
-
-Engine::Engine() : QObject()
-{
-}
-
-Engine::Engine (const Engine& p_other) : QObject (p_other.parent())
+Engine::Engine (const Engine& p_other) : QObject (p_other.parent()), d_ptr (const_cast<EnginePrivate*> (p_other.d_ptr.data()))
 {
 
 }
 
 ModuleList Engine::allModules()
 {
-    return s_list.values();
+    return EnginePrivate::s_list.values();
 }
 
 void Engine::registerModule (AbstractModule* p_module)
 {
     if (!findModule (p_module->id())) {
-        s_list.insert (p_module->id(), p_module);
+        EnginePrivate::s_list.insert (p_module->id(), p_module);
     }
 }
 
@@ -78,13 +56,13 @@ void Engine::unregisterModule (AbstractModule* p_module)
         if (p_module->isActive())
             p_module->stop();
 
-        s_list.remove (p_module->id());
+        EnginePrivate::s_list.remove (p_module->id());
     }
 }
 
 AbstractModule* Engine::findModule (const QString& p_id)
 {
-    return s_list.value (p_id);
+    return EnginePrivate::s_list.value (p_id);
 }
 
 void Engine::start()
@@ -98,5 +76,5 @@ void Engine::stop()
 }
 
 
-#include "engine.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "services/engine.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

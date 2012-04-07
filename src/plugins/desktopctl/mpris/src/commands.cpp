@@ -68,6 +68,7 @@ bool PlayerCommand::invoke (const QString& p_statement) const
     }
 
     const QString tokenArgument = AbstractCommand::obtainArgumentFromStatement (p_statement);
+
     const QString command = AbstractCommand::obtainCommandFromStatement (p_statement).toLower();
 
     if (command == "play music" || command == "resume playing music") {
@@ -94,7 +95,8 @@ bool PlayerCommand::invoke (const QString& p_statement) const
     }
     else if (command == "repeat tracks") {
         DBus::Player::instance()->setRepeat (true);
-    } else {
+    }
+    else {
         return false;
     }
 
@@ -128,4 +130,4 @@ bool LibraryCommand::invoke (const QString& p_statement) const
 
 #include "commands.moc"
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

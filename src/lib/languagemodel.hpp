@@ -41,7 +41,7 @@ class LanguageModel : public QObject
 {
     Q_OBJECT
     Q_PROPERTY (QString Path READ path)     ///< The path to the language mode, be it a directory or file.
-    Q_DECLARE_PRIVATE(LanguageModel)
+    Q_DECLARE_PRIVATE (LanguageModel)
 
 private:
     QScopedPointer<LanguageModelPrivate> d_ptr;
@@ -100,4 +100,4 @@ public:
 }
 
 #endif // SPEECHCONTROL_LANGUAGEMODEL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

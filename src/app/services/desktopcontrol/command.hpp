@@ -66,7 +66,7 @@ public slots:
 protected:
     explicit AbstractCommand (AbstractCategory* p_parentCategory , QStringList p_commands);
     QString obtainArgumentFromStatement (const QString p_statement) const;
-    QString obtainCommandFromStatement(const QString p_statement) const;
+    QString obtainCommandFromStatement (const QString p_statement) const;
     bool areStatementsEquivalent (const QString p_command, const QString p_statement) const;
     QStringList m_commands;     ///< The commands defined by this AbstractCommand.
 };
@@ -141,4 +141,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

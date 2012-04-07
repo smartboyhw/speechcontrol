@@ -22,9 +22,9 @@
 #include "base.hpp"
 
 
-using SpeechControl::Wizards::WizardBase;
+using SpeechControl::Windows::Wizards::AbstractWizard;
 
-WizardBase::WizardBase (QWidget* parent) :
+AbstractWizard::AbstractWizard (QWidget* parent) :
     QWizard (parent),
     ui (new Ui::WizardBase)
 {
@@ -32,16 +32,16 @@ WizardBase::WizardBase (QWidget* parent) :
     this->setWizardStyle (ClassicStyle);
 }
 
-void WizardBase::setPage (const int p_pageIndex, QWizardPage* p_page)
+void AbstractWizard::setPage (const int p_pageIndex, QWizardPage* p_page)
 {
     p_page->setMinimumSize (450, 275);
     QWizard::setPage (p_pageIndex, p_page);
 }
 
-WizardBase::~WizardBase()
+AbstractWizard::~AbstractWizard()
 {
     delete ui;
 }
 
-#include "base.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/base.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

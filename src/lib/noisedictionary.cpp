@@ -152,7 +152,7 @@ void NoiseDictionary::save()
     const QString padSpace = QString (size, ' ');
 
     for (QStringMap::iterator itr = d_func()->m_entries.begin();
-         itr != d_func()->m_entries.end(); itr++) {
+            itr != d_func()->m_entries.end(); itr++) {
         strm << itr.key() << padSpace << itr.value() << "\n";
         qDebug() << "[NoiseDictionary::load()] Saving entry" << itr.key() << "with the value" << itr.value();
     }
@@ -167,4 +167,4 @@ bool NoiseDictionary::isValid() const
 
 #include "noisedictionary.moc"
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

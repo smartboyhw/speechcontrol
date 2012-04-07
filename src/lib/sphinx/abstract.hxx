@@ -18,54 +18,33 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#ifndef SPCHCNTRL_LIB_SPHINX_ABSTRACT_HXX_
+#define SPCHCNTRL_LIB_SPHINX_ABSTRACT_HXX_
+
 #include <QGst/Bus>
 #include <QGst/Element>
 #include <QGst/Pipeline>
 
+#include <lib/sphinx/abstract.hpp>
+
 namespace SpeechControl
 {
 
-class AbstractSphinx;
-
-class AbstractSphinxPrivate;
-
-class AbstractSphinxPrivate
-{
-public:
+struct AbstractSphinxPrivate {
     Q_DECLARE_PUBLIC (AbstractSphinx)
-    explicit AbstractSphinxPrivate (AbstractSphinx* p_qPtr) : q_ptr (p_qPtr) {
-        clear();
-    }
+    explicit AbstractSphinxPrivate (AbstractSphinx* p_qPtr);
+    virtual ~AbstractSphinxPrivate();
+    void clear();
 
-    virtual ~AbstractSphinxPrivate() {
-        clear();
-    }
-
-    QGst::PipelinePtr   m_pipeline;     ///< Holds the pipeline for GStreamer.
-    QGst::ElementPtr    m_psphinx;      ///< Holds our lucky PocketSphinx object.
-    QGst::ElementPtr    m_vader;        ///< Holds the Vader element.
-    QGst::BusPtr        m_bus;          ///< Holds the executing bus for GStreamer.
+    QGst::PipelinePtr      m_pipeline;
+    QGst::ElementPtr       m_psphinx;
+    QGst::ElementPtr       m_vader;
+    QGst::BusPtr           m_bus;
+    AbstractSphinx::States m_running;
+    AbstractSphinx::States m_ready;
     AbstractSphinx* q_ptr;
-
-private:
-    void clear() {
-        if (!m_pipeline.isNull()) {
-            m_pipeline->setState (QGst::StateNull);
-        }
-
-        if (!m_psphinx.isNull()) {
-            m_psphinx->setState (QGst::StateNull);
-        }
-
-        if (!m_vader.isNull()) {
-            m_vader->setState (QGst::StateNull);
-        }
-
-        m_pipeline.clear();
-        m_bus.clear();
-        m_psphinx.clear();
-        m_vader.clear();
-    }
 };
 }
+
+#endif /* SPCHCNTRL_LIB_AUDIOSOURCE_ABSTRACT_HXX_ */
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

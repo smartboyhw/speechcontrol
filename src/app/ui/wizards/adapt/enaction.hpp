@@ -21,8 +21,8 @@
 #define ADAPT_ENACTIONSELECTION_HPP
 
 #include <QWizardPage>
-#include <app/sessions/adaptionutility.hpp>
-#include <app/sessions/accuracymeter.hpp>
+#include <sessions/adaptionutility.hpp>
+#include <sessions/accuracymeter.hpp>
 
 namespace Ui
 {
@@ -33,6 +33,8 @@ namespace SpeechControl
 {
 class Session;
 
+namespace Windows
+{
 namespace Wizards
 {
 namespace Pages
@@ -73,6 +75,6 @@ private:
 }
 }
 }
-
+}
 #endif // ADAPT_ENACTIONSELECTION_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

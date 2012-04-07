@@ -18,10 +18,10 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <lib/acousticmodel.hpp>
-#include <lib/languagemodel.hpp>
+#include <acousticmodel.hpp>
+#include <languagemodel.hpp>
 
-#include "app/core.hpp"
+#include "core.hpp"
 #include "sphinx.hpp"
 
 using namespace SpeechControl::Dictation;
@@ -74,4 +74,4 @@ void Sphinx::applicationMessage (const QGst::MessagePtr& p_message)
 }
 
 #include "services/dictation/sphinx.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

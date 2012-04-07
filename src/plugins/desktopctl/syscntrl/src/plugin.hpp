@@ -25,7 +25,7 @@
 #include "config.hpp"
 #include <app/plugins.hpp>
 
-APPLIST_NAMESPACE_BEGIN
+SYSCTLIST_NAMESPACE_BEGIN
 
 class Plugin : public AbstractPlugin
 {
@@ -41,7 +41,7 @@ protected:
     virtual void deinitialize();
 };
 
-APPLIST_NAMESPACE_END
+SYSCTLIST_NAMESPACE_END
 
 #endif
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -39,6 +39,7 @@ namespace Windows
 class Main;
 }
 
+class CorePrivate;
 /**
  * @brief Represents the entire heart of SpeechControl.
  *
@@ -52,6 +53,7 @@ class Core : public QObject
 
     Q_OBJECT
     Q_DISABLE_COPY (Core)
+    Q_DECLARE_PRIVATE (Core)
     SC_SINGLETON (Core)
 
 public:
@@ -164,13 +166,10 @@ private slots:
     void bootServices();
 
 private:
-    QApplication* m_app;    ///< Holds the Application instance.
-    Windows::Main* m_mw;    ///< Holds the main window.
-    QSettings* m_settings;  ///< Holds the application's global configuration.
-    QTranslator* m_trnsltr; ///< Holds the translating agent.
+    QScopedPointer<CorePrivate> d_ptr;
 };
 
 }
 
 #endif // CORE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

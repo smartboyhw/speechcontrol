@@ -21,7 +21,7 @@
 #include <QtTest/QtTest>
 #include <QtGStreamer/QGst/Init>
 #include "system.h"
-#include <lib/system.hpp>
+#include <system.hpp>
 
 using namespace SpeechControl;
 

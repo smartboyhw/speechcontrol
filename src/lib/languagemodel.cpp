@@ -27,7 +27,7 @@
 
 using namespace SpeechControl;
 
-LanguageModel::LanguageModel (QObject* p_parent) : QObject (p_parent), d_ptr(new LanguageModelPrivate)
+LanguageModel::LanguageModel (QObject* p_parent) : QObject (p_parent), d_ptr (new LanguageModelPrivate)
 {
 
 }
@@ -104,9 +104,9 @@ LanguageModelList LanguageModel::allModels()
 
 void LanguageModel::erase()
 {
-    if (isUser()){
-        QDir dir(path());
-        dir.rmpath(".");
+    if (isUser()) {
+        QDir dir (path());
+        dir.rmpath (".");
     }
 }
 
@@ -115,4 +115,4 @@ LanguageModel::~LanguageModel()
 }
 
 #include "languagemodel.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

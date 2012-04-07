@@ -33,6 +33,8 @@ class SourceSelectionPage;
 namespace SpeechControl
 {
 class AbstractContentSource;
+namespace Windows
+{
 namespace Wizards
 {
 namespace Pages
@@ -81,6 +83,6 @@ private:
 }
 }
 }
-
+}
 #endif // CONTENTWIZARD_SOURCESELECTION_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

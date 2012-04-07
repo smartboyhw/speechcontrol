@@ -20,7 +20,7 @@
 
 #include <QIcon>
 
-#include "app/core.hpp"
+#include "core.hpp"
 #include "wizards/intro.hpp"
 #include "wizards/outro.hpp"
 #include "wizards/voxforge/optin.hpp"
@@ -30,10 +30,10 @@
 #include "voxforge-wizard.hpp"
 
 using namespace SpeechControl;
-using namespace SpeechControl::Wizards;
+using namespace SpeechControl::Windows::Wizards;
 
 VoxforgeWizard::VoxforgeWizard (QWidget* parent) :
-    WizardBase (parent)
+    AbstractWizard (parent)
 {
     // http://wiki.thesii.org/SpeechControl/UserGuides/Voxforge
     QIcon icon = QIcon::fromTheme ("internet-web-browser");
@@ -60,5 +60,5 @@ VoxforgeWizard::~VoxforgeWizard()
 
 }
 
-#include "voxforge-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/voxforge-wizard.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

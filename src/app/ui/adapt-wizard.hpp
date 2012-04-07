@@ -27,6 +27,8 @@
 namespace SpeechControl
 {
 class Session;
+namespace Windows
+{
 namespace Wizards
 {
 namespace Pages
@@ -35,7 +37,7 @@ class Enaction;
 class Results;
 }
 
-class AdaptWizard : public WizardBase
+class AdaptWizard : public AbstractWizard
 {
     Q_OBJECT
     Q_DISABLE_COPY (AdaptWizard)
@@ -63,6 +65,7 @@ public slots:
 
 }
 }
+}
 #endif // WIZARD_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
 

@@ -21,32 +21,36 @@
 #include <QGst/PropertyProbe>
 #include <QGst/ElementFactory>
 
-#include "lib/audiosource/device.hxx"
-#include "lib/audiosource/device.hpp"
+#include "audiosource/device.hxx"
+#include "audiosource/device.hpp"
 
 using namespace SpeechControl;
 
 QMap<QString, DeviceAudioSource*> DeviceAudioSourcePrivate::s_map;
 
-DeviceAudioSource::DeviceAudioSource() : AbstractAudioSource (new DeviceAudioSourcePrivate (this))
+DeviceAudioSource::DeviceAudioSource() :
+    AbstractAudioSource (new DeviceAudioSourcePrivate (this))
 {
 }
 
-DeviceAudioSource::DeviceAudioSource (const QString& p_deviceName) : AbstractAudioSource (new DeviceAudioSourcePrivate (this))
+DeviceAudioSource::DeviceAudioSource (const QString& p_deviceName) :
+    AbstractAudioSource (new DeviceAudioSourcePrivate (this))
 {
-    Q_D(DeviceAudioSource);
+    Q_D (DeviceAudioSource);
     d->obtainDevice (p_deviceName);
 }
 
-DeviceAudioSource::DeviceAudioSource (const DeviceAudioSource& p_other) : AbstractAudioSource (new DeviceAudioSourcePrivate(this), p_other.parent())
+DeviceAudioSource::DeviceAudioSource (const DeviceAudioSource& p_other) :
+    AbstractAudioSource (new DeviceAudioSourcePrivate (this), p_other.parent())
 {
-    Q_D(DeviceAudioSource);
+    Q_D (DeviceAudioSource);
     d->m_deviceObj = this;
 }
 
-DeviceAudioSource::DeviceAudioSource (const AbstractAudioSource& p_other) : AbstractAudioSource (new DeviceAudioSourcePrivate(this), p_other.parent())
+DeviceAudioSource::DeviceAudioSource (const AbstractAudioSource& p_other) :
+    AbstractAudioSource (new DeviceAudioSourcePrivate (this), p_other.parent())
 {
-    Q_D(DeviceAudioSource);
+    Q_D (DeviceAudioSource);
     QString deviceName = p_other.property ("DeviceName").toString();
 
     if (deviceName.isEmpty() && !deviceName.isNull())
@@ -78,24 +82,6 @@ DeviceAudioSource* DeviceAudioSource::obtain (const QString& p_deviceName)
 DeviceAudioSource* DeviceAudioSource::defaultDevice()
 {
     return (DeviceAudioSource*) allDevices().first();
-}
-
-void DeviceAudioSourcePrivate::obtainDevice (const QString& p_deviceName)
-{
-    qDebug() << "[DeviceAudioSourcePrivate::obtainDevice()] Obtaining device" << p_deviceName << "...";
-
-    if (!m_device.isValid())
-        m_device = QGlib::Value::create<QString> (p_deviceName);
-    else
-        m_device.set<QString> (p_deviceName);
-
-    m_deviceObj->buildPipeline();
-
-    if (m_devicePtr)
-        m_devicePtr->setProperty ("device", m_device);
-    else {
-        qDebug() << "[DeviceAudioSourcePrivate::obtainDevice()] Failed to set device for use; invalid device pointer.";
-    }
 }
 
 AudioSourceList DeviceAudioSource::allDevices()
@@ -152,7 +138,7 @@ AudioSourceList DeviceAudioSource::allDevices()
 
 QString DeviceAudioSource::deviceName() const
 {
-    Q_D(DeviceAudioSource);
+    Q_D (const DeviceAudioSource);
     Q_ASSERT (d->m_device.isValid());
 
     if (d->m_device.isValid())
@@ -163,7 +149,8 @@ QString DeviceAudioSource::deviceName() const
 
 QString DeviceAudioSource::humanName() const
 {
-    Q_D(DeviceAudioSource);
+    Q_D (const DeviceAudioSource);
+
     if (d->m_devicePtr.isNull())
         return deviceName();
     else {
@@ -186,7 +173,7 @@ QString DeviceAudioSource::pipelineDescription() const
 void DeviceAudioSource::buildPipeline()
 {
     AbstractAudioSource::buildPipeline();
-    Q_D(DeviceAudioSource);
+    Q_D (DeviceAudioSource);
 
     if (isNull()) {
         qDebug() << "[DeviceAudioSource::obtain()] Can't obtain device element, base pipeline is NULL.";
@@ -199,12 +186,17 @@ void DeviceAudioSource::buildPipeline()
         if (childProxy && childProxy->childrenCount() > 0) {
             QGst::ObjectPtr realSrc = childProxy->childByIndex (0);
             qDebug() << "[DeviceAudioSource::obtain()] Obtained device" << d->m_device.toString();
-            realSrc->setProperty ("device", d->m_device.toString());
+
+            if (!realSrc->findProperty ("device").isNull())
+                realSrc->setProperty ("device", d->m_device.toString());
+
             QList<QGlib::ParamSpecPtr> properties = realSrc->listProperties();
             Q_FOREACH (QGlib::ParamSpecPtr property, properties) {
                 QString name = property->name();
                 QGlib::Value value = realSrc->property (property->name().toStdString().c_str());
-                qDebug() << "[DeviceAudioSource::obtain()] Property" << name << "=" << value.toString();
+
+                if (value.isValid())
+                    qDebug() << "[DeviceAudioSource::obtain()] Property" << name << "=" << value.toString();
             }
         }
 

@@ -19,17 +19,17 @@
  */
 
 
-#include <lib/sphinx/audiosource.hpp>
-#include <lib/audiosource/device.hpp>
+#include <sphinx/audiosource.hpp>
+#include <audiosource/device.hpp>
 
-#include "app/ui/micsetup-wizard.hpp"
+#include "ui/micsetup-wizard.hpp"
 #include "micselect.hpp"
 #include "ui_micwizard-sample.h"
 #include "micsample.hpp"
 
 using namespace SpeechControl;
-using namespace SpeechControl::Wizards::Pages;
-using SpeechControl::Wizards::Pages::MicrophoneSample;
+using namespace SpeechControl::Windows::Wizards::Pages;
+using SpeechControl::Windows::Wizards::Pages::MicrophoneSample;
 
 /// @todo The loudness of the content spoken should begin detection here.
 MicrophoneSample::MicrophoneSample (QWidget* parent) :
@@ -63,21 +63,21 @@ void MicrophoneSample::on_btnBeginPrompt_clicked()
 }
 
 /// @todo Fill the combo box with all of the mics.
-void SpeechControl::Wizards::Pages::MicrophoneSample::initializePage()
+void SpeechControl::Windows::Wizards::Pages::MicrophoneSample::initializePage()
 {
-    DeviceAudioSource* device = DeviceAudioSource::obtain(wizard()->field("mic-id").toString());
+    DeviceAudioSource* device = DeviceAudioSource::obtain (wizard()->field ("mic-id").toString());
     qDebug() << "[MicrophoneSample::initializePage()]" << device->humanName() << device->deviceName();
-    m_sphnx = new AudioSourceSphinx ((AbstractAudioSource*) device);
+    m_sphnx = new AudioSourceSphinx ( (AbstractAudioSource*) device);
     connect (m_sphnx, SIGNAL (finished (QString)), this, SLOT (handleReceivedPrompt (QString)));
     ui->lblPrompt->setText (QString::null);
 }
 
-bool SpeechControl::Wizards::Pages::MicrophoneSample::validatePage()
+bool SpeechControl::Windows::Wizards::Pages::MicrophoneSample::validatePage()
 {
     return isAtFinalPrompt() || m_index == 0;
 }
 
-bool SpeechControl::Wizards::Pages::MicrophoneSample::isComplete()
+bool SpeechControl::Windows::Wizards::Pages::MicrophoneSample::isComplete()
 {
     return hasCompletedPrompts();
 }
@@ -144,5 +144,5 @@ void MicrophoneSample::handleReceivedPrompt (QString p_str)
     emit completeChanged();
 }
 
-#include "micsample.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/micsample.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

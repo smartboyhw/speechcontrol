@@ -18,49 +18,52 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "lib/audiosource/sink.hpp"
-#include "lib/audiosource/abstract.hpp"
-#include "lib/audiosource/stream.hxx"
-#include "lib/audiosource/stream.hpp"
+#include "audiosource/sink.hpp"
+#include "audiosource/stream.hxx"
+#include "audiosource/abstract.hpp"
+#include "audiosource/stream.hpp"
 
 using namespace SpeechControl;
 
-StreamAudioSource::StreamAudioSource() : AbstractAudioSource(new StreamAudioSourcePrivate)
+StreamAudioSource::StreamAudioSource() :
+    AbstractAudioSource (new StreamAudioSourcePrivate)
+{
+}
+
+StreamAudioSource::StreamAudioSource (const AbstractAudioSource& p_other) :
+    AbstractAudioSource (p_other)
 {
 
 }
 
-StreamAudioSource::StreamAudioSource (const AbstractAudioSource& p_other) : AbstractAudioSource (p_other)
-{
-
-}
-
-StreamAudioSource::StreamAudioSource (const StreamAudioSource& p_other) : AbstractAudioSource (p_other)
+StreamAudioSource::StreamAudioSource (const StreamAudioSource& p_other) :
+    AbstractAudioSource (p_other)
 {
 }
 
-StreamAudioSource::StreamAudioSource (QDataStream* p_stream) : AbstractAudioSource (new StreamAudioSourcePrivate)
+StreamAudioSource::StreamAudioSource (QDataStream* p_stream) :
+    AbstractAudioSource (new StreamAudioSourcePrivate)
 {
-    Q_D(StreamAudioSource);
+    Q_D (StreamAudioSource);
     d->m_strm = p_stream;
 }
 
 void StreamAudioSource::buildPipeline()
 {
+    Q_D (StreamAudioSource);
     AbstractAudioSource::buildPipeline();
 
     if (isNull()) {
         qDebug() << "[StreamAudioSource::buildPipeline()] Failed to render stream, invalid base pipeline.";
     }
 
-    // Replace the appsrc used by AbstractAudioSource usually with the stream source.
-    d_func()->m_appSrc = new StreamSource (this);
-    d_func()->m_appSrc->setCaps (QGst::Caps::fromString (caps()));
-    d_func()->m_appSrc->setElement (d_func()->m_srcPtr);
+    d->m_appSrc = new StreamSource (this);
+    d->m_appSrc->setCaps (QGst::Caps::fromString (caps()));
+    d->m_appSrc->setElement (d->m_srcPtr);
 
-    d_func()->m_appSink = new StreamSink (this);
-    d_func()->m_appSink->setCaps (QGst::Caps::fromString (caps()));
-    d_func()->m_appSink->setElement (d_func()->m_sinkPtr);
+    d->m_appSink = new StreamSink (this);
+    d->m_appSink->setCaps (QGst::Caps::fromString (caps()));
+    d->m_appSink->setElement (d->m_sinkPtr);
 }
 
 QString StreamAudioSource::pipelineDescription() const
@@ -70,7 +73,7 @@ QString StreamAudioSource::pipelineDescription() const
 
 QDataStream* StreamAudioSource::stream() const
 {
-    Q_D(const StreamAudioSource);
+    Q_D (const StreamAudioSource);
     return d->m_strm;
 }
 
@@ -79,4 +82,4 @@ StreamAudioSource::~StreamAudioSource()
 
 }
 #include "audiosource/stream.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

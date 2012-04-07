@@ -21,14 +21,14 @@
 #include <QDir>
 #include <QDebug>
 
-#include "app/sessions/session.hpp"
-#include "app/sessions/content.hpp"
+#include "sessions/session.hpp"
+#include "sessions/content.hpp"
 
 #include "sessionselection.hpp"
 #include "ui_adaptwizard-sessionselection.h"
 
 using namespace SpeechControl;
-using SpeechControl::Wizards::Pages::SessionSelection;
+using SpeechControl::Windows::Wizards::Pages::SessionSelection;
 
 SessionSelection::SessionSelection (QWidget* parent) :
     QWizardPage (parent),
@@ -67,7 +67,7 @@ void SessionSelection::cleanupPage()
 bool SessionSelection::validatePage()
 {
     if (!m_listSession.isEmpty())
-        this->setSubTitle("<b><font color=red>Please select at least one session for adapting.</font></b>");
+        this->setSubTitle ("<b><font color=red>Please select at least one session for adapting.</font></b>");
 
     return !m_listSession.isEmpty();
 }
@@ -90,7 +90,7 @@ void SessionSelection::on_listWidgetSession_itemSelectionChanged ()
                 count += session->content()->uniqueWords();
             }
 
-            m_listSession << Session::obtain(id);
+            m_listSession << Session::obtain (id);
         }
         ui->lineEditUniqueWordCount->setText (QString::number (count));
     }
@@ -112,5 +112,5 @@ SessionSelection::~SessionSelection()
     delete ui;
 }
 
-#include "sessionselection.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/sessionselection.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

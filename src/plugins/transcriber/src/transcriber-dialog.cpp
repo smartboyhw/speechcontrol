@@ -21,9 +21,9 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-#include <lib/audiosource/abstract.hpp>
-#include <lib/audiosource/stream.hpp>
-#include <lib/sphinx/audiosource.hpp>
+#include <audiosource/abstract.hpp>
+#include <audiosource/stream.hpp>
+#include <sphinx/audiosource.hpp>
 
 #include "plugin.hpp"
 #include "transcriber-dialog.hpp"
@@ -36,7 +36,7 @@ using namespace SpeechControl::Windows;
 TranscriberDialog::TranscriberDialog (QWidget* parent) :
     QDialog (parent),
     m_ui (new Ui::TranscriberDialog),
-    m_streamSrc(0), m_audioSrcSphnx(0), m_strm(0)
+    m_streamSrc (0), m_audioSrcSphnx (0), m_strm (0)
 {
     m_ui->setupUi (this);
 }
@@ -57,22 +57,23 @@ void TranscriberDialog::on_btnTranscribe_clicked()
 
     if (!file->exists()) {
         m_ui->lineEditPath->clear();
-        qDebug() << "File doesn't exist.";
+        qDebug() << "[TranscriberDialog::on_btnTranscribe_clicked()] File doesn't exist.";
         return;
     }
 
-    if (!file->open(QIODevice::ReadOnly)){
-        qDebug() << "File can't open.";
+    if (!file->open (QIODevice::ReadOnly)) {
+        qDebug() << "[TranscriberDialog::on_btnTranscribe_clicked()] File can't open.";
+        return;
     }
 
-    m_strm = new QDataStream(file);
-    m_streamSrc = new StreamAudioSource(m_strm);
-    m_audioSrcSphnx = new AudioSourceSphinx(m_streamSrc,this);
+    m_strm = new QDataStream (file);
+    m_streamSrc = new StreamAudioSource (m_strm);
+    m_audioSrcSphnx = new AudioSourceSphinx (m_streamSrc, this);
 
-    connect(m_audioSrcSphnx,SIGNAL(finished(QString)),this,SLOT(outputValue(QString)));
+    connect (m_audioSrcSphnx, SIGNAL (finished (QString)), this, SLOT (outputValue (QString)));
 
-    if (!m_audioSrcSphnx->start()){
-        qDebug() << "CANT STARERETE";
+    if (!m_audioSrcSphnx->start()) {
+        qDebug() << "[TranscriberDialog::on_btnTranscribe_clicked()] Transcriber's Sphinx failed to start.";
     }
 }
 
@@ -90,4 +91,4 @@ TranscriberDialog::~TranscriberDialog()
 }
 
 #include "transcriber-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

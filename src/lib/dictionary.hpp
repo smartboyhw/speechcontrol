@@ -29,8 +29,8 @@
 #include <QScopedPointer>
 #include <QDateTime>
 
-#include <lib/config.hpp>
-#include <lib/export.hpp>
+#include <config.hpp>
+#include <export.hpp>
 
 class QUrl;
 class QFile;
@@ -243,4 +243,4 @@ private:
 };
 }
 #endif // DICTIONARY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

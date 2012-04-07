@@ -18,37 +18,43 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "services/engine.hpp"
-#include "service.hpp"
-#include "agent.hpp"
 #include <QIcon>
 
+#include <lib/acousticmodel.hpp>
+#include <lib/languagemodel.hpp>
+
+#include "app/core.hpp"
+#include "app/services/module.hpp"
+#include "app/services/engine.hpp"
+#include "app/services/desktopcontrol/sphinx.hpp"
+#include "app/services/desktopcontrol/service.hxx"
+#include "app/services/desktopcontrol/service.hpp"
+
+using SpeechControl::Core;
+using namespace SpeechControl::Services;
 using namespace SpeechControl::DesktopControl;
 Service* Service::s_inst = 0;
 
-Service::Service() : AbstractModule (Agent::instance())
+Service::Service() : AbstractModule (new ServicePrivate (this))
 {
+    Q_D (Service);
+    connect (d->m_sphinx, SIGNAL (finished (QString)), this, SLOT (invokeCommand (QString)));
+
     Services::Engine::registerModule (this);
 }
 
-void Service::deinitialize()
-{
-    Agent::instance()->stop();
-}
+void Service::deinitialize() {}
 
-void Service::initialize()
-{
-    Agent::instance()->start();
-}
+void Service::initialize() {}
 
 bool Service::isEnabled() const
 {
-    return Agent::instance()->isEnabled();
+    return Core::configuration ("DesktopControl/Enabled").toBool();
 }
 
 QString Service::id() const
 {
-    return "dsktp-cntrl";
+    return "dsktpctl";
 }
 
 QPixmap Service::pixmap() const
@@ -63,7 +69,47 @@ QString Service::name() const
 
 bool Service::isActive() const
 {
-    return Agent::instance()->isActive();
+    Q_D (const Service);
+    return d->m_sphinx && d->m_sphinx->isRunning();
+}
+
+void Service::setAcousticModel (const AcousticModel& p_acModel)
+{
+    Q_D (Service);
+    d->m_sphinx->setAcousticModel (p_acModel.path());
+}
+
+void Service::setDefaultAcousticModel (const AcousticModel& p_acModel)
+{
+    Core::setConfiguration ("DesktopControl/AcousticModel", p_acModel.path());
+    setAcousticModel(p_acModel);
+}
+
+void Service::invokeCommand (const QString& cmd)
+{
+    qDebug() << "[DesktopControl::Service::invokeCommand()] Heard " << cmd << "from the user.";
+    AbstractCategory* glbl = AbstractCategory::global();
+    CommandList cmds = glbl->matchAllCommands (cmd);
+
+    if (!cmds.isEmpty()) {
+        if (cmds.count() == 1) {
+            AbstractCommand* onlyCmd = cmds.first();
+            emit commandFound (cmd, onlyCmd);
+            onlyCmd->invoke (cmd);
+        }
+        else {
+            emit multipleCommandsFound (cmd, cmds);
+        }
+
+        Q_FOREACH (AbstractCommand * cmd, cmds) {
+            qDebug() << "[DesktopControl::Service::invokeCommand()] Command " << cmd->id() << "matched with statements" << cmd->statements();
+        }
+
+    }
+    else {
+        emit noCommandsFound (cmd);
+        qDebug() << "[DesktopControl::Service::invokeCommand()] Heard mumble-gumble, nothing useful.";
+    }
 }
 
 Service::~Service()

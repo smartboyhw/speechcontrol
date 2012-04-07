@@ -18,10 +18,11 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "lib/audiosource/abstract.hpp"
-#include "lib/audiosource/sink.hpp"
-#include "lib/audiosource/source.hpp"
-#include "lib/audiosource/stream.hpp"
+#include "audiosource/stream.hxx"
+#include "audiosource/abstract.hpp"
+#include "audiosource/stream.hpp"
+#include "audiosource/sink.hpp"
+#include "audiosource/source.hpp"
 
 using namespace SpeechControl;
 
@@ -91,4 +92,4 @@ AudioSourceSphinxSource::AudioSourceSphinxSource (AudioSourceSphinx* p_sphinx) :
 }
 
 #include "audiosource/source.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

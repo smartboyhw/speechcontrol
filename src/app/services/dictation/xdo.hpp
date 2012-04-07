@@ -22,7 +22,7 @@
 #define XDO_HPP
 
 #include <QObject>
-#include <app/macros.hpp>
+#include <macros.hpp>
 
 struct xdo;
 class Hunspell;
@@ -79,4 +79,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

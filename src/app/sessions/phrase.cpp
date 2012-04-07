@@ -48,7 +48,7 @@ bool Phrase::isCompleted() const
 
 const QString Phrase::text() const
 {
-    return m_elem->attribute("text").toLocal8Bit();
+    return m_elem->attribute ("text").toLocal8Bit();
 }
 
 QFile* Phrase::audio() const
@@ -72,5 +72,5 @@ Phrase::~Phrase()
 
 }
 
-#include "phrase.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "sessions/phrase.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

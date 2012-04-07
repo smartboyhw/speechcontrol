@@ -25,14 +25,14 @@
 #include <QLocale>
 #include <QVariantMap>
 
-using SpeechControl::Wizards::Pages::UserInitialization;
+using SpeechControl::Windows::Wizards::Pages::UserInitialization;
 
 UserInitialization::UserInitialization (QWidget* parent) :
     QWizardPage (parent),
     ui (new Ui::UserInitialization)
 {
     ui->setupUi (this);
-    this->setLayout(ui->gridLayout);
+    this->setLayout (ui->gridLayout);
     registerField ("age", ui->comboBoxAge);
     registerField ("country", ui->comboBoxCountry);
     registerField ("language-spoken", ui->comboBoxLanguageSpoken);
@@ -46,7 +46,7 @@ UserInitialization::~UserInitialization()
     delete ui;
 }
 
-bool SpeechControl::Wizards::Pages::UserInitialization::validatePage()
+bool SpeechControl::Windows::Wizards::Pages::UserInitialization::validatePage()
 {
     wizard()->setProperty ("age", ui->comboBoxAge->currentText());
     wizard()->setProperty ("country", ui->comboBoxCountry->currentText());
@@ -54,7 +54,7 @@ bool SpeechControl::Wizards::Pages::UserInitialization::validatePage()
 }
 
 /// @todo Load all of the countries.
-void SpeechControl::Wizards::Pages::UserInitialization::initializePage()
+void SpeechControl::Windows::Wizards::Pages::UserInitialization::initializePage()
 {
     ui->comboBoxCountry->clear();
     QLocale l_sys = QLocale::system();
@@ -67,12 +67,12 @@ void SpeechControl::Wizards::Pages::UserInitialization::initializePage()
 }
 
 /// @todo Find a way to obtain languages from the system.
-void SpeechControl::Wizards::Pages::UserInitialization::updateLanguages()
+void SpeechControl::Windows::Wizards::Pages::UserInitialization::updateLanguages()
 {
     QLocale l_locale;
 }
 
-void SpeechControl::Wizards::Pages::UserInitialization::clearPage()
+void SpeechControl::Windows::Wizards::Pages::UserInitialization::clearPage()
 {
     ui->comboBoxAge->clear();
     ui->comboBoxCountry->clear();
@@ -80,5 +80,5 @@ void SpeechControl::Wizards::Pages::UserInitialization::clearPage()
     ui->comboBoxLanguageSpoken->clear();
 }
 
-#include "userinfo.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/userinfo.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

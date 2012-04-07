@@ -40,6 +40,7 @@
 #include "app/services/desktopcontrol/service.hpp"
 #include "app/ui/main-window.hpp"
 #include "app/ui/quickstart-wizard.hpp"
+#include "app/core.hxx"
 #include "app/core.hpp"
 
 using namespace SpeechControl;
@@ -48,11 +49,16 @@ using SpeechControl::Services::AbstractModule;
 
 Core* Core::s_inst = 0;
 
-/// @todo Add a check for the default microphone (if provided by the user).
-Core::Core (int p_argc, char** p_argv, QApplication* app) : QObject (app),
-    m_app (app), m_mw (0), m_settings (0), m_trnsltr (0)
+Core::Core() : QObject()
 {
-    m_app = app;
+    qFatal ("This constructor shouldn't ever be called.");
+}
+
+Core::Core (int p_argc, char** p_argv, QApplication* app) : QObject (app),
+    d_ptr (new CorePrivate)
+{
+    Q_D (Core);
+    d->m_app = app;
 
     if (s_inst) {
         qFatal ("The Core instance of SpeechControl was being invoked again. This is a fatal and funny error.");
@@ -61,8 +67,8 @@ Core::Core (int p_argc, char** p_argv, QApplication* app) : QObject (app),
     s_inst = this;
 
     // start application.
-    m_trnsltr = new QTranslator (this);
-    m_app->installTranslator (m_trnsltr);
+    d->m_trnsltr = new QTranslator (this);
+    d->m_app->installTranslator (d->m_trnsltr);
 
     System::start (&p_argc, &p_argv);
     Session::init();
@@ -72,7 +78,7 @@ Core::Core (int p_argc, char** p_argv, QApplication* app) : QObject (app),
     configDir.mkdir (configurationPath().path() + "/contents");
 
     // build settings
-    m_settings = new QSettings (QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", this);
+    d->m_settings = new QSettings (QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", this);
 
     hookUpSignals();
     loadTranslations (QLocale::system());
@@ -84,20 +90,15 @@ Core::Core (int p_argc, char** p_argv, QApplication* app) : QObject (app),
         Indicator::show();
 }
 
-Core::Core() : QObject()
-{
-    qFatal ("This constructor shouldn't ever be called.");
-}
-
-Core::Core (const Core& p_other) : QObject (p_other.parent()), m_app (p_other.m_app),
-    m_mw (p_other.m_mw), m_settings (p_other.m_settings), m_trnsltr (p_other.m_trnsltr)
+Core::Core (const Core& p_other) : QObject (p_other.parent()), d_ptr (const_cast<CorePrivate*> (p_other.d_ptr.data()))
 {
 
 }
 
 void Core::hookUpSignals()
 {
-    connect (m_app, SIGNAL (aboutToQuit()), this, SLOT (stop()));
+    Q_D (Core);
+    connect (d->m_app, SIGNAL (aboutToQuit()), this, SLOT (stop()));
     connect (this, SIGNAL (started()), this, SLOT (invokeAutoStart()));
     connect (this, SIGNAL (started()), Services::Engine::instance(), SLOT (start()));
     connect (this, SIGNAL (started()), Plugins::Factory::instance(), SLOT (start()));
@@ -111,12 +112,12 @@ void Core::hookUpSignals()
 void Core::start()
 {
     // Detect if a first-run wizard should be run.
-    if (!QFile::exists (s_inst->m_settings->fileName())) {
-        if (QMessageBox::question (mainWindow(), QMessageBox::tr ("First Run"),
-                                   QMessageBox::tr ("This seems to be the first time you've run SpeechControl on this system. "
-                                           "A wizard allowing you to start SpeechControl will appear."), QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
-            QuickStart* l_win = new QuickStart (mainWindow());
-            l_win->exec();
+    if (!QFile::exists (instance()->d_func()->m_settings->fileName())) {
+        if (QMessageBox::question (mainWindow(), tr ("First Run"),
+                                   tr ("This seems to be the first time you've run SpeechControl on this system. "
+                                       "A wizard allowing you to start SpeechControl will appear."), QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
+            QuickStart* win = new QuickStart (mainWindow());
+            win->exec();
         }
     }
 
@@ -135,46 +136,46 @@ void Core::stop()
 
 Windows::Main* Core::mainWindow()
 {
-    if (instance()->m_mw == 0)
-        instance()->m_mw = new Windows::Main;
+    if (instance()->d_func()->m_mw == 0)
+        instance()->d_func()->m_mw = new Windows::Main;
 
-    return instance()->m_mw;
+    return instance()->d_func()->m_mw;
 }
 
 QVariant Core::configuration (const QString& p_attrName, QVariant p_attrDefValue)
 {
-    instance()->m_settings->sync();
-    return instance()->m_settings->value (p_attrName, p_attrDefValue);
+    instance()->d_func()->m_settings->sync();
+    return instance()->d_func()->m_settings->value (p_attrName, p_attrDefValue);
 }
 
 void Core::setConfiguration (const QString& p_attrName, const QVariant& p_attrValue)
 {
-    instance()->m_settings->setValue (p_attrName, p_attrValue);
-    instance()->m_settings->sync();
+    instance()->d_func()->m_settings->setValue (p_attrName, p_attrValue);
+    instance()->d_func()->m_settings->sync();
 }
 
 int Core::exec()
 {
-    return instance()->m_app->exec();
+    return instance()->d_func()->m_app->exec();
 }
 
 void Core::quit (const int& p_exitCode)
 {
-    instance()->m_app->exit (p_exitCode);
+    instance()->d_func()->m_app->exit (p_exitCode);
 }
 
 void Core::invokeAutoStart()
 {
     const bool dsktpCntrlState = configuration ("DesktopControl/AutoStart").toBool();
     const bool dctnState = configuration ("Dictation/AutoStart").toBool();
-    DesktopControl::Service::instance()->setState( (dsktpCntrlState) ? AbstractModule::Enabled  : AbstractModule::Disabled);
+    DesktopControl::Service::instance()->setState ( (dsktpCntrlState) ? AbstractModule::Enabled  : AbstractModule::Disabled);
     Dictation::Service::instance()->setState ( (dctnState) ? AbstractModule::Enabled  : AbstractModule::Disabled);
 }
 
 void Core::loadTranslations (const QLocale& p_locale)
 {
     qDebug() << "Loading locale" << p_locale.name();
-    instance()->m_trnsltr->load ("speechcontrol_" + p_locale.name());
+    instance()->d_func()->m_trnsltr->load ("speechcontrol_" + p_locale.name());
 }
 
 QDir Core::configurationPath()
@@ -216,7 +217,8 @@ bool Core::doesAutoStart()
 
 Core::~Core ()
 {
-    m_settings->sync();
+    Q_D(Core);
+    d->m_settings->sync();
 }
 #include "core.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

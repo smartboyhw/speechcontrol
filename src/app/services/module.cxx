@@ -18,21 +18,34 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QList>
+#include "app/services/module.hxx"
 
-namespace SpeechControl
+using namespace SpeechControl::Services;
+
+AbstractModulePrivate::AbstractModulePrivate (AbstractModule* p_qPtr) :
+    q_ptr (p_qPtr)
 {
-namespace Services
-{
-class AbstractModule;
-class EnginePrivate
-{
-public:
-    EnginePrivate() { }
-    virtual ~EnginePrivate() { }
-    static QMap<QString, AbstractModule*> s_list;
-};
 
 }
+
+void AbstractModulePrivate::changeState (AbstractModule::ActivityState p_state)
+{
+    Q_Q (AbstractModule);
+
+    if (p_state == m_state)
+        return;
+
+    m_state = handleStateChange (p_state);
+    emit q->stateChanged (m_state);
+}
+
+AbstractModule::ActivityState AbstractModulePrivate::handleStateChange (const AbstractModule::ActivityState p_state)
+{
+    return p_state;
+}
+
+AbstractModulePrivate::~AbstractModulePrivate()
+{
+
 }
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

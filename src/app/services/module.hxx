@@ -20,6 +20,7 @@
 
 #include <QtGlobal>
 #include <QScopedPointer>
+
 #include <app/services/module.hpp>
 
 using SpeechControl::Services::AbstractModule;
@@ -29,30 +30,17 @@ namespace SpeechControl
 namespace Services
 {
 
-class AbstractModulePrivate
-{
-public:
-    AbstractModulePrivate (AbstractModule* p_qPtr) : q_ptr (p_qPtr) {}
-    virtual ~AbstractModulePrivate() { }
+struct AbstractModulePrivate {
     Q_DECLARE_PUBLIC (AbstractModule)
-    void changeState (AbstractModule::ActivityState p_state) {
-        Q_Q(AbstractModule);
-        if (p_state == m_state)
-            return;
+    AbstractModulePrivate (AbstractModule* p_qPtr);
+    virtual ~AbstractModulePrivate();
+    void changeState (AbstractModule::ActivityState p_state);
+    virtual AbstractModule::ActivityState handleStateChange (const AbstractModule::ActivityState p_state);
 
-        m_state = handleStateChange (p_state);
-        emit q->stateChanged (m_state);
-    }
-
-protected:
-    virtual AbstractModule::ActivityState handleStateChange (const AbstractModule::ActivityState p_state) {
-        return p_state;
-    }
     AbstractModule* q_ptr;
     AbstractModule::ActivityState m_state;
-
 };
 
 }
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

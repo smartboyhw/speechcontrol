@@ -40,7 +40,7 @@ KeyboardEmulator::KeyboardEmulator() : QObject (Core::instance()), m_xdo (0),
     m_xdo = xdo_new (0);
     SC_ASSERT (m_xdo != 0, "Failed to create 'xdo' instance.");
 
-    m_spllchk = new Hunspell("","");
+    m_spllchk = new Hunspell ("", "");
 }
 
 /// @todo Allow the value of the delay to be adjustable.
@@ -71,4 +71,4 @@ KeyboardEmulator::~KeyboardEmulator()
 }
 
 #include "services/dictation/xdo.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

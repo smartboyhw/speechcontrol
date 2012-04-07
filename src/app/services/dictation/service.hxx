@@ -30,16 +30,16 @@ namespace Dictation
 class Service;
 class ServicePrivate : public Services::AbstractModulePrivate
 {
-friend class Service;
+    friend class Service;
 private:
     Service::SafetyMode m_safetyMode;
     Sphinx* m_sphinx;
     ServicePrivate (Service* p_qPtr);
     virtual ~ServicePrivate();
-    void setSafetyMode(const Service::SafetyMode& p_mode);
+    void setSafetyMode (const Service::SafetyMode& p_mode);
     Service::SafetyMode safetyMode() const;
     virtual AbstractModule::ActivityState handleStateChange (const AbstractModule::ActivityState& p_stt);
 };
 }
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

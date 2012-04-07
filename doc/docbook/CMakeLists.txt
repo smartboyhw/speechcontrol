@@ -1,4 +1,4 @@
-cmake_minimum_version(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8)
 
 if (WITH_KDE_SUPPORT)
     find_package(KDE4 QUIET)

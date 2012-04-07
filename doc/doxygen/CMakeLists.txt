@@ -1,9 +1,9 @@
-cmake_minimum_version(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8)
 
 find_package(Doxygen REQUIRED)
 if (DOXYGEN_FOUND)
     set(SPCHCNTRL_DOC_SOURCES_DIR "${PROJECT_SOURCE_DIR}/src")
-    set(SPCHCNTRL_DOC_BUILD_DIR "${PROJECT_BINARY_DIR}/doc")
+    set(SPCHCNTRL_DOC_BUILD_DIR "${PROJECT_BINARY_DIR}/doc/doxygen")
     set(SPCHCNTRL_APP_DOC_BUILD_DIR "${SPCHCNTRL_DOC_BUILD_DIR}/app")
     set(SPCHCNTRL_LIB_DOC_BUILD_DIR "${SPCHCNTRL_DOC_BUILD_DIR}/lib")
 

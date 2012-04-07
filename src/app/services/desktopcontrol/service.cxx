@@ -32,7 +32,7 @@
 using SpeechControl::Core;
 using namespace SpeechControl::DesktopControl;
 
-ServicePrivate::ServicePrivate (Service* p_qPtr) : AbstractModulePrivate (p_qPtr),
+ServicePrivate::ServicePrivate (Service* p_parent) : AbstractModulePrivate (p_parent),
     m_sphinx (0),
     m_view (new QDeclarativeView (QUrl ("qrc:///qml/dskptctlui")))
 {
@@ -85,6 +85,11 @@ AbstractModule::ActivityState ServicePrivate::handleStateChange (const AbstractM
     default:
         return AbstractModule::Undefined;
     }
+
+}
+
+void ServicePrivate::changeState (AbstractModule::ActivityState p_state)
+{
 
 }
 

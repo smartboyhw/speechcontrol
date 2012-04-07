@@ -18,9 +18,11 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <QObject>
 #include <QDeclarativeView>
 
 #include "app/core.hpp"
+#include "app/ui/main-window.hpp"
 #include "app/services/module.hpp"
 #include "app/services/desktopcontrol/command.hpp"
 #include "app/services/desktopcontrol/sphinx.hpp"
@@ -31,11 +33,10 @@ using SpeechControl::Core;
 using namespace SpeechControl::DesktopControl;
 
 ServicePrivate::ServicePrivate (Service* p_qPtr) : AbstractModulePrivate (p_qPtr),
-    m_sphinx (0), m_view (0)
+    m_sphinx (0),
+    m_view (new QDeclarativeView (QUrl ("qrc:///qml/dskptctlui")))
 {
-    Q_Q(Service);
-    m_sphinx = new Sphinx (Sphinx::standardDescription(), p_qPtr);
-    q->connect (m_sphinx, SIGNAL (finished (QString)), SLOT (invokeCommand (QString)));
+    m_sphinx = new Sphinx (Sphinx::standardDescription());
 
     QString defAcousticModel = Core::configuration ("DesktopControl/AcousticModel").toString();
     QString defLanguageModel = Core::configuration ("DesktopControl/LanguageModel").toString();
@@ -45,8 +46,6 @@ ServicePrivate::ServicePrivate (Service* p_qPtr) : AbstractModulePrivate (p_qPtr
 
     if (!defLanguageModel.isEmpty())
         m_sphinx->setLanguageModel (defLanguageModel);
-
-    m_view->setSource (QUrl ("qrc:///qml/dskptctlui"));
 }
 
 ServicePrivate::ServicePrivate (const SpeechControl::Services::AbstractModulePrivate& p_other) : AbstractModulePrivate (p_other)
@@ -93,4 +92,4 @@ ServicePrivate::~ServicePrivate()
 {
 
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

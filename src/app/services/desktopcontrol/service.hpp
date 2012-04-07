@@ -40,7 +40,6 @@ class Service : public SpeechControl::Services::AbstractModule
 {
     Q_OBJECT
     Q_DISABLE_COPY (Service)
-    Q_DECLARE_PRIVATE (Service)
     SC_SINGLETON (Service)
 
 signals:

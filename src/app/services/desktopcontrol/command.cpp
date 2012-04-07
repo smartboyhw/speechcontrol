@@ -94,8 +94,8 @@ QString AbstractCommand::obtainArgumentFromStatement (const QString p_statement)
 
 QString AbstractCommand::obtainCommandFromStatement (const QString p_statement) const
 {
-    const QString argument = obtainArgumentFromStatement(p_statement);
-    return QString(p_statement).remove(argument).trimmed().simplified();
+    const QString argument = obtainArgumentFromStatement (p_statement);
+    return QString (p_statement).remove (argument).trimmed().simplified();
 }
 
 const QStringList AbstractCommand::statements() const
@@ -203,4 +203,4 @@ AbstractCategory::~AbstractCategory()
 }
 
 #include "services/desktopcontrol/command.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

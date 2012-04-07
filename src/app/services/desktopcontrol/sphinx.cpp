@@ -77,4 +77,4 @@ void Sphinx::applicationMessage (const QGst::MessagePtr& p_message)
 }
 
 #include "services/desktopcontrol/sphinx.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -27,23 +27,18 @@ namespace DesktopControl
 {
 
 class Service;
-
 class Sphinx;
-class ServicePrivate : public Services::AbstractModulePrivate
-{
-    friend class Service;
 
-public:
+struct ServicePrivate : public Services::AbstractModulePrivate {
     virtual ~ServicePrivate();
-
-private:
     explicit ServicePrivate (Service* parent = 0);
     ServicePrivate (const Services::AbstractModulePrivate& p_other);
     virtual Services::AbstractModule::ActivityState handleStateChange (const Services::AbstractModule::ActivityState p_state);
     Sphinx* m_sphinx;
     QDeclarativeView* m_view;
 };
+
 }
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
 

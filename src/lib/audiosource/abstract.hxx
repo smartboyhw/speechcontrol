@@ -25,49 +25,15 @@
 namespace SpeechControl
 {
 
+class AbstractSphinx;
 class GenericSink;
 class GenericSource;
-struct AbstractAudioSourcePrivate;
+class AbstractAudioSource;
 
 struct AbstractAudioSourcePrivate {
-    AbstractAudioSourcePrivate() : m_appSink (0), m_appSrc (0), m_binPtr (),
-        m_pipeline (), m_sinkPtr (), m_srcPtr (), m_volumePtr (), m_levelPtr () {
-        m_binPtr.clear();
-        m_pipeline.clear();
-        m_sinkPtr.clear();
-        m_srcPtr.clear();
-        m_volumePtr.clear();
-        m_levelPtr.clear();
-    }
-
-    virtual ~AbstractAudioSourcePrivate() {
-        // Clean up your junk!
-        if (!m_binPtr.isNull())
-            m_binPtr->setState (QGst::StateNull);
-
-        if (!m_pipeline.isNull())
-            m_pipeline->setState (QGst::StateNull);
-
-        if (!m_sinkPtr.isNull())
-            m_sinkPtr->setState (QGst::StateNull);
-
-        if (!m_srcPtr.isNull())
-            m_srcPtr->setState (QGst::StateNull);
-
-        if (!m_volumePtr.isNull())
-            m_volumePtr->setState (QGst::StateNull);
-
-        if (!m_levelPtr.isNull())
-            m_levelPtr->setState (QGst::StateNull);
-
-        // Clean memory.
-        m_binPtr.clear();
-        m_pipeline.clear();
-        m_sinkPtr.clear();
-        m_srcPtr.clear();
-        m_volumePtr.clear();
-        m_levelPtr.clear();
-    }
+public:
+    explicit AbstractAudioSourcePrivate();
+    virtual ~AbstractAudioSourcePrivate();
 
     GenericSink* m_appSink;         ///< A pointer to the GenericSink used by the AbstractAudioSource.
     GenericSource* m_appSrc;        ///< A pointer to the GenericSource used by the AbstractAudioSource.
@@ -79,4 +45,4 @@ struct AbstractAudioSourcePrivate {
     QGst::ElementPtr m_levelPtr;    ///< A shared pointer to the level element.
 };
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

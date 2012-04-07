@@ -23,8 +23,8 @@
 
 #include <QObject>
 
-#include <lib/config.hpp>
-#include <lib/export.hpp>
+#include <config.hpp>
+#include <export.hpp>
 
 namespace SpeechControl
 {
@@ -33,7 +33,6 @@ class SPCH_EXPORT System : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY (System)
-    Q_DECLARE_PRIVATE (System)
 
 signals:
     void started();
@@ -48,11 +47,12 @@ public slots:
     static void stop();
 
 private:
+    explicit System (int* argc, char** argv[]);
     static System* s_inst;
 };
 
 }
 
 #endif // SYSTEM_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
 

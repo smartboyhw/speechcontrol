@@ -21,33 +21,40 @@
 #include <QGst/PropertyProbe>
 #include <QGst/ElementFactory>
 
-#include "lib/audiosource/device.hxx"
-#include "lib/audiosource/device.hpp"
+#include "audiosource/device.hxx"
+#include "audiosource/device.hpp"
 
 using namespace SpeechControl;
 
 QMap<QString, DeviceAudioSource*> DeviceAudioSourcePrivate::s_map;
 
-DeviceAudioSource::DeviceAudioSource() : AbstractAudioSource (0), d_ptr (new DeviceAudioSourcePrivate(this))
+DeviceAudioSource::DeviceAudioSource() :
+    AbstractAudioSource (new DeviceAudioSourcePrivate (this))
 {
 }
 
-DeviceAudioSource::DeviceAudioSource (const QString& p_deviceName) : AbstractAudioSource (0), d_ptr (new DeviceAudioSourcePrivate(this))
+DeviceAudioSource::DeviceAudioSource (const QString& p_deviceName) :
+    AbstractAudioSource (new DeviceAudioSourcePrivate (this))
 {
-    d_func()->obtainDevice (p_deviceName);
+    Q_D (DeviceAudioSource);
+    d->obtainDevice (p_deviceName);
 }
 
-DeviceAudioSource::DeviceAudioSource (const DeviceAudioSource& p_other) : AbstractAudioSource (p_other), d_ptr(const_cast<DeviceAudioSourcePrivate*> (p_other.d_ptr.data()))
+DeviceAudioSource::DeviceAudioSource (const DeviceAudioSource& p_other) :
+    AbstractAudioSource (new DeviceAudioSourcePrivate (this), p_other.parent())
 {
-    d_func()->m_deviceObj = this;
+    Q_D (DeviceAudioSource);
+    d->m_deviceObj = this;
 }
 
-DeviceAudioSource::DeviceAudioSource (const AbstractAudioSource& p_other) : AbstractAudioSource (p_other), d_ptr(new DeviceAudioSourcePrivate(this))
+DeviceAudioSource::DeviceAudioSource (const AbstractAudioSource& p_other) :
+    AbstractAudioSource (new DeviceAudioSourcePrivate (this), p_other.parent())
 {
+    Q_D (DeviceAudioSource);
     QString deviceName = p_other.property ("DeviceName").toString();
 
     if (deviceName.isEmpty() && !deviceName.isNull())
-        d_func()->obtainDevice (deviceName);
+        d->obtainDevice (deviceName);
     else {
         qDebug() << "[DeviceAudioSource::{constructor}] Conversion from a AbstractAudioSource failed.";
         Q_ASSERT (!deviceName.isNull());
@@ -75,24 +82,6 @@ DeviceAudioSource* DeviceAudioSource::obtain (const QString& p_deviceName)
 DeviceAudioSource* DeviceAudioSource::defaultDevice()
 {
     return (DeviceAudioSource*) allDevices().first();
-}
-
-void DeviceAudioSourcePrivate::obtainDevice (const QString& p_deviceName)
-{
-    qDebug() << "[DeviceAudioSourcePrivate::obtainDevice()] Obtaining device" << p_deviceName << "...";
-
-    if (!m_device.isValid())
-        m_device = QGlib::Value::create<QString> (p_deviceName);
-    else
-        m_device.set<QString> (p_deviceName);
-
-    m_deviceObj->buildPipeline();
-
-    if (m_devicePtr)
-        m_devicePtr->setProperty ("device", m_device);
-    else {
-        qDebug() << "[DeviceAudioSourcePrivate::obtainDevice()] Failed to set device for use; invalid device pointer.";
-    }
 }
 
 AudioSourceList DeviceAudioSource::allDevices()
@@ -149,22 +138,25 @@ AudioSourceList DeviceAudioSource::allDevices()
 
 QString DeviceAudioSource::deviceName() const
 {
-    Q_ASSERT (d_func()->m_device.isValid());
+    Q_D (const DeviceAudioSource);
+    Q_ASSERT (d->m_device.isValid());
 
-    if (d_func()->m_device.isValid())
-        return d_func()->m_device.toString();
+    if (d->m_device.isValid())
+        return d->m_device.toString();
     else
         return QString::null;
 }
 
 QString DeviceAudioSource::humanName() const
 {
-    if (d_func()->m_devicePtr.isNull())
+    Q_D (const DeviceAudioSource);
+
+    if (d->m_devicePtr.isNull())
         return deviceName();
     else {
-        d_func()->m_devicePtr->setState (QGst::StatePlaying);
-        QString name = d_func()->m_devicePtr->property ("device-name").toString();
-        d_func()->m_devicePtr->setState (QGst::StatePaused);
+        d->m_devicePtr->setState (QGst::StatePlaying);
+        QString name = d->m_devicePtr->property ("device-name").toString();
+        d->m_devicePtr->setState (QGst::StatePaused);
 
         if (name.isEmpty() || name.isNull())
             return deviceName();
@@ -181,6 +173,7 @@ QString DeviceAudioSource::pipelineDescription() const
 void DeviceAudioSource::buildPipeline()
 {
     AbstractAudioSource::buildPipeline();
+    Q_D (DeviceAudioSource);
 
     if (isNull()) {
         qDebug() << "[DeviceAudioSource::obtain()] Can't obtain device element, base pipeline is NULL.";
@@ -188,29 +181,34 @@ void DeviceAudioSource::buildPipeline()
     }
     else {
 
-        QGst::ChildProxyPtr childProxy = d_func()->m_srcPtr.dynamicCast<QGst::ChildProxy>();
+        QGst::ChildProxyPtr childProxy = d->m_srcPtr.dynamicCast<QGst::ChildProxy>();
 
         if (childProxy && childProxy->childrenCount() > 0) {
             QGst::ObjectPtr realSrc = childProxy->childByIndex (0);
-            qDebug() << "[DeviceAudioSource::obtain()] Obtained device" << d_func()->m_device.toString();
-            realSrc->setProperty ("device", d_func()->m_device.toString());
+            qDebug() << "[DeviceAudioSource::obtain()] Obtained device" << d->m_device.toString();
+
+            if (!realSrc->findProperty ("device").isNull())
+                realSrc->setProperty ("device", d->m_device.toString());
+
             QList<QGlib::ParamSpecPtr> properties = realSrc->listProperties();
             Q_FOREACH (QGlib::ParamSpecPtr property, properties) {
                 QString name = property->name();
                 QGlib::Value value = realSrc->property (property->name().toStdString().c_str());
-                qDebug() << "[DeviceAudioSource::obtain()] Property" << name << "=" << value.toString();
+
+                if (value.isValid())
+                    qDebug() << "[DeviceAudioSource::obtain()] Property" << name << "=" << value.toString();
             }
         }
 
-        d_func()->m_devicePtr = AbstractAudioSource::d_func()->m_binPtr->getElementByName ("src");
+        d->m_devicePtr = d->m_binPtr->getElementByName ("src");
 
-        if (d_func()->m_devicePtr.isNull())
-            qDebug() << "[DeviceAudioSource::obtain()] Warning! The obtained device pointer is NULL!" << d_func()->m_device.toString();
+        if (d->m_devicePtr.isNull())
+            qDebug() << "[DeviceAudioSource::obtain()] Warning! The obtained device pointer is NULL!" << d->m_device.toString();
         else {
-            d_func()->m_devicePtr->setProperty<const char*> ("client", "SpeechControl");
-            d_func()->m_devicePtr->setProperty<bool> ("do-timestamp", true);
-            d_func()->m_devicePtr->setProperty<int> ("blocksize", -1);
-            d_func()->m_devicePtr->setProperty<bool> ("message-forward", true);
+            d->m_devicePtr->setProperty<const char*> ("client", "SpeechControl");
+            d->m_devicePtr->setProperty<bool> ("do-timestamp", true);
+            d->m_devicePtr->setProperty<int> ("blocksize", -1);
+            d->m_devicePtr->setProperty<bool> ("message-forward", true);
         }
     }
 }

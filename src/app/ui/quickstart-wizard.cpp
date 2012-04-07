@@ -32,27 +32,27 @@
 #include "quickstart-wizard.hpp"
 
 using namespace SpeechControl;
-using namespace SpeechControl::Wizards;
+using namespace SpeechControl::Windows::Wizards;
 
 QuickStart::QuickStart (QWidget* parent) :
-    WizardBase (parent)
+    AbstractWizard (parent)
 {
     this->setWindowTitle (tr ("Quick Start :: SpeechControl"));
     QIcon l_icon = QIcon::fromTheme ("preferences-desktop-personal");
     setWindowTitle (tr ("Quick Start - SpeechControl"));
     setPixmap (QWizard::LogoPixmap, l_icon.pixmap (32, 32, QIcon::Active, QIcon::On));
     setPage (QuickStart::IntroductionPage,
-             (new Wizards::Pages::IntroductionPage (tr ("This wizard allows you to tweak SpeechControl to your personal configuration."))));
+             (new Windows::Wizards::Pages::IntroductionPage (tr ("This wizard allows you to tweak SpeechControl to your personal configuration."))));
     setPage (QuickStart::UserCreationPage,
-             (new Wizards::Pages::UserInitialization));
+             (new Windows::Wizards::Pages::UserInitialization));
     setPage (QuickStart::MicrophoneCreationPage,
-             (new Wizards::Pages::MicrophoneSelection));
+             (new Windows::Wizards::Pages::MicrophoneSelection));
     setPage (QuickStart::AccuracySamplingPage,
-             (new Wizards::Pages::MicrophoneSample));
+             (new Windows::Wizards::Pages::MicrophoneSample));
     setPage (QuickStart::ContentAdditionPage,
-             (new Wizards::Pages::SourceSelectionPage));
+             (new Windows::Wizards::Pages::SourceSelectionPage));
     setPage (QuickStart::ConclusionPage,
-             (new Wizards::Pages::ConclusionPage (tr ("You've successfully set up SpeechControl to settings of your preference."))));
+             (new Windows::Wizards::Pages::ConclusionPage (tr ("You've successfully set up SpeechControl to settings of your preference."))));
 }
 
 /// @todo The user's country could be automatically detected by QLocale.
@@ -85,5 +85,5 @@ QuickStart::~QuickStart()
 {
 }
 
-#include "quickstart-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/quickstart-wizard.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

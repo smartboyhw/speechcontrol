@@ -19,60 +19,75 @@
  */
 
 #include <QGlib/Connect>
-
 #include <QGst/enums.h>
 #include <QGst/ElementFactory>
-#include <pocketsphinx.h>
 
-#include "acousticmodel.hpp"
-#include "dictionary.hpp"
-#include "languagemodel.hpp"
-
-#include "sphinx/abstract.hpp"
-#include "audiosource/abstract.hpp"
+#include "lib/acousticmodel.hpp"
+#include "lib/dictionary.hpp"
+#include "lib/languagemodel.hpp"
+#include "lib/sphinx/abstract.hxx"
+#include "lib/sphinx/abstract.hpp"
+#include "lib/audiosource/abstract.hpp"
 
 using namespace SpeechControl;
 
 AbstractSphinx::AbstractSphinx (QObject* p_parent) : QObject (p_parent),
-    m_running (NotPrepared), m_ready (NotPrepared)
+    d_ptr (new AbstractSphinxPrivate (this))
 {
 }
 
-AbstractSphinx::AbstractSphinx (QGst::PipelinePtr p_pipeline, QObject* p_parent) : QObject (p_parent),
-    m_running (NotPrepared), m_ready (NotPrepared), m_pipeline (p_pipeline)
+AbstractSphinx::AbstractSphinx (QGst::PipelinePtr p_pipeline, QObject* p_parent) :
+    QObject (p_parent), d_ptr (new AbstractSphinxPrivate (this))
 {
+    Q_D (AbstractSphinx);
+    d->m_pipeline = p_pipeline;
 }
 
 /// @todo Automatically extract 'pocketsphinx' element name from description.
-AbstractSphinx::AbstractSphinx (const QString& p_description, QObject* p_parent) : QObject (p_parent),
-    m_running (NotPrepared), m_ready (NotPrepared)
+AbstractSphinx::AbstractSphinx (const QString& p_description, QObject* p_parent) :
+    QObject (p_parent), d_ptr (new AbstractSphinxPrivate (this))
 {
     buildPipeline (p_description);
 }
 
+AbstractSphinx::AbstractSphinx (AbstractSphinxPrivate* p_private, QObject* p_parent) :
+    QObject (p_parent), d_ptr (p_private)
+{
+
+}
+
+AbstractSphinx::AbstractSphinx (const AbstractSphinx& p_other) :
+    QObject (p_other.parent()),
+    d_ptr (const_cast<AbstractSphinxPrivate*> (p_other.d_ptr.data()))
+{
+
+}
+
 void AbstractSphinx::buildPipeline (QString p_description)
 {
-    m_pipeline = QGst::Pipeline::create();
+    Q_D (AbstractSphinx);
+    d->m_pipeline = QGst::Pipeline::create();
     QGst::BinPtr bin = QGst::Bin::fromDescription (p_description);
-    m_pipeline->add (bin);
+    d->m_pipeline->add (bin);
     qDebug() << "[AbstractSphinx::buildPipeline()] Built pipeline for AbstractSphinx (" << p_description << ").";
     prepare();
 }
 
 void AbstractSphinx::prepare()
 {
-    m_psphinx = m_pipeline->getElementByName ("asr");
-    m_vader   = m_pipeline->getElementByName ("vad");
+    Q_D (AbstractSphinx);
+    d->m_psphinx = d->m_pipeline->getElementByName ("asr");
+    d->m_vader   = d->m_pipeline->getElementByName ("vad");
 
-    QGlib::connect (m_psphinx, "partial_result", this, &AbstractSphinx::formPartialResult);
-    QGlib::connect (m_psphinx, "result", this, &AbstractSphinx::formResult);
-    m_psphinx->setProperty ("configured", true);
+    QGlib::connect (d->m_psphinx, "partial_result", this, &AbstractSphinx::formPartialResult);
+    QGlib::connect (d->m_psphinx, "result", this, &AbstractSphinx::formResult);
+    d->m_psphinx->setProperty ("configured", true);
 
-    m_pipeline->setState (QGst::StateReady);
-    m_psphinx->setState (QGst::StateReady);
-    m_vader->setState (QGst::StateReady);
+    d->m_pipeline->setState (QGst::StateReady);
+    d->m_psphinx->setState (QGst::StateReady);
+    d->m_vader->setState (QGst::StateReady);
     qDebug() << "[AbstractSphinx::prepare()] Prepared pipeline.";
-    m_ready = Ready;
+    d->m_ready = Ready;
 }
 
 QString AbstractSphinx::standardDescription()
@@ -87,69 +102,74 @@ QString AbstractSphinx::standardDescription()
 /// @todo Determine how to pull the pointer of the held data from the QGlib::Value (or GValue) and use that as the ps_decoder_t.
 QGlib::Value AbstractSphinx::decoder() const
 {
-    QGlib::Value glibPs = m_psphinx->property ("decoder");
+    Q_D (const AbstractSphinx);
+    QGlib::Value glibPs = d->m_psphinx->property ("decoder");
     bool ok;
     void* pointer = glibPs.get<void*> (&ok);
     qDebug() << "[AbstractSphinx::decoder()] Obtained successfully? " << ok << pointer;
     return glibPs;
 }
 
+const QGst::PipelinePtr AbstractSphinx::pipeline() const
+{
+    Q_D (const AbstractSphinx);
+    return d->m_pipeline;
+}
+
+const QGst::ElementPtr AbstractSphinx::audioSrcElement() const
+{
+    return pipeline()->getElementByName ("src");
+}
+
+const QGst::ElementPtr AbstractSphinx::pocketSphinxElement() const
+{
+    Q_D (const AbstractSphinx);
+    return d->m_psphinx;
+}
+
+const QGst::ElementPtr AbstractSphinx::vaderElement() const
+{
+    Q_D (const AbstractSphinx);
+    return d->m_vader;
+}
+
+const QGst::BusPtr AbstractSphinx::busElement() const
+{
+    Q_D (const AbstractSphinx);
+    return d->m_bus;
+}
+
 LanguageModel* AbstractSphinx::languageModel() const
 {
-    QGlib::Value lm = m_psphinx->property ("lm");
+    QGlib::Value lm = pocketSphinxElement()->property ("lm");
     return LanguageModel::fromDirectory (lm.toString());
 }
 
 Dictionary* AbstractSphinx::dictionary() const
 {
-    const QString dict = m_psphinx->property ("dict").toString();
+    const QString dict = pocketSphinxElement()->property ("dict").toString();
     return Dictionary::obtain (dict);
 }
 
 AcousticModel* AbstractSphinx::acousticModel() const
 {
-    const QString hmm = m_psphinx->property ("hmm").toString();
+    const QString hmm = pocketSphinxElement()->property ("hmm").toString();
     return new AcousticModel (hmm , parent());
-}
-
-const QGst::PipelinePtr AbstractSphinx::pipeline() const
-{
-    return m_pipeline;
 }
 
 const QGst::ElementPtr AbstractSphinx::volumeElement() const
 {
-    return m_pipeline->getElementByName ("volume");
-}
-
-const QGst::ElementPtr AbstractSphinx::audioSrcElement() const
-{
-    return m_pipeline->getElementByName ("src");
-}
-
-const QGst::ElementPtr AbstractSphinx::pocketSphinxElement() const
-{
-    return m_psphinx;
-}
-
-const QGst::ElementPtr AbstractSphinx::vaderElement() const
-{
-    return m_vader;
-}
-
-const QGst::BusPtr AbstractSphinx::busElement() const
-{
-    return m_bus;
+    return pipeline()->getElementByName ("volume");
 }
 
 void AbstractSphinx::setVaderProperty (const QString& p_property, const QVariant& p_value)
 {
-    m_vader->setProperty (p_property.toStdString().c_str(), QGlib::Value (p_value.toString()));
+    vaderElement()->setProperty (p_property.toStdString().c_str(), QGlib::Value (p_value.toString()));
 }
 
 void AbstractSphinx::setPsProperty (const QString& p_property, const QVariant& p_value)
 {
-    m_psphinx->setProperty (p_property.toStdString().c_str(), QGlib::Value (p_value.toString()));
+    pocketSphinxElement()->setProperty (p_property.toStdString().c_str(), QGlib::Value (p_value.toString()));
 }
 
 void AbstractSphinx::setLanguageModel (const QString& p_path)
@@ -205,16 +225,19 @@ void AbstractSphinx::setAcousticModel (const AcousticModel* p_acousticModel)
 
 bool AbstractSphinx::isReady() const
 {
-    return m_ready == Ready;
+    Q_D (const AbstractSphinx);
+    return d->m_ready == Ready;
 }
 
 bool AbstractSphinx::isRunning() const
 {
-    return m_running == Running;
+    Q_D (const AbstractSphinx);
+    return d->m_running == Running;
 }
 
 bool AbstractSphinx::start()
 {
+    Q_D (AbstractSphinx);
     qDebug() << "[AbstractSphinx::start()] Starting...";
 
     if (isRunning()) {
@@ -223,12 +246,12 @@ bool AbstractSphinx::start()
     }
 
     if (isReady()) {
-        m_bus = m_pipeline->bus();
-        m_bus->addSignalWatch();
-        QGlib::connect (m_bus, "message::application", this, &AbstractSphinx::applicationMessage);
+        d->m_bus = d->m_pipeline->bus();
+        d->m_bus->addSignalWatch();
+        QGlib::connect (d->m_bus, "message::application", this, &AbstractSphinx::applicationMessage);
 
-        m_pipeline->setState (QGst::StatePlaying);
-        m_running = Running;
+        d->m_pipeline->setState (QGst::StatePlaying);
+        d->m_running = Running;
         qDebug() << "[AbstractSphinx::start()] PocketSphinx started.";
     }
     else {
@@ -240,47 +263,47 @@ bool AbstractSphinx::start()
 
 bool AbstractSphinx::stop()
 {
-    if (m_pipeline->setState (QGst::StateNull) == QGst::StateChangeSuccess) {
-        m_running = NotPrepared;
-        m_bus.clear();
+    Q_D (AbstractSphinx);
+
+    if (d->m_pipeline->setState (QGst::StateNull) == QGst::StateChangeSuccess) {
+        d->m_running = NotPrepared;
+        d->m_bus.clear();
     }
 
-    qDebug() << "[AbstractSphinx::stop()] Has PocketSphinx halted?" << (m_running == NotPrepared);
-    return m_running == NotPrepared;
+    qDebug() << "[AbstractSphinx::stop()] Has PocketSphinx halted?" << (d->m_running == NotPrepared);
+    return d->m_running == NotPrepared;
 }
 
 void AbstractSphinx::togglePause()
 {
-    const bool l_silent = ! (m_vader->property ("silent").toBool());
-    m_vader->setProperty ("silent", l_silent);
+    Q_D (AbstractSphinx);
+    const bool silent = ! (d->m_vader->property ("silent").toBool());
+    d->m_vader->setProperty ("silent", silent);
 }
 
-/// @todo Does this obtain the partial result from the internal PocketSphinx component?
 void AbstractSphinx::formPartialResult (QString& p_text, QString& p_uttid)
 {
-    QGst::Structure l_psStructure ("partial_result");
-    l_psStructure.setValue ("hyp", p_text);
-    l_psStructure.setValue ("uttid", p_uttid);
-    QGst::MessagePtr l_message = QGst::ApplicationMessage::create (m_psphinx, l_psStructure);
-    m_bus->post (l_message);
+    Q_D (AbstractSphinx);
+    QGst::Structure psStructure ("partial_result");
+    psStructure.setValue ("hyp", p_text);
+    psStructure.setValue ("uttid", p_uttid);
+    QGst::MessagePtr message = QGst::ApplicationMessage::create (d->m_psphinx, psStructure);
+    d->m_bus->post (message);
 }
 
 /// @todo Does this obtain the partial result from the internal PocketSphinx component?
 void AbstractSphinx::formResult (QString& p_text, QString& p_uttid)
 {
-    QGst::Structure l_psStructure ("result");
-    l_psStructure.setValue ("hyp", p_text);
-    l_psStructure.setValue ("uttid", p_uttid);
-    QGst::MessagePtr l_message = QGst::ApplicationMessage::create (m_psphinx, l_psStructure);
-    m_bus->post (l_message);
+    Q_D (AbstractSphinx);
+    QGst::Structure psStructure ("result");
+    psStructure.setValue ("hyp", p_text);
+    psStructure.setValue ("uttid", p_uttid);
+    QGst::MessagePtr message = QGst::ApplicationMessage::create (d->m_psphinx, psStructure);
+    d->m_bus->post (message);
 }
 
 AbstractSphinx::~AbstractSphinx()
 {
-    m_pipeline->setState (QGst::StateNull);
-    m_psphinx->setState (QGst::StateNull);
-    m_bus.clear();
-    m_psphinx.clear();
 }
 
 #include "sphinx/abstract.moc"

@@ -18,22 +18,40 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "backup-wizard.hpp"
-#include "wizards/intro.hpp"
-#include "wizards/outro.hpp"
+#include "app/ui/contents-wizard.hpp"
+#include "app/sessions/content.hpp"
+#include "app/sessions/wikicontentsource.hpp"
+#include "ui_contentwizard-source-wiki.h"
+#include "source-wiki.hpp"
 
-using namespace SpeechControl::Wizards;
+#include <QDebug>
+#include <QDomDocument>
+#include <QFileDialog>
+#include <QMessageBox>
 
-Backup::Backup (QWidget* parent) :
-    WizardBase (parent)
+using SpeechControl::Content;
+using SpeechControl::WikiContentSource;
+using SpeechControl::WikiContentSourceWidget;
+
+WikiContentSourceWidget::WikiContentSourceWidget (QWidget* parent) :
+    QWidget (parent),
+    m_ui (new Ui::WikiContentSourceWidget)
 {
-    setPage (Backup::IntroductionPage,
-             NULL);
+    m_ui->setupUi (this);
+    this->setLayout (m_ui->gridLayout);
+    setProperty ("id", "wiki");
+    setProperty ("title", "Wikipedia");
 }
 
-Backup::~Backup()
+void WikiContentSourceWidget::updateView()
 {
+    WikiContentSource* src = new WikiContentSource;
 }
 
-#include "backup-wizard.moc"
+WikiContentSourceWidget::~WikiContentSourceWidget()
+{
+    delete m_ui;
+}
+
+#include "ui/source-wiki.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

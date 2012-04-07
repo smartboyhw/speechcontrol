@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>WikiContentSourceWidget</class>
+ <widget class="QWidget" name="WikiContentSourceWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>353</width>
+    <height>174</height>
+   </rect>
+  </property>
+  <property name="title" stdset="0">
+   <string>Wiki</string>
+  </property>
+  <property name="id" stdset="0">
+   <string>wiki</string>
+  </property>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>4</y>
+     <width>353</width>
+     <height>169</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout"/>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -31,6 +31,8 @@ class MicrophoneSample;
 namespace SpeechControl
 {
 class AudioSourceSphinx;
+namespace Windows
+{
 namespace Wizards
 {
 namespace Pages
@@ -64,5 +66,6 @@ private:
 }
 }
 }
+}
 #endif // MICSAMPLE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

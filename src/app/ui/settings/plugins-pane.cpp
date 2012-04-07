@@ -111,10 +111,13 @@ void PluginsSettingsPane::on_btnLoadPlugin_clicked()
     QListWidgetItem* item = ui->lstPlugins->currentItem();
     const QString id (item->data (Qt::UserRole).toString());
 
-    if (!Factory::isPluginLoaded (id))
-        Factory::loadPlugin (id);
-    else
+    if (!Factory::isPluginLoaded (id) && Factory::loadPlugin (id)) {
+        item->setIcon (Factory::plugin (id)->pixmap());
+    }
+    else {
         Factory::unloadPlugin (id);
+        item->setIcon (QIcon::fromTheme ("dialog-error"));
+    }
 
     on_lstPlugins_itemActivated (item);
 }
@@ -179,5 +182,5 @@ void PluginsSettingsPane::changeEvent (QEvent* e)
     }
 }
 
-#include "plugins-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/plugins-pane.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

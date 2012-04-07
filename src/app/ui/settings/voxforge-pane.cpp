@@ -81,5 +81,5 @@ void SpeechControl::Windows::VoxforgeSettingsPane::on_checkBox_clicked()
 
 }
 
-#include "voxforge-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/voxforge-pane.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

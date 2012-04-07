@@ -3,13 +3,26 @@ cmake_minimum_required(VERSION 2.8)
 
 ## setting up sources
 file(GLOB SPCHCNTRL_LIB_SRCS "*.cpp")
+file(GLOB SPCHCNTRL_LIB_HDRS "*.hpp")
+file(GLOB SPCHCNTRL_LIB_PRIVSRCS "*.cxx")
+file(GLOB SPCHCNTRL_LIB_PRIVHDRS "*.hxx")
 file(GLOB SPCHCNTRL_LIB_AUDIOSOURCE_SRCS "audiosource/*.cpp")
+file(GLOB SPCHCNTRL_LIB_AUDIOSOURCE_HDRS "audiosource/*.hpp")
+file(GLOB SPCHCNTRL_LIB_AUDIOSOURCE_PRIVSRCS "audiosource/*.cxx")
+file(GLOB SPCHCNTRL_LIB_AUDIOSOURCE_PRIVHDRS "audiosource/*.hxx")
 file(GLOB SPCHCNTRL_LIB_SPHINX_SRCS "sphinx/*.cpp")
+file(GLOB SPCHCNTRL_LIB_SPHINX_HDRS "sphinx/*.hpp")
+file(GLOB SPCHCNTRL_LIB_SPHINX_PRIVSRCS "sphinx/*.cxx")
+file(GLOB SPCHCNTRL_LIB_SPHINX_PRIVHDRS "sphinx/*.hxx")
 
 set(SPCHCNTRL_LIB_SOURCES ${SPCHCNTRL_LIB_AUDIOSOURCE_SRCS}
     ${SPCHCNTRL_LIB_SPHINX_SRCS}
     ${SPCHCNTRL_LIB_SRCS})
-file(GLOB SPCHCNTRL_LIB_HEADERS "*.hpp")
+set(SPCHCNTRL_LIB_PRIVSOURCES ${SPCHCNTRL_LIB_AUDIOSOURCE_PRIVSRCS}
+    ${SPCHCNTRL_LIB_SPHINX_PRIVSRCS}
+    ${SPCHCNTRL_LIB_PRIVSRCS})
+set(SPCHCNTRL_LIB_ALLSRCS ${SPCHCNTRL_LIB_SOURCES}
+    ${SPCHCNTRL_LIB_PRIVSOURCES})
 
 ## variables
 set(SPCHCNTRL_LIB_MAJOR_VERSION 0)
@@ -29,20 +42,11 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
 
 ## set up build variables
-set(SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS "")
-set(SPCHCNTRL_LIB_BUILD_COMPILE_DEFINITIONS "")
-
-## Test if we're going to make Python bindings.
-if(WITH_PYTHON_BINDINGS)
-    message(STATUS "Python bindings for libspeechcontrol enabled; but not yet implemented.")
-else(WITH_PYTHON_BINDINGS)
-    message(STATUS "Python bindings for libspeechcontrol disabled.")
-endif(WITH_PYTHON_BINDINGS)
-
-## fill in build values
-list(APPEND SPCHCNTRL_LIB_BUILD_COMPILE_DEFINITIONS ${SPCHCNTRL_LIB_COMPILE_DEFINITIONS})
-list(APPEND SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS ${SPCHCNTRL_LIB_INCLUDE_DIRS}
-                                            "${CMAKE_SOURCE_DIR}/src")
+set(SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS ${SPCHCNTRL_BUILD_INCLUDE_DIRS}
+    ${SPCHCNTRL_LIB_INCLUDE_DIRS}
+    ${PROJECT_SOURCE_DIR}
+    ${PROJECT_BINARY_DIR})
+set(SPCHCNTRL_LIB_BUILD_COMPILE_DEFINITIONS ${SPCHCNTRL_LIB_COMPILE_DEFINITIONS})
 list(REMOVE_ITEM SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS ${SPCHCNTRL_LIB_INCLUDE_DIR})
 
 ## configures
@@ -50,10 +54,10 @@ configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
     "${PROJECT_SOURCE_DIR}/config.hpp" @ONLY)
 
 ## Some Qt-specific stuff.
-QT4_AUTOMOC(${SPCHCNTRL_LIB_SOURCES})
+QT4_AUTOMOC(${SPCHCNTRL_LIB_ALLSRCS})
 
 ## Define the target
-add_library(speechcontrol SHARED ${SPCHCNTRL_LIB_SOURCES})
+add_library(speechcontrol SHARED ${SPCHCNTRL_LIB_ALLSRCS})
 set_target_properties(speechcontrol PROPERTIES
     COMPILE_FLAGS "${SPCHCNTRL_LIB_COMPILE_FLAGS}"
     COMPILE_DEFINITIONS "${SPCHCNTRL_LIB_BUILD_COMPILE_DEFINITIONS}"
@@ -72,13 +76,16 @@ install(EXPORT SpeechControlLibraryDepends
     DESTINATION "${SPCHCNTRL_CMAKE_DIR}"
     COMPONENT "dev")
 
-install(FILES ${SPCHCNTRL_LIB_HEADERS}
+install(FILES ${SPCHCNTRL_LIB_HDRS}
     DESTINATION "${SPCHCNTRL_LIB_INCLUDE_DIR}"
+    COMPONENT "dev")
+
+install(FILES ${SPCHCNTRL_LIB_PRIVHDRS}
+    DESTINATION "${SPCHCNTRL_LIB_INCLUDE_DIR}-private"
     COMPONENT "dev")
 
 include_directories(${SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS})
 
 add_subdirectory(cmake)
-add_subdirectory(python)
 add_subdirectory(sphinx)
 add_subdirectory(audiosource)

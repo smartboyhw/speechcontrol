@@ -49,7 +49,7 @@ private slots:
     void on_btnTrainSession_clicked();
     void on_btnOpenContent_clicked();
     void on_btnPhrasePlay_clicked();
-    void on_horizontalSliderPhrase_valueChanged(const int p_value);
+    void on_horizontalSliderPhrase_valueChanged (const int p_value);
     void on_lineEditNickname_textChanged (const QString& p_newNickname);
     void updateProgress (const double p_progress);
 
@@ -62,4 +62,4 @@ private:
 }
 
 #endif // SESSIONINFORMATIONDIALOG_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

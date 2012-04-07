@@ -32,8 +32,7 @@ struct DictionaryEntryPrivate;
 typedef QMap<QString, Dictionary* > DictionaryMap;
 typedef QMap<QString, DictionaryEntry* > DictionaryEntryMap;
 
-struct DictionaryEntryPrivate
-{
+struct DictionaryEntryPrivate {
     explicit DictionaryEntryPrivate (Dictionary* p_dictionary,
                                      const QString& p_word,
                                      const QString& p_phoneme);
@@ -44,8 +43,7 @@ struct DictionaryEntryPrivate
     QString m_phnm;         ///< The phoneme of this entry.
 };
 
-struct DictionaryPrivate
-{
+struct DictionaryPrivate {
     DictionaryPrivate ();
     virtual ~DictionaryPrivate();
     static QString getPathFromId (const QString& p_id);
@@ -55,4 +53,4 @@ struct DictionaryPrivate
 };
 
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

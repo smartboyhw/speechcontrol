@@ -19,27 +19,17 @@
  */
 
 #include <QMap>
-#include "lib/audiosource/sink.hxx"
-#include "lib/audiosource/source.hxx"
-#include "lib/audiosource/abstract.hxx"
+
+#include <lib/audiosource/abstract.hxx>
 
 namespace SpeechControl
 {
 
 class DeviceAudioSource;
-struct DeviceAudioSourcePrivate;
 
 struct DeviceAudioSourcePrivate : public AbstractAudioSourcePrivate {
-    explicit DeviceAudioSourcePrivate(DeviceAudioSource* p_obj) : AbstractAudioSourcePrivate(), m_device(),
-        m_devicePtr (), m_deviceObj(p_obj) {
-        m_devicePtr.clear();
-    }
-
-    virtual ~DeviceAudioSourcePrivate() {
-        m_devicePtr.clear();
-        m_device.clear();
-    }
-
+    explicit DeviceAudioSourcePrivate (DeviceAudioSource* p_obj);
+    virtual ~DeviceAudioSourcePrivate();
     void obtainDevice (const QString& p_deviceName);
     QGlib::Value m_device;
     QGst::ElementPtr m_devicePtr;

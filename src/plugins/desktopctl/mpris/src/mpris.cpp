@@ -19,7 +19,7 @@
  */
 
 #include "mpris.hpp"
-#include <app/core.hpp>
+#include <core.hpp>
 #include <QDBusInterface>
 #include <qdbusreply.h>
 
@@ -38,43 +38,43 @@ Player::Player() : QObject (Core::instance()), m_interface (0)
                                      );
     play();
     pause();
-    setVolume(100);
-    setVolume(40);
+    setVolume (100);
+    setVolume (40);
 }
 
 void Player::play()
 {
-    m_interface->call (QDBus::BlockWithGui,"Pause");
+    m_interface->call (QDBus::BlockWithGui, "Pause");
 }
 
 void Player::nextTrack()
 {
-    m_interface->call (QDBus::BlockWithGui,"Next");
+    m_interface->call (QDBus::BlockWithGui, "Next");
 }
 
 void Player::pause()
 {
-    m_interface->call (QDBus::BlockWithGui,"Pause");
+    m_interface->call (QDBus::BlockWithGui, "Pause");
 }
 
 void Player::previousTrack()
 {
-    m_interface->call (QDBus::BlockWithGui,"Prev");
+    m_interface->call (QDBus::BlockWithGui, "Prev");
 }
 
 void Player::stop()
 {
-    m_interface->call (QDBus::BlockWithGui,"Stop");
+    m_interface->call (QDBus::BlockWithGui, "Stop");
 }
 
 void Player::setRepeat (const bool p_repeatState)
 {
-    m_interface->call (QDBus::BlockWithGui,"Repeat", p_repeatState);
+    m_interface->call (QDBus::BlockWithGui, "Repeat", p_repeatState);
 }
 
 void Player::setVolume (const quint8 p_volume)
 {
-    m_interface->call (QDBus::BlockWithGui,"VolumeSet", p_volume);
+    m_interface->call (QDBus::BlockWithGui, "VolumeSet", p_volume);
 }
 
 quint8 Player::volume()
@@ -90,4 +90,4 @@ Player::~Player()
 
 #include "mpris.moc"
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

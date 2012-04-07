@@ -23,8 +23,8 @@
 #include <QProcess>
 #include <QTemporaryFile>
 
-#include <lib/acousticmodel.hpp>
-#include <lib/dictionary.hpp>
+#include <acousticmodel.hpp>
+#include <dictionary.hpp>
 
 #include "sessions/session.hpp"
 #include "sessions/session.hpp"
@@ -336,8 +336,8 @@ void AdaptationUtility::generateFeatures()
 
     // Build argument values.
     QDir dirInput (m_session->corpus()->audioPath());
-    QDir dirOutput(QDir::tempPath() + "/" + m_session->id() + "-" + QString::number(qrand()));
-    dirOutput.mkpath(dirOutput.path());
+    QDir dirOutput (QDir::tempPath() + "/" + m_session->id() + "-" + QString::number (qrand()));
+    dirOutput.mkpath (dirOutput.path());
     QString suffixInput = "raw";
     QString suffiXOutput = "mfc";
     QFile* controlFile = m_session->corpus()->fileIds();
@@ -386,7 +386,7 @@ void AdaptationUtility::convertModelDefinitions()
 
     QStringList args;
     args << "-text"     << fileMdef->fileName()
-                        << (fileMdef->fileName() + ".txt")
+         << (fileMdef->fileName() + ".txt")
          ;
 
     executeProcess ("pocketsphinx_mdef_convert", args);
@@ -610,5 +610,5 @@ AdaptationUtility::~AdaptationUtility()
     m_prcss->deleteLater();
 }
 
-#include "adaptionutility.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "sessions/adaptionutility.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

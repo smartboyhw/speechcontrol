@@ -24,7 +24,6 @@ Application (general)
 - Permit serialization to tarballs of segmented audio recording. (bug #000009) [jalcine]
 * Correct the CMake build system to use sub-directories for each layer of code and UI. (bug #000010)
 - Implement D-Bus integration of application. (bug #000011) [jalcine]
-* Hook into speechcontrold and allow modifying of local user options for the daemon. (bug #000013)
 * Add support for multiple languages (i18n) into SpeechControl. (bug #000022)
 * Add more tests for the UI.
 * Generate icons for Voxforge.
@@ -32,17 +31,9 @@ Application (general)
 * Segment the core of the application into an external component that can be used by other programming languages.
 * Consider merging the AbstractAgent class into the Services::AbstractModule class.
 
-Application (daemon)
-----------------------------------------------------------
-! Work on adding D-Bus support. (bug #000016) [jalcine]
-* Implement the ability to queue instances of recognition. (bug #000017)
-* Implement a configuration file (per-user and system) for default devices and options. (bug #000018)
-    - Dump possible values for each configuration on command-line when queried.
-    - Warn about invalid/incompatible values and revert to default.
-
 Miscellaneous
 ----------------------------------------------------------
-* Re-work SpeechControl to have a daemon run in the background that handles all of the speech recognition requests (speechcontrold). (bug #000020)
 ! Work on the theming for the documentation. (bug #000021) [jalcine]
 ! Add more test-cases for the library, application and daemon. [jalcine]
 ! For Sphinx-related libraries create CMake modules instead of using pkg-config. -- [gentoolx]
+* Produce more informative documentation (see TODO.docs on branch 'docs')

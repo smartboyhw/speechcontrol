@@ -20,12 +20,13 @@
 
 #include "selection.hpp"
 #include "source-text.hpp"
-#include "app/sessions/content.hpp"
-#include "app/ui/contents-wizard.hpp"
+#include "source-wiki.hpp"
+#include "sessions/content.hpp"
+#include "ui/contents-wizard.hpp"
 #include "ui_contentwizard-sourceselect.h"
 
 using namespace SpeechControl;
-using SpeechControl::Wizards::Pages::SourceSelectionPage;
+using SpeechControl::Windows::Wizards::Pages::SourceSelectionPage;
 
 QMap<QString, QWidget*> SourceSelectionPage::s_lst;
 
@@ -34,7 +35,7 @@ SourceSelectionPage::SourceSelectionPage (QWidget* parent) :
     m_ui (new Ui::SourceSelectionPage)
 {
     m_ui->setupUi (this);
-    this->setLayout(m_ui->gridLayout);
+    this->setLayout (m_ui->gridLayout);
 
     addDefaultSources();
     updateUi();
@@ -50,11 +51,16 @@ void SourceSelectionPage::updateUi()
 void SourceSelectionPage::addDefaultSources()
 {
     registerSourceWidget (new TextContentSourceWidget);
+    registerSourceWidget (new WikiContentSourceWidget);
 }
 
 void SourceSelectionPage::on_comboBoxSource_currentIndexChanged (const int& p_index)
 {
     QVariant l_vrnt = m_ui->comboBoxSource->itemData (p_index);
+
+    Q_FOREACH (QWidget * page, s_lst.values()) {
+        page->hide();
+    }
 
     if (l_vrnt.isValid()) {
         QWidget* l_wid = s_lst.value (l_vrnt.toString());
@@ -65,7 +71,7 @@ void SourceSelectionPage::on_comboBoxSource_currentIndexChanged (const int& p_in
 
 bool SourceSelectionPage::validatePage()
 {
-    AbstractContentSource* src = ( (SpeechControl::Wizards::ContentWizard*) window())->source();
+    AbstractContentSource* src = ( (SpeechControl::Windows::Wizards::ContentWizard*) window())->source();
 
     if (!src)
         setSubTitle ("<b><font color='red'>Please select a source to generate content from.</font></b>");
@@ -83,5 +89,5 @@ SourceSelectionPage::~SourceSelectionPage()
     delete m_ui;
 }
 
-#include "selection.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/selection.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

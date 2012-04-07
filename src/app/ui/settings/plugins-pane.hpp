@@ -22,8 +22,9 @@
 #define PLUGINS_SETTINGS_HPP
 
 #include <QFrame>
-#include <QListWidgetItem>
-#include <app/ui/settings-dialog.hpp>
+#include <ui/settings-dialog.hpp>
+
+class QListWidgetItem;
 
 namespace Ui
 {
@@ -52,8 +53,8 @@ protected:
 
 private slots:
     void on_btnInfo_clicked();
-    void on_checkBoxEnabled_toggled(const bool p_checked);
-    void on_checkBoxAutoStart_toggled(const bool p_checked);
+    void on_checkBoxEnabled_toggled (const bool p_checked);
+    void on_checkBoxAutoStart_toggled (const bool p_checked);
     void on_lstPlugins_itemActivated (QListWidgetItem* p_item);
     void on_btnLoadPlugin_clicked();
     void on_lstPlugins_itemSelectedChanged();
@@ -66,4 +67,4 @@ private:
 }
 
 #endif // PLUGINS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

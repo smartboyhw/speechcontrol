@@ -18,56 +18,65 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "lib/audiosource/abstract.hpp"
-#include "lib/audiosource/source.hpp"
+#include "lib/sphinx/abstract.hpp"
 #include "lib/sphinx/audiosource.hpp"
+#include "lib/sphinx/audiosource.hxx"
+#include "lib/audiosource/abstract.hpp"
 
 using namespace SpeechControl;
 
-AudioSourceSphinx::AudioSourceSphinx (QObject* p_parent) : AbstractSphinx (p_parent), m_audioSrc (0), m_appSrc (0)
+AudioSourceSphinx::AudioSourceSphinx (QObject* p_parent) :
+    AbstractSphinx (new AudioSourceSphinxPrivate (this), p_parent)
 {
 }
 
-AudioSourceSphinx::AudioSourceSphinx (AbstractAudioSource* p_source, QObject* p_parent) : AbstractSphinx (p_parent), m_audioSrc(p_source) {
+AudioSourceSphinx::AudioSourceSphinx (AbstractAudioSource* p_source, QObject* p_parent) :
+    AbstractSphinx (new AudioSourceSphinxPrivate (this), p_parent)
+{
     setSource (p_source);
 }
 
-
-AudioSourceSphinx::AudioSourceSphinx (const AudioSourceSphinx& p_other) : AbstractSphinx (p_other.parent()), m_audioSrc (0) {
-    setSource (p_other.m_audioSrc);
+AudioSourceSphinx::AudioSourceSphinx (const AudioSourceSphinx& p_other) :
+    AbstractSphinx (const_cast<AbstractSphinxPrivate*> (p_other.d_func()), p_other.parent())
+{
 }
 
-
-void AudioSourceSphinx::linkSource ()
+AudioSourceSphinx::AudioSourceSphinx (const AbstractSphinx& p_base) :
+    AbstractSphinx (p_base)
 {
-    QString description = standardDescription();
-    description = description.replace ("autoaudiosrc name=src", "appsrc name=src");
-    buildPipeline (description);
-    m_appSrc = new AudioSourceSphinxSource (this);
-    qDebug() << "[AudioSourceSphinx::linkSource()] Linked up sources.";
+
 }
 
 void AudioSourceSphinx::setSource (AbstractAudioSource* p_source)
 {
-    m_audioSrc = p_source;
-    linkSource();
+    Q_D (AudioSourceSphinx);
+    d->m_audioSrc = p_source;
+    d->linkSource();
 }
 
 AbstractAudioSource* AudioSourceSphinx::source()
 {
-    return m_audioSrc;
+    Q_D (AudioSourceSphinx);
+    return d->m_audioSrc;
 }
 
 bool AudioSourceSphinx::start()
 {
-    m_audioSrc->start();
-    return SpeechControl::AbstractSphinx::start();
+    Q_D (AudioSourceSphinx);
+    d->m_audioSrc->start();
+
+    if (!d->m_audioSrc->isActive())
+        return false;
+
+    return AbstractSphinx::start();
 }
 
 bool AudioSourceSphinx::stop()
 {
-    m_audioSrc->stop();
-    return SpeechControl::AbstractSphinx::stop();
+    Q_D (AudioSourceSphinx);
+    d->m_audioSrc->stop();
+
+    return AbstractSphinx::stop();
 }
 
 void AudioSourceSphinx::applicationMessage (const QGst::MessagePtr& p_message)

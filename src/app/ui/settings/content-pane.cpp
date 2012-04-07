@@ -162,5 +162,5 @@ void ContentSettingsPane::on_btnInfo_clicked()
     }
 }
 
-#include "content-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/content-pane.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

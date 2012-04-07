@@ -26,10 +26,12 @@
 
 namespace SpeechControl
 {
+namespace Windows
+{
 namespace Wizards
 {
 
-class QuickStart : public WizardBase
+class QuickStart : public AbstractWizard
 {
     Q_OBJECT
 
@@ -52,6 +54,6 @@ public slots:
 
 }
 }
-
+}
 #endif // WIZARD_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

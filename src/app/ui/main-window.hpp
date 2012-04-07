@@ -27,7 +27,7 @@
 #include <QVariantMap>
 #include <QMainWindow>
 
-#include <app/sessions/accuracymeter.hpp>
+#include <sessions/accuracymeter.hpp>
 
 class QProgressBar;
 class QListWidgetItem;
@@ -133,7 +133,7 @@ public slots:
      * @param p_value The value of the progress on a scale of 0.0 to 1.0
      **/
     void setProgress (const double p_value);
-    void on_acrcyThrd_foundNoData();
+    void onAcrcyThrd_foundNoData();
 private slots:
     // desktop control
     void on_actionDesktopControlOptions_triggered();
@@ -169,9 +169,9 @@ private slots:
     void on_btnAllServices_clicked();
 
     // recognition pane
-    void on_acrcyThrd_foundError();
-    void on_acrcyThrd_foundSuccess();
-    void on_acrcyThrd_finished();
+    void onAcrcyThrd_foundError();
+    void onAcrcyThrd_foundSuccess();
+    void onAcrcyThrd_finished();
     void doAccuracyCheck();
 
     // misc.
@@ -194,4 +194,4 @@ private:
 }
 
 #endif // MAIN_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

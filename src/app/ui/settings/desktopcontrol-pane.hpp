@@ -22,7 +22,7 @@
 #define DESKTOPCONTROL_SETTINGS_HPP
 
 #include <QFrame>
-#include <app/ui/settings-dialog.hpp>
+#include <ui/settings-dialog.hpp>
 
 namespace Ui
 {
@@ -72,4 +72,4 @@ private:
 }
 
 #endif // GENERAL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

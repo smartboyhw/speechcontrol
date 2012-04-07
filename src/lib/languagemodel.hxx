@@ -19,14 +19,16 @@
  */
 #include <QString>
 
-namespace SpeechControl {
-    class LanguageModel;
-    class LanguageModelPrivate;
+namespace SpeechControl
+{
+class LanguageModel;
+class LanguageModelPrivate;
 
-    struct LanguageModelPrivate {
-        LanguageModelPrivate() : m_path(QString::null) { }
-        explicit LanguageModelPrivate(QString& p_path) : m_path(p_path) { }
+struct LanguageModelPrivate {
+    LanguageModelPrivate() : m_path (QString::null) { }
+    explicit LanguageModelPrivate (QString& p_path) : m_path (p_path) { }
 
-        QString m_path;
-    };
+    QString m_path;
+};
 }
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

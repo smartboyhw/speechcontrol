@@ -23,8 +23,8 @@
  *
  */
 
-#include "lib/system.hpp"
-#include "lib/audiosource/device.hpp"
+#include "system.hpp"
+#include "audiosource/device.hpp"
 
 #include <QDir>
 #include <QGst/Init>
@@ -73,4 +73,4 @@ void System::stop()
 }
 
 #include "system.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

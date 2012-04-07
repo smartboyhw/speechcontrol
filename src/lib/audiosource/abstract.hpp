@@ -147,7 +147,9 @@ public slots:
 
 protected:
     Q_DISABLE_COPY (AbstractAudioSource)
-    Q_DECLARE_PRIVATE(AbstractAudioSource)
+    Q_DECLARE_PRIVATE (AbstractAudioSource)
+
+    QSharedPointer<AbstractAudioSourcePrivate> d_ptr;
 
     /**
      * @brief Null constructor.
@@ -162,6 +164,14 @@ protected:
      * @param p_other The QObject to base this on.
      **/
     AbstractAudioSource (const QObject& p_other);
+
+    /**
+     * @brief Copy constructor of private data.
+     *
+     * @param dd Private data to copy.
+     * @param parent Parent to inherit from. Defaults to 0.
+     **/
+    AbstractAudioSource (AbstractAudioSourcePrivate* p_dPtr, QObject* p_parent = 0);
 
     /**
      * @brief Obtains the portion of a pipeline needed for a derived AbstractAudioSource to use.
@@ -192,8 +202,6 @@ protected:
      *
      **/
     virtual void buildPipeline();
-
-    QScopedPointer<AbstractAudioSourcePrivate> d_ptr;
 
 private slots:
     void onPipelineBusmessage (const QGst::MessagePtr& message);

@@ -21,7 +21,7 @@
 #include "optin.hpp"
 #include "ui_voxforgewizard-optin.h"
 
-using namespace SpeechControl::Wizards::Pages;
+using namespace SpeechControl::Windows::Wizards::Pages;
 
 OptinConfirmation::OptinConfirmation (QWidget* parent) : QWizardPage (parent),
     ui (new Ui::OptinConfirmation)
@@ -29,7 +29,7 @@ OptinConfirmation::OptinConfirmation (QWidget* parent) : QWizardPage (parent),
     ui->setupUi (this);
     this->setLayout (ui->verticalLayout);
     registerField ("optin.enabled", ui->checkBoxVoxforge);
-    connect(ui->checkBoxVoxforge,SIGNAL(stateChanged(int)),this,SIGNAL(completeChanged()));
+    connect (ui->checkBoxVoxforge, SIGNAL (stateChanged (int)), this, SIGNAL (completeChanged()));
 }
 
 bool OptinConfirmation::validatePage()
@@ -43,5 +43,5 @@ OptinConfirmation::~OptinConfirmation()
 
 }
 
-#include "optin.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/optin.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

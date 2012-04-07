@@ -163,6 +163,7 @@ public slots:
 private slots:
     void invokeAutoStart();
     void hookUpSignals();
+    void bootServices();
 
 private:
     QScopedPointer<CorePrivate> d_ptr;

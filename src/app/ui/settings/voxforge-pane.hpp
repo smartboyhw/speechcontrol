@@ -50,7 +50,11 @@ protected:
     void changeEvent (QEvent* e);
 
 private slots:
-    void on_checkBox_clicked();
+    void on_btnTestLogin_clicked();
+    void on_checkBoxEnabled_toggled(const bool& p_checked);
+    void on_groupBoxAuthenticated_toggled(const bool& p_checked);
+    void on_lineEditUserName_textChanged(const QString& p_text);
+    void on_lineEditPassWord_textChanged(const QString& p_text);
 
 private:
     Ui::VoxforgeSettingsPane* ui;

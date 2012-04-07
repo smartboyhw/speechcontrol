@@ -20,6 +20,8 @@
 
 #ifndef UPLOADHANDLER_HPP
 #define UPLOADHANDLER_HPP
+
+#include <QList>
 #include <QObject>
 
 namespace SpeechControl
@@ -27,16 +29,45 @@ namespace SpeechControl
 namespace Voxforge
 {
 
+class Package;
+
 class UploadHandler : public QObject
 {
     Q_OBJECT
 
 public:
-    virtual ~UploadHandler();
+    enum Status {
+        Undefined = -1,
+        Connecting,
+        Authenticating,
+        Authenticated,
+        Connected,
+        Uploading,
+        Uploaded
+    };
+
     explicit UploadHandler (QObject* parent = 0);
+    virtual ~UploadHandler();
+    void addPackage (Package* p_package);
+    void setUsername (const QString& p_username);
+    void setPassword (const QString& p_password);
+    QList<Package*> packages() const;
+
+public slots:
+    void upload();
+    void cancelUpload();
+
+signals:
+    void stateChanged(const Status& p_status);
+    void uploadProgressChanged(const double& p_progress);
+
+private:
+    QList<Package*> m_pckgs;
+    QString m_usrName;
+    QString m_pssWord;
 };
 }
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

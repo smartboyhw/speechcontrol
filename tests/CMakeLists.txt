@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 project(SpeechControlTests)
 
 include(SpeechControlDefaults)
+include(SpeechControlMacros)
+
 if(WITH_TESTS)
     message(STATUS "Building tests enabled.")
     if (TARGET speechcontrol)
@@ -26,8 +28,8 @@ if(WITH_TESTS)
     file(READ "template.build" TEST_BUILD_TEMPLATE)
 
     ## source files
-    file(GLOB SPCHCNTRL_APP_TEST_SRCS "src/app/*.cpp")
-    file(GLOB SPCHCNTRL_LIB_TEST_SRCS "src/lib/*.cpp")
+    file(GLOB SPCHCNTRL_APP_TEST_SRCS  "src/app/*.cpp")
+    file(GLOB SPCHCNTRL_LIB_TEST_SRCS  "src/lib/*.cpp")
     file(GLOB SPCHCNTRL_DBUS_TEST_SRCS "src/dbus/*.cpp")
 
     macro(buildtest _test_mode _test_src)
@@ -65,6 +67,7 @@ if(WITH_TESTS)
 
     if (WITH_PLUGINS)
         file(GLOB SPCHCNTRL_PLUGINS_TEST_SRCS "src/plugins/*.cpp")
+        message(STATUS "Building plug-in tests are not yet fully supported.")
         foreach(TEST_PLUGINS_SRC ${SPCHCNTRL_PLUGINS_TEST_SRCS})
             buildtest("PLUGIN" "${TEST_PLUGINS_SRC}")
         endforeach()

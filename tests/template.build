@@ -38,7 +38,6 @@ if (TEST_MODE STREQUAL "APP" OR TEST_MODE STREQUAL "PLUGIN")
 endif()
 
 if (TEST_MODE STREQUAL "PLUGIN")
-    message(STATUS "Building plug-in tests are not yet fully supported.")
     list(APPEND @TEST_ID@_INCLUDE_DIRS "${CMAKE_BINARY_DIR}/src/plugins"
                                        "${CMAKE_SOURCE_DIR}/src/plugins")
 endif (TEST_MODE STREQUAL "PLUGIN")

@@ -38,7 +38,6 @@
                     <surname />
                 </personname>
             </author>
-            <author>
         </authorgroup>
 
         <legalnotice>&FDLNotice;</legalnotice>
@@ -125,14 +124,13 @@
             <title>Desktop Control</title>
             <para>&spch; takes the game farther with in-built desktop control support.</para>
             <itemizedlist>
-                <listitem>MPRIS support</listitem>
-                <listitem>Session and System control</listitem>
-                <listitem>Application execution</listitem>
+                <listitem><para>MPRIS support</para></listitem>
+                <listitem><para>Session and System control</para></listitem>
+                <listitem><para>Application execution</para></listitem>
             </itemizedlist>
         </sect1>
     </chapter>
-   </chapter>
-   <chapter id="faq">
+    <chapter id="faq">
        <title>Tips and Tricks</title>
        <para>Up-to-date documentation regarding SpeechControl is available <ulink url="http://thesii.org/wiki/SpeechControl/UserGuides">here</ulink>.</para>
        <para><ulink url="http://forum.thesii.org">&sii; Forums</ulink> is always a good place to ask user-specific questions.</para>
@@ -175,16 +173,16 @@
             <title>Requirements</title>
             <para>In order to successfully use &spch;, you'd need the following:</para>
             <itemizedlist>
-                <listitem>Qt 4.7+;</listitem>
-                <listitem>QtGStreamer 0.10</listitem>
-                <listitem>GStreamer good plug-ins</listem>
-                <listitem>PocketSphinx, SphinxBase and SphinxTrain</listitem>
+                <listitem><para>Qt 4.7+;</para></listitem>
+                <listitem><para>QtGStreamer 0.10</para></listitem>
+                <listitem><para>GStreamer good plug-ins</para></listitem>
+                <listitem><para>PocketSphinx, SphinxBase and SphinxTrain</para></listitem>
             </itemizedlist>
         </sect1>
 
         <sect1 id="compilation">
             <title>Compilation and Installation</title>
-            <para>If you wish to compile &spch;, you have to install the development files of the <link linkend="requirements">requirements</a>, have git and the build essentials installed.</para>
+            <para>If you wish to compile &spch;, you have to install the development files of the <link linkend="requirements">requirements</link>, have git and the build essentials installed.</para>
             <para>Under Debian/&ubuntu; you get those through running</para>
             <para>
                 <userinput>
@@ -204,7 +202,7 @@
 
             <para>
                 We will be using git, as the most recent code is available on the git repository. The &sii; Projects page for &spch; can be found <ulink url="http://dev.thesii.org/projects/?id=spch">here</ulink>.
-                Stable releases can also be downloaded <ulink url="http://dev.thesii.org/projects/?id=spch&p=releases">here</ulink> in form of tar-balls.
+                Stable releases can also be downloaded <ulink url="http://dev.thesii.org/projects/releases/speechcontrol">here</ulink> in form of tar-balls.
             </para>
 
             <para>
@@ -229,7 +227,7 @@
 
             <para>
                 <userinput>
-                    <command>mkdir</command> <parameter>build</parameter> && <command>cd</command> <parameter>build</parameter>
+                    <command>mkdir</command> <parameter>build</parameter> &amp;&amp; <command>cd</command> <parameter>build</parameter>
                 </userinput>
             </para>
 

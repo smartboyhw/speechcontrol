@@ -278,7 +278,7 @@ void Main::doAccuracyCheck()
 {
     qDebug() << "[Main::on_acrcyThrd_finished()] Invoking accuracy check thread...";
 
-    m_ui->lblRating->setPixmap (QIcon::fromTheme ("media-playback-play").pixmap (48, 48));
+    m_ui->lblRating->setPixmap (QIcon::fromTheme ("task-recurring").pixmap (48, 48));
     m_ui->progressBarEstimatedEffort->setRange (0, 1);
     m_ui->progressBarAccuracy->setRange (0, 1);
     m_ui->progressBarEstimatedEffort->setValue (0);

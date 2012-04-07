@@ -18,33 +18,41 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef SPCHCNTRL_LIB_SPHINX_ABSTRACT_HXX_
-#define SPCHCNTRL_LIB_SPHINX_ABSTRACT_HXX_
+#include "lib/sphinx/abstract.hxx"
 
-#include <QGst/Bus>
-#include <QGst/Element>
-#include <QGst/Pipeline>
+using namespace SpeechControl;
 
-#include <lib/sphinx/abstract.hpp>
-
-namespace SpeechControl
+AbstractSphinxPrivate::AbstractSphinxPrivate (AbstractSphinx* p_qPtr) :
+    m_pipeline(), m_psphinx(), m_vader(), m_bus(),
+    m_running (AbstractSphinx::NotPrepared), m_ready (AbstractSphinx::NotPrepared),
+    q_ptr(p_qPtr)
 {
-
-struct AbstractSphinxPrivate {
-    Q_DECLARE_PUBLIC (AbstractSphinx)
-    explicit AbstractSphinxPrivate (AbstractSphinx* p_qPtr);
-    virtual ~AbstractSphinxPrivate();
-    void clear();
-
-    QGst::PipelinePtr      m_pipeline;
-    QGst::ElementPtr       m_psphinx;
-    QGst::ElementPtr       m_vader;
-    QGst::BusPtr           m_bus;
-    AbstractSphinx::States m_running;
-    AbstractSphinx::States m_ready;
-    AbstractSphinx* q_ptr;
-};
+    clear();
 }
 
-#endif /* SPCHCNTRL_LIB_AUDIOSOURCE_ABSTRACT_HXX_ */
+void AbstractSphinxPrivate::clear()
+{
+    if (!m_pipeline.isNull()) {
+        m_pipeline->setState (QGst::StateNull);
+    }
+
+    if (!m_psphinx.isNull()) {
+        m_psphinx->setState (QGst::StateNull);
+    }
+
+    if (!m_vader.isNull()) {
+        m_vader->setState (QGst::StateNull);
+    }
+
+    m_pipeline.clear();
+    m_psphinx.clear();
+    m_vader.clear();
+    m_bus.clear();
+}
+
+AbstractSphinxPrivate::~AbstractSphinxPrivate()
+{
+    clear();
+}
+
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

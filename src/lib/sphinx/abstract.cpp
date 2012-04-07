@@ -19,18 +19,15 @@
  */
 
 #include <QGlib/Connect>
-
 #include <QGst/enums.h>
 #include <QGst/ElementFactory>
-#include <pocketsphinx.h>
 
-#include "acousticmodel.hpp"
-#include "dictionary.hpp"
-#include "languagemodel.hpp"
-
-#include "sphinx/abstract.hxx"
-#include "sphinx/abstract.hpp"
-#include "audiosource/abstract.hpp"
+#include "lib/acousticmodel.hpp"
+#include "lib/dictionary.hpp"
+#include "lib/languagemodel.hpp"
+#include "lib/sphinx/abstract.hxx"
+#include "lib/sphinx/abstract.hpp"
+#include "lib/audiosource/abstract.hpp"
 
 using namespace SpeechControl;
 
@@ -39,22 +36,29 @@ AbstractSphinx::AbstractSphinx (QObject* p_parent) : QObject (p_parent),
 {
 }
 
-AbstractSphinx::AbstractSphinx (QGst::PipelinePtr p_pipeline, QObject* p_parent) : QObject (p_parent),
-    d_ptr (new AbstractSphinxPrivate (this))
+AbstractSphinx::AbstractSphinx (QGst::PipelinePtr p_pipeline, QObject* p_parent) :
+    QObject (p_parent), d_ptr (new AbstractSphinxPrivate (this))
 {
     Q_D (AbstractSphinx);
     d->m_pipeline = p_pipeline;
 }
 
 /// @todo Automatically extract 'pocketsphinx' element name from description.
-AbstractSphinx::AbstractSphinx (const QString& p_description, QObject* p_parent) : QObject (p_parent),
-    d_ptr (new AbstractSphinxPrivate (this))
+AbstractSphinx::AbstractSphinx (const QString& p_description, QObject* p_parent) :
+    QObject (p_parent), d_ptr (new AbstractSphinxPrivate (this))
 {
     buildPipeline (p_description);
 }
 
 AbstractSphinx::AbstractSphinx (AbstractSphinxPrivate* p_private, QObject* p_parent) :
     QObject (p_parent), d_ptr (p_private)
+{
+
+}
+
+AbstractSphinx::AbstractSphinx (const AbstractSphinx& p_other) :
+    QObject (p_other.parent()),
+    d_ptr (const_cast<AbstractSphinxPrivate*> (p_other.d_ptr.data()))
 {
 
 }
@@ -221,13 +225,13 @@ void AbstractSphinx::setAcousticModel (const AcousticModel* p_acousticModel)
 
 bool AbstractSphinx::isReady() const
 {
-    Q_D(AbstractSphinx);
+    Q_D (const AbstractSphinx);
     return d->m_ready == Ready;
 }
 
 bool AbstractSphinx::isRunning() const
 {
-    Q_D(AbstractSphinx);
+    Q_D (const AbstractSphinx);
     return d->m_running == Running;
 }
 
@@ -294,8 +298,8 @@ void AbstractSphinx::formResult (QString& p_text, QString& p_uttid)
     QGst::Structure psStructure ("result");
     psStructure.setValue ("hyp", p_text);
     psStructure.setValue ("uttid", p_uttid);
-    QGst::MessagePtr l_message = QGst::ApplicationMessage::create (d->m_psphinx, psStructure);
-    d->m_bus->post (l_message);
+    QGst::MessagePtr message = QGst::ApplicationMessage::create (d->m_psphinx, psStructure);
+    d->m_bus->post (message);
 }
 
 AbstractSphinx::~AbstractSphinx()

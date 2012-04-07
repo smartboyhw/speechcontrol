@@ -33,11 +33,13 @@ class ServicePrivate : public Services::AbstractModulePrivate
 {
     friend class Service;
 
+public:
+    virtual ~ServicePrivate();
+
 private:
     explicit ServicePrivate (Service* parent = 0);
     ServicePrivate (const Services::AbstractModulePrivate& p_other);
     virtual Services::AbstractModule::ActivityState handleStateChange (const Services::AbstractModule::ActivityState p_state);
-    virtual ~ServicePrivate();
     Sphinx* m_sphinx;
     QDeclarativeView* m_view;
 };

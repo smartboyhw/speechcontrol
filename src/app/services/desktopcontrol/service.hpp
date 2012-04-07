@@ -34,13 +34,14 @@ namespace DesktopControl
 {
 
 class AbstractCommand;
+class ServicePrivate;
 
 class Service : public SpeechControl::Services::AbstractModule
 {
     Q_OBJECT
     Q_DISABLE_COPY (Service)
+    Q_DECLARE_PRIVATE (Service)
     SC_SINGLETON (Service)
-    friend class ServicePrivate;
 
 signals:
     void commandFound (const QString& p_statement, AbstractCommand* p_command);
@@ -50,6 +51,7 @@ signals:
 protected:
     virtual void deinitialize();
     virtual void initialize();
+
 public:
     void setAcousticModel (const AcousticModel& p_acModel);
     void setDefaultAcousticModel (const AcousticModel& acModel);
@@ -61,7 +63,10 @@ public:
     virtual ~Service();
 
 public slots:
-    void invokeCommand(const QString& p_text);
+    void invokeCommand (const QString& p_text);
+
+private:
+    QScopedPointer<ServicePrivate> d_ptr;
 };
 
 }

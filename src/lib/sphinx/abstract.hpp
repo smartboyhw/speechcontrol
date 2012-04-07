@@ -80,8 +80,6 @@ protected:
         Running
     };
 
-    States m_running;
-    States m_ready;
     QScopedPointer<AbstractSphinxPrivate> d_ptr;
 
     /**

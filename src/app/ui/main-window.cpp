@@ -409,16 +409,16 @@ void Main::updateServiceListing()
     }
 
     widget->clearSelection();
+    widget->setVisible ( (widget->count() > 0));
 }
 
 void Main::on_listWidgetService_itemClicked (QListWidgetItem* p_item)
 {
     bool isChecked = p_item->checkState() == Qt::Checked;
     Services::AbstractModule* module = Services::Engine::findModule (p_item->data (Qt::UserRole).toString());
+    qDebug() << "[Main::on_listWidgetService_itemClicked()] Is" << p_item->text() << "checked?" << isChecked;
 
-    (isChecked) ? module->start() : module->stop();
-    qDebug() << "[Main::on_listWidgetService_itemClicked()] Is checked?" << isChecked;
-    updateServiceListing();
+    ( (isChecked) ? module->start() : module->stop());
 }
 
 void Main::setProgress (const double p_progress)
@@ -628,4 +628,7 @@ Main::~Main()
 }
 
 #include "ui/main-window.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+
+
+

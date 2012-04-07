@@ -1,10 +1,10 @@
 ## Make the meta-library for the application to prevent HUGE builds.
 file(GLOB_RECURSE TEST_APP_SRCS
-    "${CMAKE_SOURCE_DIR}/src/app/ui/*.cpp"
-    "${CMAKE_SOURCE_DIR}/src/app/services/*.cpp"
-    "${CMAKE_SOURCE_DIR}/src/app/sessions/*.cpp")
+    "${CMAKE_SOURCE_DIR}/src/app/ui/*.c*"
+    "${CMAKE_SOURCE_DIR}/src/app/services/*.c*"
+    "${CMAKE_SOURCE_DIR}/src/app/sessions/*.c*")
 file (GLOB TEST_APP_BASE_SRCS
-    "${CMAKE_SOURCE_DIR}/src/app/*.cpp")
+    "${CMAKE_SOURCE_DIR}/src/app/*.c*")
 
 list(APPEND TEST_APP_SRCS ${TEST_APP_BASE_SRCS})
 list(REMOVE_ITEM TEST_APP_SRCS "${CMAKE_SOURCE_DIR}/src/app/main.cpp")

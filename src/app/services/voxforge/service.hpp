@@ -21,8 +21,9 @@
 #ifndef SPEECHCONTROL_VOXFORGE_SERVICE_HPP
 #define SPEECHCONTROL_VOXFORGE_SERVICE_HPP
 
-#include <services/engine.hpp>
-#include <macros.hpp>
+#include <app/macros.hpp>
+#include <app/services/module.hpp>
+#include <app/services/engine.hpp>
 
 namespace SpeechControl
 {

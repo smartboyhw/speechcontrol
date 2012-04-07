@@ -87,10 +87,10 @@ void Service::setSafetyMode (const Service::SafetyMode& p_mode)
     Q_D (Service);
 
     switch (p_mode) {
-    case SafetyMode::Enabled:
-    case SafetyMode::Disabled:
-        Core::setConfiguration ("Dictation/UseSafetyWords", ( (p_mode == SafetyMode::Enabled) ? true : false));
-        qDebug() << "[Dictation::Service::setSafetyMode()] Is safety mode enabled? " << (p_mode == SafetyMode::Enabled);
+    case Service::Enabled:
+    case Service::Disabled:
+        Core::setConfiguration ("Dictation/UseSafetyWords", ( (p_mode == Service::Enabled) ? true : false));
+        qDebug() << "[Dictation::Service::setSafetyMode()] Is safety mode enabled? " << (p_mode == Service::Enabled);
         break;
 
     default:
@@ -133,4 +133,4 @@ Service::~Service()
 }
 
 #include "services/dictation/service.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

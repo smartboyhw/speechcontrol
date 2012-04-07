@@ -18,29 +18,27 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "lib/sphinx/abstract.hxx"
-#include "lib/sphinx/audiosource.hpp"
+#ifndef SPCHCNTRL_LIB_SPHINX_AUDIOSOURCE_HXX_
+#define SPCHCNTRL_LIB_SPHINX_AUDIOSOURCE_HXX_
+
+#include <lib/sphinx/abstract.hxx>
 
 namespace SpeechControl
 {
 
+class AbstractAudioSource;
 class AudioSourceSphinx;
+class AudioSourceSphinxSource;
 
-class AbstractSphinxPrivate;
-class AudioSourceSphinxPrivate;
-
-class AudioSourceSphinxPrivate : public AbstractSphinxPrivate
-{
-public:
-    explicit AudioSourceSphinxPrivate (AudioSourceSphinx* p_qPtr) : AbstractSphinxPrivate(p_qPtr), m_audioSrc (0), m_appSrc (0){ }
-    virtual ~AudioSourceSphinxPrivate() {
-
-    }
-
+struct AudioSourceSphinxPrivate : public AbstractSphinxPrivate {
+    explicit AudioSourceSphinxPrivate (AudioSourceSphinx* p_qPtr);
+    virtual ~AudioSourceSphinxPrivate();
     void linkSource ();
     AbstractAudioSource* m_audioSrc;
     AudioSourceSphinxSource* m_appSrc;
-
 };
+
 }
+
+#endif
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

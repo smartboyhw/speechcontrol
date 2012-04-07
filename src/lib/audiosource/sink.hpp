@@ -22,8 +22,8 @@
 
 #include <QObject>
 
-#include <lib/config.hpp>
-#include <lib/export.hpp>
+#include <config.hpp>
+#include <export.hpp>
 
 #include <QGst/Utils/ApplicationSink>
 
@@ -41,7 +41,7 @@ class SPCH_EXPORT GenericSink : public QObject, public QGst::Utils::ApplicationS
 {
     Q_OBJECT
 public:
-    explicit GenericSink(QObject* p_parent = 0);
+    explicit GenericSink (QObject* p_parent = 0);
     virtual ~GenericSink();
     GenericSource* source();
     void setSource (GenericSource* p_source);
@@ -79,4 +79,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

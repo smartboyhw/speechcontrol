@@ -22,7 +22,7 @@
 #include "ui_adaptwizard-results.h"
 
 using namespace SpeechControl;
-using SpeechControl::Wizards::Pages::Results;
+using SpeechControl::Windows::Wizards::Pages::Results;
 
 Results::Results (QWidget* parent) :
     QWizardPage (parent),
@@ -72,5 +72,5 @@ Results::~Results()
     delete ui;
 }
 
-#include "results.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/results.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

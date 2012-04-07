@@ -21,12 +21,12 @@
 #include "login.hpp"
 #include "ui_voxforgewizard-login.h"
 
-using namespace SpeechControl::Wizards::Pages;
+using namespace SpeechControl::Windows::Wizards::Pages;
 
 LoginPortal::LoginPortal (QWidget* parent) : QWizardPage (parent), ui (new Ui::LoginPortal)
 {
     ui->setupUi (this);
-    this->setWindowIcon(QIcon::fromTheme("encrypted"));
+    this->setWindowIcon (QIcon::fromTheme ("encrypted"));
     this->setLayout (ui->gridLayout);
 }
 
@@ -40,5 +40,5 @@ LoginPortal::~LoginPortal()
 
 }
 
-#include "login.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/login.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

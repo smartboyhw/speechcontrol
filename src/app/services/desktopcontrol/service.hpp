@@ -21,31 +21,51 @@
 #ifndef SPEECHCONTROL_DESKTOPCONTROL_SERVICE_HPP
 #define SPEECHCONTROL_DESKTOPCONTROL_SERVICE_HPP
 
-#include <services/engine.hpp>
-#include <macros.hpp>
+#include <app/macros.hpp>
+#include <app/services/engine.hpp>
+#include <app/services/desktopcontrol/command.hpp>
 
 namespace SpeechControl
 {
 
+class AcousticModel;
+
 namespace DesktopControl
 {
+
+class AbstractCommand;
+class ServicePrivate;
 
 class Service : public SpeechControl::Services::AbstractModule
 {
     Q_OBJECT
     Q_DISABLE_COPY (Service)
     SC_SINGLETON (Service)
+
+signals:
+    void commandFound (const QString& p_statement, AbstractCommand* p_command);
+    void multipleCommandsFound (const QString& p_statement, const CommandList& p_commands);
+    void noCommandsFound (const QString& p_statement);
+
 protected:
     virtual void deinitialize();
     virtual void initialize();
 
 public:
+    void setAcousticModel (const AcousticModel& p_acModel);
+    void setDefaultAcousticModel (const AcousticModel& acModel);
     virtual bool isEnabled() const;
     virtual bool isActive() const;
     virtual QString id() const;
     virtual QPixmap pixmap() const;
     virtual QString name() const;
     virtual ~Service();
+
+public slots:
+    void invokeCommand (const QString& p_text);
+
+private:
+    QScopedPointer<ServicePrivate> d_ptr;
 };
 
 }

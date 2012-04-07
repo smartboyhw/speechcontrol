@@ -31,6 +31,8 @@ class MicrophoneSelection;
 namespace SpeechControl
 {
 class DeviceAudioSource;
+namespace Windows
+{
 namespace Wizards
 {
 namespace Pages
@@ -44,14 +46,14 @@ public:
     explicit MicrophoneSelection (QWidget* p_parent = 0);
     ~MicrophoneSelection();
     DeviceAudioSource* device();
-    void setDevice(DeviceAudioSource* p_device);
+    void setDevice (DeviceAudioSource* p_device);
     virtual void initializePage();
     virtual void cleanupPage();
     virtual bool validatePage();
     virtual bool isComplete();
 
 private slots:
-    void on_mic_bufferObtained(QByteArray p_buffer);
+    void on_mic_bufferObtained (QByteArray p_buffer);
     void on_comboBoxMicrophones_activated (int p_index);
 
 private:
@@ -62,5 +64,6 @@ private:
 }
 }
 }
+}
 #endif // MICSELECT_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

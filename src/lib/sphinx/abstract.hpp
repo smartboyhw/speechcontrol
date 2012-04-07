@@ -36,8 +36,8 @@
 #include <QGst/Message>
 
 // local includes
-#include <lib/config.hpp>
-#include <lib/export.hpp>
+#include <config.hpp>
+#include <export.hpp>
 
 #include <Utils/ApplicationSource>
 
@@ -80,8 +80,6 @@ protected:
         Running
     };
 
-    States m_running;
-    States m_ready;
     QScopedPointer<AbstractSphinxPrivate> d_ptr;
 
     /**
@@ -309,4 +307,4 @@ public slots:
 }
 
 #endif // ABSTRACTSPHINX_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

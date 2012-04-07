@@ -173,5 +173,5 @@ void SessionManager::on_listSession_itemSelectionChanged()
     }
 }
 
-#include "session-manager.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/session-manager.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

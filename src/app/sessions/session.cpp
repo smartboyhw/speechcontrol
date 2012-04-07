@@ -23,7 +23,7 @@
 #include <QFile>
 #include <QDebug>
 
-#include "app/core.hpp"
+#include "core.hpp"
 #include "sessions/phrase.hpp"
 #include "sessions/corpus.hpp"
 #include "sessions/content.hpp"
@@ -140,7 +140,6 @@ void Session::init()
         qDebug() << "[Session::init()] Created session listing.";
     }
 
-    qDebug() << s_dom->toString (4);
     configFile->close();
 }
 
@@ -400,5 +399,5 @@ Session* Session::clone() const
     }
 }
 
-#include "session.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "sessions/session.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

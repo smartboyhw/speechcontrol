@@ -18,10 +18,10 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "app/core.hpp"
-#include "app/ui/main-window.hpp"
-#include "app/services/dictation/agent.hpp"
-#include "app/services/desktopcontrol/agent.hpp"
+#include "core.hpp"
+#include "ui/main-window.hpp"
+#include "services/dictation/service.hpp"
+#include "services/desktopcontrol/service.hpp"
 #include "ui_settingspane-dictation.h"
 
 #include "dictation-pane.hpp"
@@ -73,36 +73,38 @@ QPixmap DictationSettingsPane::pixmap() const
 
 void DictationSettingsPane::restoreDefaults()
 {
-    Core::setConfiguration("Dictation/StartWord","start dictation");
-    Core::setConfiguration("Dictation/StartWord","end dictation");
+    Core::setConfiguration ("Dictation/StartWord", "start dictation");
+    Core::setConfiguration ("Dictation/StartWord", "end dictation");
 }
 
 void DictationSettingsPane::updateUi()
 {
-    m_ui->checkBoxEnable->setChecked (Dictation::Agent::instance()->isEnabled() && !DesktopControl::Agent::instance()->isEnabled());
-    m_ui->checkBoxEnable->setEnabled (!DesktopControl::Agent::instance()->isEnabled());
-    m_ui->groupBoxKeywords->setEnabled(Dictation::Agent::instance()->isEnabled());
-    m_ui->groupBoxKeywords->setChecked(Core::configuration("Dictation/UseSafeWords").toBool());
-    m_ui->lineEditStart->setText(Core::configuration("Dictation/StartWord").toString());
-    m_ui->lineEditEnd->setText(Core::configuration("Dictation/EndWord").toString());
+    m_ui->checkBoxEnable->setChecked (Dictation::Service::instance()->isEnabled() && !DesktopControl::Service::instance()->isEnabled());
+    m_ui->checkBoxEnable->setEnabled (!DesktopControl::Service::instance()->isEnabled());
+    m_ui->groupBoxKeywords->setEnabled (Dictation::Service::instance()->isEnabled());
+    m_ui->groupBoxKeywords->setChecked (Core::configuration ("Dictation/UseSafeWords").toBool());
+    m_ui->lineEditStart->setText (Core::configuration ("Dictation/StartWord").toString());
+    m_ui->lineEditEnd->setText (Core::configuration ("Dictation/EndWord").toString());
 }
 
 void DictationSettingsPane::on_lineEditStart_textChanged (QString p_text)
 {
-    Core::setConfiguration("Dictation/StartWord",p_text.toLower());
+    Core::setConfiguration ("Dictation/StartWord", p_text.toLower());
 }
 
 void DictationSettingsPane::on_lineEditEnd_textChanged (QString p_text)
 {
-    Core::setConfiguration("Dictation/EndWord",p_text.toLower());
+    Core::setConfiguration ("Dictation/EndWord", p_text.toLower());
 }
 
 void DictationSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
 {
-    if (!DesktopControl::Agent::instance()->isEnabled()) {
+    if (!DesktopControl::Service::instance()->isEnabled()) {
         Core::setConfiguration ("Dictation/Enabled", p_checked);
+
         if (!p_checked)
-            Dictation::Agent::instance()->stop();
+            Dictation::Service::instance()->stop();
+
         Core::mainWindow()->updateUi();
     }
 
@@ -111,10 +113,10 @@ void DictationSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
 
 void DictationSettingsPane::on_checkBoxEnableStartup_toggled (bool p_checked)
 {
-    if (DesktopControl::Agent::instance()->isEnabled()) {
+    if (DesktopControl::Service::instance()->isEnabled()) {
         Core::setConfiguration ("Dictation/AutoStart", p_checked);
     }
 }
 
-#include "dictation-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/dictation-pane.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -20,8 +20,8 @@
 
 #include <QDebug>
 
-#include <app/core.hpp>
-#include <app/indicator.hpp>
+#include <core.hpp>
+#include <indicator.hpp>
 
 #include "general-pane.hpp"
 #include "sessions/session.hpp"
@@ -138,5 +138,5 @@ void GeneralSettingsPane::on_radioButtonIconWhite_toggled (bool p_checked)
 
     Indicator::show();
 }
-#include "general-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/general-pane.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

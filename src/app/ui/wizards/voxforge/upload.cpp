@@ -21,12 +21,12 @@
 #include "upload.hpp"
 #include "ui_voxforgewizard-upload.h"
 
-using namespace SpeechControl::Wizards::Pages;
+using namespace SpeechControl::Windows::Wizards::Pages;
 
 UploadEnaction::UploadEnaction (QWidget* parent) : QWizardPage (parent), ui (new Ui::UploadEnaction)
 {
     ui->setupUi (this);
-    this->setWindowIcon(QIcon::fromTheme("go-up"));
+    this->setWindowIcon (QIcon::fromTheme ("go-up"));
     this->setLayout (ui->gridLayout);
 }
 
@@ -36,4 +36,4 @@ UploadEnaction::~UploadEnaction()
 }
 
 #include "ui/upload.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

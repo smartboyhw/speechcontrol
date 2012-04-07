@@ -22,16 +22,17 @@
 #ifndef MS_WIZARD_HPP
 #define MS_WIZARD_HPP
 
-#include <ui/wizards/base.hpp>
-#include <ui/wizards/micsetup/micselect.hpp>
-#include <ui/wizards/micsetup/micsample.hpp>
+#include <app/ui/wizards/base.hpp>
+#include <app/ui/wizards/micsetup/micselect.hpp>
+#include <app/ui/wizards/micsetup/micsample.hpp>
 
 namespace SpeechControl
 {
+namespace Windows
+{
 namespace Wizards
 {
-
-class MicrophoneSetup : public WizardBase
+class MicrophoneSetup : public AbstractWizard
 {
     Q_OBJECT
     friend class Pages::MicrophoneSelection;
@@ -58,5 +59,8 @@ private:
 
 }
 }
+}
+
 #endif // WIZARD_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+

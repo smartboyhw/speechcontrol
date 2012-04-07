@@ -20,18 +20,18 @@
 
 #include "plugin-info-dialog.hpp"
 #include "ui_plugin-info-dialog.h"
-#include <app/factory.hpp>
+#include <factory.hpp>
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
 
-PluginInfoDialog::PluginInfoDialog (QUuid p_uuid, QWidget* parent) : QDialog(parent)
+PluginInfoDialog::PluginInfoDialog (QUuid p_uuid, QWidget* parent) : QDialog (parent)
 {
-    m_plgn = new Plugins::GenericPlugin(p_uuid);
+    m_plgn = new Plugins::GenericPlugin (p_uuid);
     updateUi();
 }
 
-PluginInfoDialog::PluginInfoDialog (SpeechControl::Plugins::AbstractPlugin* p_plugin, QWidget* parent) : QDialog(parent)
+PluginInfoDialog::PluginInfoDialog (SpeechControl::Plugins::AbstractPlugin* p_plugin, QWidget* parent) : QDialog (parent)
 {
     m_plgn = (Plugins::GenericPlugin*) p_plugin;
     updateUi();
@@ -40,18 +40,16 @@ PluginInfoDialog::PluginInfoDialog (SpeechControl::Plugins::AbstractPlugin* p_pl
 void PluginInfoDialog::updateUi()
 {
     ui = new Ui::PluginInfoDialog;
-    ui->setupUi(this);
-    ui->lblTitle->setText(QString("<em style='font-size: large'>%1</em></font><br /><small>version %2</small>").arg(m_plgn->name()).arg(m_plgn->version()));
-    ui->lblAbout->setText(m_plgn->description());
-    ui->lblAuthors->setText(m_plgn->author());
+    ui->setupUi (this);
+    ui->lblTitle->setText (QString ("<em style='font-size: large'>%1</em></font><br /><small>version %2</small>").arg (m_plgn->name()).arg (m_plgn->version()));
+    ui->lblAbout->setText (m_plgn->description());
+    ui->lblAuthors->setText (m_plgn->author());
 
     if (!m_plgn->isLoaded())
-        ui->lblIcon->setPixmap(m_plgn->pixmap());
+        ui->lblIcon->setPixmap (m_plgn->pixmap());
     else
-        ui->lblIcon->setPixmap(Plugins::Factory::plugin(m_plgn->id())->pixmap());
+        ui->lblIcon->setPixmap (Plugins::Factory::plugin (m_plgn->id())->pixmap());
 }
 
-
-
-#include "plugin-info-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/plugin-info-dialog.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

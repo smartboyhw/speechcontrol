@@ -26,7 +26,7 @@
 #include "plugin.hpp"
 #include "commands.hpp"
 
-APPLIST_NAMESPACE_BEGIN
+SYSCTLIST_NAMESPACE_BEGIN
 
 Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent)
 {
@@ -46,7 +46,7 @@ void Plugin::deinitialize()
 
 QPixmap Plugin::pixmap() const
 {
-    return QIcon::fromTheme("system-shutdown").pixmap(64,64);
+    return QIcon::fromTheme ("system-shutdown").pixmap (64, 64);
 }
 
 Plugin::~Plugin()
@@ -56,8 +56,8 @@ Plugin::~Plugin()
 
 #include "plugin.moc"
 
-APPLIST_NAMESPACE_END
+SYSCTLIST_NAMESPACE_END
 
-Q_EXPORT_PLUGIN2 (spchcntrl-applist, SpeechControl::Plugins::DesktopControl::ApplicationListing::Plugin)
+Q_EXPORT_PLUGIN2 (spchcntrl-syscntrl, SpeechControl::Plugins::DesktopControl::ApplicationListing::Plugin)
 
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

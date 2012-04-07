@@ -1,7 +1,7 @@
 /***
  *  This file is part of SpeechControl.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -14,30 +14,39 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-
-#ifndef ABSTRACTAGENT_HPP
-#define ABSTRACTAGENT_HPP
+#ifndef SPEECHCONTROL_SERVICES_MODULE_HPP
+#define SPEECHCONTROL_SERVICES_MODULE_HPP
 
 #include <QObject>
+#include <QList>
+#include <QPixmap>
 
 namespace SpeechControl
 {
+
+namespace Services
+{
+
+class AbstractModule;
+class AbstractModulePrivate;
 /**
- * @brief Abstract class representing an executing module within SpeechControl.
- *
- * Agents are used in SpeechControl to wrap the status and exportability of
- * certain events within it like desktop control and dictation. Using agents
- * also permit a basis of toggling specific features of the system on and off.
- *
- * @author Jacky Alcine <jacky.alcine@thesii.org>
+ * @brief Represents a list of Modules.
  **/
-class AbstractAgent : public QObject
+typedef QList<AbstractModule*> ModuleList;
+
+/**
+ * @brief Represents a service module.
+ *
+ * Modules serve as wrappers to the interfaces that internal and external components
+ * of SpeechControl can provide.
+ **/
+class AbstractModule : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY (AbstractAgent)
+    Q_ENUMS (ActivityState)
 
 public:
     /**
@@ -51,36 +60,16 @@ public:
     enum ActivityState {
 
         Undefined = -1, /** Defines the state of the agent as undefined.
-                         */
+        */
 
         Disabled,       /** Defines the state of the agent as disabled.
-                         *  All activity defined by the agent should be halted if active.
-                         */
+        *  All activity defined by the agent should be halted if active.
+        */
 
         Enabled         /** Defines the state of the agent as enabled.
-                         *  All activity defined by the agent should be activated.
-                         */
+        *  All activity defined by the agent should be activated.
+        */
     };
-
-    /**
-     * @brief Constructor.
-     * @param p_parent Defaults to NULL.
-     **/
-    explicit AbstractAgent (QObject* p_parent = 0);
-
-    /**
-     * @brief Destructor.
-     **/
-    virtual ~AbstractAgent();
-
-    /**
-     * @brief Determines active state of the agent.
-     *
-     * A convenience method as opposed to using the state() method.
-     *
-     * @return TRUE if state() == Enabled, else FALSE.
-     **/
-    virtual bool isActive() const = 0;
 
     /**
      * Obtains the current state of the Agent.
@@ -89,23 +78,30 @@ public:
      **/
     ActivityState state() const;
 
-public slots:
     /**
-     * Changes the state of this Agent to the specified state.
-     * @return void
-     * @see ActivityState
+     * @brief Obtains the friendly name of this AbstractModule.
      **/
-    void setState (const ActivityState p_state);
+    virtual QString name() const = 0;
 
     /**
-     * @brief Sets the state of this Agent to Enabled.
+     * @brief Obtains the ID of the AbstractModule.
      **/
-    virtual void start();
+    virtual QString id() const = 0;
 
     /**
-     * @brief Sets the state of this Agent to Disabled.
+     * @brief Obtains the QPixmap to use with this AbstractModule.
      **/
-    virtual void stop();
+    virtual QPixmap pixmap() const = 0;
+
+    /**
+     * @brief Determines if this AbstractModule is enabled.
+     **/
+    virtual bool isEnabled() const = 0;
+
+    /**
+     * @brief Determines if this AbstractModule is active.
+     **/
+    virtual bool isActive() const;
 
 signals:
     /**
@@ -129,16 +125,38 @@ signals:
      **/
     void stateChanged (const ActivityState& p_state);
 
-protected:
+public slots:
     /**
-     * Handles the actions depending on each of the states changing.
-     * @return State The accepted state to render to, or Undefined if this state is invalid.
+     * @brief Starts this AbstractModule.
+     **/
+    void start();
+
+    /**
+     * @brief Stops this AbstractModule.
+     **/
+    void stop();
+
+    /**
+     * Changes the state of this Agent to the specified state.
+     * @return void
      * @see ActivityState
      **/
-    virtual ActivityState onStateChanged (const ActivityState p_state) = 0;
-    ActivityState m_state; ///< The state of the agent.
+    void setState (const ActivityState p_state);
+protected:
+    QScopedPointer<AbstractModulePrivate> d_ptr;
+    Q_DISABLE_COPY (AbstractModule)
+    Q_DECLARE_PRIVATE (AbstractModule)
+
+    virtual void initialize() = 0;
+    virtual void deinitialize() = 0;
+    explicit AbstractModule (QObject* parent = 0);
+    AbstractModule (AbstractModulePrivate* p_dd, QObject* p_parent = 0);
+    virtual ~AbstractModule();
 };
+
 }
 
-#endif
+}
+
+#endif // SPEECHCONTROL_SERVICES_MODULE_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

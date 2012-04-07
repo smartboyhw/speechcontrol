@@ -18,8 +18,8 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef BASE_HPP
-#define BASE_HPP
+#ifndef SPCHCNTRL_UI_WIZARDS_BASE_HPP_
+#define SPCHCNTRL_UI_WIZARDS_BASE_HPP_
 
 #include <QWizard>
 
@@ -30,18 +30,20 @@ class WizardBase;
 
 namespace SpeechControl
 {
+namespace Windows
+{
 namespace Wizards
 {
 
 /// @todo Allow automatic insertion of introduction page.
-class WizardBase : public QWizard
+class AbstractWizard : public QWizard
 {
     Q_OBJECT
 
 public:
-    explicit WizardBase (QWidget* parent = 0);
-    virtual ~WizardBase();
-    virtual void setPage(const int p_pageIndex, QWizardPage* p_page);
+    explicit AbstractWizard (QWidget* parent = 0);
+    virtual ~AbstractWizard();
+    virtual void setPage (const int p_pageIndex, QWizardPage* p_page);
 
 private:
     Ui::WizardBase* ui;
@@ -49,6 +51,6 @@ private:
 
 }
 }
-
-#endif // BASE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+}
+#endif // SPCHCNTRL_UI_WIZARDS_BASE_HPP_
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

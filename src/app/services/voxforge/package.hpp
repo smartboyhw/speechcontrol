@@ -32,7 +32,7 @@ namespace Voxforge
 
 class Package : public QObject
 {
-
+    Q_OBJECT
 public:
     explicit Package (QObject* parent = 0);
     Package();

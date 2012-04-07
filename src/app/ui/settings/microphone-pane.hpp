@@ -22,7 +22,7 @@
 #define MICROPHONE_SETTINGS_HPP
 
 #include <QFrame>
-#include <app/ui/settings-dialog.hpp>
+#include <ui/settings-dialog.hpp>
 
 namespace Ui
 {
@@ -55,7 +55,7 @@ private slots:
 private:
     Ui::MicrophoneSettingsPane* ui;
 public slots:
-    void on_checkBoxMute_toggled(const bool p_checked);
+    void on_checkBoxMute_toggled (const bool p_checked);
     void on_comboBoxDevices_currentIndexChanged (const int p_index);
     void on_horizontialSliderVolume_valueChanged (const int p_value);
 };
@@ -64,4 +64,4 @@ public slots:
 }
 
 #endif // MICROPHONE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

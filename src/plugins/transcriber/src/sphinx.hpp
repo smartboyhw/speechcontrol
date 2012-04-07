@@ -20,7 +20,7 @@
 
 #ifndef SPEECHCONTROL_PLUGINS_TRANSCRIBER_SPHINX_HPP
 #define SPEECHCONTROL_PLUGINS_TRANSCRIBER_SPHINX_HPP
-#include <lib/sphinx/abstract.hpp>
+#include <sphinx/abstract.hpp>
 
 namespace SpeechControl
 {
@@ -45,4 +45,4 @@ private:
 }
 
 #endif // SPEECHCONTROL_PLUGINS_TRANSCRIBER_SPHINX_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

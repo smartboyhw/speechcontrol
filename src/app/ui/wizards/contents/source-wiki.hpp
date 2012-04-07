@@ -18,51 +18,32 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "abstractagent.hpp"
+#ifndef CONTENTWIZARD_SOURCE_WIKI_HPP
+#define CONTENTWIZARD_SOURCE_WIKI_HPP
 
-using SpeechControl::AbstractAgent;
+#include <QWidget>
 
-AbstractAgent::AbstractAgent (QObject* p_parent) : QObject (p_parent)
+namespace Ui
 {
+class WikiContentSourceWidget;
 }
 
-AbstractAgent::AbstractAgent (const AbstractAgent&  p_agent) : QObject (p_agent.parent()),
-    m_state (p_agent.m_state)
+namespace SpeechControl
 {
+class WikiContentSourceWidget : public QWidget
+{
+    Q_OBJECT
+    void updateView();
+
+public:
+    explicit WikiContentSourceWidget (QWidget* parent = 0);
+    ~WikiContentSourceWidget();
+
+private:
+    Ui::WikiContentSourceWidget* m_ui;
+};
 
 }
 
-void AbstractAgent::setState (const AbstractAgent::ActivityState p_state)
-{
-    if (p_state == m_state)
-        return;
-
-    m_state = onStateChanged (p_state);
-//     if (p_state == Enabled)
-//         start();
-//     else
-//         stop();
-    emit stateChanged (m_state);
-}
-
-void AbstractAgent::start()
-{
-    setState (Enabled);
-}
-
-void AbstractAgent::stop()
-{
-    setState (Disabled);
-}
-
-AbstractAgent::ActivityState AbstractAgent::state() const
-{
-    return m_state;
-}
-
-AbstractAgent::~AbstractAgent()
-{
-}
-
-#include "abstractagent.moc"
+#endif // CONTENTWIZARD_SOURCE_WIKI_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

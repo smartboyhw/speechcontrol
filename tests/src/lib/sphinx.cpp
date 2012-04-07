@@ -22,8 +22,8 @@
 #include <QtTest/QTest>
 #include <QtGStreamer/QGlib/refpointer.h>
 #include <QtGStreamer/QGst/Element>
-#include <lib/system.hpp>
-#include <lib/audiosource/device.hpp>
+#include <system.hpp>
+#include <audiosource/device.hpp>
 
 #include "sphinx.h"
 #include "config_sphinx.hpp"
@@ -89,5 +89,5 @@ void TestSphinx::benchSphinx()
 
 QTEST_MAIN (TestSphinx)
 #include "sphinx.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
 

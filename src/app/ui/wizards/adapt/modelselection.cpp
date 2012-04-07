@@ -21,14 +21,14 @@
 #include <QDir>
 #include <QDebug>
 
-#include <lib/acousticmodel.hpp>
-#include <lib/noisedictionary.hpp>
+#include <acousticmodel.hpp>
+#include <noisedictionary.hpp>
 #include "ui_adaptwizard-modelselection.h"
 
 #include "modelselection.hpp"
 
 using namespace SpeechControl;
-using SpeechControl::Wizards::Pages::ModelSelection;
+using SpeechControl::Windows::Wizards::Pages::ModelSelection;
 
 ModelSelection::ModelSelection (QWidget* parent) :
     QWizardPage (parent),
@@ -59,7 +59,7 @@ void ModelSelection::fillModelsForComboBox (QComboBox* p_comboBox)
         paths << model->path();
 
         if (!model->path().endsWith ("/.")) {
-            const bool isUserLocal = model->path().contains(QDir::homePath());
+            const bool isUserLocal = model->path().contains (QDir::homePath());
             const QString name = QString ("(") +
                                  QString (isUserLocal ? "user-specific" : "system-wide") +
                                  QString (") ") +
@@ -103,5 +103,5 @@ ModelSelection::~ModelSelection()
     delete ui;
 }
 
-#include "modelselection.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "ui/modelselection.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

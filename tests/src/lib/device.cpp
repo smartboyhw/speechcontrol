@@ -20,9 +20,9 @@
 
 #include <QtTest/QtTest>
 
-#include <lib/audiosource/abstract.hpp>
-#include <lib/audiosource/device.hpp>
-#include <lib/system.hpp>
+#include <audiosource/abstract.hpp>
+#include <audiosource/device.hpp>
+#include <system.hpp>
 
 #include "device.h"
 
@@ -81,4 +81,4 @@ void TestDevice::toggleMuteState()
 QTEST_MAIN (TestDevice)
 
 #include "device.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

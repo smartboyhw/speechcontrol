@@ -24,10 +24,10 @@
 #include <QGlib/Error>
 #include <QGlib/Connect>
 
-#include "lib/audiosource/sink.hpp"
-#include "lib/audiosource/source.hpp"
-#include "lib/audiosource/abstract.hxx"
-#include "lib/audiosource/abstract.hpp"
+#include "audiosource/sink.hpp"
+#include "audiosource/source.hpp"
+#include "audiosource/abstract.hxx"
+#include "audiosource/abstract.hpp"
 
 using namespace SpeechControl;
 
@@ -42,7 +42,9 @@ AbstractAudioSource::AbstractAudioSource (QObject* p_parent) : QObject (p_parent
 {
 }
 
-AbstractAudioSource::AbstractAudioSource (AbstractAudioSourcePrivate* p_dPtr, QObject* p_parent) : QObject(p_parent), d_ptr(p_dPtr) {
+AbstractAudioSource::AbstractAudioSource (AbstractAudioSourcePrivate* p_dPtr, QObject* p_parent) :
+    QObject (p_parent), d_ptr (p_dPtr)
+{
 
 }
 
@@ -99,11 +101,11 @@ void AbstractAudioSource::buildPipeline()
         }
 
         // build our magical sink and sources.
-        d_func()->m_appSink = new GenericSink(this);
+        d_func()->m_appSink = new GenericSink (this);
         d_func()->m_appSink->setCaps (QGst::Caps::fromString (caps()));
         d_func()->m_appSink->setElement (d_func()->m_sinkPtr);
 
-        d_func()->m_appSrc = new GenericSource(this);
+        d_func()->m_appSrc = new GenericSource (this);
         d_func()->m_appSrc->setCaps (QGst::Caps::fromString (caps()));
         connect (d_func()->m_appSrc, SIGNAL (bufferObtained (QByteArray)), this, SIGNAL (bufferObtained (QByteArray)));
         d_func()->m_appSink->setSource (d_func()->m_appSrc);

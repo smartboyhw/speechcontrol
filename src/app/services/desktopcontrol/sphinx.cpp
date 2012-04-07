@@ -18,9 +18,9 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <lib/acousticmodel.hpp>
-#include <lib/languagemodel.hpp>
-#include "app/core.hpp"
+#include <acousticmodel.hpp>
+#include <languagemodel.hpp>
+#include "core.hpp"
 #include "sphinx.hpp"
 #include "command.hpp"
 
@@ -77,4 +77,4 @@ void Sphinx::applicationMessage (const QGst::MessagePtr& p_message)
 }
 
 #include "services/desktopcontrol/sphinx.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

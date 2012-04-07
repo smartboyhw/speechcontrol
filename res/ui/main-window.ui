@@ -111,6 +111,9 @@
          </item>
          <item row="1" column="3">
           <widget class="QPushButton" name="btnSessionInfo">
+           <property name="statusTip">
+            <string>Shows information about the selected session.</string>
+           </property>
            <property name="text">
             <string>&amp;Info</string>
            </property>
@@ -149,6 +152,9 @@
         <layout class="QGridLayout" name="gridLayoutServices">
          <item row="0" column="1">
           <widget class="QPushButton" name="btnAllServices">
+           <property name="statusTip">
+            <string>Opens the preferences pane about the Services.</string>
+           </property>
            <property name="text">
             <string>All Ser&amp;vices...</string>
            </property>
@@ -203,8 +209,8 @@
          <rect>
           <x>4</x>
           <y>20</y>
-          <width>237</width>
-          <height>81</height>
+          <width>241</width>
+          <height>98</height>
          </rect>
         </property>
         <layout class="QHBoxLayout" name="hLayoutRecognition">
@@ -514,6 +520,9 @@
    <property name="text">
     <string>Act&amp;ive</string>
    </property>
+   <property name="toolTip">
+    <string>Activates Dictation.</string>
+   </property>
    <property name="shortcut">
     <string>Ctrl+Shift+D</string>
    </property>
@@ -525,43 +534,64 @@
    <property name="text">
     <string>&amp;Options</string>
    </property>
+   <property name="toolTip">
+    <string>Opens the settings pane for desktop control.</string>
+   </property>
   </action>
   <action name="actionStartTraining">
    <property name="text">
     <string>Start Trainin&amp;g...</string>
    </property>
    <property name="toolTip">
-    <string>Start</string>
+    <string>Start the training process.</string>
    </property>
   </action>
   <action name="actionAdaptModels">
    <property name="text">
     <string>A&amp;dapt Models</string>
    </property>
+   <property name="toolTip">
+    <string>Opens the Adaption wizard to adapt acoustic models.</string>
+   </property>
   </action>
   <action name="actionDictationOptions">
    <property name="text">
     <string>Optio&amp;ns</string>
+   </property>
+   <property name="toolTip">
+    <string>Opens the settings pane for dictation.</string>
    </property>
   </action>
   <action name="actionTrainingOptions">
    <property name="text">
     <string>O&amp;ptions</string>
    </property>
+   <property name="toolTip">
+    <string>Opens the settings pane for training.</string>
+   </property>
   </action>
   <action name="actionPluginOptions">
    <property name="text">
     <string>Options</string>
+   </property>
+   <property name="toolTip">
+    <string>Opens the settings pane for plug-ins.</string>
    </property>
   </action>
   <action name="actionWizardQuickStart">
    <property name="text">
     <string>&amp;Quick Start..</string>
    </property>
+   <property name="toolTip">
+    <string>Starts the 'Quick Start' wizard.</string>
+   </property>
   </action>
   <action name="actionHelp">
    <property name="text">
     <string>Hel&amp;p</string>
+   </property>
+   <property name="toolTip">
+    <string>Opens your web browser to point to user guides for SpeechControl.</string>
    </property>
    <property name="shortcut">
     <string>F1</string>
@@ -573,6 +603,9 @@
   <action name="actionWizardAdaption">
    <property name="text">
     <string>Adaption...</string>
+   </property>
+   <property name="toolTip">
+    <string>Opens the Adaption wizard.</string>
    </property>
   </action>
   <action name="actionCreateSession">

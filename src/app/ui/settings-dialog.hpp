@@ -27,7 +27,7 @@
 #include <QPixmap>
 #include <QTreeWidgetItem>
 #include <QAbstractButton>
-#include <app/macros.hpp>
+#include <macros.hpp>
 
 
 namespace Ui
@@ -80,7 +80,7 @@ class AbstractSettingsPane : public QFrame
     friend class Settings;
 
 public:
-    explicit AbstractSettingsPane(QWidget* parent = 0);
+    explicit AbstractSettingsPane (QWidget* parent = 0);
     virtual ~AbstractSettingsPane();
     bool hasPane (const QString& p_paneID) const;
     virtual void restoreDefaults() = 0;
@@ -100,4 +100,4 @@ private:
 }
 }
 #endif // SETTINGS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

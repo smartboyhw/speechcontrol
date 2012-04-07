@@ -20,9 +20,9 @@
 
 #include <QtTest/QtTest>
 
-#include <app/sessions/content.hpp>
-#include <app/sessions/corpus.hpp>
-#include <app/sessions/phrase.hpp>
+#include <sessions/content.hpp>
+#include <sessions/corpus.hpp>
+#include <sessions/phrase.hpp>
 
 #include "corpus_test.h"
 
@@ -92,4 +92,4 @@ void TestCorpus::cleanupTestCase()
 QTEST_MAIN (TestCorpus)
 
 #include "corpus_test.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -139,4 +139,4 @@ void GeneralSettingsPane::on_radioButtonIconWhite_toggled (bool p_checked)
     Indicator::show();
 }
 #include "ui/general-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

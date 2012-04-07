@@ -52,4 +52,4 @@ void PluginInfoDialog::updateUi()
 }
 
 #include "ui/plugin-info-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

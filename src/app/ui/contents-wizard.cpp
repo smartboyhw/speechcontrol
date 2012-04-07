@@ -45,7 +45,7 @@ ContentWizard::ContentWizard (QWidget* parent) :
                      "that SpeechControl can efficiently render it for training. Check the Synthetic Intellect Institute's "
                      "wiki for more information at "
                      "<a href=\"http://wiki.thesii.org/UserGuides/AddingContent\">http://wiki.thesii.org/UserGuides/AddingContent</a>."
-                                                       ))));
+                                                                ))));
     setPage (ContentWizard::SourceSelectionPage,
              (new Windows::Wizards::Pages::SourceSelectionPage));
     setPage (ContentWizard::ConclusionPage,
@@ -53,7 +53,7 @@ ContentWizard::ContentWizard (QWidget* parent) :
                      "start a new Session and train your acoustic models.Check the Synthetic Intellect Institute's "
                      "wiki for more information at "
                      "<a href=\"http://wiki.thesii.org/UserGuides/Training#Introduction\">http://wiki.thesii.org/UserGuides/Training#Introduction</a>."
-                                                     ))));
+                                                              ))));
 }
 
 AbstractContentSource* ContentWizard::source()
@@ -114,4 +114,4 @@ ContentWizard::~ContentWizard()
 }
 
 #include "ui/contents-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

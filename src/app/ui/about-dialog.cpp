@@ -33,11 +33,11 @@ AboutDialog::AboutDialog (QWidget* parent) : QDialog (parent), ui (new Ui::About
     ui->setupUi (this);
     ui->lblHeader->setText (ui->lblHeader->text().arg (SPCHCNTRL_BUILD_VERSION)
                             .arg (SPCHCNTRL_BUILD_DATE));
-    this->setLayout(ui->verticalLayout);
-    ui->frame->setLayout(ui->horizontalLayout);
-    ui->tabAbout->setLayout(ui->layoutAbout);
-    ui->tabAuthors->setLayout(ui->layoutAuthors);
+    this->setLayout (ui->verticalLayout);
+    ui->frame->setLayout (ui->horizontalLayout);
+    ui->tabAbout->setLayout (ui->layoutAbout);
+    ui->tabAuthors->setLayout (ui->layoutAuthors);
 }
 
 #include "ui/about-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

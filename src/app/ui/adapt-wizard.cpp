@@ -70,12 +70,14 @@ int AdaptWizard::nextId() const
 
     case AdaptWizard::ModelSelectionPage: {
         Pages::ModelSelection* page = (Pages::ModelSelection*) currentPage();
-        if (page->model() && page->model()->isValid()){
+
+        if (page->model() && page->model()->isValid()) {
             return AdaptWizard::SessionSelectionPage;
-        } else {
-            QMessageBox::warning(topLevelWidget(),tr("Invalid Model"),
-                                 tr("<h2>Invalid Model</h2>"
-                                 "The model you've selected is invalid. Please select another."));
+        }
+        else {
+            QMessageBox::warning (topLevelWidget(), tr ("Invalid Model"),
+                                  tr ("<h2>Invalid Model</h2>"
+                                      "The model you've selected is invalid. Please select another."));
             return AdaptWizard::ModelSelectionPage;
         }
     }
@@ -83,15 +85,18 @@ int AdaptWizard::nextId() const
 
     case AdaptWizard::SessionSelectionPage: {
         return AdaptWizard::EnactionPage;
-    } break;
+    }
+    break;
 
     case AdaptWizard::EnactionPage: {
         return AdaptWizard::ResultsPage;
-    } break;
+    }
+    break;
 
     case AdaptWizard::ResultsPage: {
         return AdaptWizard::ConclusionPage;
-    } break;
+    }
+    break;
 
     case AdaptWizard::ConclusionPage: {
         // just return, willis!
@@ -108,7 +113,7 @@ void AdaptWizard::accept()
 
 void AdaptWizard::setSession (Session* p_session)
 {
-    ((Pages::SessionSelection*) this->page(AdaptWizard::SessionSelectionPage))->setSession(p_session);
+    ( (Pages::SessionSelection*) this->page (AdaptWizard::SessionSelectionPage))->setSession (p_session);
 }
 
 AdaptWizard::~AdaptWizard()
@@ -117,4 +122,4 @@ AdaptWizard::~AdaptWizard()
 }
 
 #include "ui/adapt-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

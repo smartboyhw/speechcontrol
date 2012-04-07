@@ -24,8 +24,9 @@
 
 #include <ui/wizards/base.hpp>
 
-namespace Ui {
-    class MicrophoneSelectionDialog;
+namespace Ui
+{
+class MicrophoneSelectionDialog;
 }
 
 namespace SpeechControl
@@ -47,8 +48,8 @@ public slots:
     virtual void accept();
 
 private slots:
-    void on_comboBoxDevices_currentIndexChanged(const int index);
-    void on_checkBoxUseDefault_toggled(const bool checked);
+    void on_comboBoxDevices_currentIndexChanged (const int index);
+    void on_checkBoxUseDefault_toggled (const bool checked);
 
 private:
     Ui::MicrophoneSelectionDialog* ui;
@@ -59,4 +60,4 @@ private:
 }
 }
 #endif // WIZARD_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

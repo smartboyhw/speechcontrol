@@ -32,7 +32,7 @@ UserInitialization::UserInitialization (QWidget* parent) :
     ui (new Ui::UserInitialization)
 {
     ui->setupUi (this);
-    this->setLayout(ui->gridLayout);
+    this->setLayout (ui->gridLayout);
     registerField ("age", ui->comboBoxAge);
     registerField ("country", ui->comboBoxCountry);
     registerField ("language-spoken", ui->comboBoxLanguageSpoken);
@@ -81,4 +81,4 @@ void SpeechControl::Windows::Wizards::Pages::UserInitialization::clearPage()
 }
 
 #include "ui/userinfo.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

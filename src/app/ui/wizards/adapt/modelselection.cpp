@@ -59,7 +59,7 @@ void ModelSelection::fillModelsForComboBox (QComboBox* p_comboBox)
         paths << model->path();
 
         if (!model->path().endsWith ("/.")) {
-            const bool isUserLocal = model->path().contains(QDir::homePath());
+            const bool isUserLocal = model->path().contains (QDir::homePath());
             const QString name = QString ("(") +
                                  QString (isUserLocal ? "user-specific" : "system-wide") +
                                  QString (") ") +
@@ -104,4 +104,4 @@ ModelSelection::~ModelSelection()
 }
 
 #include "ui/modelselection.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

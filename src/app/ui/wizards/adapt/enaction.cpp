@@ -122,18 +122,19 @@ void Enaction::on_mMeter_assessmentCompleted ()
             invokeAdaption (m_sessions.at (m_sessions.indexOf (m_utility->session()) + 1));
 
         qDebug() << "[Enaction::on_mMeter_assessmentCompleted()]" << m_meter->data();
-        wizard()->setProperty("accuracy-rating","passed");
+        wizard()->setProperty ("accuracy-rating", "passed");
     }
     break;
 
     case AccuracyMeter::Error : {
-        QMessageBox::critical(this,tr("Failed to Determine Accuracy"),
-                              tr("SpeechControl was unable to determine the accuracy "
-                                "of the adapted acoustic model.\n\n<b>Error message</b>: %1\nOutput:\n<pre>%2</pre>"
-                              ).arg(m_meter->data()["message"].toString()).arg(m_meter->data()["output"].toString()));
-        wizard()->setProperty("accuracy-rating","failed");
+        QMessageBox::critical (this, tr ("Failed to Determine Accuracy"),
+                               tr ("SpeechControl was unable to determine the accuracy "
+                                   "of the adapted acoustic model.\n\n<b>Error message</b>: %1\nOutput:\n<pre>%2</pre>"
+                                  ).arg (m_meter->data() ["message"].toString()).arg (m_meter->data() ["output"].toString()));
+        wizard()->setProperty ("accuracy-rating", "failed");
         wizard()->next();
-    } break;
+    }
+    break;
 
     default:
         break;
@@ -170,4 +171,4 @@ Enaction::~Enaction()
 }
 
 #include "ui/enaction.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

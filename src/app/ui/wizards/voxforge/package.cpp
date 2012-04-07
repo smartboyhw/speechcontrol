@@ -24,11 +24,11 @@
 using namespace SpeechControl::Windows::Wizards::Pages;
 
 PackageSelection::PackageSelection (QWidget* parent) : QWizardPage (parent),
-    ui(new Ui::PackageSelection)
+    ui (new Ui::PackageSelection)
 {
-    ui->setupUi(this);
-    this->setWindowIcon(QIcon::fromTheme("application-x-archive"));
-    this->setLayout(ui->gridLayout);
+    ui->setupUi (this);
+    this->setWindowIcon (QIcon::fromTheme ("application-x-archive"));
+    this->setLayout (ui->gridLayout);
 }
 
 PackageSelection::~PackageSelection()
@@ -37,4 +37,4 @@ PackageSelection::~PackageSelection()
 }
 
 #include "ui/package.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

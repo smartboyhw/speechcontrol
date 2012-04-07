@@ -55,10 +55,10 @@ protected:
 private slots:
     void on_comboBoxAcousticModelView_currentIndexChanged();
     void on_comboBoxLanguageModelView_currentIndexChanged();
-    void on_listWidgetAcoustic_currentRowChanged(const int p_index);
-    void on_listWidgetLanguage_currentRowChanged(const int p_index);
-    void on_checkBoxDefaultAcousticModel_clicked(const bool p_checked);
-    void on_checkBoxDefaultLanguageModel_clicked(const bool p_checked);
+    void on_listWidgetAcoustic_currentRowChanged (const int p_index);
+    void on_listWidgetLanguage_currentRowChanged (const int p_index);
+    void on_checkBoxDefaultAcousticModel_clicked (const bool p_checked);
+    void on_checkBoxDefaultLanguageModel_clicked (const bool p_checked);
     void on_btnAdaptDelete_clicked();
     void on_btnAdaptAcoustic_clicked();
     void on_btnLanguageDelete_clicked();
@@ -71,4 +71,4 @@ private:
 }
 
 #endif // GENERAL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

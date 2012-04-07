@@ -152,10 +152,10 @@ Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0), m_acrcyThrd (0)
     m_prgStatusbar = new QProgressBar (this);
     m_acrcyThrd = new AccuracyUpdaterThread (this);
 
-    connect (m_acrcyThrd, SIGNAL (foundError()),   this, SLOT (on_acrcyThrd_foundError()));
-    connect (m_acrcyThrd, SIGNAL (foundSuccess()), this, SLOT (on_acrcyThrd_foundSuccess()));
-    connect (m_acrcyThrd, SIGNAL (finished()),     this, SLOT (on_acrcyThrd_finished()));
-    connect (m_acrcyThrd, SIGNAL (foundNoData()),  this, SLOT (on_acrcyThrd_foundNoData()));
+    connect (m_acrcyThrd, SIGNAL (foundError()),   this, SLOT (onAcrcyThrd_foundError()));
+    connect (m_acrcyThrd, SIGNAL (foundSuccess()), this, SLOT (onAcrcyThrd_foundSuccess()));
+    connect (m_acrcyThrd, SIGNAL (finished()),     this, SLOT (onAcrcyThrd_finished()));
+    connect (m_acrcyThrd, SIGNAL (foundNoData()),  this, SLOT (onAcrcyThrd_foundNoData()));
 
     // Redo layout
     m_ui->centralwidget->setLayout (m_ui->gLayoutMain);
@@ -274,11 +274,6 @@ void Main::setStatusMessage (const QString& p_message , const int p_timeout)
     m_ui->statusBar->showMessage (p_message, p_timeout);
 }
 
-void Main::on_acrcyThrd_finished()
-{
-    QTimer::singleShot (1000 * 5, Core::mainWindow(), SLOT (doAccuracyCheck()));
-}
-
 void Main::doAccuracyCheck()
 {
     qDebug() << "[Main::on_acrcyThrd_finished()] Invoking accuracy check thread...";
@@ -294,7 +289,12 @@ void Main::doAccuracyCheck()
     qDebug() << "[Main::on_acrcyThrd_finished()] Thread invoked.";
 }
 
-void Main::on_acrcyThrd_foundNoData()
+void Main::onAcrcyThrd_finished()
+{
+    QTimer::singleShot (1000 * 5, Core::mainWindow(), SLOT (doAccuracyCheck()));
+}
+
+void Main::onAcrcyThrd_foundNoData()
 {
     m_ui->lblRating->setPixmap (QIcon::fromTheme ("media-playback-stop").pixmap (48, 48));
     m_ui->progressBarAccuracy->setFormat ("No data available.");
@@ -302,12 +302,12 @@ void Main::on_acrcyThrd_foundNoData()
     setStatusMessage (tr ("No data found for determining the accuracy of SpeechControl."));
 }
 
-void Main::on_acrcyThrd_foundSuccess()
+void Main::onAcrcyThrd_foundSuccess()
 {
 
 }
 
-void Main::on_acrcyThrd_foundError()
+void Main::onAcrcyThrd_foundError()
 {
     m_ui->lblRating->setPixmap (QIcon::fromTheme ("dialog-error").pixmap (48, 48));
     m_ui->progressBarAccuracy->setRange (0, 1);
@@ -628,4 +628,4 @@ Main::~Main()
 }
 
 #include "ui/main-window.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

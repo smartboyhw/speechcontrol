@@ -138,12 +138,12 @@ void ContentManager::on_lstContent_itemSelectionChanged()
         uint sessionCount = 0;
 
         SessionList lst = Session::allSessions();
-        Q_FOREACH(const Session* itm, lst){
+        Q_FOREACH (const Session * itm, lst) {
             if (itm->content()->id() == cnt->id())
                 sessionCount ++;
         }
 
-        ui->lblSessionCount->setText(tr("Used by %1 session(s)").arg(sessionCount));
+        ui->lblSessionCount->setText (tr ("Used by %1 session(s)").arg (sessionCount));
 
     }
     else {
@@ -155,4 +155,4 @@ void ContentManager::on_lstContent_itemSelectionChanged()
 }
 
 #include "ui/content-manager.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

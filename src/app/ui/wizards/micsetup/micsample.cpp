@@ -65,9 +65,9 @@ void MicrophoneSample::on_btnBeginPrompt_clicked()
 /// @todo Fill the combo box with all of the mics.
 void SpeechControl::Windows::Wizards::Pages::MicrophoneSample::initializePage()
 {
-    DeviceAudioSource* device = DeviceAudioSource::obtain(wizard()->field("mic-id").toString());
+    DeviceAudioSource* device = DeviceAudioSource::obtain (wizard()->field ("mic-id").toString());
     qDebug() << "[MicrophoneSample::initializePage()]" << device->humanName() << device->deviceName();
-    m_sphnx = new AudioSourceSphinx ((AbstractAudioSource*) device);
+    m_sphnx = new AudioSourceSphinx ( (AbstractAudioSource*) device);
     connect (m_sphnx, SIGNAL (finished (QString)), this, SLOT (handleReceivedPrompt (QString)));
     ui->lblPrompt->setText (QString::null);
 }
@@ -145,4 +145,4 @@ void MicrophoneSample::handleReceivedPrompt (QString p_str)
 }
 
 #include "ui/micsample.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

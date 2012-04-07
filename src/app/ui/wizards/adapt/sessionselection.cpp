@@ -67,7 +67,7 @@ void SessionSelection::cleanupPage()
 bool SessionSelection::validatePage()
 {
     if (!m_listSession.isEmpty())
-        this->setSubTitle("<b><font color=red>Please select at least one session for adapting.</font></b>");
+        this->setSubTitle ("<b><font color=red>Please select at least one session for adapting.</font></b>");
 
     return !m_listSession.isEmpty();
 }
@@ -90,7 +90,7 @@ void SessionSelection::on_listWidgetSession_itemSelectionChanged ()
                 count += session->content()->uniqueWords();
             }
 
-            m_listSession << Session::obtain(id);
+            m_listSession << Session::obtain (id);
         }
         ui->lineEditUniqueWordCount->setText (QString::number (count));
     }
@@ -113,4 +113,4 @@ SessionSelection::~SessionSelection()
 }
 
 #include "ui/sessionselection.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

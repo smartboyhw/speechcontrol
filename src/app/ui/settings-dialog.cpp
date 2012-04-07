@@ -64,7 +64,7 @@ void Settings::buildWindow()
 }
 
 
-Settings::Settings (const Settings& p_other) : QDialog(p_other.parentWidget())
+Settings::Settings (const Settings& p_other) : QDialog (p_other.parentWidget())
 {
 
 }
@@ -240,4 +240,4 @@ AbstractSettingsPane::~AbstractSettingsPane()
 }
 
 #include "ui/settings-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

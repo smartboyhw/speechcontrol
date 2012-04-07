@@ -26,7 +26,7 @@ using namespace SpeechControl::Windows::Wizards::Pages;
 LoginPortal::LoginPortal (QWidget* parent) : QWizardPage (parent), ui (new Ui::LoginPortal)
 {
     ui->setupUi (this);
-    this->setWindowIcon(QIcon::fromTheme("encrypted"));
+    this->setWindowIcon (QIcon::fromTheme ("encrypted"));
     this->setLayout (ui->gridLayout);
 }
 
@@ -41,4 +41,4 @@ LoginPortal::~LoginPortal()
 }
 
 #include "ui/login.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

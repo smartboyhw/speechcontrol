@@ -189,6 +189,7 @@ private:
     Ui::MainWindow* m_ui;
     QProgressBar* m_prgStatusbar;
     AccuracyUpdaterThread* m_acrcyThrd;
+    int m_count;
 };
 }
 }

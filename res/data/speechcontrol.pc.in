@@ -1,0 +1,9 @@
+prefix=@CMAKE_INSTALL_PREFIX@
+libdir=@SPCHCNTRL_LIB_DIR@
+includedir=@SPCHCNTRL_LIB_INCLUDE_DIR@
+
+Name: SpeechControl Library
+Description: Library for the core functionality of SpeechControl.
+Version: @SPCHCNTRL_LIB_VERSION@
+Libs: @SPCHCNTRL_LIBRARIES@
+Cflags: @SPCHCNTRL_COMPILE_FLAGS@

@@ -150,20 +150,13 @@ signals:
 public slots:
     /**
      * @brief Starts SpeechControl's main loop.
-     *
      **/
     void start();
 
     /**
      * @brief Stops SpeechControl's main loop.
-     *
      **/
     void stop();
-
-private slots:
-    void invokeAutoStart();
-    void hookUpSignals();
-    void bootServices();
 
 private:
     QScopedPointer<CorePrivate> d_ptr;
@@ -172,4 +165,4 @@ private:
 }
 
 #endif // CORE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

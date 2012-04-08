@@ -21,9 +21,8 @@
 // Qt includes
 #include <QFile>
 #include <QDebug>
-#include <QLibraryInfo>
 #include <QSettings>
-#include <qtranslator.h>
+#include <QTranslator>
 #include <QApplication>
 #include <QMessageBox>
 
@@ -56,7 +55,7 @@ Core::Core() : QObject()
 }
 
 Core::Core (int p_argc, char** p_argv, QApplication* app) : QObject (app),
-    d_ptr (new CorePrivate)
+    d_ptr (new CorePrivate(this))
 {
     Q_D (Core);
     d->m_app = app;
@@ -68,9 +67,6 @@ Core::Core (int p_argc, char** p_argv, QApplication* app) : QObject (app),
     s_inst = this;
 
     // start application.
-    d->m_trnsltr = new QTranslator (this);
-    d->m_app->installTranslator (d->m_trnsltr);
-
     System::start (&p_argc, &p_argv);
     Session::init();
 
@@ -78,10 +74,7 @@ Core::Core (int p_argc, char** p_argv, QApplication* app) : QObject (app),
     QDir configDir;
     configDir.mkdir (configurationPath().path() + "/contents");
 
-    // build settings
-    d->m_settings = new QSettings (QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", this);
-
-    hookUpSignals();
+    d->hookUpSignals();
     loadTranslations (QLocale::system());
 
     // Set up indicator.
@@ -96,29 +89,10 @@ Core::Core (const Core& p_other) : QObject (p_other.parent()), d_ptr (const_cast
 
 }
 
-void Core::hookUpSignals()
-{
-    Q_D (Core);
-    connect (d->m_app, SIGNAL (aboutToQuit()), this, SLOT (stop()));
-    connect (this, SIGNAL (started()), this, SLOT (invokeAutoStart()));
-    connect (this, SIGNAL (started()), Services::Engine::instance(), SLOT (start()));
-    connect (this, SIGNAL (started()), Plugins::Factory::instance(), SLOT (start()));
-
-    connect (this, SIGNAL (stopped()), Services::Engine::instance(), SLOT (stop()));
-    connect (this, SIGNAL (stopped()), Plugins::Factory::instance(), SLOT (stop()));
-
-    bootServices();
-}
-
-void Core::bootServices()
-{
-    DesktopControl::Service::instance();
-    Dictation::Service::instance();
-    Voxforge::Service::instance();
-}
-
 void Core::start()
 {
+    Q_D(Core);
+
     // Detect if a first-run wizard should be run.
     if (!QFile::exists (instance()->d_func()->m_settings->fileName())) {
         if (QMessageBox::question (mainWindow(), tr ("First Run"),
@@ -130,6 +104,7 @@ void Core::start()
     }
 
     mainWindow()->open();
+    d->invokeAutoStart();
     emit instance()->started();
 }
 
@@ -170,14 +145,6 @@ int Core::exec()
 void Core::quit (const int& p_exitCode)
 {
     instance()->d_func()->m_app->exit (p_exitCode);
-}
-
-void Core::invokeAutoStart()
-{
-    const bool dsktpCntrlState = configuration ("DesktopControl/AutoStart").toBool();
-    const bool dctnState = configuration ("Dictation/AutoStart").toBool();
-    DesktopControl::Service::instance()->setState ( (dsktpCntrlState) ? AbstractModule::Enabled  : AbstractModule::Disabled);
-    Dictation::Service::instance()->setState ( (dctnState) ? AbstractModule::Enabled  : AbstractModule::Disabled);
 }
 
 void Core::loadTranslations (const QLocale& p_locale)

@@ -24,15 +24,25 @@ class QTranslator;
 
 namespace SpeechControl
 {
+
+class Core;
 namespace Windows
 {
 class Main;
 }
 struct CorePrivate {
+    Q_DECLARE_PUBLIC(Core)
+    CorePrivate(Core* p_qPtr);
+    virtual ~CorePrivate();
+    void invokeAutoStart();
+    void hookUpSignals();
+    void bootServices();
+
     QApplication* m_app;
     Windows::Main* m_mw;
     QSettings* m_settings;
     QTranslator* m_trnsltr;
+    Core* q_ptr;
 };
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -40,6 +40,7 @@ add_executable(speechcontrol-frontend ${SPCHCNTRL_APP_SCPP}
 
 set_target_properties(speechcontrol-frontend PROPERTIES
     COMPILE_FLAGS "${SPCHCNTRL_APP_COMPILE_FLAGS}"
+    OUTPUT_NAME "speechcontrol"
     PROJECT_LABEL "SpeechControl")
 
 add_dependencies(speechcontrol-frontend speechcontrol)

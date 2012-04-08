@@ -62,10 +62,9 @@ void CorePrivate::invokeAutoStart()
 {
     const bool dsktpCntrlState = Core::configuration ("DesktopControl/AutoStart", false).toBool();
     const bool dctnState = Core::configuration ("Dictation/AutoStart", false).toBool();
-    const bool vxfrgEnabled = Core::configuration ("Voxforge/Enabled", false).toBool();
     DesktopControl::Service::instance()->setState ( (dsktpCntrlState) ? AbstractModule::Enabled  : AbstractModule::Disabled);
     Dictation::Service::instance()->setState ( (dctnState) ? AbstractModule::Enabled  : AbstractModule::Disabled);
-    Voxforge::Service::instance()->setState ( (vxfrgEnabled) ? AbstractModule::Enabled : AbstractModule::Disabled);
+
 }
 
 void CorePrivate::bootServices()

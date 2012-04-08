@@ -12,7 +12,7 @@ if (WITH_PLUGINS)
     message(STATUS "Plug-ins are being built.")
 
     add_custom_target(plugins ALL
-        DEPENDS speechcontrol-frontend)
+                      DEPENDS speechcontrol-app)
 
     ## directories
     add_subdirectory(python)

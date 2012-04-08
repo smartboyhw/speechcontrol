@@ -37,17 +37,17 @@ QT4_CREATE_TRANSLATION("speechcontrol.qm" "${SPCHCNTRL_APP_SRCS};${SPCHCNTRL_UI}
 include_directories(${SPCHCNTRL_APP_BUILD_INCLUDE_DIRS})
 
 ## Define targets
-add_executable(speechcontrol-frontend ${SPCHCNTRL_APP_SCPP}
+add_executable(speechcontrol-app ${SPCHCNTRL_APP_SCPP}
     ${SPCHCNTRL_APP_SPRIVCPP})
 
-set_target_properties(speechcontrol-frontend PROPERTIES
+set_target_properties(speechcontrol-app PROPERTIES
     COMPILE_FLAGS "${SPCHCNTRL_APP_COMPILE_FLAGS}"
     OUTPUT_NAME "speechcontrol"
     PROJECT_LABEL "SpeechControl")
 
-add_dependencies(speechcontrol-frontend speechcontrol)
-target_link_libraries(speechcontrol-frontend ${SPCHCNTRL_APP_LIBRARIES})
+add_dependencies(speechcontrol-app speechcontrol)
+target_link_libraries(speechcontrol-app ${SPCHCNTRL_APP_LIBRARIES})
 
 ## Installs
-install(TARGETS speechcontrol-frontend
+install(TARGETS speechcontrol-app
         DESTINATION "${SPCHCNTRL_BIN_DIR}")

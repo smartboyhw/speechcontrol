@@ -201,7 +201,7 @@ void Core::setAutoStart (const bool p_toggle)
             desktopFile << "[Desktop Entry]" << endl
                         << "Name=Start SpeechControl on Launch" << endl
                         << "Icon=speechcontrol" << endl
-                        << "Exec=speechcontrol-frontend" << endl
+                        << "Exec=speechcontrol" << endl
                         << "Terminal=false" << endl
                         << "Type=Application" << endl
                         << "X-GNOME-Autostart-enabled=true" << endl

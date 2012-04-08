@@ -10,9 +10,9 @@ if(WITH_TESTS)
         set(SpeechControlLibrary_DIR "${CMAKE_BINARY_DIR}/src/lib/InstallFiles")
     endif (TARGET speechcontrol)
 
-    if (TARGET speechcontrol-frontend)
+    if (TARGET speechcontrol-app)
         set(SpeechControlApplication_DIR "${CMAKE_BINARY_DIR}/src/app/InstallFiles")
-    endif (TARGET speechcontrol-frontend)
+    endif (TARGET speechcontrol-app)
 
     set(TEST_INCLUDE_FILE "${CMAKE_SOURCE_DIR}/tests/CTestConfig.cmake")
 

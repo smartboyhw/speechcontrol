@@ -100,7 +100,8 @@
         <property name="styleSheet">
          <string notr="true">border: 1px solid #000;
 background-color: #fff;
-font-size: 12pt;</string>
+font-size: 12pt;
+color: #000;</string>
         </property>
         <property name="text">
          <string/>

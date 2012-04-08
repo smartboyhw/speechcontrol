@@ -145,7 +145,7 @@ Session* AccuracyUpdaterThread::session() const
     return Session::obtain (ssnID);
 }
 
-Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0), m_acrcyThrd (0)
+Main::Main() : m_ui (new Ui::MainWindow), m_prgStatusbar (0), m_acrcyThrd (0), m_count(0)
 {
     m_ui->setupUi (this);
     m_ui->retranslateUi (this);
@@ -291,7 +291,8 @@ void Main::doAccuracyCheck()
 
 void Main::onAcrcyThrd_finished()
 {
-    QTimer::singleShot (1000 * 5, Core::mainWindow(), SLOT (doAccuracyCheck()));
+    m_count += 1;
+    QTimer::singleShot (1000 * (5 * m_count), Core::mainWindow(), SLOT (doAccuracyCheck()));
 }
 
 void Main::onAcrcyThrd_foundNoData()

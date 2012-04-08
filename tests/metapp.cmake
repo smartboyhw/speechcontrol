@@ -35,5 +35,5 @@ set_target_properties(test-appcore PROPERTIES
     EchoString "Built core application library for test-suite."
     EXCLUDE_FROM_ALL ON)
 
-add_dependencies(test-appcore speechcontrol-frontend
-                              speechcontrol)
+add_dependencies(test-appcore speechcontrol
+                              speechcontrol-app)

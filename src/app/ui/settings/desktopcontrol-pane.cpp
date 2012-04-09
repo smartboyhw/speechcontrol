@@ -151,5 +151,5 @@ void DesktopControlSettingsPane::on_deftAcousticModel_textEdited (const QString&
     }
 }
 
-#include "ui/desktopcontrol-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/settings/desktopcontrol-pane.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -80,5 +80,5 @@ void SpeechControl::Windows::Wizards::Pages::UserInitialization::clearPage()
     ui->comboBoxLanguageSpoken->clear();
 }
 
-#include "ui/userinfo.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/wizards/quickstart/userinfo.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

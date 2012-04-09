@@ -124,5 +124,5 @@ void VoxforgeSettingsPane::on_lineEditUserName_textChanged (const QString& p_tex
     Core::setConfiguration ("Voxforge/Authentication", map);
 }
 
-#include "ui/voxforge-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/settings/voxforge-pane.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

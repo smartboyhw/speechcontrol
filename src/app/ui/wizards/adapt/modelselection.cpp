@@ -103,5 +103,5 @@ ModelSelection::~ModelSelection()
     delete ui;
 }
 
-#include "ui/modelselection.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/wizards/adapt/modelselection.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

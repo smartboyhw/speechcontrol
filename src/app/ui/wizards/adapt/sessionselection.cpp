@@ -112,5 +112,5 @@ SessionSelection::~SessionSelection()
     delete ui;
 }
 
-#include "ui/sessionselection.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/wizards/adapt/sessionselection.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

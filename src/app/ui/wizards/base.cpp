@@ -43,5 +43,5 @@ AbstractWizard::~AbstractWizard()
     delete ui;
 }
 
-#include "ui/base.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/wizards/base.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

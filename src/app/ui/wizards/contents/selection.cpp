@@ -89,5 +89,5 @@ SourceSelectionPage::~SourceSelectionPage()
     delete m_ui;
 }
 
-#include "ui/selection.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/wizards/contents/selection.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

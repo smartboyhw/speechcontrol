@@ -80,5 +80,5 @@ LoginPortal::~LoginPortal()
 
 }
 
-#include "ui/login.moc"
+#include "ui/wizards/voxforge/login.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

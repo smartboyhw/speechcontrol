@@ -144,5 +144,5 @@ void MicrophoneSample::handleReceivedPrompt (QString p_str)
     emit completeChanged();
 }
 
-#include "ui/micsample.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/wizards/micsetup/micsample.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

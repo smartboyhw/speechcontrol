@@ -236,5 +236,5 @@ void ModelSettingsPane::on_listWidgetLanguage_currentRowChanged (const int p_ind
     qDebug() << "[ModelSettingsPane::on_listWidgetLanguage_currentRowChanged()]" << defaultModel << currentModel;
 }
 
-#include "ui/models-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/settings/models-pane.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

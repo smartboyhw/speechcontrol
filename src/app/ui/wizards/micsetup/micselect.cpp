@@ -125,5 +125,5 @@ void MicrophoneSelection::setDevice (DeviceAudioSource* p_device)
     }
 }
 
-#include "ui/micselect.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/wizards/micsetup/micselect.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -182,5 +182,5 @@ void PluginsSettingsPane::changeEvent (QEvent* e)
     }
 }
 
-#include "ui/plugins-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/settings/plugins-pane.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

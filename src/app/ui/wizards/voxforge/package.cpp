@@ -36,5 +36,5 @@ PackageSelection::~PackageSelection()
 
 }
 
-#include "ui/package.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/wizards/voxforge/package.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

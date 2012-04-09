@@ -35,5 +35,5 @@ UploadEnaction::~UploadEnaction()
 
 }
 
-#include "ui/upload.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/wizards/voxforge/upload.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

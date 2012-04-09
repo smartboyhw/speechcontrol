@@ -85,7 +85,6 @@ configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
 
 # Add build information for front-end application and KDE features
 include(application.cmake)
-add_subdirectory(kde)
 
 ## Installs
 install(DIRECTORY   "${PROJECT_SOURCE_DIR}/"

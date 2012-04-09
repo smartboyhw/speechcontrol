@@ -1,10 +1,7 @@
 project(SpeechControl)
 cmake_minimum_required(VERSION 2.8)
 
-## Let's use our own modules to find some softwares not packed with the system.
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/Modules")
-include(SpeechControlDefaults)
-include(SpeechControlMacros)
 
 ## Options to toggle components of SpeechControl.
 ## By default, they're all off, just to speed up build times :)
@@ -31,6 +28,9 @@ find_package(Xdo REQUIRED)
 find_package(Hunspell REQUIRED)
 find_package(Phonon REQUIRED)
 
+include(SpeechControlDefaults)
+include(SpeechControlMacros)
+
 ## variables
 set(PROJECT_VERSION "0.1")
 set(SPCHCNTRL_BUILDING ON)
@@ -54,9 +54,9 @@ set(SPCHCNTRL_LIBRARIES ${QT_QTCORE_LIBRARY}
     ${POCKETSPHINX_LIBRARIES})
 
 ## The subdirectories, order's vital here.
+add_subdirectory(cmake)
 add_subdirectory(src)
 add_subdirectory(res)
-add_subdirectory(cmake)
 
 if(WITH_TESTS)
     add_subdirectory(tests)

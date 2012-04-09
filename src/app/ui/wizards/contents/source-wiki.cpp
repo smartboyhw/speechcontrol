@@ -54,5 +54,5 @@ WikiContentSourceWidget::~WikiContentSourceWidget()
     delete m_ui;
 }
 
-#include "ui/source-wiki.moc"
+#include "ui/wizards/contents/source-wiki.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

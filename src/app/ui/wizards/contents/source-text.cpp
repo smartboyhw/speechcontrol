@@ -80,5 +80,5 @@ TextContentSourceWidget::~TextContentSourceWidget()
     delete m_ui;
 }
 
-#include "ui/source-text.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/wizards/contents/source-text.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

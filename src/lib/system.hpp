@@ -18,13 +18,13 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef SYSTEM_HPP
-#define SYSTEM_HPP
+#ifndef SPEECHCONTROL_SYSTEM_HPP
+#define SPEECHCONTROL_SYSTEM_HPP
 
 #include <QObject>
 
-#include <config.hpp>
-#include <export.hpp>
+#include <lib/config.hpp>
+#include <lib/export.hpp>
 
 namespace SpeechControl
 {
@@ -54,5 +54,5 @@ private:
 }
 
 #endif // SYSTEM_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
 

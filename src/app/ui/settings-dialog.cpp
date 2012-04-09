@@ -60,6 +60,7 @@ void Settings::buildWindow()
     addPane (new GeneralSettingsPane);
     addPane (new TrainingSettingsPane);
     addPane (new ServicesSettingsPane);
+    addPane (new PluginsSettingsPane);
     qDebug() << "[Settings::buildWindow()] Built settings window.";
 }
 
@@ -240,4 +241,4 @@ AbstractSettingsPane::~AbstractSettingsPane()
 }
 
 #include "ui/settings-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

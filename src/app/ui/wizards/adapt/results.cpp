@@ -72,5 +72,5 @@ Results::~Results()
     delete ui;
 }
 
-#include "ui/results.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/wizards/adapt/results.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

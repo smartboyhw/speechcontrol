@@ -21,15 +21,15 @@
 #include <QIcon>
 #include <QMessageBox>
 
+#include <lib/acousticmodel.hpp>
+
 #include "core.hpp"
-#include "acousticmodel.hpp"
 #include "wizards/intro.hpp"
 #include "wizards/outro.hpp"
 #include "wizards/adapt/modelselection.hpp"
 #include "wizards/adapt/sessionselection.hpp"
 #include "wizards/adapt/enaction.hpp"
 #include "wizards/adapt/results.hpp"
-
 #include "adapt-wizard.hpp"
 
 using namespace SpeechControl;
@@ -122,4 +122,4 @@ AdaptWizard::~AdaptWizard()
 }
 
 #include "ui/adapt-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

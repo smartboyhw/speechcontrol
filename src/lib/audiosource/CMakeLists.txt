@@ -1,9 +1,0 @@
-cmake_minimum_required(VERSION 2.8)
-
-install(FILES ${SPCHCNTRL_LIB_AUDIOSOURCE_HDRS}
-    DESTINATION "${SPCHCNTRL_LIB_INCLUDE_DIR}/audiosource"
-    COMPONENT "dev")
-
-install(FILES ${SPCHCNTRL_LIB_AUDIOSOURCE_PRIVHDRS}
-    DESTINATION "${SPCHCNTRL_LIB_INCLUDE_DIR}-private/audiosource"
-    COMPONENT "dev")

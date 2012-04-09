@@ -20,7 +20,7 @@
 
 #include <QDebug>
 // libspchcntrl includes
-#include <audiosource/device.hpp>
+#include <lib/audiosource/device.hpp>
 
 #include "micselect.hpp"
 #include "ui/micsetup-wizard.hpp"
@@ -125,5 +125,5 @@ void MicrophoneSelection::setDevice (DeviceAudioSource* p_device)
     }
 }
 
-#include "ui/micselect.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/wizards/micsetup/micselect.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

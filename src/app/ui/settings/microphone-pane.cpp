@@ -20,7 +20,7 @@
 
 #include <QDebug>
 
-#include <audiosource/device.hpp>
+#include <lib/audiosource/device.hpp>
 
 #include "core.hpp"
 #include "microphone-pane.hpp"
@@ -129,5 +129,5 @@ void MicrophoneSettingsPane::on_checkBoxMute_toggled (const bool p_checked)
     ui->horizontalSliderVolume->setValue ( (p_checked ? 0 : mic->volume() * 100));
 }
 
-#include "ui/microphone-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/settings/microphone-pane.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

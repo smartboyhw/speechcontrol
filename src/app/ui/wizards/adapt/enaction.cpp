@@ -170,5 +170,5 @@ Enaction::~Enaction()
     delete ui;
 }
 
-#include "ui/enaction.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "ui/wizards/adapt/enaction.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

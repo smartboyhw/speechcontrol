@@ -39,9 +39,11 @@ class WikiContentSource : public AbstractContentSource
 public:
     explicit WikiContentSource (QObject* parent = 0);
     WikiContentSource (QString const& id, QObject* parent = 0);
-
     virtual ~WikiContentSource();
 
+    /**
+     * @brief Determines if it's ready to pull data from Wikipedia.
+     **/
     bool ready() const;
 
     /**
@@ -49,7 +51,7 @@ public:
      *
      * This method enqueues fetch of new Wiki sample replacing the current one.
      */
-    void order();
+    void order(const QList<QUrl> p_urls);
 
 signals:
     void generateReady();
@@ -77,12 +79,13 @@ private:
     int wikiFail;
 
 private slots:
-    void portalPhase();
+    void portalPhase(const QList<QUrl> p_urls);
     void wikiPhase (bool ok);
     void parsingPhase (bool ok);
+    void clear();
 
 };
 
 }
 #endif // WIKICONTENTSOURCE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

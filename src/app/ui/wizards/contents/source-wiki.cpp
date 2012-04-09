@@ -49,6 +49,11 @@ void WikiContentSourceWidget::updateView()
     Content* aContent = src->generate();
 }
 
+void WikiContentSourceWidget::on_btnFetchPortals_checked()
+{
+
+}
+
 WikiContentSourceWidget::~WikiContentSourceWidget()
 {
     delete m_ui;

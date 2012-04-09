@@ -39,6 +39,9 @@ public:
     explicit WikiContentSourceWidget (QWidget* parent = 0);
     ~WikiContentSourceWidget();
 
+private slots:
+    void on_btnFetchPortals_checked();
+
 private:
     Ui::WikiContentSourceWidget* m_ui;
 };
@@ -46,4 +49,4 @@ private:
 }
 
 #endif // CONTENTWIZARD_SOURCE_WIKI_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

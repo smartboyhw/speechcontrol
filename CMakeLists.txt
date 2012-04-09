@@ -31,14 +31,13 @@ find_package(Xdo REQUIRED)
 find_package(Hunspell REQUIRED)
 find_package(Phonon REQUIRED)
 
-## Now we'll add in the Qt stuff
-include("${QT_USE_FILE}")
-
 ## variables
 set(PROJECT_VERSION "0.1")
 set(SPCHCNTRL_BUILDING ON)
 set(SPCHCNTRL_CMAKE_SDIR "${PROJECT_SOURCE_DIR}/cmake")
 set(SPCHCNTRL_INCLUDE_DIRS ${QT_INCLUDE_DIR}
+    ${QT_QTCORE_INCLUDE_DIR}
+    ${QT_QTXML_INCLUDE_DIR}
     ${SPCHCNTRL_INCLUDE_DIR}
     ${POCKETSPHINX_INCLUDE_DIRS}
     ${QTGSTREAMER_INCLUDE_DIR}

@@ -43,8 +43,8 @@ SourceSelectionPage::SourceSelectionPage (QWidget* parent) :
 
 void SourceSelectionPage::updateUi()
 {
-    Q_FOREACH (QWidget * l_src, s_lst) {
-        m_ui->comboBoxSource->addItem (l_src->property ("title").toString(), l_src->property ("id"));
+    Q_FOREACH (QWidget * src, s_lst) {
+        m_ui->comboBoxSource->addItem (src->property ("title").toString(), src->property ("id"));
     }
 }
 
@@ -56,16 +56,17 @@ void SourceSelectionPage::addDefaultSources()
 
 void SourceSelectionPage::on_comboBoxSource_currentIndexChanged (const int& p_index)
 {
-    QVariant l_vrnt = m_ui->comboBoxSource->itemData (p_index);
+    QVariant vrnt = m_ui->comboBoxSource->itemData (p_index);
 
     Q_FOREACH (QWidget * page, s_lst.values()) {
         page->hide();
     }
 
-    if (l_vrnt.isValid()) {
-        QWidget* l_wid = s_lst.value (l_vrnt.toString());
-        l_wid->setParent (m_ui->frameContainer);
-        l_wid->show();
+    if (vrnt.isValid()) {
+        QWidget* wid = s_lst.value (vrnt.toString());
+        wid->setParent (m_ui->frameContainer);
+        wid->updateGeometry();
+        wid->show();
     }
 }
 

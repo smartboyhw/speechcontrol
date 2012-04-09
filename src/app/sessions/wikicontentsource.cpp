@@ -27,12 +27,14 @@
 
 using namespace SpeechControl;
 
-WikiContentSource::WikiContentSource (QObject* p_parent) : AbstractContentSource (p_parent)
+WikiContentSource::WikiContentSource (QObject* p_parent) :
+    AbstractContentSource (p_parent)
 {
 
 }
 
-WikiContentSource::WikiContentSource (const QString& id, QObject* p_parent) : AbstractContentSource (id, p_parent)
+WikiContentSource::WikiContentSource (const QString& id, QObject* p_parent) :
+    AbstractContentSource (id, p_parent)
 {
 
 }
@@ -47,9 +49,17 @@ bool WikiContentSource::ready() const
     return !wikiFrames.empty();
 }
 
-void WikiContentSource::order()
+void WikiContentSource::order (const QList< QUrl > p_urls = (QList<QUrl>())
+                               << QUrl ("http://en.wikipedia.org/wiki/Portal:Technology")
+                               << QUrl ("http://en.wikipedia.org/wiki/Portal:Society")
+                               << QUrl ("http://en.wikipedia.org/wiki/Portal:History"))
 {
-    // Cleanups
+    clear();
+    portalPhase (p_urls);
+}
+
+void WikiContentSource::clear()
+{
     portalPages.clear();
     portalFrames.clear();
     wikiPages.clear();
@@ -59,23 +69,11 @@ void WikiContentSource::order()
     portalFail    = 0;
     wikiSuccess   = 0;
     wikiFail      = 0;
-
-    portalPhase();
 }
 
-void WikiContentSource::portalPhase()
+void WikiContentSource::portalPhase (const QList< QUrl > p_urls)
 {
-    // Let's use featured articles from Technology, Society and History portals.
-    QUrl tech ("http://en.wikipedia.org/wiki/Portal:Technology"),
-         society ("http://en.wikipedia.org/wiki/Portal:Society"),
-         history ("http://en.wikipedia.org/wiki/Portal:History");
-
-    QList<QUrl> portalUrls;
-    portalUrls.append (tech);
-    portalUrls.append (society);
-    portalUrls.append (history);
-
-    Q_FOREACH (QUrl url, portalUrls) {
+    Q_FOREACH (QUrl url, p_urls) {
         QWebPage* page = new QWebPage;
         QWebFrame* fr = page->mainFrame();
 
@@ -100,11 +98,12 @@ void WikiContentSource::wikiPhase (bool ok)
     // Get featured articles' URLs.
     QList<QUrl> featuredUrls;
     Q_FOREACH (QWebFrame * portal, portalFrames) {
-        qDebug() << "URL:" << portal->url();
+        qDebug() << "[WikiContentSource::wikiPhase()] URL:" << portal->url();
         QWebElement document = portal->documentElement();
         QWebElementCollection links = document.findAll ("p b a");
 
-//         qDebug() << "Document has" << document.toPlainText();
+        qDebug() << "[WikiContentSource::wikiPhase()] Document Text:" << endl
+                 << document.toPlainText();
 
         Q_FOREACH (QWebElement link, links) {
             if (link.toPlainText() == "Read more...") {
@@ -114,7 +113,7 @@ void WikiContentSource::wikiPhase (bool ok)
         }
     }
 
-    // Start loading featured arcticles.
+    // Start loading featured articles.
     Q_FOREACH (QUrl url, featuredUrls) {
         QWebPage* page = new QWebPage;
         QWebFrame* frame = page->mainFrame();
@@ -143,17 +142,17 @@ void WikiContentSource::parsingPhase (bool ok)
 Content* WikiContentSource::generate()
 {
     if (!ready()) {
-        qWarning() << "[WikiContentSource] Not ready for generation.";
+        qWarning() << "[WikiContentSource::generate()] Not ready for generation.";
         return NULL;
     }
 
-    qDebug() << "We have" << wikiFrames.size() << "frames.";
+    qDebug() << "[WikiContentSource::generate()] We have" << wikiFrames.size() << "frames.";
     Q_FOREACH (QWebFrame * frame, wikiFrames) {
-        qDebug() << "Text of the featured frame is:" << frame->toPlainText();
+        qDebug() << "[WikiContentSource::generate()] Text of the featured frame is:" << frame->toPlainText();
     }
 
-    return Content::create ("Unimplemented yet", "Unimplemented yet", "Unimplemented yet");
+    return Content::create ("Unknown Wiki Author", "Unknown Wiki Title", QString::null);
 }
 
-#include "wikicontentsource.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#include "sessions/wikicontentsource.moc"
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

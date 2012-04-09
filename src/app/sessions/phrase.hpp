@@ -25,7 +25,7 @@
 #include <QString>
 #include <QObject>
 
-#include <export.hpp>
+#include <lib/export.hpp>
 
 class QFile;
 class QDomElement;
@@ -107,4 +107,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

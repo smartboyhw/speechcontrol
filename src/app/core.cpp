@@ -27,8 +27,8 @@
 #include <QMessageBox>
 
 // libspchcntrl includes
-#include <config.hpp>
-#include <system.hpp>
+#include <lib/config.hpp>
+#include <lib/system.hpp>
 
 // local includes
 #include "app/factory.hpp"

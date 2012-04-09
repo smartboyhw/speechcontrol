@@ -21,7 +21,7 @@
 #include <QTableWidget>
 #include <QLabel>
 
-#include <acousticmodel.hpp>
+#include <lib/acousticmodel.hpp>
 
 #include "core.hpp"
 #include "services/dictation/service.hpp"
@@ -29,7 +29,6 @@
 #include "services/desktopcontrol/command.hpp"
 #include "ui/main-window.hpp"
 #include "ui_settingspane-desktopcontrol.h"
-
 #include "desktopcontrol-pane.hpp"
 
 using namespace SpeechControl;

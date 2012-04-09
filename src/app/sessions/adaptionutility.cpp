@@ -23,8 +23,8 @@
 #include <QProcess>
 #include <QTemporaryFile>
 
-#include <acousticmodel.hpp>
-#include <dictionary.hpp>
+#include <lib/acousticmodel.hpp>
+#include <lib/dictionary.hpp>
 
 #include "sessions/session.hpp"
 #include "sessions/session.hpp"
@@ -611,4 +611,4 @@ AdaptationUtility::~AdaptationUtility()
 }
 
 #include "sessions/adaptionutility.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

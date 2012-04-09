@@ -18,13 +18,15 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "models-pane.hpp"
-#include <ui/adapt-wizard.hpp>
-#include <core.hpp>
-#include <acousticmodel.hpp>
-#include <languagemodel.hpp>
-#include "ui_settingspane-model.h"
 #include <QMessageBox>
+
+#include <lib/acousticmodel.hpp>
+#include <lib/languagemodel.hpp>
+
+#include <app/core.hpp>
+#include <app/ui/adapt-wizard.hpp>
+#include "models-pane.hpp"
+#include "ui_settingspane-model.h"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;

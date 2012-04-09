@@ -18,10 +18,10 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef DESKTOPASR_HPP
-#define DESKTOPASR_HPP
+#ifndef SPCHAPP_DESKTOPASR_HPP
+#define SPCHAPP_DESKTOPASR_HPP
 
-#include <sphinx/abstract.hpp>
+#include <lib/sphinx/abstract.hpp>
 
 namespace SpeechControl
 {
@@ -74,4 +74,4 @@ private slots:
 }
 
 #endif // DESKTOPASR_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

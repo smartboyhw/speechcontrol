@@ -19,8 +19,8 @@
  */
 
 
-#include <sphinx/audiosource.hpp>
-#include <audiosource/device.hpp>
+#include <lib/sphinx/audiosource.hpp>
+#include <lib/audiosource/device.hpp>
 
 #include "ui/micsetup-wizard.hpp"
 #include "micselect.hpp"

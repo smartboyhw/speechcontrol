@@ -20,7 +20,7 @@
 
 #include <QDebug>
 // libspchcntrl includes
-#include <audiosource/device.hpp>
+#include <lib/audiosource/device.hpp>
 
 #include "micselect.hpp"
 #include "ui/micsetup-wizard.hpp"

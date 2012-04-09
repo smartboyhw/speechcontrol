@@ -21,8 +21,8 @@
 #include <QDir>
 #include <QDebug>
 
-#include <acousticmodel.hpp>
-#include <noisedictionary.hpp>
+#include <lib/acousticmodel.hpp>
+#include <lib/noisedictionary.hpp>
 #include "ui_adaptwizard-modelselection.h"
 
 #include "modelselection.hpp"

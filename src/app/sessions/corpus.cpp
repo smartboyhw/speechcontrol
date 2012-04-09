@@ -26,7 +26,7 @@
 #include <QDateTime>
 #include <QDomDocument>
 
-#include "dictionary.hpp"
+#include <lib/dictionary.hpp>
 
 #include "app/core.hpp"
 #include "app/config.hpp"

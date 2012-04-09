@@ -20,7 +20,7 @@
 
 #include <QDebug>
 
-#include <audiosource/device.hpp>
+#include <lib/audiosource/device.hpp>
 
 #include "core.hpp"
 #include "microphone-pane.hpp"

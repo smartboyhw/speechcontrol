@@ -19,11 +19,10 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef DICTATIONASR_HPP
-#define DICTATIONASR_HPP
+#ifndef SPCHAPP_DICTATIONASR_HPP
+#define SPCHAPP_DICTATIONASR_HPP
 
-
-#include <sphinx/abstract.hpp>
+#include <lib/sphinx/abstract.hpp>
 
 namespace SpeechControl
 {
@@ -80,4 +79,4 @@ public slots:
 }
 
 #endif // DICTATIONASR_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

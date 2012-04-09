@@ -1,7 +1,0 @@
-cmake_minimum_required(VERSION 2.8)
-
-file(GLOB SPCHCNTRL_WINDOWS_HDRS "*.hpp")
-
-install(FILES ${SPCHCNTRL_WINDOWS_HDRS}
-        DESTINATION "${SPCHCNTRL_APP_INCLUDE_DIR}/windows"
-        COMPONENT "dev")

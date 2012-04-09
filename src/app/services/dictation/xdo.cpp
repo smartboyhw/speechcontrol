@@ -18,16 +18,12 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-// locals (order is IMPORTANT!)
+#include <QDebug>
+#include <hunspell.hxx>
+
 #include "xdo.hpp"
 #include "core.hpp"
-#include "xdo.hxx"
-
-// Qt
-#include <QDebug>
-
-// Hunspell
-#include <hunspell.hxx>
+#include "xdo_p.hxx"
 
 using SpeechControl::Core;
 using SpeechControl::Dictation::KeyboardEmulator;
@@ -71,4 +67,4 @@ KeyboardEmulator::~KeyboardEmulator()
 }
 
 #include "services/dictation/xdo.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

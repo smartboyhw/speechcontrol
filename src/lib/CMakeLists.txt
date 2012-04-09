@@ -2,27 +2,7 @@ project(SpeechControlLibrary)
 cmake_minimum_required(VERSION 2.8)
 
 ## setting up sources
-file(GLOB SPCHCNTRL_LIB_SRCS "*.cpp")
-file(GLOB SPCHCNTRL_LIB_HDRS "*.hpp")
-file(GLOB SPCHCNTRL_LIB_PRIVSRCS "*.cxx")
-file(GLOB SPCHCNTRL_LIB_PRIVHDRS "*.hxx")
-file(GLOB SPCHCNTRL_LIB_AUDIOSOURCE_SRCS "audiosource/*.cpp")
-file(GLOB SPCHCNTRL_LIB_AUDIOSOURCE_HDRS "audiosource/*.hpp")
-file(GLOB SPCHCNTRL_LIB_AUDIOSOURCE_PRIVSRCS "audiosource/*.cxx")
-file(GLOB SPCHCNTRL_LIB_AUDIOSOURCE_PRIVHDRS "audiosource/*.hxx")
-file(GLOB SPCHCNTRL_LIB_SPHINX_SRCS "sphinx/*.cpp")
-file(GLOB SPCHCNTRL_LIB_SPHINX_HDRS "sphinx/*.hpp")
-file(GLOB SPCHCNTRL_LIB_SPHINX_PRIVSRCS "sphinx/*.cxx")
-file(GLOB SPCHCNTRL_LIB_SPHINX_PRIVHDRS "sphinx/*.hxx")
-
-set(SPCHCNTRL_LIB_SOURCES ${SPCHCNTRL_LIB_AUDIOSOURCE_SRCS}
-    ${SPCHCNTRL_LIB_SPHINX_SRCS}
-    ${SPCHCNTRL_LIB_SRCS})
-set(SPCHCNTRL_LIB_PRIVSOURCES ${SPCHCNTRL_LIB_AUDIOSOURCE_PRIVSRCS}
-    ${SPCHCNTRL_LIB_SPHINX_PRIVSRCS}
-    ${SPCHCNTRL_LIB_PRIVSRCS})
-set(SPCHCNTRL_LIB_ALLSRCS ${SPCHCNTRL_LIB_SOURCES}
-    ${SPCHCNTRL_LIB_PRIVSOURCES})
+file(GLOB_RECURSE SPCHCNTRL_LIB_SRCS "*.cpp" "*.cxx")
 
 ## variables
 set(SPCHCNTRL_LIB_MAJOR_VERSION 0)
@@ -54,10 +34,10 @@ configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
     "${PROJECT_SOURCE_DIR}/config.hpp" @ONLY)
 
 ## Some Qt-specific stuff.
-QT4_AUTOMOC(${SPCHCNTRL_LIB_ALLSRCS})
+QT4_AUTOMOC(${SPCHCNTRL_LIB_SRCS})
 
 ## Define the target
-add_library(speechcontrol SHARED ${SPCHCNTRL_LIB_ALLSRCS})
+add_library(speechcontrol SHARED ${SPCHCNTRL_LIB_SRCS})
 set_target_properties(speechcontrol PROPERTIES
     COMPILE_FLAGS "${SPCHCNTRL_LIB_COMPILE_FLAGS}"
     COMPILE_DEFINITIONS "${SPCHCNTRL_LIB_BUILD_COMPILE_DEFINITIONS}"
@@ -66,6 +46,9 @@ set_target_properties(speechcontrol PROPERTIES
     SOVERSION "${SPCHCNTRL_LIB_VERSION}")
 
 target_link_libraries(speechcontrol ${SPCHCNTRL_LIB_LIBRARIES})
+
+include_directories(${SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS})
+add_subdirectory(cmake)
 
 ## Install stuff.
 install(TARGETS speechcontrol
@@ -76,16 +59,11 @@ install(EXPORT SpeechControlLibraryDepends
     DESTINATION "${SPCHCNTRL_CMAKE_DIR}"
     COMPONENT "dev")
 
-install(FILES ${SPCHCNTRL_LIB_HDRS}
-    DESTINATION "${SPCHCNTRL_LIB_INCLUDE_DIR}"
-    COMPONENT "dev")
-
-install(FILES ${SPCHCNTRL_LIB_PRIVHDRS}
-    DESTINATION "${SPCHCNTRL_LIB_INCLUDE_DIR}-private"
-    COMPONENT "dev")
-
-include_directories(${SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS})
-
-add_subdirectory(cmake)
-add_subdirectory(sphinx)
-add_subdirectory(audiosource)
+install(DIRECTORY   "${CMAKE_CURRENT_SOURCE_DIR}/"
+        DESTINATION "${SPCHCNTRL_LIB_INCLUDE_DIR}"
+        COMPONENT "dev"
+        FILES_MATCHING
+            PATTERN "*.hpp"
+            PATTERN "*.hxx"
+            PATTERN "*_p.hxx" EXCLUDE
+            PATTERN "cmake"   EXCLUDE)

@@ -79,9 +79,6 @@ list(APPEND QT_DEFINITIONS "-DBOOST_TT_HAS_OPERATOR_HPP_INCLUDED")
 
 ## Add sub-directories.
 add_subdirectory(cmake)
-add_subdirectory(sessions)
-add_subdirectory(services)
-add_subdirectory(ui)
 
 configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
                "${PROJECT_SOURCE_DIR}/config.hpp" @ONLY)
@@ -91,10 +88,11 @@ include(application.cmake)
 add_subdirectory(kde)
 
 ## Installs
-install(FILES ${SPCHCNTRL_APP_HDRS}
-    DESTINATION "${SPCHCNTRL_APP_INCLUDE_DIR}"
-    COMPONENT "dev")
-
-install(FILES ${SPCHCNTRL_APP_PRIVHDRS}
-    DESTINATION "${SPCHCNTRL_APP_INCLUDE_DIR}-private"
-    COMPONENT "dev")
+install(DIRECTORY   "${PROJECT_SOURCE_DIR}/"
+        DESTINATION "${SPCHCNTRL_APP_INCLUDE_DIR}"
+        COMPONENT "dev"
+        FILES_MATCHING
+            PATTERN "*.hpp"
+            PATTERN "*.hxx"
+            PATTERN "kde" EXCLUDE
+            PATTERN "cmake" EXCLUDE)

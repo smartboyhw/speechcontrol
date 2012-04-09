@@ -30,6 +30,7 @@ file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/services/desktopcontrol")
 file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/services/voxforge")
 file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/sessions")
 
+add_definitions(${SPCHCNTRL_APP_COMPILE_DEFINITIONS})
 ## Define targets
 add_executable(speechcontrol-app ${SPCHCNTRL_APP_SRCS}
     ${SPCHCNTRL_APP_SPRIVCPP})

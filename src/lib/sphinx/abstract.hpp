@@ -19,8 +19,8 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef ABSTRACTSPHINX_HPP
-#define ABSTRACTSPHINX_HPP
+#ifndef SPEECHCONTROL_ABSTRACTSPHINX_HPP
+#define SPEECHCONTROL_ABSTRACTSPHINX_HPP
 
 // Qt includes
 #include <QMap>
@@ -36,8 +36,8 @@
 #include <QGst/Message>
 
 // local includes
-#include <config.hpp>
-#include <export.hpp>
+#include <lib/config.hpp>
+#include <lib/export.hpp>
 
 #include <Utils/ApplicationSource>
 
@@ -307,4 +307,4 @@ public slots:
 }
 
 #endif // ABSTRACTSPHINX_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

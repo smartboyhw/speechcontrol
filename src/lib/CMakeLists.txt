@@ -49,6 +49,8 @@ target_link_libraries(speechcontrol ${SPCHCNTRL_LIB_LIBRARIES})
 
 include_directories(${SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS})
 add_subdirectory(cmake)
+file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/sphinx")
+file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/audiosource")
 
 ## Install stuff.
 install(TARGETS speechcontrol

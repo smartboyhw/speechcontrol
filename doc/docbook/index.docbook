@@ -1,0 +1,254 @@
+<?xml version="1.0" ?>
+<!DOCTYPE book PUBLIC "-//KDE//DTD DocBook XML V4.2-Based Variant V1.1//EN" "dtd/kdex.dtd" [
+    <!ENTITY spch "<application>SpeechControl</application>">
+    <!ENTITY sii "Synthetic Intellect Institute">
+    <!ENTITY appname "&spch;">
+    <!ENTITY jalcine "<personname>
+    <firstname>Jacky</firstname>
+    <surname>Alcine</surname>
+</personname>
+">
+    <!ENTITY gentoolx "<personname>
+    <firstname>Adrian</firstname>
+    <surname>Borucki</surname>
+</personname>
+">
+    <!ENTITY Team.Spch "<personname>
+    <firstname>SpeechControl</firstname>
+    <surname>Team</surname>
+</personname>
+">
+    <!ENTITY jalcine.mail "<email>jacky.alcine@thesii.org</email>">
+    <!ENTITY gentoolx.mail "<email>gentoolx@gmail.com</email>">
+    <!ENTITY Team.Spch.mail "<email>spchcntrl-users@thesii.org</email>">
+    <!ENTITY % addindex "IGNORE">
+    <!ENTITY % English "INCLUDE">
+]>
+
+<book lang="&language;">
+    <bookinfo>
+        <title>&spch; Handbook</title>
+        <authorgroup>
+            <author>&jalcine; &jalcine.mail;</author>
+            <author>&gentoolx; &gentoolx.mail;</author>
+            <author>&Team.Spch; &Team.Spch.mail;</author>
+            <author>
+                <personname>
+                    <firstname>Parts of this documentation are copied verbatim from the &sii;'s <ulink url="http://thesii.org/wiki/SpeechControl/UserGuides">Wiki</ulink></firstname>
+                    <surname />
+                </personname>
+            </author>
+        </authorgroup>
+
+        <legalnotice>&FDLNotice;</legalnotice>
+        <date>2010-04-04</date>
+        <releaseinfo>@SPCHCNTRL_VERSION@</releaseinfo>
+
+        <abstract>
+            <para></para>
+        </abstract>
+
+        <keywordset>
+            <keyword>&sii;</keyword>
+            <keyword>S.I.I</keyword>
+            <keyword>speech</keyword>
+            <keyword>speech recognition</keyword>
+            <keyword>PocketSphinx</keyword>
+        </keywordset>
+    </bookinfo>
+
+    <chapter id="intro">
+        <title>Introduction</title>
+        <para>SpeechControl is a project backed by the &sii; to provide speech recognition services for the Linux desktop.</para>
+        <important>
+            <para>Ensure that your audio input devices (like microphones or wireless Bluetooth pieces) can be used to record audio on your system.</para>
+        </important>
+
+        <sect1 id="starting">
+            <title>Starting &spch;</title>
+            <para>
+                &spch; can be started in a number of ways:
+                <itemizedlist>
+                    <listitem>
+                        <para>From your preferred application launcher, select
+                            <menuchoice>
+                                <guimenuitem>Applications</guimenuitem>
+                                <guisubmenu>Utilities</guisubmenu>
+                                <guimenuitem>&spch;</guimenuitem>
+                            </menuchoice>
+                        </para>
+                    </listitem>
+                    <listitem>
+                        <para>
+                            <keycombo action="simul">&Alt;<keycap>F2</keycap></keycombo>
+                            should open &krunner;. Once opened, type <userinput>&spch;</userinput> (lower case) and press &Enter; to start &spch;.
+                        </para>
+                    </listitem>
+                </itemizedlist>
+            </para>
+        </sect1>
+    </chapter>
+
+    <chapter id="interface">
+        <title>Interface</title>
+            <para>
+                <screenshot>
+                    <screeninfo></screeninfo>
+                    <mediaobject>
+                        <imageobject>
+                            <imagedata fileref="imgs/main-window.png" format="PNG"/>
+                        </imageobject>
+                        <textobject>
+                            <phrase>&spch;'s Main Window, with a few sessions.</phrase>
+                        </textobject>
+                        <caption>
+                            <para>&spch;'s Main Window, with a few sessions.</para>
+                        </caption>
+                    </mediaobject>
+                </screenshot>
+            </para>
+            <para>&spch;</para>
+    </chapter>
+    <chapter id="features">
+        <title>Features</title>
+        <para>&spch;, being a unique application, comes with a different paradigm of features.</para>
+        <sect1 id="dictation">
+            <title>Dictation</title>
+            <para>Never again will you have to type your documents or enter arbitrary text in fields.</para>
+            <sect2 id="punctuation-support">
+                <title>Punctuation Support</title>
+                <para></para>
+            </sect2>
+        </sect1>
+        <sect1 id="desktop-control">
+            <title>Desktop Control</title>
+            <para>&spch; takes the game farther with in-built desktop control support.</para>
+            <itemizedlist>
+                <listitem><para>MPRIS support</para></listitem>
+                <listitem><para>Session and System control</para></listitem>
+                <listitem><para>Application execution</para></listitem>
+            </itemizedlist>
+        </sect1>
+    </chapter>
+    <chapter id="faq">
+       <title>Tips and Tricks</title>
+       <para>Up-to-date documentation regarding SpeechControl is available <ulink url="http://thesii.org/wiki/SpeechControl/UserGuides">here</ulink>.</para>
+       <para><ulink url="http://forum.thesii.org">&sii; Forums</ulink> is always a good place to ask user-specific questions.</para>
+       <para>The <ulink url="http://thesii.org/wiki/SpeechControl">&spch; project page</ulink> has release announcements for the latest stable and unstable releases along with more helpful links. You can also contact the developers on the <ulink url="irc://freenode/#spch">#spch IRC channel</ulink> or the <ulink url="mailto:spchcntrl-devel@thesii.org">mailing list</ulink> with more questions. </para>
+        <sect1 id="contribute">
+            <title>How do I contribute?</title>
+            <para>See above for now.</para>
+        </sect1>
+    </chapter>
+
+    <chapter id="credits">
+        <title>Credits and License</title>
+        <para> &spch; </para>
+
+        <para>
+            Program copyright: &underGPL;
+        </para>
+
+        <itemizedlist>
+            <title>Developers</title>
+            <listitem><para>&Team.Spch; &Team.Spch.mail;</para></listitem>
+        </itemizedlist>
+
+        <para>
+            Documentation Copyright (C) 2012 &jalcine; &jalcine.mail;
+        </para>
+
+        &underFDL;
+    </chapter>
+
+    <appendix id="installation">
+        <title>Installation</title>
+        <sect1 id="getting-spch">
+            <title>How to obtain &spch;</title>
+            <para>Stable Packages of &spch; can be downloaded via standard repositories of your distribution.</para>
+            <para>You also can compile &spch; yourself; see <link linkend="compilation">Compilation and Installation</link> for that.</para>
+        </sect1>
+
+        <sect1 id="requirements">
+            <title>Requirements</title>
+            <para>In order to successfully use &spch;, you'd need the following:</para>
+            <itemizedlist>
+                <listitem><para>Qt 4.7+;</para></listitem>
+                <listitem><para>QtGStreamer 0.10</para></listitem>
+                <listitem><para>GStreamer good plug-ins</para></listitem>
+                <listitem><para>PocketSphinx, SphinxBase and SphinxTrain</para></listitem>
+            </itemizedlist>
+        </sect1>
+
+        <sect1 id="compilation">
+            <title>Compilation and Installation</title>
+            <para>If you wish to compile &spch;, you have to install the development files of the <link linkend="requirements">requirements</link>, have git and the build essentials installed.</para>
+            <para>Under Debian/&ubuntu; you get those through running</para>
+            <para>
+                <userinput>
+                    <command>sudo</command> <command>apt-get</command>
+                    <option>install</option> <parameter>build-essential git-core libqt4-dev libqtgstreamer-dev libpocketsphinx-dev libsphinxbase-dev sphinxtrain gstreamer0.10-pocketsphinx cmake</parameter>
+                </userinput>
+            </para>
+
+            <para>Under OpenSuse you get those through running</para>
+            <para>
+                <userinput>
+                    <command>sudo</command> <command>zypper</command>
+                    <option>in</option>
+                    <parameter>libkde4-devel git-core gcc gcc-c++ make cmake libqt4-devel libqtgstreamer-devel libpocketsphinx-devel libsphinxbase-devel sphinxtrain gstreamer0.10-pocketsphinx</parameter>
+                </userinput>
+            </para>
+
+            <para>
+                We will be using git, as the most recent code is available on the git repository. The &sii; Projects page for &spch; can be found <ulink url="http://dev.thesii.org/projects/?id=spch">here</ulink>.
+                Stable releases can also be downloaded <ulink url="http://dev.thesii.org/projects/releases/speechcontrol">here</ulink> in form of tar-balls.
+            </para>
+
+            <para>
+                Now we need to checkout the latest code. To do so, in a terminal run:
+            </para>
+
+            <para>
+                <userinput>
+                    <command>git</command> <option>clone</option> <parameter>git://dev.thesii.org/speechcontrol</parameter>
+                </userinput>
+            </para>
+
+            <para>
+                To compile the code, type in the following:
+            </para>
+
+            <para>
+                <userinput>
+                    <command>cd</command> <parameter>directory_where_source_code_is</parameter>
+                </userinput>
+            </para>
+
+            <para>
+                <userinput>
+                    <command>mkdir</command> <parameter>build</parameter> &amp;&amp; <command>cd</command> <parameter>build</parameter>
+                </userinput>
+            </para>
+
+            <para>
+                <userinput>
+                    <command>cmake</command> <option>-DCMAKE_INSTALL_PREFIX=~/usr</option> <parameter>..</parameter>
+                </userinput>
+            </para>
+
+            <para>
+                <userinput>
+                    <command>make</command>
+                </userinput>
+            </para>
+
+            <para>
+                <userinput>
+                    <command>sudo</command> <command>make</command> <parameter>install</parameter>
+                </userinput>
+            </para>
+        </sect1>
+    </appendix>
+&documentation.index;
+</book>

@@ -1,0 +1,5 @@
+View Plasmoid by invoking (after installing):
+    $ plasmoidviewer plasmoid-speechcontrol
+
+http://techbase.kde.org/index.php?title=Development/Tutorials/Plasma/GettingStarted
+http://techbase.kde.org/Projects/Plasma

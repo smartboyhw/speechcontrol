@@ -5,6 +5,5 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(SPCHCNTRL_BUILDING ON)
 
 add_subdirectory(lib)
-add_subdirectory(kde)
 add_subdirectory(app)
 add_subdirectory(plugins)

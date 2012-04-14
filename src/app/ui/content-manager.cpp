@@ -20,9 +20,8 @@
 
 #include "core.hpp"
 #include "sessions/content.hpp"
-#include <sessions/session.hpp>
+#include "sessions/session.hpp"
 #include "contents-wizard.hpp"
-#include "ui/main-window.hpp"
 #include "content-manager.hpp"
 #include "ui_manager-content.h"
 
@@ -112,7 +111,6 @@ void ContentManager::on_btnAdd_clicked()
     ContentWizard* wiz = new ContentWizard;
 
     if (wiz->exec() == QDialog::Accepted) {
-        Core::mainWindow()->updateUi();
         updateList();
     }
 }
@@ -155,4 +153,4 @@ void ContentManager::on_lstContent_itemSelectionChanged()
 }
 
 #include "ui/content-manager.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

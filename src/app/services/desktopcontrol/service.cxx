@@ -22,7 +22,6 @@
 #include <QDeclarativeView>
 
 #include "app/core.hpp"
-#include "app/ui/main-window.hpp"
 #include "app/services/module.hpp"
 #include "app/services/desktopcontrol/command.hpp"
 #include "app/services/desktopcontrol/sphinx.hpp"

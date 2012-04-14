@@ -108,18 +108,27 @@ void Service::handleText (const QString& p_text)
     const QString endWord = Core::configuration ("Dictation/EndWord").toString();
 
     if (isSafetyModeEnabled()) {
-        if (p_text == startWord || p_text == endWord) {
-            if (p_text == startWord) {
+        const bool usedStartSafetyWord = p_text == startWord;
+        const bool usedEndSafetyWord = p_text == endWord;
+        const bool usedSafetyWord = usedStartSafetyWord || usedEndSafetyWord;
+
+        if (usedSafetyWord) {
+            if (usedStartSafetyWord) {
                 d->m_safetyMode = Service::Active;
             }
-            else if (p_text == endWord) {
+            else if (usedEndSafetyWord) {
                 d->m_safetyMode = Service::Inactive;
             }
+
+            return;
         }
         else {
             if (isSafetyModeActive()) {
-                qDebug() << "[Dictation::Agent::handleText()] Text " << p_text << "ignored since safety mode is active.";
+                qDebug() << "[Dictation::Agent::handleText()] Text" << p_text << "ignored since safety mode is active.";
                 return;
+            }
+            else {
+                qDebug() << "[Dictation::Agent::handleText()] Valid text for echoing:" << p_text;
             }
         }
     }

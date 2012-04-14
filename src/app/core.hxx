@@ -26,10 +26,6 @@ namespace SpeechControl
 {
 
 class Core;
-namespace Windows
-{
-class Main;
-}
 struct CorePrivate {
     Q_DECLARE_PUBLIC(Core)
     CorePrivate(Core* p_qPtr);
@@ -39,7 +35,6 @@ struct CorePrivate {
     void bootServices();
 
     QApplication* m_app;
-    Windows::Main* m_mw;
     QSettings* m_settings;
     QTranslator* m_trnsltr;
     Core* q_ptr;

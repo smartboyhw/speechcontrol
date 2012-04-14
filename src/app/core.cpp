@@ -38,7 +38,6 @@
 #include "app/services/dictation/service.hpp"
 #include "app/services/desktopcontrol/service.hpp"
 #include "app/services/voxforge/service.hpp"
-#include "app/ui/main-window.hpp"
 #include "app/ui/quickstart-wizard.hpp"
 #include "app/core.hxx"
 #include "app/core.hpp"
@@ -77,11 +76,7 @@ Core::Core (int p_argc, char** p_argv, QApplication* app) : QObject (app),
     d->hookUpSignals();
     loadTranslations (QLocale::system());
 
-    // Set up indicator.
-    qDebug() << "[Core::${constructor}] Show indicator on start? " << configuration ("Indicator/Show").toBool();
-
-    if (configuration ("Indicator/Show").toBool())
-        Indicator::show();
+    Indicator::instance();
 }
 
 Core::Core (const Core& p_other) : QObject (p_other.parent()), d_ptr (const_cast<CorePrivate*> (p_other.d_ptr.data()))
@@ -95,34 +90,21 @@ void Core::start()
 
     // Detect if a first-run wizard should be run.
     if (!QFile::exists (instance()->d_func()->m_settings->fileName())) {
-        if (QMessageBox::question (mainWindow(), tr ("First Run"),
+        if (QMessageBox::question (0, tr ("First Run"),
                                    tr ("This seems to be the first time you've run SpeechControl on this system. "
                                        "A wizard allowing you to start SpeechControl will appear."), QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
-            QuickStart* win = new QuickStart (mainWindow());
+            QuickStart* win = new QuickStart (0);
             win->exec();
         }
     }
 
-    mainWindow()->open();
     d->invokeAutoStart();
     emit instance()->started();
 }
 
 void Core::stop()
 {
-    if (Core::configuration ("MainWindow/RememberState").toBool()) {
-        Core::setConfiguration ("MainWindow/Visible", mainWindow()->isVisible());
-    }
-
     emit instance()->stopped();
-}
-
-Windows::Main* Core::mainWindow()
-{
-    if (instance()->d_func()->m_mw == 0)
-        instance()->d_func()->m_mw = new Windows::Main;
-
-    return instance()->d_func()->m_mw;
 }
 
 QVariant Core::configuration (const QString& p_attrName, QVariant p_attrDefValue)

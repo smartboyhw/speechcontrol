@@ -34,11 +34,6 @@ class QTranslator;
 namespace SpeechControl
 {
 
-namespace Windows
-{
-class Main;
-}
-
 class CorePrivate;
 /**
  * @brief Represents the entire heart of SpeechControl.
@@ -49,8 +44,6 @@ class CorePrivate;
  **/
 class Core : public QObject
 {
-    friend class Windows::Main;
-
     Q_OBJECT
     Q_DISABLE_COPY (Core)
     Q_DECLARE_PRIVATE (Core)
@@ -92,11 +85,6 @@ public:
      *
      **/
     static void setConfiguration (const QString& p_attrName, const QVariant& p_attrValue);
-
-    /**
-     * @brief Provides a pointer to the Main Window instance.
-     **/
-    static Windows::Main* mainWindow();
 
     /**
      * @brief Invoke the application's main execution loop.

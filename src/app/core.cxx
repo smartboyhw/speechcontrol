@@ -35,7 +35,7 @@ using namespace SpeechControl;
 using SpeechControl::Services::AbstractModule;
 using SpeechControl::Core;
 
-CorePrivate::CorePrivate(Core* p_qPtr) : m_app (0), m_mw (0),
+CorePrivate::CorePrivate(Core* p_qPtr) : m_app (0),
     m_settings (0), m_trnsltr (0), q_ptr(p_qPtr)
 {
     Q_Q (Core);

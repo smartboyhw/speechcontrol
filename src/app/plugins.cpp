@@ -18,18 +18,17 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "core.hpp"
-#include "config.hpp"
-#include "plugins.hpp"
-#include "factory.hpp"
-#include "ui/main-window.hpp"
-#include "ui_main-window.h"
-
 #include <QDebug>
 #include <QSettings>
 #include <QPluginLoader>
 #include <QApplication>
 #include <QAction>
+
+#include "core.hpp"
+#include "config.hpp"
+#include "plugins.hpp"
+#include "factory.hpp"
+#include "indicator.hpp"
 
 using namespace SpeechControl;
 using SpeechControl::Plugins::Factory;
@@ -192,7 +191,7 @@ void AbstractPlugin::stop()
         if (!action)
             continue;
 
-        Core::mainWindow()->m_ui->menuPlugins->removeAction (action);
+        Indicator::removeActionForPlugins (action);
     }
     deinitialize();
     emit stopped();
@@ -224,9 +223,9 @@ QList< QAction* > AbstractPlugin::actions()
 
 void AbstractPlugin::addAction (QAction* p_action)
 {
-    p_action->setParent (this);
-    Core::mainWindow()->m_ui->menuPlugins->insertAction (0, p_action);
-    qDebug() << "[AbstractPlugin::addAction()] Added action" << p_action->text() << "to the Main window.";
+    p_action->setParent (Indicator::instance());
+    Indicator::addActionForPlugins (p_action);
+    qDebug() << "[AbstractPlugin::addAction()] Added action" << p_action->text() << "to the Indicator";
 }
 
 void AbstractPlugin::addActions (QList< QAction* > p_actions)

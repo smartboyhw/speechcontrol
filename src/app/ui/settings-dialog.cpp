@@ -23,7 +23,6 @@
 #include <QTreeWidget>
 
 #include "core.hpp"
-#include "ui/main-window.hpp"
 #include "settings-dialog.hpp"
 #include "settings/general-pane.hpp"
 #include "settings/plugins-pane.hpp"
@@ -116,7 +115,6 @@ void Settings::displayPane (const QString& p_paneID)
         treeNavi->setCurrentItem (instance()->findPaneForItem (p_paneID));
     }
     else {
-        Core::mainWindow()->setStatusMessage (tr ("Invalid settings pane ID '%1'").arg (p_paneID));
         displayPane ("gnrl");
     }
 

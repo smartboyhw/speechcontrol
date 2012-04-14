@@ -64,12 +64,10 @@ protected:
     void changeEvent (QEvent* e);
 
 private slots:
-    void on_checkBoxIndicatorIcon_toggled (bool p_checked);
     void on_checkBoxAutoStartApp_toggled (bool p_checked);
     void on_radioButtonIconWhite_toggled (bool p_checked);
     void on_radioButtonIconBlack_toggled (bool p_checked);
     void on_radioButtonIconDefault_toggled (bool p_checked);
-    void on_checkBoxWindowState_toggled (bool p_checked);
     virtual void updateUi();
 
 private:
@@ -80,4 +78,4 @@ private:
 }
 
 #endif // GENERAL_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

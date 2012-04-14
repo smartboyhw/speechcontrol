@@ -19,7 +19,6 @@
  */
 
 #include "core.hpp"
-#include "ui/main-window.hpp"
 #include "services/dictation/service.hpp"
 #include "services/desktopcontrol/service.hpp"
 #include "ui_settingspane-dictation.h"
@@ -104,8 +103,6 @@ void DictationSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
 
         if (!p_checked)
             Dictation::Service::instance()->stop();
-
-        Core::mainWindow()->updateUi();
     }
 
     updateUi();

@@ -22,7 +22,6 @@
 #include <QVariantMap>
 
 #include "app/core.hpp"
-#include "app/ui/main-window.hpp"
 #include "voxforge-pane.hpp"
 #include "ui_settingspane-voxforge.h"
 
@@ -102,7 +101,6 @@ void VoxforgeSettingsPane::on_btnTestLogin_clicked()
 void SpeechControl::Windows::VoxforgeSettingsPane::on_checkBoxEnabled_toggled (const bool& p_checked)
 {
     Core::setConfiguration ("Voxforge/Enabled", p_checked);
-    Core::mainWindow()->updateUi();
 }
 
 void VoxforgeSettingsPane::on_groupBoxAuthenticated_toggled (const bool& p_checked)

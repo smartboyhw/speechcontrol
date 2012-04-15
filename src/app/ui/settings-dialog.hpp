@@ -55,7 +55,7 @@ public:
     explicit Settings (QWidget* m_prnt);
     static void addPane (AbstractSettingsPane* p_pane);
     static void removePane (const QString& p_paneID);
-    static void displayPane (const QString& p_paneID);
+    static void displayPane (const QString& p_paneID = "gnrl");
     virtual ~Settings();
 
 private slots:
@@ -100,4 +100,4 @@ private:
 }
 }
 #endif // SETTINGS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

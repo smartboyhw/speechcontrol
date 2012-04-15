@@ -116,12 +116,6 @@ public:
      **/
     static QDir configurationPath();
 
-    /**
-     * @brief Quits the application's main execution loop.
-     * @param p_exitCode The exit code for the application to use.
-     */
-    void quit (const int& p_exitCode = 0);
-
 signals:
     /**
      * @brief Emitted when SpeechControl has started.
@@ -145,6 +139,12 @@ public slots:
      * @brief Stops SpeechControl's main loop.
      **/
     void stop();
+
+    /**
+     * @brief Quits the application's main execution loop.
+     * @param p_exitCode The exit code for the application to use.
+     */
+    void quit (const int& p_exitCode = 0);
 
 private:
     QScopedPointer<CorePrivate> d_ptr;

@@ -18,6 +18,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+class QMenu;
 class QAction;
 class QSystemTrayIcon;
 
@@ -29,17 +30,20 @@ struct IndicatorPrivate {
     void buildMenu();
     void buildActions();
 
-    QSystemTrayIcon* m_icon;            ///< The tray icon.
-    QAction* m_actionDesktopControlToggle;
+    QSystemTrayIcon* m_icon;
+    QMenu* m_menu;
+    QMenu* m_menuDesktopControl;
+    QMenu* m_menuDictation;
+    QMenu* m_menuPlugins;
+    QMenu* m_menuHelp;
     QAction* m_actionDesktopControlOptions;
+    QAction* m_actionDesktopControlToggle;
     QAction* m_actionDictationToggle;
     QAction* m_actionDictationOptions;
     QAction* m_actionPluginOptions;
     QAction* m_actionAboutSpeechControl;
     QAction* m_actionAboutQt;
     QAction* m_actionHelpManual;
-public slots:
-    void on_actionAboutQt_triggered ();
 };
 }
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

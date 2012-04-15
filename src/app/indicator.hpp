@@ -33,6 +33,8 @@ class QSystemTrayIcon;
 
 namespace SpeechControl
 {
+
+struct IndicatorPrivate;
 class Indicator;
 
 /**
@@ -44,6 +46,7 @@ class Indicator;
 class Indicator : public QObject
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(Indicator)
     SC_SINGLETON (Indicator)
 
 public:
@@ -128,8 +131,16 @@ public:
      **/
     static QIcon icon();
 
-    static void addActionForPlugins(QAction* p_action);
-    static void removeActionForPlugins (QAction* action);
+    static void addActionForPlugins (QAction* p_action);
+    static void removeActionForPlugins (QAction* p_action);
+
+private slots:
+    void on_actionOptions_triggered();
+    void on_actionDictationToggle_toggled(const bool& p_checked);
+    void on_actionDesktopControlToggle_toggled(const bool& p_checked);
+    void on_actionAboutSpeechControl_triggered ();
+    void on_actionDesktopControlOptions_triggered();
+    void on_actionDictationOptions_triggered();
 
 private:
     QScopedPointer<IndicatorPrivate> d_ptr;

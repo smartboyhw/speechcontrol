@@ -28,10 +28,12 @@
 #include "core.hpp"
 #include "indicator.hpp"
 #include "indicator.hxx"
+#include "ui/settings-dialog.hpp"
+#include "ui/about-dialog.hpp"
+#include "services/dictation/service.hpp"
+#include "services/desktopcontrol/service.hpp"
 
-using SpeechControl::Indicator;
-using SpeechControl::IndicatorPrivate;
-using SpeechControl::Core;
+using namespace SpeechControl;
 
 Indicator* Indicator::s_inst = 0;
 
@@ -127,17 +129,48 @@ void Indicator::presentMessage (const QString& p_title, const QString& p_message
         Indicator::Message::create (p_messageIndicator->key(), p_message, true);
 
     if (p_messageIndicator->enabled())
-        instance()->m_icon->showMessage (p_title, p_message, QSystemTrayIcon::Information, p_timeout);
+        instance()->d_func()->m_icon->showMessage (p_title, p_message, QSystemTrayIcon::Information, p_timeout);
 }
 
 void Indicator::addActionForPlugins (QAction* p_action)
 {
-
+    instance()->d_func()->m_menuPlugins->insertAction(0,p_action);
 }
 
-void Indicator::removeActionForPlugins (QAction* action)
+void Indicator::removeActionForPlugins (QAction* p_action)
 {
+    instance()->d_func()->m_menuPlugins->removeAction (p_action);
+}
 
+void Indicator::on_actionDesktopControlOptions_triggered ()
+{
+    Windows::Settings::displayPane ("dsktpcntrl");
+}
+
+void Indicator::on_actionDictationOptions_triggered ()
+{
+    Windows::Settings::displayPane ("dctn");
+}
+
+void Indicator::on_actionDictationToggle_toggled (const bool& p_checked)
+{
+    p_checked ? Dictation::Service::instance()->start() : Dictation::Service::instance()->stop();
+}
+
+void Indicator::on_actionDesktopControlToggle_toggled (const bool& p_checked)
+{
+    p_checked ? DesktopControl::Service::instance()->start() : DesktopControl::Service::instance()->stop();
+}
+
+void Indicator::on_actionOptions_triggered()
+{
+    Windows::Settings::displayPane();
+}
+
+void Indicator::on_actionAboutSpeechControl_triggered()
+{
+    Windows::AboutDialog dialog;
+    dialog.exec();
 }
 
 Indicator::~Indicator()
@@ -151,63 +184,68 @@ IndicatorPrivate::IndicatorPrivate() : m_icon (new QSystemTrayIcon (QApplication
     m_actionPluginOptions (0), m_actionAboutSpeechControl (0),
     m_actionAboutQt (0), m_actionHelpManual (0)
 {
-    m_icon->setIcon (icon().pixmap (48, 48));
+    m_icon->setIcon (Indicator::icon().pixmap (48, 48));
     m_icon->show();
 }
 
 void IndicatorPrivate::buildActions()
 {
-    m_actionAboutQt = new QAction (QIcon::fromTheme ("qt"), "About Qt");
+    m_actionDesktopControlOptions = new QAction (QIcon::fromTheme ("configure"), "&Options", Indicator::instance());
+    m_actionDesktopControlToggle = new QAction ("&Active", Indicator::instance());
+    m_actionDictationOptions = new QAction (QIcon::fromTheme ("configure"), "&Options", Indicator::instance());
+    m_actionDictationToggle = new QAction ("&Active", Indicator::instance());
 
-    QObject::connect (m_actionAboutQt, SIGNAL (triggered (bool)), SLOT (on_actionAboutQt_triggered (bool)));
+    Indicator::instance()->connect (m_actionDesktopControlToggle, SIGNAL (toggled (bool)), SLOT (on_actionDesktopControlToggle_toggled (bool)));
+    Indicator::instance()->connect (m_actionDictationToggle, SIGNAL (toggled (bool)), SLOT (on_actionDictationToggle_toggled (bool)));
+    Indicator::instance()->connect (m_actionDesktopControlOptions, SIGNAL (triggered (bool)), SLOT (on_actionDesktopControlOptions_triggered()));
+    Indicator::instance()->connect (m_actionDictationOptions, SIGNAL (triggered (bool)), SLOT (on_actionDictationOptions_triggered (bool)));
+
+    m_actionDesktopControlToggle->setCheckable (true);
+    m_actionDictationToggle->setCheckable (true);
+    m_actionDesktopControlToggle->setChecked (DesktopControl::Service::instance()->isEnabled());
+    m_actionDictationToggle->setChecked (Dictation::Service::instance()->isEnabled());
 }
 
 void IndicatorPrivate::buildMenu()
 {
     buildActions();
-    QMenu* menu = new QMenu;
-    QMenu* menuDesktopControl = menu->addMenu (QIcon::fromTheme ("audio-headset"), "Desktop Control");
-    QMenu* menuDictation      = menu->addMenu (QIcon::fromTheme ("audio-input-microphone"), "Dictation");
-    QMenu* menuPlugins        = menu->addMenu (QIcon::fromTheme ("configure"), "Plug-ins");
-    QMenu* menuHelp           = menu->addMenu (QIcon::fromTheme ("help"), "Help");
+    m_menu = new QMenu;
 
-    menuDesktopControl->addActions (QList<QAction*>()
-        << m_actionDesktopControlToggle
-        << m_actionDesktopControlOptions
-    );
-    menuDictation->addActions (QList<QAction*>()
-        << m_actionDictationToggle
-        << m_actionDictationOptions
-    );
-    menuPlugins->addActions (QList<QAction*>()
-        << m_actionPluginOptions
-    );
-    menuHelp->addActions (QList<QAction*>()
-        << m_actionAboutQt
-        << m_actionAboutSpeechControl
-        << m_actionHelpManual
-    );
+    m_menuDesktopControl = m_menu->addMenu (QIcon::fromTheme ("audio-headset"), "Desktop Control");
+    m_menuDesktopControl->addActions (QList<QAction*>()
+                                      << m_actionDesktopControlToggle
+                                      << m_actionDesktopControlOptions
+                                     );
 
-    menu->addMenu (menuDesktopControl);
-    menu->addMenu (menuDictation);
-    menu->addMenu (menuPlugins);
-    menu->addSeparator();
-    menu->addAction (QIcon::fromTheme ("configure"), "Options");
-    menu->addMenu (menuHelp);
-    menu->addSeparator();
-    menu->addAction (QIcon::fromTheme ("application-exit"), "Quit", Core::instance(), SLOT (stop()));
+    m_menuDictation      = m_menu->addMenu (QIcon::fromTheme ("audio-input-microphone"), "Dictation");
+    m_menuDictation->addActions (QList<QAction*>()
+                                 << m_actionDictationToggle
+                                 << m_actionDictationOptions
+                                );
 
-    m_icon->setContextMenu (menu);
-}
+    m_menuPlugins        = m_menu->addMenu (QIcon::fromTheme ("configure"), "Plug-ins");
+    m_menuPlugins->addSeparator();
+    m_menuPlugins->addAction (m_actionPluginOptions);
 
-void IndicatorPrivate::on_actionAboutQt_triggered ()
-{
-    QApplication::aboutQt();
+    m_menuHelp           = m_menu->addMenu (QIcon::fromTheme ("help"), "Help");
+    m_actionAboutQt = m_menuHelp->addAction (QIcon::fromTheme ("qt"), "About &Qt", QApplication::instance(), SLOT (aboutQt()));
+    m_actionAboutSpeechControl = m_menuHelp->addAction (QApplication::windowIcon(), "&About SpeechControl", Indicator::instance(), SLOT (on_actionAboutSpeechControl_triggered()));
+
+    m_menu->addMenu (m_menuDesktopControl);
+    m_menu->addMenu (m_menuDictation);
+    m_menu->addMenu (m_menuPlugins);
+    m_menu->addSeparator();
+    m_menu->addAction (QIcon::fromTheme ("configure"), "&Options", Indicator::instance() , SLOT (on_actionOptions_triggered()));
+    m_menu->addMenu (m_menuHelp);
+    m_menu->addSeparator();
+    m_menu->addAction (QIcon::fromTheme ("application-exit"), "Quit", Core::instance(), SLOT (quit()));
+
+    m_icon->setContextMenu (m_menu);
 }
 
 IndicatorPrivate::~IndicatorPrivate()
 {
-
+    m_icon->hide();
 }
 
 

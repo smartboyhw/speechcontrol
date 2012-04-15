@@ -27,8 +27,10 @@
 
 #include "core.hpp"
 #include "indicator.hpp"
+#include "indicator.hxx"
 
 using SpeechControl::Indicator;
+using SpeechControl::IndicatorPrivate;
 using SpeechControl::Core;
 
 Indicator* Indicator::s_inst = 0;
@@ -96,40 +98,12 @@ QVariantMap Indicator::Message::objectData (const QString& p_keyName)
 
 /// @todo Check for a configuration value to determine whether or not the indicator should be shown on initialization.
 Indicator::Indicator () : QObject (Core::instance()),
-    m_icon (0)
+    d_ptr (new IndicatorPrivate)
 {
+    Q_D (Indicator);
     s_inst = this;
-    m_icon = new QSystemTrayIcon (this);
-    buildMenu();
-    m_icon->setIcon (icon().pixmap (48, 48));
-    m_icon->show();
+    d->buildMenu();
 }
-
-void Indicator::buildMenu()
-{
-    QMenu* menu = new QMenu;
-    QMenu* menuDesktopControl = menu->addMenu (QIcon::fromTheme ("audio-headset"), "Desktop Control");
-    QMenu* menuDictation      = menu->addMenu (QIcon::fromTheme ("audio-input-microphone"), "Dictation");
-    QMenu* menuPlugins        = menu->addMenu (QIcon::fromTheme ("configure"), "Plug-ins");
-    QMenu* menuHelp           = menu->addMenu (QIcon::fromTheme ("help"), "Help");
-
-    menuDesktopControl->addActions (QList<QAction*>());
-    menuDictation->addActions (QList<QAction*>());
-    menuPlugins->addActions (QList<QAction*>());
-    menuHelp->addActions (QList<QAction*>());
-
-    menu->addMenu (menuDesktopControl);
-    menu->addMenu (menuDictation);
-    menu->addMenu (menuPlugins);
-    menu->addSeparator();
-    menu->addAction (QIcon::fromTheme ("configure"), "Options");
-    menu->addMenu (menuHelp);
-    menu->addSeparator();
-    menu->addAction (QIcon::fromTheme ("application-exit"), "Quit", Core::instance(), SLOT(stop()));
-
-    m_icon->setContextMenu (menu);
-}
-
 
 QIcon Indicator::icon()
 {
@@ -171,5 +145,72 @@ Indicator::~Indicator()
 
 }
 
+IndicatorPrivate::IndicatorPrivate() : m_icon (new QSystemTrayIcon (QApplication::windowIcon())),
+    m_actionDesktopControlToggle (0), m_actionDesktopControlOptions (0),
+    m_actionDictationToggle (0), m_actionDictationOptions (0),
+    m_actionPluginOptions (0), m_actionAboutSpeechControl (0),
+    m_actionAboutQt (0), m_actionHelpManual (0)
+{
+    m_icon->setIcon (icon().pixmap (48, 48));
+    m_icon->show();
+}
+
+void IndicatorPrivate::buildActions()
+{
+    m_actionAboutQt = new QAction (QIcon::fromTheme ("qt"), "About Qt");
+
+    QObject::connect (m_actionAboutQt, SIGNAL (triggered (bool)), SLOT (on_actionAboutQt_triggered (bool)));
+}
+
+void IndicatorPrivate::buildMenu()
+{
+    buildActions();
+    QMenu* menu = new QMenu;
+    QMenu* menuDesktopControl = menu->addMenu (QIcon::fromTheme ("audio-headset"), "Desktop Control");
+    QMenu* menuDictation      = menu->addMenu (QIcon::fromTheme ("audio-input-microphone"), "Dictation");
+    QMenu* menuPlugins        = menu->addMenu (QIcon::fromTheme ("configure"), "Plug-ins");
+    QMenu* menuHelp           = menu->addMenu (QIcon::fromTheme ("help"), "Help");
+
+    menuDesktopControl->addActions (QList<QAction*>()
+        << m_actionDesktopControlToggle
+        << m_actionDesktopControlOptions
+    );
+    menuDictation->addActions (QList<QAction*>()
+        << m_actionDictationToggle
+        << m_actionDictationOptions
+    );
+    menuPlugins->addActions (QList<QAction*>()
+        << m_actionPluginOptions
+    );
+    menuHelp->addActions (QList<QAction*>()
+        << m_actionAboutQt
+        << m_actionAboutSpeechControl
+        << m_actionHelpManual
+    );
+
+    menu->addMenu (menuDesktopControl);
+    menu->addMenu (menuDictation);
+    menu->addMenu (menuPlugins);
+    menu->addSeparator();
+    menu->addAction (QIcon::fromTheme ("configure"), "Options");
+    menu->addMenu (menuHelp);
+    menu->addSeparator();
+    menu->addAction (QIcon::fromTheme ("application-exit"), "Quit", Core::instance(), SLOT (stop()));
+
+    m_icon->setContextMenu (menu);
+}
+
+void IndicatorPrivate::on_actionAboutQt_triggered ()
+{
+    QApplication::aboutQt();
+}
+
+IndicatorPrivate::~IndicatorPrivate()
+{
+
+}
+
+
 #include "indicator.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+

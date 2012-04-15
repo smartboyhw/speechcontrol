@@ -132,8 +132,7 @@ public:
     static void removeActionForPlugins (QAction* action);
 
 private:
-    void buildMenu();
-    QSystemTrayIcon* m_icon;            ///< The tray icon.
+    QScopedPointer<IndicatorPrivate> d_ptr;
 };
 }
 

@@ -134,7 +134,7 @@ void Indicator::presentMessage (const QString& p_title, const QString& p_message
 
 void Indicator::addActionForPlugins (QAction* p_action)
 {
-    instance()->d_func()->m_menuPlugins->insertAction(0,p_action);
+    instance()->d_func()->m_menuPlugins->insertAction (0, p_action);
 }
 
 void Indicator::removeActionForPlugins (QAction* p_action)
@@ -179,7 +179,7 @@ Indicator::~Indicator()
 }
 
 IndicatorPrivate::IndicatorPrivate() : m_icon (new QSystemTrayIcon (QApplication::windowIcon())),
-    m_actionDesktopControlToggle (0), m_actionDesktopControlOptions (0),
+    m_actionDesktopControlOptions (0), m_actionDesktopControlToggle (0),
     m_actionDictationToggle (0), m_actionDictationOptions (0),
     m_actionPluginOptions (0), m_actionAboutSpeechControl (0),
     m_actionAboutQt (0), m_actionHelpManual (0)

@@ -1,11 +1,10 @@
 cmake_minimum_required(VERSION 2.8)
 
-file(GLOB_RECURSE SPCHCNTRL_APP_SRCS "*.cpp" "*.cxx")
-file(GLOB_RECURSE SPCHCNTRL_APP_HDRS "*.hpp" "*.hxx")
-
-## Variables
-set(SPCHCNTRL_QRESC "${CMAKE_SOURCE_DIR}/res/res.qrc")
+## Required files
+file(GLOB_RECURSE SPCHCNTRL_APP_SRCS "*.cpp")
+file(GLOB_RECURSE SPCHCNTRL_APP_HDRS "*.hpp")
 file(GLOB SPCHCNTRL_UI "${CMAKE_SOURCE_DIR}/res/ui/*.ui")
+set(SPCHCNTRL_QRESC "${CMAKE_SOURCE_DIR}/res/res.qrc")
 
 ## Do some handy dandy work.
 QT4_ADD_RESOURCES(SPCHCNTRL_APP_SRCS ${SPCHCNTRL_QRESC})

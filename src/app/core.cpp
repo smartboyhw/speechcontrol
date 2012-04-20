@@ -39,7 +39,7 @@
 #include "app/services/desktopcontrol/service.hpp"
 #include "app/services/voxforge/service.hpp"
 #include "app/ui/quickstart-wizard.hpp"
-#include "app/core.hxx"
+#include "app/coreprivate.hpp"
 #include "app/core.hpp"
 
 using namespace SpeechControl;
@@ -47,6 +47,52 @@ using namespace SpeechControl::Windows::Wizards;
 using SpeechControl::Services::AbstractModule;
 
 Core* Core::s_inst = 0;
+
+CorePrivate::CorePrivate(Core* p_qPtr) : m_app (0),
+m_settings (0), m_trnsltr (0), q_ptr(p_qPtr)
+{
+    Q_Q (Core);
+    m_trnsltr = new QTranslator (q);
+    m_settings = new QSettings (QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", q);
+
+    m_app->installTranslator (m_trnsltr);
+}
+
+void CorePrivate::hookUpSignals()
+{
+    Q_Q (Core);
+    QObject::connect (m_app, SIGNAL (aboutToQuit()), q, SLOT (stop()));
+    QObject::connect (q, SIGNAL (started()), Services::Engine::instance(), SLOT (start()));
+    QObject::connect (q, SIGNAL (started()), Plugins::Factory::instance(), SLOT (start()));
+
+    QObject::connect (q, SIGNAL (stopped()), Services::Engine::instance(), SLOT (stop()));
+    QObject::connect (q, SIGNAL (stopped()), Plugins::Factory::instance(), SLOT (stop()));
+
+    bootServices();
+}
+
+void CorePrivate::invokeAutoStart()
+{
+    const bool dsktpCntrlState = Core::configuration ("DesktopControl/AutoStart", false).toBool();
+    const bool dctnState = Core::configuration ("Dictation/AutoStart", false).toBool();
+    DesktopControl::Service::instance()->setState ( (dsktpCntrlState) ? AbstractModule::Enabled  : AbstractModule::Disabled);
+    Dictation::Service::instance()->setState ( (dctnState) ? AbstractModule::Enabled  : AbstractModule::Disabled);
+
+}
+
+void CorePrivate::bootServices()
+{
+    qDebug() << "[CorePrivate::bootServices()] Initializing services...";
+    DesktopControl::Service::instance();
+    Dictation::Service::instance();
+    Voxforge::Service::instance();
+    qDebug() << "[CorePrivate::bootServices()] Initialized. services.";
+}
+
+CorePrivate::~CorePrivate()
+{
+
+}
 
 Core::Core() : QObject()
 {

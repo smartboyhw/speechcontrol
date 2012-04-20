@@ -27,7 +27,7 @@
 
 #include "core.hpp"
 #include "indicator.hpp"
-#include "indicator.hxx"
+#include "indicatorprivate.hpp"
 #include "ui/settings-dialog.hpp"
 #include "ui/about-dialog.hpp"
 #include "services/dictation/service.hpp"

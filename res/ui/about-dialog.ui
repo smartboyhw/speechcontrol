@@ -139,7 +139,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>329</width>
+          <width>333</width>
           <height>241</height>
          </rect>
         </property>
@@ -147,7 +147,7 @@
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Jacky Alcine&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;mailto:jacky.alcine@thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;jacky.alcine@thesii.org&lt;/span&gt;&lt;/a&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;|&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;a href=&quot;http://jackyalcine.co.cc&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;website&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;Core Developer, Packager, Maintainer, Designer &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Adrian Borucki&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;mailto:adrian@thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;adrian@thesii.org&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;Core Developer, Packager, Maintainer, Idea Man&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Jacky Alcine&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;mailto:jacky.alcine@thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;jacky.alcine@thesii.org&lt;/span&gt;&lt;/a&gt; | &lt;a href=&quot;http://jackyalcine.co.cc&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;website&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;Core Developer, Packager, Maintainer, Designer &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Dante Ashton&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;mailto:dante.ashton@thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;dante.ashton@thesii.org&lt;/span&gt;&lt;/a&gt; | &lt;a href=&quot;http://livingwithmachines.wordpress.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;blog&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Project Lead, Designer, Q/A Guy&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Adrian Borucki&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;mailto:adrian@thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;adrian@thesii.org&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;Core Developer, Packager, Maintainer, Idea Man, Designer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignHCenter|Qt::AlignTop</set>

@@ -14,7 +14,32 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+
+#include <app/services/moduleprivate.hpp>
+
+class QDeclarativeView;
+namespace SpeechControl
+{
+namespace DesktopControl
+{
+
+class Service;
+class Sphinx;
+
+struct ServicePrivate : public Services::AbstractModulePrivate {
+    virtual ~ServicePrivate();
+    explicit ServicePrivate (Service* p_parent = 0);
+    ServicePrivate (const Services::AbstractModulePrivate& p_other);
+    virtual void changeState (AbstractModule::ActivityState p_state);
+    virtual Services::AbstractModule::ActivityState handleStateChange (const Services::AbstractModule::ActivityState p_state);
+    Sphinx* m_sphinx;
+    QDeclarativeView* m_view;
+};
+
+}
+}
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+

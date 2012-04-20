@@ -25,12 +25,79 @@
 #include "app/services/module.hpp"
 #include "app/services/dictation/xdo.hpp"
 #include "app/services/dictation/sphinx.hpp"
-#include "app/services/dictation/service.hxx"
+#include "app/services/dictation/serviceprivate.hpp"
 #include "app/services/dictation/service.hpp"
 
 using SpeechControl::Core;
 using namespace SpeechControl::Dictation;
 Service* Service::s_inst = 0;
+
+ServicePrivate::ServicePrivate (Service* p_qPtr) :
+AbstractModulePrivate (p_qPtr), m_safetyMode (Service::Active),
+m_sphinx (0)
+{
+
+}
+
+AbstractModule::ActivityState ServicePrivate::handleStateChange (const AbstractModule::ActivityState p_state)
+{
+    Q_Q (Service);
+
+    switch (p_state) {
+        case AbstractModule::Enabled:
+
+            if (!m_sphinx) {
+                m_sphinx = new Sphinx (Sphinx::standardDescription(), q);
+                q->connect (m_sphinx, SIGNAL (finished (QString)), SLOT (handleText (QString)));
+            }
+
+            if (!m_sphinx->start()) {
+                qWarning() << "[Dictation::ServicePrivate::onStateChanged()] Start unsuccessful.";
+                return AbstractModule::Disabled;
+            }
+            else {
+                qDebug() << "[Dictation::ServicePrivate::onStateChanged()] Enabled.";
+            }
+
+            return AbstractModule::Enabled;
+            break;
+
+        case AbstractModule::Disabled:
+            if (m_sphinx) {
+                m_sphinx->stop();
+                m_sphinx = 0;
+                qDebug() << "[Dictation::ServicePrivate::onStateChanged()] Disabled.";
+            }
+
+            break;
+
+        case AbstractModule::Undefined:
+        default:
+            break;
+    }
+
+    return AbstractModule::Undefined;
+}
+
+void ServicePrivate::changeState (AbstractModule::ActivityState p_state)
+{
+    m_state = handleStateChange(p_state);
+}
+
+Service::SafetyMode ServicePrivate::safetyMode() const
+{
+    return m_safetyMode;
+}
+
+void ServicePrivate::setSafetyMode (const Service::SafetyMode& p_mode)
+{
+    m_safetyMode = p_mode;
+}
+
+ServicePrivate::~ServicePrivate()
+{
+
+}
 
 Service::Service() : AbstractModule (new ServicePrivate (this), KeyboardEmulator::instance())
 {

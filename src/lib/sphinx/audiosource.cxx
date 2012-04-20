@@ -21,7 +21,7 @@
 #include "lib/audiosource/source.hpp"
 #include "lib/sphinx/abstract.hpp"
 #include "lib/sphinx/audiosource.hpp"
-#include "lib/sphinx/audiosource.hxx"
+#include "lib/sphinx/audiosourceprivate.hpp"
 
 using namespace SpeechControl;
 

@@ -24,14 +24,17 @@
 #include <QObject>
 #include <QString>
 #include <QVariantMap>
-#include <QSystemTrayIcon>
 
 #include "macros.hpp"
 
+class QAction;
 class QImage;
+class QSystemTrayIcon;
 
 namespace SpeechControl
 {
+
+struct IndicatorPrivate;
 class Indicator;
 
 /**
@@ -43,6 +46,7 @@ class Indicator;
 class Indicator : public QObject
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(Indicator)
     SC_SINGLETON (Indicator)
 
 public:
@@ -115,16 +119,6 @@ public:
     virtual ~Indicator();
 
     /**
-     * @brief Shows the visual representation of SpeechControl's indicator to the system.
-     **/
-    static void show();
-
-    /**
-     * @brief Hides the visual representation of SpeechControl's indicator from the system.
-     **/
-    static void hide();
-
-    /**
      * @brief Raises a new message to the system.
      * @param p_title The title of the message to present to the user.
      * @param p_message The message to present to the user.
@@ -137,25 +131,21 @@ public:
      **/
     static QIcon icon();
 
-    /**
-     * @brief Determines if the Indicator is visible.
-     **/
-    static bool isVisible();
-
-    /**
-     * @brief Determines if the Indicator is enabled.
-     **/
-    static bool isEnabled();
+    static void addActionForPlugins (QAction* p_action);
+    static void removeActionForPlugins (QAction* p_action);
 
 private slots:
-    void on_mIcon_activated (QSystemTrayIcon::ActivationReason p_reason);
-    void showMainWindow();
-    void buildMenu();
+    void on_actionOptions_triggered();
+    void on_actionDictationToggle_toggled(const bool& p_checked);
+    void on_actionDesktopControlToggle_toggled(const bool& p_checked);
+    void on_actionAboutSpeechControl_triggered ();
+    void on_actionDesktopControlOptions_triggered();
+    void on_actionDictationOptions_triggered();
 
 private:
-    QSystemTrayIcon* m_icon;            ///< The tray icon.
+    QScopedPointer<IndicatorPrivate> d_ptr;
 };
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

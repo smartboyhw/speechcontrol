@@ -26,10 +26,52 @@
 
 #include "audiosource/sink.hpp"
 #include "audiosource/source.hpp"
-#include "audiosource/abstract.hxx"
+#include "audiosource/abstractprivate.hpp"
 #include "audiosource/abstract.hpp"
 
 using namespace SpeechControl;
+
+AbstractAudioSourcePrivate::AbstractAudioSourcePrivate() : m_appSink (0),
+    m_appSrc (0), m_binPtr (), m_pipeline (), m_sinkPtr (),
+    m_srcPtr (), m_volumePtr (), m_levelPtr ()
+{
+    m_binPtr.clear();
+    m_pipeline.clear();
+    m_sinkPtr.clear();
+    m_srcPtr.clear();
+    m_volumePtr.clear();
+    m_levelPtr.clear();
+}
+
+AbstractAudioSourcePrivate::~AbstractAudioSourcePrivate()
+{
+    // Clean up your junk!
+    if (!m_binPtr.isNull())
+        m_binPtr->setState (QGst::StateNull);
+
+    if (!m_pipeline.isNull())
+        m_pipeline->setState (QGst::StateNull);
+
+    if (!m_sinkPtr.isNull())
+        m_sinkPtr->setState (QGst::StateNull);
+
+    if (!m_srcPtr.isNull())
+        m_srcPtr->setState (QGst::StateNull);
+
+    if (!m_volumePtr.isNull())
+        m_volumePtr->setState (QGst::StateNull);
+
+    if (!m_levelPtr.isNull())
+        m_levelPtr->setState (QGst::StateNull);
+
+    // Clean memory.
+    m_binPtr.clear();
+    m_pipeline.clear();
+    m_sinkPtr.clear();
+    m_srcPtr.clear();
+    m_volumePtr.clear();
+    m_levelPtr.clear();
+}
 
 AbstractAudioSource::AbstractAudioSource (const AbstractAudioSource& p_other) : QObject (p_other.parent()),
     d_ptr (const_cast<AbstractAudioSourcePrivate*> (p_other.d_ptr.data()))

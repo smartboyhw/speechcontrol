@@ -38,9 +38,8 @@
 #include "app/services/dictation/service.hpp"
 #include "app/services/desktopcontrol/service.hpp"
 #include "app/services/voxforge/service.hpp"
-#include "app/ui/main-window.hpp"
 #include "app/ui/quickstart-wizard.hpp"
-#include "app/core.hxx"
+#include "app/coreprivate.hpp"
 #include "app/core.hpp"
 
 using namespace SpeechControl;
@@ -48,6 +47,52 @@ using namespace SpeechControl::Windows::Wizards;
 using SpeechControl::Services::AbstractModule;
 
 Core* Core::s_inst = 0;
+
+CorePrivate::CorePrivate(Core* p_qPtr) : m_app (0),
+m_settings (0), m_trnsltr (0), q_ptr(p_qPtr)
+{
+    Q_Q (Core);
+    m_trnsltr = new QTranslator (q);
+    m_settings = new QSettings (QSettings::UserScope, "Synthetic Intellect Institute", "SpeechControl", q);
+
+    m_app->installTranslator (m_trnsltr);
+}
+
+void CorePrivate::hookUpSignals()
+{
+    Q_Q (Core);
+    QObject::connect (m_app, SIGNAL (aboutToQuit()), q, SLOT (stop()));
+    QObject::connect (q, SIGNAL (started()), Services::Engine::instance(), SLOT (start()));
+    QObject::connect (q, SIGNAL (started()), Plugins::Factory::instance(), SLOT (start()));
+
+    QObject::connect (q, SIGNAL (stopped()), Services::Engine::instance(), SLOT (stop()));
+    QObject::connect (q, SIGNAL (stopped()), Plugins::Factory::instance(), SLOT (stop()));
+
+    bootServices();
+}
+
+void CorePrivate::invokeAutoStart()
+{
+    const bool dsktpCntrlState = Core::configuration ("DesktopControl/AutoStart", false).toBool();
+    const bool dctnState = Core::configuration ("Dictation/AutoStart", false).toBool();
+    DesktopControl::Service::instance()->setState ( (dsktpCntrlState) ? AbstractModule::Enabled  : AbstractModule::Disabled);
+    Dictation::Service::instance()->setState ( (dctnState) ? AbstractModule::Enabled  : AbstractModule::Disabled);
+
+}
+
+void CorePrivate::bootServices()
+{
+    qDebug() << "[CorePrivate::bootServices()] Initializing services...";
+    DesktopControl::Service::instance();
+    Dictation::Service::instance();
+    Voxforge::Service::instance();
+    qDebug() << "[CorePrivate::bootServices()] Initialized. services.";
+}
+
+CorePrivate::~CorePrivate()
+{
+
+}
 
 Core::Core() : QObject()
 {
@@ -77,11 +122,7 @@ Core::Core (int p_argc, char** p_argv, QApplication* app) : QObject (app),
     d->hookUpSignals();
     loadTranslations (QLocale::system());
 
-    // Set up indicator.
-    qDebug() << "[Core::${constructor}] Show indicator on start? " << configuration ("Indicator/Show").toBool();
-
-    if (configuration ("Indicator/Show").toBool())
-        Indicator::show();
+    Indicator::instance();
 }
 
 Core::Core (const Core& p_other) : QObject (p_other.parent()), d_ptr (const_cast<CorePrivate*> (p_other.d_ptr.data()))
@@ -95,34 +136,21 @@ void Core::start()
 
     // Detect if a first-run wizard should be run.
     if (!QFile::exists (instance()->d_func()->m_settings->fileName())) {
-        if (QMessageBox::question (mainWindow(), tr ("First Run"),
+        if (QMessageBox::question (0, tr ("First Run"),
                                    tr ("This seems to be the first time you've run SpeechControl on this system. "
                                        "A wizard allowing you to start SpeechControl will appear."), QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
-            QuickStart* win = new QuickStart (mainWindow());
+            QuickStart* win = new QuickStart (0);
             win->exec();
         }
     }
 
-    mainWindow()->open();
     d->invokeAutoStart();
     emit instance()->started();
 }
 
 void Core::stop()
 {
-    if (Core::configuration ("MainWindow/RememberState").toBool()) {
-        Core::setConfiguration ("MainWindow/Visible", mainWindow()->isVisible());
-    }
-
     emit instance()->stopped();
-}
-
-Windows::Main* Core::mainWindow()
-{
-    if (instance()->d_func()->m_mw == 0)
-        instance()->d_func()->m_mw = new Windows::Main;
-
-    return instance()->d_func()->m_mw;
 }
 
 QVariant Core::configuration (const QString& p_attrName, QVariant p_attrDefValue)

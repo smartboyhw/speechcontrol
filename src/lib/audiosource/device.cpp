@@ -21,12 +21,42 @@
 #include <QGst/PropertyProbe>
 #include <QGst/ElementFactory>
 
-#include "audiosource/device.hxx"
+#include "audiosource/deviceprivate.hpp"
 #include "audiosource/device.hpp"
 
 using namespace SpeechControl;
 
 QMap<QString, DeviceAudioSource*> DeviceAudioSourcePrivate::s_map;
+
+DeviceAudioSourcePrivate::DeviceAudioSourcePrivate (DeviceAudioSource* p_obj) :
+AbstractAudioSourcePrivate(), m_device(), m_devicePtr(), m_deviceObj (p_obj)
+{
+    m_device.clear();
+    m_devicePtr.clear();
+}
+
+void DeviceAudioSourcePrivate::obtainDevice (const QString& p_deviceName)
+{
+    qDebug() << "[DeviceAudioSourcePrivate::obtainDevice()] Obtaining device" << p_deviceName << "...";
+
+    if (!m_device.isValid())
+        m_device = QGlib::Value::create<QString> (p_deviceName);
+    else
+        m_device.set<QString> (p_deviceName);
+
+    m_deviceObj->buildPipeline();
+
+    if (m_devicePtr)
+        m_devicePtr->setProperty ("device", m_device);
+    else {
+        qDebug() << "[DeviceAudioSourcePrivate::obtainDevice()] Failed to set device for use; invalid device pointer.";
+    }
+}
+
+DeviceAudioSourcePrivate::~DeviceAudioSourcePrivate()
+{
+
+}
 
 DeviceAudioSource::DeviceAudioSource() :
     AbstractAudioSource (new DeviceAudioSourcePrivate (this))

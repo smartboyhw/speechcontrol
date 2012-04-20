@@ -18,28 +18,29 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <app/services/module.hxx>
+#include "service.hpp"
+#include "app/services/moduleprivate.hpp"
+#include "app/services/dictation/sphinx.hpp"
 
-class QDeclarativeView;
 namespace SpeechControl
 {
-namespace DesktopControl
+namespace Dictation
 {
 
 class Service;
-class Sphinx;
-
-struct ServicePrivate : public Services::AbstractModulePrivate {
-    virtual ~ServicePrivate();
-    explicit ServicePrivate (Service* p_parent = 0);
-    ServicePrivate (const Services::AbstractModulePrivate& p_other);
-    virtual void changeState (AbstractModule::ActivityState p_state);
-    virtual Services::AbstractModule::ActivityState handleStateChange (const Services::AbstractModule::ActivityState p_state);
+class ServicePrivate : public Services::AbstractModulePrivate
+{
+    friend class Service;
+private:
+    Service::SafetyMode m_safetyMode;
     Sphinx* m_sphinx;
-    QDeclarativeView* m_view;
+    ServicePrivate (Service* p_qPtr);
+    virtual ~ServicePrivate();
+    void setSafetyMode (const Service::SafetyMode& p_mode);
+    Service::SafetyMode safetyMode() const;
+    virtual void changeState (AbstractModule::ActivityState p_state);
+    virtual AbstractModule::ActivityState handleStateChange (const AbstractModule::ActivityState p_state);
 };
-
 }
 }
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
-

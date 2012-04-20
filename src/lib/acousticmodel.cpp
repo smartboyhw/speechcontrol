@@ -30,7 +30,7 @@
 
 #include "config.hpp"
 #include "noisedictionary.hpp"
-#include "acousticmodel.hxx"
+#include "acousticmodelprivate.hpp"
 #include "acousticmodel.hpp"
 
 using namespace std;

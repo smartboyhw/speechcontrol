@@ -19,11 +19,22 @@
  */
 
 #include "audiosource/sink.hpp"
-#include "audiosource/stream.hxx"
+#include "audiosource/streamprivate.hpp"
 #include "audiosource/abstract.hpp"
 #include "audiosource/stream.hpp"
 
 using namespace SpeechControl;
+
+StreamAudioSourcePrivate::StreamAudioSourcePrivate() :
+    AbstractAudioSourcePrivate(), m_strm (0)
+{
+
+}
+
+StreamAudioSourcePrivate::~StreamAudioSourcePrivate()
+{
+
+}
 
 StreamAudioSource::StreamAudioSource() :
     AbstractAudioSource (new StreamAudioSourcePrivate)
@@ -82,4 +93,4 @@ StreamAudioSource::~StreamAudioSource()
 
 }
 #include "audiosource/stream.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

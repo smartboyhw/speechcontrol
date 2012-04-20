@@ -18,7 +18,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "audiosource/stream.hxx"
+#include "audiosource/streamprivate.hpp"
 #include "audiosource/abstract.hpp"
 #include "audiosource/stream.hpp"
 #include "audiosource/sink.hpp"

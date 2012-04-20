@@ -22,7 +22,7 @@
 #include <QDirIterator>
 
 #include "config.hpp"
-#include "languagemodel.hxx"
+#include "languagemodelprivate.hpp"
 #include "languagemodel.hpp"
 
 using namespace SpeechControl;

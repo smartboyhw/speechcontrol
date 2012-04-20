@@ -20,7 +20,7 @@
 
 #include "lib/sphinx/abstract.hpp"
 #include "lib/sphinx/audiosource.hpp"
-#include "lib/sphinx/audiosource.hxx"
+#include "lib/sphinx/audiosourceprivate.hpp"
 #include "lib/audiosource/abstract.hpp"
 
 using namespace SpeechControl;

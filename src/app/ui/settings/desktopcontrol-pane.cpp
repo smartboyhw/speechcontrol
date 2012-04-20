@@ -18,8 +18,8 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QTableWidget>
 #include <QLabel>
+#include <QTableWidget>
 
 #include <lib/acousticmodel.hpp>
 
@@ -27,9 +27,8 @@
 #include "services/dictation/service.hpp"
 #include "services/desktopcontrol/service.hpp"
 #include "services/desktopcontrol/command.hpp"
-#include "ui/main-window.hpp"
-#include "ui_settingspane-desktopcontrol.h"
 #include "desktopcontrol-pane.hpp"
+#include "ui_settingspane-desktopcontrol.h"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
@@ -132,7 +131,6 @@ void DesktopControlSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
     if (!p_checked && DesktopControl::Service::instance()->isActive())
         DesktopControl::Service::instance()->stop();
 
-    Core::mainWindow()->updateUi();
     updateUi();
 }
 

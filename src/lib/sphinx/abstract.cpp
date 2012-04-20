@@ -25,7 +25,7 @@
 #include "lib/acousticmodel.hpp"
 #include "lib/dictionary.hpp"
 #include "lib/languagemodel.hpp"
-#include "lib/sphinx/abstract.hxx"
+#include "lib/sphinx/abstractprivate.hpp"
 #include "lib/sphinx/abstract.hpp"
 #include "lib/audiosource/abstract.hpp"
 

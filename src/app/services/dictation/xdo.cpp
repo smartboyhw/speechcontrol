@@ -21,9 +21,9 @@
 #include <QDebug>
 #include <hunspell.hxx>
 
-#include "xdo.hpp"
 #include "core.hpp"
-#include "xdo_p.hxx"
+#include "xdo.hpp"
+#include "xdoprivate.hpp"
 
 using SpeechControl::Core;
 using SpeechControl::Dictation::KeyboardEmulator;

@@ -18,22 +18,19 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <sessions/phrase.hpp>
-#include <sessions/corpus.hpp>
-#include <QMessageBox>
 #include <QListWidget>
+#include <QMessageBox>
 #include <QListWidgetItem>
 
-#include "ui_manager-session.h"
-
+#include "core.hpp"
 #include "sessions/session.hpp"
+#include "sessions/phrase.hpp"
+#include "sessions/corpus.hpp"
+#include "session-information-dialog.hpp"
 #include "ui/about-dialog.hpp"
-#include "ui/main-window.hpp"
+#include "ui_manager-session.h"
 #include "content-manager.hpp"
 #include "session-manager.hpp"
-#include "session-information-dialog.hpp"
-#include "core.hpp"
-
 
 using namespace SpeechControl;
 using SpeechControl::Windows::SessionInformationDialog;
@@ -129,7 +126,6 @@ void SessionManager::on_btnCreate_clicked()
 
         if (l_session) {
             m_session = l_session;
-            Core::mainWindow()->updateUi();
         }
     }
 
@@ -174,4 +170,4 @@ void SessionManager::on_listSession_itemSelectionChanged()
 }
 
 #include "ui/session-manager.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

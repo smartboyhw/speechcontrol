@@ -19,7 +19,7 @@
  */
 
 #include <QDebug>
-#include "module.hxx"
+#include "moduleprivate.hpp"
 #include "module.hpp"
 
 using namespace SpeechControl::Services;

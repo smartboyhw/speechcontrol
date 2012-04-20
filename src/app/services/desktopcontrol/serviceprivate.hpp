@@ -18,31 +18,28 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-class QApplication;
-class QSettings;
-class QTranslator;
+#include <app/services/moduleprivate.hpp>
 
+class QDeclarativeView;
 namespace SpeechControl
 {
-
-class Core;
-namespace Windows
+namespace DesktopControl
 {
-class Main;
-}
-struct CorePrivate {
-    Q_DECLARE_PUBLIC(Core)
-    CorePrivate(Core* p_qPtr);
-    virtual ~CorePrivate();
-    void invokeAutoStart();
-    void hookUpSignals();
-    void bootServices();
 
-    QApplication* m_app;
-    Windows::Main* m_mw;
-    QSettings* m_settings;
-    QTranslator* m_trnsltr;
-    Core* q_ptr;
+class Service;
+class Sphinx;
+
+struct ServicePrivate : public Services::AbstractModulePrivate {
+    virtual ~ServicePrivate();
+    explicit ServicePrivate (Service* p_parent = 0);
+    ServicePrivate (const Services::AbstractModulePrivate& p_other);
+    virtual void changeState (AbstractModule::ActivityState p_state);
+    virtual Services::AbstractModule::ActivityState handleStateChange (const Services::AbstractModule::ActivityState p_state);
+    Sphinx* m_sphinx;
+    QDeclarativeView* m_view;
 };
+
+}
 }
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+

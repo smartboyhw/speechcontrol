@@ -18,29 +18,27 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "service.hpp"
-#include "app/services/module.hxx"
-#include "app/services/dictation/sphinx.hpp"
+#ifndef SPCHCNTRL_LIB_SPHINX_AUDIOSOURCE_HXX_
+#define SPCHCNTRL_LIB_SPHINX_AUDIOSOURCE_HXX_
+
+#include <lib/sphinx/abstractprivate.hpp>
 
 namespace SpeechControl
 {
-namespace Dictation
-{
 
-class Service;
-class ServicePrivate : public Services::AbstractModulePrivate
-{
-    friend class Service;
-private:
-    Service::SafetyMode m_safetyMode;
-    Sphinx* m_sphinx;
-    ServicePrivate (Service* p_qPtr);
-    virtual ~ServicePrivate();
-    void setSafetyMode (const Service::SafetyMode& p_mode);
-    Service::SafetyMode safetyMode() const;
-    virtual void changeState (AbstractModule::ActivityState p_state);
-    virtual AbstractModule::ActivityState handleStateChange (const AbstractModule::ActivityState p_state);
+class AbstractAudioSource;
+class AudioSourceSphinx;
+class AudioSourceSphinxSource;
+
+struct AudioSourceSphinxPrivate : public AbstractSphinxPrivate {
+    explicit AudioSourceSphinxPrivate (AudioSourceSphinx* p_qPtr);
+    virtual ~AudioSourceSphinxPrivate();
+    void linkSource ();
+    AbstractAudioSource* m_audioSrc;
+    AudioSourceSphinxSource* m_appSrc;
 };
+
 }
-}
+
+#endif
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

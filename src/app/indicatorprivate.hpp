@@ -14,27 +14,36 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QMap>
-
-#include <lib/audiosource/abstract.hxx>
+class QMenu;
+class QAction;
+class QSystemTrayIcon;
 
 namespace SpeechControl
 {
+struct IndicatorPrivate {
+    IndicatorPrivate();
+    ~IndicatorPrivate();
+    void buildMenu();
+    void buildActions();
 
-class DeviceAudioSource;
-
-struct DeviceAudioSourcePrivate : public AbstractAudioSourcePrivate {
-    explicit DeviceAudioSourcePrivate (DeviceAudioSource* p_obj);
-    virtual ~DeviceAudioSourcePrivate();
-    void obtainDevice (const QString& p_deviceName);
-    QGlib::Value m_device;
-    QGst::ElementPtr m_devicePtr;
-    DeviceAudioSource* m_deviceObj;
-    static QMap<QString, DeviceAudioSource*> s_map;
+    QSystemTrayIcon* m_icon;
+    QMenu* m_menu;
+    QMenu* m_menuDesktopControl;
+    QMenu* m_menuDictation;
+    QMenu* m_menuPlugins;
+    QMenu* m_menuHelp;
+    QAction* m_actionDesktopControlOptions;
+    QAction* m_actionDesktopControlToggle;
+    QAction* m_actionDictationToggle;
+    QAction* m_actionDictationOptions;
+    QAction* m_actionPluginOptions;
+    QAction* m_actionAboutSpeechControl;
+    QAction* m_actionAboutQt;
+    QAction* m_actionHelpManual;
 };
 }
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

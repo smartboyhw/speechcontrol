@@ -2,10 +2,6 @@ project(SpeechControlApplication)
 cmake_minimum_required(VERSION 2.8)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
-## Required files
-file(GLOB SPCHCNTRL_APP_SRCS "*.cpp" "*.cxx")
-file(GLOB SPCHCNTRL_APP_HDRS "*.hpp" "*.hxx")
-
 ## Needed variables for the SpeechControl application.
 set(SPCHCNTRL_APP_COMPILE_FLAGS ${SPCHCNTRL_COMPILE_FLAGS} ${SPCHCNTRL_LIB_COMPILE_FLAGS})
 set(SPCHCNTRL_APP_COMPILE_FLAGS_DEBUG ${SPCHCNTRL_COMPILE_FLAGS_DEBUG} ${SPCHCNTRL_LIB_COMPILE_FLAGS_DEBUG})
@@ -63,6 +59,5 @@ install(DIRECTORY   "${PROJECT_SOURCE_DIR}/"
         COMPONENT "dev"
         FILES_MATCHING
             PATTERN "*.hpp"
-            PATTERN "*.hxx"
             PATTERN "kde" EXCLUDE
             PATTERN "cmake" EXCLUDE)

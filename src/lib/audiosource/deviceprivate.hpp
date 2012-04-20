@@ -14,7 +14,27 @@
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+
+#include <QMap>
+
+#include <lib/audiosource/abstractprivate.hpp>
+
+namespace SpeechControl
+{
+
+class DeviceAudioSource;
+
+struct DeviceAudioSourcePrivate : public AbstractAudioSourcePrivate {
+    explicit DeviceAudioSourcePrivate (DeviceAudioSource* p_obj);
+    virtual ~DeviceAudioSourcePrivate();
+    void obtainDevice (const QString& p_deviceName);
+    QGlib::Value m_device;
+    QGst::ElementPtr m_devicePtr;
+    DeviceAudioSource* m_deviceObj;
+    static QMap<QString, DeviceAudioSource*> s_map;
+};
+}
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

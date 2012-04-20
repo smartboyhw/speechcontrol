@@ -19,6 +19,8 @@
  */
 
 #include <QIcon>
+#include <QUrl>
+#include <QDeclarativeView>
 
 #include <lib/acousticmodel.hpp>
 #include <lib/languagemodel.hpp>
@@ -27,13 +29,76 @@
 #include "app/services/module.hpp"
 #include "app/services/engine.hpp"
 #include "app/services/desktopcontrol/sphinx.hpp"
-#include "app/services/desktopcontrol/service.hxx"
+#include "app/services/desktopcontrol/serviceprivate.hpp"
 #include "app/services/desktopcontrol/service.hpp"
 
 using SpeechControl::Core;
 using namespace SpeechControl::Services;
 using namespace SpeechControl::DesktopControl;
 Service* Service::s_inst = 0;
+
+ServicePrivate::ServicePrivate (Service* p_parent) : AbstractModulePrivate (p_parent),
+m_sphinx (0),
+m_view (new QDeclarativeView (QUrl ("qrc:///qml/dskptctlui")))
+{
+    m_sphinx = new Sphinx (Sphinx::standardDescription());
+
+    QString defAcousticModel = Core::configuration ("DesktopControl/AcousticModel").toString();
+    QString defLanguageModel = Core::configuration ("DesktopControl/LanguageModel").toString();
+
+    if (!defAcousticModel.isEmpty())
+        m_sphinx->setAcousticModel (defAcousticModel);
+
+    if (!defLanguageModel.isEmpty())
+        m_sphinx->setLanguageModel (defLanguageModel);
+}
+
+ServicePrivate::ServicePrivate (const SpeechControl::Services::AbstractModulePrivate& p_other) : AbstractModulePrivate (p_other)
+{
+
+}
+
+AbstractModule::ActivityState ServicePrivate::handleStateChange (const AbstractModule::ActivityState p_state)
+{
+    switch (p_state) {
+        case AbstractModule::Enabled:
+
+            if (!m_sphinx->start()) {
+                qWarning() << "[DesktopControl::ServicePrivate::start()] Start unsuccessful.";
+                return AbstractModule::Disabled;
+            }
+
+            qDebug() << "[DesktopControl::ServicePrivate::start()] Enabled.";
+
+            return AbstractModule::Enabled;
+            break;
+
+        case AbstractModule::Disabled:
+
+            if (!m_sphinx->stop()) {
+                qWarning() << "[DesktopControl::ServicePrivate::stop()] Stop unsuccessful.";
+                return AbstractModule::Enabled;
+            }
+
+            return AbstractModule::Disabled;
+            break;
+
+        default:
+            return AbstractModule::Undefined;
+    }
+
+    m_view->setVisible(m_sphinx->isRunning());
+}
+
+void ServicePrivate::changeState (AbstractModule::ActivityState p_state)
+{
+    m_state = handleStateChange(p_state);
+}
+
+ServicePrivate::~ServicePrivate()
+{
+
+}
 
 Service::Service() : AbstractModule (new ServicePrivate (this))
 {

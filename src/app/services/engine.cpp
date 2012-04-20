@@ -20,7 +20,7 @@
 
 #include "app/core.hpp"
 #include "app/services/module.hpp"
-#include "app/services/engine.hxx"
+#include "app/services/engineprivate.hpp"
 #include "app/services/engine.hpp"
 
 using SpeechControl::Core;

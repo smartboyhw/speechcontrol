@@ -33,7 +33,7 @@ namespace Services
 struct AbstractModulePrivate {
     Q_DECLARE_PUBLIC (AbstractModule)
     AbstractModulePrivate (AbstractModule* p_qPtr);
-    virtual ~AbstractModulePrivate();
+    ~AbstractModulePrivate();
     virtual void changeState (AbstractModule::ActivityState p_state) = 0;
     virtual AbstractModule::ActivityState handleStateChange (const AbstractModule::ActivityState p_state) = 0;
 

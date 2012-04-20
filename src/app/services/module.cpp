@@ -24,6 +24,17 @@
 
 using namespace SpeechControl::Services;
 
+AbstractModulePrivate::AbstractModulePrivate (AbstractModule* p_qPtr) :
+    q_ptr (p_qPtr), m_state (AbstractModule::Undefined)
+{
+
+}
+
+AbstractModulePrivate::~AbstractModulePrivate()
+{
+
+}
+
 AbstractModule::AbstractModule (QObject* p_parent) : QObject (p_parent),
     d_ptr (0)
 {

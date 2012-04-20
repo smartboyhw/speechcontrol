@@ -22,7 +22,7 @@
 #include <QDebug>
 #include <QTextStream>
 
-#include "noisedictionary.hxx"
+#include "noisedictionaryprivate.hpp"
 #include "noisedictionary.hpp"
 
 using namespace SpeechControl;

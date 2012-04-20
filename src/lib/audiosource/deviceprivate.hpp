@@ -20,7 +20,7 @@
 
 #include <QMap>
 
-#include <lib/audiosource/abstract.hxx>
+#include <lib/audiosource/abstractprivate.hpp>
 
 namespace SpeechControl
 {

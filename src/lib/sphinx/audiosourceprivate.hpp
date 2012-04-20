@@ -17,24 +17,28 @@
  *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#ifndef SPCHCNTRL_LIB_AUDIOSOURCE_STREAM_HXX_
-#define SPCHCNTRL_LIB_AUDIOSOURCE_STREAM_HXX_
-#include <QDataStream>
 
-#include "audiosource/sink.hpp"
-#include "audiosource/source.hpp"
-#include "audiosource/abstract.hxx"
+#ifndef SPCHCNTRL_LIB_SPHINX_AUDIOSOURCE_HXX_
+#define SPCHCNTRL_LIB_SPHINX_AUDIOSOURCE_HXX_
+
+#include <lib/sphinx/abstractprivate.hpp>
 
 namespace SpeechControl
 {
 
-struct StreamAudioSourcePrivate : public AbstractAudioSourcePrivate {
-    explicit StreamAudioSourcePrivate();
-    virtual ~StreamAudioSourcePrivate();
+class AbstractAudioSource;
+class AudioSourceSphinx;
+class AudioSourceSphinxSource;
 
-    QDataStream* m_strm;
+struct AudioSourceSphinxPrivate : public AbstractSphinxPrivate {
+    explicit AudioSourceSphinxPrivate (AudioSourceSphinx* p_qPtr);
+    virtual ~AudioSourceSphinxPrivate();
+    void linkSource ();
+    AbstractAudioSource* m_audioSrc;
+    AudioSourceSphinxSource* m_appSrc;
 };
+
 }
 
-#endif /* SPCHCNTRL_LIB_AUDIOSOURCE_STREAM_HXX_ */
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+#endif
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

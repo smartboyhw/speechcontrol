@@ -65,6 +65,6 @@ install(DIRECTORY   "${CMAKE_CURRENT_SOURCE_DIR}/"
         COMPONENT "dev"
         FILES_MATCHING
             PATTERN "*.hpp"
-            PATTERN "*.hxx"
-            PATTERN "*_p.hxx" EXCLUDE
+            PATTERN "*private.hpp"
+            PATTERN "*_pprivate.hpp" EXCLUDE
             PATTERN "cmake"   EXCLUDE)

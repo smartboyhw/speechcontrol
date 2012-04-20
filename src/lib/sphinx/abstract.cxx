@@ -18,7 +18,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "lib/sphinx/abstract.hxx"
+#include "lib/sphinx/abstractprivate.hpp"
 
 using namespace SpeechControl;
 

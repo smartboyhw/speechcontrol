@@ -18,7 +18,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "dictionary.hxx"
+#include "dictionaryprivate.hpp"
 #include "dictionary.hpp"
 
 #include <QDir>
@@ -224,4 +224,4 @@ DictionaryEntry::~DictionaryEntry()
 }
 
 #include "dictionary.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

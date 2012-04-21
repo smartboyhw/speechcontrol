@@ -141,6 +141,8 @@ private slots:
     void on_actionAboutSpeechControl_triggered ();
     void on_actionDesktopControlOptions_triggered();
     void on_actionDictationOptions_triggered();
+    void on_actionStartTraining_triggered();
+    void on_actionAdaptModels_triggered();
 
 private:
     QScopedPointer<IndicatorPrivate> d_ptr;

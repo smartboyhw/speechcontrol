@@ -20,7 +20,6 @@
 
 #include "selection.hpp"
 #include "source-text.hpp"
-#include "source-wiki.hpp"
 #include "sessions/content.hpp"
 #include "ui/contents-wizard.hpp"
 #include "ui_contentwizard-sourceselect.h"
@@ -51,7 +50,6 @@ void SourceSelectionPage::updateUi()
 void SourceSelectionPage::addDefaultSources()
 {
     registerSourceWidget (new TextContentSourceWidget);
-    registerSourceWidget (new WikiContentSourceWidget);
 }
 
 void SourceSelectionPage::on_comboBoxSource_currentIndexChanged (const int& p_index)

@@ -98,8 +98,8 @@ void SpeechControl::Windows::Wizards::Pages::MicrophoneSelection::on_comboBoxMic
 
     setDevice (DeviceAudioSource::obtain (deviceName));
 
-    device()->start();
     connect (device(), SIGNAL (bufferObtained (QByteArray)), this, SLOT (on_mic_bufferObtained (QByteArray)));
+    device()->start();
 }
 
 void MicrophoneSelection::on_mic_bufferObtained (QByteArray p_buffer)
@@ -107,7 +107,8 @@ void MicrophoneSelection::on_mic_bufferObtained (QByteArray p_buffer)
     quint16 max = pow (2, 16) - 1;
     quint16 val = p_buffer.toUInt();
     double progress = (double) val / (double) max;
-    qDebug() << p_buffer.toUInt();
+    qDebug() << "[MicrophoneSelection::on_mic_bufferObtained()] Buffer value: "
+             << p_buffer.toUInt();
     ui->progressBarFeedback->setValue (progress * 100);
 }
 
@@ -121,7 +122,7 @@ void MicrophoneSelection::setDevice (DeviceAudioSource* p_device)
     m_mic = p_device;
 
     if (p_device) {
-        wizard()->setField ("mic-id", m_mic->deviceName());
+        wizard()->setField ("mic", m_mic->deviceName());
     }
 }
 

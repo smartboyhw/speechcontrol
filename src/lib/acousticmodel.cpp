@@ -60,6 +60,13 @@ void cloneDirectory (QDir p_base, QDir p_newDir)
     }
 }
 
+AcousticModelPrivate::AcousticModelPrivate (const AcousticModel* p_model)
+    : m_params(), m_path(),
+      m_noisedict (0), m_mdl (const_cast<AcousticModel*> (p_model))
+{
+
+}
+
 void AcousticModelPrivate::loadFeatureParameters()
 {
     QFile* file = new QFile (m_mdl->parameterPath());
@@ -293,5 +300,5 @@ void AcousticModel::erase()
     }
 }
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
 #include "acousticmodel.moc"

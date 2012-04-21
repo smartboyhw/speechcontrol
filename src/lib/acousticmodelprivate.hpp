@@ -18,14 +18,18 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+#include <QString>
+#include <QVariantMap>
+
 namespace SpeechControl
 {
 
 class AcousticModel;
+class NoiseDictionary;
 struct AcousticModelPrivate;
 
 struct AcousticModelPrivate {
-    AcousticModelPrivate (const AcousticModel* p_modl) : m_params(), m_path(), m_noisedict (0), m_mdl (const_cast<AcousticModel*> (p_modl)) { }
+    AcousticModelPrivate (const AcousticModel* p_model);
     QVariantMap m_params;           ///< Holds the properties of the model.
     QString m_path;                 ///< Holds the path to the base directory of the acoustic model.
     NoiseDictionary* m_noisedict;   ///< Holds information about the noise dictionary.
@@ -35,4 +39,4 @@ struct AcousticModelPrivate {
 };
 
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

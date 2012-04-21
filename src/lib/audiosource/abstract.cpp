@@ -223,8 +223,8 @@ void AbstractAudioSource::onPipelineBusmessage (const QGst::MessagePtr& message)
 {
     switch (message->type()) {
     case QGst::MessageError: {
-        QGst::ErrorMessagePtr l_errMsg = message.staticCast<QGst::ErrorMessage>();
-        qDebug() << "[AbstractContentSource::onPipelineBusmessage()] Error message:" << l_errMsg->debugMessage();
+        QGst::ErrorMessagePtr errMsg = message.staticCast<QGst::ErrorMessage>();
+        qDebug() << "[AbstractContentSource::onPipelineBusmessage()] Error message:" << errMsg->debugMessage();
     }
     break;
 

@@ -65,6 +65,7 @@ DeviceAudioSource::DeviceAudioSource (const QString& p_deviceName) :
     d->obtainDevice (p_deviceName);
 }
 
+/// @todo Fix these copy constructor.
 DeviceAudioSource::DeviceAudioSource (const DeviceAudioSource& p_other) :
     AbstractAudioSource (new DeviceAudioSourcePrivate (this), p_other.parent())
 {
@@ -72,6 +73,7 @@ DeviceAudioSource::DeviceAudioSource (const DeviceAudioSource& p_other) :
     d->q_ptr = this;
 }
 
+/// @todo Fix these copy constructor.
 DeviceAudioSource::DeviceAudioSource (const AbstractAudioSource& p_other) :
     AbstractAudioSource (new DeviceAudioSourcePrivate (this), p_other.parent())
 {

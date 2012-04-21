@@ -39,7 +39,8 @@ class AbstractAudioSource;
 struct AbstractAudioSourcePrivate;
 
 /**
- * @brief Represents a shorthand for denoting a list of AbstractAudioSource objects.
+ * @brief Represents a shorthand for denoting a list of AbstractAudioSource
+ *        objects.
  **/
 typedef QList<AbstractAudioSource*> AudioSourceList;
 
@@ -51,10 +52,11 @@ typedef QMap<QUuid, AbstractAudioSource*> AudioSourceMap;
 /**
  * @brief Represents a handle of an audio input device on this computer.
  *
- * The AbstractAudioSource class allows developers to not worry too much about handling
- * audio devices for SpeechControl. It automatically obtains a listing of all
- * input devices in the system and allows this to be attached to other classes
- * that'd require the use of an audio input device like AbstractSphinx.
+ * The AbstractAudioSource class allows developers to not worry too much about
+ * handling audio devices for SpeechControl. It automatically obtains a
+ * listing of all input devices in the system and allows this to be attached
+ * to other classes that'd require the use of an audio input device
+ * like AudioSourceSphinx.
  **/
 class SPCH_EXPORT AbstractAudioSource : public QObject
 {
@@ -77,8 +79,8 @@ public:
     /**
      * @brief Determines if the AbstractAudioSource is properly formed.
      *
-     * @return TRUE if the building of the internal pipeline succeeded and all of the elements were formed.
-     *         FALSE if that operation failed.
+     * @return TRUE if the building of the internal pipeline succeeded and
+     *         all of the elements were formed. FALSE if that operation failed.
      **/
     bool isNull() const;
 
@@ -127,8 +129,10 @@ signals:
     void ended();
 
     /**
-     * @brief Emitted whenever a new buffer has been generated within this AbstractAudioSource.
-     * @param p_buffer A buffer representing a single quint8 (unsigned 8-bit integer or unsigned char).
+     * @brief Emitted whenever a new buffer has been generated within
+     *        this AbstractAudioSource.
+     * @param p_buffer A buffer representing a single quint8 (unsigned 8-bit
+     *                 integer or unsigned char).
      **/
     void bufferObtained (const QByteArray& p_buffer);
 
@@ -174,22 +178,25 @@ protected:
     AbstractAudioSource (AbstractAudioSourcePrivate* p_dPtr, QObject* p_parent = 0);
 
     /**
-     * @brief Obtains the portion of a pipeline needed for a derived AbstractAudioSource to use.
+     * @brief Obtains the portion of a pipeline needed for a derived
+     *        AbstractAudioSource to use.
      *
      * This method is implemented in derived classes to define specifically what
-     * elements for GStreamer are needed for the adequate construction of the pipeline.
+     * elements for GStreamer are needed for the adequate construction of the
+     * pipeline.
      *
      * @return A string representing the added portion of the description.
      **/
     virtual QString pipelineDescription() const = 0;
 
     /**
-     * @brief Obtains a QString representing the recommend capabilities of sinks and sources.
+     * @brief Obtains a string representing the recommend capabilities of sinks
+     *        and sources.
      **/
     QString caps() const;
 
     /**
-     * @brief Obtains a QString generating the resulting pipeline string.
+     * @brief Obtains a string generating the resulting pipeline string.
      * @see pipelineDescription()
      **/
     QString pipelineStr() const;
@@ -197,8 +204,13 @@ protected:
     /**
      * @brief Builds the internal pipeline.
      *
-     * Builds the necessary internal elements (like m_sinkPtr and m_levelPtr) to m_binPtr and
-     * then connects the GenericSink and GenericSource objects to their respective elements.
+     * Builds the necessary internal elements from the bin element and
+     * then connects the GenericSink and GenericSource objects to their
+     * respective elements.
+     *
+     * @note This method by itself cannot insure that all of the components of
+     * the pipeline have been correctly formed. Additional work is needed by the
+     * derived device to work.
      *
      **/
     virtual void buildPipeline();

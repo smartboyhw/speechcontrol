@@ -31,8 +31,8 @@ struct DeviceAudioSourcePrivate : public AbstractAudioSourcePrivate {
     explicit DeviceAudioSourcePrivate (DeviceAudioSource* p_obj);
     virtual ~DeviceAudioSourcePrivate();
     void obtainDevice (const QString& p_deviceName);
-    QGlib::Value m_device;
-    QGst::ElementPtr m_devicePtr;
+    QGlib::Value device;
+    QGst::ElementPtr devicePtr;
     DeviceAudioSource* m_deviceObj;
     static QMap<QString, DeviceAudioSource*> s_map;
 };

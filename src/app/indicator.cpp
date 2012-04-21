@@ -30,8 +30,13 @@
 #include "indicatorprivate.hpp"
 #include "ui/settings-dialog.hpp"
 #include "ui/about-dialog.hpp"
+#include "ui/training-dialog.hpp"
+#include "ui/session-manager.hpp"
+#include "ui/content-manager.hpp"
+#include "ui/adapt-wizard.hpp"
 #include "services/dictation/service.hpp"
 #include "services/desktopcontrol/service.hpp"
+#include "sessions/session.hpp"
 
 using namespace SpeechControl;
 
@@ -173,6 +178,36 @@ void Indicator::on_actionAboutSpeechControl_triggered()
     dialog.exec();
 }
 
+void Indicator::on_actionAdaptModels_triggered()
+{
+    Windows::Wizards::AdaptWizard adaptWizard;
+    adaptWizard.exec();
+}
+
+void Indicator::on_actionStartTraining_triggered()
+{
+    Session* session = 0;
+
+    if (!Session::allSessions().isEmpty()) {
+        session = Windows::Managers::SessionManager::pickSession();
+    }
+    else {
+        Content* content = 0;
+        content = Windows::Managers::ContentManager::pickContent();
+
+        if (content) {
+            session = Session::create (content);
+        }
+        else {
+            return;
+        }
+    }
+
+    if (session) {
+        Windows::TrainingDialog::startTraining (session);
+    }
+}
+
 Indicator::~Indicator()
 {
 
@@ -213,24 +248,24 @@ void IndicatorPrivate::buildMenu()
 
     menuDesktopControl = menuBase->addMenu (QIcon::fromTheme ("audio-headset"), "Desktop Control");
     menuDesktopControl->addActions (QList<QAction*>()
-                                      << actionDesktopControlToggle
-                                      << actionDesktopControlOptions
-                                     );
+                                    << actionDesktopControlToggle
+                                    << actionDesktopControlOptions
+                                   );
 
     menuDictation      = menuBase->addMenu (QIcon::fromTheme ("audio-input-microphone"), "Dictation");
     menuDictation->addActions (QList<QAction*>()
-                                 << actionDictationToggle
-                                 << actionDictationOptions
-                                );
+                               << actionDictationToggle
+                               << actionDictationOptions
+                              );
 
     menuPlugins        = menuBase->addMenu (QIcon::fromTheme ("configure"), "Plug-ins");
     menuPlugins->addSeparator();
     menuPlugins->addAction (actionPluginOptions);
 
     menuHelp           = menuBase->addMenu (QIcon::fromTheme ("help"), "Help");
-    menuTraining        = menuBase->addMenu("&Training");
-    menuTraining->addAction("&Start Training...",Indicator::instance(),SLOT(on_actionStartTraining_triggered()));
-    menuTraining->addAction("&Adapt Models",Indicator::instance(),SLOT(on_actionAdaptModels_triggered()));
+    menuTraining        = menuBase->addMenu ("&Training");
+    menuTraining->addAction ("&Start Training...", Indicator::instance(), SLOT (on_actionStartTraining_triggered()));
+    menuTraining->addAction ("&Adapt Models", Indicator::instance(), SLOT (on_actionAdaptModels_triggered()));
 
 
     actionAboutQt = menuHelp->addAction (QIcon::fromTheme ("qt"), "About &Qt", QApplication::instance(), SLOT (aboutQt()));

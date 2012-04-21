@@ -17,7 +17,6 @@ find_package(Qt4 4.7 COMPONENTS
   QtGui
   QtDBus
   QtXml
-  QtWebKit
   QtDeclarative
   REQUIRED)
 find_package(QtGStreamer REQUIRED)

@@ -31,46 +31,46 @@
 
 using namespace SpeechControl;
 
-AbstractAudioSourcePrivate::AbstractAudioSourcePrivate() : m_appSink (0),
-    m_appSrc (0), m_binPtr (), m_pipeline (), m_sinkPtr (),
-    m_srcPtr (), m_volumePtr (), m_levelPtr ()
+AbstractAudioSourcePrivate::AbstractAudioSourcePrivate() : appSink (0),
+    appSource (0), ptrBin (), m_pipeline (), ptrAudioSink (),
+    ptrAudioSource (), ptrVolume (), ptrLevel ()
 {
-    m_binPtr.clear();
+    ptrBin.clear();
     m_pipeline.clear();
-    m_sinkPtr.clear();
-    m_srcPtr.clear();
-    m_volumePtr.clear();
-    m_levelPtr.clear();
+    ptrAudioSink.clear();
+    ptrAudioSource.clear();
+    ptrVolume.clear();
+    ptrLevel.clear();
 }
 
 AbstractAudioSourcePrivate::~AbstractAudioSourcePrivate()
 {
     // Clean up your junk!
-    if (!m_binPtr.isNull())
-        m_binPtr->setState (QGst::StateNull);
+    if (!ptrBin.isNull())
+        ptrBin->setState (QGst::StateNull);
 
     if (!m_pipeline.isNull())
         m_pipeline->setState (QGst::StateNull);
 
-    if (!m_sinkPtr.isNull())
-        m_sinkPtr->setState (QGst::StateNull);
+    if (!ptrAudioSink.isNull())
+        ptrAudioSink->setState (QGst::StateNull);
 
-    if (!m_srcPtr.isNull())
-        m_srcPtr->setState (QGst::StateNull);
+    if (!ptrAudioSource.isNull())
+        ptrAudioSource->setState (QGst::StateNull);
 
-    if (!m_volumePtr.isNull())
-        m_volumePtr->setState (QGst::StateNull);
+    if (!ptrVolume.isNull())
+        ptrVolume->setState (QGst::StateNull);
 
-    if (!m_levelPtr.isNull())
-        m_levelPtr->setState (QGst::StateNull);
+    if (!ptrLevel.isNull())
+        ptrLevel->setState (QGst::StateNull);
 
     // Clean memory.
-    m_binPtr.clear();
+    ptrBin.clear();
     m_pipeline.clear();
-    m_sinkPtr.clear();
-    m_srcPtr.clear();
-    m_volumePtr.clear();
-    m_levelPtr.clear();
+    ptrAudioSink.clear();
+    ptrAudioSource.clear();
+    ptrVolume.clear();
+    ptrLevel.clear();
 }
 
 AbstractAudioSource::AbstractAudioSource (const AbstractAudioSource& p_other) : QObject (p_other.parent()),
@@ -106,53 +106,54 @@ void AbstractAudioSource::buildPipeline()
 {
     try {
         qDebug() << "[AbstractAudioSource::buildPipeline()] Building pipeline " << pipelineStr();
-        d_func()->m_binPtr = QGst::Bin::fromDescription (pipelineStr());
+        d_func()->ptrBin = QGst::Bin::fromDescription (pipelineStr());
     }
     catch (const QGlib::Error& error) {
         qCritical() << QString ("[AbstractAudioSource::buildPipeline()] Failed to create audio source bin from pipeline '%1': %2").arg (pipelineStr()).arg (error.what());
-        d_func()->m_binPtr.clear();
+        d_func()->ptrBin.clear();
         return;
     }
 
-    if (d_func()->m_binPtr.isNull()) {
+    if (d_func()->ptrBin.isNull()) {
         qDebug() << "[AbstractAudioSource::buildPipeline()] Pipeline built as NULL using description" << pipelineStr();
         return;
     }
     else {
-        qDebug() << "[AbstractAudioSource::buildPipeline()] Pipeline built using description" << pipelineStr() << d_func()->m_binPtr->pathString();
+        qDebug() << "[AbstractAudioSource::buildPipeline()] Pipeline built using description" << pipelineStr() << d_func()->ptrBin->pathString();
 
-        // Obtain tools for recording like the encoder and the source.
-        d_func()->m_sinkPtr   = d_func()->m_binPtr->getElementByName ("sink");
-        d_func()->m_srcPtr    = d_func()->m_binPtr->getElementByName ("src");
-        d_func()->m_volumePtr = d_func()->m_binPtr->getElementByName ("volume");
-        d_func()->m_levelPtr  = d_func()->m_binPtr->getElementByName ("level");
+        // Obtain elements.
+        d_func()->ptrAudioSink   = d_func()->ptrBin->getElementByName ("sink");
+        d_func()->ptrAudioSource = d_func()->ptrBin->getElementByName ("src");
+        d_func()->ptrVolume      = d_func()->ptrBin->getElementByName ("volume");
+        d_func()->ptrLevel       = d_func()->ptrBin->getElementByName ("level");
+
         qDebug() << "[AbstractAudioSource::buildPipeline()] Obtained pipeline elements.";
 
-        if (d_func()->m_sinkPtr.isNull()) {
+        if (d_func()->ptrAudioSink.isNull()) {
             qDebug() << "[AbstractAudioSource::buildPipeline()] Invalid element pointer obtained for the application sink.";
         }
 
-        if (d_func()->m_srcPtr.isNull()) {
+        if (d_func()->ptrAudioSource.isNull()) {
             qDebug() << "[AbstractAudioSource::buildPipeline()] Invalid element pointer obtained for the dynamic source.";
         }
 
         if (isNull()) {
             qDebug() << "[AbstractAudioSource::buildPipeline()] NULL elements discovered, aborting the building of the pipeline.";
-            d_func()->m_binPtr.clear();
+            d_func()->ptrBin.clear();
             return;
         }
 
         // build our magical sink and sources.
-        d_func()->m_appSink = new GenericSink (this);
-        d_func()->m_appSink->setCaps (QGst::Caps::fromString (caps()));
-        d_func()->m_appSink->setElement (d_func()->m_sinkPtr);
+        d_func()->appSink = new GenericSink (this);
+        d_func()->appSink->setCaps (QGst::Caps::fromString (caps()));
+        d_func()->appSink->setElement (d_func()->ptrAudioSink);
 
-        d_func()->m_appSrc = new GenericSource (this);
-        d_func()->m_appSrc->setCaps (QGst::Caps::fromString (caps()));
-        connect (d_func()->m_appSrc, SIGNAL (bufferObtained (QByteArray)), this, SIGNAL (bufferObtained (QByteArray)));
-        d_func()->m_appSink->setSource (d_func()->m_appSrc);
+        d_func()->appSource = new GenericSource (this);
+        d_func()->appSource->setCaps (QGst::Caps::fromString (caps()));
+        connect (d_func()->appSource, SIGNAL (bufferObtained (QByteArray)), this, SIGNAL (bufferObtained (QByteArray)));
+        d_func()->appSink->setSource (d_func()->appSource);
 
-        d_func()->m_binPtr->setState (QGst::StatePaused);
+        d_func()->ptrBin->setState (QGst::StatePaused);
         qDebug() << "[AbstractAudioSource::buildPipeline()] Paused elements in pipeline.";
     }
 }
@@ -162,8 +163,8 @@ double AbstractAudioSource::volume() const
     if (isNull())
         return -1.0;
 
-    qDebug() << "[AbstractContentSource::volume()] Level: " << d_func()->m_levelPtr->property ("peak-falloff").toString();
-    return d_func()->m_volumePtr->property ("volume").toString().toDouble();
+    qDebug() << "[AbstractContentSource::volume()] Level: " << d_func()->ptrLevel->property ("peak-falloff").toString();
+    return d_func()->ptrVolume->property ("volume").toString().toDouble();
 }
 
 bool AbstractAudioSource::isMuted() const
@@ -171,13 +172,13 @@ bool AbstractAudioSource::isMuted() const
     if (isNull())
         return -1.0;
 
-    return d_func()->m_volumePtr->property ("mute").toBool();
+    return d_func()->ptrVolume->property ("mute").toBool();
 }
 
 void AbstractAudioSource::setVolume (const double p_volume)
 {
     if (!isNull()) {
-        d_func()->m_volumePtr->setProperty<double> ("volume", p_volume);
+        d_func()->ptrVolume->setProperty<double> ("volume", p_volume);
         qDebug() << "[AbstractContentSource::setVolume()] Set volume of " << p_volume << ".";
     }
 }
@@ -185,7 +186,7 @@ void AbstractAudioSource::setVolume (const double p_volume)
 void AbstractAudioSource::setMuted (const bool p_muted)
 {
     if (!isNull()) {
-        d_func()->m_volumePtr->setProperty<bool> ("mute", p_muted);
+        d_func()->ptrVolume->setProperty<bool> ("mute", p_muted);
         qDebug() << "[AbstractContentSource::setVolume()] Set mute state of '" << p_muted << "'";
     }
 }
@@ -263,13 +264,13 @@ void AbstractAudioSource::onPipelineBusmessage (const QGst::MessagePtr& message)
 
 bool AbstractAudioSource::isNull() const
 {
-    qDebug() << "[AbstractAudioSource::isNull()] Bin (" << d_func()->m_binPtr.isNull()
-             << "); Sink (" << d_func()->m_sinkPtr.isNull()
-             << "); Source (" << d_func()->m_srcPtr.isNull()
-             << "); Volume (" << d_func()->m_volumePtr.isNull()
-             << "); Level (" << d_func()->m_levelPtr.isNull()
+    qDebug() << "[AbstractAudioSource::isNull()] Bin (" << d_func()->ptrBin.isNull()
+             << "); Sink (" << d_func()->ptrAudioSink.isNull()
+             << "); Source (" << d_func()->ptrAudioSource.isNull()
+             << "); Volume (" << d_func()->ptrVolume.isNull()
+             << "); Level (" << d_func()->ptrLevel.isNull()
              << ")";
-    return (d_func()->m_binPtr.isNull() || d_func()->m_sinkPtr.isNull() || d_func()->m_srcPtr.isNull() || d_func()->m_volumePtr.isNull() || d_func()->m_levelPtr.isNull());
+    return (d_func()->ptrBin.isNull() || d_func()->ptrAudioSink.isNull() || d_func()->ptrAudioSource.isNull() || d_func()->ptrVolume.isNull() || d_func()->ptrLevel.isNull());
 }
 
 void AbstractAudioSource::start()
@@ -282,7 +283,7 @@ void AbstractAudioSource::start()
     }
 
     d_func()->m_pipeline = QGst::Pipeline::create();
-    d_func()->m_pipeline->add (d_func()->m_binPtr);
+    d_func()->m_pipeline->add (d_func()->ptrBin);
 
     // Connect the bus to this AbstractAudioSource to detect changes in the pipeline.
     d_func()->m_pipeline->bus()->addSignalWatch();
@@ -308,7 +309,7 @@ void AbstractAudioSource::stop()
         d_func()->m_pipeline->bus()->removeSignalWatch();
         d_func()->m_pipeline->setState (QGst::StateNull);
         d_func()->m_pipeline.clear();
-        d_func()->m_binPtr->setState (QGst::StatePaused);
+        d_func()->ptrBin->setState (QGst::StatePaused);
     }
 
     qDebug() << "[AbstractAudioSource::start()] Bin inactive, recording stopped.";
@@ -320,8 +321,8 @@ bool AbstractAudioSource::isActive() const
     if (isNull())
         return false;
 
-    qDebug() << "[AbstractAudioSource::isRecording()] State of bin" << getStateText (d_func()->m_binPtr->currentState());
-    return (d_func()->m_binPtr->currentState() == QGst::StatePlaying);
+    qDebug() << "[AbstractAudioSource::isRecording()] State of bin" << getStateText (d_func()->ptrBin->currentState());
+    return (d_func()->ptrBin->currentState() == QGst::StatePlaying);
 }
 
 AbstractAudioSource::~AbstractAudioSource()

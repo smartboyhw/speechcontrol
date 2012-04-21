@@ -35,14 +35,14 @@ public:
     explicit AbstractAudioSourcePrivate();
     virtual ~AbstractAudioSourcePrivate();
 
-    GenericSink* m_appSink;         ///< A pointer to the GenericSink used by the AbstractAudioSource.
-    GenericSource* m_appSrc;        ///< A pointer to the GenericSource used by the AbstractAudioSource.
-    QGst::BinPtr m_binPtr;          ///< A shared pointer to the bin that handles the elements of this AbstractAudioSource.
+    GenericSink* appSink;         ///< A pointer to the GenericSink used by the AbstractAudioSource.
+    GenericSource* appSource;        ///< A pointer to the GenericSource used by the AbstractAudioSource.
+    QGst::BinPtr ptrBin;          ///< A shared pointer to the bin that handles the elements of this AbstractAudioSource.
     QGst::PipelinePtr m_pipeline;   ///< A shared pointer to the pipeline that manipulates the activity state of this AbstractAudioSource.
-    QGst::ElementPtr m_sinkPtr;     ///< A shared pointer to the application sink element.
-    QGst::ElementPtr m_srcPtr;      ///< A shared pointer to the application source element.
-    QGst::ElementPtr m_volumePtr;   ///< A shared pointer to the volume element.
-    QGst::ElementPtr m_levelPtr;    ///< A shared pointer to the level element.
+    QGst::ElementPtr ptrAudioSink;     ///< A shared pointer to the application sink element.
+    QGst::ElementPtr ptrAudioSource;      ///< A shared pointer to the application source element.
+    QGst::ElementPtr ptrVolume;   ///< A shared pointer to the volume element.
+    QGst::ElementPtr ptrLevel;    ///< A shared pointer to the level element.
 };
 }
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

@@ -33,7 +33,7 @@ struct DeviceAudioSourcePrivate : public AbstractAudioSourcePrivate {
     void obtainDevice (const QString& p_deviceName);
     QGlib::Value device;
     QGst::ElementPtr devicePtr;
-    DeviceAudioSource* m_deviceObj;
+    DeviceAudioSource* q_ptr;
     static QMap<QString, DeviceAudioSource*> s_map;
 };
 }

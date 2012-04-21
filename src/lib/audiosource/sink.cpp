@@ -103,7 +103,7 @@ QGst::BufferPtr StreamSink::pullBuffer()
 
 uint StreamSink::bufferSize() const
 {
-    QGlib::Value bufferSizeVal = d_func()->m_audioSrc->d_func()->m_srcPtr->property ("blocksize");
+    QGlib::Value bufferSizeVal = d_func()->m_audioSrc->d_func()->ptrAudioSource->property ("blocksize");
     const int bufferSize = bufferSizeVal.toUInt();
 
     if (bufferSize == -1)
@@ -114,7 +114,7 @@ uint StreamSink::bufferSize() const
 
 void StreamSink::setBufferSize (const uint& p_bufferSize)
 {
-    d_func()->m_audioSrc->d_func()->m_srcPtr->setProperty ("blocksize", p_bufferSize);
+    d_func()->m_audioSrc->d_func()->ptrAudioSource->setProperty ("blocksize", p_bufferSize);
 }
 
 StreamSink::~StreamSink()

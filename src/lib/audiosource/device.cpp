@@ -30,7 +30,7 @@ using namespace SpeechControl;
 QMap<QString, DeviceAudioSource*> DeviceAudioSourcePrivate::s_map;
 
 DeviceAudioSourcePrivate::DeviceAudioSourcePrivate (DeviceAudioSource* p_obj) :
-AbstractAudioSourcePrivate(), device(), devicePtr(), m_deviceObj (p_obj)
+    AbstractAudioSourcePrivate(), device(), devicePtr(), q_ptr (p_obj)
 {
     device.clear();
     devicePtr.clear();
@@ -45,13 +45,7 @@ void DeviceAudioSourcePrivate::obtainDevice (const QString& p_deviceName)
     else
         device.set<QString> (p_deviceName);
 
-    m_deviceObj->buildPipeline();
-
-    if (devicePtr)
-        devicePtr->setProperty ("device", device);
-    else {
-        qDebug() << "[DeviceAudioSourcePrivate::obtainDevice()] Failed to set device for use; invalid device pointer.";
-    }
+    q_ptr->buildPipeline();
 }
 
 DeviceAudioSourcePrivate::~DeviceAudioSourcePrivate()
@@ -75,7 +69,7 @@ DeviceAudioSource::DeviceAudioSource (const DeviceAudioSource& p_other) :
     AbstractAudioSource (new DeviceAudioSourcePrivate (this), p_other.parent())
 {
     Q_D (DeviceAudioSource);
-    d->m_deviceObj = this;
+    d->q_ptr = this;
 }
 
 DeviceAudioSource::DeviceAudioSource (const AbstractAudioSource& p_other) :
@@ -143,10 +137,10 @@ AudioSourceList DeviceAudioSource::allDevices()
                     propProbe->setProperty ("device", device);
 
                     Q_FOREACH (const QGlib::ParamSpecPtr spec, specs) {
-                                            qDebug() << "[DeviceAudioSource::allDevices()] Device:" << device.toString()
-                                                     << spec->name() << propProbe->property (spec->name().toStdString().c_str()).toString()
-                                                     << spec->description();
-                                            ;
+                        qDebug() << "[DeviceAudioSource::allDevices()] Device:" << device.toString()
+                                 << spec->name() << propProbe->property (spec->name().toStdString().c_str()).toString()
+                                 << spec->description();
+                        ;
                     }
 
                     if (!DeviceAudioSourcePrivate::s_map.contains (device.toString()))
@@ -183,9 +177,9 @@ QString DeviceAudioSource::humanName() const
     if (d->devicePtr.isNull())
         return deviceName();
     else {
-        d->devicePtr->setState (QGst::StatePlaying);
+        d->devicePtr->setState (QGst::StateReady);
         QString name = d->devicePtr->property ("device-name").toString();
-        d->devicePtr->setState (QGst::StatePaused);
+        d->devicePtr->setState (QGst::StateNull);
 
         if (name.isEmpty() || name.isNull())
             return deviceName();
@@ -212,7 +206,8 @@ void DeviceAudioSource::buildPipeline()
     }
     else {
 
-        QGst::ChildProxyPtr childProxy = d->m_srcPtr.dynamicCast<QGst::ChildProxy>();
+        d->ptrAudioSource->setState (QGst::StateReady);
+        QGst::ChildProxyPtr childProxy = d->ptrAudioSource.dynamicCast<QGst::ChildProxy>();
 
         if (childProxy && childProxy->childrenCount() > 0) {
             QGst::ObjectPtr realSrc = childProxy->childByIndex (0);
@@ -231,15 +226,17 @@ void DeviceAudioSource::buildPipeline()
             }
         }
 
-        d->devicePtr = d->m_binPtr->getElementByName ("src");
+        d->devicePtr = d->ptrBin->getElementByName ("src");
 
-        if (d->devicePtr.isNull())
-            qDebug() << "[DeviceAudioSource::obtain()] Warning! The obtained device pointer is NULL!" << d->device.toString();
+        if (d->devicePtr.isNull()) {
+            qWarning() << "[DeviceAudioSource::obtain()] The obtained device pointer is NULL!" << d->device.toString();
+        }
         else {
             d->devicePtr->setProperty<const char*> ("client", "SpeechControl");
             d->devicePtr->setProperty<bool> ("do-timestamp", true);
             d->devicePtr->setProperty<int> ("blocksize", -1);
             d->devicePtr->setProperty<bool> ("message-forward", true);
+            d->devicePtr->setProperty ("device", d->device);
         }
     }
 }

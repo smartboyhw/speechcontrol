@@ -68,13 +68,13 @@ void StreamAudioSource::buildPipeline()
         qDebug() << "[StreamAudioSource::buildPipeline()] Failed to render stream, invalid base pipeline.";
     }
 
-    d->m_appSrc = new StreamSource (this);
-    d->m_appSrc->setCaps (QGst::Caps::fromString (caps()));
-    d->m_appSrc->setElement (d->m_srcPtr);
+    d->appSource = new StreamSource (this);
+    d->appSource->setCaps (QGst::Caps::fromString (caps()));
+    d->appSource->setElement (d->ptrAudioSource);
 
-    d->m_appSink = new StreamSink (this);
-    d->m_appSink->setCaps (QGst::Caps::fromString (caps()));
-    d->m_appSink->setElement (d->m_sinkPtr);
+    d->appSink = new StreamSink (this);
+    d->appSink->setCaps (QGst::Caps::fromString (caps()));
+    d->appSink->setElement (d->ptrAudioSink);
 }
 
 QString StreamAudioSource::pipelineDescription() const

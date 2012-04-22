@@ -215,9 +215,7 @@ void DeviceAudioSource::buildPipeline()
             QGst::ObjectPtr realSrc = childProxy->childByIndex (0);
             qDebug() << "[DeviceAudioSource::obtain()] Obtained device" << d->device.toString();
 
-            if (!realSrc->findProperty ("device").isNull())
-                realSrc->setProperty ("device", d->device.toString());
-
+#if 0
             QList<QGlib::ParamSpecPtr> properties = realSrc->listProperties();
             Q_FOREACH (QGlib::ParamSpecPtr property, properties) {
                 QString name = property->name();
@@ -226,6 +224,7 @@ void DeviceAudioSource::buildPipeline()
                 if (value.isValid())
                     qDebug() << "[DeviceAudioSource::obtain()] Property" << name << "=" << value.toString();
             }
+#endif
         }
 
         d->devicePtr = d->ptrBin->getElementByName ("src");
@@ -236,8 +235,8 @@ void DeviceAudioSource::buildPipeline()
         else {
             d->devicePtr->setProperty<const char*> ("client", "SpeechControl");
             d->devicePtr->setProperty<bool> ("do-timestamp", true);
-            d->devicePtr->setProperty<int> ("blocksize", -1);
             d->devicePtr->setProperty<bool> ("message-forward", true);
+            d->devicePtr->setProperty<int> ("blocksize", 1024);
             d->devicePtr->setProperty ("device", d->device);
         }
     }

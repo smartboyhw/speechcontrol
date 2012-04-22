@@ -237,7 +237,7 @@ void AbstractAudioSource::onPipelineBusmessage (const QGst::MessagePtr& message)
     break;
 
     case QGst::MessageAsyncDone:
-        qDebug() << "[AbstractContentSource::onPipelineBusmessage()] Asynchronous stop invoked.";
+        qDebug() << "[AbstractContentSource::onPipelineBusmessage()] Asynchronous completion invoked.";
         break;
 
     case QGst::MessageAsyncStart:
@@ -253,6 +253,11 @@ void AbstractAudioSource::onPipelineBusmessage (const QGst::MessagePtr& message)
     case QGst::MessageElement: {
         QGst::ElementMessagePtr elementMessage = message.staticCast<QGst::ElementMessage>();
         //qDebug() << "[AbstractContentSource::onPipelineBusmessage()] Element message: " << elementMessage->internalStructure()->toString();
+    }
+    break;
+
+    case QGst::MessageClockProvide:
+    case QGst::MessageClockLost: {
     }
     break;
 

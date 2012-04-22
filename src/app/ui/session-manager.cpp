@@ -55,15 +55,15 @@ void SessionManager::updateList()
 {
     m_ui->listSession->clear();
 
-    SessionList l_lst = Session::allSessions();
-    Q_FOREACH (const Session * l_sessionItr, l_lst) {
+    SessionList lst = Session::allSessions();
+    Q_FOREACH (const Session * sessionItr, lst) {
         QListWidgetItem* item = new QListWidgetItem (m_ui->listSession);
-        item->setData (Qt::UserRole, l_sessionItr->id());
-        item->setText (tr ("%1 - %2%").arg (l_sessionItr->name()).arg ( (int) (l_sessionItr->assessProgress() * 100.0)));
-        item->setIcon ( (l_sessionItr->isCompleted()) ? QIcon::fromTheme ("task-complete") : QIcon::fromTheme ("task-ongoing"));
+        item->setData (Qt::UserRole, sessionItr->id());
+        item->setText (tr ("%1 - %2%").arg (sessionItr->name()).arg ( (int) (sessionItr->assessProgress() * 100.0)));
+        item->setIcon ( (sessionItr->isCompleted()) ? QIcon::fromTheme ("task-complete") : QIcon::fromTheme ("task-ongoing"));
         m_ui->listSession->addItem (item);
 
-        if (m_session && m_session->id() == l_sessionItr->id()) {
+        if (m_session && m_session->id() == sessionItr->id()) {
             item->setSelected (true);
         }
     }
@@ -71,6 +71,8 @@ void SessionManager::updateList()
     if (!m_session) {
         m_ui->listSession->setCurrentRow (0);
     }
+
+    m_ui->btnSelect->setEnabled(m_session != 0);
 }
 
 Session* SessionManager::session() const
@@ -81,15 +83,15 @@ Session* SessionManager::session() const
 /// @todo Implement a means of selecting @see Session objects from the manager.
 Session* SessionManager::pickSession()
 {
-    SessionManager* l_win = new SessionManager;
+    SessionManager* win = new SessionManager;
 
     if (Session::allSessions().empty()) {
-        l_win->on_btnCreate_clicked();
-        return l_win->session();
+        win->on_btnCreate_clicked();
+        return win->session();
     }
     else {
-        if (l_win->exec() == QDialog::Accepted) {
-            return l_win->session();
+        if (win->exec() == QDialog::Accepted) {
+            return win->session();
         }
     }
 
@@ -101,7 +103,7 @@ void SessionManager::on_btnCancel_clicked()
     this->reject();
 }
 
-void SessionManager::on_btnOk_clicked()
+void SessionManager::on_btnSelect_clicked()
 {
     if (m_session->isCompleted()) {
         if (QMessageBox::Yes == QMessageBox::question (this,
@@ -122,10 +124,10 @@ void SessionManager::on_btnCreate_clicked()
     Content* content = ContentManager::pickContent();
 
     if (content) {
-        Session* l_session = Session::create (content);
+        Session* session = Session::create (content);
 
-        if (l_session) {
-            m_session = l_session;
+        if (session) {
+            m_session = session;
         }
     }
 
@@ -151,6 +153,7 @@ void SessionManager::on_listSession_itemSelectionChanged()
 
     if (item) {
         Session* session = Session::obtain (item->data (Qt::UserRole).toString());
+        m_ui->btnSelect->setEnabled(session != 0);
 
         if (session) {
             const int progress = (int) (session->assessProgress() * 100.0);
@@ -161,6 +164,8 @@ void SessionManager::on_listSession_itemSelectionChanged()
                 m_ui->progressBar->setFormat (tr ("%p% complete"));
 
             m_ui->progressBar->setValue (progress);
+
+            m_session = session;
         }
         else {
             m_ui->progressBar->setFormat (tr ("no session selected"));

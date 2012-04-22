@@ -49,7 +49,8 @@ TrainingDialog::TrainingDialog (QWidget* p_parent) :
     m_ui (new Ui::Training),
     m_mic (0),
     m_session (0),
-    m_currentPosition (0), m_initialPosition (0)
+    m_currentPosition (0), m_initialPosition (0),
+    m_data()
 {
     m_ui->setupUi (this);
     m_ui->pushButtonProgress->setIcon (QIcon::fromTheme (ICON_RECORD));
@@ -74,7 +75,7 @@ DeviceAudioSource* TrainingDialog::deviceSource() const
 void TrainingDialog::setDevice (DeviceAudioSource* p_device)
 {
     m_mic = p_device;
-    connect (m_mic, SIGNAL (start()), this, SLOT (onMicStartedListening()));
+    connect (m_mic, SIGNAL (begun()), this, SLOT (onMicStartedListening()));
     connect (m_mic, SIGNAL (ended()), this, SLOT (onMicStoppedListening()));
     connect (m_mic, SIGNAL (bufferObtained (QByteArray)), this, SLOT (on_mic_BufferObtained (QByteArray)));
 
@@ -90,15 +91,20 @@ void TrainingDialog::on_mic_BufferObtained (QByteArray p_buffer)
 void TrainingDialog::onMicStartedListening()
 {
     m_ui->lblRecording->setPixmap (QIcon::fromTheme ("audio-volume-high").pixmap (32, 32));
-    QFile* file = currentPhrase()->audio();
-    file->open (QIODevice::WriteOnly | QIODevice::Truncate);
-    qDebug() << "[TrainingDialog::onMicStartedListening()]" << file->write ("kick me in the face")
-             << file->errorString();
+    m_data.clear();
 }
 
 void TrainingDialog::onMicStoppedListening()
 {
     m_ui->lblRecording->setPixmap (QIcon::fromTheme ("audio-volume-muted").pixmap (32, 32));
+    QFile* file = currentPhrase()->audio();
+    file->open (QIODevice::WriteOnly | QIODevice::Truncate);
+
+    if (file->write (m_data) == -1) {
+        qDebug() << "[TrainingDialog::onMicStoppedListening()] Error saving audio to disk: " << file->errorString();
+    }
+
+    file->close();
 }
 
 
@@ -125,7 +131,6 @@ void TrainingDialog::startTraining (Session* session, DeviceAudioSource* device)
     }
 }
 
-/// @bug When training reaches the end of the phrase, it's unable to proceed to the next phrase when training is invoked from here. A manual (yet sloppy) fix is to click 'Undo' until you reach the beginning of the phrase and re-record everything.
 void TrainingDialog::startCollecting()
 {
     if (!m_session->firstIncompletePhrase()) {
@@ -150,7 +155,7 @@ void TrainingDialog::startCollecting()
 
 void TrainingDialog::stopCollecting()
 {
-    if (m_mic)
+    if (m_mic && m_mic->isActive())
         m_mic->stop();
 
     m_ui->pushButtonNext->setEnabled (false);
@@ -177,6 +182,7 @@ Session* TrainingDialog::session() const
     return m_session;
 }
 
+/// @todo Should we add a 'save progress' confirmation dialog here?
 void TrainingDialog::on_pushButtonClose_clicked()
 {
     stopCollecting();
@@ -186,21 +192,15 @@ void TrainingDialog::on_pushButtonClose_clicked()
 void TrainingDialog::on_pushButtonProgress_toggled (const bool& checked)
 {
     m_ui->labelText->setEnabled (!checked);
-
-    if (!checked) {
-        stopCollecting();
-    }
-    else {
-        startCollecting();
-    }
+    !checked ? stopCollecting() : startCollecting();
 }
 
 void TrainingDialog::updateProgress (const double p_progress)
 {
-    const int l_progress = (int) (p_progress * 100) + ( (0.5 / (double) m_session->corpus()->phrases().length()) * 100);
-    this->setWindowTitle (tr ("Training '%2' (%1%) - SpeechControl").arg (l_progress).arg (m_session->content()->title()));
-    m_ui->groupBoxTitle->setTitle (QString ("%1 - %2%").arg (m_session->name()).arg (QString::number (l_progress)));
-    m_ui->progressBar->setValue (l_progress);
+    const int progress = (int) (p_progress * 100) + ( (0.5 / (double) m_session->corpus()->phrases().length()) * 100);
+    this->setWindowTitle (tr ("Training '%2' (%1%) - SpeechControl").arg (progress).arg (m_session->content()->title()));
+    m_ui->groupBoxTitle->setTitle (QString ("%1 - %2%").arg (m_session->name()).arg (QString::number (progress)));
+    m_ui->progressBar->setValue (progress);
 }
 
 void TrainingDialog::open()
@@ -298,27 +298,17 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonNext_clicked()
 
     if (m_mic->isActive()) {
         m_mic->stop();
-        QFile* file = currentPhrase()->audio();
-
-        if (!file->open (QIODevice::WriteOnly | QIODevice::Truncate)) {
-            qDebug() << "[TrainingDialog::onPushButtonNext_clicked()] Failed to save audio:" << file->errorString();
-        }
-        else {
-            QDataStream strm (file);
-            strm << m_data;
-            file->close();
-        }
     }
 
     if (!m_session->firstIncompletePhrase()) {
         updateProgress (1.0);
-        QMessageBox* l_msgComplete = new QMessageBox (this);
-        l_msgComplete->setWindowTitle (tr ("Session Complete - SpeechControl"));
-        l_msgComplete->setText (tr ("You've successfully completed the recording part of this session!"));
-        l_msgComplete->setInformativeText (tr ("With the session completed, you can now queue it for either adaption or generation of a language model."));
-        l_msgComplete->setIcon (QMessageBox::Information);
-        l_msgComplete->setIconPixmap (QIcon::fromTheme ("task-complete").pixmap (64, 64));
-        l_msgComplete->open();
+        QMessageBox* msgComplete = new QMessageBox (this);
+        msgComplete->setWindowTitle (tr ("Session Complete - SpeechControl"));
+        msgComplete->setText (tr ("You've successfully completed the recording part of this session!"));
+        msgComplete->setInformativeText (tr ("With the session completed, you can now queue it for either adaption or generation of a language model."));
+        msgComplete->setIcon (QMessageBox::Information);
+        msgComplete->setIconPixmap (QIcon::fromTheme ("task-complete").pixmap (64, 64));
+        msgComplete->open();
         close();
         return;
     }

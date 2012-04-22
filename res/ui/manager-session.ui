@@ -62,7 +62,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="btnOk">
+       <widget class="QPushButton" name="btnSelect">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
           <horstretch>0</horstretch>

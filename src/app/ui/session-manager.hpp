@@ -51,7 +51,7 @@ public:
 
 private slots:
     void on_btnCancel_clicked();
-    void on_btnOk_clicked();
+    void on_btnSelect_clicked();
     void on_btnCreate_clicked();
     void updateList();
     void on_listSession_itemSelectionChanged();

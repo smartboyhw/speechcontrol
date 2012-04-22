@@ -291,6 +291,7 @@ void AbstractAudioSource::start()
 
     // Get the party started :)
     d_func()->m_pipeline->setState (QGst::StatePlaying);
+    d_func()->ptrBin->setState(QGst::StatePlaying);
 
     qDebug() << "[AbstractAudioSource::start()] Bin active, recording started.";
     emit begun();

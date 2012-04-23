@@ -96,15 +96,17 @@ void TrainingDialog::onMicStartedListening()
 
 void TrainingDialog::onMicStoppedListening()
 {
-    m_ui->lblRecording->setPixmap (QIcon::fromTheme ("audio-volume-muted").pixmap (32, 32));
-    QFile* file = currentPhrase()->audio();
-    file->open (QIODevice::WriteOnly | QIODevice::Truncate);
+    if (session()) {
+        m_ui->lblRecording->setPixmap (QIcon::fromTheme ("audio-volume-muted").pixmap (32, 32));
+        QFile* file = currentPhrase()->audio();
+        file->open (QIODevice::WriteOnly | QIODevice::Truncate);
 
-    if (file->write (m_data) == -1) {
-        qDebug() << "[TrainingDialog::onMicStoppedListening()] Error saving audio to disk: " << file->errorString();
+        if (file->write (m_data) == -1) {
+            qDebug() << "[TrainingDialog::onMicStoppedListening()] Error saving audio to disk: " << file->errorString();
+        }
+
+        file->close();
     }
-
-    file->close();
 }
 
 

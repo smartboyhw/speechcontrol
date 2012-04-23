@@ -26,13 +26,15 @@
 
 using namespace SpeechControl;
 
-GenericSource::GenericSource (AbstractAudioSource* p_audioSource) : m_audioSrc (p_audioSource)
+GenericSource::GenericSource (AbstractAudioSource* p_audioSource) :
+    m_audioSrc (p_audioSource)
 {
     setParent (p_audioSource);
     qDebug() << "[GenericSource::{constructor}] Built source for " << m_audioSrc->pipelineStr() << ".";
 }
 
-GenericSource::GenericSource (const GenericSource& p_other) : QObject (p_other.parent()), ApplicationSource(), m_audioSrc (p_other.m_audioSrc)
+GenericSource::GenericSource (const GenericSource& p_other) :
+    QObject (p_other.parent()), ApplicationSource(), m_audioSrc (p_other.m_audioSrc)
 {
 
 }
@@ -46,13 +48,13 @@ QGst::FlowReturn GenericSource::pushBuffer (const QGst::BufferPtr& p_buffer)
 {
     quint8* bufferInt = p_buffer->data();
     QByteArray buffer;
-    buffer.resize (1);
     buffer[0] = (qint8) * bufferInt;
     emit bufferObtained (buffer);
 
-    //qDebug() << "[GenericSource::pushBuffer()] Buffer obtained from AbstractAudioSource" << p_buffer->data() << bufferInt << buffer;
+    qDebug() << "[GenericSource::pushBuffer()] Buffer obtained from AbstractAudioSource"
+             << p_buffer->data() << bufferInt << buffer;
 
-    return QGst::Utils::ApplicationSource::pushBuffer (p_buffer);
+    return ApplicationSource::pushBuffer (p_buffer);
 }
 
 GenericSource::~GenericSource()
@@ -61,7 +63,8 @@ GenericSource::~GenericSource()
         element()->setState (QGst::StateNull);
 }
 
-StreamSource::StreamSource (StreamAudioSource* p_audioSource) : GenericSource (p_audioSource)
+StreamSource::StreamSource (StreamAudioSource* p_audioSource) :
+    GenericSource (p_audioSource)
 {
 
 }
@@ -87,9 +90,10 @@ StreamSource::~StreamSource()
 
 }
 
-AudioSourceSphinxSource::AudioSourceSphinxSource (AudioSourceSphinx* p_sphinx) : QObject(), m_sphinx (p_sphinx)
+AudioSourceSphinxSource::AudioSourceSphinxSource (AudioSourceSphinx* p_sphinx)
+    : QObject(), m_sphinx (p_sphinx)
 {
 }
 
 #include "audiosource/source.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

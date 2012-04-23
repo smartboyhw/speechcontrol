@@ -43,7 +43,7 @@ GenericSink::GenericSink (const GenericSink& p_other) : QObject (p_other.parent(
 
 void GenericSink::eos()
 {
-    Q_D(GenericSink);
+    Q_D (GenericSink);
     qDebug() << "[GenericSink::eos()] End of stream in generic sink.";
     d->m_src->endOfStream();
     QGst::Utils::ApplicationSink::eos();
@@ -51,12 +51,20 @@ void GenericSink::eos()
 
 QGst::FlowReturn GenericSink::newBuffer()
 {
-    Q_D(GenericSink);
-    QGst::BufferPtr buffer = pullBuffer();
+    Q_D (GenericSink);
 
-    //qDebug() << "[GenericSink::newBuffer()] Buffer: " << * (buffer->data());
+    if (!isEos()) {
+        QGst::BufferPtr buffer = pullBuffer();
 
-    return d->em_src->pushBuffer (buffer);
+        qDebug() << "[GenericSink::newBuffer()] Buffer: " << *(buffer->data())
+                 << buffer->size() << buffer->timeStamp();
+
+        return d->m_src->pushBuffer (buffer);
+    }
+    else {
+        qDebug() << "[GenericSink::newBuffer()] Sink is at end-of-stream!";
+        return QGst::FlowError;
+    }
 }
 
 void GenericSink::setSource (GenericSource* p_source)
@@ -76,17 +84,20 @@ GenericSink::~GenericSink()
         element()->setState (QGst::StateNull);
 }
 
-StreamSink::StreamSink (StreamAudioSource* p_audioSrc) : GenericSink(), d_ptr (new StreamSinkPrivate)
+StreamSink::StreamSink (StreamAudioSource* p_audioSrc) :
+    GenericSink(), d_ptr (new StreamSinkPrivate)
 {
     d_func()->m_audioSrc = p_audioSrc;
 }
 
-StreamSink::StreamSink (const StreamSink& p_other) : GenericSink (p_other), d_ptr (const_cast<StreamSinkPrivate*> (p_other.d_func()))
+StreamSink::StreamSink (const StreamSink& p_other) :
+    GenericSink (p_other), d_ptr (const_cast<StreamSinkPrivate*> (p_other.d_func()))
 {
 
 }
 
-StreamSink::StreamSink (const GenericSink& p_other) : GenericSink (p_other), d_ptr (new StreamSinkPrivate)
+StreamSink::StreamSink (const GenericSink& p_other) :
+    GenericSink (p_other), d_ptr (new StreamSinkPrivate)
 {
 
 }

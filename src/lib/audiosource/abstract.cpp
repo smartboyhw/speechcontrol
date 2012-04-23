@@ -280,6 +280,7 @@ bool AbstractAudioSource::isNull() const
 
 void AbstractAudioSource::start()
 {
+    Q_D(AbstractAudioSource);
     if (isNull()) {
         qCritical() << "[AbstractAudioSource::start()]"
                     << "One or more elements could not be created. "
@@ -287,16 +288,20 @@ void AbstractAudioSource::start()
         return;
     }
 
-    d_func()->m_pipeline = QGst::Pipeline::create();
-    d_func()->m_pipeline->add (d_func()->ptrBin);
+
+    d->appSink->setSource(d->appSource);
+
+    d->m_pipeline = QGst::Pipeline::create();
+    d->m_pipeline->add (d->ptrBin);
 
     // Connect the bus to this AbstractAudioSource to detect changes in the pipeline.
-    d_func()->m_pipeline->bus()->addSignalWatch();
-    QGlib::connect (d_func()->m_pipeline->bus(), "message", this, &AbstractAudioSource::onPipelineBusmessage);
+    d->m_pipeline->bus()->addSignalWatch();
+    QGlib::connect (d->m_pipeline->bus(), "message", this, &AbstractAudioSource::onPipelineBusmessage);
 
     // Get the party started :)
-    d_func()->m_pipeline->setState (QGst::StatePlaying);
-    d_func()->ptrBin->setState(QGst::StatePlaying);
+    d->m_pipeline->setState (QGst::StatePlaying);
+    d->ptrBin->setState(QGst::StatePlaying);
+    d->appSource->setLive(true);
 
     qDebug() << "[AbstractAudioSource::start()] Bin active, recording started.";
     emit begun();

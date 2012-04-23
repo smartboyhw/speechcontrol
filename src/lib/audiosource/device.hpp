@@ -48,6 +48,8 @@ public:
     explicit DeviceAudioSource();
     DeviceAudioSource (const AbstractAudioSource& p_other);
     virtual ~DeviceAudioSource();
+    virtual void start();
+    virtual void stop();
     QString deviceName() const;
     QString humanName() const;
     static AudioSourceList allDevices();

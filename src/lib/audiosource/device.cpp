@@ -197,6 +197,16 @@ QString DeviceAudioSource::pipelineDescription() const
     return QString ("autoaudiosrc name=src");
 }
 
+void DeviceAudioSource::start()
+{
+    SpeechControl::AbstractAudioSource::start();
+}
+
+void DeviceAudioSource::stop()
+{
+    SpeechControl::AbstractAudioSource::stop();
+}
+
 void DeviceAudioSource::buildPipeline()
 {
     AbstractAudioSource::buildPipeline();

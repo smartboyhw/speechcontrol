@@ -29,30 +29,34 @@
 
 using namespace SpeechControl;
 
-GenericSink::GenericSink (QObject* p_parent) : QObject (p_parent), ApplicationSink(), d_ptr (new GenericSinkPrivate)
+GenericSink::GenericSink (QObject* p_parent) : QObject (p_parent),
+    ApplicationSink(), d_ptr (new GenericSinkPrivate)
 {
 
 }
 
-GenericSink::GenericSink (const GenericSink& p_other) : QObject (p_other.parent()), ApplicationSink(), d_ptr (new GenericSinkPrivate)
+GenericSink::GenericSink (const GenericSink& p_other) : QObject (p_other.parent()),
+    ApplicationSink(), d_ptr (new GenericSinkPrivate)
 {
 
 }
 
 void GenericSink::eos()
 {
+    Q_D(GenericSink);
     qDebug() << "[GenericSink::eos()] End of stream in generic sink.";
-    d_func()->m_src->endOfStream();
+    d->m_src->endOfStream();
     QGst::Utils::ApplicationSink::eos();
 }
 
 QGst::FlowReturn GenericSink::newBuffer()
 {
+    Q_D(GenericSink);
     QGst::BufferPtr buffer = pullBuffer();
 
     //qDebug() << "[GenericSink::newBuffer()] Buffer: " << * (buffer->data());
 
-    return d_func()->m_src->pushBuffer (buffer);
+    return d->em_src->pushBuffer (buffer);
 }
 
 void GenericSink::setSource (GenericSource* p_source)
@@ -123,4 +127,4 @@ StreamSink::~StreamSink()
 }
 
 #include "audiosource/sink.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

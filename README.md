@@ -1,9 +1,13 @@
-SpeechControl
-=======================
-Website: http://wiki.thesii.org/SpeechControl
-GitHub: https://github.com/spchcntrl/speechcontrol
+# SpeechControl
 
-1. Introduction
+Speech recognition software for human beings.
+
+***
+
+Website: http://wiki.thesii.org/SpeechControl
+GitHub:  https://github.com/thesii/speechcontrol
+
+## Introduction
 
 SpeechControl's the attempt of the Synthetic Intellect Institute to
 provide an efficient means of speech recognition technologies to the
@@ -17,12 +21,13 @@ you to:
   * control your desktop using arbitrary commands
   * provide speech recognition to other applications
 
-2. Bug Reporting
+## Bug Reporting
 
-Any and all bugs should be reported to http://tasks.thesii.org/.
+Any and all bugs should be reported to http://bugs.thesii.org
 That link points to the issue tracking system used to maintain any and all
 activities pertaining to SpeechControl. The exact link for bug reporting
-when it comes to SpeechControl is <http://tasks.thesii.org/enter_bug.cgi?product=speechcontrol>.
+when it comes to SpeechControl is 
+http://bugs.thesii.org/enter_bug.cgi?product=speechcontrol.
 
 It's recommended that you first test if SpeechControl works on your system
 and then try debugging SpeechControl. To produce meaningful information
@@ -41,15 +46,16 @@ occur and provide this information in a bug report on the Institute's tracker at
 http://tasks.thesii.org. You can provide more information by taking a look at
 README.tests.
 
-3. Contact
+## Contact
 You can reach the development team behind SpeechControl at their
-mailing list <spchcntrl-devel@thesii.org>. The people who helped produce
-and also use SpeechControl have a mailing list at <spchcntrl-users@thesii.org>.
+mailing list spchcntrl-devel@thesii.org. The people who helped produce
+and also use SpeechControl have a mailing list at spchcntrl-users@thesii.org.
 You can openly subscribe and add content to both of these mailing lists.
-Thank you for using our software.
+Thank you for using our software. More information regarding SpeechControl
+can be found at http://thesii.org/wiki/SpeechControl.
 
 
--------------------------
+***
 One Vision. One Purpose
 The Synthetic Intellect Institute :: F/OSS AI
 http://www.thesii.org :: spchcntrl-users@thesii.org :: #sii-speechcontrol on irc.freenode.net

@@ -339,6 +339,7 @@ bool AbstractAudioSource::isActive() const
 AbstractAudioSource::~AbstractAudioSource()
 {
     stop();
+    d_ptr.clear();
 }
 
 #include "audiosource/abstract.moc"

@@ -136,7 +136,6 @@ AudioSourceList DeviceAudioSource::allDevices()
                 Q_FOREACH (QGlib::Value device, devices) {
                     qDebug() << "[DeviceAudioSource::allDevices()] Found audio device" << device.toString();
                     QList<QGlib::ParamSpecPtr> specs = propProbe->listProperties();
-                    propProbe->setProperty ("device", device);
 
                     Q_FOREACH (const QGlib::ParamSpecPtr spec, specs) {
                         qDebug() << "[DeviceAudioSource::allDevices()] Device:" << device.toString()
@@ -199,12 +198,16 @@ QString DeviceAudioSource::pipelineDescription() const
 
 void DeviceAudioSource::start()
 {
+    Q_D(DeviceAudioSource);
     SpeechControl::AbstractAudioSource::start();
+    d->devicePtr->setState(QGst::StatePlaying);
 }
 
 void DeviceAudioSource::stop()
 {
+    Q_D(DeviceAudioSource);
     SpeechControl::AbstractAudioSource::stop();
+    d->devicePtr->setState(QGst::StateNull);
 }
 
 void DeviceAudioSource::buildPipeline()
@@ -213,7 +216,7 @@ void DeviceAudioSource::buildPipeline()
     Q_D (DeviceAudioSource);
 
     if (isNull()) {
-        qDebug() << "[DeviceAudioSource::obtain()] The base pipeline is NULL.";
+        qDebug() << "[DeviceAudioSource::buildPipeline()] The base pipeline is NULL.";
         return;
     }
     else {
@@ -240,14 +243,15 @@ void DeviceAudioSource::buildPipeline()
         d->devicePtr = d->ptrBin->getElementByName ("src");
 
         if (d->devicePtr.isNull()) {
-            qWarning() << "[DeviceAudioSource::obtain()] The obtained device pointer is NULL!" << d->device.toString();
+            qWarning() << "[DeviceAudioSource::buildPipeline()] The obtained device pointer is NULL!" << d->device.toString();
         }
         else {
+            qDebug() << "[DeviceAudioSource::buildPipeline()] Setting specific properties for" << d->device.toString() << "...";
             d->devicePtr->setProperty<const char*> ("client", "SpeechControl");
             d->devicePtr->setProperty<bool> ("do-timestamp", true);
             d->devicePtr->setProperty<bool> ("message-forward", true);
             d->devicePtr->setProperty<int> ("blocksize", 1024);
-            d->devicePtr->setProperty ("device", d->device);
+            //d->devicePtr->setProperty ("device", d->device);
         }
     }
 }

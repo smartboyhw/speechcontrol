@@ -18,7 +18,7 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <qt4/QtCore/QMap>
+#include <QtCore/QMap>
 #include <QString>
 
 class QFile;

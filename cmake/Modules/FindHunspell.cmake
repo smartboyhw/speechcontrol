@@ -18,12 +18,13 @@
 # (To distribute this file outside of CMake, substitute the full
 #  License text for the above reference.)
 
+set(HUNSPELL_VERSION 1.3)
 find_package(PkgConfig QUIET)
 pkg_check_modules(_HS hunspell)
 
 find_path(HUNSPELL_INCLUDE_DIRS "hunspell.hxx"
-          HINTS ${_HS_INCLUDEDIR} ${_HS_INCLUDE_DIRS})
-find_library(HUNSPELL_LIBRARIES "hunspell"
+    HINTS ${_HS_INCLUDEDIR} ${_HS_INCLUDE_DIRS})
+    find_library(HUNSPELL_LIBRARIES "hunspell" "hunspell-${HUNSPELL_VERSION}"
     HINTS ${_HS_LIBRARY_DIRS} ${_HS_LIBDIR})
 
 include(FindPackageHandleStandardArgs)

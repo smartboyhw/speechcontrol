@@ -129,6 +129,7 @@ void TrainingDialog::startTraining (Session* session, DeviceAudioSource* device)
         dialog->open();
     }
     else {
+        /// @bug This is ambiguous due to the branching statement above (testing for two possible cases).
         QMessageBox::information (0 , tr ("Session Completed"), tr ("<h2>Session Completed</h2>Session <b>%1</b> has been completed already.").arg (session->name()));
     }
 }
@@ -208,6 +209,7 @@ void TrainingDialog::updateProgress (const double p_progress)
 void TrainingDialog::open()
 {
     stopCollecting();
+    m_ui->pushButtonProgress->setText (tr ("Start"));
     m_ui->labelText->setText (tr ("<i>click <em>start</b> to begin training.</i>"));
     QDialog::open();
 }

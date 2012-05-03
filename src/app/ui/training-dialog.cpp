@@ -58,6 +58,7 @@ TrainingDialog::TrainingDialog (QWidget* p_parent) :
     m_ui->pushButtonUndo->setIcon (QIcon::fromTheme (ICON_UNDO));
     m_ui->pushButtonNext->setIcon (QIcon::fromTheme (ICON_NEXT));
 
+    /// @bug stopCollecting method seems to be used in redundant way (e.g. in the open() method).
     stopCollecting();
     onMicStoppedListening();
 }

@@ -79,7 +79,7 @@ double Session::assessProgress() const
 
     if (isValid()) {
         Q_FOREACH (const Phrase * phrase, corpus()->phrases()) {
-            progress += (phrase->isCompleted()) ? 1.0 : 0.0;
+            progress += (phrase->recorded()) ? 1.0 : 0.0;
         }
 
         double progressDelta = progress / (double) (corpus()->phrases().count());
@@ -300,7 +300,7 @@ PhraseList Session::uncompletedPhrases() const
 
     if (isValid()) {
         Q_FOREACH (Phrase * phrase, m_corpus->phrases()) {
-            if (!phrase->isCompleted()) {
+            if (!phrase->recorded()) {
                 list << phrase;
                 qDebug() << "[Phrase::incompletedPhrases()] Incomplete: " << phrase->index() << phrase->text();
             }

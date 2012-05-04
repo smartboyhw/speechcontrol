@@ -110,14 +110,14 @@ void SessionInformationDialog::on_btnPhrasePlay_clicked()
     Phrase* phrase = m_session->corpus()->phraseAt (m_ui->horizontalSliderPhrase->value());
     Phonon::MediaObject* media = new Phonon::MediaObject (this);
     Phonon::createPath (media, (new Phonon::AudioOutput (Phonon::NoCategory, this)));
-    media->setCurrentSource (QUrl (phrase->audio()->fileName()));
+    media->setCurrentSource (QUrl (phrase->audioFile()->fileName()));
     media->play();
 }
 
 void SessionInformationDialog::on_horizontalSliderPhrase_valueChanged (const int p_value)
 {
     Phrase* phrase = m_session->corpus()->phraseAt (p_value);
-    m_ui->btnPlayPhrase->setEnabled (phrase->isCompleted());
+    m_ui->btnPlayPhrase->setEnabled (phrase->recorded());
     m_ui->lblPhraseText->setText (phrase->text());
 }
 

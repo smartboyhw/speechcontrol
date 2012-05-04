@@ -35,15 +35,16 @@ namespace SpeechControl
 
 class Corpus;
 class Phrase;
-class Corpus;
 
 /**
- * @brief Represents a list of Phrase objects.
+ * @brief A list of Phrase objects.
  **/
 typedef QList<Phrase*> PhraseList;
 
 /**
- * @brief Represents a phrase of text, as part of a speech corpus.
+ * @brief A phrase of text, as part of a speech corpus.
+ * 
+ * The text representation uses DOM document which is written to 
  **/
 class SPCH_EXPORT Phrase : public QObject
 {
@@ -58,43 +59,43 @@ public:
     virtual ~Phrase();
 
     /**
-     * @brief Obtains the audio QFile of this phrase.
+     * @brief Obtain the audio QFile of this phrase.
      **/
-    QFile* audio() const;
+    QFile* audioFile() const;
 
     /**
-     * @brief Obtains the text of this Phrase.
+     * @brief Obtain the text of this Phrase.
      **/
     const QString text() const;
 
     /**
-     * @brief Obtains the number of words in this Phrase.
+     * @brief Obtain the number of words in this Phrase.
      **/
     quint8 words() const;
 
     /**
-     * @brief Obtains the index of this Phrase.
+     * @brief Obtain the index of this Phrase.
      **/
     quint8 index() const;
 
     /**
-     * @brief Determines if this Phrase has been recorded.
+     * @brief Determine if this Phrase has been recorded.
      **/
-    bool isCompleted() const;
+    bool recorded() const;
 
     /**
-     * @brief Obtains the path to the audio file.
+     * @brief Obtain the path to the audio file.
      * @see audio()
      **/
     QString audioPath() const;
 
     /**
-     * @brief Creates a new Phrase for a corpus.
+     * @brief Create a new Phrase for a corpus.
      *
-     * Creates a new Phrase with text p_text for a specific corpus, p_corpus.
+     * Create a new Phrase located in some Corpus with given text.
      *
-     * @param p_corpus The corpus obtaining this new Phrase.
-     * @param p_text The QString rendering this Phrase.
+     * @param p_corpus The Corpus for this new Phrase.
+     * @param p_text The text of this Phrase.
      **/
     static Phrase* create (Corpus* p_corpus, const QString& p_text);
 

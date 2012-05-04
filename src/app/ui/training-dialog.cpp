@@ -99,7 +99,7 @@ void TrainingDialog::onMicStoppedListening()
 {
     if (session()) {
         m_ui->lblRecording->setPixmap (QIcon::fromTheme ("audio-volume-muted").pixmap (32, 32));
-        QFile* file = currentPhrase()->audio();
+        QFile* file = currentPhrase()->audioFile();
         file->open (QIODevice::WriteOnly | QIODevice::Truncate);
 
         if (file->write (m_data) == -1) {
@@ -256,8 +256,8 @@ void TrainingDialog::navigatePreviousPart()
 
 bool TrainingDialog::currentPhraseCompleted()
 {
-    qDebug() << "[TrainingDialog::currentPhraseCompleted()] Is phrase completed? " << currentPhrase()->isCompleted();
-    return currentPhrase()->isCompleted();
+    qDebug() << "[TrainingDialog::currentPhraseCompleted()] Is phrase completed? " << currentPhrase()->recorded();
+    return currentPhrase()->recorded();
 }
 
 /// @todo This should clear all of the progress made since the start of training WHEN this dialog opened.
@@ -275,7 +275,7 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonReset_clicked()
         Phrase* sntc = m_session->corpus()->phraseAt (i);
         qDebug() << "[TrainingDialog::on_pushButtonReset_clicked()] Wiping phrase" << sntc->text();
         Q_FOREACH (Phrase * phrs, m_session->corpus()->phrases()) {
-            phrs->audio()->remove();
+            phrs->audioFile()->remove();
         }
     }
 
@@ -290,7 +290,7 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonUndo_clicked()
 {
     int pos = 0;
     // Wipe out this audio.
-    currentPhrase()->audio()->remove();
+    currentPhrase()->audioFile()->remove();
 
     // Rewind to that part.
     navigateToPart (pos);

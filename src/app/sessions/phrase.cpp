@@ -41,9 +41,9 @@ Phrase* Phrase::create (Corpus* p_corpus, const QString& p_text)
     return p_corpus->addPhrase (new Phrase (p_corpus, elem));
 }
 
-bool Phrase::isCompleted() const
+bool Phrase::recorded() const
 {
-    return audio()->exists();
+    return audioFile()->exists();
 }
 
 const QString Phrase::text() const
@@ -51,7 +51,7 @@ const QString Phrase::text() const
     return m_elem->attribute ("text").toLocal8Bit();
 }
 
-QFile* Phrase::audio() const
+QFile* Phrase::audioFile() const
 {
     const QString fileName = m_corpus->audioPath() + "/phrase" + QString::number (index()) + ".raw";
     return new QFile (fileName);

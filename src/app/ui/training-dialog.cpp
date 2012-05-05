@@ -58,6 +58,7 @@ TrainingDialog::TrainingDialog (QWidget* p_parent) :
     m_ui->pushButtonUndo->setIcon (QIcon::fromTheme (ICON_UNDO));
     m_ui->pushButtonNext->setIcon (QIcon::fromTheme (ICON_NEXT));
 
+    /// @bug stopCollecting method seems to be used in redundant way (e.g. in the open() method).
     stopCollecting();
     onMicStoppedListening();
 }
@@ -98,7 +99,7 @@ void TrainingDialog::onMicStoppedListening()
 {
     if (session()) {
         m_ui->lblRecording->setPixmap (QIcon::fromTheme ("audio-volume-muted").pixmap (32, 32));
-        QFile* file = currentPhrase()->audio();
+        QFile* file = currentPhrase()->audioFile();
         file->open (QIODevice::WriteOnly | QIODevice::Truncate);
 
         if (file->write (m_data) == -1) {
@@ -129,6 +130,7 @@ void TrainingDialog::startTraining (Session* session, DeviceAudioSource* device)
         dialog->open();
     }
     else {
+        /// @bug This is ambiguous due to the branching statement above (testing for two possible cases).
         QMessageBox::information (0 , tr ("Session Completed"), tr ("<h2>Session Completed</h2>Session <b>%1</b> has been completed already.").arg (session->name()));
     }
 }
@@ -208,6 +210,7 @@ void TrainingDialog::updateProgress (const double p_progress)
 void TrainingDialog::open()
 {
     stopCollecting();
+    m_ui->pushButtonProgress->setText (tr ("Start"));
     m_ui->labelText->setText (tr ("<i>click <em>start</b> to begin training.</i>"));
     QDialog::open();
 }
@@ -253,8 +256,8 @@ void TrainingDialog::navigatePreviousPart()
 
 bool TrainingDialog::currentPhraseCompleted()
 {
-    qDebug() << "[TrainingDialog::currentPhraseCompleted()] Is phrase completed? " << currentPhrase()->isCompleted();
-    return currentPhrase()->isCompleted();
+    qDebug() << "[TrainingDialog::currentPhraseCompleted()] Is phrase completed? " << currentPhrase()->recorded();
+    return currentPhrase()->recorded();
 }
 
 /// @todo This should clear all of the progress made since the start of training WHEN this dialog opened.
@@ -272,7 +275,7 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonReset_clicked()
         Phrase* sntc = m_session->corpus()->phraseAt (i);
         qDebug() << "[TrainingDialog::on_pushButtonReset_clicked()] Wiping phrase" << sntc->text();
         Q_FOREACH (Phrase * phrs, m_session->corpus()->phrases()) {
-            phrs->audio()->remove();
+            phrs->audioFile()->remove();
         }
     }
 
@@ -287,7 +290,7 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonUndo_clicked()
 {
     int pos = 0;
     // Wipe out this audio.
-    currentPhrase()->audio()->remove();
+    currentPhrase()->audioFile()->remove();
 
     // Rewind to that part.
     navigateToPart (pos);

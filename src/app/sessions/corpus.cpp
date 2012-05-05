@@ -385,7 +385,7 @@ QFile* Corpus::fileIds() const
             QTextStream strm (fileIds);
 
             Q_FOREACH (const Phrase * phrase, phrases()) {
-                QFileInfo currentFile (phrase->audio()->fileName());
+                QFileInfo currentFile (phrase->audioFile()->fileName());
                 const QString fileid = currentFile.baseName();
                 strm << fileid << endl;
             }
@@ -416,7 +416,7 @@ QFile* Corpus::transcription (QString const& p_silencePrefix,
             QTextStream strm (transcription);
 
             Q_FOREACH (const Phrase * phrase, phrases()) {
-                QFileInfo currentFile (phrase->audio()->fileName());
+                QFileInfo currentFile (phrase->audioFile()->fileName());
                 const QString fileid = currentFile.baseName();
                 const QString phraseText = phrase->text().toUpper();
                 strm << p_silencePrefix << " "

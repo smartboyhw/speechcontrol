@@ -21,7 +21,7 @@
 #ifndef SPEECHCONTROL_VOXFORGE_PACKAGE_HPP
 #define SPEECHCONTROL_VOXFORGE_PACKAGE_HPP
 
-#include <qt4/QtCore/QObject>
+#include <QtCore/QObject>
 
 
 namespace SpeechControl

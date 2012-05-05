@@ -237,8 +237,8 @@ void IndicatorPrivate::buildActions()
 
     actionDesktopControlToggle->setCheckable (true);
     actionDictationToggle->setCheckable (true);
-    actionDesktopControlToggle->setChecked (DesktopControl::Service::instance()->isEnabled());
-    actionDictationToggle->setChecked (Dictation::Service::instance()->isEnabled());
+    actionDesktopControlToggle->setChecked (DesktopControl::Service::instance()->isActive());
+    actionDictationToggle->setChecked (Dictation::Service::instance()->isActive());
 }
 
 void IndicatorPrivate::buildMenu()

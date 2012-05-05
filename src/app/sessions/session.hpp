@@ -163,7 +163,7 @@ public:
     static void init();
 
     /**
-     * @brief Saves information about the Session's cache to disc.
+     * @brief Saves information about the Session's cache to disk.
      **/
     static void save();
 

@@ -99,7 +99,7 @@ QGst::BinPtr FileRecorder::createAudioSrcBin()
     
     try {
         audioBin = QGst::Bin::fromDescription("autoaudiosrc name=\"audiosrc\" ! audioconvert ! "
-        "audioresample ! audiorate ! speexenc ! queue");
+        "audioresample ! audiorate ! queue");
     } catch (const QGlib::Error & error) {
         qCritical() << "Failed to create audio source bin:" << error;
         return QGst::BinPtr();
@@ -202,7 +202,9 @@ void FileRecorder::start()
     //link elements
     QGst::PadPtr audioPad;
     if (encoding == "Wav")
-        audioPad = mux->getRequestPad("sink");
+        audioPad = mux->getStaticPad("sink");
+    else if (encoding == "Avi")
+        audioPad = mux->getRequestPad("audio_%d");
     else
         audioPad = mux->getRequestPad("sink_%d");
     audioSrcBin->getStaticPad("src")->link(audioPad);

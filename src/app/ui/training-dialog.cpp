@@ -95,6 +95,7 @@ void TrainingDialog::onMicStartedListening()
     m_data.clear();
 }
 
+/// @todo [audio-recording] This is to be removed because new class will handle saving audio to files.
 void TrainingDialog::onMicStoppedListening()
 {
     if (session()) {

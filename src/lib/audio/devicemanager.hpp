@@ -26,8 +26,38 @@
 */
 
 
-#include "fileaudiorecorder.hpp"
+#ifndef DEVICEMANAGER_HPP
+#define DEVICEMANAGER_HPP
 
+#include <QtCore/QObject>
+#include <QStringList>
+#include <QString>
 
+namespace SpeechControl
+{
 
+namespace Audio
+{
 
+class DeviceManager : public QObject
+{
+    Q_OBJECT
+    
+public:
+    explicit DeviceManager(QObject* parent = 0);
+    virtual ~DeviceManager();
+    
+    static void add(QString device);
+    static void chooseDevice(QString device);
+    static void chooseDevice(int deviceID);
+
+    static QString currentChoice();
+    
+private:
+    static QStringList devices;
+    static QString chosenDevice;
+};
+
+}
+}
+#endif // DEVICEMANAGER_HPP

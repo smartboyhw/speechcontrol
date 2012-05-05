@@ -26,14 +26,43 @@
 */
 
 
-#ifndef FILEAUDIORECORDER_HPP
-#define FILEAUDIORECORDER_HPP
+#include "devicemanager.hpp"
 
-#include <QtCore/QObject>
+#include <QDebug>
 
+using namespace SpeechControl::Audio;
 
-class FileAudioRecorder : public QObject
+QStringList DeviceManager::devices;
+QString DeviceManager::chosenDevice;
+
+void DeviceManager::add ( QString device )
 {
-};
+    DeviceManager::devices.append(device);
+}
 
-#endif // FILEAUDIORECORDER_HPP
+void DeviceManager::chooseDevice ( QString device )
+{
+    chosenDevice = device;
+}
+
+void DeviceManager::chooseDevice ( int deviceID )
+{
+    chosenDevice = devices.at(deviceID);
+}
+
+QString DeviceManager::currentChoice()
+{
+    return chosenDevice;
+}
+
+DeviceManager::DeviceManager ( QObject* parent ) : QObject ( parent )
+{
+
+}
+
+DeviceManager::~DeviceManager()
+{
+
+}
+
+#include "devicemanager.moc"

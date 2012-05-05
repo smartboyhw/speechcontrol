@@ -94,6 +94,8 @@ public:
      **/
     void setEncoding(QString _encoding);
     
+    bool isActive() const;
+    
 public slots:
     void start();
     void stop();
@@ -105,6 +107,7 @@ signals:
 private:
     QString outFile;
     QString encoding;
+    bool active;
     
     QGst::PropertyProbePtr audioProbe;
     QGst::PipelinePtr pipeline;

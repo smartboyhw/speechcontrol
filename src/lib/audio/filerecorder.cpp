@@ -144,19 +144,20 @@ void FileRecorder::onBusMessage ( const QGst::MessagePtr& message )
     }
 }
 
-FileRecorder::FileRecorder ( QObject* parent ) : QObject ( parent )
+FileRecorder::FileRecorder ( QObject* parent ) : QObject ( parent ), outFile("/dev/null"), encoding("Wav"),
+    active(false)
 {
 
 }
 
 FileRecorder::FileRecorder ( QString _outFile, QObject* parent ) : QObject ( parent ),
-    outFile(_outFile), encoding("Wav")
+    outFile(_outFile), encoding("Wav"), active(false)
 {
 
 }
 
 FileRecorder::FileRecorder ( QFile& _outFile, QObject* parent ) : QObject ( parent ),
-    encoding("Wav")
+    encoding("Wav"), active(false)
 {
     outFile = _outFile.fileName();
 }
@@ -210,12 +211,23 @@ void FileRecorder::start()
     
     //go!
     pipeline->setState(QGst::StatePlaying);
+    
+    active = true;
+    emit started();
 }
 
 void FileRecorder::stop()
 {
     pipeline->setState(QGst::StateNull);
     pipeline.clear();
+    
+    active = false;
+    emit stopped();
+}
+
+bool FileRecorder::isActive() const
+{
+    return active;
 }
 
 #include "filerecorder.moc"

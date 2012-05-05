@@ -53,8 +53,13 @@ const QString Phrase::text() const
 
 QFile* Phrase::audioFile() const
 {
-    const QString fileName = m_corpus->audioPath() + "/phrase" + QString::number (index()) + ".raw";
+    const QString fileName = m_corpus->audioPath() + "/phrase" + QString::number (index()) + ".wav";
     return new QFile (fileName);
+}
+
+QString Phrase::filePath() const
+{
+    return m_corpus->audioPath() + "/phrase" + QString::number (index()) + ".wav";
 }
 
 quint8 Phrase::index() const

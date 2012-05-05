@@ -32,6 +32,8 @@
 #include <QMessageBox>
 #include <QDebug>
 
+#include <QGst/Bus>
+#include <QGst/Message>
 #include <QGlib/Error>
 #include <QGlib/Connect>
 
@@ -123,7 +125,23 @@ QGst::BinPtr FileRecorder::createAudioSrcBin()
 
 void FileRecorder::onBusMessage ( const QGst::MessagePtr& message )
 {
-
+    switch (message->type()) {
+        case QGst::MessageEos:
+            //got end-of-stream - stop the pipeline
+            stop();
+            break;
+        case QGst::MessageError:
+            //check if the pipeline exists before destroying it,
+            //as we might get multiple error messages
+            if (pipeline) {
+                stop();
+            }
+            QMessageBox::critical(NULL, tr("Pipeline Error"),
+            message.staticCast<QGst::ErrorMessage>()->error().message());
+            break;
+        default:
+            break;
+    }
 }
 
 FileRecorder::FileRecorder ( QObject* parent ) : QObject ( parent )
@@ -132,12 +150,13 @@ FileRecorder::FileRecorder ( QObject* parent ) : QObject ( parent )
 }
 
 FileRecorder::FileRecorder ( QString _outFile, QObject* parent ) : QObject ( parent ),
-    outFile(_outFile)
+    outFile(_outFile), encoding("Wav")
 {
 
 }
 
-FileRecorder::FileRecorder ( QFile& _outFile, QObject* parent ) : QObject ( parent )
+FileRecorder::FileRecorder ( QFile& _outFile, QObject* parent ) : QObject ( parent ),
+    encoding("Wav")
 {
     outFile = _outFile.fileName();
 }
@@ -164,12 +183,39 @@ void FileRecorder::setEncoding ( QString _encoding )
 
 void FileRecorder::start()
 {
-
+    QGst::BinPtr audioSrcBin = createAudioSrcBin();
+    QGst::ElementPtr mux = QGst::ElementFactory::make(muxers.value(encoding));
+    QGst::ElementPtr sink = QGst::ElementFactory::make("filesink");
+    
+    if (!audioSrcBin || !mux || !sink) {
+        QMessageBox::critical(NULL, tr("Error"), tr("One or more elements could not be created. "
+        "Verify that you have all the necessary element plugins installed."));
+        return;
+    }
+    
+    sink->setProperty("location", outFile);
+    
+    pipeline = QGst::Pipeline::create();
+    pipeline->add(audioSrcBin, mux, sink);
+    
+    //link elements
+    QGst::PadPtr audioPad = mux->getRequestPad("sink_%d");
+    audioSrcBin->getStaticPad("src")->link(audioPad);
+    
+    mux->link(sink);
+    
+    //connect the bus
+    pipeline->bus()->addSignalWatch();
+    QGlib::connect(pipeline->bus(), "message", this, &FileRecorder::onBusMessage);
+    
+    //go!
+    pipeline->setState(QGst::StatePlaying);
 }
 
 void FileRecorder::stop()
 {
-
+    pipeline->setState(QGst::StateNull);
+    pipeline.clear();
 }
 
 #include "filerecorder.moc"

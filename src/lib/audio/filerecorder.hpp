@@ -43,12 +43,15 @@
 namespace SpeechControl
 {
 
+class System;
+
 namespace Audio
 {
 
 class FileRecorder : public QObject
 {
     Q_OBJECT
+    friend class SpeechControl::System;
     
 public:
     explicit FileRecorder(QObject* parent = 0);

@@ -200,7 +200,11 @@ void FileRecorder::start()
     pipeline->add(audioSrcBin, mux, sink);
     
     //link elements
-    QGst::PadPtr audioPad = mux->getRequestPad("sink_%d");
+    QGst::PadPtr audioPad;
+    if (encoding == "Wav")
+        audioPad = mux->getRequestPad("sink");
+    else
+        audioPad = mux->getRequestPad("sink_%d");
     audioSrcBin->getStaticPad("src")->link(audioPad);
     
     mux->link(sink);

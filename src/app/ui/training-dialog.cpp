@@ -62,10 +62,10 @@ TrainingDialog::TrainingDialog (QWidget* p_parent) :
     m_ui->pushButtonNext->setIcon (QIcon::fromTheme (ICON_NEXT));
     
     recorder = new FileRecorder;
+    recorder->setEncoding("Ogg");
 
     /// @bug stopCollecting method seems to be used in redundant way (e.g. in the open() method).
     stopCollecting();
-    onMicStoppedListening();
 }
 
 TrainingDialog::~TrainingDialog()

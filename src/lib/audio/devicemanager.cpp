@@ -36,6 +36,7 @@ QStringList DeviceManager::devices;
 QString DeviceManager::chosenDevice;
 QMap<QString, QString> DeviceManager::muxers;
 QString DeviceManager::chosenMux;
+QString DeviceManager::chosenFormat;
 
 void DeviceManager::setup()
 {
@@ -62,6 +63,7 @@ void DeviceManager::chooseDevice ( int deviceID )
 void DeviceManager::setMux ( QString audioType )
 {
     chosenMux = muxers.value(audioType);
+    chosenFormat = audioType;
 }
 
 QString DeviceManager::device()
@@ -72,6 +74,11 @@ QString DeviceManager::device()
 QString DeviceManager::mux()
 {
     return chosenMux;
+}
+
+QString DeviceManager::audioFormat()
+{
+    return chosenFormat;
 }
 
 DeviceManager::DeviceManager ( QObject* parent ) : QObject ( parent )

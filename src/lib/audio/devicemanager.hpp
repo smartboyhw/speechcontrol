@@ -58,10 +58,12 @@ public:
 
     static QString device();
     static QString mux();
+    static QString audioFormat();
     
 private:
     static QStringList devices;
     static QString chosenDevice;
+    static QString chosenFormat;
     static QString chosenMux;
     
     static QMap<QString, QString> muxers;

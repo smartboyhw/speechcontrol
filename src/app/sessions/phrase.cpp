@@ -20,6 +20,7 @@
 
 #include "phrase.hpp"
 #include "corpus.hpp"
+#include <lib/audio/devicemanager.hpp>
 
 #include <QFile>
 #include <QDebug>
@@ -59,7 +60,14 @@ QFile* Phrase::audioFile() const
 
 QString Phrase::filePath() const
 {
-    return m_corpus->audioPath() + "/phrase" + QString::number (index()) + ".wav";
+    QString pathPrefix = m_corpus->audioPath() + "/phrase" + QString::number (index());
+    if (Audio::DeviceManager::audioFormat() == "Wav")
+        pathPrefix.append(".wav");
+    else if (Audio::DeviceManager::audioFormat() == "Ogg")
+        pathPrefix.append(".ogg");
+    else
+        pathPrefix.append(".avi");
+    return pathPrefix;
 }
 
 quint8 Phrase::index() const

@@ -32,9 +32,12 @@
 #include <QtCore/QObject>
 #include <QStringList>
 #include <QString>
+#include <QMap>
 
 namespace SpeechControl
 {
+
+class System;
 
 namespace Audio
 {
@@ -42,6 +45,7 @@ namespace Audio
 class DeviceManager : public QObject
 {
     Q_OBJECT
+    friend class SpeechControl::System;
     
 public:
     explicit DeviceManager(QObject* parent = 0);
@@ -50,12 +54,18 @@ public:
     static void add(QString device);
     static void chooseDevice(QString device);
     static void chooseDevice(int deviceID);
+    static void setMux(QString audioType);
 
-    static QString currentChoice();
+    static QString device();
+    static QString mux();
     
 private:
     static QStringList devices;
     static QString chosenDevice;
+    static QString chosenMux;
+    
+    static QMap<QString, QString> muxers;
+    static void setup();
 };
 
 }

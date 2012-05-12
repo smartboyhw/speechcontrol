@@ -25,7 +25,8 @@
 
 #include "system.hpp"
 #include "audiosource/device.hpp"
-#include <lib/audio/filerecorder.hpp>
+#include "audio/filerecorder.hpp"
+#include "audio/devicemanager.hpp"
 
 #include <QDir>
 #include <QGst/Init>
@@ -50,7 +51,9 @@ System::System (int* argc, char** argv[])
     configDir.mkpath (QDir::homePath() + "/.config/speechcontrol/corpus");
     configDir.mkpath (QDir::homePath() + "/.config/speechcontrol/dictionaries");
     
-    Audio::FileRecorder::setup();
+    Audio::DeviceManager::setup();
+    /// @todo Use app configuration instead.
+    Audio::DeviceManager::setMux("Wav");
 }
 
 void System::start()

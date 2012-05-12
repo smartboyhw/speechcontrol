@@ -34,6 +34,15 @@ using namespace SpeechControl::Audio;
 
 QStringList DeviceManager::devices;
 QString DeviceManager::chosenDevice;
+QMap<QString, QString> DeviceManager::muxers;
+QString DeviceManager::chosenMux;
+
+void DeviceManager::setup()
+{
+    DeviceManager::muxers.insert("Wav", "wavenc");
+    DeviceManager::muxers.insert("Ogg", "oggmux");
+    DeviceManager::muxers.insert("Avi", "avimux");
+}
 
 void DeviceManager::add ( QString device )
 {
@@ -50,9 +59,19 @@ void DeviceManager::chooseDevice ( int deviceID )
     chosenDevice = devices.at(deviceID);
 }
 
-QString DeviceManager::currentChoice()
+void DeviceManager::setMux ( QString audioType )
+{
+    chosenMux = muxers.value(audioType);
+}
+
+QString DeviceManager::device()
 {
     return chosenDevice;
+}
+
+QString DeviceManager::mux()
+{
+    return chosenMux;
 }
 
 DeviceManager::DeviceManager ( QObject* parent ) : QObject ( parent )

@@ -39,15 +39,6 @@
 
 using namespace SpeechControl::Audio;
 
-QMap<QString, QString> FileRecorder::muxers;
-
-void FileRecorder::setup()
-{
-    FileRecorder::muxers.insert("Ogg", "oggmux");
-    FileRecorder::muxers.insert("Avi", "avimux");
-    FileRecorder::muxers.insert("Wav", "wavenc");
-}
-
 void FileRecorder::findDevices()
 {
     const char* srcElementName = "autoaudiosrc";
@@ -106,7 +97,7 @@ QGst::BinPtr FileRecorder::createAudioSrcBin()
     }
     
     //set the source's properties
-    QString device = DeviceManager::currentChoice();
+    QString device = DeviceManager::device();
     if (!device.isEmpty()) {
         QGst::ElementPtr src = audioBin->getElementByName("audiosrc");
         
@@ -144,20 +135,20 @@ void FileRecorder::onBusMessage ( const QGst::MessagePtr& message )
     }
 }
 
-FileRecorder::FileRecorder ( QObject* parent ) : QObject ( parent ), outFile("/dev/null"), encoding("Wav"),
+FileRecorder::FileRecorder ( QObject* parent ) : QObject ( parent ), outFile("/dev/null"),
     active(false)
 {
 
 }
 
 FileRecorder::FileRecorder ( QString _outFile, QObject* parent ) : QObject ( parent ),
-    outFile(_outFile), encoding("Wav"), active(false)
+    outFile(_outFile), active(false)
 {
 
 }
 
 FileRecorder::FileRecorder ( QFile& _outFile, QObject* parent ) : QObject ( parent ),
-    encoding("Wav"), active(false)
+    active(false)
 {
     outFile = _outFile.fileName();
 }
@@ -177,15 +168,11 @@ void FileRecorder::setFile ( QFile& file )
     outFile = file.fileName();
 }
 
-void FileRecorder::setEncoding ( QString _encoding )
-{
-    encoding = _encoding;
-}
-
 void FileRecorder::start()
 {
+    QString muxType = DeviceManager::mux();
     QGst::BinPtr audioSrcBin = createAudioSrcBin();
-    QGst::ElementPtr mux = QGst::ElementFactory::make(muxers.value(encoding));
+    QGst::ElementPtr mux = QGst::ElementFactory::make(muxType);
     QGst::ElementPtr sink = QGst::ElementFactory::make("filesink");
     
     if (!audioSrcBin || !mux || !sink) {
@@ -201,9 +188,9 @@ void FileRecorder::start()
     
     //link elements
     QGst::PadPtr audioPad;
-    if (encoding == "Wav")
+    if (muxType == "Wav")
         audioPad = mux->getStaticPad("sink");
-    else if (encoding == "Avi")
+    else if (muxType == "Avi")
         audioPad = mux->getRequestPad("audio_%d");
     else
         audioPad = mux->getRequestPad("sink_%d");

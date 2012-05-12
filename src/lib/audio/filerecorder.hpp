@@ -51,7 +51,6 @@ namespace Audio
 class FileRecorder : public QObject
 {
     Q_OBJECT
-    friend class SpeechControl::System;
     
 public:
     explicit FileRecorder(QObject* parent = 0);
@@ -87,13 +86,6 @@ public:
      **/
     void setFile(QFile& file);
     
-    /**
-     * @brief Set encoding.
-     *
-     * @param _encoding Name of the encoding, we support "Ogg", "Avi" and "Wav".
-     **/
-    void setEncoding(QString _encoding);
-    
     bool isActive() const;
     
 public slots:
@@ -106,7 +98,6 @@ signals:
     
 private:
     QString outFile;
-    QString encoding;
     bool active;
     
     QGst::PropertyProbePtr audioProbe;
@@ -118,9 +109,6 @@ private:
     QGst::BinPtr createAudioSrcBin();
     
     void onBusMessage(const QGst::MessagePtr& message);
-    
-    static QMap<QString, QString> muxers;
-    static void setup();
 };
 
 }

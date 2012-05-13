@@ -170,9 +170,9 @@ void FileRecorder::setFile ( QFile& file )
 
 void FileRecorder::start()
 {
-    QString muxType = DeviceManager::mux();
+//     QString muxType = DeviceManager::mux();
     QGst::BinPtr audioSrcBin = createAudioSrcBin();
-    QGst::ElementPtr mux = QGst::ElementFactory::make(muxType);
+    QGst::ElementPtr mux = QGst::ElementFactory::make("wavenc");
     QGst::ElementPtr sink = QGst::ElementFactory::make("filesink");
     
     if (!audioSrcBin || !mux || !sink) {
@@ -187,13 +187,13 @@ void FileRecorder::start()
     pipeline->add(audioSrcBin, mux, sink);
     
     //link elements
-    QGst::PadPtr audioPad;
-    if (muxType == "Wav")
-        audioPad = mux->getStaticPad("sink");
-    else if (muxType == "Avi")
-        audioPad = mux->getRequestPad("audio_%d");
-    else
-        audioPad = mux->getRequestPad("sink_%d");
+    QGst::PadPtr audioPad = mux->getStaticPad("sink");
+//     if (muxType == "Wav")
+//         audioPad = mux->getStaticPad("sink");
+//     else if (muxType == "Avi")
+//         audioPad = mux->getRequestPad("audio_%d");
+//     else
+//         audioPad = mux->getRequestPad("sink_%d");
     audioSrcBin->getStaticPad("src")->link(audioPad);
     
     mux->link(sink);

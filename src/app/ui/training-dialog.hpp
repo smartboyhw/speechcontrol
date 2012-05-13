@@ -27,6 +27,7 @@
 
 // local includes
 #include <core.hpp>
+#include <lib/audio/filerecorder.hpp>
 
 namespace Ui
 {
@@ -159,6 +160,7 @@ private:
 
     Ui::Training* m_ui;              /// The object used to manage the dialog's widgets.
     DeviceAudioSource* m_mic;        /// The Microphone used by this dialog.
+    Audio::FileRecorder* recorder;
     Session* m_session;              /// The current Session being trained.
     uint m_currentPosition;          /// The position of the phrase that of which training began with when the dialog opened.
     uint m_initialPosition;          /// The position of the current phrase being focused on.

@@ -62,6 +62,11 @@ public:
      * @brief Obtain the audio QFile of this phrase.
      **/
     QFile* audioFile() const;
+    
+    /**
+     * @brief Obtain the path to the audio file.
+     **/
+    QString filePath() const;
 
     /**
      * @brief Obtain the text of this Phrase.
@@ -82,13 +87,7 @@ public:
      * @brief Determine if this Phrase has been recorded.
      **/
     bool recorded() const;
-
-    /**
-     * @brief Obtain the path to the audio file.
-     * @see audio()
-     **/
-    QString audioPath() const;
-
+    
     /**
      * @brief Create a new Phrase for a corpus.
      *

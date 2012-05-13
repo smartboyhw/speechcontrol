@@ -24,6 +24,7 @@
 #include <QMessageBox>
 
 #include <lib/audiosource/device.hpp>
+#include <lib/audio/devicemanager.hpp>
 
 #include "core.hpp"
 #include "sessions/session.hpp"
@@ -42,12 +43,14 @@
 #define ICON_NEXT "go-next"
 
 using namespace SpeechControl;
+using namespace SpeechControl::Audio;
 using SpeechControl::Windows::TrainingDialog;
 
 TrainingDialog::TrainingDialog (QWidget* p_parent) :
     QDialog (p_parent),
     m_ui (new Ui::Training),
     m_mic (0),
+    recorder(0),
     m_session (0),
     m_currentPosition (0), m_initialPosition (0),
     m_data()
@@ -57,10 +60,11 @@ TrainingDialog::TrainingDialog (QWidget* p_parent) :
     m_ui->pushButtonReset->setIcon (QIcon::fromTheme (ICON_CLEAR));
     m_ui->pushButtonUndo->setIcon (QIcon::fromTheme (ICON_UNDO));
     m_ui->pushButtonNext->setIcon (QIcon::fromTheme (ICON_NEXT));
+    
+    recorder = new FileRecorder;
 
     /// @bug stopCollecting method seems to be used in redundant way (e.g. in the open() method).
     stopCollecting();
-    onMicStoppedListening();
 }
 
 TrainingDialog::~TrainingDialog()
@@ -79,7 +83,6 @@ void TrainingDialog::setDevice (DeviceAudioSource* p_device)
     connect (m_mic, SIGNAL (begun()), this, SLOT (onMicStartedListening()));
     connect (m_mic, SIGNAL (ended()), this, SLOT (onMicStoppedListening()));
     connect (m_mic, SIGNAL (bufferObtained (QByteArray)), this, SLOT (on_mic_BufferObtained (QByteArray)));
-
 }
 
 /// @todo Write data to a stream representing the current phrase's audio.
@@ -95,6 +98,7 @@ void TrainingDialog::onMicStartedListening()
     m_data.clear();
 }
 
+/// @todo [audio-recording] This is to be removed because new class will handle saving audio to files.
 void TrainingDialog::onMicStoppedListening()
 {
     if (session()) {
@@ -127,6 +131,7 @@ void TrainingDialog::startTraining (Session* session, DeviceAudioSource* device)
 
         dialog->setSession (session);
         dialog->setDevice (device);
+        DeviceManager::chooseDevice(device->deviceName());
         dialog->open();
     }
     else {
@@ -159,8 +164,8 @@ void TrainingDialog::startCollecting()
 
 void TrainingDialog::stopCollecting()
 {
-    if (m_mic && m_mic->isActive())
-        m_mic->stop();
+    if (recorder->isActive())
+        recorder->stop();
 
     m_ui->pushButtonNext->setEnabled (false);
     m_ui->pushButtonUndo->setEnabled (false);
@@ -233,7 +238,8 @@ void TrainingDialog::navigateToPart (const uint& p_index)
     m_ui->pushButtonReset->setEnabled (! (currentPhrase() == initialPhrase()));
     m_ui->pushButtonUndo->setEnabled (m_ui->pushButtonReset->isEnabled());
     updateProgress (m_session->assessProgress());
-    m_mic->start();
+    recorder->setFile(currentPhrase()->filePath());
+    recorder->start();
 }
 
 void TrainingDialog::navigateNextPart()
@@ -299,11 +305,10 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonUndo_clicked()
 /// @todo This method here should handle the act of recording audio.
 void SpeechControl::Windows::TrainingDialog::on_pushButtonNext_clicked()
 {
-    qDebug() << "[TrainingDialog::onPushButtonNext_clicked()] Is recording? " << m_mic->isActive();
+    qDebug() << "[TrainingDialog::onPushButtonNext_clicked()] Is recording? " << "BLAH BLAH";
 
-    if (m_mic->isActive()) {
-        m_mic->stop();
-    }
+    if (recorder->isActive())
+        recorder->stop();
 
     if (!m_session->firstIncompletePhrase()) {
         updateProgress (1.0);

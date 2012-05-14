@@ -233,7 +233,7 @@ void IndicatorPrivate::buildActions()
     Indicator::instance()->connect (actionDesktopControlToggle, SIGNAL (toggled (bool)), SLOT (on_actionDesktopControlToggle_toggled (bool)));
     Indicator::instance()->connect (actionDictationToggle, SIGNAL (toggled (bool)), SLOT (on_actionDictationToggle_toggled (bool)));
     Indicator::instance()->connect (actionDesktopControlOptions, SIGNAL (triggered (bool)), SLOT (on_actionDesktopControlOptions_triggered()));
-    Indicator::instance()->connect (actionDictationOptions, SIGNAL (triggered (bool)), SLOT (on_actionDictationOptions_triggered (bool)));
+    Indicator::instance()->connect (actionDictationOptions, SIGNAL (triggered (bool)), SLOT (on_actionDictationOptions_triggered ()));
 
     actionDesktopControlToggle->setCheckable (true);
     actionDictationToggle->setCheckable (true);

@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,38 +13,34 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-// Qt includes
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/16/12 20:58:06 PM
+ */
+
 #include <QFile>
 #include <QDebug>
 #include <QSettings>
 #include <QTranslator>
 #include <QApplication>
 #include <QMessageBox>
-
-// libspchcntrl includes
-#include <lib/config.hpp>
 #include <lib/system.hpp>
-
-// local includes
 #include "app/factory.hpp"
 #include "app/indicator.hpp"
 #include "app/sessions/session.hpp"
 #include "app/services/engine.hpp"
-#include "app/services/dictation/service.hpp"
-#include "app/services/desktopcontrol/service.hpp"
 #include "app/services/voxforge/service.hpp"
 #include "app/ui/quickstart-wizard.hpp"
 #include "app/coreprivate.hpp"
 #include "app/core.hpp"
 
-using namespace SpeechControl;
-using namespace SpeechControl::Windows::Wizards;
-using SpeechControl::Services::AbstractModule;
+SPCHCNTRL_USE_NAMESPACE
 
 Core* Core::s_inst = 0;
 
@@ -62,31 +58,13 @@ void CorePrivate::hookUpSignals()
 {
     Q_Q (Core);
     QObject::connect (m_app, SIGNAL (aboutToQuit()), q, SLOT (stop()));
-    QObject::connect (q, SIGNAL (started()), Services::Engine::instance(), SLOT (start()));
-    QObject::connect (q, SIGNAL (started()), Plugins::Factory::instance(), SLOT (start()));
+    QObject::connect (q, SIGNAL (started()), ServiceEngine::instance(), SLOT (start()));
+    QObject::connect (q, SIGNAL (started()), Factory::instance(), SLOT (start()));
 
-    QObject::connect (q, SIGNAL (stopped()), Services::Engine::instance(), SLOT (stop()));
-    QObject::connect (q, SIGNAL (stopped()), Plugins::Factory::instance(), SLOT (stop()));
+    QObject::connect (q, SIGNAL (stopped()), ServiceEngine::instance(), SLOT (stop()));
+    QObject::connect (q, SIGNAL (stopped()), Factory::instance(), SLOT (stop()));
 
-    bootServices();
-}
-
-void CorePrivate::invokeAutoStart()
-{
-    const bool dsktpCntrlState = Core::configuration ("DesktopControl/AutoStart", false).toBool();
-    const bool dctnState = Core::configuration ("Dictation/AutoStart", false).toBool();
-    DesktopControl::Service::instance()->setState ( (dsktpCntrlState) ? AbstractModule::Enabled  : AbstractModule::Disabled);
-    Dictation::Service::instance()->setState ( (dctnState) ? AbstractModule::Enabled  : AbstractModule::Disabled);
-
-}
-
-void CorePrivate::bootServices()
-{
-    qDebug() << "[CorePrivate::bootServices()] Initializing services...";
-    DesktopControl::Service::instance();
-    Dictation::Service::instance();
-    Voxforge::Service::instance();
-    qDebug() << "[CorePrivate::bootServices()] Initialized. services.";
+    ServiceEngine::start();
 }
 
 CorePrivate::~CorePrivate()
@@ -132,19 +110,16 @@ Core::Core (const Core& p_other) : QObject (p_other.parent()), d_ptr (const_cast
 
 void Core::start()
 {
-    Q_D(Core);
-
     // Detect if a first-run wizard should be run.
     if (!QFile::exists (instance()->d_func()->m_settings->fileName())) {
         if (QMessageBox::question (0, tr ("First Run"),
                                    tr ("This seems to be the first time you've run SpeechControl on this system. "
                                        "A wizard allowing you to start SpeechControl will appear."), QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
-            QuickStart* win = new QuickStart (0);
-            win->exec();
+            //QuickStart* win = new QuickStart (0);
+            //win->exec();
         }
     }
 
-    d->invokeAutoStart();
     emit instance()->started();
 }
 
@@ -223,5 +198,6 @@ Core::~Core ()
     Q_D (Core);
     d->m_settings->sync();
 }
+
 #include "core.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

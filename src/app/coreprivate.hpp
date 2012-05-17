@@ -22,22 +22,22 @@ class QApplication;
 class QSettings;
 class QTranslator;
 
-namespace SpeechControl
-{
+#include <app/global.hpp>
+
+SPCHCNTRL_BEGIN_NAMESPACE
 
 class Core;
 struct CorePrivate {
     Q_DECLARE_PUBLIC(Core)
     CorePrivate(Core* p_qPtr);
     virtual ~CorePrivate();
-    void invokeAutoStart();
     void hookUpSignals();
-    void bootServices();
 
     QApplication* m_app;
     QSettings* m_settings;
     QTranslator* m_trnsltr;
     Core* q_ptr;
 };
-}
+
+SPCHCNTRL_END_NAMESPACE
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

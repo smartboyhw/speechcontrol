@@ -1,5 +1,5 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
  *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
@@ -13,13 +13,19 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef CONTENT_HPP
-#define CONTENT_HPP
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/16/12 22:37:15 PM
+ */
+
+#ifndef SPCHCNTRL_CONTENT_HPP
+#define SPCHCNTRL_CONTENT_HPP
 
 #include <QMap>
 #include <QUrl>
@@ -27,15 +33,18 @@
 #include <QObject>
 #include <QVariant>
 #include <QStringList>
+#include <app/global.hpp>
 
 class QFile;
 class QDomDocument;
 
-namespace SpeechControl
-{
+SPCHCNTRL_BEGIN_NAMESPACE
+
 class Content;
 class AbstractContentSource;
 class TextContentSource;
+struct ContentPrivate;
+struct AbstractContentSourcePrivate;
 
 /**
  * @brief Represents a @c QList of @c Content objects.
@@ -60,7 +69,9 @@ typedef QMap<QString, Content*> ContentMap;
 class Content : public QObject
 {
     Q_OBJECT
+    Q_DECLARE_PRIVATE(Content)
     Q_DISABLE_COPY (Content)
+    QScopedPointer<ContentPrivate> d_ptr;
 
 public:
     /**
@@ -186,15 +197,6 @@ public:
      * @brief Obtains a list of Contents object recognized by SpeechControl.
      **/
     static ContentList allContents();
-
-private:
-    static QString getPath (const QString& p_id);
-    static ContentList findAllContents (QString p_path);
-    void parseText (const QString& p_text);
-    static ContentMap s_lst;
-    QStringList m_pages;
-    QDomDocument* m_dom;
-    QString m_id;
 };
 
 /**
@@ -210,12 +212,33 @@ private:
 class AbstractContentSource : public QObject
 {
     Q_OBJECT
+    QScopedPointer<AbstractContentSourcePrivate> d_ptr;
 
-public:
-    AbstractContentSource (const AbstractContentSource& p_other);
+protected:
+    Q_DISABLE_COPY(AbstractContentSource);
+    Q_DECLARE_PRIVATE(AbstractContentSource);
 
+    /**
+     * @brief Destructor.
+     **/
     virtual ~AbstractContentSource();
 
+    /**
+     * @brief Null constructor.
+     *
+     * @param p_parent Defaults to 0.
+     **/
+    explicit AbstractContentSource (QObject* p_parent = 0);
+
+    /**
+     * @brief The ID of this AbstractContentSource.
+     *
+     * @param p_id The ID to use.
+     * @param p_parent Defaults to 0.
+     **/
+    AbstractContentSource (QString p_id, QObject* p_parent = 0);
+
+public:
     /**
      * @brief Sets the author of the Content to be generated.
      *
@@ -271,16 +294,6 @@ public:
      * @brief Generates a Content from the information stored by this AbstractContentSource.
      **/
     Content* generate();
-
-protected:
-    explicit AbstractContentSource (QObject* p_parent = 0);
-    explicit AbstractContentSource (QString p_id, QObject* p_parent = 0);
-
-private:
-    QString m_id;           ///< The ID of the AbstractContentSource.
-    QString m_author;       ///< The author of the AbstractContentSource.
-    QString m_text;         ///< The text of the AbstractContentSource.
-    QString m_title;        ///< The title of the AbstractContentSource.
 };
 
 /**
@@ -316,7 +329,7 @@ public:
     bool setUrl (const QUrl& p_url);
 };
 
-}
+SPCHCNTRL_END_NAMESPACE
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

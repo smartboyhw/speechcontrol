@@ -34,8 +34,6 @@
 #include "ui/session-manager.hpp"
 #include "ui/content-manager.hpp"
 #include "ui/adapt-wizard.hpp"
-#include "services/dictation/service.hpp"
-#include "services/desktopcontrol/service.hpp"
 #include "sessions/session.hpp"
 
 using namespace SpeechControl;
@@ -147,29 +145,9 @@ void Indicator::removeActionForPlugins (QAction* p_action)
     instance()->d_func()->menuPlugins->removeAction (p_action);
 }
 
-void Indicator::on_actionDesktopControlOptions_triggered ()
-{
-    Windows::Settings::displayPane ("dsktpcntrl");
-}
-
-void Indicator::on_actionDictationOptions_triggered ()
-{
-    Windows::Settings::displayPane ("dctn");
-}
-
-void Indicator::on_actionDictationToggle_toggled (const bool& p_checked)
-{
-    p_checked ? Dictation::Service::instance()->start() : Dictation::Service::instance()->stop();
-}
-
-void Indicator::on_actionDesktopControlToggle_toggled (const bool& p_checked)
-{
-    p_checked ? DesktopControl::Service::instance()->start() : DesktopControl::Service::instance()->stop();
-}
-
 void Indicator::on_actionOptions_triggered()
 {
-    Windows::Settings::displayPane();
+    SettingsDialog::displayPane();
 }
 
 void Indicator::on_actionAboutSpeechControl_triggered()
@@ -214,8 +192,6 @@ Indicator::~Indicator()
 }
 
 IndicatorPrivate::IndicatorPrivate() : icon (new QSystemTrayIcon (QApplication::windowIcon())),
-    actionDesktopControlOptions (0), actionDesktopControlToggle (0),
-    actionDictationToggle (0), actionDictationOptions (0),
     actionPluginOptions (0), actionAboutSpeechControl (0),
     actionAboutQt (0), actionHelpManual (0)
 {
@@ -223,40 +199,9 @@ IndicatorPrivate::IndicatorPrivate() : icon (new QSystemTrayIcon (QApplication::
     icon->show();
 }
 
-void IndicatorPrivate::buildActions()
-{
-    actionDesktopControlOptions = new QAction (QIcon::fromTheme ("configure"), "&Options", Indicator::instance());
-    actionDesktopControlToggle = new QAction ("&Active", Indicator::instance());
-    actionDictationOptions = new QAction (QIcon::fromTheme ("configure"), "&Options", Indicator::instance());
-    actionDictationToggle = new QAction ("&Active", Indicator::instance());
-
-    Indicator::instance()->connect (actionDesktopControlToggle, SIGNAL (toggled (bool)), SLOT (on_actionDesktopControlToggle_toggled (bool)));
-    Indicator::instance()->connect (actionDictationToggle, SIGNAL (toggled (bool)), SLOT (on_actionDictationToggle_toggled (bool)));
-    Indicator::instance()->connect (actionDesktopControlOptions, SIGNAL (triggered (bool)), SLOT (on_actionDesktopControlOptions_triggered()));
-    Indicator::instance()->connect (actionDictationOptions, SIGNAL (triggered (bool)), SLOT (on_actionDictationOptions_triggered (bool)));
-
-    actionDesktopControlToggle->setCheckable (true);
-    actionDictationToggle->setCheckable (true);
-    actionDesktopControlToggle->setChecked (DesktopControl::Service::instance()->isActive());
-    actionDictationToggle->setChecked (Dictation::Service::instance()->isActive());
-}
-
 void IndicatorPrivate::buildMenu()
 {
-    buildActions();
     menuBase = new QMenu;
-
-    menuDesktopControl = menuBase->addMenu (QIcon::fromTheme ("audio-headset"), "Desktop Control");
-    menuDesktopControl->addActions (QList<QAction*>()
-                                    << actionDesktopControlToggle
-                                    << actionDesktopControlOptions
-                                   );
-
-    menuDictation      = menuBase->addMenu (QIcon::fromTheme ("audio-input-microphone"), "Dictation");
-    menuDictation->addActions (QList<QAction*>()
-                               << actionDictationToggle
-                               << actionDictationOptions
-                              );
 
     menuPlugins        = menuBase->addMenu (QIcon::fromTheme ("configure"), "Plug-ins");
     menuPlugins->addSeparator();
@@ -271,8 +216,6 @@ void IndicatorPrivate::buildMenu()
     actionAboutQt = menuHelp->addAction (QIcon::fromTheme ("qt"), "About &Qt", QApplication::instance(), SLOT (aboutQt()));
     actionAboutSpeechControl = menuHelp->addAction (QApplication::windowIcon(), "&About SpeechControl", Indicator::instance(), SLOT (on_actionAboutSpeechControl_triggered()));
 
-    menuBase->addMenu (menuDesktopControl);
-    menuBase->addMenu (menuDictation);
     menuBase->addMenu (menuPlugins);
     menuBase->addSeparator();
     menuBase->addAction (QIcon::fromTheme ("configure"), "&Options", Indicator::instance() , SLOT (on_actionOptions_triggered()));

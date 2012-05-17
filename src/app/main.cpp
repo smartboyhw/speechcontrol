@@ -35,11 +35,7 @@
 
 #include <QIcon>
 #include <QApplication>
-
-// speechcontrol lib includes
-#include <config.hpp>
-
-// local includes
+#include "global.hpp"
 #include "core.hpp"
 
 // pretty simple, huh?
@@ -57,5 +53,5 @@ int main (int argc, char** argv)
     appCore.start();
     return app->exec();
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
 

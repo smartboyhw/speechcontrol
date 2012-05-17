@@ -24,15 +24,12 @@
 #include <QSettings>
 #include <QPluginLoader>
 #include <QApplication>
-
-// Local
 #include "core.hpp"
-#include "config.hpp"
-#include "plugins.hpp"
+#include "plugin.hpp"
 #include "factory.hpp"
+#include "pluginprivate.hpp"
 
-using namespace SpeechControl;
-using namespace SpeechControl::Plugins;
+SPCHCNTRL_USE_NAMESPACE
 
 Factory* Factory::s_inst = 0;
 PluginMap Factory::s_ldPlgns;
@@ -90,7 +87,7 @@ bool Factory::loadPlugin (const QString& p_id)
     GenericPlugin* gnrcPlgn = new GenericPlugin (p_id);
 
     if (gnrcPlgn->isSupported() && gnrcPlgn->loadComponents()) {
-        AbstractPlugin* plgn = qobject_cast<AbstractPlugin*> (gnrcPlgn->m_ldr->instance());
+        AbstractPlugin* plgn = qobject_cast<AbstractPlugin*> (gnrcPlgn->d_func()->ldr->instance());
 
         if (!plgn) {
             qDebug() << "[Factory::loadPlugin()] Couldn't nab core object.";
@@ -175,7 +172,7 @@ void Factory::start()
                  << "...";
 
         if (Factory::pluginSettings (plgn)->value ("Plugin/Enabled").toBool())
-            Plugins::Factory::loadPlugin (plgn);
+            Factory::loadPlugin (plgn);
     }
     qDebug() << "[Factory::start()] Auto-start plug-ins loaded.";
 }
@@ -193,4 +190,4 @@ Factory::~Factory()
 }
 
 #include "factory.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

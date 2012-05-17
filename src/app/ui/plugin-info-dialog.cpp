@@ -1,5 +1,5 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
  *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
@@ -13,27 +13,32 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/16/12 23:23:53 PM
  */
 
 #include "plugin-info-dialog.hpp"
 #include "ui_plugin-info-dialog.h"
 #include <factory.hpp>
 
-using namespace SpeechControl;
-using namespace SpeechControl::Windows;
+SPCHCNTRL_USE_NAMESPACE
 
 PluginInfoDialog::PluginInfoDialog (QUuid p_uuid, QWidget* parent) : QDialog (parent)
 {
-    m_plgn = new Plugins::GenericPlugin (p_uuid);
+    m_plgn = new GenericPlugin (p_uuid);
     updateUi();
 }
 
-PluginInfoDialog::PluginInfoDialog (SpeechControl::Plugins::AbstractPlugin* p_plugin, QWidget* parent) : QDialog (parent)
+PluginInfoDialog::PluginInfoDialog (SpeechControl::AbstractPlugin* p_plugin, QWidget* parent) : QDialog (parent)
 {
-    m_plgn = (Plugins::GenericPlugin*) p_plugin;
+    m_plgn = (GenericPlugin*) p_plugin;
     updateUi();
 }
 
@@ -48,8 +53,8 @@ void PluginInfoDialog::updateUi()
     if (!m_plgn->isLoaded())
         ui->lblIcon->setPixmap (m_plgn->pixmap());
     else
-        ui->lblIcon->setPixmap (Plugins::Factory::plugin (m_plgn->id())->pixmap());
+        ui->lblIcon->setPixmap (Factory::plugin (m_plgn->id())->pixmap());
 }
 
 #include "ui/plugin-info-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

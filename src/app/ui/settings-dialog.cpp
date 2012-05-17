@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,9 +13,15 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/16/12 23:28:52 PM
  */
 
 #include <QDebug>
@@ -31,46 +37,46 @@
 #include "settings/services-pane.hpp"
 #include "ui_settings-dialog.h"
 
-using namespace SpeechControl;
-using namespace SpeechControl::Windows;
+SPCHCNTRL_USE_NAMESPACE
 
-Settings* Settings::s_inst = 0;
+SettingsDialog* SettingsDialog::s_inst = 0;
 
-Settings::Settings() : QDialog()
+SettingsDialog::SettingsDialog() : QDialog()
 {
     s_inst = this;
     buildWindow();
 }
 
-Settings::Settings (QWidget* m_prnt) :
+SettingsDialog::SettingsDialog (QWidget* m_prnt) :
     QDialog (m_prnt)
 {
     s_inst = this;
     buildWindow();
 }
 
-void Settings::buildWindow()
+void SettingsDialog::buildWindow()
 {
     qDebug() << "[Settings::buildWindow()] Building settings window.";
     m_ui = new Ui::SettingsDialog;
     m_ui->setupUi (this);
     this->setLayout (m_ui->gridLayout);
 
-    addPane (new GeneralSettingsPane);
-    addPane (new TrainingSettingsPane);
-    addPane (new ServicesSettingsPane);
-    addPane (new PluginsSettingsPane);
+    /// @todo Add back the panels for the Settings window.
+    //addPane (new GeneralSettingsPane);
+    //addPane (new TrainingSettingsPane);
+    //addPane (new ServicesSettingsPane);
+    //addPane (new PluginsSettingsPane);
     qDebug() << "[Settings::buildWindow()] Built settings window.";
 }
 
 
-Settings::Settings (const Settings& p_other) : QDialog (p_other.parentWidget())
+SettingsDialog::SettingsDialog (const SettingsDialog& p_other) : QDialog (p_other.parentWidget())
 {
 
 }
 
 /// @todo Add it to the list of options.
-void Settings::addPane (AbstractSettingsPane* p_pane)
+void SettingsDialog::addPane (AbstractSettingsPane* p_pane)
 {
     if (instance()->m_panes.contains (p_pane->id()))
         return;
@@ -104,7 +110,7 @@ void Settings::addPane (AbstractSettingsPane* p_pane)
     }
 }
 
-void Settings::displayPane (const QString& p_paneID)
+void SettingsDialog::displayPane (const QString& p_paneID)
 {
     AbstractSettingsPane* currentPane = instance()->m_panes.value (p_paneID);
     QTreeWidget* treeNavi = instance()->m_ui->treeNavigation;
@@ -123,7 +129,7 @@ void Settings::displayPane (const QString& p_paneID)
     }
 }
 
-AbstractSettingsPane* Settings::currentPane()
+AbstractSettingsPane* SettingsDialog::currentPane()
 {
     QTreeWidget* treeNavi = instance()->m_ui->treeNavigation;
     QTreeWidgetItem* treeItem = treeNavi->currentItem();
@@ -137,7 +143,7 @@ AbstractSettingsPane* Settings::currentPane()
     }
 }
 
-QTreeWidgetItem* Settings::findPaneForItem (const QString& p_panelID)
+QTreeWidgetItem* SettingsDialog::findPaneForItem (const QString& p_panelID)
 {
     QTreeWidget* treeNavi = instance()->m_ui->treeNavigation;
     AbstractSettingsPane* pane = m_panes.value (p_panelID);
@@ -150,12 +156,12 @@ QTreeWidgetItem* Settings::findPaneForItem (const QString& p_panelID)
 }
 
 /// @todo Remove this from the list of options.
-void Settings::removePane (const QString& p_panelID)
+void SettingsDialog::removePane (const QString& p_panelID)
 {
     instance()->m_panes.remove (p_panelID);
 }
 
-void Settings::on_treeNavigation_itemSelectionChanged()
+void SettingsDialog::on_treeNavigation_itemSelectionChanged()
 {
     QWidget* container = instance()->m_ui->frmPageContainer;
     QTreeWidget* treeNavi = instance()->m_ui->treeNavigation;
@@ -173,7 +179,7 @@ void Settings::on_treeNavigation_itemSelectionChanged()
     }
 }
 
-void Settings::on_buttonBox_clicked (QAbstractButton* p_button)
+void SettingsDialog::on_buttonBox_clicked (QAbstractButton* p_button)
 {
     QDialogButtonBox::StandardButton buttonState = m_ui->buttonBox->standardButton (p_button);
 
@@ -195,7 +201,7 @@ void Settings::on_buttonBox_clicked (QAbstractButton* p_button)
         break;
     }
 }
-Settings::~Settings()
+SettingsDialog::~SettingsDialog()
 {
     delete m_ui;
 }
@@ -204,7 +210,7 @@ AbstractSettingsPane::AbstractSettingsPane (QWidget* parent) : QFrame (parent)
 {
 }
 
-AbstractSettingsPane* Settings::findPane (QString id)
+AbstractSettingsPane* SettingsDialog::findPane (QString id)
 {
     return m_panes.value (id);
 }

@@ -24,52 +24,52 @@
 #include "app/services/engine.hpp"
 #include "service.hpp"
 
-using namespace SpeechControl;
-using namespace SpeechControl::Voxforge;
-Service* Service::s_inst = 0;
+SPCHCNTRL_USE_NAMESPACE
 
-Service::Service() : AbstractModule (Core::instance())
+VoxforgeService* VoxforgeService::s_inst = 0;
+
+VoxforgeService::VoxforgeService() : AbstractServiceModule (Core::instance())
 {
-    Services::Engine::registerModule (this);
+    ServiceEngine::registerModule (this);
 }
 
-void Service::deinitialize()
-{
-
-}
-
-void Service::initialize()
+void VoxforgeService::deinitialize()
 {
 
 }
 
-bool Service::isEnabled() const
+void VoxforgeService::initialize()
+{
+
+}
+
+bool VoxforgeService::isEnabled() const
 {
     return Core::configuration ("Voxforge/Enabled").toBool();
 }
 
-QString Service::id() const
+QString VoxforgeService::id() const
 {
     return "vxfrg";
 }
 
-QPixmap Service::pixmap() const
+QPixmap VoxforgeService::pixmap() const
 {
     return QIcon::fromTheme ("audio-input").pixmap (64, 64);
 }
 
-QString Service::name() const
+QString VoxforgeService::name() const
 {
     return "Voxforge";
 }
 
 /// @todo This should return TRUE whenever an upload's in progress or underway.
-bool Service::isActive() const
+bool VoxforgeService::isActive() const
 {
     return isEnabled();
 }
 
-Service::~Service()
+VoxforgeService::~VoxforgeService()
 {
 
 }

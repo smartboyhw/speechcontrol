@@ -33,7 +33,6 @@ using namespace SpeechControl;
 
 QMap<QString, QDomElement*> Session::s_elems;
 QDomDocument* Session::s_dom = 0;
-ContentMap Content::s_lst;
 
 Session::Session (const QString& p_id) : m_corpus (0), m_content (0), m_elem (0)
 {
@@ -400,4 +399,4 @@ Session* Session::clone() const
 }
 
 #include "sessions/session.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

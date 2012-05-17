@@ -25,14 +25,13 @@
 #include <QString>
 #include <QVariantMap>
 
-#include "macros.hpp"
+#include "global.hpp"
 
 class QAction;
 class QImage;
 class QSystemTrayIcon;
 
-namespace SpeechControl
-{
+SPCHCNTRL_BEGIN_NAMESPACE
 
 struct IndicatorPrivate;
 class Indicator;
@@ -136,18 +135,15 @@ public:
 
 private slots:
     void on_actionOptions_triggered();
-    void on_actionDictationToggle_toggled(const bool& p_checked);
-    void on_actionDesktopControlToggle_toggled(const bool& p_checked);
     void on_actionAboutSpeechControl_triggered ();
-    void on_actionDesktopControlOptions_triggered();
-    void on_actionDictationOptions_triggered();
     void on_actionStartTraining_triggered();
     void on_actionAdaptModels_triggered();
 
 private:
     QScopedPointer<IndicatorPrivate> d_ptr;
 };
-}
+
+SPCHCNTRL_END_NAMESPACE
 
 #endif
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

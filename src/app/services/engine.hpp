@@ -1,5 +1,5 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
  *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
@@ -13,30 +13,34 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef SERVICES_ENGINE_HPP
-#define SERVICES_ENGINE_HPP
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/16/12 22:21:08 PM
+ */
+
+#ifndef SPCHCNTRL_SERVICES_ENGINE_HPP
+#define SPCHCNTRL_SERVICES_ENGINE_HPP
 
 #include <QMap>
+#include <QObject>
 #include <QScopedPointer>
-
-#include <macros.hpp>
+#include <app/global.hpp>
 
 class QPixmap;
 
-namespace SpeechControl
-{
-namespace Services
-{
-class AbstractModule;
-class Engine;
-class EnginePrivate;
+SPCHCNTRL_BEGIN_NAMESPACE
 
-typedef QList<AbstractModule*> ModuleList;
+class AbstractServiceModule;
+class ServiceEngine;
+class ServiceEnginePrivate;
+
+typedef QList<AbstractServiceModule*> ServiceModuleList;
 
 /**
  * @brief Represents the core Service engine.
@@ -44,12 +48,12 @@ typedef QList<AbstractModule*> ModuleList;
  * Engine holds the integral part of dispatching the addition and removal of
  * modules in SpeechControl.
  **/
-class Engine : public QObject
+class ServiceEngine : public QObject
 {
     Q_OBJECT
-    Q_DISABLE_COPY (Engine)
-    SC_SINGLETON (Engine)
-    friend class AbstractModule;
+    Q_DISABLE_COPY (ServiceEngine)
+    SC_SINGLETON (ServiceEngine)
+    friend class AbstractServiceModule;
 
 signals:
     /**
@@ -69,28 +73,28 @@ public:
      * @param p_id The ID of the AbstractModule in question.
      * @return A pointer to a AbstractModule if found, NULL otherwise.
      **/
-    static AbstractModule* findModule (const QString& p_id);
+    static AbstractServiceModule* findModule (const QString& p_id);
 
     /**
      * @brief Obtains all of the AbstractModules registered.
      *
      * @return :Services::ModuleList
      **/
-    static ModuleList allModules();
+    static ServiceModuleList allModules();
 
     /**
      * @brief Registers a AbstractModule.
      *
      * @param p_module The Module to add to the Engine.
      **/
-    static void registerModule (AbstractModule* p_module);
+    static void registerModule (AbstractServiceModule* p_module);
 
     /**
      * @brief Unregisters a AbstractModule.
      *
      * @param p_module The Module to remove to the Engine.
      **/
-    static void unregisterModule (AbstractModule* p_module);
+    static void unregisterModule (AbstractServiceModule* p_module);
 
 public slots:
     /**
@@ -104,12 +108,9 @@ public slots:
     static void stop();
 
 private:
-    QScopedPointer<EnginePrivate> d_ptr;
+    QScopedPointer<ServiceEnginePrivate> d_ptr;
 };
 
-}
-}
-
-
+SPCHCNTRL_END_NAMESPACE
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

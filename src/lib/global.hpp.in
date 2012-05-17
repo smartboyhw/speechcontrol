@@ -1,0 +1,61 @@
+/***
+ *  This file is part of the SpeechControl project.
+ *
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
+ *
+ *  SpeechControl is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Library General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  SpeechControl is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
+ *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/16/12 20:16:26 PM
+ */
+
+#ifndef SPCHCNTRL_LIB_GLOBAL_HPP
+#define SPCHCNTRL_LIB_GLOBAL_HPP
+
+// Holds the build-time value of the location of PocketSphinx's pre-built modules.
+#define POCKETSPHINX_MODELDIR "@POCKETSPHINX_MODELDIR@"
+
+// Holds the version information of PocketSphinx.
+#define POCKETSPHINX_VERSION "@POCKETSPHINX_VERSION@"
+
+// Holds the build version of SpeechControl's library.
+#define SPCHCNTRL_BUILD_VERSION "@SPCHCNTRL_LIB_VERSION@"
+
+// Holds the date that of which SpeechControl's library was built.
+#define SPCHCNTRL_BUILD_DATE __TIMESTAMP__
+
+// Handy macros for SpeechControl
+#define SPCHCNTRL_NAMESPACE SpeechControl
+#define SPCHCNTRL_PREPEND_NAMESPACE(name) ::SPCHCNTRL_NAMESPACE::name
+#define SPCHCNTRL_USE_NAMESPACE using namespace ::SPCHCNTRL_NAMESPACE;
+#define SPCHCNTRL_BEGIN_NAMESPACE namespace SPCHCNTRL_NAMESPACE {
+#define SPCHCNTRL_END_NAMESPACE }
+#define SPCHCNTRL_FORWARD_DECLARE_CLASS(name) \
+SPCHCNTRL_BEGIN_NAMESPACE class name; SPCHCNTRL_END_NAMESPACE\
+using SPCHCNTRL_PREPEND_NAMESPACE(name);
+
+#define SPCHCNTRL_FORWARD_DECLARE_STRUCT(name) \
+SPCHCNTRL_BEGIN_NAMESPACE struct name; SPCHCNTRL_END_NAMESPACE\
+using SPCHCNTRL_PREPEND_NAMESPACE(name);
+
+#ifdef SPCHCNTRL_NAMESPACE
+namespace SPCHCNTRL_NAMESPACE { }
+#endif
+
+#endif /* SPCHCNTRL_LIB_GLOBAL_HPP */
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

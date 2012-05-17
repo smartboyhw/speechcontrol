@@ -17,6 +17,7 @@ if (WITH_PLUGINS)
     ## directories
     add_subdirectory(python)
     add_subdirectory(transcriber)
+    add_subdirectory(dictation)
     add_subdirectory(desktopctl)
 
 endif(WITH_PLUGINS)

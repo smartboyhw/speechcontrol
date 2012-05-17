@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=SpeechControl
+Comment=Plasma widget to utilize SpeechControl.
+Type=Service
+X-KDE-ServiceTypes=Plasma/Applet
+X-KDE-Library=plasmoid-speechcontrol
+X-KDE-PluginInfo-Author=Jacky Alcine
+X-KDE-PluginInfo-Email=jacky.alcine@thesii.org
+X-KDE-PluginInfo-Name=plasmoid-speechcontrol
+X-KDE-PluginInfo-Version=0.0a
+X-KDE-PluginInfo-Website=http://www.thesii.org
+X-KDE-PluginInfo-Category=Accessibility
+X-KDE-PluginInfo-Depends=
+X-KDE-PluginInfo-License=GPL
+X-KDE-PluginInfo-EnabledByDefault=true
+

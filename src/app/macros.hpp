@@ -21,29 +21,6 @@
 #ifndef SC_MACROS_HPP
 #define SC_MACROS_HPP
 
-#include <QDebug>
-
-/// @brief Allows a class to be used as a singleton.
-#define SC_SINGLETON(Type) \
-    private:\
-        static Type* s_inst;\
-        Type();\
-    public:\
-        static Type* instance ( )\
-        {\
-            if (s_inst == 0)\
-            {\
-                s_inst = new Type;\
-                qDebug() << "[SC_SINGLETON()] Created singleton instance of " #Type << ".";\
-            }\
-            return s_inst;\
-        }\
- 
-#ifndef QT_NO_DEBUG
-# define SC_ASSERT(condition,message) ((!(#condition)) ? qt_assert("condition##message",__FILE__,__LINE__) : qt_noop())
-#else
-# define SC_ASSERT(condition,message) qt_noop()
-#endif
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

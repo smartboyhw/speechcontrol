@@ -49,11 +49,11 @@ QGst::FlowReturn GenericSource::pushBuffer (const QGst::BufferPtr& p_buffer)
     quint8* bufferInt = p_buffer->data();
     QByteArray buffer;
     buffer[0] = (qint8) * bufferInt;
-    emit bufferObtained (buffer);
 
     qDebug() << "[GenericSource::pushBuffer()] Buffer obtained from AbstractAudioSource"
              << p_buffer->data() << bufferInt << buffer;
 
+    emit bufferObtained (buffer);
     return ApplicationSource::pushBuffer (p_buffer);
 }
 

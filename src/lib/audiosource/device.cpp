@@ -178,9 +178,7 @@ QString DeviceAudioSource::humanName() const
     if (d->devicePtr.isNull())
         return deviceName();
     else {
-        d->devicePtr->setState (QGst::StateReady);
         QString name = d->devicePtr->property ("device-name").toString();
-        d->devicePtr->setState (QGst::StateNull);
 
         if (name.isEmpty() || name.isNull())
             return deviceName();
@@ -193,7 +191,7 @@ QString DeviceAudioSource::humanName() const
 
 QString DeviceAudioSource::pipelineDescription() const
 {
-    return QString ("autoaudiosrc name=src");
+    return QString ("alsasrc name=src");
 }
 
 void DeviceAudioSource::start()
@@ -220,15 +218,13 @@ void DeviceAudioSource::buildPipeline()
         return;
     }
     else {
-
-        d->ptrAudioSource->setState (QGst::StateReady);
+        d->ptrAudioSource->setState (QGst::StatePaused);
         QGst::ChildProxyPtr childProxy = d->ptrAudioSource.dynamicCast<QGst::ChildProxy>();
 
         if (childProxy && childProxy->childrenCount() > 0) {
             QGst::ObjectPtr realSrc = childProxy->childByIndex (0);
             qDebug() << "[DeviceAudioSource::obtain()] Obtained device" << d->device.toString();
 
-#if 0
             QList<QGlib::ParamSpecPtr> properties = realSrc->listProperties();
             Q_FOREACH (QGlib::ParamSpecPtr property, properties) {
                 QString name = property->name();
@@ -237,7 +233,6 @@ void DeviceAudioSource::buildPipeline()
                 if (value.isValid())
                     qDebug() << "[DeviceAudioSource::obtain()] Property" << name << "=" << value.toString();
             }
-#endif
         }
 
         d->devicePtr = d->ptrBin->getElementByName ("src");
@@ -251,7 +246,6 @@ void DeviceAudioSource::buildPipeline()
             d->devicePtr->setProperty<bool> ("do-timestamp", true);
             d->devicePtr->setProperty<bool> ("message-forward", true);
             d->devicePtr->setProperty<int> ("blocksize", 1024);
-            //d->devicePtr->setProperty ("device", d->device);
         }
     }
 }

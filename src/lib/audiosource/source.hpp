@@ -17,6 +17,7 @@
  *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+
 #ifndef SPCHCNTRL_LIB_AUDIOSOURCE_SOURCE_HPP_
 #define SPCHCNTRL_LIB_AUDIOSOURCE_SOURCE_HPP_
 
@@ -38,6 +39,9 @@ class AbstractAudioSource;
 class StreamAudioSource;
 class GenericSink;
 
+/**
+ * @brief Provides the basis of producing data for AbstractAudioSource.
+ */
 class SPCH_EXPORT GenericSource : public QObject, public QGst::Utils::ApplicationSource
 {
     Q_OBJECT
@@ -56,6 +60,10 @@ protected:
     AbstractAudioSource* m_audioSrc;
 };
 
+/**
+ * @brief Provides the capability of using QDataStream objects as sources of
+ *        audio.
+ */
 class SPCH_EXPORT StreamSource : public GenericSource
 {
     Q_OBJECT

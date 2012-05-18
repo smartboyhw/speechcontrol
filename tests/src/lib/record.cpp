@@ -27,17 +27,19 @@
 #include <QtTest/QtTest>
 #include <QGst/Pipeline>
 #include <QGst/Bin>
+#include <QGst/Init>
 #include "record.h"
 
 void TestRecord::init()
 {
-
+    QGst::init();
 }
 void TestRecord::doRecord()
 {
     QGst::BinPtr bin = QGst::Bin::fromDescription(QString ("%1 ! level name=level ! audioconvert ! "
                        "audioresample ! audiorate ! volume name=volume ! "
                        "appsink name=sink").arg ("autoaudiosrc"));
+    QGst::PipelinePtr pipeline;
 }
 
 void TestRecord::cleanup() {

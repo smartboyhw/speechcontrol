@@ -98,7 +98,9 @@ QString AbstractAudioSource::caps() const
 
 QString AbstractAudioSource::pipelineStr() const
 {
-    return QString ("%1 ! level name=level ! audioconvert ! audioresample ! audiorate ! volume name=volume ! appsink name=sink").arg (pipelineDescription());
+    return QString ("%1 ! level name=level ! audioconvert ! "
+    "audioresample ! audiorate ! volume name=volume ! "
+    "appsink name=sink").arg (pipelineDescription());
 }
 
 /// @todo Delete d_func()->m_appSrc if it exists but disconnect its slot/signal first.
@@ -290,6 +292,7 @@ void AbstractAudioSource::start()
 
 
     d->appSink->setSource(d->appSource);
+    d->appSource->setLive(true);
 
     d->m_pipeline = QGst::Pipeline::create();
     d->m_pipeline->add (d->ptrBin);
@@ -300,8 +303,6 @@ void AbstractAudioSource::start()
 
     // Get the party started :)
     d->m_pipeline->setState (QGst::StatePlaying);
-    d->ptrBin->setState(QGst::StatePlaying);
-    d->appSource->setLive(true);
 
     qDebug() << "[AbstractAudioSource::start()] Bin active, recording started.";
     emit begun();
@@ -320,7 +321,6 @@ void AbstractAudioSource::stop()
         d_func()->m_pipeline->bus()->removeSignalWatch();
         d_func()->m_pipeline->setState (QGst::StateNull);
         d_func()->m_pipeline.clear();
-        d_func()->ptrBin->setState (QGst::StatePaused);
     }
 
     qDebug() << "[AbstractAudioSource::start()] Bin inactive, recording stopped.";

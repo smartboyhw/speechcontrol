@@ -28,7 +28,7 @@
 
 #include <algorithm>
 
-#include "config.hpp"
+#include "global.hpp"
 #include "noisedictionary.hpp"
 #include "acousticmodelprivate.hpp"
 #include "acousticmodel.hpp"

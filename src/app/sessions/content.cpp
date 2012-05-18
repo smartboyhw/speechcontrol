@@ -392,6 +392,14 @@ Content* Content::create (const QString& p_author, const QString& p_title, const
     return nabbedContent;
 }
 
+AbstractContentSourcePrivate::AbstractContentSourcePrivate(AbstractContentSource* p_Qptr) : id(), author(),
+
+    text(), title(), q_ptr(p_Qptr) {
+}
+
+AbstractContentSourcePrivate::~AbstractContentSourcePrivate() {
+
+}
 
 AbstractContentSource::AbstractContentSource (QObject* p_parent) :
     QObject (p_parent), d_ptr(new AbstractContentSourcePrivate(this))

@@ -25,8 +25,8 @@
 
 #include <QGst/Buffer>
 
-#include <config.hpp>
-#include <export.hpp>
+#include <lib/global.hpp>
+#include <lib/export.hpp>
 
 #include <QGst/Utils/ApplicationSource>
 
@@ -83,4 +83,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

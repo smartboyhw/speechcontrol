@@ -22,8 +22,8 @@
 
 #include <QObject>
 
-#include <config.hpp>
-#include <export.hpp>
+#include <lib/global.hpp>
+#include <lib/export.hpp>
 
 #include <QGst/Utils/ApplicationSink>
 
@@ -79,4 +79,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

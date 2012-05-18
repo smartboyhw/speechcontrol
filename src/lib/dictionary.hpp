@@ -29,7 +29,7 @@
 #include <QScopedPointer>
 #include <QDateTime>
 
-#include <lib/config.hpp>
+#include <lib/global.hpp>
 #include <lib/export.hpp>
 
 class QUrl;

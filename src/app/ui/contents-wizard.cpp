@@ -64,7 +64,7 @@ AbstractContentSource* ContentWizard::source()
 void ContentWizard::setSource (AbstractContentSource* p_src)
 {
     if (p_src) {
-        m_src = new AbstractContentSource (*p_src);
+        m_src = p_src;
         qDebug() << "[ContentWizard::setSource()] Got source type" << m_src->id();
     }
     else {
@@ -114,4 +114,4 @@ ContentWizard::~ContentWizard()
 }
 
 #include "ui/contents-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

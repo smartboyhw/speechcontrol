@@ -88,6 +88,10 @@ void ContentPrivate::parseText (const QString& p_text)
     QString tmpText;
     uint count = 0;
 
+    // This method of breaking every X letters are so seemed like a good idea
+    // at the time. If you have a more efficient way to determine a single
+    // chunk of text that'd be remotely uniform in size between other Content
+    // objects, be my guest.
     Q_FOREACH (const QChar chr, p_text) {
         if (count == CONTENT_CHUNK_SIZE) {
             if (chr.isLetterOrNumber()) {
@@ -120,11 +124,13 @@ Content::Content (const QString& p_id) : d_ptr(new ContentPrivate(this))
     load (p_id);
 }
 
-/// @todo Implement copy constructor.
 Content::Content (const Content& p_other) : QObject(),
     d_ptr(new ContentPrivate(this))
 {
-
+    Q_D(Content);
+    d->dom = p_other.d_func()->dom;
+    d->id = p_other.d_func()->id;
+    d->path = p_other.d_func()->path;
 }
 
 Content* Content::obtain (const QString& p_id)

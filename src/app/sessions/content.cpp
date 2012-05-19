@@ -24,6 +24,7 @@
 #include <QDebug>
 #include <QTextStream>
 #include <QDomDocument>
+#include <QRegExp>
 
 #include "app/core.hpp"
 #include "app/config.hpp"
@@ -162,25 +163,24 @@ void Content::load (QFile* p_file)
 
 void Content::parseText (const QString& p_text)
 {
-    QString tmpText;
-    uint count = 0;
+	QString tmpText;
+    QStringList lines = p_text.split('\n');
 
-    Q_FOREACH (const QChar chr, p_text) {
-        if (count == CONTENT_CHUNK_SIZE) {
-            if (chr.isLetterOrNumber()) {
-                count -= 1;
-            }
-            else {
-                m_pages << tmpText;
-                tmpText.clear();
-                count = -1;
-            }
-        }
+    Q_FOREACH (QString line, lines) {
+    	line.remove(QRegExp("^\\s+"));
+    	line.remove(QRegExp("\\s+$"));
+    	line.replace(QRegExp("\\[[0-9]+\\]"), "");
+    	if (line.isEmpty())
+    		continue;
 
-        tmpText.append (chr);
-
-        ++count;
+    	if (*(line.end()) != '.')
+    		tmpText.append(line + ' ');
+    	else
+    		tmpText.append(line + '\n');
     }
+
+    tmpText.replace(QRegExp("(?P<short>[a-zA-Z0-9]{3}\\. )"), "\\1\n");
+    m_pages = tmpText.split('\n');
 }
 
 bool Content::isValid() const

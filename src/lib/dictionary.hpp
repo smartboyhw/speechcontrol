@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,13 +13,19 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl .
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef DICTIONARY_HPP
-#define DICTIONARY_HPP
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/18/12 16:04:14 PM
+ */
+
+#ifndef SPCHCNTRL_DICTIONARY_HPP
+#define SPCHCNTRL_DICTIONARY_HPP
 
 #include <QDir>
 #include <QMap>
@@ -29,7 +35,7 @@
 #include <QScopedPointer>
 #include <QDateTime>
 
-#include <lib/config.hpp>
+#include <lib/global.hpp>
 #include <lib/export.hpp>
 
 class QUrl;
@@ -37,8 +43,7 @@ class QFile;
 class QDomDocument;
 class QDomElement;
 
-namespace SpeechControl
-{
+SPCHCNTRL_BEGIN_NAMESPACE
 
 class Phrase;
 class Sentence;
@@ -72,7 +77,9 @@ typedef QMap<QString, DictionaryEntry*> DictionaryEntryMap;
  *
  * Entries within a dictionary are typically used to provide the most
  * accurate pronunciation (phoneme) of words for Sphinx to use during
- * the act of building or adapting acoustic models.
+ * the act of building or adapting acoustic models. It's important that
+ * dictionary objects render the proper and a valid phoneme scheme for
+ * words.
  *
  * @see Dictionary
  **/
@@ -173,10 +180,18 @@ public:
      * @brief Creates a new Dictionary from the specified text.
      *
      * @param p_text The text to use.
-     * @param p_id The dictionary's path.
+     * @param p_id The ID of the new Dictionary.
      * @return Dictionary* A pointer to the newly formed Dictionary.
      **/
     static Dictionary* create (QStringList p_text, QString p_id);
+
+    /**
+     * @brief Merges a collection of Dictionary objects into one dictionary.
+     *
+     * @param p_list A list of the Dictionary objects to merge.
+     * @param p_id The ID of the merged Dictionary.
+     **/
+    static Dictionary* merge(const DictionaryList &p_list, const QString& p_id);
 
     /**
      * @brief Obtains the list of entries representing this Dictionary.
@@ -241,6 +256,8 @@ public:
 private:
     QScopedPointer<DictionaryPrivate> d_ptr;
 };
-}
+
+SPCHCNTRL_END_NAMESPACE
+
 #endif // DICTIONARY_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

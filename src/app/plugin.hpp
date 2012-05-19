@@ -18,8 +18,8 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef PLUGINS_HPP
-#define PLUGINS_HPP
+#ifndef SPCHCNTRL_PLUGINS_HPP
+#define SPCHCNTRL_PLUGINS_HPP
 
 #include <QUrl>
 #include <QList>
@@ -27,20 +27,17 @@
 #include <QStringList>
 
 #include <lib/export.hpp>
+#include <app/global.hpp>
 
 class QPixmap;
 class QAction;
 class QSettings;
 class QPluginLoader;
 
-namespace SpeechControl
-{
-namespace Plugins
-{
-class Factory;
-class AbstractHandle;
-class AbstractPlugin;
+SPCHCNTRL_BEGIN_NAMESPACE
 
+class AbstractPlugin;
+struct AbstractPluginPrivate;
 /**
  * @brief Represents a list of plug-ins.
  **/
@@ -68,6 +65,8 @@ class SPCH_EXPORT AbstractPlugin : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY (AbstractPlugin)
+    Q_DECLARE_PRIVATE(AbstractPlugin)
+    QScopedPointer<AbstractPluginPrivate> d_ptr;
     friend class Factory;
     friend class GenericPlugin;
 
@@ -220,7 +219,7 @@ protected:
      *
      * @return A QList< QAction* > of actions. It'll be empty if no QActions have been added.
      **/
-    QList<QAction*> actions();
+    QList<QAction*> actions() const;
 
     /**
      * @brief Adds a QAction for this plug-in to the Main window.
@@ -249,25 +248,6 @@ private slots:
      * @internal
      **/
     void stop();
-
-private:
-    /**
-     * @brief Loads the library into memory.
-     * @internal
-     * @return TRUE if the plug-in could be loaded, FALSE otherwise.
-     **/
-    bool loadLibrary();
-
-    /**
-     * @brief Loads all of the plug-in's dependency plug-ins.
-     * @internal
-     * @return TRUE if the plug-ins were ALL loaded, FALSE otherwise.
-     **/
-    bool loadPlugins();
-
-    QPluginLoader* m_ldr;     ///< The magical QPluginLoader!
-    QString m_id;             ///< The ID of the plug-in.
-    QList<QAction*> m_acts;   ///< The QActions used to add the 'Plugins' menu.
 };
 
 /**
@@ -297,12 +277,11 @@ public:
     QPixmap pixmap() const;
 
 protected:
-    virtual void initialize() { };
-    virtual void deinitialize() { };
+    virtual inline void initialize() { };
+    virtual inline void deinitialize() { };
 };
 
-}
-}
+SPCHCNTRL_END_NAMESPACE
 
-#endif // PLUGINS_HPP
+#endif // SPCHCNTRL_PLUGINS_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

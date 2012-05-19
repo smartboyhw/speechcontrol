@@ -58,39 +58,39 @@ ServicePrivate::ServicePrivate (const SpeechControl::Services::AbstractModulePri
 
 }
 
-AbstractModule::ActivityState ServicePrivate::handleStateChange (const AbstractModule::ActivityState p_state)
+AbstractServiceModule::ActivityState ServicePrivate::handleStateChange (const AbstractServiceModule::ActivityState p_state)
 {
     switch (p_state) {
-        case AbstractModule::Enabled:
+        case AbstractServiceModule::Enabled:
 
             if (!m_sphinx->start()) {
                 qWarning() << "[DesktopControl::ServicePrivate::start()] Start unsuccessful.";
-                return AbstractModule::Disabled;
+                return AbstractServiceModule::Disabled;
             }
 
             qDebug() << "[DesktopControl::ServicePrivate::start()] Enabled.";
 
-            return AbstractModule::Enabled;
+            return AbstractServiceModule::Enabled;
             break;
 
-        case AbstractModule::Disabled:
+        case AbstractServiceModule::Disabled:
 
             if (!m_sphinx->stop()) {
                 qWarning() << "[DesktopControl::ServicePrivate::stop()] Stop unsuccessful.";
-                return AbstractModule::Enabled;
+                return AbstractServiceModule::Enabled;
             }
 
-            return AbstractModule::Disabled;
+            return AbstractServiceModule::Disabled;
             break;
 
         default:
-            return AbstractModule::Undefined;
+            return AbstractServiceModule::Undefined;
     }
 
     m_view->setVisible(m_sphinx->isRunning());
 }
 
-void ServicePrivate::changeState (AbstractModule::ActivityState p_state)
+void ServicePrivate::changeState (AbstractServiceModule::ActivityState p_state)
 {
     m_state = handleStateChange(p_state);
 }
@@ -184,5 +184,5 @@ Service::~Service()
 
 }
 
-#include "services/desktopcontrol/service.moc"
+#include "service.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

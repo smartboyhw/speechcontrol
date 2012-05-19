@@ -136,7 +136,6 @@ AudioSourceList DeviceAudioSource::allDevices()
                 Q_FOREACH (QGlib::Value device, devices) {
                     qDebug() << "[DeviceAudioSource::allDevices()] Found audio device" << device.toString();
                     QList<QGlib::ParamSpecPtr> specs = propProbe->listProperties();
-                    propProbe->setProperty ("device", device);
 
                     Q_FOREACH (const QGlib::ParamSpecPtr spec, specs) {
                         qDebug() << "[DeviceAudioSource::allDevices()] Device:" << device.toString()
@@ -179,9 +178,7 @@ QString DeviceAudioSource::humanName() const
     if (d->devicePtr.isNull())
         return deviceName();
     else {
-        d->devicePtr->setState (QGst::StateReady);
         QString name = d->devicePtr->property ("device-name").toString();
-        d->devicePtr->setState (QGst::StateNull);
 
         if (name.isEmpty() || name.isNull())
             return deviceName();
@@ -194,17 +191,21 @@ QString DeviceAudioSource::humanName() const
 
 QString DeviceAudioSource::pipelineDescription() const
 {
-    return QString ("autoaudiosrc name=src");
+    return QString ("alsasrc name=src");
 }
 
 void DeviceAudioSource::start()
 {
+    Q_D(DeviceAudioSource);
     SpeechControl::AbstractAudioSource::start();
+    d->devicePtr->setState(QGst::StatePlaying);
 }
 
 void DeviceAudioSource::stop()
 {
+    Q_D(DeviceAudioSource);
     SpeechControl::AbstractAudioSource::stop();
+    d->devicePtr->setState(QGst::StateNull);
 }
 
 void DeviceAudioSource::buildPipeline()
@@ -213,19 +214,17 @@ void DeviceAudioSource::buildPipeline()
     Q_D (DeviceAudioSource);
 
     if (isNull()) {
-        qDebug() << "[DeviceAudioSource::obtain()] The base pipeline is NULL.";
+        qDebug() << "[DeviceAudioSource::buildPipeline()] The base pipeline is NULL.";
         return;
     }
     else {
-
-        d->ptrAudioSource->setState (QGst::StateReady);
+        d->ptrAudioSource->setState (QGst::StatePaused);
         QGst::ChildProxyPtr childProxy = d->ptrAudioSource.dynamicCast<QGst::ChildProxy>();
 
         if (childProxy && childProxy->childrenCount() > 0) {
             QGst::ObjectPtr realSrc = childProxy->childByIndex (0);
             qDebug() << "[DeviceAudioSource::obtain()] Obtained device" << d->device.toString();
 
-#if 0
             QList<QGlib::ParamSpecPtr> properties = realSrc->listProperties();
             Q_FOREACH (QGlib::ParamSpecPtr property, properties) {
                 QString name = property->name();
@@ -234,20 +233,19 @@ void DeviceAudioSource::buildPipeline()
                 if (value.isValid())
                     qDebug() << "[DeviceAudioSource::obtain()] Property" << name << "=" << value.toString();
             }
-#endif
         }
 
         d->devicePtr = d->ptrBin->getElementByName ("src");
 
         if (d->devicePtr.isNull()) {
-            qWarning() << "[DeviceAudioSource::obtain()] The obtained device pointer is NULL!" << d->device.toString();
+            qWarning() << "[DeviceAudioSource::buildPipeline()] The obtained device pointer is NULL!" << d->device.toString();
         }
         else {
+            qDebug() << "[DeviceAudioSource::buildPipeline()] Setting specific properties for" << d->device.toString() << "...";
             d->devicePtr->setProperty<const char*> ("client", "SpeechControl");
             d->devicePtr->setProperty<bool> ("do-timestamp", true);
             d->devicePtr->setProperty<bool> ("message-forward", true);
             d->devicePtr->setProperty<int> ("blocksize", 1024);
-            d->devicePtr->setProperty ("device", d->device);
         }
     }
 }

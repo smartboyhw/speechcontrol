@@ -1,5 +1,5 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
  *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
@@ -13,9 +13,15 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/16/12 22:21:00 PM
  */
 
 #include "app/core.hpp"
@@ -23,58 +29,65 @@
 #include "app/services/engineprivate.hpp"
 #include "app/services/engine.hpp"
 
-using SpeechControl::Core;
-using namespace SpeechControl::Services;
+SPCHCNTRL_USE_NAMESPACE
 
-QMap<QString, AbstractModule*> EnginePrivate::s_list;
-Engine* Engine::s_inst = 0;
+QMap<QString, AbstractServiceModule*> ServiceEnginePrivate::s_list;
+ServiceEngine* ServiceEngine::s_inst = 0;
 
-Engine::Engine() : QObject (Core::instance()), d_ptr (new EnginePrivate)
+ServiceEngine::ServiceEngine() : QObject (Core::instance()), d_ptr (new ServiceEnginePrivate)
 {
 }
 
-Engine::Engine (const Engine& p_other) : QObject (p_other.parent()), d_ptr (const_cast<EnginePrivate*> (p_other.d_ptr.data()))
+ServiceEngine::ServiceEngine (const ServiceEngine& p_other) : QObject (p_other.parent()), d_ptr (const_cast<ServiceEnginePrivate*> (p_other.d_ptr.data()))
 {
 
 }
 
-ModuleList Engine::allModules()
+ServiceModuleList ServiceEngine::allModules()
 {
-    return EnginePrivate::s_list.values();
+    return ServiceEnginePrivate::s_list.values();
 }
 
-void Engine::registerModule (AbstractModule* p_module)
+void ServiceEngine::registerModule (AbstractServiceModule* p_module)
 {
     if (!findModule (p_module->id())) {
-        EnginePrivate::s_list.insert (p_module->id(), p_module);
+        ServiceEnginePrivate::s_list.insert (p_module->id(), p_module);
     }
 }
 
-void Engine::unregisterModule (AbstractModule* p_module)
+void ServiceEngine::unregisterModule (AbstractServiceModule* p_module)
 {
     if (findModule (p_module->id())) {
         if (p_module->isActive())
             p_module->stop();
 
-        EnginePrivate::s_list.remove (p_module->id());
+        ServiceEnginePrivate::s_list.remove (p_module->id());
     }
 }
 
-AbstractModule* Engine::findModule (const QString& p_id)
+AbstractServiceModule* ServiceEngine::findModule (const QString& p_id)
 {
-    return EnginePrivate::s_list.value (p_id);
+    return ServiceEnginePrivate::s_list.value (p_id);
 }
 
-void Engine::start()
+void ServiceEngine::start()
 {
+    Q_FOREACH(AbstractServiceModule* module, allModules()){
+        module->start();
+    }
+
     emit instance()->started();
 }
 
-void Engine::stop()
+void ServiceEngine::stop()
 {
+    Q_FOREACH(AbstractServiceModule* module, allModules()){
+        module->stop();
+    }
+
     emit instance()->stopped();
 }
 
 
 #include "services/engine.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

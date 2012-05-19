@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,9 +13,15 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/16/12 21:41:05 PM
  */
 
 #include <QDebug>
@@ -23,40 +29,78 @@
 #include <QPluginLoader>
 #include <QApplication>
 #include <QAction>
-
 #include "core.hpp"
-#include "config.hpp"
-#include "plugins.hpp"
 #include "factory.hpp"
 #include "indicator.hpp"
+#include "plugin.hpp"
+#include "pluginprivate.hpp"
 
-using namespace SpeechControl;
-using SpeechControl::Plugins::Factory;
-using SpeechControl::Plugins::PluginMap;
-using SpeechControl::Plugins::PluginList;
-using SpeechControl::Plugins::AbstractPlugin;
+SPCHCNTRL_USE_NAMESPACE
+
+AbstractPluginPrivate::AbstractPluginPrivate(AbstractPlugin* p_Qptr) :
+    ldr(0), id(QString::null), acts(), q_ptr(p_Qptr)
+{
+
+}
+
+bool AbstractPluginPrivate::loadLibrary()
+{
+    Q_Q(AbstractPlugin);
+    const QString libName = "lib" + q->configuration()->value ("Dependencies/Library").toString() + ".so";
+    const QString pth = SPCHCNTRL_PLUGINS_LIB_DIR "/" + libName;
+    ldr = new QPluginLoader;
+    ldr->setFileName (pth);
+
+    if (!ldr->load()) {
+        qDebug() << "[AbstractPlugin::loadLibrary()]" << q->name() << "'s library failed to load."
+                 << ldr->errorString() << ldr->fileName() << pth << id;
+        return false;
+    }
+
+    return true;
+}
+
+bool AbstractPluginPrivate::loadPlugins()
+{
+    Q_Q(AbstractPlugin);
+    Q_FOREACH (AbstractPlugin * plgn, q->plugins()) {
+        if (! (plgn->isSupported() && Factory::isPluginLoaded (plgn->id()))) {
+            qDebug() << "[AbstractPlugin::loadPlugins()] Plugin" << q->name() << "is missing a dependency:" << plgn->name();
+            return false;
+        }
+    }
+
+    return true;
+}
+
+AbstractPluginPrivate::~AbstractPluginPrivate() {
+
+}
+
 
 AbstractPlugin::AbstractPlugin (QObject* p_prnt) :
-    QObject (p_prnt), m_ldr (0), m_id (QString::null)
+    QObject (p_prnt), d_ptr(new AbstractPluginPrivate(this))
 {
 }
 
 AbstractPlugin::AbstractPlugin (const QString& p_id, QObject* p_parent) : QObject (p_parent),
-    m_ldr (0), m_id (p_id)
+    d_ptr(new AbstractPluginPrivate(this))
 {
-
+    Q_D(AbstractPlugin);
+    d->id  = p_id;
 }
 
+/// @todo Add implementation for copy constructor.
 AbstractPlugin::AbstractPlugin (const AbstractPlugin& p_other) : QObject (p_other.parent()),
-    m_ldr (p_other.m_ldr), m_id (p_other.m_id)
+    d_ptr(new AbstractPluginPrivate(this))
 {
-
 }
 
 /// @todo Determine if a plug-in has been loaded.
 bool AbstractPlugin::hasLoaded() const
 {
-    return m_ldr && m_ldr->isLoaded();
+    Q_D(const AbstractPlugin);
+    return d->ldr && d->ldr->isLoaded();
 }
 
 bool AbstractPlugin::isSupported() const
@@ -143,40 +187,13 @@ const PluginList AbstractPlugin::plugins() const
 
 bool AbstractPlugin::loadComponents()
 {
-    if (loadPlugins()) {
-        return loadLibrary();
+    Q_D(AbstractPlugin);
+    if (d->loadPlugins()) {
+        return d->loadLibrary();
     }
 
     qDebug() << "[AbstractPlugin::loadComponents()] Failed to load components for " << name();
     return false;
-}
-
-bool AbstractPlugin::loadLibrary()
-{
-    const QString libName = "lib" + configuration()->value ("Dependencies/Library").toString() + ".so";
-    const QString pth = SPCHCNTRL_PLUGINS_LIB_DIR "/" + libName;
-    m_ldr = new QPluginLoader;
-    m_ldr->setFileName (pth);
-
-    if (!m_ldr->load()) {
-        qDebug() << "[AbstractPlugin::loadLibrary()]" << name() << "'s library failed to load."
-                 << m_ldr->errorString() << m_ldr->fileName() << pth << m_id;
-        return false;
-    }
-
-    return true;
-}
-
-bool AbstractPlugin::loadPlugins()
-{
-    Q_FOREACH (AbstractPlugin * plgn, plugins()) {
-        if (! (plgn->isSupported() && Factory::isPluginLoaded (plgn->id()))) {
-            qDebug() << "[AbstractPlugin::loadPlugins()] Plugin" << name() << "is missing a dependency:" << plgn->name();
-            return false;
-        }
-    }
-
-    return true;
 }
 
 void AbstractPlugin::start()
@@ -208,17 +225,20 @@ bool AbstractPlugin::load()
 
 QSettings* AbstractPlugin::configuration() const
 {
-    return Factory::pluginConfiguration (m_id);
+    Q_D(const AbstractPlugin);
+    return Factory::pluginConfiguration (d->id);
 }
 
 QSettings* AbstractPlugin::settings() const
 {
-    return Factory::pluginSettings (m_id);
+    Q_D(const AbstractPlugin);
+    return Factory::pluginSettings (d->id);
 }
 
-QList< QAction* > AbstractPlugin::actions()
+QList< QAction* > AbstractPlugin::actions() const
 {
-    return m_acts;
+    Q_D(AbstractPlugin);
+    return d->acts;
 }
 
 void AbstractPlugin::addAction (QAction* p_action)
@@ -247,22 +267,21 @@ bool AbstractPlugin::isLoaded() const
 
 AbstractPlugin::~AbstractPlugin()
 {
-
 }
 
-Plugins::GenericPlugin::GenericPlugin (const QString& p_id) : AbstractPlugin (p_id, Core::instance())
+GenericPlugin::GenericPlugin (const QString& p_id) : AbstractPlugin (p_id, Core::instance())
 {
 }
 
-Plugins::GenericPlugin::GenericPlugin (const Plugins::GenericPlugin& p_other) : AbstractPlugin (p_other.id(), Core::instance())
+GenericPlugin::GenericPlugin (const GenericPlugin& p_other) : AbstractPlugin (p_other.id(), Core::instance())
 {
     qFatal ("Shouldn't hit here.");
 }
 
-QPixmap Plugins::GenericPlugin::pixmap() const
+QPixmap GenericPlugin::pixmap() const
 {
     return QApplication::windowIcon().pixmap (64, 64);
 }
 
-#include "plugins.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "plugin.moc"
+// kate: indent-mode cstyle; replace-tabs on;

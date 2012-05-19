@@ -29,7 +29,7 @@
 #include <lib/dictionary.hpp>
 
 #include "app/core.hpp"
-#include "app/config.hpp"
+#include "app/global.hpp"
 #include "app/sessions/corpus.hpp"
 #include "app/sessions/phrase.hpp"
 

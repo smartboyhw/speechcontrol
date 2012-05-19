@@ -21,33 +21,48 @@
 #ifndef SPCHCNTRL_APP_CONFIG_HPP
 #define SPCHCNTRL_APP_CONFIG_HPP
 
-#include <lib/config.hpp>
-#include "macros.hpp"
+#include <QDebug>
+#include <lib/global.hpp>
 
-/// Provides the location to the libraries to be used as plug-ins.
-/// @see AbstractPlugin
-/// @see Factory
+// Provides the location to the libraries to be used as plug-ins.
 #define SPCHCNTRL_PLUGINS_LIB_DIR "@SPCHCNTRL_PLUGINS_LIB_INSTALL_DIR@"
 
-/// Provides the location to the specification files to be used as meta-data for plug-ins.
-/// @see AbstractPlugin
-/// @see Factory
+// Provides the location to the specification files to be used as meta-data for plug-ins.
 #define SPCHCNTRL_PLUGINS_SPEC_DIR "@SPCHCNTRL_PLUGINS_SPEC_INSTALL_DIR@"
 
-/// Provides the location to the pre-packaged Content files.
-/// @see Content
+// Provides the location to the pre-packaged Content files.
 #define SPCHCNTRL_SYSTEM_CONTENT_DIR "@SPCHCNTRL_DATA_CONTENT_DIR@"
 
-/// Defines the default size of a phrase when rendering in a corpus.
-/// @see Corpus::create()
-/// @see Corpus
+// Defines the default size of a phrase when rendering in a corpus.
 #define CORPUS_WORD_BLOCK 8
 
-/// Defines the default count of alphanumerical characters to be considered one page in a Content.
-/// @see Content::create()
-/// @see Content
+// Defines the default count of alphanumerical characters to be considered one page in a Content.
 #define CONTENT_CHUNK_SIZE 250
+
+#include <QDebug>
+
+/// @brief Allows a class to be used as a singleton.
+#define SC_SINGLETON(Type) \
+private:\
+    static Type* s_inst;\
+    Type();\
+public:\
+    static Type* instance ( )\
+    {\
+        if (s_inst == 0)\
+        {\
+            s_inst = new Type;\
+            qDebug() << "[SC_SINGLETON()] Created singleton instance of " #Type << ".";\
+        }\
+    return s_inst;\
+    }\
+
+#ifndef QT_NO_DEBUG
+# define SC_ASSERT(condition,message) ((!(#condition)) ? qt_assert("condition##message",__FILE__,__LINE__) : qt_noop())
+#else
+# define SC_ASSERT(condition,message) qt_noop()
+#endif
 
 #endif
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

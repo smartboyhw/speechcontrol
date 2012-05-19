@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,21 +13,26 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/16/12 19:54:35 PM
  */
 
 #include <QLabel>
 #include <QTableWidget>
 
 #include <lib/acousticmodel.hpp>
+#include <core.hpp>
 
-#include "core.hpp"
-#include "services/dictation/service.hpp"
-#include "services/desktopcontrol/service.hpp"
-#include "services/desktopcontrol/command.hpp"
-#include "desktopcontrol-pane.hpp"
+#include "service.hpp"
+#include "command.hpp"
+#include "settings-pane.hpp"
 #include "ui_settingspane-desktopcontrol.h"
 
 using namespace SpeechControl;
@@ -86,8 +91,7 @@ void DesktopControlSettingsPane::restoreDefaults()
 
 void DesktopControlSettingsPane::updateUi()
 {
-    m_ui->checkBoxEnable->setChecked (!Dictation::Service::instance()->isEnabled() && DesktopControl::Service::instance()->isEnabled());
-    m_ui->checkBoxEnable->setEnabled (!Dictation::Service::instance()->isEnabled());
+    m_ui->checkBoxEnable->setChecked (DesktopControl::Service::instance()->isEnabled());
     AcousticModelList models = AcousticModel::allModels();
 
     QTableWidget* widget = m_ui->tableWidget;
@@ -148,5 +152,5 @@ void DesktopControlSettingsPane::on_deftAcousticModel_textEdited (const QString&
     }
 }
 
-#include "ui/settings/desktopcontrol-pane.moc"
+#include "settings-pane.moc"
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

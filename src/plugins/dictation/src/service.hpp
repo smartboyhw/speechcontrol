@@ -18,29 +18,55 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "service.hpp"
-#include "app/services/moduleprivate.hpp"
-#include "app/services/dictation/sphinx.hpp"
+#ifndef SPEECHCONTROL_DICTATION_SERVICE_HPP
+#define SPEECHCONTROL_DICTATION_SERVICE_HPP
+
+#include <app/macros.hpp>
+#include <app/services/module.hpp>
 
 namespace SpeechControl
 {
+
 namespace Dictation
 {
 
-class Service;
-class ServicePrivate : public Services::AbstractModulePrivate
+class Service : public SpeechControl::Services::AbstractServiceModule
 {
-    friend class Service;
-private:
-    Service::SafetyMode m_safetyMode;
-    Sphinx* m_sphinx;
-    ServicePrivate (Service* p_qPtr);
-    virtual ~ServicePrivate();
-    void setSafetyMode (const Service::SafetyMode& p_mode);
-    Service::SafetyMode safetyMode() const;
-    virtual void changeState (AbstractModule::ActivityState p_state);
-    virtual AbstractModule::ActivityState handleStateChange (const AbstractModule::ActivityState p_state);
+    Q_OBJECT
+    Q_ENUMS (SafetyMode)
+    Q_DISABLE_COPY (Service)
+    SC_SINGLETON (Service)
+
+protected:
+    virtual void deinitialize();
+    virtual void initialize();
+
+public:
+    enum SafetyMode {
+        Undefined = -1,
+        Enabled,
+        Active,
+        Inactive,
+        Disabled
+    };
+
+    bool isSafetyModeActive() const;
+    bool isSafetyModeEnabled() const;
+    SafetyMode safetyMode() const;
+    virtual bool isEnabled() const;
+    virtual QString id() const;
+    virtual QPixmap pixmap() const;
+    virtual QString name() const;
+    virtual ~Service();
+
+public slots:
+    void handleText (const QString& p_text);
+    void setSafetyMode (const SafetyMode& p_mode);
 };
+
 }
+
 }
+
+#endif // SPEECHCONTROL_DICTATION_SERVICE_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

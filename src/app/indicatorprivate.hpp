@@ -28,19 +28,12 @@ struct IndicatorPrivate {
     IndicatorPrivate();
     ~IndicatorPrivate();
     void buildMenu();
-    void buildActions();
 
     QSystemTrayIcon* icon;
     QMenu* menuBase;
-    QMenu* menuDesktopControl;
-    QMenu* menuDictation;
     QMenu* menuPlugins;
     QMenu* menuHelp;
     QMenu* menuTraining;
-    QAction* actionDesktopControlOptions;
-    QAction* actionDesktopControlToggle;
-    QAction* actionDictationToggle;
-    QAction* actionDictationOptions;
     QAction* actionPluginOptions;
     QAction* actionAboutSpeechControl;
     QAction* actionAboutQt;

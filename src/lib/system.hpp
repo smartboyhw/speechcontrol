@@ -23,11 +23,10 @@
 
 #include <QObject>
 
-#include <lib/config.hpp>
+#include <lib/global.hpp>
 #include <lib/export.hpp>
 
-namespace SpeechControl
-{
+SPCHCNTRL_BEGIN_NAMESPACE
 
 class SPCH_EXPORT System : public QObject
 {
@@ -51,7 +50,7 @@ private:
     static System* s_inst;
 };
 
-}
+SPCHCNTRL_END_NAMESPACE
 
 #endif // SYSTEM_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

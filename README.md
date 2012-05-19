@@ -26,7 +26,7 @@ you to:
 Any and all bugs should be reported to http://bugs.thesii.org
 That link points to the issue tracking system used to maintain any and all
 activities pertaining to SpeechControl. The exact link for bug reporting
-when it comes to SpeechControl is 
+when it comes to SpeechControl is
 http://bugs.thesii.org/enter_bug.cgi?product=speechcontrol.
 
 It's recommended that you first test if SpeechControl works on your system
@@ -43,7 +43,7 @@ the GNU Debugger (gdb). To do so, from the terminal, invoke the following:
 
 You should then re-run the same procedure you invoked to cause that error to
 occur and provide this information in a bug report on the Institute's tracker at
-http://tasks.thesii.org. You can provide more information by taking a look at
+http://bugs.thesii.org. You can provide more information by taking a look at
 README.tests.
 
 ## Contact
@@ -57,5 +57,7 @@ can be found at http://thesii.org/wiki/SpeechControl.
 
 ***
 One Vision. One Purpose
+
 The Synthetic Intellect Institute :: F/OSS AI
+
 http://www.thesii.org :: spchcntrl-users@thesii.org :: #sii-speechcontrol on irc.freenode.net

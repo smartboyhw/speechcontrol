@@ -21,22 +21,15 @@
 #ifndef SPEECHCONTROL_DESKTOPCONTROL_SERVICE_HPP
 #define SPEECHCONTROL_DESKTOPCONTROL_SERVICE_HPP
 
-#include <app/macros.hpp>
-#include <app/services/engine.hpp>
-#include <app/services/desktopcontrol/command.hpp>
+#include <app/services/module.hpp>
+#include "command.hpp"
+#include "global.hpp"
 
-namespace SpeechControl
-{
+DSKTPCTLAPI_NAMESPACE_BEGIN
 
-class AcousticModel;
-
-namespace DesktopControl
-{
-
-class AbstractCommand;
 class ServicePrivate;
 
-class Service : public SpeechControl::Services::AbstractModule
+class Service : public Services::AbstractModule
 {
     Q_OBJECT
     Q_DISABLE_COPY (Service)
@@ -68,9 +61,8 @@ private:
     QScopedPointer<ServicePrivate> d_ptr;
 };
 
-}
 
-}
+DSKTPCTLAPI_NAMESPACE_END
 
 #endif // SPEECHCONTROL_DESKTOPCONTROL_SERVICE_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

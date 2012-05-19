@@ -22,10 +22,10 @@
 #include "moduleprivate.hpp"
 #include "module.hpp"
 
-using namespace SpeechControl::Services;
+SPCHCNTRL_USE_NAMESPACE
 
-AbstractModulePrivate::AbstractModulePrivate (AbstractModule* p_qPtr) :
-    q_ptr (p_qPtr), m_state (AbstractModule::Undefined)
+AbstractModulePrivate::AbstractModulePrivate (AbstractServiceModule* p_qPtr) :
+    q_ptr (p_qPtr), m_state (AbstractServiceModule::Undefined)
 {
 
 }
@@ -35,19 +35,19 @@ AbstractModulePrivate::~AbstractModulePrivate()
 
 }
 
-AbstractModule::AbstractModule (QObject* p_parent) : QObject (p_parent),
+AbstractServiceModule::AbstractServiceModule (QObject* p_parent) : QObject (p_parent),
     d_ptr (0)
 {
 
 }
 
-AbstractModule::AbstractModule (AbstractModulePrivate* p_dd, QObject* p_parent) :
+AbstractServiceModule::AbstractServiceModule (AbstractModulePrivate* p_dd, QObject* p_parent) :
     QObject (p_parent), d_ptr (p_dd)
 {
 
 }
 
-void AbstractModule::setState (const AbstractModule::ActivityState p_state)
+void AbstractServiceModule::setState (const AbstractServiceModule::ActivityState p_state)
 {
     Q_D (AbstractModule);
     qDebug() << "[AbstractModule::setState()] State changing to " << p_state << "...";
@@ -57,12 +57,12 @@ void AbstractModule::setState (const AbstractModule::ActivityState p_state)
         emit stateChanged (p_state);
 }
 
-bool AbstractModule::isActive() const
+bool AbstractServiceModule::isActive() const
 {
     return state() == Enabled;
 }
 
-void AbstractModule::start()
+void AbstractServiceModule::start()
 {
     if (!isActive()) {
         qDebug() << "[AbstractModule::start()] Initializing...";
@@ -79,7 +79,7 @@ void AbstractModule::start()
     }
 }
 
-void AbstractModule::stop()
+void AbstractServiceModule::stop()
 {
     if (isActive()) {
         qDebug() << "[AbstractModule::stop()] Initializing...";
@@ -96,14 +96,14 @@ void AbstractModule::stop()
     }
 }
 
-AbstractModule::ActivityState AbstractModule::state() const
+AbstractServiceModule::ActivityState AbstractServiceModule::state() const
 {
     Q_D (const AbstractModule);
     return d->m_state;
 }
 
 
-AbstractModule::~AbstractModule()
+AbstractServiceModule::~AbstractServiceModule()
 {
 
 }

@@ -1,0 +1,53 @@
+/***
+ *  This file is part of SpeechControl.
+ *
+ *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *
+ *  SpeechControl is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Library General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  SpeechControl is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Library General Public License
+ *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+#ifndef SPCHCNTRL_APP_CONFIG_HPP
+#define SPCHCNTRL_APP_CONFIG_HPP
+
+#include <lib/config.hpp>
+#include "macros.hpp"
+
+/// Provides the location to the libraries to be used as plug-ins.
+/// @see AbstractPlugin
+/// @see Factory
+#define SPCHCNTRL_PLUGINS_LIB_DIR "/usr/lib/speechcontrol"
+
+/// Provides the location to the specification files to be used as meta-data for plug-ins.
+/// @see AbstractPlugin
+/// @see Factory
+#define SPCHCNTRL_PLUGINS_SPEC_DIR "/usr/share/speechcontrol/plugins"
+
+/// Provides the location to the pre-packaged Content files.
+/// @see Content
+#define SPCHCNTRL_SYSTEM_CONTENT_DIR "/usr/share/speechcontrol/contents"
+
+/// Defines the default size of a phrase when rendering in a corpus.
+/// @see Corpus::create()
+/// @see Corpus
+#define CORPUS_WORD_BLOCK 8
+
+/// Defines the default count of alphanumerical characters to be considered one page in a Content.
+/// @see Content::create()
+/// @see Content
+#define CONTENT_CHUNK_SIZE 250
+
+#endif
+
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 

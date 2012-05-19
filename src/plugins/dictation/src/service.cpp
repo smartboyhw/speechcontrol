@@ -99,7 +99,7 @@ ServicePrivate::~ServicePrivate()
 
 }
 
-Service::Service() : AbstractModule (new ServicePrivate (this), KeyboardEmulator::instance())
+Service::Service() : AbstractServiceModule (new ServicePrivate (this), KeyboardEmulator::instance())
 {
     Services::Engine::registerModule (this);
 }

@@ -36,7 +36,7 @@
 #include <QGst/Message>
 
 // local includes
-#include <lib/config.hpp>
+#include <lib/global.hpp>
 #include <lib/export.hpp>
 
 #include <Utils/ApplicationSource>

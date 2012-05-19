@@ -26,7 +26,7 @@
 #include <QObject>
 #include <QString>
 
-#include <config.hpp>
+#include <lib/global.hpp>
 
 namespace SpeechControl
 {
@@ -121,4 +121,4 @@ private:
 }
 
 #endif // SPEECHCONTROL_NOISEDICTIONARY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

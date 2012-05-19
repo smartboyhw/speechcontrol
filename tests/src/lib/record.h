@@ -18,28 +18,25 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <app/services/moduleprivate.hpp>
+#ifndef TEST_LIB_RECORD_HPP
+#define TEST_LIB_RECORD_HPP
 
-class QDeclarativeView;
+#include <QObject>
+
 namespace SpeechControl
 {
-namespace DesktopControl
+class AbstractAudioSource;
+}
+
+class TestRecord : public QObject
 {
+    Q_OBJECT
 
-class Service;
-class Sphinx;
-
-struct ServicePrivate : public Services::AbstractModulePrivate {
-    virtual ~ServicePrivate();
-    explicit ServicePrivate (Service* p_parent = 0);
-    ServicePrivate (const Services::AbstractModulePrivate& p_other);
-    virtual void changeState (AbstractModule::ActivityState p_state);
-    virtual Services::AbstractModule::ActivityState handleStateChange (const Services::AbstractModule::ActivityState p_state);
-    Sphinx* m_sphinx;
-    QDeclarativeView* m_view;
+private slots:
+    void init();
+    void cleanup();
+    void doRecord();
 };
 
-}
-}
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
-
+#endif
+// kate: indent-mode cstyle; replace-tabs on;

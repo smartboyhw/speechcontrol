@@ -20,13 +20,13 @@
 #define SPCHCNTRL_LIB_CONFIG_HPP
 
 /// Holds the build-time value of the location of PocketSphinx's pre-built modules.
-#define POCKETSPHINX_MODELDIR "@POCKETSPHINX_MODELDIR@"
+#define POCKETSPHINX_MODELDIR "/usr/share/pocketsphinx/model"
 
 /// Holds the version information of PocketSphinx.
-#define POCKETSPHINX_VERSION "@POCKETSPHINX_VERSION@"
+#define POCKETSPHINX_VERSION "0.5.1"
 
 /// Holds the build version of SpeechControl's library.
-#define SPCHCNTRL_BUILD_VERSION "@SPCHCNTRL_LIB_VERSION@"
+#define SPCHCNTRL_BUILD_VERSION "0.1"
 
 /// Holds the date that of which SpeechControl's library was built.
 #define SPCHCNTRL_BUILD_DATE __TIMESTAMP__

@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,21 +13,26 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include "dictionaryprivate.hpp"
-#include "dictionary.hpp"
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/18/12 15:40:34 PM
+ */
 
 #include <QDir>
 #include <QFile>
 #include <QDebug>
 #include <QVariant>
 #include <QDomDocument>
+#include "dictionaryprivate.hpp"
+#include "dictionary.hpp"
 
-using namespace SpeechControl;
+SPCHCNTRL_USE_NAMESPACE
 
 DictionaryPrivate::DictionaryPrivate () : m_words(), m_device (0)
 {
@@ -55,15 +60,18 @@ DictionaryEntryPrivate::~DictionaryEntryPrivate()
 
 }
 
-Dictionary::Dictionary (QObject* p_parent) : QObject (p_parent), d_ptr (new DictionaryPrivate)
+Dictionary::Dictionary (QObject* p_parent) :
+    QObject (p_parent), d_ptr (new DictionaryPrivate)
 {
 }
 
-Dictionary::Dictionary (const Dictionary& p_other) : QObject (p_other.parent()), d_ptr (const_cast<DictionaryPrivate*> (p_other.d_ptr.data()))
+Dictionary::Dictionary (const Dictionary& p_other) :
+    QObject (p_other.parent()), d_ptr (const_cast<DictionaryPrivate*> (p_other.d_ptr.data()))
 {
 }
 
-Dictionary::Dictionary (const QString& p_id) : QObject (0), d_ptr (new DictionaryPrivate)
+Dictionary::Dictionary (const QString& p_id) :
+    QObject (0), d_ptr (new DictionaryPrivate)
 {
     load (new QFile (DictionaryPrivate::getPathFromId (p_id)));
 }
@@ -83,14 +91,36 @@ Dictionary* Dictionary::create (QStringList p_wordlist, QString p_id)
     Q_FOREACH (const QString & word, p_wordlist) {
         QString phonemes;
         QString wordUpper = word.toUpper();
-        wordUpper = wordUpper.trimmed().simplified().toAscii();
-        qDebug() << wordUpper << word;
-        strm << wordUpper << "\t" << wordUpper << endl;
+        wordUpper = wordUpper.trimmed().simplified();
+
+        Q_FOREACH(const QChar& letter, wordUpper){
+            phonemes += letter;
+            phonemes += " ";
+        }
+
+        phonemes = phonemes.trimmed();
+        qDebug() << word << wordUpper << phonemes;
+        strm << wordUpper << "\t" << phonemes << endl;
     }
 
     fileDictionary->close();
 
     return Dictionary::obtain (p_id);
+}
+
+Dictionary* Dictionary::merge(const DictionaryList& p_list, const QString& p_id)
+{
+    QFile* fileDictionary = new QFile (DictionaryPrivate::getPathFromId (p_id));
+    fileDictionary->open (QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+    QTextStream strm (fileDictionary);
+
+    Q_FOREACH(const Dictionary* p_dict, p_list){
+        QFile dict(p_dict->path());
+        strm << dict.readAll() << endl;
+    }
+
+    fileDictionary->close();
+    return Dictionary::obtain(p_id);
 }
 
 void Dictionary::load (QFile* p_device)

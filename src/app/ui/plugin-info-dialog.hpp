@@ -23,33 +23,30 @@
 
 #include <QDialog>
 #include <QUuid>
-#include <plugins.hpp>
+#include <app/plugin.hpp>
 
 namespace Ui
 {
 class PluginInfoDialog;
 }
 
-namespace SpeechControl
-{
-namespace Windows
-{
+SPCHCNTRL_BEGIN_NAMESPACE
+
 class PluginInfoDialog : public QDialog
 {
     Q_OBJECT
 
 public:
     PluginInfoDialog (QUuid p_uuid, QWidget* parent = 0);
-    PluginInfoDialog (Plugins::AbstractPlugin* p_plugin, QWidget* parent = 0);
+    PluginInfoDialog (AbstractPlugin* p_plugin, QWidget* parent = 0);
 
 private:
     Ui::PluginInfoDialog* ui;
     void updateUi();
-    Plugins::GenericPlugin* m_plgn;
+    GenericPlugin* m_plgn;
 
 };
-}
-}
 
+SPCHCNTRL_END_NAMESPACE
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

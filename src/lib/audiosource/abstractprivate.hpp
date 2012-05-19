@@ -45,4 +45,4 @@ public:
     QGst::ElementPtr ptrLevel;    ///< A shared pointer to the level element.
 };
 }
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

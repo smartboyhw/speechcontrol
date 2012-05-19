@@ -22,13 +22,9 @@
 #define FACTORY_HPP
 
 #include <QObject>
+#include <app/global.hpp>
 
-#include "macros.hpp"
-
-namespace SpeechControl
-{
-namespace Plugins
-{
+SPCHCNTRL_BEGIN_NAMESPACE
 
 class Factory;
 class AbstractPlugin;
@@ -192,8 +188,8 @@ public:
 private:
     static QMap<QString, AbstractPlugin*> s_ldPlgns; ///< The loaded plug-ins.
 };
-}
-}
+
+SPCHCNTRL_END_NAMESPACE
 
 #endif // FACTORY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

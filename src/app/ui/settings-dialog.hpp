@@ -19,44 +19,41 @@
  */
 
 
-#ifndef SETTINGS_DIALOG_HPP
-#define SETTINGS_DIALOG_HPP
+#ifndef SPCHCNTRL_SETTINGS_DIALOG_HPP
+#define SPCHCNTRL_SETTINGS_DIALOG_HPP
 
 #include <QMap>
 #include <QDialog>
 #include <QPixmap>
 #include <QTreeWidgetItem>
 #include <QAbstractButton>
-#include <macros.hpp>
-
+#include "global.hpp"
 
 namespace Ui
 {
 class SettingsDialog;
 }
 
-namespace SpeechControl
-{
-namespace Windows
-{
-class Settings;
+SPCHCNTRL_BEGIN_NAMESPACE
+
+class SettingsDialog;
 class AbstractSettingsPane;
 
 /**
  * @brief Settings dialog
  **/
-class Settings : public QDialog
+class SettingsDialog : public QDialog
 {
     Q_OBJECT
-    Q_DISABLE_COPY (Settings)
-    SC_SINGLETON (Settings)
+    Q_DISABLE_COPY (SettingsDialog)
+    SC_SINGLETON (SettingsDialog)
 
 public:
-    explicit Settings (QWidget* m_prnt);
+    explicit SettingsDialog (QWidget* m_prnt);
     static void addPane (AbstractSettingsPane* p_pane);
     static void removePane (const QString& p_paneID);
     static void displayPane (const QString& p_paneID = "gnrl");
-    virtual ~Settings();
+    virtual ~SettingsDialog();
 
 private slots:
     void on_treeNavigation_itemSelectionChanged();
@@ -77,7 +74,7 @@ class AbstractSettingsPane : public QFrame
     Q_PROPERTY (QString ID READ id)
     Q_PROPERTY (QString Title READ title)
     Q_PROPERTY (QPixmap Pixmap READ pixmap)
-    friend class Settings;
+    friend class SettingsDialog;
 
 public:
     explicit AbstractSettingsPane (QWidget* parent = 0);
@@ -97,7 +94,8 @@ protected:
 private:
     QMap<QString, AbstractSettingsPane*> m_panes;
 };
-}
-}
+
+SPCHCNTRL_END_NAMESPACE
+
 #endif // SETTINGS_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

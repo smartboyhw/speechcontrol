@@ -21,7 +21,7 @@
 #include <QDebug>
 #include <QDirIterator>
 
-#include "config.hpp"
+#include "global.hpp"
 #include "languagemodelprivate.hpp"
 #include "languagemodel.hpp"
 
@@ -115,4 +115,4 @@ LanguageModel::~LanguageModel()
 }
 
 #include "languagemodel.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

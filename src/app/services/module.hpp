@@ -17,25 +17,22 @@
  *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
-#ifndef SPEECHCONTROL_SERVICES_MODULE_HPP
-#define SPEECHCONTROL_SERVICES_MODULE_HPP
+#ifndef SPCHCNTRL_SERVICES_MODULE_HPP
+#define SPCHCNTRL_SERVICES_MODULE_HPP
 
 #include <QObject>
 #include <QList>
 #include <QPixmap>
+#include <app/global.hpp>
 
-namespace SpeechControl
-{
+SPCHCNTRL_BEGIN_NAMESPACE
 
-namespace Services
-{
-
-class AbstractModule;
+class AbstractServiceModule;
 class AbstractModulePrivate;
 /**
  * @brief Represents a list of Modules.
  **/
-typedef QList<AbstractModule*> ModuleList;
+typedef QList<AbstractServiceModule*> ModuleList;
 
 /**
  * @brief Represents a service module.
@@ -43,7 +40,7 @@ typedef QList<AbstractModule*> ModuleList;
  * Modules serve as wrappers to the interfaces that internal and external components
  * of SpeechControl can provide.
  **/
-class AbstractModule : public QObject
+class AbstractServiceModule : public QObject
 {
     Q_OBJECT
     Q_ENUMS (ActivityState)
@@ -144,19 +141,17 @@ public slots:
     void setState (const ActivityState p_state);
 protected:
     QScopedPointer<AbstractModulePrivate> d_ptr;
-    Q_DISABLE_COPY (AbstractModule)
+    Q_DISABLE_COPY (AbstractServiceModule)
     Q_DECLARE_PRIVATE (AbstractModule)
 
     virtual void initialize() = 0;
     virtual void deinitialize() = 0;
-    explicit AbstractModule (QObject* parent = 0);
-    AbstractModule (AbstractModulePrivate* p_dd, QObject* p_parent = 0);
-    virtual ~AbstractModule();
+    explicit AbstractServiceModule (QObject* parent = 0);
+    AbstractServiceModule (AbstractModulePrivate* p_dd, QObject* p_parent = 0);
+    virtual ~AbstractServiceModule();
 };
 
-}
-
-}
+SPCHCNTRL_END_NAMESPACE
 
 #endif // SPEECHCONTROL_SERVICES_MODULE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

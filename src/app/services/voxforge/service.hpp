@@ -18,24 +18,20 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef SPEECHCONTROL_VOXFORGE_SERVICE_HPP
-#define SPEECHCONTROL_VOXFORGE_SERVICE_HPP
+#ifndef SPCHCNTRL_VOXFORGE_SERVICE_HPP
+#define SPCHCNTRL_VOXFORGE_SERVICE_HPP
 
-#include <app/macros.hpp>
+#include <app/global.hpp>
 #include <app/services/module.hpp>
 #include <app/services/engine.hpp>
 
-namespace SpeechControl
-{
+SPCHCNTRL_BEGIN_NAMESPACE
 
-namespace Voxforge
-{
-
-class Service : public SpeechControl::Services::AbstractModule
+class VoxforgeService : public AbstractServiceModule
 {
     Q_OBJECT
-    Q_DISABLE_COPY(Service)
-    SC_SINGLETON(Service)
+    Q_DISABLE_COPY(VoxforgeService)
+    SC_SINGLETON(VoxforgeService)
 protected:
     virtual void deinitialize();
     virtual void initialize();
@@ -46,12 +42,10 @@ public:
     virtual bool isActive() const;
     virtual QPixmap pixmap() const;
     virtual QString name() const;
-    virtual ~Service();
+    virtual ~VoxforgeService();
 };
 
-}
-
-}
+SPCHCNTRL_END_NAMESPACE
 
 #endif // SPEECHCONTROL_VOXFORGE_SERVICE_HPP
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

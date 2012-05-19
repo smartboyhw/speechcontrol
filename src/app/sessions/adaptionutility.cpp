@@ -568,10 +568,10 @@ void AdaptationUtility::generateAccuracyReportHypothesis()
 
     args << "-adcin"     << "yes"
          << "-cepdir"    << m_session->corpus()->audioPath()
-         << "-cepext"    << ".raw"
+         << "-cepext"    << ".wav"
          << "-ctl"       << m_session->corpus()->fileIds()->fileName()
-         << "-lm"        << "" // Define a language model to be used here.
-         << "-dict"      << m_session->corpus()->dictionary()->path()
+         << "-lm"        << "/usr/share/pocketsphinx/model/lm/wsj/wlist5o.3e-7.vp.tg.lm.DMP" /// @todo Define a language model to be used here.
+         << "-dict"      << m_session->corpus()->dictionary()->path() /// @bug Pocketsphinx crashes, which is probably associated with dictionaries.
          << "-hmm"       << m_modelResult->path()
          << "-hyp"       << hypothesis()->fileName()
          ;

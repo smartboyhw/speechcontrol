@@ -108,6 +108,21 @@ Dictionary* Dictionary::create (QStringList p_wordlist, QString p_id)
     return Dictionary::obtain (p_id);
 }
 
+Dictionary* Dictionary::merge(const DictionaryList& p_list, const QString& p_id)
+{
+    QFile* fileDictionary = new QFile (DictionaryPrivate::getPathFromId (p_id));
+    fileDictionary->open (QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
+    QTextStream strm (fileDictionary);
+
+    Q_FOREACH(const Dictionary* p_dict, p_list){
+        QFile dict(p_dict->path());
+        strm << dict.readAll() << endl;
+    }
+
+    fileDictionary->close();
+    return Dictionary::obtain(p_id);
+}
+
 void Dictionary::load (QFile* p_device)
 {
     Q_ASSERT (d_func()->m_device != 0 || p_device != 0);

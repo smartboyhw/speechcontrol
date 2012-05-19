@@ -180,10 +180,18 @@ public:
      * @brief Creates a new Dictionary from the specified text.
      *
      * @param p_text The text to use.
-     * @param p_id The dictionary's path.
+     * @param p_id The ID of the new Dictionary.
      * @return Dictionary* A pointer to the newly formed Dictionary.
      **/
     static Dictionary* create (QStringList p_text, QString p_id);
+
+    /**
+     * @brief Merges a collection of Dictionary objects into one dictionary.
+     *
+     * @param p_list A list of the Dictionary objects to merge.
+     * @param p_id The ID of the merged Dictionary.
+     **/
+    static Dictionary* merge(const DictionaryList &p_list, const QString& p_id);
 
     /**
      * @brief Obtains the list of entries representing this Dictionary.

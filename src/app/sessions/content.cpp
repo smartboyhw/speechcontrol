@@ -130,7 +130,6 @@ Content::Content (const Content& p_other) : QObject(),
     Q_D(Content);
     d->dom = p_other.d_func()->dom;
     d->id = p_other.d_func()->id;
-    d->path = p_other.d_func()->path();
 }
 
 Content* Content::obtain (const QString& p_id)

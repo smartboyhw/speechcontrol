@@ -48,7 +48,7 @@ void UploadHandler::setPassword (const QString& p_password)
 
 void UploadHandler::setUsername (const QString& p_username)
 {
-    if (!p_username.isEmpty() && !p_username.isNull()){
+    if (!p_username.isEmpty() && !p_username.isNull()) {
         m_usrName = p_username;
     }
 }
@@ -69,4 +69,4 @@ UploadHandler::~UploadHandler()
 }
 
 #include "services/voxforge/upload.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

@@ -31,7 +31,7 @@ class VoxforgeService : public AbstractServiceModule
 {
     Q_OBJECT
     Q_DISABLE_COPY(VoxforgeService)
-    SC_SINGLETON(VoxforgeService)
+    SPCHCNTRL_SINGLETON(VoxforgeService)
 protected:
     virtual void deinitialize();
     virtual void initialize();
@@ -48,4 +48,4 @@ public:
 SPCHCNTRL_END_NAMESPACE
 
 #endif // SPEECHCONTROL_VOXFORGE_SERVICE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

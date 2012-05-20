@@ -50,7 +50,7 @@ System::System (int* argc, char** argv[])
 
     configDir.mkpath (QDir::homePath() + "/.config/speechcontrol/corpus");
     configDir.mkpath (QDir::homePath() + "/.config/speechcontrol/dictionaries");
-    
+
     Audio::DeviceManager::setup();
     /// @todo Use app configuration instead.
     Audio::DeviceManager::setMux("Wav");
@@ -79,4 +79,4 @@ void System::stop()
 }
 
 #include "system.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

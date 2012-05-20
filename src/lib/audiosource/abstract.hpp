@@ -224,4 +224,4 @@ private slots:
 #endif // SPCHCNTRL_LIB_AUDIOSOURCE_ABSTRACT_HPP_
 
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

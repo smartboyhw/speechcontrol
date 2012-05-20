@@ -99,8 +99,8 @@ QString AbstractAudioSource::caps() const
 QString AbstractAudioSource::pipelineStr() const
 {
     return QString ("%1 ! level name=level ! audioconvert ! "
-    "audioresample ! audiorate ! volume name=volume ! "
-    "appsink name=sink").arg (pipelineDescription());
+                    "audioresample ! audiorate ! volume name=volume ! "
+                    "appsink name=sink").arg (pipelineDescription());
 }
 
 /// @todo Delete d_func()->m_appSrc if it exists but disconnect its slot/signal first.
@@ -343,4 +343,4 @@ AbstractAudioSource::~AbstractAudioSource()
 }
 
 #include "audiosource/abstract.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

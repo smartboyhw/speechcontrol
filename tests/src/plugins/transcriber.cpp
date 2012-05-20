@@ -33,4 +33,4 @@ void TestTranscriber::cleanup()
 QTEST_MAIN (TestTranscriber)
 
 #include "transcriber.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on; 

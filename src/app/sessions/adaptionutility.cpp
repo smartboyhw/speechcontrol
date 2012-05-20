@@ -245,7 +245,12 @@ void AdaptationUtility::reportErrorInPhase (const QString& p_message)
 void AdaptationUtility::executeProcess (const QString& p_program, const QStringList p_arguments)
 {
     m_prcss->start (p_program, p_arguments);
-    qDebug() << "[AdaptationUtility::executeProcess()] Invoking" << p_program << "with" << p_arguments << "..";
+    qDebug() << "[AdaptationUtility::executeProcess()] Waiting for start...";
+    if (m_prcss->waitForStarted()) {
+        qDebug() << "[AdaptationUtility::executeProcess()] Invoking" << p_program << "with" << p_arguments << "..";
+    } else {
+        emit phaseError(currentPhase(),"Failed to start process" + p_program + ".");
+    }
 }
 
 QString AdaptationUtility::obtainPhaseText (const Phases& p_phase) const
@@ -576,7 +581,9 @@ void AdaptationUtility::generateAccuracyReportHypothesis()
          << "-cepext"    << ".wav"
          << "-ctl"       << m_session->corpus()->fileIds()->fileName()
          << "-lm"        << "/usr/share/pocketsphinx/model/lm/wsj/wlist5o.3e-7.vp.tg.lm.DMP" /// @todo Define a language model to be used here.
-         << "-dict"      << m_session->corpus()->dictionary()->path() /// @bug Pocketsphinx crashes, which is probably associated with dictionaries.
+         << "-dict"      << "/usr/share/pocketsphinx/model/lm/wsj/wlist5o.dic"
+         //m_session->corpus()->dictionary()->path()
+         /// @bug Pocketsphinx crashes, which is probably associated with dictionaries.
          << "-hmm"       << m_modelResult->path()
          << "-hyp"       << hypothesis()->fileName()
          ;
@@ -603,8 +610,10 @@ void AdaptationUtility::on_mPrcss_finished (const int& p_exitCode, QProcess::Exi
 
     case QProcess::CrashExit:
         qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Crash exit experienced!";
+        Phases curPhase = currentPhase();
         cleanupPhase();
         haltPhasing();
+        emit phaseError(curPhase,"Crashed");
         break;
     }
 }
@@ -616,4 +625,4 @@ AdaptationUtility::~AdaptationUtility()
 }
 
 #include "sessions/adaptionutility.moc"
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

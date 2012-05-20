@@ -8,7 +8,4 @@
         <file alias="white">img/SClogonobackground.png</file>
         <file alias="black">img/SClogonobackgroundblack.png</file>
     </qresource>
-    <qresource prefix="/qml">
-        <file alias="dskptctlui">qml/dsktpctlui.qml</file>
-    </qresource>
 </RCC>

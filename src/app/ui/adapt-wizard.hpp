@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,29 +13,26 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/20/12 13:06:28 PM
+ */
 
 #ifndef ADAPTION_WIZARD_HPP
 #define ADAPTION_WIZARD_HPP
 
 #include <ui/wizards/base.hpp>
 
-namespace SpeechControl
-{
-class Session;
-namespace Windows
-{
-namespace Wizards
-{
-namespace Pages
-{
-class Enaction;
-class Results;
-}
+SPCHCNTRL_FORWARD_DECLARE_CLASS(Session);
+SPCHCNTRL_UI_WIZARD_FORWARD_DECLARE_PAGE(Enaction)
+SPCHCNTRL_UI_WIZARD_FORWARD_DECLARE_PAGE(Results)
+SPCHCNTRL_UI_BEGIN_NAMESPACE
 
 class AdaptWizard : public AbstractWizard
 {
@@ -63,9 +60,7 @@ public slots:
     virtual void accept();
 };
 
-}
-}
-}
-#endif // WIZARD_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+SPCHCNTRL_UI_END_NAMESPACE
+#endif
+// kate: indent-mode cstyle; replace-tabs on;
 

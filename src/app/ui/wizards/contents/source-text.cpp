@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,9 +13,15 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/20/12 14:26:19 PM
  */
 
 #include "source-text.hpp"
@@ -29,11 +35,8 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-using SpeechControl::Content;
-using SpeechControl::TextContentSource;
-using SpeechControl::AbstractContentSource;
-using SpeechControl::TextContentSourceWidget;
-
+SPCHCNTRL_USE_NAMESPACE
+SPCHCNTRL_UI_USE_NAMESPACE
 
 TextContentSourceWidget::TextContentSourceWidget (QWidget* parent) :
     QWidget (parent),
@@ -47,15 +50,15 @@ TextContentSourceWidget::TextContentSourceWidget (QWidget* parent) :
 
 void TextContentSourceWidget::on_btnOpen_clicked()
 {
-    QString l_path = QFileDialog::getOpenFileName (this, "Select SpeechControl Content",
+    QString path = QFileDialog::getOpenFileName (this, "Select SpeechControl Content",
                      QDir::homePath());
 
-    if (!QFile::exists (l_path)) {
+    if (!QFile::exists (path)) {
         QMessageBox::critical (this, tr ("Invalid Content Source"), tr ("The content source specified is invalid.\nPlease select another."));
         return;
     }
     else {
-        m_ui->lineEditPath->setText (l_path);
+        m_ui->lineEditPath->setText (path);
         updateView();
     }
 }
@@ -67,11 +70,11 @@ void TextContentSourceWidget::updateView()
 
     if (src->isValid()) {
         m_ui->lblInfo->setText (tr ("<h2>%1</h2>by <b>%2</b>").arg (src->title()).arg (src->author()));
-        ( (SpeechControl::Windows::Wizards::ContentWizard*) this->window())->setSource (src);
+        ( (SpeechControl::Windows::ContentWizard*) this->window())->setSource (src);
     }
     else {
         m_ui->lblInfo->setText (tr ("<h2>Invalid Content</h2>"));
-        ( (SpeechControl::Windows::Wizards::ContentWizard*) this->window())->setSource (0);
+        ( (SpeechControl::Windows::ContentWizard*) this->window())->setSource (0);
     }
 }
 
@@ -81,4 +84,4 @@ TextContentSourceWidget::~TextContentSourceWidget()
 }
 
 #include "ui/wizards/contents/source-text.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

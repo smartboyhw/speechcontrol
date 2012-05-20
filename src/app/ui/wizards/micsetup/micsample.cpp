@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,11 +13,16 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/20/12 14:00:47 PM
+ */
 
 #include <lib/sphinx/audiosource.hpp>
 #include <lib/audiosource/device.hpp>
@@ -27,9 +32,9 @@
 #include "ui_micwizard-sample.h"
 #include "micsample.hpp"
 
-using namespace SpeechControl;
-using namespace SpeechControl::Windows::Wizards::Pages;
-using SpeechControl::Windows::Wizards::Pages::MicrophoneSample;
+SPCHCNTRL_USE_NAMESPACE
+SPCHCNTRL_UI_USE_NAMESPACE
+SPCHCNTRL_UI_WIZARD_PAGES_USE_NAMESPACE
 
 /// @todo The loudness of the content spoken should begin detection here.
 MicrophoneSample::MicrophoneSample (QWidget* parent) :
@@ -63,7 +68,7 @@ void MicrophoneSample::on_btnBeginPrompt_clicked()
 }
 
 /// @todo Fill the combo box with all of the mics.
-void SpeechControl::Windows::Wizards::Pages::MicrophoneSample::initializePage()
+void MicrophoneSample::initializePage()
 {
     DeviceAudioSource* device = DeviceAudioSource::obtain (wizard()->field ("mic-id").toString());
     qDebug() << "[MicrophoneSample::initializePage()]" << device->humanName() << device->deviceName();
@@ -72,12 +77,12 @@ void SpeechControl::Windows::Wizards::Pages::MicrophoneSample::initializePage()
     ui->lblPrompt->setText (QString::null);
 }
 
-bool SpeechControl::Windows::Wizards::Pages::MicrophoneSample::validatePage()
+bool MicrophoneSample::validatePage()
 {
     return isAtFinalPrompt() || m_index == 0;
 }
 
-bool SpeechControl::Windows::Wizards::Pages::MicrophoneSample::isComplete()
+bool MicrophoneSample::isComplete()
 {
     return hasCompletedPrompts();
 }
@@ -145,4 +150,4 @@ void MicrophoneSample::handleReceivedPrompt (QString p_str)
 }
 
 #include "ui/wizards/micsetup/micsample.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

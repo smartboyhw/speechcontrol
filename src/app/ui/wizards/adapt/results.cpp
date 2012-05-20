@@ -21,8 +21,8 @@
 #include "results.hpp"
 #include "ui_adaptwizard-results.h"
 
-using namespace SpeechControl;
-using SpeechControl::Windows::Wizards::Pages::Results;
+SPCHCNTRL_USE_NAMESPACE
+SPCHCNTRL_UI_WIZARD_PAGES_USE_NAMESPACE
 
 Results::Results (QWidget* parent) :
     QWizardPage (parent),
@@ -73,4 +73,4 @@ Results::~Results()
 }
 
 #include "ui/wizards/adapt/results.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

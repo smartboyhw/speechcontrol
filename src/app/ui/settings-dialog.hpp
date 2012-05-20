@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,11 +13,16 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/19/12 16:19:12 PM
+ */
 
 #ifndef SPCHCNTRL_SETTINGS_DIALOG_HPP
 #define SPCHCNTRL_SETTINGS_DIALOG_HPP
@@ -27,12 +32,9 @@
 #include <QPixmap>
 #include <QTreeWidgetItem>
 #include <QAbstractButton>
-#include "global.hpp"
+#include <ui/global.hpp>
 
-namespace Ui
-{
-class SettingsDialog;
-}
+SPCHCNTRL_DEFINE_UIC(SettingsDialog)
 
 SPCHCNTRL_BEGIN_NAMESPACE
 
@@ -46,7 +48,7 @@ class SettingsDialog : public QDialog
 {
     Q_OBJECT
     Q_DISABLE_COPY (SettingsDialog)
-    SC_SINGLETON (SettingsDialog)
+    SPCHCNTRL_SINGLETON (SettingsDialog)
 
 public:
     explicit SettingsDialog (QWidget* m_prnt);
@@ -98,4 +100,4 @@ private:
 SPCHCNTRL_END_NAMESPACE
 
 #endif // SETTINGS_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

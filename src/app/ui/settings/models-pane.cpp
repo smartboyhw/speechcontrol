@@ -136,7 +136,7 @@ void ModelSettingsPane::updateLanguageTab()
 
 void ModelSettingsPane::on_btnAdaptAcoustic_clicked()
 {
-    Wizards::AdaptWizard* wiz = new Wizards::AdaptWizard (this->window());
+    Windows::AdaptWizard* wiz = new Windows::AdaptWizard (this->window());
     wiz->exec();
 }
 
@@ -239,4 +239,4 @@ void ModelSettingsPane::on_listWidgetLanguage_currentRowChanged (const int p_ind
 }
 
 #include "ui/settings/models-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

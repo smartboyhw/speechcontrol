@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,9 +13,15 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/20/12 14:25:11 PM
  */
 
 #include "sessions/content.hpp"
@@ -30,8 +36,8 @@
 #include <QDebug>
 #include <QVariant>
 
-using namespace SpeechControl;
-using namespace SpeechControl::Windows::Wizards;
+SPCHCNTRL_USE_NAMESPACE
+SPCHCNTRL_UI_USE_NAMESPACE
 
 ContentWizard::ContentWizard (QWidget* parent) :
     AbstractWizard (parent), m_src (0)
@@ -40,16 +46,16 @@ ContentWizard::ContentWizard (QWidget* parent) :
     setPixmap (QWizard::LogoPixmap, l_icon.pixmap (32, 32, QIcon::Active, QIcon::On));
     setWindowTitle (tr ("Content Addition Wizard - SpeechControl"));
     setPage (ContentWizard::IntroductionPage,
-             (new Windows::Wizards::Pages::IntroductionPage (tr ("This wizard allows you to add a new source of content into SpeechControl's collection of content."
+             (new Windows::Pages::IntroductionPage (tr ("This wizard allows you to add a new source of content into SpeechControl's collection of content."
                      "In SpeechControl, the term <b>content</b> refers to arbitrary text that's been formatted so "
                      "that SpeechControl can efficiently render it for training. Check the Synthetic Intellect Institute's "
                      "wiki for more information at "
                      "<a href=\"http://wiki.thesii.org/UserGuides/AddingContent\">http://wiki.thesii.org/UserGuides/AddingContent</a>."
                                                                 ))));
     setPage (ContentWizard::SourceSelectionPage,
-             (new Windows::Wizards::Pages::SourceSelectionPage));
+             (new Windows::Pages::SourceSelectionPage));
     setPage (ContentWizard::ConclusionPage,
-             (new Windows::Wizards::Pages::ConclusionPage (tr ("You've successfully added a Content into SpeechControl. With this new Content, you can now "
+             (new Windows::Pages::ConclusionPage (tr ("You've successfully added a Content into SpeechControl. With this new Content, you can now "
                      "start a new Session and train your acoustic models.Check the Synthetic Intellect Institute's "
                      "wiki for more information at "
                      "<a href=\"http://wiki.thesii.org/UserGuides/Training#Introduction\">http://wiki.thesii.org/UserGuides/Training#Introduction</a>."
@@ -114,4 +120,4 @@ ContentWizard::~ContentWizard()
 }
 
 #include "ui/contents-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

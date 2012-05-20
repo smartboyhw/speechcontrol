@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,13 +13,19 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef FACTORY_HPP
-#define FACTORY_HPP
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/20/12 12:26:56 PM
+ */
+
+#ifndef SPCHCNTRL_FACTORY_HPP
+#define SPCHCNTRL_FACTORY_HPP
 
 #include <QObject>
 #include <app/global.hpp>
@@ -28,6 +34,7 @@ SPCHCNTRL_BEGIN_NAMESPACE
 
 class Factory;
 class AbstractPlugin;
+struct FactoryPrivate;
 
 /**
  * @brief Represents a manipulative system to control plug-ins.
@@ -52,7 +59,9 @@ class Factory : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY (Factory)
-    SC_SINGLETON (Factory)
+    Q_DECLARE_PRIVATE(Factory)
+    SPCHCNTRL_SINGLETON (Factory)
+    QScopedPointer<FactoryPrivate> d_ptr;
 
 signals:
     /**
@@ -184,12 +193,9 @@ public:
      * @brief Obtains a QStringList of the plug-ins loaded on start.
      **/
     static QStringList autoStart();
-
-private:
-    static QMap<QString, AbstractPlugin*> s_ldPlgns; ///< The loaded plug-ins.
 };
 
 SPCHCNTRL_END_NAMESPACE
 
 #endif // FACTORY_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

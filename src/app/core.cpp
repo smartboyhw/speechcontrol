@@ -41,11 +41,10 @@
 #include "app/core.hpp"
 
 SPCHCNTRL_USE_NAMESPACE
-
-Core* Core::s_inst = 0;
+SPCHCNTRL_DEFINE_SINGLETON(Core)
 
 CorePrivate::CorePrivate(Core* p_qPtr) : m_app (0),
-m_settings (0), m_trnsltr (0), q_ptr(p_qPtr)
+    m_settings (0), m_trnsltr (0), q_ptr(p_qPtr)
 {
     Q_Q (Core);
     m_trnsltr = new QTranslator (q);
@@ -200,4 +199,4 @@ Core::~Core ()
 }
 
 #include "core.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

@@ -30,9 +30,15 @@
 #include "app/services/engine.hpp"
 
 SPCHCNTRL_USE_NAMESPACE
+SPCHCNTRL_DEFINE_SINGLETON(ServiceEngine)
 
-QMap<QString, AbstractServiceModule*> ServiceEnginePrivate::s_list;
-ServiceEngine* ServiceEngine::s_inst = 0;
+ServiceEnginePrivate::ServiceEnginePrivate() : list() {
+
+}
+
+ServiceEnginePrivate::~ServiceEnginePrivate() {
+
+}
 
 ServiceEngine::ServiceEngine() : QObject (Core::instance()), d_ptr (new ServiceEnginePrivate)
 {
@@ -45,13 +51,13 @@ ServiceEngine::ServiceEngine (const ServiceEngine& p_other) : QObject (p_other.p
 
 ServiceModuleList ServiceEngine::allModules()
 {
-    return ServiceEnginePrivate::s_list.values();
+    return instance()->d_func()->list.values();
 }
 
 void ServiceEngine::registerModule (AbstractServiceModule* p_module)
 {
     if (!findModule (p_module->id())) {
-        ServiceEnginePrivate::s_list.insert (p_module->id(), p_module);
+        instance()->d_func()->list.insert (p_module->id(), p_module);
     }
 }
 
@@ -61,18 +67,18 @@ void ServiceEngine::unregisterModule (AbstractServiceModule* p_module)
         if (p_module->isActive())
             p_module->stop();
 
-        ServiceEnginePrivate::s_list.remove (p_module->id());
+        instance()->d_func()->list.remove (p_module->id());
     }
 }
 
 AbstractServiceModule* ServiceEngine::findModule (const QString& p_id)
 {
-    return ServiceEnginePrivate::s_list.value (p_id);
+    return instance()->d_func()->list.value (p_id);
 }
 
 void ServiceEngine::start()
 {
-    Q_FOREACH(AbstractServiceModule* module, allModules()){
+    Q_FOREACH(AbstractServiceModule* module, allModules()) {
         module->start();
     }
 
@@ -81,7 +87,7 @@ void ServiceEngine::start()
 
 void ServiceEngine::stop()
 {
-    Q_FOREACH(AbstractServiceModule* module, allModules()){
+    Q_FOREACH(AbstractServiceModule* module, allModules()) {
         module->stop();
     }
 
@@ -90,4 +96,4 @@ void ServiceEngine::stop()
 
 
 #include "services/engine.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

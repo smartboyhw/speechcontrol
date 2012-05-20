@@ -332,4 +332,4 @@ public:
 SPCHCNTRL_END_NAMESPACE
 
 #endif
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

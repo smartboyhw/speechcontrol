@@ -43,8 +43,8 @@ typedef QList<Phrase*> PhraseList;
 
 /**
  * @brief A phrase of text, as part of a speech corpus.
- * 
- * The text representation uses DOM document which is written to 
+ *
+ * The text representation uses DOM document which is written to
  **/
 class SPCH_EXPORT Phrase : public QObject
 {
@@ -62,7 +62,7 @@ public:
      * @brief Obtain the audio QFile of this phrase.
      **/
     QFile* audioFile() const;
-    
+
     /**
      * @brief Obtain the path to the audio file.
      **/
@@ -87,7 +87,7 @@ public:
      * @brief Determine if this Phrase has been recorded.
      **/
     bool recorded() const;
-    
+
     /**
      * @brief Create a new Phrase for a corpus.
      *
@@ -107,4 +107,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

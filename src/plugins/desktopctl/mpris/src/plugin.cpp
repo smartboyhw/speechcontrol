@@ -61,4 +61,4 @@ MPRIS_NAMESPACE_END
 
 Q_EXPORT_PLUGIN2 (spchcntrl-mpris, SpeechControl::Plugins::DesktopControl::MPRIS::Plugin)
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

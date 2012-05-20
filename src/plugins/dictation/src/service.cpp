@@ -33,8 +33,8 @@ using namespace SpeechControl::Dictation;
 Service* Service::s_inst = 0;
 
 ServicePrivate::ServicePrivate (Service* p_qPtr) :
-AbstractModulePrivate (p_qPtr), m_safetyMode (Service::Active),
-m_sphinx (0)
+    AbstractModulePrivate (p_qPtr), m_safetyMode (Service::Active),
+    m_sphinx (0)
 {
 
 }
@@ -44,36 +44,36 @@ AbstractModule::ActivityState ServicePrivate::handleStateChange (const AbstractM
     Q_Q (Service);
 
     switch (p_state) {
-        case AbstractModule::Enabled:
+    case AbstractModule::Enabled:
 
-            if (!m_sphinx) {
-                m_sphinx = new Sphinx (Sphinx::standardDescription(), q);
-                q->connect (m_sphinx, SIGNAL (finished (QString)), SLOT (handleText (QString)));
-            }
+        if (!m_sphinx) {
+            m_sphinx = new Sphinx (Sphinx::standardDescription(), q);
+            q->connect (m_sphinx, SIGNAL (finished (QString)), SLOT (handleText (QString)));
+        }
 
-            if (!m_sphinx->start()) {
-                qWarning() << "[Dictation::ServicePrivate::onStateChanged()] Start unsuccessful.";
-                return AbstractModule::Disabled;
-            }
-            else {
-                qDebug() << "[Dictation::ServicePrivate::onStateChanged()] Enabled.";
-            }
+        if (!m_sphinx->start()) {
+            qWarning() << "[Dictation::ServicePrivate::onStateChanged()] Start unsuccessful.";
+            return AbstractModule::Disabled;
+        }
+        else {
+            qDebug() << "[Dictation::ServicePrivate::onStateChanged()] Enabled.";
+        }
 
-            return AbstractModule::Enabled;
-            break;
+        return AbstractModule::Enabled;
+        break;
 
-        case AbstractModule::Disabled:
-            if (m_sphinx) {
-                m_sphinx->stop();
-                m_sphinx = 0;
-                qDebug() << "[Dictation::ServicePrivate::onStateChanged()] Disabled.";
-            }
+    case AbstractModule::Disabled:
+        if (m_sphinx) {
+            m_sphinx->stop();
+            m_sphinx = 0;
+            qDebug() << "[Dictation::ServicePrivate::onStateChanged()] Disabled.";
+        }
 
-            break;
+        break;
 
-        case AbstractModule::Undefined:
-        default:
-            break;
+    case AbstractModule::Undefined:
+    default:
+        break;
     }
 
     return AbstractModule::Undefined;
@@ -209,4 +209,4 @@ Service::~Service()
 }
 
 #include "services/dictation/service.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

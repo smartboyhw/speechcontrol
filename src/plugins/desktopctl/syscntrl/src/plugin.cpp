@@ -60,4 +60,4 @@ SYSCTLIST_NAMESPACE_END
 
 Q_EXPORT_PLUGIN2 (spchcntrl-syscntrl, SpeechControl::Plugins::DesktopControl::ApplicationListing::Plugin)
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

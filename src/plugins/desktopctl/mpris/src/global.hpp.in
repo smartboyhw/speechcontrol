@@ -29,4 +29,4 @@
 #define USING_NAMESPACE_MPRIS using namespace SpeechControl::Plugins::DesktopControl::MPRIS;
 
 #define PLUGIN_ID "@SPDSKMPRIS_PLUGIN_ID@"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on; 

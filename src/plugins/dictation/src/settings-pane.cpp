@@ -116,4 +116,4 @@ void DictationSettingsPane::on_checkBoxEnableStartup_toggled (bool p_checked)
 }
 
 #include "ui/settings/dictation-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

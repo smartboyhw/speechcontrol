@@ -1,9 +1,27 @@
-# Set up execinfo
+# - Find ExecInfo on the development system.
+# This module finds if ExecInfo is installed and determines where the
+# include files and libraries are. It also determines what the name of
+# the library is. This code sets the following variables:
+#
+#  EXECINFO_LIBRARIES           - path to the ExecInfo library
+#  EXECINFO_INCLUDE_DIRS        - path to where execinfo.h is found
+#
+#=============================================================================
+# Copyright (c) 2012 Jacky Alcine <jacky.alcine@thesii.org>
+#
+# This module is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Library General Public
+# License as published by the Free Software Foundation; either
+# version 2 of the License, or (at your option) any later version.
+#
+#=============================================================================
+# (To distribute this file outside of CMake, substitute the full
+#  License text for the above reference.)
 
-# The problem with this library is that it is built-in in the Linux glib,
-# while on systems like FreeBSD, it is installed separately and thus needs to be linked to.
-# Therefore, we search for the header to see if the it's available in the first place.
-# If it is available, we try to locate the library to figure out whether it is built-in or not.
+## The problem with this library is that it is built-in in the Linux glib,
+## while on systems like FreeBSD, it is installed separately and thus needs to be linked to.
+## Therefore, we search for the header to see if the it's available in the first place.
+## If it is available, we try to locate the library to figure out whether it is built-in or not.
 
 find_path(EXECINFO_INCLUDES "execinfo.h")
 

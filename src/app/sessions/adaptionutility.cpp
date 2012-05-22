@@ -595,6 +595,13 @@ void AdaptationUtility::on_mPrcss_finished (const int& p_exitCode, QProcess::Exi
     qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Exit code" << p_exitCode;
     qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Output:" << m_prcss->readAll();
 
+    if (p_exitCode != 0) {
+        qWarning("[AdaptationUtility::on_proc_finished()] Error during adaptation!");
+        cleanupPhase();
+        haltPhasing();
+        return;
+    }
+
     switch (p_exitStatus) {
     case QProcess::NormalExit:
         qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Normal exit experienced.";

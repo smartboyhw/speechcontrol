@@ -30,14 +30,14 @@
 SPCHCNTRL_BEGIN_NAMESPACE
 
 class AbstractServiceModule;
-class ServiceEnginePrivate
+struct ServiceEnginePrivate
 {
 public:
-    ServiceEnginePrivate() { }
-    virtual ~ServiceEnginePrivate() { }
-    static QMap<QString, AbstractServiceModule*> s_list;
+    ServiceEnginePrivate();
+    ~ServiceEnginePrivate();
+    QMap<QString, AbstractServiceModule*> list;
 };
 
 SPCHCNTRL_END_NAMESPACE
 
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

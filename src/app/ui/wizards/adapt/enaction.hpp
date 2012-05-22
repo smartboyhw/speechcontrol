@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,32 +13,28 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/20/12 13:17:09 PM
+ */
+
 #ifndef ADAPT_ENACTIONSELECTION_HPP
 #define ADAPT_ENACTIONSELECTION_HPP
 
 #include <QWizardPage>
+#include <ui/wizards/base.hpp>
 #include <sessions/adaptionutility.hpp>
 #include <sessions/accuracymeter.hpp>
 
-namespace Ui
-{
-class Enaction;
-}
-
-namespace SpeechControl
-{
-class Session;
-
-namespace Windows
-{
-namespace Wizards
-{
-namespace Pages
-{
+SPCHCNTRL_DEFINE_UIC(Enaction)
+SPCHCNTRL_FORWARD_DECLARE_CLASS(Session)
+SPCHCNTRL_UI_WIZARD_PAGES_BEGIN_NAMESPACE
 
 typedef SpeechControl::AdaptationUtility::Phases Phases;
 
@@ -72,9 +68,6 @@ private:
     AccuracyMeter* m_meter;
 };
 
-}
-}
-}
-}
+SPCHCNTRL_UI_WIZARD_PAGES_END_NAMESPACE
 #endif // ADAPT_ENACTIONSELECTION_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

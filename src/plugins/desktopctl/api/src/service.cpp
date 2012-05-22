@@ -38,8 +38,8 @@ using namespace SpeechControl::DesktopControl;
 Service* Service::s_inst = 0;
 
 ServicePrivate::ServicePrivate (Service* p_parent) : AbstractModulePrivate (p_parent),
-m_sphinx (0),
-m_view (new QDeclarativeView (QUrl ("qrc:///qml/dskptctlui")))
+    m_sphinx (0),
+    m_view (new QDeclarativeView (QUrl ("qrc:///qml/dskptctlui")))
 {
     m_sphinx = new Sphinx (Sphinx::standardDescription());
 
@@ -61,30 +61,30 @@ ServicePrivate::ServicePrivate (const SpeechControl::Services::AbstractModulePri
 AbstractServiceModule::ActivityState ServicePrivate::handleStateChange (const AbstractServiceModule::ActivityState p_state)
 {
     switch (p_state) {
-        case AbstractServiceModule::Enabled:
+    case AbstractServiceModule::Enabled:
 
-            if (!m_sphinx->start()) {
-                qWarning() << "[DesktopControl::ServicePrivate::start()] Start unsuccessful.";
-                return AbstractServiceModule::Disabled;
-            }
-
-            qDebug() << "[DesktopControl::ServicePrivate::start()] Enabled.";
-
-            return AbstractServiceModule::Enabled;
-            break;
-
-        case AbstractServiceModule::Disabled:
-
-            if (!m_sphinx->stop()) {
-                qWarning() << "[DesktopControl::ServicePrivate::stop()] Stop unsuccessful.";
-                return AbstractServiceModule::Enabled;
-            }
-
+        if (!m_sphinx->start()) {
+            qWarning() << "[DesktopControl::ServicePrivate::start()] Start unsuccessful.";
             return AbstractServiceModule::Disabled;
-            break;
+        }
 
-        default:
-            return AbstractServiceModule::Undefined;
+        qDebug() << "[DesktopControl::ServicePrivate::start()] Enabled.";
+
+        return AbstractServiceModule::Enabled;
+        break;
+
+    case AbstractServiceModule::Disabled:
+
+        if (!m_sphinx->stop()) {
+            qWarning() << "[DesktopControl::ServicePrivate::stop()] Stop unsuccessful.";
+            return AbstractServiceModule::Enabled;
+        }
+
+        return AbstractServiceModule::Disabled;
+        break;
+
+    default:
+        return AbstractServiceModule::Undefined;
     }
 
     m_view->setVisible(m_sphinx->isRunning());
@@ -185,4 +185,4 @@ Service::~Service()
 }
 
 #include "service.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

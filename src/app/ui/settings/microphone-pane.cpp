@@ -130,4 +130,4 @@ void MicrophoneSettingsPane::on_checkBoxMute_toggled (const bool p_checked)
 }
 
 #include "ui/settings/microphone-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

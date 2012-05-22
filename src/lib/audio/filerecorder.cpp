@@ -43,27 +43,27 @@ void FileRecorder::findDevices()
 {
     const char* srcElementName = "autoaudiosrc";
     QGst::ElementPtr src = QGst::ElementFactory::make(srcElementName);
-    
+
     if (!src) {
         QMessageBox::critical(NULL, tr("Error"),
                               tr("Failed to create element \"%1\". Make sure you have "
-                              "gstreamer-plugins-good installed").arg(srcElementName));
-                              return;
+                                 "gstreamer-plugins-good installed").arg(srcElementName));
+        return;
     }
-    
+
     QGst::PropertyProbePtr deviceProbe;
-    
+
     src->setState(QGst::StateReady);
     QGst::ChildProxyPtr childProxy = src.dynamicCast<QGst::ChildProxy>();
     if (childProxy && childProxy->childrenCount() > 0) {
         deviceProbe = childProxy->childByIndex(0).dynamicCast<QGst::PropertyProbe>();
     }
     src->setState(QGst::StateNull);
-    
+
     if (deviceProbe && deviceProbe->propertySupportsProbe("device")) {
         audioProbe = deviceProbe;
         probeForDevices(deviceProbe);
-        
+
         // this signal will notify us when devices change
         QGlib::connect(deviceProbe, "probe-needed",
                        this, &FileRecorder::probeForDevices, QGlib::PassSender);
@@ -75,11 +75,11 @@ void FileRecorder::findDevices()
 void FileRecorder::probeForDevices ( const QGst::PropertyProbePtr& propertyProbe )
 {
     QList<QGlib::Value> devices = propertyProbe->probeAndGetValues("device");
-    
+
     Q_FOREACH(const QGlib::Value & device, devices) {
         propertyProbe->setProperty("device", device);
         QString deviceName = propertyProbe->property("device-name").toString();
-        
+
         DeviceManager::add(deviceName);
     }
 }
@@ -87,51 +87,51 @@ void FileRecorder::probeForDevices ( const QGst::PropertyProbePtr& propertyProbe
 QGst::BinPtr FileRecorder::createAudioSrcBin()
 {
     QGst::BinPtr audioBin;
-    
+
     try {
         audioBin = QGst::Bin::fromDescription("autoaudiosrc name=\"audiosrc\" ! audioconvert ! "
-        "audioresample ! audiorate ! queue");
+                                              "audioresample ! audiorate ! queue");
     } catch (const QGlib::Error & error) {
         qCritical() << "Failed to create audio source bin:" << error;
         return QGst::BinPtr();
     }
-    
+
     //set the source's properties
     QString device = DeviceManager::device();
     if (!device.isEmpty()) {
         QGst::ElementPtr src = audioBin->getElementByName("audiosrc");
-        
+
         //autoaudiosrc creates the actual source in the READY state
         src->setState(QGst::StateReady);
-        
+
         QGst::ChildProxyPtr childProxy = src.dynamicCast<QGst::ChildProxy>();
         if (childProxy && childProxy->childrenCount() > 0) {
             QGst::ObjectPtr realSrc = childProxy->childByIndex(0);
             realSrc->setProperty("device", device);
         }
     }
-    
+
     return audioBin;
 }
 
 void FileRecorder::onBusMessage ( const QGst::MessagePtr& message )
 {
     switch (message->type()) {
-        case QGst::MessageEos:
-            //got end-of-stream - stop the pipeline
+    case QGst::MessageEos:
+        //got end-of-stream - stop the pipeline
+        stop();
+        break;
+    case QGst::MessageError:
+        //check if the pipeline exists before destroying it,
+        //as we might get multiple error messages
+        if (pipeline) {
             stop();
-            break;
-        case QGst::MessageError:
-            //check if the pipeline exists before destroying it,
-            //as we might get multiple error messages
-            if (pipeline) {
-                stop();
-            }
-            QMessageBox::critical(NULL, tr("Pipeline Error"),
-            message.staticCast<QGst::ErrorMessage>()->error().message());
-            break;
-        default:
-            break;
+        }
+        QMessageBox::critical(NULL, tr("Pipeline Error"),
+                              message.staticCast<QGst::ErrorMessage>()->error().message());
+        break;
+    default:
+        break;
     }
 }
 
@@ -174,18 +174,18 @@ void FileRecorder::start()
     QGst::BinPtr audioSrcBin = createAudioSrcBin();
     QGst::ElementPtr mux = QGst::ElementFactory::make("wavenc");
     QGst::ElementPtr sink = QGst::ElementFactory::make("filesink");
-    
+
     if (!audioSrcBin || !mux || !sink) {
         QMessageBox::critical(NULL, tr("Error"), tr("One or more elements could not be created. "
-        "Verify that you have all the necessary element plugins installed."));
+                              "Verify that you have all the necessary element plugins installed."));
         return;
     }
-    
+
     sink->setProperty("location", outFile);
-    
+
     pipeline = QGst::Pipeline::create();
     pipeline->add(audioSrcBin, mux, sink);
-    
+
     //link elements
     QGst::PadPtr audioPad = mux->getStaticPad("sink");
 //     if (muxType == "Wav")
@@ -195,16 +195,16 @@ void FileRecorder::start()
 //     else
 //         audioPad = mux->getRequestPad("sink_%d");
     audioSrcBin->getStaticPad("src")->link(audioPad);
-    
+
     mux->link(sink);
-    
+
     //connect the bus
     pipeline->bus()->addSignalWatch();
     QGlib::connect(pipeline->bus(), "message", this, &FileRecorder::onBusMessage);
-    
+
     //go!
     pipeline->setState(QGst::StatePlaying);
-    
+
     active = true;
     emit started();
 }
@@ -213,7 +213,7 @@ void FileRecorder::stop()
 {
     pipeline->setState(QGst::StateNull);
     pipeline.clear();
-    
+
     active = false;
     emit stopped();
 }

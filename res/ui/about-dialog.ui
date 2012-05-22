@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>347</width>
-    <height>385</height>
+    <width>356</width>
+    <height>419</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,8 +18,8 @@
     <rect>
      <x>4</x>
      <y>4</y>
-     <width>341</width>
-     <height>377</height>
+     <width>351</width>
+     <height>411</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -48,7 +48,7 @@
         <rect>
          <x>4</x>
          <y>0</y>
-         <width>309</width>
+         <width>341</width>
          <height>61</height>
         </rect>
        </property>
@@ -103,15 +103,15 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>329</width>
-          <height>241</height>
+          <width>341</width>
+          <height>271</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="layoutAbout">
          <item>
           <widget class="QLabel" name="label">
            <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;©2010 - 2012 by the &lt;a href=&quot;http://www.thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Synthetic Intellect Institute&lt;/span&gt;&lt;/a&gt;&lt;img src=&quot;:/logo/sii&quot; width=&quot;96&quot; height=&quot;96&quot; style=&quot;float: right;&quot;/&gt;&lt;br/&gt;&lt;a href=&quot;http://wiki.thesii.org/SpeechControl&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://wiki.thesii.org/SpeechControl&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;&lt;a href=&quot;irc://irc.freenode.net/sii-speechcontrol&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;#sii-speechcontrol&lt;/span&gt;&lt;/a&gt; on &lt;a href=&quot;http://www.freenode.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Freenode&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;&lt;br/&gt;SpeechControl is licensed under &lt;a href=&quot;http://www.gnu.org/licenses/gpl-3.0.txt&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;GPLv3&lt;/span&gt;&lt;/a&gt;.&lt;br/&gt;Please use &lt;a href=&quot;http://tasks.thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://tasks.thesii.org&lt;/span&gt;&lt;/a&gt; to report bugs. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;One Vision. One Purpose.&lt;br/&gt;We Are The SII.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;©2010 - 2012 by the &lt;a href=&quot;http://www.thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Synthetic Intellect Institute&lt;/span&gt;&lt;/a&gt;&lt;img src=&quot;:/logo/sii&quot; width=&quot;96&quot; height=&quot;96&quot; style=&quot;float: right;&quot;/&gt;&lt;br/&gt;&lt;a href=&quot;http://wiki.thesii.org/SpeechControl&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;http://wiki.thesii.org/SpeechControl&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;&lt;a href=&quot;irc://irc.freenode.net/sii-speechcontrol&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;#sii-speechcontrol&lt;/span&gt;&lt;/a&gt; on &lt;a href=&quot;http://www.freenode.net&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;Freenode&lt;/span&gt;&lt;/a&gt; and &lt;a href=&quot;irc://irc.thesii.org/dev&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;#dev&lt;/span&gt;&lt;/a&gt; on irc@sii.&lt;br/&gt;&lt;br/&gt;SpeechControl is licensed under &lt;a href=&quot;http://www.gnu.org/licenses/gpl-3.0.txt&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;GPLv3&lt;/span&gt;&lt;/a&gt;.&lt;br/&gt;Please use &lt;a href=&quot;http://tasks.thesii.org?enter_bug.cgi?product=speechcontrol&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;bugs@thesii&lt;/span&gt;&lt;/a&gt; to report bugs. &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;One Vision. One Purpose.&lt;br/&gt;We Are The SII.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -124,6 +124,9 @@
            </property>
            <property name="margin">
             <number>10</number>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -139,15 +142,15 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>333</width>
-          <height>241</height>
+          <width>341</width>
+          <height>271</height>
          </rect>
         </property>
         <layout class="QVBoxLayout" name="layoutAuthors">
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Jacky Alcine&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;mailto:jacky.alcine@thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;jacky.alcine@thesii.org&lt;/span&gt;&lt;/a&gt; | &lt;a href=&quot;http://jackyalcine.co.cc&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;website&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;Core Developer, Packager, Maintainer, Designer &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Dante Ashton&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;mailto:dante.ashton@thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;dante.ashton@thesii.org&lt;/span&gt;&lt;/a&gt; | &lt;a href=&quot;http://livingwithmachines.wordpress.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;blog&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Project Lead, Designer, Q/A Guy&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Adrian Borucki&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;mailto:adrian@thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;adrian@thesii.org&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;Core Developer, Packager, Maintainer, Idea Man, Designer&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Jacky Alcine&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;mailto:jacky.alcine@thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;jacky.alcine@thesii.org&lt;/span&gt;&lt;/a&gt; | &lt;a href=&quot;http://jackyalcine.co.cc&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;website&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;Core Developer, Packager, Maintainer, Designer &lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Adrian Borucki&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;mailto:adrian@thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;adrian@thesii.org&lt;/span&gt;&lt;/a&gt;&lt;br/&gt;Core Developer, Packager, Maintainer, Idea Man, Designer&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Dante Ashton&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;a href=&quot;mailto:dante.ashton@thesii.org&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;dante.ashton@thesii.org&lt;/span&gt;&lt;/a&gt; | &lt;a href=&quot;http://livingwithmachines.wordpress.com&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0057ae;&quot;&gt;blog&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Project Lead, Designer, Q/A Guy&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignHCenter|Qt::AlignTop</set>

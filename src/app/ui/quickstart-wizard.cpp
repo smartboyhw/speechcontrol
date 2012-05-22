@@ -31,28 +31,28 @@
 
 #include "quickstart-wizard.hpp"
 
-using namespace SpeechControl;
-using namespace SpeechControl::Windows::Wizards;
+SPCHCNTRL_USE_NAMESPACE
+SPCHCNTRL_UI_USE_NAMESPACE
 
 QuickStart::QuickStart (QWidget* parent) :
     AbstractWizard (parent)
 {
     this->setWindowTitle (tr ("Quick Start :: SpeechControl"));
-    QIcon l_icon = QIcon::fromTheme ("preferences-desktop-personal");
     setWindowTitle (tr ("Quick Start - SpeechControl"));
-    setPixmap (QWizard::LogoPixmap, l_icon.pixmap (32, 32, QIcon::Active, QIcon::On));
-    setPage (QuickStart::IntroductionPage,
-             (new Windows::Wizards::Pages::IntroductionPage (tr ("This wizard allows you to tweak SpeechControl to your personal configuration."))));
-    setPage (QuickStart::UserCreationPage,
-             (new Windows::Wizards::Pages::UserInitialization));
+    setPixmap (QWizard::LogoPixmap, QIcon::fromTheme ("preferences-desktop-personal").pixmap (32, 32, QIcon::Active, QIcon::On));
+    setPage(QuickStart::IntroductionPage,
+            new Windows::Pages::IntroductionPage(tr("This wizard allows you to tweak SpeechControl to your personal configuration."))
+           );
+    /*setPage (QuickStart::UserCreationPage,
+             (new Pages::UserInitialization));
     setPage (QuickStart::MicrophoneCreationPage,
-             (new Windows::Wizards::Pages::MicrophoneSelection));
+             (new Pages::MicrophoneSelection));
     setPage (QuickStart::AccuracySamplingPage,
-             (new Windows::Wizards::Pages::MicrophoneSample));
+             (new Pages::MicrophoneSample));
     setPage (QuickStart::ContentAdditionPage,
-             (new Windows::Wizards::Pages::SourceSelectionPage));
+             (new Pages::SourceSelectionPage));*/
     setPage (QuickStart::ConclusionPage,
-             (new Windows::Wizards::Pages::ConclusionPage (tr ("You've successfully set up SpeechControl to settings of your preference."))));
+             (new Windows::Pages::ConclusionPage (tr ("You've successfully set up SpeechControl to settings of your preference."))));
 }
 
 /// @todo The user's country could be automatically detected by QLocale.
@@ -86,4 +86,4 @@ QuickStart::~QuickStart()
 }
 
 #include "ui/quickstart-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

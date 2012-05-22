@@ -60,7 +60,7 @@ TrainingDialog::TrainingDialog (QWidget* p_parent) :
     m_ui->pushButtonReset->setIcon (QIcon::fromTheme (ICON_CLEAR));
     m_ui->pushButtonUndo->setIcon (QIcon::fromTheme (ICON_UNDO));
     m_ui->pushButtonNext->setIcon (QIcon::fromTheme (ICON_NEXT));
-    
+
     recorder = new FileRecorder;
 
     /// @bug stopCollecting method seems to be used in redundant way (e.g. in the open() method).
@@ -328,4 +328,4 @@ void SpeechControl::Windows::TrainingDialog::on_pushButtonNext_clicked()
 }
 
 #include "ui/training-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

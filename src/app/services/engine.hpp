@@ -38,7 +38,7 @@ SPCHCNTRL_BEGIN_NAMESPACE
 
 class AbstractServiceModule;
 class ServiceEngine;
-class ServiceEnginePrivate;
+struct ServiceEnginePrivate;
 
 typedef QList<AbstractServiceModule*> ServiceModuleList;
 
@@ -52,8 +52,10 @@ class ServiceEngine : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY (ServiceEngine)
-    SC_SINGLETON (ServiceEngine)
+    Q_DECLARE_PRIVATE(ServiceEngine)
+    SPCHCNTRL_SINGLETON (ServiceEngine)
     friend class AbstractServiceModule;
+    QScopedPointer<ServiceEnginePrivate> d_ptr;
 
 signals:
     /**
@@ -106,11 +108,8 @@ public slots:
      * @brief Stops the Engine.
      **/
     static void stop();
-
-private:
-    QScopedPointer<ServiceEnginePrivate> d_ptr;
 };
 
 SPCHCNTRL_END_NAMESPACE
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

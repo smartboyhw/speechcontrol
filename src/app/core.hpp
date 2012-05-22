@@ -24,8 +24,8 @@
  * @date 05/16/12 20:57:57 PM
  */
 
-#ifndef CORE_HPP
-#define CORE_HPP
+#ifndef SPCHCNTRL_CORE_HPP
+#define SPCHCNTRL_CORE_HPP
 
 #include <QDir>
 #include <QObject>
@@ -52,9 +52,9 @@ class Core : public QObject
     Q_OBJECT
     Q_DISABLE_COPY (Core)
     Q_DECLARE_PRIVATE (Core)
-    SC_SINGLETON (Core)
+    SPCHCNTRL_SINGLETON (Core)
+    QScopedPointer<CorePrivate> d_ptr;
 
-public:
     /**
      * @brief Constructor.
      * @param p_argc The argument count from command-line.
@@ -63,6 +63,7 @@ public:
      * @internal
      **/
     Core (int p_argc, char** p_argv, QApplication* app);
+public:
 
     /**
      * @brief Destructor.
@@ -150,12 +151,9 @@ public slots:
      * @param p_exitCode The exit code for the application to use.
      */
     void quit (const int& p_exitCode = 0);
-
-private:
-    QScopedPointer<CorePrivate> d_ptr;
 };
 
 SPCHCNTRL_END_NAMESPACE
 
 #endif // CORE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

@@ -51,11 +51,11 @@ namespace Audio
 class FileRecorder : public QObject
 {
     Q_OBJECT
-    
+
 public:
     explicit FileRecorder(QObject* parent = 0);
     virtual ~FileRecorder();
-    
+
     /**
      * @brief Initialize FileAudioRecorder with the destination file.
      *
@@ -63,7 +63,7 @@ public:
      * @param parent Parent QObject. Defaults to NULL.
      **/
     FileRecorder(QString _outFile, QObject* parent = 0);
-    
+
     /**
      * @brief Initialize FileAudioRecorder with the destination file.
      *
@@ -71,43 +71,43 @@ public:
      * @param parent Parent QObject. Defaults to NULL.
      **/
     FileRecorder(QFile& _outFile, QObject* parent = 0);
-    
+
     /**
      * @brief Set output file using its path.
      *
      * @param path Path to the output file
      **/
     void setFile(QString path);
-    
+
     /**
      * @brief Set output file using its instance.
      *
      * @param file QFile instance of the output file.
      **/
     void setFile(QFile& file);
-    
+
     bool isActive() const;
-    
+
 public slots:
     void start();
     void stop();
-    
+
 signals:
     void started();
     void stopped();
-    
+
 private:
     QString outFile;
     bool active;
-    
+
     QGst::PropertyProbePtr audioProbe;
     QGst::PipelinePtr pipeline;
-    
+
     void findDevices();
     void probeForDevices(const QGst::PropertyProbePtr& propertyProbe);
-    
+
     QGst::BinPtr createAudioSrcBin();
-    
+
     void onBusMessage(const QGst::MessagePtr& message);
 };
 

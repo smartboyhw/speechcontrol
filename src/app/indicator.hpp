@@ -1,5 +1,5 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
  *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
@@ -13,13 +13,19 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef INDICATOR_HPP
-#define INDICATOR_HPP
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/20/12 12:50:47 PM
+ */
+
+#ifndef SPCHCNTRL_INDICATOR_HPP
+#define SPCHCNTRL_INDICATOR_HPP
 
 #include <QObject>
 #include <QString>
@@ -46,7 +52,7 @@ class Indicator : public QObject
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(Indicator)
-    SC_SINGLETON (Indicator)
+    SPCHCNTRL_SINGLETON (Indicator)
 
 public:
 
@@ -146,4 +152,4 @@ private:
 SPCHCNTRL_END_NAMESPACE
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

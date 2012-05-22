@@ -93,7 +93,7 @@ Dictionary* Dictionary::create (QStringList p_wordlist, QString p_id)
         QString wordUpper = word.toUpper();
         wordUpper = wordUpper.trimmed().simplified();
 
-        Q_FOREACH(const QChar& letter, wordUpper){
+        Q_FOREACH(const QChar& letter, wordUpper) {
             phonemes += letter;
             phonemes += " ";
         }
@@ -114,7 +114,7 @@ Dictionary* Dictionary::merge(const DictionaryList& p_list, const QString& p_id)
     fileDictionary->open (QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate);
     QTextStream strm (fileDictionary);
 
-    Q_FOREACH(const Dictionary* p_dict, p_list){
+    Q_FOREACH(const Dictionary* p_dict, p_list) {
         QFile dict(p_dict->path());
         strm << dict.readAll() << endl;
     }
@@ -254,4 +254,4 @@ DictionaryEntry::~DictionaryEntry()
 }
 
 #include "dictionary.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

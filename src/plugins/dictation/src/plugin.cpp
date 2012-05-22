@@ -64,4 +64,4 @@ DSKTPCTLAPI_NAMESPACE_END
 
 Q_EXPORT_PLUGIN2 (spchcntrl-dsktpctlapi, SpeechControl::Plugins::DesktopControl::Plugin)
 
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

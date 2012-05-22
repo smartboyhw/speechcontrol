@@ -560,4 +560,4 @@ bool TextContentSource::setUrl (const QUrl& p_url)
 }
 
 #include "sessions/content.moc"
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

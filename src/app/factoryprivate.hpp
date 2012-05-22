@@ -1,5 +1,5 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
  *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
@@ -13,22 +13,27 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl .
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef TEST_APP_SESSIONS_HPP
-#define TEST_APP_SESSIONS_HPP
-#include <QObject>
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/20/12 12:28:53 PM
+ */
+#include <QMap>
+#include <QString>
+#include <app/global.hpp>
 
-class TestSessions : public QObject
-{
-    Q_OBJECT
+SPCHCNTRL_BEGIN_NAMESPACE
+class AbstractPlugin;
 
-private slots:
-    void listSessions();
+struct FactoryPrivate {
+    FactoryPrivate();
+    ~FactoryPrivate();
+    QMap<QString, AbstractPlugin*> loadedPlugins;
 };
 
-#endif
-// kate: indent-mode cstyle; replace-tabs on; 
+SPCHCNTRL_END_NAMESPACE

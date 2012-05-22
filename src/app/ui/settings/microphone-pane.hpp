@@ -64,4 +64,4 @@ public slots:
 }
 
 #endif // MICROPHONE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on; 

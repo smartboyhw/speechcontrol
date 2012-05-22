@@ -26,12 +26,8 @@
 #include <app/ui/wizards/micsetup/micselect.hpp>
 #include <app/ui/wizards/micsetup/micsample.hpp>
 
-namespace SpeechControl
-{
-namespace Windows
-{
-namespace Wizards
-{
+SPCHCNTRL_UI_BEGIN_NAMESPACE
+
 class MicrophoneSetup : public AbstractWizard
 {
     Q_OBJECT
@@ -47,7 +43,7 @@ public:
     };
 
     explicit MicrophoneSetup (QWidget* parent = 0);
-    ~MicrophoneSetup();
+    virtual ~MicrophoneSetup();
 
 public slots:
     virtual void accept();
@@ -57,10 +53,8 @@ private:
 
 };
 
-}
-}
-}
+SPCHCNTRL_UI_END_NAMESPACE
 
 #endif // WIZARD_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;
 

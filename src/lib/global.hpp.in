@@ -40,7 +40,7 @@
 #define SPCHCNTRL_BUILD_DATE __TIMESTAMP__
 
 // Handy macros for SpeechControl
-#define SPCHCNTRL_NAMESPACE SpeechControl
+#define SPCHCNTRL_NAMESPACE SpeechControl /// What for?
 #define SPCHCNTRL_PREPEND_NAMESPACE(name) ::SPCHCNTRL_NAMESPACE::name
 #define SPCHCNTRL_PREPEND_NAMESPACE2(name) SPCHCNTRL_NAMESPACE::name
 #define SPCHCNTRL_USE_NAMESPACE using namespace ::SPCHCNTRL_NAMESPACE;

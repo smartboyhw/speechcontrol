@@ -44,6 +44,7 @@
 #include "sessions/session.hpp"
 
 SPCHCNTRL_USE_NAMESPACE
+SPCHCNTRL_UI_USE_NAMESPACE
 SPCHCNTRL_DEFINE_SINGLETON(Indicator);
 
 Indicator::Message::Message (const QString& p_keyName) : m_key (p_keyName)

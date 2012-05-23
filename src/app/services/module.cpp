@@ -30,13 +30,13 @@
 
 SPCHCNTRL_USE_NAMESPACE
 
-AbstractModulePrivate::AbstractModulePrivate (AbstractServiceModule* p_qPtr) :
+AbstractServiceModulePrivate::AbstractServiceModulePrivate (AbstractServiceModule* p_qPtr) :
     q_ptr (p_qPtr), m_state (AbstractServiceModule::Undefined)
 {
 
 }
 
-AbstractModulePrivate::~AbstractModulePrivate()
+AbstractServiceModulePrivate::~AbstractServiceModulePrivate()
 {
 
 }
@@ -47,7 +47,7 @@ AbstractServiceModule::AbstractServiceModule (QObject* p_parent) : QObject (p_pa
 
 }
 
-AbstractServiceModule::AbstractServiceModule (AbstractModulePrivate* p_dd, QObject* p_parent) :
+AbstractServiceModule::AbstractServiceModule (AbstractServiceModulePrivate* p_dd, QObject* p_parent) :
     QObject (p_parent), d_ptr (p_dd)
 {
 
@@ -55,7 +55,7 @@ AbstractServiceModule::AbstractServiceModule (AbstractModulePrivate* p_dd, QObje
 
 void AbstractServiceModule::setState (const AbstractServiceModule::ActivityState p_state)
 {
-    Q_D (AbstractModule);
+    Q_D (AbstractServiceModule);
     qDebug() << "[AbstractModule::setState()] State changing to " << p_state << "...";
     d->changeState (p_state);
 
@@ -104,7 +104,7 @@ void AbstractServiceModule::stop()
 
 AbstractServiceModule::ActivityState AbstractServiceModule::state() const
 {
-    Q_D (const AbstractModule);
+    Q_D (const AbstractServiceModule);
     return d->m_state;
 }
 

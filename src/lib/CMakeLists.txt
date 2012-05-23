@@ -30,7 +30,7 @@ list(REMOVE_ITEM SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS ${SPCHCNTRL_LIB_INCLUDE_DIR})
 
 ## configures
 configure_file("${PROJECT_SOURCE_DIR}/global.hpp.in"
-    "${PROJECT_SOURCE_DIR}/global.hpp" @ONLY)
+               "${PROJECT_SOURCE_DIR}/global.hpp" @ONLY)
 
 ## Some Qt-specific stuff.
 QT4_AUTOMOC(${SPCHCNTRL_LIB_SRCS})

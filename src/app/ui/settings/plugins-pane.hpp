@@ -37,12 +37,9 @@
 
 class QListWidgetItem;
 
-namespace Ui
-{
-class PluginsSettingsPane;
-}
+SPCHCNTRL_DEFINE_UIC(PluginsSettingsPane)
 
-SPCHCNTRL_BEGIN_NAMESPACE
+SPCHCNTRL_UI_BEGIN_NAMESPACE
 
 class PluginsSettingsPane : public AbstractSettingsPane
 {
@@ -71,7 +68,7 @@ private:
     Ui::PluginsSettingsPane* ui;
 };
 
-SPCHCNTRL_END_NAMESPACE
+SPCHCNTRL_UI_END_NAMESPACE
 
 #endif // PLUGINS_HPP
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

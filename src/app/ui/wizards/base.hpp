@@ -27,12 +27,13 @@
 #ifndef SPCHCNTRL_UI_WIZARDS_BASE_HPP
 #define SPCHCNTRL_UI_WIZARDS_BASE_HPP
 
+#include <QObject>
 #include <QWizard>
 #include <ui/global.hpp>
 
 #define SPCHCNTRL_UI_WIZARD_PAGES_NAMESPACE Pages
 #define SPCHCNTRL_UI_WIZARD_PAGES_USE_NAMESPACE \
-using namespace SPCHCNTRL_UI_PREPEND_NAMESPACE2(SPCHCNTRL_UI_WIZARD_PAGES_NAMESPACE);
+using namespace SPCHCNTRL_UI_PREPEND_NAMESPACE(SPCHCNTRL_UI_WIZARD_PAGES_NAMESPACE);
 
 #define SPCHCNTRL_UI_WIZARD_PAGES_BEGIN_NAMESPACE \
 SPCHCNTRL_UI_BEGIN_NAMESPACE \
@@ -52,7 +53,7 @@ SPCHCNTRL_DEFINE_UIC(WizardBase);
 SPCHCNTRL_UI_BEGIN_NAMESPACE
 
 /// @todo Allow automatic insertion of introduction page.
-class AbstractWizard : public QWizard
+class AbstractWizard : public ::QWizard
 {
     Q_OBJECT
 

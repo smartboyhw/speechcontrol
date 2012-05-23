@@ -21,8 +21,8 @@ QT4_AUTOMOC(${SPTRSB_SRCS})
 QT4_WRAP_UI(SPTRSB_SRCS ${SPTRSB_UI})
 QT4_ADD_RESOURCES(SPTRSB_SRCS ${SPTRSB_QRESC})
 
-configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
-               "${PROJECT_SOURCE_DIR}/src/config.hpp" @ONLY)
+configure_file("${PROJECT_SOURCE_DIR}/src/global.hpp.in"
+               "${PROJECT_SOURCE_DIR}/src/global.hpp" @ONLY)
 
 include_directories(${SPTRSB_PLUGIN_INCLUDE_DIRS}
     "${PROJECT_SOURCE_DIR}/src"

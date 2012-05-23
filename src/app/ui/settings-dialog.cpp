@@ -38,8 +38,8 @@
 #include "ui_settings-dialog.h"
 
 SPCHCNTRL_USE_NAMESPACE
-
-SettingsDialog* SettingsDialog::s_inst = 0;
+SPCHCNTRL_UI_USE_NAMESPACE
+SPCHCNTRL_DEFINE_SINGLETON(SettingsDialog)
 
 SettingsDialog::SettingsDialog() : QDialog()
 {
@@ -61,11 +61,10 @@ void SettingsDialog::buildWindow()
     m_ui->setupUi (this);
     this->setLayout (m_ui->gridLayout);
 
-    /// @todo Add back the panels for the Settings window.
-    //addPane (new GeneralSettingsPane);
-    //addPane (new TrainingSettingsPane);
-    //addPane (new ServicesSettingsPane);
-    //addPane (new PluginsSettingsPane);
+    addPane (new GeneralSettingsPane);
+    addPane (new TrainingSettingsPane);
+    addPane (new ServicesSettingsPane);
+    addPane (new PluginsSettingsPane);
     qDebug() << "[Settings::buildWindow()] Built settings window.";
 }
 
@@ -249,4 +248,4 @@ AbstractSettingsPane::~AbstractSettingsPane()
 }
 
 #include "ui/settings-dialog.moc"
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

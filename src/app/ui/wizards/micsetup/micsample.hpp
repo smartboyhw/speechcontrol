@@ -32,6 +32,7 @@
 
 SPCHCNTRL_DEFINE_UIC(MicrophoneSample)
 SPCHCNTRL_FORWARD_DECLARE_CLASS(AudioSourceSphinx)
+
 SPCHCNTRL_UI_WIZARD_PAGES_BEGIN_NAMESPACE
 
 class MicrophoneSample : public QWizardPage

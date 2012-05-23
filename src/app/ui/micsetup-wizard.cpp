@@ -34,7 +34,6 @@
 #include "app/ui/wizards/micsetup/micsample.hpp"
 
 SPCHCNTRL_UI_USE_NAMESPACE
-SPCHCNTRL_UI_WIZARD_PAGES_USE_NAMESPACE
 
 MicrophoneSetup::MicrophoneSetup (QWidget* parent) :
     AbstractWizard (parent)

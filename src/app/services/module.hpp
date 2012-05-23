@@ -35,7 +35,7 @@
 SPCHCNTRL_BEGIN_NAMESPACE
 
 class AbstractServiceModule;
-class AbstractModulePrivate;
+class AbstractServiceModulePrivate;
 /**
  * @brief Represents a list of Modules.
  **/
@@ -147,14 +147,14 @@ public slots:
      **/
     void setState (const ActivityState p_state);
 protected:
-    QScopedPointer<AbstractModulePrivate> d_ptr;
+    QScopedPointer<AbstractServiceModulePrivate> d_ptr;
     Q_DISABLE_COPY (AbstractServiceModule)
-    Q_DECLARE_PRIVATE (AbstractModule)
+    Q_DECLARE_PRIVATE (AbstractServiceModule)
 
     virtual void initialize() = 0;
     virtual void deinitialize() = 0;
     explicit AbstractServiceModule (QObject* parent = 0);
-    AbstractServiceModule (AbstractModulePrivate* p_dd, QObject* p_parent = 0);
+    AbstractServiceModule (AbstractServiceModulePrivate* p_dd, QObject* p_parent = 0);
     virtual ~AbstractServiceModule();
 };
 

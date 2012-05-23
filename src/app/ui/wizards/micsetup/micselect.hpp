@@ -27,12 +27,14 @@
 #ifndef MS_MICSELECT_HPP
 #define MS_MICSELECT_HPP
 
+#include <QObject>
 #include <QWizardPage>
 #include <ui/wizards/base.hpp>
 
 SPCHCNTRL_DEFINE_UIC(MicrophoneSelection)
 SPCHCNTRL_FORWARD_DECLARE_CLASS(DeviceAudioSource)
 SPCHCNTRL_UI_WIZARD_PAGES_BEGIN_NAMESPACE
+
 class MicrophoneSelection : public QWizardPage
 {
     Q_OBJECT

@@ -31,10 +31,10 @@
 #include <app/services/module.hpp>
 
 SPCHCNTRL_BEGIN_NAMESPACE
-struct AbstractModulePrivate {
+struct AbstractServiceModulePrivate {
     Q_DECLARE_PUBLIC (AbstractServiceModule)
-    AbstractModulePrivate (AbstractServiceModule* p_qPtr);
-    ~AbstractModulePrivate();
+    AbstractServiceModulePrivate (AbstractServiceModule* p_qPtr);
+    ~AbstractServiceModulePrivate();
     virtual void changeState (AbstractServiceModule::ActivityState p_state) = 0;
     virtual AbstractServiceModule::ActivityState handleStateChange (const AbstractServiceModule::ActivityState p_state) = 0;
 

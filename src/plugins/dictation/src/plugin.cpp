@@ -28,9 +28,12 @@
 #include <QtPlugin>
 #include <QIcon>
 
+#include <app/core.hpp>
+#include "service.hpp"
 #include "plugin.hpp"
 
-DSKTPCTLAPI_NAMESPACE_BEGIN
+SPCHCNTRL_USE_NAMESPACE
+DCTN_USE_NAMESPACE
 
 Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent)
 {
@@ -39,7 +42,7 @@ Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent)
 void Plugin::initialize()
 {
     const bool dctnState = Core::configuration ("Dictation/AutoStart", false).toBool();
-    Dictation::Service::instance()->setState ( (dctnState) ? AbstractModule::Enabled  : AbstractModule::Disabled);
+    Dictation::Service::instance()->setState ( (dctnState) ? AbstractServiceModule::Enabled  : AbstractServiceModule::Disabled);
     qDebug() << "Plug-in loaded! (dsktpctlapi)";
 }
 
@@ -60,8 +63,6 @@ Plugin::~Plugin()
 
 #include "plugin.moc"
 
-DSKTPCTLAPI_NAMESPACE_END
+Q_EXPORT_PLUGIN2 (spchcntrl-dctn, SpeechControl::Dictation::Plugin)
 
-Q_EXPORT_PLUGIN2 (spchcntrl-dsktpctlapi, SpeechControl::Plugins::DesktopControl::Plugin)
-
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

@@ -43,7 +43,7 @@ class QFile;
 class QDomDocument;
 class QDomElement;
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 
 class Phrase;
 class Sentence;
@@ -257,7 +257,7 @@ private:
     QScopedPointer<DictionaryPrivate> d_ptr;
 };
 
-SPCHCNTRL_END_NAMESPACE
+}
 
 #endif // DICTIONARY_HPP
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

@@ -25,6 +25,7 @@ class QFile;
 
 namespace SpeechControl
 {
+
 class Dictionary;
 class DictionaryEntry;
 struct DictionaryPrivate;
@@ -53,4 +54,4 @@ struct DictionaryPrivate {
 };
 
 }
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

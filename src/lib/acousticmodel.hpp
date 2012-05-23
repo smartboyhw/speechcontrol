@@ -29,7 +29,7 @@
 
 class QFile;
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 
 class AcousticModel;
 struct AcousticModelPrivate;
@@ -237,7 +237,7 @@ private:
     QScopedPointer<AcousticModelPrivate> d_ptr;
 };
 
-SPCHCNTRL_END_NAMESPACE
+}
 
 #endif // ACOUSTICMODEL_HPP
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

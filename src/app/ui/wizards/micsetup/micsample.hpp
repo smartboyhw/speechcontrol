@@ -33,7 +33,7 @@
 SPCHCNTRL_DEFINE_UIC(MicrophoneSample)
 SPCHCNTRL_FORWARD_DECLARE_CLASS(AudioSourceSphinx)
 
-SPCHCNTRL_UI_WIZARD_PAGES_BEGIN_NAMESPACE
+namespace SpeechControl { namespace Windows { namespace Pages {
 
 class MicrophoneSample : public QWizardPage
 {
@@ -60,7 +60,7 @@ private:
     QStringList m_prompts;
 };
 
-SPCHCNTRL_UI_WIZARD_PAGES_END_NAMESPACE
+} } }
 
 #endif // MICSAMPLE_HPP
 // kate: indent-mode cstyle; replace-tabs on;

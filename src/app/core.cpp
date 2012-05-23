@@ -40,7 +40,7 @@
 #include "app/coreprivate.hpp"
 #include "app/core.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
+using namespace SpeechControl;
 SPCHCNTRL_DEFINE_SINGLETON(Core)
 
 CorePrivate::CorePrivate(Core* p_qPtr) : m_app (0),

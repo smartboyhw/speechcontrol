@@ -37,8 +37,8 @@
 #include "ui_adaptwizard-enaction.h"
 #include "enaction.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_WIZARD_PAGES_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows::Pages;
 
 Enaction::Enaction (QWidget* parent) :
     QWizardPage (parent),

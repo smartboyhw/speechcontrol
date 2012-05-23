@@ -27,7 +27,7 @@
 #include "intro.hpp"
 #include "ui_wizardbase-intro.h"
 
-SPCHCNTRL_UI_WIZARD_PAGES_USE_NAMESPACE
+using namespace SpeechControl::Windows::Pages;
 
 IntroductionPage::IntroductionPage (const QString& summary) :
     QWizardPage(),

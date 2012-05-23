@@ -36,7 +36,7 @@
 
 SPCHCNTRL_DEFINE_UIC(SettingsDialog)
 
-SPCHCNTRL_UI_BEGIN_NAMESPACE
+namespace SpeechControl { namespace Windows {
 
 class SettingsDialog;
 class AbstractSettingsPane;
@@ -97,7 +97,7 @@ private:
     QMap<QString, AbstractSettingsPane*> m_panes;
 };
 
-SPCHCNTRL_UI_END_NAMESPACE
+} }
 
 #endif // SETTINGS_HPP
 // kate: indent-mode cstyle; replace-tabs on;

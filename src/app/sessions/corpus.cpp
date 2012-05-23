@@ -286,7 +286,7 @@ void Corpus::nullify()
 bool Corpus::isValid() const
 {
     const bool valid = m_dom && !m_id.isNull();
-    SC_ASSERT (valid == true, "Invalid Corpus.");
+    Q_ASSERT (valid == true);
     qDebug() << "[Corpus::isValid()] Is corpus valid?" << valid;
     return valid;
 }
@@ -447,4 +447,4 @@ Corpus::~Corpus()
 }
 
 #include "sessions/corpus.moc"
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

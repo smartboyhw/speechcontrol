@@ -33,7 +33,7 @@
 #include "app/ui/wizards/micsetup/micselect.hpp"
 #include "app/ui/wizards/micsetup/micsample.hpp"
 
-SPCHCNTRL_UI_USE_NAMESPACE
+using namespace SpeechControl::Windows;
 
 MicrophoneSetup::MicrophoneSetup (QWidget* parent) :
     AbstractWizard (parent)

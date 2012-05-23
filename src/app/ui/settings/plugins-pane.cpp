@@ -36,8 +36,8 @@
 #include "ui/plugin-info-dialog.hpp"
 #include "ui_settingspane-plugins.h"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows;
 
 PluginsSettingsPane::PluginsSettingsPane () :
     ui (new Ui::PluginsSettingsPane)

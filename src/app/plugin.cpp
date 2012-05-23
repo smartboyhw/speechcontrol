@@ -35,7 +35,7 @@
 #include "plugin.hpp"
 #include "pluginprivate.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
+using namespace SpeechControl;
 
 AbstractPluginPrivate::AbstractPluginPrivate(AbstractPlugin* p_Qptr) :
     ldr(0), id(QString::null), acts(), q_ptr(p_Qptr)

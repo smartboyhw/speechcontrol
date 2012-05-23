@@ -28,8 +28,8 @@
 #include "voxforge-pane.hpp"
 #include "ui_settingspane-services.h"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows;
 
 ServicesSettingsPane::ServicesSettingsPane() :
     ui (new Ui::ServicesSettingsPane)

@@ -30,7 +30,7 @@
 #include <QPluginLoader>
 #include <app/global.hpp>
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 
 class AbstractPlugin;
 
@@ -58,4 +58,4 @@ struct AbstractPluginPrivate {
     AbstractPlugin* q_ptr;
 };
 
-SPCHCNTRL_END_NAMESPACE
+}

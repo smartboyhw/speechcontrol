@@ -21,7 +21,7 @@
 #include "ui_wizardbase.h"
 #include "base.hpp"
 
-SPCHCNTRL_UI_USE_NAMESPACE
+using namespace SpeechControl::Windows;
 
 AbstractWizard::AbstractWizard (QWidget* parent) :
     QWizard (parent),

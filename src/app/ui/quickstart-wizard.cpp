@@ -31,8 +31,8 @@
 
 #include "quickstart-wizard.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows;
 
 QuickStart::QuickStart (QWidget* parent) :
     AbstractWizard (parent)

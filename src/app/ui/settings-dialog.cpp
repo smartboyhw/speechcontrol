@@ -37,8 +37,8 @@
 #include "settings/services-pane.hpp"
 #include "ui_settings-dialog.h"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows;
 SPCHCNTRL_DEFINE_SINGLETON(SettingsDialog)
 
 SettingsDialog::SettingsDialog() : QDialog()

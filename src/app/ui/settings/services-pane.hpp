@@ -22,7 +22,7 @@
 #include <ui/settings-dialog.hpp>
 
 SPCHCNTRL_DEFINE_UIC(ServicesSettingsPane)
-SPCHCNTRL_UI_BEGIN_NAMESPACE
+namespace SpeechControl { namespace Windows {
 
 class ServicesSettingsPane : public AbstractSettingsPane
 {
@@ -45,7 +45,7 @@ private:
     Ui::ServicesSettingsPane* ui;
 };
 
-SPCHCNTRL_UI_END_NAMESPACE
+} }
 
 #endif // SERVICESSETTINGSPANE_HPP
 // kate: indent-mode cstyle; replace-tabs on;

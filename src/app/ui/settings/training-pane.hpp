@@ -25,7 +25,7 @@
 
 SPCHCNTRL_DEFINE_UIC(TrainingSettingsPane)
 
-SPCHCNTRL_UI_BEGIN_NAMESPACE
+namespace SpeechControl { namespace Windows {
 
 class TrainingSettingsPane : public AbstractSettingsPane
 {
@@ -47,7 +47,7 @@ private:
     Ui::TrainingSettingsPane* ui;
 };
 
-SPCHCNTRL_UI_END_NAMESPACE
+} }
 
 #endif // TRAININGSETTINGSPANE_HPP
 // kate: indent-mode cstyle; replace-tabs on;

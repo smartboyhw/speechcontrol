@@ -30,8 +30,8 @@
 #include "ui/contents-wizard.hpp"
 #include "ui_contentwizard-sourceselect.h"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_WIZARD_PAGES_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows::Pages;
 
 QMap<QString, QWidget*> SourceSelectionPage::s_lst;
 

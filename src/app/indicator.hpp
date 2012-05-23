@@ -37,7 +37,7 @@ class QAction;
 class QImage;
 class QSystemTrayIcon;
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 
 struct IndicatorPrivate;
 class Indicator;
@@ -149,7 +149,7 @@ private:
     QScopedPointer<IndicatorPrivate> d_ptr;
 };
 
-SPCHCNTRL_END_NAMESPACE
+}
 
 #endif
 // kate: indent-mode cstyle; replace-tabs on;

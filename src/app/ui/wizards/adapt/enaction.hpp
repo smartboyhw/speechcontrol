@@ -34,7 +34,7 @@
 
 SPCHCNTRL_DEFINE_UIC(Enaction)
 SPCHCNTRL_FORWARD_DECLARE_CLASS(Session)
-SPCHCNTRL_UI_WIZARD_PAGES_BEGIN_NAMESPACE
+namespace SpeechControl { namespace Windows { namespace Pages {
 
 typedef SpeechControl::AdaptationUtility::Phases Phases;
 
@@ -68,6 +68,6 @@ private:
     AccuracyMeter* m_meter;
 };
 
-SPCHCNTRL_UI_WIZARD_PAGES_END_NAMESPACE
+} } }
 #endif // ADAPT_ENACTIONSELECTION_HPP
 // kate: indent-mode cstyle; replace-tabs on;

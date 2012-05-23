@@ -33,8 +33,8 @@
 #include "sessions/session.hpp"
 #include "ui_settingspane-general.h"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows;
 
 GeneralSettingsPane::GeneralSettingsPane () :
     ui (new Ui::GeneralSettingsPane)

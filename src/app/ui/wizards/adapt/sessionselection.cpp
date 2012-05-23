@@ -33,8 +33,8 @@
 #include "sessionselection.hpp"
 #include "ui_adaptwizard-sessionselection.h"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_WIZARD_PAGES_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows::Pages;
 
 SessionSelection::SessionSelection (QWidget* parent) :
     QWizardPage (parent),

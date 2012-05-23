@@ -32,9 +32,9 @@
 #include "ui_micwizard-sample.h"
 #include "micsample.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_USE_NAMESPACE
-SPCHCNTRL_UI_WIZARD_PAGES_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows;
+using namespace SpeechControl::Windows::Pages;
 
 /// @todo The loudness of the content spoken should begin detection here.
 MicrophoneSample::MicrophoneSample (QWidget* parent) :

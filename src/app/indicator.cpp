@@ -43,8 +43,8 @@
 #include "ui/adapt-wizard.hpp"
 #include "sessions/session.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows;
 SPCHCNTRL_DEFINE_SINGLETON(Indicator);
 
 Indicator::Message::Message (const QString& p_keyName) : m_key (p_keyName)

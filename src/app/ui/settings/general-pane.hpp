@@ -31,7 +31,7 @@
 #include <ui/settings-dialog.hpp>
 
 SPCHCNTRL_DEFINE_UIC(GeneralSettingsPane)
-SPCHCNTRL_UI_BEGIN_NAMESPACE
+namespace SpeechControl { namespace Windows {
 /**
  * @brief General settings of SpeechControl.
  *
@@ -72,6 +72,6 @@ private:
     Ui::GeneralSettingsPane* ui;
 };
 
-SPCHCNTRL_UI_END_NAMESPACE
+} }
 #endif // GENERAL_HPP
 // kate: indent-mode cstyle; replace-tabs on;

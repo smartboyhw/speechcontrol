@@ -40,7 +40,7 @@ class QAction;
 class QSettings;
 class QPluginLoader;
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 
 class AbstractPlugin;
 struct AbstractPluginPrivate;
@@ -287,7 +287,7 @@ protected:
     virtual inline void deinitialize() { };
 };
 
-SPCHCNTRL_END_NAMESPACE
+}
 
 #endif // SPCHCNTRL_PLUGINS_HPP
 // kate: indent-mode cstyle; replace-tabs on;

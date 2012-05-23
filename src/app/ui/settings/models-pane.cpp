@@ -34,8 +34,8 @@
 #include "models-pane.hpp"
 #include "ui_settingspane-model.h"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows;
 
 ModelSettingsPane::ModelSettingsPane() :
     m_ui (new Ui::ModelSettingsPane)

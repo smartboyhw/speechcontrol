@@ -24,8 +24,8 @@
 
 #include "settings-pane.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows;
 
 DictationSettingsPane::DictationSettingsPane() :
     m_ui (new Ui::DictationSettingsPane)

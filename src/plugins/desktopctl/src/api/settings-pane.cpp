@@ -36,7 +36,7 @@
 #include "settings-pane.hpp"
 #include "ui_settingspane-desktopcontrol.h"
 
-SPCHCNTRL_UI_USE_NAMESPACE
+using namespace SpeechControl::Windows;
 DSKTPCTLAPI_USE_NAMESPACE
 
 DesktopControlSettingsPane::DesktopControlSettingsPane () :

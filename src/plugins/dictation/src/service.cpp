@@ -28,7 +28,7 @@
 #include "serviceprivate.hpp"
 #include "service.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
+using namespace SpeechControl;
 DCTN_USE_NAMESPACE
 SPCHCNTRL_DEFINE_SINGLETON(Service)
 

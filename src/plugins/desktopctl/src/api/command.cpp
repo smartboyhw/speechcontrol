@@ -32,7 +32,7 @@
 #include "command.hpp"
 
 using namespace std;
-SPCHCNTRL_USE_NAMESPACE
+using namespace SpeechControl;
 DSKTPCTLAPI_USE_NAMESPACE
 
 struct GlobalCategory : public AbstractCategory {

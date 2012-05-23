@@ -33,7 +33,7 @@
 #include "service.hpp"
 #include "plugin.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
+using namespace SpeechControl;
 DSKTPCTLAPI_USE_NAMESPACE
 
 Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent)

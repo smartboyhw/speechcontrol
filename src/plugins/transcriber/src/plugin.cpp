@@ -21,7 +21,7 @@
 #include <QtPlugin>
 #include <QAction>
 
-#include "config.hpp"
+#include "global.hpp"
 #include "plugin.hpp"
 #include "transcriber-dialog.hpp"
 

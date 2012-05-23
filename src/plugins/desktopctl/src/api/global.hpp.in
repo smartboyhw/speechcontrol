@@ -1,0 +1,57 @@
+/***
+ *  This file is part of the SpeechCOntrol project.
+ *
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
+ *
+ *  SpeechCOntrol is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Library General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  SpeechCOntrol is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechCOntrol.
+ *  If not, write to the Free Software Foundation, Inc.,
+ *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/16/12 20:13:37 PM
+ */
+
+#include <app/global.hpp>
+
+#define DSKTPCTLAPI_NAMESPACE DesktopControl
+#define DSKTPCTLAPI_PREPEND_NAMESPACE(name) SPCHCNTRL_PREPEND_NAMESPACE(DSKTPCTLAPI_NAMESPACE::name)
+#define DSKTPCTLAPI_PREPEND_NAMESPACE2(name) SPCHCNTRL_PREPEND_NAMESPACE2(DSKTPCTLAPI_NAMESPACE::name)
+#define DSKTPCTLAPI_USE_NAMESPACE using namespace SPCHCNTRL_PREPEND_NAMESPACE(DSKTPCTLAPI_NAMESPACE);
+#define DSKTPCTLAPI_BEGIN_NAMESPACE \
+SPCHCNTRL_BEGIN_NAMESPACE \
+namespace DSKTPCTLAPI_NAMESPACE {
+
+#define DSKTPCTLAPI_END_NAMESPACE \
+SPCHCNTRL_END_NAMESPACE \
+}
+
+#define DSKTPCTLAPI_FORWARD_DECLARE_CLASS(name) \
+DSKTPCTLAPI_BEGIN_NAMESPACE class name; DSKTPCTLAPI_END_NAMESPACE;\
+\
+using DSKTPCTLAPI_PREPEND_NAMESPACE2(name);
+
+#define DSKTPCTLAPI_FORWARD_DECLARE_STRUCT(name) \
+DSKTPCTLAPI_BEGIN_NAMESPACE struct name; DSKTPCTLAPI_END_NAMESPACE;\
+\
+using DSKTPCTLAPI_PREPEND_NAMESPACE2(name);
+
+#ifdef DSKTPCTLAPI_NAMESPACE
+DSKTPCTLAPI_BEGIN_NAMESPACE
+DSKTPCTLAPI_END_NAMESPACE
+#endif
+
+#define PLUGIN_ID "@SPDSKAPI_PLUGIN_ID@"
+// kate: indent-mode cstyle; replace-tabs on;

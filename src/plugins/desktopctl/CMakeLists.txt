@@ -1,8 +1,5 @@
+project(SpeechControl-DesktopControl)
 cmake_minimum_required(VERSION 2.8)
 
-include_directories("${CMAKE_SOURCE_DIR}/src/app/services")
-
-add_subdirectory(api)
-add_subdirectory(apps)
-add_subdirectory(mpris)
-add_subdirectory(syscntrl)
+include_directories("${PROJECT_SOURCE_DIR}/src")
+add_subdirectory(src)

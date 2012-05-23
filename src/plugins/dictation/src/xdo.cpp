@@ -66,5 +66,5 @@ KeyboardEmulator::~KeyboardEmulator()
 
 }
 
-#include "services/dictation/xdo.moc"
-// kate: indent-mode cstyle; replace-tabs on; 
+#include "xdo.moc"
+// kate: indent-mode cstyle; replace-tabs on;

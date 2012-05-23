@@ -20,7 +20,7 @@
 
 #include "service.hpp"
 #include "app/services/moduleprivate.hpp"
-#include "app/services/dictation/sphinx.hpp"
+#include "sphinx.hpp"
 
 namespace SpeechControl
 {
@@ -28,7 +28,7 @@ namespace Dictation
 {
 
 class Service;
-class ServicePrivate : public Services::AbstractModulePrivate
+class ServicePrivate : public AbstractServiceModulePrivate
 {
     friend class Service;
 private:
@@ -43,4 +43,4 @@ private:
 };
 }
 }
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

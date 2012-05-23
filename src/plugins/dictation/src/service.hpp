@@ -1,5 +1,5 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
  *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
@@ -13,16 +13,23 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl .
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/22/12 21:11:01 PM
  */
 
 #ifndef SPEECHCONTROL_DICTATION_SERVICE_HPP
 #define SPEECHCONTROL_DICTATION_SERVICE_HPP
 
-#include <app/macros.hpp>
+#include <app/global.hpp>
 #include <app/services/module.hpp>
+#include "global.hpp"
 
 namespace SpeechControl
 {
@@ -30,12 +37,12 @@ namespace SpeechControl
 namespace Dictation
 {
 
-class Service : public SpeechControl::Services::AbstractServiceModule
+class Service : public SpeechControl::AbstractServiceModule
 {
     Q_OBJECT
     Q_ENUMS (SafetyMode)
     Q_DISABLE_COPY (Service)
-    SC_SINGLETON (Service)
+    SPCHCNTRL_SINGLETON (Service)
 
 protected:
     virtual void deinitialize();
@@ -69,4 +76,4 @@ public slots:
 }
 
 #endif // SPEECHCONTROL_DICTATION_SERVICE_HPP
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

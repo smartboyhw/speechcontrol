@@ -2,6 +2,8 @@ project(SpeechControl-Dictation)
 cmake_minimum_required(VERSION 2.8)
 
 find_package(SpeechControlApplication REQUIRED QUIET)
+find_package(Xdo REQUIRED)
+find_package(Hunspell REQUIRED)
 include(SpeechControlMacros)
 
 set(SPDCTN_PLUGIN_MINOR_VERSION 1)
@@ -18,10 +20,6 @@ set(SPDCTN_PLUGIN_LIBRARIES ${SPCHCNTRL_LIBRARIES}
 file(GLOB SPDCTN_UI "ui/*.ui")
 file(GLOB SPDCTN_SRCS "src/*.cpp")
 file(GLOB SPDCTN_HDRS "src/*.hpp")
-
-find_package(Xdo REQUIRED)
-find_package(Hunspell REQUIRED)
-
 
 QT4_WRAP_UI(SPDCTN_SRCS ${SPDCTN_UI})
 QT4_AUTOMOC(${SPDCTN_SRCS})

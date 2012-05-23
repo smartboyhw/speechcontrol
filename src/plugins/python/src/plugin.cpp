@@ -21,7 +21,7 @@
 #include <QtPlugin>
 #include <QIcon>
 
-#include "config.hpp"
+#include "global.hpp"
 #include "python.hpp"
 
 #include "plugin.hpp"

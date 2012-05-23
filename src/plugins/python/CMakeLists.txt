@@ -19,8 +19,8 @@ file(GLOB SPPY_HDRS "src/*.hpp")
 
 QT4_AUTOMOC(${SPPY_SRCS})
 
-configure_file("${PROJECT_SOURCE_DIR}/config.hpp.in"
-               "${PROJECT_SOURCE_DIR}/src/config.hpp" @ONLY)
+configure_file("${PROJECT_SOURCE_DIR}/src/global.hpp.in"
+               "${PROJECT_SOURCE_DIR}/src/global.hpp" @ONLY)
 
 include_directories(${SPPY_PLUGIN_INCLUDE_DIRS}
     "${PROJECT_SOURCE_DIR}/src"

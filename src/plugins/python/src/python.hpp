@@ -24,7 +24,7 @@
 
 #include <PythonQt/PythonQt.h>
 
-#include <macros.hpp>
+#include <app/global.hpp>
 
 namespace SpeechControl
 {
@@ -37,7 +37,7 @@ class Instance  : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY (Instance)
-    SC_SINGLETON (Instance)
+    SPCHCNTRL_SINGLETON (Instance)
 
 public slots:
     void start();
@@ -51,4 +51,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

@@ -47,6 +47,8 @@ add_subdirectory(cmake)
 
 configure_file("${PROJECT_SOURCE_DIR}/global.hpp.in"
                "${PROJECT_SOURCE_DIR}/global.hpp" @ONLY)
+configure_file("${PROJECT_SOURCE_DIR}/ui/global.hpp.in"
+               "${PROJECT_SOURCE_DIR}/ui/global.hpp" @ONLY)
 
 # Add build information for front-end application and KDE features
 include(application.cmake)

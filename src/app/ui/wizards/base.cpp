@@ -21,8 +21,7 @@
 #include "ui_wizardbase.h"
 #include "base.hpp"
 
-
-using SpeechControl::Windows::Wizards::AbstractWizard;
+SPCHCNTRL_UI_USE_NAMESPACE
 
 AbstractWizard::AbstractWizard (QWidget* parent) :
     QWizard (parent),
@@ -44,4 +43,4 @@ AbstractWizard::~AbstractWizard()
 }
 
 #include "ui/wizards/base.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

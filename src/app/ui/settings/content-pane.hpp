@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,9 +13,15 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/20/12 14:32:22 PM
  */
 
 #ifndef CONTENTSETTINGSPANE_HPP
@@ -23,16 +29,8 @@
 
 #include <ui/settings-dialog.hpp>
 
-namespace Ui
-{
-class ContentSettingsPane;
-}
-
-namespace SpeechControl
-{
-namespace Windows
-{
-
+SPCHCNTRL_DEFINE_UIC(ContentSettingsPane)
+SPCHCNTRL_UI_BEGIN_NAMESPACE
 class ContentSettingsPane : public AbstractSettingsPane
 {
     Q_OBJECT
@@ -59,8 +57,7 @@ private:
     Ui::ContentSettingsPane* ui;
 };
 
-}
-}
+SPCHCNTRL_UI_END_NAMESPACE
 
 #endif // CONTENTSETTINGSPANE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

@@ -46,11 +46,11 @@ class DeviceManager : public QObject
 {
     Q_OBJECT
     friend class SpeechControl::System;
-    
+
 public:
     explicit DeviceManager(QObject* parent = 0);
     virtual ~DeviceManager();
-    
+
     static void add(QString device);
     static void chooseDevice(QString device);
     static void chooseDevice(int deviceID);
@@ -59,13 +59,13 @@ public:
     static QString device();
     static QString mux();
     static QString audioFormat();
-    
+
 private:
     static QStringList devices;
     static QString chosenDevice;
     static QString chosenFormat;
     static QString chosenMux;
-    
+
     static QMap<QString, QString> muxers;
     static void setup();
 };

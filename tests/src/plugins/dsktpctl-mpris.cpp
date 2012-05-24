@@ -34,4 +34,4 @@ void TestDsktpCtlMpris::cleanup()
 QTEST_MAIN (TestDsktpCtlMpris)
 
 #include "dsktpctl-mpris.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on; 

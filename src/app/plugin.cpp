@@ -284,4 +284,4 @@ QPixmap GenericPlugin::pixmap() const
 }
 
 #include "plugin.moc"
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

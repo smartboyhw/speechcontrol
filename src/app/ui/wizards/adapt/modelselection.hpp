@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,32 +13,28 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/20/12 13:21:37 PM
+ */
+
 #ifndef ADAPT_MODELSELECTION_HPP
 #define ADAPT_MODELSELECTION_HPP
 
 #include <QWizardPage>
+#include <ui/wizards/base.hpp>
 
 class QComboBox;
 
-namespace Ui
-{
-class ModelSelection;
-}
-
-namespace SpeechControl
-{
-
-class AcousticModel;
-namespace Windows
-{
-namespace Wizards
-{
-namespace Pages
-{
+SPCHCNTRL_DEFINE_UIC(ModelSelection)
+SPCHCNTRL_FORWARD_DECLARE_CLASS(AcousticModel)
+SPCHCNTRL_UI_WIZARD_PAGES_BEGIN_NAMESPACE
 
 /**
  * @brief A QWizardPage that allows a user to select a base model for adaption.
@@ -54,7 +50,8 @@ namespace Pages
  * @section qco Quick Configuration Options
  *
  * Quick configuration options would allow users to mix and match components of
- * acoustic models to potentially sharpen the accuracy process.
+ * acoustic models to potentially sharpen the accuracy process. This allows for
+ * specialized acoustic models that users could switch to for specific use cases.
  **/
 class ModelSelection : public QWizardPage
 {
@@ -77,9 +74,7 @@ private:
     AcousticModel* m_model;
 };
 
-}
-}
-}
-}
+SPCHCNTRL_UI_WIZARD_PAGES_END_NAMESPACE
+
 #endif // ADAPT_MODELSELECTION_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

@@ -23,63 +23,63 @@
 #include "app/core.hpp"
 #include "app/services/engine.hpp"
 #include "app/services/module.hpp"
-#include "app/services/dictation/xdo.hpp"
-#include "app/services/dictation/sphinx.hpp"
-#include "app/services/dictation/serviceprivate.hpp"
-#include "app/services/dictation/service.hpp"
+#include "xdo.hpp"
+#include "sphinx.hpp"
+#include "serviceprivate.hpp"
+#include "service.hpp"
 
-using SpeechControl::Core;
-using namespace SpeechControl::Dictation;
-Service* Service::s_inst = 0;
+SPCHCNTRL_USE_NAMESPACE
+DCTN_USE_NAMESPACE
+SPCHCNTRL_DEFINE_SINGLETON(Service)
 
 ServicePrivate::ServicePrivate (Service* p_qPtr) :
-AbstractModulePrivate (p_qPtr), m_safetyMode (Service::Active),
-m_sphinx (0)
+    AbstractServiceModulePrivate (p_qPtr), m_safetyMode (Service::Active),
+    m_sphinx (0)
 {
 
 }
 
-AbstractModule::ActivityState ServicePrivate::handleStateChange (const AbstractModule::ActivityState p_state)
+AbstractServiceModule::ActivityState ServicePrivate::handleStateChange (const AbstractServiceModule::ActivityState p_state)
 {
     Q_Q (Service);
 
     switch (p_state) {
-        case AbstractModule::Enabled:
+    case AbstractServiceModule::Enabled:
 
-            if (!m_sphinx) {
-                m_sphinx = new Sphinx (Sphinx::standardDescription(), q);
-                q->connect (m_sphinx, SIGNAL (finished (QString)), SLOT (handleText (QString)));
-            }
+        if (!m_sphinx) {
+            m_sphinx = new Sphinx (Sphinx::standardDescription(), q);
+            q->connect (m_sphinx, SIGNAL (finished (QString)), SLOT (handleText (QString)));
+        }
 
-            if (!m_sphinx->start()) {
-                qWarning() << "[Dictation::ServicePrivate::onStateChanged()] Start unsuccessful.";
-                return AbstractModule::Disabled;
-            }
-            else {
-                qDebug() << "[Dictation::ServicePrivate::onStateChanged()] Enabled.";
-            }
+        if (!m_sphinx->start()) {
+            qWarning() << "[Dictation::ServicePrivate::onStateChanged()] Start unsuccessful.";
+            return AbstractServiceModule::Disabled;
+        }
+        else {
+            qDebug() << "[Dictation::ServicePrivate::onStateChanged()] Enabled.";
+        }
 
-            return AbstractModule::Enabled;
-            break;
+        return AbstractServiceModule::Enabled;
+        break;
 
-        case AbstractModule::Disabled:
-            if (m_sphinx) {
-                m_sphinx->stop();
-                m_sphinx = 0;
-                qDebug() << "[Dictation::ServicePrivate::onStateChanged()] Disabled.";
-            }
+    case AbstractServiceModule::Disabled:
+        if (m_sphinx) {
+            m_sphinx->stop();
+            m_sphinx = 0;
+            qDebug() << "[Dictation::ServicePrivate::onStateChanged()] Disabled.";
+        }
 
-            break;
+        break;
 
-        case AbstractModule::Undefined:
-        default:
-            break;
+    case AbstractServiceModule::Undefined:
+    default:
+        break;
     }
 
-    return AbstractModule::Undefined;
+    return AbstractServiceModule::Undefined;
 }
 
-void ServicePrivate::changeState (AbstractModule::ActivityState p_state)
+void ServicePrivate::changeState (AbstractServiceModule::ActivityState p_state)
 {
     m_state = handleStateChange(p_state);
 }
@@ -101,7 +101,7 @@ ServicePrivate::~ServicePrivate()
 
 Service::Service() : AbstractServiceModule (new ServicePrivate (this), KeyboardEmulator::instance())
 {
-    Services::Engine::registerModule (this);
+    ServiceEngine::registerModule (this);
 }
 
 void Service::deinitialize()
@@ -208,5 +208,5 @@ Service::~Service()
 
 }
 
-#include "services/dictation/service.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "service.moc"
+// kate: indent-mode cstyle; replace-tabs on;

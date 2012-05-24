@@ -73,5 +73,5 @@ void Sphinx::applicationMessage (const QGst::MessagePtr& p_message)
     }
 }
 
-#include "services/dictation/sphinx.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "sphinx.moc"
+// kate: indent-mode cstyle; replace-tabs on;

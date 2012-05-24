@@ -1,5 +1,5 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
  *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
@@ -13,9 +13,15 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl .
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/20/12 14:49:01 PM
  */
 
 #include <QDebug>
@@ -24,13 +30,13 @@
 
 SPCHCNTRL_USE_NAMESPACE
 
-AbstractModulePrivate::AbstractModulePrivate (AbstractServiceModule* p_qPtr) :
+AbstractServiceModulePrivate::AbstractServiceModulePrivate (AbstractServiceModule* p_qPtr) :
     q_ptr (p_qPtr), m_state (AbstractServiceModule::Undefined)
 {
 
 }
 
-AbstractModulePrivate::~AbstractModulePrivate()
+AbstractServiceModulePrivate::~AbstractServiceModulePrivate()
 {
 
 }
@@ -41,7 +47,7 @@ AbstractServiceModule::AbstractServiceModule (QObject* p_parent) : QObject (p_pa
 
 }
 
-AbstractServiceModule::AbstractServiceModule (AbstractModulePrivate* p_dd, QObject* p_parent) :
+AbstractServiceModule::AbstractServiceModule (AbstractServiceModulePrivate* p_dd, QObject* p_parent) :
     QObject (p_parent), d_ptr (p_dd)
 {
 
@@ -49,7 +55,7 @@ AbstractServiceModule::AbstractServiceModule (AbstractModulePrivate* p_dd, QObje
 
 void AbstractServiceModule::setState (const AbstractServiceModule::ActivityState p_state)
 {
-    Q_D (AbstractModule);
+    Q_D (AbstractServiceModule);
     qDebug() << "[AbstractModule::setState()] State changing to " << p_state << "...";
     d->changeState (p_state);
 
@@ -98,7 +104,7 @@ void AbstractServiceModule::stop()
 
 AbstractServiceModule::ActivityState AbstractServiceModule::state() const
 {
-    Q_D (const AbstractModule);
+    Q_D (const AbstractServiceModule);
     return d->m_state;
 }
 
@@ -109,4 +115,4 @@ AbstractServiceModule::~AbstractServiceModule()
 }
 
 #include "services/module.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,22 +13,25 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <QDebug>
-// libspchcntrl includes
-#include <lib/audiosource/device.hpp>
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/20/12 14:03:25 PM
+ */
 
+#include <QDebug>
+#include <lib/audiosource/device.hpp>
 #include "micselect.hpp"
 #include "ui/micsetup-wizard.hpp"
 #include "ui_micwizard-select.h"
 
-using namespace SpeechControl;
-using namespace SpeechControl::Windows::Wizards::Pages;
-using SpeechControl::Windows::Wizards::Pages::MicrophoneSelection;
+SPCHCNTRL_USE_NAMESPACE
+SPCHCNTRL_UI_WIZARD_PAGES_USE_NAMESPACE
 
 /// @todo The loudness of the content spoken should begin detection here.
 MicrophoneSelection::MicrophoneSelection (QWidget* parent) :
@@ -46,7 +49,7 @@ MicrophoneSelection::~MicrophoneSelection()
 }
 
 /// @todo Fill the combo box with all of the mics.
-void SpeechControl::Windows::Wizards::Pages::MicrophoneSelection::initializePage()
+void MicrophoneSelection::initializePage()
 {
     AudioSourceList l_allMics = DeviceAudioSource::allDevices();
 
@@ -60,7 +63,7 @@ void SpeechControl::Windows::Wizards::Pages::MicrophoneSelection::initializePage
     on_comboBoxMicrophones_activated (ui->comboBoxMicrophones->currentIndex());
 }
 
-bool SpeechControl::Windows::Wizards::Pages::MicrophoneSelection::validatePage()
+bool MicrophoneSelection::validatePage()
 {
     device()->stop();
 
@@ -71,7 +74,7 @@ bool SpeechControl::Windows::Wizards::Pages::MicrophoneSelection::validatePage()
     return ui->progressBarFeedback->isEnabled();
 }
 
-void SpeechControl::Windows::Wizards::Pages::MicrophoneSelection::cleanupPage()
+void MicrophoneSelection::cleanupPage()
 {
     device()->stop();
     ui->comboBoxMicrophones->clear();
@@ -79,14 +82,14 @@ void SpeechControl::Windows::Wizards::Pages::MicrophoneSelection::cleanupPage()
     ui->progressBarFeedback->setFormat ("inactive");
 }
 
-bool SpeechControl::Windows::Wizards::Pages::MicrophoneSelection::isComplete()
+bool MicrophoneSelection::isComplete()
 {
     return device() != 0;
 }
 
 /// @todo Set the device to be detected for volume detection here.
 /// @todo Set this page's value to this field.
-void SpeechControl::Windows::Wizards::Pages::MicrophoneSelection::on_comboBoxMicrophones_activated (int index)
+void MicrophoneSelection::on_comboBoxMicrophones_activated (int index)
 {
     if (device()) {
         device()->stop();
@@ -127,4 +130,4 @@ void MicrophoneSelection::setDevice (DeviceAudioSource* p_device)
 }
 
 #include "ui/wizards/micsetup/micselect.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

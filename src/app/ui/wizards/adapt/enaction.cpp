@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,9 +13,15 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl .
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/19/12 21:05:36 PM
  */
 
 #include <QDebug>
@@ -29,11 +35,10 @@
 #include "sessions/adaptionutility.hpp"
 #include "sessions/adaptionutility.hpp"
 #include "ui_adaptwizard-enaction.h"
-
 #include "enaction.hpp"
 
-using namespace SpeechControl;
-using namespace SpeechControl::Windows::Wizards::Pages;
+SPCHCNTRL_USE_NAMESPACE
+SPCHCNTRL_UI_WIZARD_PAGES_USE_NAMESPACE
 
 Enaction::Enaction (QWidget* parent) :
     QWizardPage (parent),
@@ -64,8 +69,8 @@ void Enaction::on_btnAdapt_clicked()
 {
     ui->btnAdapt->setEnabled (false);
 
-    SessionSelection* sessionPage = (SessionSelection*) wizard()->page (Windows::Wizards::AdaptWizard::SessionSelectionPage);
-    ModelSelection* modelPage = (ModelSelection*) wizard()->page (Windows::Wizards::AdaptWizard::ModelSelectionPage);
+    SessionSelection* sessionPage = (SessionSelection*) wizard()->page (Windows::AdaptWizard::SessionSelectionPage);
+    ModelSelection* modelPage = (ModelSelection*) wizard()->page (Windows::AdaptWizard::ModelSelectionPage);
 
     m_sessions = sessionPage->sessions();
     m_model = modelPage->model();
@@ -162,7 +167,7 @@ void Enaction::on_mUtility_phaseStarted (const Phases& p_phase)
 
 bool Enaction::isComplete() const
 {
-    return m_utility && m_utility->currentPhase() == AdaptationUtility::PhaseCompleteAdaption && m_utility->session() == m_sessions.last();
+    return m_utility && m_utility->currentPhase() == AdaptationUtility::CompleteAdaption && m_utility->session() == m_sessions.last();
 }
 
 Enaction::~Enaction()
@@ -171,4 +176,4 @@ Enaction::~Enaction()
 }
 
 #include "ui/wizards/adapt/enaction.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

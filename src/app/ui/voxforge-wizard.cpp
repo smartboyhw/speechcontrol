@@ -40,7 +40,7 @@ VoxforgeWizard::VoxforgeWizard (QWidget* parent) :
     setPixmap (QWizard::LogoPixmap, icon.pixmap (32, 32, QIcon::Active, QIcon::On));
     setWindowTitle (tr ("Voxforge Upload Wizard - SpeechControl"));
     setPage (VoxforgeWizard::IntroductionPage,
-             new Pages::IntroductionPage (tr ("This wizard will help you upload your speech corpora."
+             new Windows::Pages::IntroductionPage (tr ("This wizard will help you upload your speech corpora."
                                           "visit <a href=\"http://wiki.thesii.org/SpeechControl/UserGuides/Voxforge\">http://wiki.thesii.org/SpeechControl/UserGuides/Voxforge</a> "
                                           "for more detailed information about correct and recommended use of the microphone whilst using SpeechControl."
                                              )));
@@ -49,7 +49,7 @@ VoxforgeWizard::VoxforgeWizard (QWidget* parent) :
     setPage (VoxforgeWizard::LoginPortalPage, new Pages::LoginPortal);
     setPage (VoxforgeWizard::UploadEnactionPage, new Pages::UploadEnaction);
     setPage (VoxforgeWizard::ConclusionPage,
-             new Pages::ConclusionPage (tr ("You've successfully uploaded speech corpora to Voxforge."
+             new Windows::Pages::ConclusionPage (tr ("You've successfully uploaded speech corpora to Voxforge."
                                             "Visit <a href=\"http://wiki.thesii.org/SpeechControl/UserGuides/Voxforge\">http://wiki.thesii.org/SpeechControl/UserGuides/Voxforge</a> "
                                             "for more detailed information about correct and recommended use of the microphone whilst using SpeechControl."
                                            )));
@@ -61,4 +61,4 @@ VoxforgeWizard::~VoxforgeWizard()
 }
 
 #include "ui/voxforge-wizard.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

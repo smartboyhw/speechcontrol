@@ -21,15 +21,8 @@
 #define SERVICESSETTINGSPANE_HPP
 #include <ui/settings-dialog.hpp>
 
-namespace Ui
-{
-class ServicesSettingsPane;
-}
-
-namespace SpeechControl
-{
-namespace Windows
-{
+SPCHCNTRL_DEFINE_UIC(ServicesSettingsPane)
+SPCHCNTRL_UI_BEGIN_NAMESPACE
 
 class ServicesSettingsPane : public AbstractSettingsPane
 {
@@ -52,8 +45,7 @@ private:
     Ui::ServicesSettingsPane* ui;
 };
 
-}
-}
+SPCHCNTRL_UI_END_NAMESPACE
 
 #endif // SERVICESSETTINGSPANE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

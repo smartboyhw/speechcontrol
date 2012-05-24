@@ -19,14 +19,13 @@
  */
 
 #include "core.hpp"
-#include "services/dictation/service.hpp"
-#include "services/desktopcontrol/service.hpp"
+#include "service.hpp"
 #include "ui_settingspane-dictation.h"
 
-#include "dictation-pane.hpp"
+#include "settings-pane.hpp"
 
-using namespace SpeechControl;
-using namespace SpeechControl::Windows;
+SPCHCNTRL_USE_NAMESPACE
+SPCHCNTRL_UI_USE_NAMESPACE
 
 DictationSettingsPane::DictationSettingsPane() :
     m_ui (new Ui::DictationSettingsPane)
@@ -78,8 +77,7 @@ void DictationSettingsPane::restoreDefaults()
 
 void DictationSettingsPane::updateUi()
 {
-    m_ui->checkBoxEnable->setChecked (Dictation::Service::instance()->isEnabled() && !DesktopControl::Service::instance()->isEnabled());
-    m_ui->checkBoxEnable->setEnabled (!DesktopControl::Service::instance()->isEnabled());
+    m_ui->checkBoxEnable->setChecked (Dictation::Service::instance()->isEnabled());
     m_ui->groupBoxKeywords->setEnabled (Dictation::Service::instance()->isEnabled());
     m_ui->groupBoxKeywords->setChecked (Core::configuration ("Dictation/UseSafeWords").toBool());
     m_ui->lineEditStart->setText (Core::configuration ("Dictation/StartWord").toString());
@@ -98,22 +96,18 @@ void DictationSettingsPane::on_lineEditEnd_textChanged (QString p_text)
 
 void DictationSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
 {
-    if (!DesktopControl::Service::instance()->isEnabled()) {
-        Core::setConfiguration ("Dictation/Enabled", p_checked);
+    Core::setConfiguration ("Dictation/Enabled", p_checked);
 
-        if (!p_checked)
-            Dictation::Service::instance()->stop();
-    }
+    if (!p_checked)
+        Dictation::Service::instance()->stop();
 
     updateUi();
 }
 
 void DictationSettingsPane::on_checkBoxEnableStartup_toggled (bool p_checked)
 {
-    if (DesktopControl::Service::instance()->isEnabled()) {
-        Core::setConfiguration ("Dictation/AutoStart", p_checked);
-    }
+    Core::setConfiguration ("Dictation/AutoStart", p_checked);
 }
 
-#include "ui/settings/dictation-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+#include "settings-pane.moc"
+// kate: indent-mode cstyle; replace-tabs on;

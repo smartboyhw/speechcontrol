@@ -28,8 +28,8 @@
 #include <QListWidget>
 #include <QMessageBox>
 
-using namespace SpeechControl;
-using namespace SpeechControl::Windows;
+SPCHCNTRL_USE_NAMESPACE
+SPCHCNTRL_UI_USE_NAMESPACE
 
 SessionSettingsPane::SessionSettingsPane() :
     m_ui (new Ui::SessionSettingsPane)
@@ -185,4 +185,4 @@ void SpeechControl::Windows::SessionSettingsPane::on_actionCopy_triggered()
 }
 
 #include "ui/settings/session-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

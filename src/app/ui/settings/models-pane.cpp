@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,9 +13,15 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/22/12 23:24:09 PM
  */
 
 #include <QMessageBox>
@@ -28,8 +34,8 @@
 #include "models-pane.hpp"
 #include "ui_settingspane-model.h"
 
-using namespace SpeechControl;
-using namespace SpeechControl::Windows;
+SPCHCNTRL_USE_NAMESPACE
+SPCHCNTRL_UI_USE_NAMESPACE
 
 ModelSettingsPane::ModelSettingsPane() :
     m_ui (new Ui::ModelSettingsPane)
@@ -136,7 +142,7 @@ void ModelSettingsPane::updateLanguageTab()
 
 void ModelSettingsPane::on_btnAdaptAcoustic_clicked()
 {
-    Wizards::AdaptWizard* wiz = new Wizards::AdaptWizard (this->window());
+    Windows::AdaptWizard* wiz = new Windows::AdaptWizard (this->window());
     wiz->exec();
 }
 
@@ -239,4 +245,4 @@ void ModelSettingsPane::on_listWidgetLanguage_currentRowChanged (const int p_ind
 }
 
 #include "ui/settings/models-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

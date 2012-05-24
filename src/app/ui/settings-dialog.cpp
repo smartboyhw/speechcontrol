@@ -38,8 +38,8 @@
 #include "ui_settings-dialog.h"
 
 SPCHCNTRL_USE_NAMESPACE
-
-SettingsDialog* SettingsDialog::s_inst = 0;
+SPCHCNTRL_UI_USE_NAMESPACE
+SPCHCNTRL_DEFINE_SINGLETON(SettingsDialog)
 
 SettingsDialog::SettingsDialog() : QDialog()
 {
@@ -61,11 +61,10 @@ void SettingsDialog::buildWindow()
     m_ui->setupUi (this);
     this->setLayout (m_ui->gridLayout);
 
-    /// @todo Add back the panels for the Settings window.
-    //addPane (new GeneralSettingsPane);
-    //addPane (new TrainingSettingsPane);
-    //addPane (new ServicesSettingsPane);
-    //addPane (new PluginsSettingsPane);
+    addPane (new GeneralSettingsPane);
+    addPane (new TrainingSettingsPane);
+    addPane (new ServicesSettingsPane);
+    addPane (new PluginsSettingsPane);
     qDebug() << "[Settings::buildWindow()] Built settings window.";
 }
 
@@ -121,7 +120,9 @@ void SettingsDialog::displayPane (const QString& p_paneID)
         treeNavi->setCurrentItem (instance()->findPaneForItem (p_paneID));
     }
     else {
-        displayPane ("gnrl");
+        if (p_paneID != "gnrl") {
+            displayPane ("gnrl");
+        }
     }
 
     if (!instance()->isVisible()) {
@@ -181,24 +182,26 @@ void SettingsDialog::on_treeNavigation_itemSelectionChanged()
 
 void SettingsDialog::on_buttonBox_clicked (QAbstractButton* p_button)
 {
-    QDialogButtonBox::StandardButton buttonState = m_ui->buttonBox->standardButton (p_button);
+    if (currentPane()) {
+        QDialogButtonBox::StandardButton buttonState = m_ui->buttonBox->standardButton (p_button);
 
-    switch (buttonState) {
-    case QDialogButtonBox::Ok:
-        this->accept();
-        break;
+        switch (buttonState) {
+        case QDialogButtonBox::Ok:
+            this->accept();
+            break;
 
-    case QDialogButtonBox::Help:
-        /// @todo Add ability to queue for help.
-        break;
+        case QDialogButtonBox::Help:
+            /// @todo Add ability to queue for help.
+            break;
 
-    case QDialogButtonBox::RestoreDefaults:
-        /// @todo Add functionality to set the values of the properties all back to default.
-        currentPane()->restoreDefaults();
-        break;
+        case QDialogButtonBox::RestoreDefaults:
+            /// @todo Add functionality to set the values of the properties all back to default.
+            currentPane()->restoreDefaults();
+            break;
 
-    default:
-        break;
+        default:
+            break;
+        }
     }
 }
 SettingsDialog::~SettingsDialog()
@@ -245,4 +248,4 @@ AbstractSettingsPane::~AbstractSettingsPane()
 }
 
 #include "ui/settings-dialog.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

@@ -39,4 +39,4 @@ private slots:
 };
 
 #endif
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

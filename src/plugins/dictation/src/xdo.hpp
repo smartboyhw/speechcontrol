@@ -22,7 +22,7 @@
 #define XDO_HPP
 
 #include <QObject>
-#include <macros.hpp>
+#include <app/global.hpp>
 
 struct xdo;
 class Hunspell;
@@ -40,7 +40,7 @@ namespace Dictation
 class KeyboardEmulator : public QObject
 {
     Q_OBJECT
-    SC_SINGLETON (KeyboardEmulator)
+    SPCHCNTRL_SINGLETON (KeyboardEmulator)
 
 public:
     /**
@@ -79,4 +79,4 @@ private:
 }
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

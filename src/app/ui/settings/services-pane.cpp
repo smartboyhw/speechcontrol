@@ -28,7 +28,8 @@
 #include "voxforge-pane.hpp"
 #include "ui_settingspane-services.h"
 
-using namespace SpeechControl::Windows;
+SPCHCNTRL_USE_NAMESPACE
+SPCHCNTRL_UI_USE_NAMESPACE
 
 ServicesSettingsPane::ServicesSettingsPane() :
     ui (new Ui::ServicesSettingsPane)
@@ -84,4 +85,4 @@ void ServicesSettingsPane::updateUi()
 }
 
 #include "ui/settings/services-pane.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

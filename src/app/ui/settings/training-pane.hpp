@@ -23,15 +23,9 @@
 #include <QFrame>
 #include <ui/settings-dialog.hpp>
 
-namespace Ui
-{
-class TrainingSettingsPane;
-}
+SPCHCNTRL_DEFINE_UIC(TrainingSettingsPane)
 
-namespace SpeechControl
-{
-namespace Windows
-{
+SPCHCNTRL_UI_BEGIN_NAMESPACE
 
 class TrainingSettingsPane : public AbstractSettingsPane
 {
@@ -53,8 +47,7 @@ private:
     Ui::TrainingSettingsPane* ui;
 };
 
-}
-}
+SPCHCNTRL_UI_END_NAMESPACE
 
 #endif // TRAININGSETTINGSPANE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

@@ -1,5 +1,5 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
  *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
@@ -13,10 +13,17 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl .
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/20/12 14:49:12 PM
+ */
+
 #ifndef SPCHCNTRL_SERVICES_MODULE_HPP
 #define SPCHCNTRL_SERVICES_MODULE_HPP
 
@@ -28,7 +35,7 @@
 SPCHCNTRL_BEGIN_NAMESPACE
 
 class AbstractServiceModule;
-class AbstractModulePrivate;
+class AbstractServiceModulePrivate;
 /**
  * @brief Represents a list of Modules.
  **/
@@ -140,18 +147,18 @@ public slots:
      **/
     void setState (const ActivityState p_state);
 protected:
-    QScopedPointer<AbstractModulePrivate> d_ptr;
+    QScopedPointer<AbstractServiceModulePrivate> d_ptr;
     Q_DISABLE_COPY (AbstractServiceModule)
-    Q_DECLARE_PRIVATE (AbstractModule)
+    Q_DECLARE_PRIVATE (AbstractServiceModule)
 
     virtual void initialize() = 0;
     virtual void deinitialize() = 0;
     explicit AbstractServiceModule (QObject* parent = 0);
-    AbstractServiceModule (AbstractModulePrivate* p_dd, QObject* p_parent = 0);
+    AbstractServiceModule (AbstractServiceModulePrivate* p_dd, QObject* p_parent = 0);
     virtual ~AbstractServiceModule();
 };
 
 SPCHCNTRL_END_NAMESPACE
 
 #endif // SPEECHCONTROL_SERVICES_MODULE_HPP
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

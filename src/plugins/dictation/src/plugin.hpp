@@ -27,10 +27,10 @@
 #ifndef SPCHCNTRL_DSKCTL_API_PLUGIN_HPP
 #define SPCHCNTRL_DSKCTL_API_PLUGIN_HPP
 
-#include <plugins.hpp>
-#include "config.hpp"
+#include <app/plugin.hpp>
+#include "global.hpp"
 
-DSKTPCTLAPI_NAMESPACE_BEGIN
+DCTN_BEGIN_NAMESPACE
 
 class Plugin : public AbstractPlugin
 {
@@ -46,7 +46,7 @@ protected:
     virtual void deinitialize();
 };
 
-DSKTPCTLAPI_NAMESPACE_END
+DCTN_END_NAMESPACE
 
 #endif
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

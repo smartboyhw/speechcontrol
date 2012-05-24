@@ -1,0 +1,62 @@
+/***
+ *  This file is part of the SpeechControl project.
+ *
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
+ *
+ *  SpeechControl is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Library General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  SpeechControl is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
+ *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/19/12 08:13:26 AM
+ */
+
+#include <lib/global.hpp>
+#include <app/global.hpp>
+
+#ifndef SPCHCNTRL_UI_GLOBAL_HPP
+#define SPCHCNTRL_UI_GLOBAL_HPP
+
+#define SPCHCNTRL_UI_NAMESPACE_SYMBOL Windows
+#define SPCHCNTRL_UI_NAMESPACE SPCHCNTRL_PREPEND_NAMESPACE2(SPCHCNTRL_UI_NAMESPACE_SYMBOL)
+#define SPCHCNTRL_UI_PREPEND_NAMESPACE(name) SPCHCNTRL_PREPEND_NAMESPACE(SPCHCNTRL_UI_NAMESPACE_SYMBOL::name)
+#define SPCHCNTRL_UI_PREPEND_NAMESPACE2(name) SPCHCNTRL_PREPEND_NAMESPACE2(SPCHCNTRL_UI_NAMESPACE_SYMBOL::name)
+#define SPCHCNTRL_UI_USE_NAMESPACE using namespace ::SPCHCNTRL_UI_NAMESPACE;
+#define SPCHCNTRL_UI_BEGIN_NAMESPACE \
+SPCHCNTRL_BEGIN_NAMESPACE \
+namespace SPCHCNTRL_UI_NAMESPACE_SYMBOL {
+#define SPCHCNTRL_UI_END_NAMESPACE \
+SPCHCNTRL_END_NAMESPACE \
+}
+#define SPCHCNTRL_UI_FORWARD_DECLARE_CLASS(name) \
+    SPCHCNTRL_UI_BEGIN_NAMESPACE class name; SPCHCNTRL_UI_END_NAMESPACE\
+    using SPCHCNTRL_UI_PREPEND_NAMESPACE(name);
+
+#define SPCHCNTRL_UI_FORWARD_DECLARE_STRUCT(name) \
+    SPCHCNTRL_UI_BEGIN_NAMESPACE struct name; SPCHCNTRL_UI_END_NAMESPACE\
+    using SPCHCNTRL_UI_PREPEND_NAMESPACE(name);
+
+#ifdef SPCHCNTRL_UI_NAMESPACE
+SPCHCNTRL_UI_BEGIN_NAMESPACE
+SPCHCNTRL_UI_END_NAMESPACE
+#endif
+
+#define SPCHCNTRL_DEFINE_UIC(name) \
+    namespace Ui {\
+    class name;\
+    }
+
+#endif /* SPCHCNTRL_UI_GLOBAL_HPP */

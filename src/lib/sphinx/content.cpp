@@ -108,6 +108,25 @@ void ContentPrivate::parseText (const QString& p_text)
 
         ++count;
     }
+
+    // While the above algorithm divides text into chunks ("pages"),
+    // this one generates a list of sentences.
+    QString fakeText;
+    QStringList lines = p_text.split('\n');
+    Q_FOREACH (QString line, lines) {
+        line = line.remove(QRegExp("\\s+$"));
+        line = line.remove("\\[[0-9]+\\]");
+
+        if (line.isEmpty())
+            continue;
+
+        if (line.at(line.length() - 1) != '.')
+            fakeText.append(line + ' ');
+        else
+            fakeText.append(line + '\n');
+    }
+    fakeText = fakeText.replace("([a-zA-Z0-9]{3}\\. )", "\\1\n");
+    utterances = fakeText.split('\n');
 }
 
 QString ContentPrivate::path() const
@@ -349,6 +368,27 @@ QStringList Content::pages() const
     return d->pages;
 }
 
+int Content::uttNumber() const
+{
+    Q_D(const Content);
+    return d->utterances.length();
+}
+
+QString Content::getUtterance(int id) const
+{
+    Q_D(const Content);
+    return d->utterances.at(id);
+}
+
+QStringList Content::getUtteranceSeq(int begin, int end) const
+{
+    Q_D(const Content);
+    QStringList seq;
+    for (int i = begin; i <= end; ++begin)
+        seq << d->utterances.at(i);
+    return seq;
+}
+
 QString Content::pageAt (const int& p_index) const
 {
     if (p_index < pages().count()) {
@@ -560,4 +600,4 @@ bool TextContentSource::setUrl (const QUrl& p_url)
 }
 
 #include "sessions/content.moc"
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on; 

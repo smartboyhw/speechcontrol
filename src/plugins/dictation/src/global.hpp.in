@@ -1,34 +1,58 @@
 /***
- *  This file is part of the Wintermute project.
+ *  This file is part of the SpeechControl project.
  *
  *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
- *  Wintermute is free software; you can redistribute it and/or
+ *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
  *  License as published by the Free Software Foundation; either
  *  version 2 of the License, or (at your option) any later version.
  *
- *  Wintermute is distributed in the hope that it will be useful,
+ *  SpeechControl is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
  *  You should have received a copy of the GNU Library General Public
- *  License along with Wintermute.
+ *  License along with SpeechControl.
  *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
 /**
  * @author Jacky Alciné <jackyalcine@gmail.com>
- * @date 05/13/12 4:12:09 PM
+ * @date 05/16/12 20:13:37 PM
  */
 
-#define DCTN_NAMESPACE_BEGIN namespace SpeechControl {\
-    namespace Plugins {\
-        namespace Dictation {\
+#include <app/global.hpp>
 
-#define DCTN_NAMESPACE_END } } }
+#define DCTN_NAMESPACE Dictation
+#define DCTN_PREPEND_NAMESPACE(name) SPCHCNTRL_PREPEND_NAMESPACE(DCTN_NAMESPACE::name)
+#define DCTN_PREPEND_NAMESPACE2(name) SPCHCNTRL_PREPEND_NAMESPACE2(DCTN_NAMESPACE::name)
+#define DCTN_USE_NAMESPACE using namespace SPCHCNTRL_PREPEND_NAMESPACE(DCTN_NAMESPACE);
+#define DCTN_BEGIN_NAMESPACE \
+SPCHCNTRL_BEGIN_NAMESPACE \
+namespace DCTN_NAMESPACE {
+
+#define DCTN_END_NAMESPACE \
+SPCHCNTRL_END_NAMESPACE \
+}
+
+#define DCTN_FORWARD_DECLARE_CLASS(name) \
+DCTN_BEGIN_NAMESPACE class name; DCTN_END_NAMESPACE;\
+\
+using DCTN_PREPEND_NAMESPACE2(name);
+
+#define DCTN_FORWARD_DECLARE_STRUCT(name) \
+DCTN_BEGIN_NAMESPACE struct name; DCTN_END_NAMESPACE;\
+\
+using DCTN_PREPEND_NAMESPACE2(name);
+
+#ifdef DCTN_NAMESPACE
+DCTN_BEGIN_NAMESPACE
+DCTN_END_NAMESPACE
+#endif
+
 
 #define PLUGIN_ID "@SPDSKAPI_PLUGIN_ID@"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

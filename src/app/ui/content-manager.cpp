@@ -25,8 +25,8 @@
 #include "content-manager.hpp"
 #include "ui_manager-content.h"
 
-using namespace SpeechControl;
-using namespace SpeechControl::Windows::Wizards;
+SPCHCNTRL_USE_NAMESPACE
+SPCHCNTRL_UI_USE_NAMESPACE
 using namespace SpeechControl::Windows::Managers;
 
 ContentManager::ContentManager (QWidget* parent) :
@@ -153,4 +153,4 @@ void ContentManager::on_lstContent_itemSelectionChanged()
 }
 
 #include "ui/content-manager.moc"
-// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
+// kate: indent-mode cstyle; replace-tabs on;

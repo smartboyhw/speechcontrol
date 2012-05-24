@@ -36,7 +36,7 @@ SPCHCNTRL_DEFINE_UIC(Enaction)
 SPCHCNTRL_FORWARD_DECLARE_CLASS(Session)
 SPCHCNTRL_UI_WIZARD_PAGES_BEGIN_NAMESPACE
 
-typedef SpeechControl::AdaptationUtility::Phases Phases;
+typedef SpeechControl::AdaptationUtility::Phase Phases;
 
 class Enaction : public QWizardPage
 {

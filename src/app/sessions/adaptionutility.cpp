@@ -40,12 +40,12 @@
 using namespace SpeechControl;
 
 
-AdaptationUtility::AdaptationUtility() : QObject(), m_session (0), m_modelBase (0), m_modelResult (0), m_prcss (0), m_fileTmpHyp (new QTemporaryFile), m_phase (PhaseUndefined)
+AdaptationUtility::AdaptationUtility() : QObject(), m_session (0), m_modelBase (0), m_modelResult (0), m_prcss (0), m_fileTmpHyp (new QTemporaryFile), m_phase (Undefined)
 {
     qWarning() << "[AdaptationUtility] Initialized with null objects.";
 }
 
-AdaptationUtility::AdaptationUtility (Session* p_session, AcousticModel* p_model) : QObject(), m_session (p_session), m_modelBase (p_model), m_modelResult (0), m_prcss (0), m_fileTmpHyp (new QTemporaryFile), m_phase (PhaseUndefined)
+AdaptationUtility::AdaptationUtility (Session* p_session, AcousticModel* p_model) : QObject(), m_session (p_session), m_modelBase (p_model), m_modelResult (0), m_prcss (0), m_fileTmpHyp (new QTemporaryFile), m_phase (Undefined)
 {
 
 }
@@ -91,10 +91,10 @@ AcousticModel* AdaptationUtility::adapt()
     // set up the process.
     m_prcss = new QProcess (this);
     m_prcss->setProcessChannelMode (QProcess::MergedChannels);
-    connect (m_prcss, SIGNAL (finished (int, QProcess::ExitStatus)), this, SLOT (on_mPrcss_finished (int, QProcess::ExitStatus)));
+    connect (m_prcss, SIGNAL (finished (int, QProcess::ExitStatus)), this, SLOT (on_process_finished (int, QProcess::ExitStatus)));
 
     // invoke the cycle.
-    changePhase (PhaseInitialized);
+    changePhase (Initialized);
     advanceNextPhase();
 
     return m_modelResult;
@@ -103,110 +103,110 @@ AcousticModel* AdaptationUtility::adapt()
 void AdaptationUtility::advanceNextPhase()
 {
     switch (m_phase) {
-    case PhaseInitialized:
+    case Initialized:
         copyAcousticModel();
         break;
 
-    case PhaseCopyAcousticModels:
+    case CopyAcousticModels:
         generateFeatures();
         break;
 
-    case PhaseGenerateFeatures:
+    case GenerateFeatures:
         generateMixtureWeights();
         break;
 
-    case PhaseGenerateMixtureWeights:
+    case GenerateMixtureWeights:
         convertModelDefinitions();
         break;
 
-    case PhaseConvertModelDefinitions:
+    case ConvertModelDefinitions:
         collectAcousticStatistics();
         break;
 
-    case PhaseCollectAcousticStatistics:
+    case CollectAcousticStatistics:
         performAdaptation();
         break;
 
-    case PhasePerformAdaptation:
+    case PerformAdaptation:
         generateSendmap();
         break;
 
-    case PhaseGenerateSendmap:
+    case GenerateSendmap:
         generateAccuracyReportHypothesis();
         break;
 
-    case PhaseGenerateAccuracyReportHypothesis:
+    case GenerateAccuracyReportHypothesis:
         completeAdaptation();
         break;
 
-    case PhaseCompleteAdaption:
-        changePhase (PhaseDeinitialized);
+    case CompleteAdaption:
+        changePhase (Deinitialized);
         break;
 
-    case PhaseDeinitialized:
-        changePhase (PhaseUndefined);
+    case Deinitialized:
+        changePhase (Undefined);
         break;
 
     default:
-    case PhaseUndefined:
+    case Undefined:
         break;
     }
 }
 
-void AdaptationUtility::cleanupPhase (const Phases& phase = PhaseUndefined)
+void AdaptationUtility::cleanupPhase (const Phase& phase = Undefined)
 {
-    if (phase == PhaseUndefined) {
-        cleanupPhase (PhaseCopyAcousticModels);
-        cleanupPhase (PhaseCollectAcousticStatistics);
-        cleanupPhase (PhaseGenerateMixtureWeights);
-        cleanupPhase (PhaseGenerateFeatures);
-        cleanupPhase (PhaseGenerateSendmap);
-        cleanupPhase (PhaseGenerateAccuracyReportHypothesis);
-        cleanupPhase (PhasePerformAdaptation);
+    if (phase == Undefined) {
+        cleanupPhase (CopyAcousticModels);
+        cleanupPhase (CollectAcousticStatistics);
+        cleanupPhase (GenerateMixtureWeights);
+        cleanupPhase (GenerateFeatures);
+        cleanupPhase (GenerateSendmap);
+        cleanupPhase (GenerateAccuracyReportHypothesis);
+        cleanupPhase (PerformAdaptation);
     }
     else {
         switch (phase) {
-        case PhaseCopyAcousticModels:
+        case CopyAcousticModels:
             break;
 
-        case PhaseCollectAcousticStatistics:
+        case CollectAcousticStatistics:
             break;
 
-        case PhaseConvertModelDefinitions:
+        case ConvertModelDefinitions:
             break;
 
-        case PhaseGenerateAccuracyReportHypothesis:
+        case GenerateAccuracyReportHypothesis:
             break;
 
-        case PhaseGenerateFeatures:
+        case GenerateFeatures:
             break;
 
-        case PhaseGenerateMixtureWeights:
+        case GenerateMixtureWeights:
             break;
 
-        case PhaseGenerateSendmap:
+        case GenerateSendmap:
             break;
 
-        case PhasePerformAdaptation:
+        case PerformAdaptation:
             break;
 
-        case PhaseCompleteAdaption:
+        case CompleteAdaption:
 
-        case PhaseInitialized:
-        case PhaseDeinitialized:
-        case PhaseUndefined:
+        case Initialized:
+        case Deinitialized:
+        case Undefined:
             break;
         }
     }
 }
 
-void AdaptationUtility::haltPhasing()
+void AdaptationUtility::halt()
 {
-    changePhase (PhaseDeinitialized);
+    changePhase (Deinitialized);
     advanceNextPhase();
 }
 
-AdaptationUtility::Phases AdaptationUtility::currentPhase()
+AdaptationUtility::Phase AdaptationUtility::currentPhase()
 {
     return m_phase;
 }
@@ -214,22 +214,22 @@ AdaptationUtility::Phases AdaptationUtility::currentPhase()
 void AdaptationUtility::endPhase ()
 {
     emit phaseEnded (m_phase);
-    m_phase = PhaseUndefined;
+    m_phase = Undefined;
 }
 
-void AdaptationUtility::startPhase (AdaptationUtility::Phases p_phase)
+void AdaptationUtility::startPhase (AdaptationUtility::Phase p_phase)
 {
     m_phase = p_phase;
     qDebug() << "[AdaptationUtility::setPhase()] Set to phase" << obtainPhaseText (m_phase);
     emit phaseStarted (m_phase);
 
-    if (m_phase == PhaseCopyAcousticModels)
+    if (m_phase == CopyAcousticModels)
         emit startedAdapting();
-    else if (m_phase == PhaseCompleteAdaption)
+    else if (m_phase == CompleteAdaption)
         emit endedAdapting();
 }
 
-void AdaptationUtility::changePhase (const Phases& p_phase)
+void AdaptationUtility::changePhase (const Phase& p_phase)
 {
     endPhase ();
     startPhase (p_phase);
@@ -237,7 +237,7 @@ void AdaptationUtility::changePhase (const Phases& p_phase)
 
 void AdaptationUtility::reportErrorInPhase (const QString& p_message)
 {
-    const Phases erredPhase = m_phase;
+    const Phase erredPhase = m_phase;
     emit phaseError (erredPhase, p_message);
 
 }
@@ -253,50 +253,50 @@ void AdaptationUtility::executeProcess (const QString& p_program, const QStringL
     }
 }
 
-QString AdaptationUtility::obtainPhaseText (const Phases& p_phase) const
+QString AdaptationUtility::obtainPhaseText (const Phase& p_phase) const
 {
     switch (p_phase) {
-    case PhaseCollectAcousticStatistics:
+    case CollectAcousticStatistics:
         return "Collecting Acoustic Statistics";
         break;
 
-    case PhaseConvertModelDefinitions:
+    case ConvertModelDefinitions:
         return "Convert Model Definitions";
         break;
 
-    case PhaseCopyAcousticModels:
+    case CopyAcousticModels:
         return "Copy Acoustic Model";
         break;
 
-    case PhaseGenerateAccuracyReportHypothesis:
+    case GenerateAccuracyReportHypothesis:
         return "Generate Accuracy Report Hypothesis";
         break;
 
-    case PhaseGenerateFeatures:
+    case GenerateFeatures:
         return "Generate Features";
         break;
 
-    case PhaseGenerateMixtureWeights:
+    case GenerateMixtureWeights:
         return "Generate Mixture Weights";
         break;
 
-    case PhaseCompleteAdaption:
+    case CompleteAdaption:
         return "Complete Adaption";
         break;
 
-    case PhaseDeinitialized:
+    case Deinitialized:
         return "Deinitialized";
         break;
 
-    case PhaseInitialized:
+    case Initialized:
         return "Initialized";
         break;
 
-    case PhaseGenerateSendmap:
+    case GenerateSendmap:
         return "Generate sendmap";
         break;
 
-    case PhasePerformAdaptation:
+    case PerformAdaptation:
         return "Perform Adaption";
         break;
 
@@ -310,7 +310,7 @@ QString AdaptationUtility::obtainPhaseText (const Phases& p_phase) const
 
 void AdaptationUtility::copyAcousticModel()
 {
-    changePhase (PhaseCopyAcousticModels);
+    changePhase (CopyAcousticModels);
     m_modelResult = m_modelBase->clone();
     advanceNextPhase();
 }
@@ -342,7 +342,7 @@ void AdaptationUtility::copyAcousticModel()
 ///@todo Add a means of validating the files generated by Sphinx here.
 void AdaptationUtility::generateFeatures()
 {
-    changePhase (PhaseGenerateFeatures);
+    changePhase (GenerateFeatures);
 
     // Build argument values.
     QDir dirInput (m_session->corpus()->audioPath());
@@ -373,7 +373,7 @@ void AdaptationUtility::generateFeatures()
 /// @todo Determine the path to 'sendump.py' from SphinxTrain.
 void AdaptationUtility::generateMixtureWeights()
 {
-    changePhase (PhaseGenerateMixtureWeights);
+    changePhase (GenerateMixtureWeights);
 
     QStringList args;
     args << "/usr/lib/sphinxtrain/python/cmusphinx/sendump.py"
@@ -390,7 +390,7 @@ void AdaptationUtility::generateMixtureWeights()
  */
 void AdaptationUtility::convertModelDefinitions()
 {
-    changePhase (PhaseConvertModelDefinitions);
+    changePhase (ConvertModelDefinitions);
 
     QFile* fileMdef = m_modelResult->modelDefinitions();
 
@@ -437,7 +437,7 @@ void AdaptationUtility::convertModelDefinitions()
 /// @todo Use silence deliminators from noise dictionary for transcription.
 void AdaptationUtility::collectAcousticStatistics()
 {
-    changePhase (PhaseCollectAcousticStatistics);
+    changePhase (CollectAcousticStatistics);
 
     m_dirAccum.setPath (QDir::tempPath() + QString ("/speechcontrol-") + m_session->id());
     m_dirAccum.mkpath (m_dirAccum.path());
@@ -509,7 +509,7 @@ void AdaptationUtility::collectAcousticStatistics()
  */
 void AdaptationUtility::performAdaptation ()
 {
-    changePhase (PhasePerformAdaptation);
+    changePhase (PerformAdaptation);
 
     QStringList args;
     args << "-meanfn"    << m_modelBase->means()->fileName()
@@ -547,7 +547,7 @@ void AdaptationUtility::performAdaptation ()
  */
 void AdaptationUtility::generateSendmap()
 {
-    changePhase (PhaseGenerateSendmap);
+    changePhase (GenerateSendmap);
 
     QStringList args;
     args << "-pocketsphinx" << "yes"
@@ -568,7 +568,7 @@ void AdaptationUtility::generateSendmap()
  */
 void AdaptationUtility::generateAccuracyReportHypothesis()
 {
-    changePhase (PhaseGenerateAccuracyReportHypothesis);
+    changePhase (GenerateAccuracyReportHypothesis);
 
     // Render the temporary file.
     hypothesis()->setAutoRemove (false);
@@ -593,11 +593,11 @@ void AdaptationUtility::generateAccuracyReportHypothesis()
 
 void AdaptationUtility::completeAdaptation()
 {
-    changePhase (PhaseCompleteAdaption);
+    changePhase (CompleteAdaption);
     advanceNextPhase();
 }
 
-void AdaptationUtility::on_mPrcss_finished (const int& p_exitCode, QProcess::ExitStatus p_exitStatus)
+void AdaptationUtility::on_process_finished (const int& p_exitCode, QProcess::ExitStatus p_exitStatus)
 {
     qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Exit code" << p_exitCode;
     qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Output:" << m_prcss->readAll();
@@ -605,7 +605,7 @@ void AdaptationUtility::on_mPrcss_finished (const int& p_exitCode, QProcess::Exi
     if (p_exitCode != 0) {
         qWarning("[AdaptationUtility::on_proc_finished()] Error during adaptation!");
         cleanupPhase();
-        haltPhasing();
+        halt();
         return;
     }
 
@@ -617,9 +617,9 @@ void AdaptationUtility::on_mPrcss_finished (const int& p_exitCode, QProcess::Exi
 
     case QProcess::CrashExit:
         qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Crash exit experienced!";
-        Phases curPhase = currentPhase();
+        Phase curPhase = currentPhase();
         cleanupPhase();
-        haltPhasing();
+        halt();
         emit phaseError(curPhase,"Crashed");
         break;
     }

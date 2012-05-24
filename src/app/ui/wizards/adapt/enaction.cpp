@@ -167,7 +167,7 @@ void Enaction::on_mUtility_phaseStarted (const Phases& p_phase)
 
 bool Enaction::isComplete() const
 {
-    return m_utility && m_utility->currentPhase() == AdaptationUtility::PhaseCompleteAdaption && m_utility->session() == m_sessions.last();
+    return m_utility && m_utility->currentPhase() == AdaptationUtility::CompleteAdaption && m_utility->session() == m_sessions.last();
 }
 
 Enaction::~Enaction()

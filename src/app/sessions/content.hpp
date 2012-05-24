@@ -159,6 +159,18 @@ public:
     QStringList pages() const;
 
     /**
+     * @brief Get a number of sentences.
+     *
+     * @return A number of sentences in this Content.
+     **/
+    int uttNumber() const;
+
+    /**
+     * @brief Get indexes of utterances that are not yet used by any Session.
+     */
+    QList<int> freeUtters() const;
+
+    /**
      * @brief Obtains a specified page at index p_indx.
      * @param p_indx The index at which the page is to be found.
      * @return A string with the page's text, or QString::null if not found.
@@ -215,8 +227,8 @@ class AbstractContentSource : public QObject
     QScopedPointer<AbstractContentSourcePrivate> d_ptr;
 
 protected:
-    Q_DISABLE_COPY(AbstractContentSource);
-    Q_DECLARE_PRIVATE(AbstractContentSource);
+    Q_DISABLE_COPY(AbstractContentSource)
+    Q_DECLARE_PRIVATE(AbstractContentSource)
 
     /**
      * @brief Destructor.

@@ -108,6 +108,29 @@ void ContentPrivate::parseText (const QString& p_text)
 
         ++count;
     }
+
+    // While the above algorithm divides text into chunks ("pages"),
+    // this one generates a list of sentences.
+    QString fakeText;
+    QStringList lines = p_text.split('\n');
+    Q_FOREACH (QString line, lines) {
+        line = line.remove(QRegExp("\\s+$"));
+        line = line.remove("\\[[0-9]+\\]");
+
+        if (line.isEmpty())
+            continue;
+
+        if (line.at(line.length() - 1) != '.')
+            fakeText.append(line + ' ');
+        else
+            fakeText.append(line + '\n');
+    }
+    fakeText = fakeText.replace("([a-zA-Z0-9]{3}\\. )", "\\1\n");
+    utterances = fakeText.split('\n');
+
+    for (int i = 0; i < (utterances.length() - 1); ++i) {
+        freeUtts.append(i);
+    }
 }
 
 QString ContentPrivate::path() const
@@ -347,6 +370,18 @@ QStringList Content::pages() const
 {
     Q_D(const Content);
     return d->pages;
+}
+
+int Content::uttNumber() const
+{
+    Q_D(const Content);
+    return d->utterances.length();
+}
+
+QList<int> Content::freeUtters() const
+{
+    Q_D(const Content);
+    return d->freeUtts;
 }
 
 QString Content::pageAt (const int& p_index) const

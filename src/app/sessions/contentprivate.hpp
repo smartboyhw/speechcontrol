@@ -43,7 +43,6 @@ struct ContentPrivate {
     QString path() const;
     QStringList pages;
     QStringList utterances;
-    QList<int> freeUtts;
     QDomDocument* dom;
     QString id;
     Content* q_ptr;

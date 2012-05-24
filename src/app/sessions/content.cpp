@@ -127,10 +127,6 @@ void ContentPrivate::parseText (const QString& p_text)
     }
     fakeText = fakeText.replace("([a-zA-Z0-9]{3}\\. )", "\\1\n");
     utterances = fakeText.split('\n');
-
-    for (int i = 0; i < (utterances.length() - 1); ++i) {
-        freeUtts.append(i);
-    }
 }
 
 QString ContentPrivate::path() const
@@ -378,10 +374,19 @@ int Content::uttNumber() const
     return d->utterances.length();
 }
 
-QList<int> Content::freeUtters() const
+QString Content::getUtterance(int id) const
 {
     Q_D(const Content);
-    return d->freeUtts;
+    return d->utterances.at(id);
+}
+
+QStringList Content::getUtteranceSeq(int begin, int end) const
+{
+    Q_D(const Content);
+    QStringList seq;
+    for (int i = begin; i <= end; ++begin)
+        seq << d->utterances.at(i);
+    return seq;
 }
 
 QString Content::pageAt (const int& p_index) const

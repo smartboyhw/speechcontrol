@@ -166,9 +166,22 @@ public:
     int uttNumber() const;
 
     /**
-     * @brief Get indexes of utterances that are not yet used by any Session.
+     * @brief Get an utterance from the Content.
+     *
+     * @param id List index to the utterance.
+     * @return Utterance at the given index.
+     * @throws OutOfBoundException
      */
-    QList<int> freeUtters() const;
+    QString getUtterance(int id) const;
+
+    /**
+     * @brief Get a sequence of utterances.
+     *
+     * @param begin First index of the sequence.
+     * @param end Last index of the sequence.
+     * @return List of the utterances.
+     */
+    QStringList getUtteranceSeq(int begin, int end) const;
 
     /**
      * @brief Obtains a specified page at index p_indx.

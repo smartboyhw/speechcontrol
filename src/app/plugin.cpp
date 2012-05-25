@@ -28,7 +28,6 @@
 #include <QSettings>
 #include <QPluginLoader>
 #include <QApplication>
-#include <QAction>
 #include "core.hpp"
 #include "factory.hpp"
 #include "indicator.hpp"
@@ -38,7 +37,7 @@
 using namespace SpeechControl;
 
 AbstractPluginPrivate::AbstractPluginPrivate(AbstractPlugin* p_Qptr) :
-    ldr(0), id(QString::null), acts(), q_ptr(p_Qptr)
+    ldr(0), id(QString::null), acts(), menus(), q_ptr(p_Qptr)
 {
 
 }
@@ -237,8 +236,14 @@ QSettings* AbstractPlugin::settings() const
 
 QList< QAction* > AbstractPlugin::actions() const
 {
-    Q_D(AbstractPlugin);
+    Q_D(const AbstractPlugin);
     return d->acts;
+}
+
+QList< QMenu* > AbstractPlugin::menus() const
+{
+    Q_D(const AbstractPlugin);
+    return d->menus;
 }
 
 void AbstractPlugin::addAction (QAction* p_action)
@@ -248,10 +253,22 @@ void AbstractPlugin::addAction (QAction* p_action)
     qDebug() << "[AbstractPlugin::addAction()] Added action" << p_action->text() << "to the Indicator";
 }
 
+void AbstractPlugin::addMenu (QMenu* p_menu)
+{
+    Indicator::addMenuForPlugins(p_menu);
+}
+
 void AbstractPlugin::addActions (QList< QAction* > p_actions)
 {
     Q_FOREACH (QAction * action, p_actions) {
         addAction (action);
+    }
+}
+
+void AbstractPlugin::addMenus (QList< QMenu* > p_menus)
+{
+    Q_FOREACH (QMenu * menu, p_menus) {
+        addMenu (menu);
     }
 }
 
@@ -284,4 +301,4 @@ QPixmap GenericPlugin::pixmap() const
 }
 
 #include "plugin.moc"
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

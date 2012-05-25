@@ -27,6 +27,7 @@
 #include <QList>
 #include <QString>
 #include <QAction>
+#include <QMenu>
 #include <QPluginLoader>
 #include <app/global.hpp>
 
@@ -55,6 +56,7 @@ struct AbstractPluginPrivate {
     QPluginLoader* ldr;     ///< The magical QPluginLoader!
     QString id;             ///< The ID of the plug-in.
     QList<QAction*> acts;   ///< The QActions used to add the 'Plugins' menu.
+    QList<QMenu*> menus;
     AbstractPlugin* q_ptr;
 };
 

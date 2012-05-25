@@ -37,6 +37,7 @@
 
 class QPixmap;
 class QAction;
+class QMenu;
 class QSettings;
 class QPluginLoader;
 
@@ -228,6 +229,13 @@ protected:
     QList<QAction*> actions() const;
 
     /**
+     * @brief Obtains the list of QMenus used by this plug-in.
+     *
+     * @return QList< QMenu* > of menus.
+     **/
+    QList<QMenu*> menus() const;
+
+    /**
      * @brief Adds a QAction for this plug-in to the Main window.
      *
      * @param p_action The QAction to be added.
@@ -235,11 +243,27 @@ protected:
     void addAction (QAction* p_action);
 
     /**
+     * @brief ...
+     *
+     * @param p_menu ...
+     * @return void
+     **/
+    void addMenu(QMenu* p_menu);
+
+    /**
      * @brief Adds a list of QActions for the plug-in to the Main window.
      *
      * @param p_actions A list of QActions to be added.
      **/
     void addActions (QList<QAction*> p_actions);
+
+    /**
+     * @brief ...
+     *
+     * @param p_menus ...
+     * @return void
+     **/
+    void addMenus(QList<QMenu*> p_menus);
 
 private slots:
 

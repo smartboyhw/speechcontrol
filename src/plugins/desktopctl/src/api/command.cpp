@@ -33,7 +33,7 @@
 
 using namespace std;
 using namespace SpeechControl;
-DSKTPCTLAPI_USE_NAMESPACE
+using namespace SpeechControl::DesktopControl;
 
 struct GlobalCategory : public AbstractCategory {
     static GlobalCategory* s_inst;

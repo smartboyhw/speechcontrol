@@ -38,7 +38,7 @@
 #include <ui/settings-dialog.hpp>
 
 using namespace SpeechControl;
-DSKTPCTLAPI_USE_NAMESPACE
+using namespace SpeechControl::DesktopControl;
 
 Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent), m_actionToggle (0),
     m_actionOptions (0), m_menuDesktopControl (0)
@@ -86,6 +86,6 @@ Plugin::~Plugin()
 
 #include "plugin.moc"
 
-Q_EXPORT_PLUGIN2 (spchcntrl - dsktpctlapi, SpeechControl::DesktopControl::Plugin)
+Q_EXPORT_PLUGIN2 (spchcntrl-dskctlapi, SpeechControl::DesktopControl::Plugin)
 
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

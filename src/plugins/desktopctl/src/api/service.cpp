@@ -39,8 +39,8 @@
 #include "service.hpp"
 
 using namespace SpeechControl;
-DSKTPCTLAPI_USE_NAMESPACE
-SPCHCNTRL_DEFINE_SINGLETON(Service)
+using namespace SpeechControl::DesktopControl;
+SPCHCNTRL_DEFINE_SINGLETON (Service)
 
 ServicePrivate::ServicePrivate (Service* p_parent) : AbstractServiceModulePrivate (p_parent),
     m_sphinx (0),
@@ -92,12 +92,12 @@ AbstractServiceModule::ActivityState ServicePrivate::handleStateChange (const Ab
         return AbstractServiceModule::Undefined;
     }
 
-    m_view->setVisible(m_sphinx->isRunning());
+    m_view->setVisible (m_sphinx->isRunning());
 }
 
 void ServicePrivate::changeState (AbstractServiceModule::ActivityState p_state)
 {
-    m_state = handleStateChange(p_state);
+    m_state = handleStateChange (p_state);
 }
 
 ServicePrivate::~ServicePrivate()
@@ -190,4 +190,4 @@ Service::~Service()
 }
 
 #include "service.moc"
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

@@ -37,7 +37,7 @@
 #include "ui_settingspane-desktopcontrol.h"
 
 using namespace SpeechControl::Windows;
-DSKTPCTLAPI_USE_NAMESPACE
+using namespace SpeechControl::DesktopControl;
 
 DesktopControlSettingsPane::DesktopControlSettingsPane () :
     m_ui (new Ui::DesktopControlSettingsPane)

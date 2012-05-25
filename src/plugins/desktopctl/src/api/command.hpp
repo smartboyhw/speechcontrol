@@ -34,7 +34,7 @@
 #include <QStringList>
 #include "global.hpp"
 
-DSKTPCTLAPI_BEGIN_NAMESPACE
+namespace SpeechControl { namespace DesktopControl {
 
 class AbstractCommand;
 class AbstractCategory;
@@ -143,7 +143,7 @@ private:
     QMap<QString, AbstractCommand*> m_map;              ///< The commands held by the category.
 };
 
-DSKTPCTLAPI_END_NAMESPACE
+}}
 
 #endif
 // kate: indent-mode cstyle; replace-tabs on;

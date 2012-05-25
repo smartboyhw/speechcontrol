@@ -27,11 +27,15 @@
 #ifndef SPCHCNTRL_DSKCTL_API_PLUGIN_HPP
 #define SPCHCNTRL_DSKCTL_API_PLUGIN_HPP
 
+#include <QObject>
 #include <app/plugin.hpp>
 #include "global.hpp"
 
 class QMenu;
-DSKTPCTLAPI_BEGIN_NAMESPACE
+namespace SpeechControl
+{
+namespace DesktopControl
+{
 
 /// @todo Add a opaque pointer for this.
 class Plugin : public SpeechControl::AbstractPlugin
@@ -40,8 +44,10 @@ class Plugin : public SpeechControl::AbstractPlugin
     QAction* m_actionToggle;
     QAction* m_actionOptions;
     QMenu* m_menuDesktopControl;
-    void Q_SLOT doMenuOptions();
-    void Q_SLOT doMenuToggle(bool& p_checked);
+
+private slots:
+    void doMenuOptions();
+    void doMenuToggle (bool& p_checked);
 
 public:
     explicit Plugin (QObject* parent = 0);
@@ -53,7 +59,8 @@ protected:
     virtual void deinitialize();
 };
 
-DSKTPCTLAPI_END_NAMESPACE
+}
+}
 
 #endif
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

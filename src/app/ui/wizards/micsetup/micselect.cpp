@@ -51,10 +51,10 @@ MicrophoneSelection::~MicrophoneSelection()
 /// @todo Fill the combo box with all of the mics.
 void MicrophoneSelection::initializePage()
 {
-    AudioSourceList l_allMics = DeviceAudioSource::allDevices();
+    AudioSourceList allMics = DeviceAudioSource::allDevices();
 
-    if (!l_allMics.empty()) {
-        Q_FOREACH (AbstractAudioSource * src, l_allMics) {
+    if (!allMics.empty()) {
+        Q_FOREACH (AbstractAudioSource * src, allMics) {
             DeviceAudioSource* deviceSrc = (DeviceAudioSource*) src;
             ui->comboBoxMicrophones->addItem (QIcon::fromTheme ("audio-input-microphone"), deviceSrc->humanName(), deviceSrc->deviceName());
         }

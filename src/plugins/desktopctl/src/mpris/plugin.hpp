@@ -1,8 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
- *            (C) 2012 Jacky Alcine <jacky.alcine@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -14,18 +13,29 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef PLUGIN_HPP
-#define PLUGIN_HPP
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/25/12 15:40:10 PM
+ */
+
+#ifndef SPCHCNTRL_DSKTPCTL_MPRIS_PLUGIN_HPP
+#define SPCHCNTRL_DSKTPCTL_MPRIS_PLUGIN_HPP
 
 #include "global.hpp"
 #include <app/plugin.hpp>
 
-MPRIS_NAMESPACE_BEGIN
+namespace SpeechControl
+{
+namespace DesktopControl
+{
+namespace MPRIS
+{
 
 class Plugin : public AbstractPlugin
 {
@@ -41,7 +51,9 @@ protected:
     virtual void deinitialize();
 };
 
-MPRIS_NAMESPACE_END
+}
+}
+}
 
 #endif
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

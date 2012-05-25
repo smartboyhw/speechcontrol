@@ -33,15 +33,17 @@
 #include <app/global.hpp>
 #include <api/command.hpp>
 
-DSKTPCTLAPI_FORWARD_DECLARE_CLASS(AbstractCategory)
-DSKTPCTLAPI_FORWARD_DECLARE_CLASS(AbstractCommand)
-
-MPRIS_NAMESPACE_BEGIN
+namespace SpeechControl
+{
+namespace DesktopControl
+{
+namespace MPRIS
+{
 
 /**
  * @brief Represents the category of commands related to MPRIS.
  **/
-class MprisCategory : public AbstractCategory
+class MprisCategory : public DesktopControl::AbstractCategory
 {
     Q_OBJECT
     Q_DISABLE_COPY (MprisCategory)
@@ -60,7 +62,7 @@ public:
  * This command is based partly on the D-Bus specification for MPRIS
  * defined at http://www.mpris.org/2.1/spec/Player_Node.html.
  **/
-class PlayerCommand : public AbstractCommand
+class PlayerCommand : public DesktopControl::AbstractCommand
 {
     Q_OBJECT
     Q_DISABLE_COPY (PlayerCommand)
@@ -81,7 +83,7 @@ private:
  * This command is based partly on the D-Bus specification for MPRIS
  * defined at http://www.mpris.org/2.1/spec/Player_Node.html.
  **/
-class LibraryCommand : public AbstractCommand
+class LibraryCommand : public DesktopControl::AbstractCommand
 {
     Q_OBJECT
     Q_DISABLE_COPY (LibraryCommand)
@@ -96,7 +98,9 @@ private:
     explicit LibraryCommand ();
 };
 
-MPRIS_NAMESPACE_END
+}
+}
+}
 
 #endif
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

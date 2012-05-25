@@ -24,11 +24,9 @@
 #include <qdbusreply.h>
 
 using namespace SpeechControl;
-USING_NAMESPACE_MPRIS
-
+using namespace SpeechControl::DesktopControl::MPRIS;
 using DBus::Player;
-
-Player* Player::s_inst = 0;
+SPCHCNTRL_DEFINE_SINGLETON(Player)
 
 Player::Player() : QObject (Core::instance()), m_interface (0)
 {
@@ -90,4 +88,4 @@ Player::~Player()
 
 #include "mpris.moc"
 
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

@@ -26,7 +26,7 @@
 #include "plugin.hpp"
 #include "commands.hpp"
 
-MPRIS_NAMESPACE_BEGIN
+using namespace SpeechControl::DesktopControl::MPRIS;
 
 Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent)
 {
@@ -57,8 +57,6 @@ Plugin::~Plugin()
 
 #include "plugin.moc"
 
-MPRIS_NAMESPACE_END
+Q_EXPORT_PLUGIN2 (spchcntrl - mpris, SpeechControl::DesktopControl::MPRIS::Plugin)
 
-Q_EXPORT_PLUGIN2 (spchcntrl-mpris, SpeechControl::Plugins::DesktopControl::MPRIS::Plugin)
-
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

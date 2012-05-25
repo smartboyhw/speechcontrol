@@ -30,11 +30,18 @@
 #include <app/plugin.hpp>
 #include "global.hpp"
 
+class QMenu;
 DSKTPCTLAPI_BEGIN_NAMESPACE
 
+/// @todo Add a opaque pointer for this.
 class Plugin : public SpeechControl::AbstractPlugin
 {
     Q_OBJECT
+    QAction* m_actionToggle;
+    QAction* m_actionOptions;
+    QMenu* m_menuDesktopControl;
+    void Q_SLOT doMenuOptions();
+    void Q_SLOT doMenuToggle(bool& p_checked);
 
 public:
     explicit Plugin (QObject* parent = 0);

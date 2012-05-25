@@ -6,4 +6,4 @@ URL=http://www.thesii.org/wiki/SpeechControl/Plugins#SystemControl
 Version=0.1
 
 [Dependencies]
-Library=spchcntrl-applist
+Library=spchcntrl-syscntrl

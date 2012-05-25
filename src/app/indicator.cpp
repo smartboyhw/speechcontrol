@@ -147,9 +147,19 @@ void Indicator::addActionForPlugins (QAction* p_action)
     instance()->d_func()->menuPlugins->insertAction (0, p_action);
 }
 
+void Indicator::addMenuForPlugins (QMenu* p_menu)
+{
+    instance()->d_func()->menuPlugins->addMenu(p_menu);
+}
+
 void Indicator::removeActionForPlugins (QAction* p_action)
 {
     instance()->d_func()->menuPlugins->removeAction (p_action);
+}
+
+void Indicator::removeMenuForPlugins (QMenu* p_menu)
+{
+    instance()->d_func()->menuPlugins->removeAction(p_menu->menuAction());
 }
 
 void Indicator::on_actionOptions_triggered()

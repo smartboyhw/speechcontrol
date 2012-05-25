@@ -34,6 +34,7 @@
 #include "global.hpp"
 
 class QAction;
+class QMenu;
 class QImage;
 class QSystemTrayIcon;
 
@@ -137,7 +138,9 @@ public:
     static QIcon icon();
 
     static void addActionForPlugins (QAction* p_action);
+    static void addMenuForPlugins(QMenu* p_menu);
     static void removeActionForPlugins (QAction* p_action);
+    static void removeMenuForPlugins(QMenu* p_menu);
 
 private slots:
     void on_actionOptions_triggered();

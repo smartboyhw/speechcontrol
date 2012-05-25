@@ -139,7 +139,8 @@ Content* Content::obtain (const QString& p_id)
     if (!ContentPrivate::s_lst.contains (p_id)) {
         Content* content = new Content (p_id);
         qDebug() << "[Content::obtain()] Is content valid? " << content->isValid();
-        Q_ASSERT (content->isValid());
+        if (!content->isValid())
+            return 0;
 
         ContentPrivate::s_lst.insert (p_id, (content));
         qDebug() << "[Content::obtain()] Content" << p_id << "rendered.";

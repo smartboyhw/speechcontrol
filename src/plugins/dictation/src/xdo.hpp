@@ -1,5 +1,5 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
  *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
@@ -13,13 +13,19 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl.  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#ifndef XDO_HPP
-#define XDO_HPP
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/25/12 15:35:59 PM
+ */
+
+#ifndef SPCHCNTRL_DCTN_XDO_HPP
+#define SPCHCNTRL_DCTN_XDO_HPP
 
 #include <QObject>
 #include <app/global.hpp>

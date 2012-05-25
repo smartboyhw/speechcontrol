@@ -30,7 +30,10 @@
 #include <app/plugin.hpp>
 #include "global.hpp"
 
-DCTN_BEGIN_NAMESPACE
+namespace SpeechControl
+{
+namespace Dictation
+{
 
 class Plugin : public AbstractPlugin
 {
@@ -46,7 +49,8 @@ protected:
     virtual void deinitialize();
 };
 
-DCTN_END_NAMESPACE
+}
+}
 
 #endif
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

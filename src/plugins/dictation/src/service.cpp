@@ -29,7 +29,7 @@
 #include "service.hpp"
 
 using namespace SpeechControl;
-DCTN_USE_NAMESPACE
+using namespace SpeechControl::Dictation;
 SPCHCNTRL_DEFINE_SINGLETON(Service)
 
 ServicePrivate::ServicePrivate (Service* p_qPtr) :

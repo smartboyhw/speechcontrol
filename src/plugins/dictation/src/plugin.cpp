@@ -33,7 +33,7 @@
 #include "plugin.hpp"
 
 using namespace SpeechControl;
-DCTN_USE_NAMESPACE
+using namespace SpeechControl::Dictation;
 
 Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent)
 {

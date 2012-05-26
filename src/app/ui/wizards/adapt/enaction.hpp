@@ -36,7 +36,7 @@ SPCHCNTRL_DEFINE_UIC(Enaction)
 SPCHCNTRL_FORWARD_DECLARE_CLASS(Session)
 namespace SpeechControl { namespace Windows { namespace Pages {
 
-typedef SpeechControl::AdaptationUtility::Phases Phases;
+typedef SpeechControl::AdaptationUtility::Phase Phases;
 
 class Enaction : public QWizardPage
 {

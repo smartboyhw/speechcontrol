@@ -33,7 +33,7 @@ class Content;
 class AbstractContentSource;
 
 struct ContentPrivate {
-    Q_DECLARE_PUBLIC(Content);
+    Q_DECLARE_PUBLIC(Content)
     ContentPrivate(Content* p_Qptr);
     virtual ~ContentPrivate();
     static QString getPath (const QString& p_id);
@@ -42,13 +42,14 @@ struct ContentPrivate {
     static ContentMap s_lst;
     QString path() const;
     QStringList pages;
+    QStringList utterances;
     QDomDocument* dom;
     QString id;
     Content* q_ptr;
 };
 
 struct AbstractContentSourcePrivate {
-    Q_DECLARE_PUBLIC(AbstractContentSource);
+    Q_DECLARE_PUBLIC(AbstractContentSource)
     AbstractContentSourcePrivate(AbstractContentSource* p_Qptr);
     virtual ~AbstractContentSourcePrivate();
     QString id;

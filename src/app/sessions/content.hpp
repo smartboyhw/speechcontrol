@@ -159,6 +159,31 @@ public:
     QStringList pages() const;
 
     /**
+     * @brief Get a number of sentences.
+     *
+     * @return A number of sentences in this Content.
+     **/
+    int uttNumber() const;
+
+    /**
+     * @brief Get an utterance from the Content.
+     *
+     * @param id List index to the utterance.
+     * @return Utterance at the given index.
+     * @throws OutOfBoundException
+     */
+    QString getUtterance(int id) const;
+
+    /**
+     * @brief Get a sequence of utterances.
+     *
+     * @param begin First index of the sequence.
+     * @param end Last index of the sequence.
+     * @return List of the utterances.
+     */
+    QStringList getUtteranceSeq(int begin, int end) const;
+
+    /**
      * @brief Obtains a specified page at index p_indx.
      * @param p_indx The index at which the page is to be found.
      * @return A string with the page's text, or QString::null if not found.
@@ -215,8 +240,8 @@ class AbstractContentSource : public QObject
     QScopedPointer<AbstractContentSourcePrivate> d_ptr;
 
 protected:
-    Q_DISABLE_COPY(AbstractContentSource);
-    Q_DECLARE_PRIVATE(AbstractContentSource);
+    Q_DISABLE_COPY(AbstractContentSource)
+    Q_DECLARE_PRIVATE(AbstractContentSource)
 
     /**
      * @brief Destructor.

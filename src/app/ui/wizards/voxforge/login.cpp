@@ -24,7 +24,7 @@
 #include "login.hpp"
 #include "ui_voxforgewizard-login.h"
 
-using namespace SpeechControl::Windows::Wizards::Pages;
+using namespace SpeechControl::Windows::Pages;
 
 LoginPortal::LoginPortal (QWidget* parent) : QWizardPage (parent),
     ui (new Ui::LoginPortal), m_successLogin (false)

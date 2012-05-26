@@ -1,7 +1,7 @@
 /***
- *  This file is part of SpeechControl.
+ *  This file is part of the SpeechControl project.
  *
- *  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
  *
  *  SpeechControl is free software; you can redistribute it and/or
  *  modify it under the terms of the GNU Library General Public
@@ -13,9 +13,15 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  *  Library General Public License for more details.
  *
- *  You should have received a copy of the GNU Library General Public License
- *  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/26/12 10:57:10 AM
  */
 
 #include "userinfo.hpp"
@@ -25,7 +31,7 @@
 #include <QLocale>
 #include <QVariantMap>
 
-using SpeechControl::Windows::Wizards::Pages::UserInitialization;
+using SpeechControl::Windows::Pages::UserInitialization;
 
 UserInitialization::UserInitialization (QWidget* parent) :
     QWizardPage (parent),
@@ -46,7 +52,7 @@ UserInitialization::~UserInitialization()
     delete ui;
 }
 
-bool SpeechControl::Windows::Wizards::Pages::UserInitialization::validatePage()
+bool SpeechControl::Windows::Pages::UserInitialization::validatePage()
 {
     wizard()->setProperty ("age", ui->comboBoxAge->currentText());
     wizard()->setProperty ("country", ui->comboBoxCountry->currentText());
@@ -54,7 +60,7 @@ bool SpeechControl::Windows::Wizards::Pages::UserInitialization::validatePage()
 }
 
 /// @todo Load all of the countries.
-void SpeechControl::Windows::Wizards::Pages::UserInitialization::initializePage()
+void SpeechControl::Windows::Pages::UserInitialization::initializePage()
 {
     ui->comboBoxCountry->clear();
     QLocale l_sys = QLocale::system();
@@ -67,12 +73,12 @@ void SpeechControl::Windows::Wizards::Pages::UserInitialization::initializePage(
 }
 
 /// @todo Find a way to obtain languages from the system.
-void SpeechControl::Windows::Wizards::Pages::UserInitialization::updateLanguages()
+void SpeechControl::Windows::Pages::UserInitialization::updateLanguages()
 {
     QLocale l_locale;
 }
 
-void SpeechControl::Windows::Wizards::Pages::UserInitialization::clearPage()
+void SpeechControl::Windows::Pages::UserInitialization::clearPage()
 {
     ui->comboBoxAge->clear();
     ui->comboBoxCountry->clear();
@@ -81,4 +87,4 @@ void SpeechControl::Windows::Wizards::Pages::UserInitialization::clearPage()
 }
 
 #include "ui/wizards/quickstart/userinfo.moc"
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

@@ -30,10 +30,15 @@
 #include <QWizardPage>
 #include <ui/wizards/base.hpp>
 
-SPCHCNTRL_DEFINE_UIC(MicrophoneSample)
-SPCHCNTRL_FORWARD_DECLARE_CLASS(AudioSourceSphinx)
+SPCHCNTRL_DEFINE_UIC (MicrophoneSample)
 
-namespace SpeechControl { namespace Windows { namespace Pages {
+namespace SpeechControl
+{
+class AudioSourceSphinx;
+namespace Windows
+{
+namespace Pages
+{
 
 class MicrophoneSample : public QWizardPage
 {
@@ -60,7 +65,9 @@ private:
     QStringList m_prompts;
 };
 
-} } }
+}
+}
+}
 
 #endif // MICSAMPLE_HPP
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

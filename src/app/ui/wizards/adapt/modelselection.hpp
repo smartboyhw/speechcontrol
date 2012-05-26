@@ -32,9 +32,14 @@
 
 class QComboBox;
 
-SPCHCNTRL_DEFINE_UIC(ModelSelection)
-SPCHCNTRL_FORWARD_DECLARE_CLASS(AcousticModel)
-namespace SpeechControl { namespace Windows { namespace Pages {
+SPCHCNTRL_DEFINE_UIC (ModelSelection)
+namespace SpeechControl
+{
+class AcousticModel;
+namespace Windows
+{
+namespace Pages
+{
 
 /**
  * @brief A QWizardPage that allows a user to select a base model for adaption.
@@ -74,7 +79,9 @@ private:
     AcousticModel* m_model;
 };
 
-} } }
+}
+}
+}
 
 #endif // ADAPT_MODELSELECTION_HPP
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

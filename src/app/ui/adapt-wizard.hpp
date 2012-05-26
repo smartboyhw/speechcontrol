@@ -29,11 +29,16 @@
 
 #include <ui/wizards/base.hpp>
 
-SPCHCNTRL_FORWARD_DECLARE_CLASS(Session);
-SPCHCNTRL_UI_WIZARD_FORWARD_DECLARE_PAGE(Enaction)
-SPCHCNTRL_UI_WIZARD_FORWARD_DECLARE_PAGE(Results)
-
-namespace SpeechControl { namespace Windows {
+namespace SpeechControl
+{
+class Session;
+namespace Windows
+{
+namespace Pages
+{
+class Enaction;
+class Results;
+}
 
 class AdaptWizard : public AbstractWizard
 {
@@ -61,7 +66,8 @@ public slots:
     virtual void accept();
 };
 
-} }
+}
+}
 #endif
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;
 

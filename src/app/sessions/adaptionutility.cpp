@@ -376,7 +376,21 @@ void AdaptationUtility::generateMixtureWeights()
     changePhase (GenerateMixtureWeights);
 
     QStringList args;
-    args << "/usr/lib/sphinxtrain/python/cmusphinx/sendump.py"
+
+    // Locate sendump.py
+    /// @todo Do that more elegantly
+    QFile loc1("/usr/lib/sphinxtrain/python/cmusphinx/sendump.py");
+    QFile loc2("/usr/lib/python2.7/dist-packages/cmusphinx/sendump.py");
+    QFile loc3("/usr/local/lib/python2.7/dist-packages/cmusphinx/sendump.py");
+    QString sendumpLoc;
+    if (loc1.exists())
+        sendumpLoc = loc1.fileName();
+    else if (loc2.exists())
+        sendumpLoc = loc2.fileName();
+    else
+        sendumpLoc = loc3.fileName();
+
+    args << sendumpLoc
          << m_modelBase->senDump()->fileName()
          << m_modelResult->mixtureWeights()->fileName()
          ;

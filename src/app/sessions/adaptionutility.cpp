@@ -346,7 +346,7 @@ void AdaptationUtility::generateFeatures()
 
     // Build argument values.
     QDir dirInput (m_session->corpus()->audioPath());
-    QDir dirOutput (QDir::tempPath() + "/" + m_session->id() + "-" + QString::number (qrand()));
+    QDir dirOutput (QDir::tempPath() + "/speechcontrol-" + m_session->id());
     dirOutput.mkpath (dirOutput.path());
     QString suffixInput = "wav";
     QString suffiXOutput = "mfc";
@@ -467,6 +467,7 @@ void AdaptationUtility::collectAcousticStatistics()
          << "-dictfn"    << m_session->corpus()->dictionary()->path()
          << "-ctlfn"     << m_session->corpus()->fileIds()->fileName()
          << "-lsnfn"     << m_session->corpus()->transcription ("<s>", "</s>")->fileName()
+         << "-cepdir"    << m_dirAccum.absolutePath()
          << "-accumdir"  << m_dirAccum.absolutePath();
     ;
 

@@ -460,8 +460,8 @@ void AdaptationUtility::collectAcousticStatistics()
     args << "-hmmdir"    << m_modelResult->path()
          << "-moddeffn"  << (m_modelResult->modelDefinitions()->fileName() + ".txt")
          << "-ts2cbfn"    << ".semi."
-         << "-feat"      << "ls_c_d_dd"
-         << "-svspec"    << "0-12/13-25/26-38"
+         << "-feat"      << "s2_4x" /// @todo Automatically detect correct -feat argument.
+//         << "-svspec"    << "0-12/13-25/26-38"
          << "-cmn"       << "current"
          << "-agc"       << "none"
          << "-dictfn"    << m_session->corpus()->dictionary()->path()

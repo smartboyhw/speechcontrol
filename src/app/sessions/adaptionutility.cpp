@@ -459,7 +459,7 @@ void AdaptationUtility::collectAcousticStatistics()
     QStringList args;
     args << "-hmmdir"    << m_modelResult->path()
          << "-moddeffn"  << (m_modelResult->modelDefinitions()->fileName() + ".txt")
-         << "-t2cbfn"    << ".semi."
+         << "-ts2cbfn"    << ".semi."
          << "-feat"      << "ls_c_d_dd"
          << "-svspec"    << "0-12/13-25/26-38"
          << "-cmn"       << "current"

@@ -33,8 +33,8 @@
 
 #include "modelselection.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_WIZARD_PAGES_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows::Pages;
 
 ModelSelection::ModelSelection (QWidget* parent) :
     QWizardPage (parent),

@@ -39,7 +39,7 @@ class QListWidgetItem;
 
 SPCHCNTRL_DEFINE_UIC(PluginsSettingsPane)
 
-SPCHCNTRL_UI_BEGIN_NAMESPACE
+namespace SpeechControl { namespace Windows {
 
 class PluginsSettingsPane : public AbstractSettingsPane
 {
@@ -68,7 +68,7 @@ private:
     Ui::PluginsSettingsPane* ui;
 };
 
-SPCHCNTRL_UI_END_NAMESPACE
+} }
 
 #endif // PLUGINS_HPP
 // kate: indent-mode cstyle; replace-tabs on;

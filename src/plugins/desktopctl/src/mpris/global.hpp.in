@@ -26,15 +26,6 @@
 
 #include <app/global.hpp>
 
-#define MPRIS_NAMESPACE_BEGIN namespace SpeechControl {\
-    namespace Plugins {\
-        namespace DesktopControl {\
-            namespace MPRIS {\
-
-#define MPRIS_NAMESPACE_END } } } }
-
-#define USING_NAMESPACE_MPRIS using namespace SpeechControl::Plugins::DesktopControl::MPRIS;
-
 #undef PLUGIN_ID
 #define PLUGIN_ID "@SPDSKMPRIS_PLUGIN_ID@"
 // kate: indent-mode cstyle; replace-tabs on;

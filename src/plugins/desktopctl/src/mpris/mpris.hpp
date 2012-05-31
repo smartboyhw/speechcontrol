@@ -27,7 +27,12 @@
 
 class QDBusInterface;
 
-MPRIS_NAMESPACE_BEGIN
+namespace SpeechControl
+{
+namespace DesktopControl
+{
+namespace MPRIS
+{
 namespace DBus
 {
 class Player : public QObject
@@ -54,7 +59,8 @@ private:
 };
 
 }
-
-MPRIS_NAMESPACE_END
+}
+}
+}
 #endif // MPRIS_HPP
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

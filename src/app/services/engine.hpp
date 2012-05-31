@@ -34,7 +34,7 @@
 
 class QPixmap;
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 
 class AbstractServiceModule;
 class ServiceEngine;
@@ -110,6 +110,6 @@ public slots:
     static void stop();
 };
 
-SPCHCNTRL_END_NAMESPACE
+}
 #endif
 // kate: indent-mode cstyle; replace-tabs on;

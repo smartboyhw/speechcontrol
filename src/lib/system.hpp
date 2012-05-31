@@ -26,7 +26,7 @@
 #include <lib/global.hpp>
 #include <lib/export.hpp>
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 
 class SPCH_EXPORT System : public QObject
 {
@@ -50,7 +50,7 @@ private:
     static System* s_inst;
 };
 
-SPCHCNTRL_END_NAMESPACE
+}
 
 #endif // SYSTEM_HPP
 // kate: indent-mode cstyle; replace-tabs on; 

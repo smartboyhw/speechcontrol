@@ -30,7 +30,7 @@
 #include <ui/settings-dialog.hpp>
 
 SPCHCNTRL_DEFINE_UIC(VoxforgeSettingsPane)
-SPCHCNTRL_UI_BEGIN_NAMESPACE
+namespace SpeechControl { namespace Windows {
 
 class VoxforgeSettingsPane : public AbstractSettingsPane
 {
@@ -59,7 +59,7 @@ private:
     Ui::VoxforgeSettingsPane* ui;
 };
 
-SPCHCNTRL_UI_END_NAMESPACE
+} }
 
 #endif // VOXFORGESETTINGSPANE_HPP
 // kate: indent-mode cstyle; replace-tabs on;

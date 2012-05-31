@@ -28,8 +28,6 @@ namespace SpeechControl
 {
 namespace Windows
 {
-namespace Wizards
-{
 
 class VoxforgeWizard : public AbstractWizard
 {
@@ -49,9 +47,7 @@ public:
     explicit VoxforgeWizard (QWidget* parent = 0);
     virtual ~VoxforgeWizard();
 };
-
-}
 }
 }
 #endif // SPCHCNTRL_VOXFORGE_WIZARD_HPP
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

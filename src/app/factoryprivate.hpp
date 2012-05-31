@@ -27,7 +27,7 @@
 #include <QString>
 #include <app/global.hpp>
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 class AbstractPlugin;
 
 struct FactoryPrivate {
@@ -36,4 +36,4 @@ struct FactoryPrivate {
     QMap<QString, AbstractPlugin*> loadedPlugins;
 };
 
-SPCHCNTRL_END_NAMESPACE
+}

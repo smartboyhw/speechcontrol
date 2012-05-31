@@ -43,8 +43,8 @@
 #include "ui/adapt-wizard.hpp"
 #include "sessions/session.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows;
 SPCHCNTRL_DEFINE_SINGLETON(Indicator);
 
 Indicator::Message::Message (const QString& p_keyName) : m_key (p_keyName)
@@ -147,9 +147,19 @@ void Indicator::addActionForPlugins (QAction* p_action)
     instance()->d_func()->menuPlugins->insertAction (0, p_action);
 }
 
+void Indicator::addMenuForPlugins (QMenu* p_menu)
+{
+    instance()->d_func()->menuPlugins->addMenu(p_menu);
+}
+
 void Indicator::removeActionForPlugins (QAction* p_action)
 {
     instance()->d_func()->menuPlugins->removeAction (p_action);
+}
+
+void Indicator::removeMenuForPlugins (QMenu* p_menu)
+{
+    instance()->d_func()->menuPlugins->removeAction(p_menu->menuAction());
 }
 
 void Indicator::on_actionOptions_triggered()

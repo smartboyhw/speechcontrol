@@ -26,7 +26,7 @@
 #include <app/ui/wizards/micsetup/micselect.hpp>
 #include <app/ui/wizards/micsetup/micsample.hpp>
 
-SPCHCNTRL_UI_BEGIN_NAMESPACE
+namespace SpeechControl { namespace Windows {
 
 class MicrophoneSetup : public AbstractWizard
 {
@@ -53,7 +53,7 @@ private:
 
 };
 
-SPCHCNTRL_UI_END_NAMESPACE
+} }
 
 #endif // WIZARD_HPP
 // kate: indent-mode cstyle; replace-tabs on;

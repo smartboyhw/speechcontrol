@@ -30,7 +30,7 @@
 #include <QObject>
 #include <app/global.hpp>
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 
 class Factory;
 class AbstractPlugin;
@@ -195,7 +195,7 @@ public:
     static QStringList autoStart();
 };
 
-SPCHCNTRL_END_NAMESPACE
+}
 
 #endif // FACTORY_HPP
 // kate: indent-mode cstyle; replace-tabs on;

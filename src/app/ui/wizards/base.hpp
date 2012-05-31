@@ -31,26 +31,14 @@
 #include <QWizard>
 #include <ui/global.hpp>
 
-#define SPCHCNTRL_UI_WIZARD_PAGES_NAMESPACE Pages
-#define SPCHCNTRL_UI_WIZARD_PAGES_USE_NAMESPACE \
-using namespace SPCHCNTRL_UI_PREPEND_NAMESPACE(SPCHCNTRL_UI_WIZARD_PAGES_NAMESPACE);
-
-#define SPCHCNTRL_UI_WIZARD_PAGES_BEGIN_NAMESPACE \
-SPCHCNTRL_UI_BEGIN_NAMESPACE \
-    namespace SPCHCNTRL_UI_WIZARD_PAGES_NAMESPACE {
-
-#define SPCHCNTRL_UI_WIZARD_PAGES_END_NAMESPACE \
-    } \
-SPCHCNTRL_UI_END_NAMESPACE
-
 #define SPCHCNTRL_UI_WIZARD_FORWARD_DECLARE_PAGE(PageName) \
-SPCHCNTRL_UI_WIZARD_PAGES_BEGIN_NAMESPACE \
+namespace SpeechControl { namespace Windows { namespace Pages { \
 class PageName; \
-SPCHCNTRL_UI_WIZARD_PAGES_END_NAMESPACE
+} } }
 
 SPCHCNTRL_DEFINE_UIC(WizardBase);
 
-SPCHCNTRL_UI_BEGIN_NAMESPACE
+namespace SpeechControl { namespace Windows {
 
 /// @todo Allow automatic insertion of introduction page.
 class AbstractWizard : public ::QWizard
@@ -66,6 +54,6 @@ private:
     Ui::WizardBase* ui;
 };
 
-SPCHCNTRL_UI_END_NAMESPACE
+} }
 #endif // SPCHCNTRL_UI_WIZARDS_BASE_HPP_
 // kate: indent-mode cstyle; replace-tabs on;

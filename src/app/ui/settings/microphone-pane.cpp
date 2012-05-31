@@ -32,8 +32,8 @@
 #include "microphone-pane.hpp"
 #include "ui_settingspane-microphone.h"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows;
 
 MicrophoneSettingsPane::MicrophoneSettingsPane () :
     ui (new Ui::MicrophoneSettingsPane)

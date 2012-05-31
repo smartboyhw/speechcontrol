@@ -27,7 +27,7 @@
 #include <app/global.hpp>
 #include <app/sessions/content.hpp>
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 
 class Content;
 class AbstractContentSource;
@@ -59,4 +59,4 @@ struct AbstractContentSourcePrivate {
     AbstractContentSource* q_ptr;
 };
 
-SPCHCNTRL_END_NAMESPACE
+}

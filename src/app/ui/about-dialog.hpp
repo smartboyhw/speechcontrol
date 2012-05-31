@@ -32,7 +32,7 @@
 
 SPCHCNTRL_DEFINE_UIC(AboutDialog)
 
-SPCHCNTRL_UI_BEGIN_NAMESPACE
+namespace SpeechControl { namespace Windows {
 
 class AboutDialog : public QDialog
 {
@@ -46,7 +46,7 @@ private:
 
 };
 
-SPCHCNTRL_UI_END_NAMESPACE
+} }
 
 #endif
 // kate: indent-mode cstyle; replace-tabs on; 

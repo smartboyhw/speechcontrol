@@ -32,9 +32,15 @@
 #include <QWizardPage>
 #include <ui/wizards/base.hpp>
 
-SPCHCNTRL_DEFINE_UIC(SourceSelectionPage)
-SPCHCNTRL_FORWARD_DECLARE_CLASS(AbstractContentSource);
-SPCHCNTRL_UI_WIZARD_PAGES_BEGIN_NAMESPACE
+SPCHCNTRL_DEFINE_UIC (SourceSelectionPage)
+
+namespace SpeechControl
+{
+class AbstractContentSource;
+namespace Windows
+{
+namespace Pages
+{
 
 /**
  * @brief ...
@@ -76,6 +82,8 @@ private:
     static QMap<QString, QWidget*> s_lst;
 };
 
-SPCHCNTRL_UI_WIZARD_PAGES_END_NAMESPACE
+}
+}
+}
 #endif // CONTENTWIZARD_SOURCESELECTION_HPP
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

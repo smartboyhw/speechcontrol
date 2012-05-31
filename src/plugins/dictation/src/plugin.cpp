@@ -32,8 +32,8 @@
 #include "service.hpp"
 #include "plugin.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
-DCTN_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Dictation;
 
 Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent)
 {

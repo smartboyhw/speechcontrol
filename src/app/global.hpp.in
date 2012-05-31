@@ -30,24 +30,45 @@
 #include <QDebug>
 #include <lib/global.hpp>
 
-// Provides the location to the libraries to be used as plug-ins.
+/**
+ * @def SPCHCNTRL_PLUGINS_LIB_DIR
+ * @ingroup SpeechControlMacros
+ * @brief Provides the location to the libraries to be used as plug-ins.
+ */
 #define SPCHCNTRL_PLUGINS_LIB_DIR "@SPCHCNTRL_PLUGINS_LIB_INSTALL_DIR@"
 
-// Provides the location to the specification files to be used as meta-data for plug-ins.
+/**
+ * @def SPCHCNTRL_PLUGINS_SPEC_DIR
+ * @ingroup SpeechControlMacros
+ */
 #define SPCHCNTRL_PLUGINS_SPEC_DIR "@SPCHCNTRL_PLUGINS_SPEC_INSTALL_DIR@"
 
-// Provides the location to the pre-packaged Content files.
+/**
+ * @def SPCHCNTRL_SYSTEM_CONTENT_DIR
+ * @ingroup SpeechControlMacros
+ * @brief Provides the location to the pre-packaged Content files.
+ */
 #define SPCHCNTRL_SYSTEM_CONTENT_DIR "@SPCHCNTRL_DATA_CONTENT_DIR@"
 
-// Defines the default size of a phrase when rendering in a corpus.
+/**
+ * @def CORPUS_WORD_BLOCK
+ * @ingroup SpeechControlMacros
+ * @brief Defines the default size of a phrase when rendering in a corpus.
+ */
 #define CORPUS_WORD_BLOCK 8
 
-// Defines the default count of alphanumerical characters to be considered one page in a Content.
+/**
+ * @def CONTENT_CHUNK_SIZE
+ * @ingroup SpeechControlMacros
+ * @brief Defines the default count of alphanumerical characters to be considered one page in a Content.
+ */
 #define CONTENT_CHUNK_SIZE 250
 
-#include <QDebug>
-
-/// @brief Allows a class to be used as a singleton.
+/**
+ * @def SPCHCNTRL_SINGLETON
+ * @ingroup SpeechControlMacros
+ * @brief Defines a class as a singleton.
+ */
 #define SPCHCNTRL_SINGLETON(Type) \
 private:\
     static Type* s_inst;\
@@ -62,13 +83,13 @@ public:\
         }\
     return s_inst;\
     }
-#define SPCHCNTRL_DEFINE_SINGLETON(Type) Type* Type::s_inst = 0;
 
-#ifndef QT_NO_DEBUG
-# define SC_ASSERT(condition,message) ((!(#condition)) ? qt_assert("condition##message",__FILE__,__LINE__) : qt_noop())
-#else
-# define SC_ASSERT(condition,message) qt_noop()
-#endif
+/**
+ * @def SPCHCNTRL_DEFINE_SINGLETON
+ * @ingroup SpeechControlMacros
+ * @brief Implements the singleton.
+ */
+#define SPCHCNTRL_DEFINE_SINGLETON(Type) Type* Type::s_inst = 0;
 
 #endif
 

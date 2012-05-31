@@ -38,9 +38,9 @@
 #include "wizards/adapt/results.hpp"
 #include "adapt-wizard.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_USE_NAMESPACE
-SPCHCNTRL_UI_WIZARD_PAGES_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows;
+using namespace SpeechControl::Windows::Pages;
 
 AdaptWizard::AdaptWizard (QWidget* parent) :
     AbstractWizard (parent)

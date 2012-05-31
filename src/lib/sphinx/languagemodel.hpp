@@ -33,7 +33,7 @@
 
 #include <lib/global.hpp>
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 
 class LanguageModel;
 struct LanguageModelPrivate;
@@ -102,7 +102,7 @@ public:
     void erase();
 };
 
-SPCHCNTRL_END_NAMESPACE
+}
 
 #endif // SPEECHCONTROL_LANGUAGEMODEL_HPP
 // kate: indent-mode cstyle; replace-tabs on; 

@@ -31,7 +31,7 @@
 #include <app/services/module.hpp>
 #include <app/services/engine.hpp>
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 
 class VoxforgeService : public AbstractServiceModule
 {
@@ -51,7 +51,7 @@ public:
     virtual ~VoxforgeService();
 };
 
-SPCHCNTRL_END_NAMESPACE
+}
 
 #endif // SPEECHCONTROL_VOXFORGE_SERVICE_HPP
 // kate: indent-mode cstyle; replace-tabs on;

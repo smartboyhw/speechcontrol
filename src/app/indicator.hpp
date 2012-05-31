@@ -34,10 +34,11 @@
 #include "global.hpp"
 
 class QAction;
+class QMenu;
 class QImage;
 class QSystemTrayIcon;
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 
 struct IndicatorPrivate;
 class Indicator;
@@ -137,7 +138,9 @@ public:
     static QIcon icon();
 
     static void addActionForPlugins (QAction* p_action);
+    static void addMenuForPlugins(QMenu* p_menu);
     static void removeActionForPlugins (QAction* p_action);
+    static void removeMenuForPlugins(QMenu* p_menu);
 
 private slots:
     void on_actionOptions_triggered();
@@ -149,7 +152,7 @@ private:
     QScopedPointer<IndicatorPrivate> d_ptr;
 };
 
-SPCHCNTRL_END_NAMESPACE
+}
 
 #endif
 // kate: indent-mode cstyle; replace-tabs on;

@@ -32,7 +32,7 @@
 
 SPCHCNTRL_DEFINE_UIC(DesktopControlSettingsPane)
 
-SPCHCNTRL_UI_BEGIN_NAMESPACE
+namespace SpeechControl { namespace Windows {
 
 class DesktopControlSettingsPane : public AbstractSettingsPane
 {
@@ -68,7 +68,7 @@ private:
     Ui::DesktopControlSettingsPane* m_ui;
 };
 
-SPCHCNTRL_UI_END_NAMESPACE
+} }
 
 #endif // GENERAL_HPP
 // kate: indent-mode cstyle; replace-tabs on;

@@ -40,7 +40,7 @@ KeyboardEmulator::KeyboardEmulator() : QObject (Core::instance()), m_xdo (0),
     m_win (0), m_spllchk (0)
 {
     m_xdo = xdo_new (0);
-    SC_ASSERT (m_xdo != 0, "Failed to create 'xdo' instance.");
+    Q_ASSERT (m_xdo != 0);
 
     m_spllchk = new Hunspell ("", "");
 }

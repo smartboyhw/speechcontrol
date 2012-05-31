@@ -29,7 +29,7 @@
 #include "app/services/engineprivate.hpp"
 #include "app/services/engine.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
+using namespace SpeechControl;
 SPCHCNTRL_DEFINE_SINGLETON(ServiceEngine)
 
 ServiceEnginePrivate::ServiceEnginePrivate() : list() {

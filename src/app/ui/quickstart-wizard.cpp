@@ -1,22 +1,28 @@
 /***
-*  This file is part of SpeechControl.
-*
-*  Copyright (C) 2012 SpeechControl Developers <spchcntrl-devel@thesii.org>
-*
-*  SpeechControl is free software; you can redistribute it and/or
-*  modify it under the terms of the GNU Library General Public
-*  License as published by the Free Software Foundation; either
-*  version 2 of the License, or (at your option) any later version.
-*
-*  SpeechControl is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-*  Library General Public License for more details.
-*
-*  You should have received a copy of the GNU Library General Public License
-*  along with SpeechControl .  If not, write to the Free Software Foundation, Inc.,
-*  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-*/
+ *  This file is part of the SpeechControl project.
+ *
+ *  Copyright (C) 2012 Jacky Alciné <jackyalcine@gmail.com>
+ *
+ *  SpeechControl is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Library General Public
+ *  License as published by the Free Software Foundation; either
+ *  version 2 of the License, or (at your option) any later version.
+ *
+ *  SpeechControl is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Library General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Library General Public
+ *  License along with SpeechControl.
+ *  If not, write to the Free Software Foundation, Inc.,
+ *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ */
+
+/**
+ * @author Jacky Alciné <jackyalcine@gmail.com>
+ * @date 05/26/12 10:56:33 AM
+ */
 
 #include <QIcon>
 #include <QVariantMap>
@@ -31,8 +37,8 @@
 
 #include "quickstart-wizard.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows;
 
 QuickStart::QuickStart (QWidget* parent) :
     AbstractWizard (parent)
@@ -43,14 +49,14 @@ QuickStart::QuickStart (QWidget* parent) :
     setPage(QuickStart::IntroductionPage,
             new Windows::Pages::IntroductionPage(tr("This wizard allows you to tweak SpeechControl to your personal configuration."))
            );
-    /*setPage (QuickStart::UserCreationPage,
-             (new Pages::UserInitialization));
+    setPage (QuickStart::UserCreationPage,
+             (new Windows::Pages::UserInitialization));
     setPage (QuickStart::MicrophoneCreationPage,
-             (new Pages::MicrophoneSelection));
+             (new Windows::Pages::MicrophoneSelection));
     setPage (QuickStart::AccuracySamplingPage,
-             (new Pages::MicrophoneSample));
+             (new Windows::Pages::MicrophoneSample));
     setPage (QuickStart::ContentAdditionPage,
-             (new Pages::SourceSelectionPage));*/
+             (new Windows::Pages::SourceSelectionPage));
     setPage (QuickStart::ConclusionPage,
              (new Windows::Pages::ConclusionPage (tr ("You've successfully set up SpeechControl to settings of your preference."))));
 }

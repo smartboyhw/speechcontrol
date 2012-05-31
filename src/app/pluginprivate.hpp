@@ -27,10 +27,11 @@
 #include <QList>
 #include <QString>
 #include <QAction>
+#include <QMenu>
 #include <QPluginLoader>
 #include <app/global.hpp>
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 
 class AbstractPlugin;
 
@@ -55,7 +56,8 @@ struct AbstractPluginPrivate {
     QPluginLoader* ldr;     ///< The magical QPluginLoader!
     QString id;             ///< The ID of the plug-in.
     QList<QAction*> acts;   ///< The QActions used to add the 'Plugins' menu.
+    QList<QMenu*> menus;
     AbstractPlugin* q_ptr;
 };
 
-SPCHCNTRL_END_NAMESPACE
+}

@@ -30,7 +30,7 @@
 #include <app/global.hpp>
 #include <app/services/module.hpp>
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 struct AbstractServiceModulePrivate {
     Q_DECLARE_PUBLIC (AbstractServiceModule)
     AbstractServiceModulePrivate (AbstractServiceModule* p_qPtr);
@@ -42,6 +42,6 @@ struct AbstractServiceModulePrivate {
     AbstractServiceModule::ActivityState m_state;
 };
 
-SPCHCNTRL_END_NAMESPACE
+}
 
 // kate: indent-mode cstyle; replace-tabs on;

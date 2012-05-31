@@ -27,7 +27,7 @@
 #include "outro.hpp"
 #include "ui_wizardbase-outro.h"
 
-SPCHCNTRL_UI_WIZARD_PAGES_USE_NAMESPACE
+using namespace SpeechControl::Windows::Pages;
 
 ConclusionPage::ConclusionPage (const QString& summary) :
     QWizardPage(),

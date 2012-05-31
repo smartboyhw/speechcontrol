@@ -31,9 +31,15 @@
 #include <QWizardPage>
 #include <ui/wizards/base.hpp>
 
-SPCHCNTRL_DEFINE_UIC(MicrophoneSelection)
-SPCHCNTRL_FORWARD_DECLARE_CLASS(DeviceAudioSource)
-SPCHCNTRL_UI_WIZARD_PAGES_BEGIN_NAMESPACE
+SPCHCNTRL_DEFINE_UIC (MicrophoneSelection)
+
+namespace SpeechControl
+{
+class DeviceAudioSource;
+namespace Windows
+{
+namespace Pages
+{
 
 class MicrophoneSelection : public QWizardPage
 {
@@ -58,6 +64,8 @@ private:
     DeviceAudioSource* m_mic;
 };
 
-SPCHCNTRL_UI_WIZARD_PAGES_END_NAMESPACE
+}
+}
+}
 #endif // MICSELECT_HPP
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

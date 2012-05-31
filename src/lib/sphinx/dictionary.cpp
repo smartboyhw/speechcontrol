@@ -32,7 +32,7 @@
 #include "dictionaryprivate.hpp"
 #include "dictionary.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
+using namespace SpeechControl;
 
 DictionaryPrivate::DictionaryPrivate () : m_words(), m_device (0)
 {
@@ -254,4 +254,4 @@ DictionaryEntry::~DictionaryEntry()
 }
 
 #include "dictionary.moc"
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

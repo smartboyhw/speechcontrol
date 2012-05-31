@@ -32,9 +32,14 @@
 #include <sessions/adaptionutility.hpp>
 #include <sessions/accuracymeter.hpp>
 
-SPCHCNTRL_DEFINE_UIC(Enaction)
-SPCHCNTRL_FORWARD_DECLARE_CLASS(Session)
-SPCHCNTRL_UI_WIZARD_PAGES_BEGIN_NAMESPACE
+SPCHCNTRL_DEFINE_UIC (Enaction)
+namespace SpeechControl
+{
+class Session;
+namespace Windows
+{
+namespace Pages
+{
 
 typedef SpeechControl::AdaptationUtility::Phase Phases;
 
@@ -68,6 +73,8 @@ private:
     AccuracyMeter* m_meter;
 };
 
-SPCHCNTRL_UI_WIZARD_PAGES_END_NAMESPACE
+}
+}
+}
 #endif // ADAPT_ENACTIONSELECTION_HPP
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

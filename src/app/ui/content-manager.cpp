@@ -25,8 +25,8 @@
 #include "content-manager.hpp"
 #include "ui_manager-content.h"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows;
 using namespace SpeechControl::Windows::Managers;
 
 ContentManager::ContentManager (QWidget* parent) :

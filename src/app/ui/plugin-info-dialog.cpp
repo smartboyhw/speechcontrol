@@ -28,7 +28,7 @@
 #include "ui_plugin-info-dialog.h"
 #include <factory.hpp>
 
-SPCHCNTRL_USE_NAMESPACE
+using namespace SpeechControl;
 
 PluginInfoDialog::PluginInfoDialog (QUuid p_uuid, QWidget* parent) : QDialog (parent)
 {

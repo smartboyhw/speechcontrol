@@ -30,7 +30,7 @@
 #include "app/services/engine.hpp"
 #include "service.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
+using namespace SpeechControl;
 
 VoxforgeService* VoxforgeService::s_inst = 0;
 

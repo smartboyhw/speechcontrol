@@ -31,7 +31,7 @@
 #include "models-pane.hpp"
 #include "ui_settingspane-training.h"
 
-SPCHCNTRL_UI_USE_NAMESPACE
+using namespace SpeechControl::Windows;
 
 TrainingSettingsPane::TrainingSettingsPane() :
     ui (new Ui::TrainingSettingsPane)

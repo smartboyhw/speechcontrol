@@ -30,7 +30,7 @@ namespace Ui
 class PluginInfoDialog;
 }
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 
 class PluginInfoDialog : public QDialog
 {
@@ -47,6 +47,6 @@ private:
 
 };
 
-SPCHCNTRL_END_NAMESPACE
+}
 #endif
 // kate: indent-mode cstyle; replace-tabs on; 

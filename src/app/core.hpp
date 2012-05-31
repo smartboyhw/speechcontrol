@@ -37,7 +37,7 @@ class QSettings;
 class QApplication;
 class QTranslator;
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 
 class CorePrivate;
 /**
@@ -153,7 +153,7 @@ public slots:
     void quit (const int& p_exitCode = 0);
 };
 
-SPCHCNTRL_END_NAMESPACE
+}
 
 #endif // CORE_HPP
 // kate: indent-mode cstyle; replace-tabs on;

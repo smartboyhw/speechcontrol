@@ -27,24 +27,35 @@
 #include <QDebug>
 #include <QtPlugin>
 #include <QIcon>
+#include <QAction>
+#include <QMenu>
 
 #include <app/core.hpp>
 #include <app/services/module.hpp>
 #include "service.hpp"
 #include "plugin.hpp"
+#include "settings-pane.hpp"
+#include <ui/settings-dialog.hpp>
 
-SPCHCNTRL_USE_NAMESPACE
-DSKTPCTLAPI_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::DesktopControl;
 
-Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent)
+Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent), m_actionToggle (0),
+    m_actionOptions (0), m_menuDesktopControl (0)
 {
+    m_menuDesktopControl = new QMenu ("Desktop Control", 0);
+    m_actionOptions = m_menuDesktopControl->addAction (QIcon::fromTheme ("configure"), "Configure..",
+                      this, SLOT (doMenuConfigure()));
+    m_actionToggle = m_menuDesktopControl->addAction ("Toggle", this, SLOT (doMenuToggle (bool)));
+    m_actionToggle->setCheckable (true);
+    m_actionToggle->setChecked (DesktopControl::Service::instance()->isEnabled());
 }
 
 void Plugin::initialize()
 {
     const bool dsktpCntrlState = Core::configuration ("DesktopControl/AutoStart", false).toBool();
     DesktopControl::Service::instance()->setState ( (dsktpCntrlState) ? AbstractServiceModule::Enabled  : AbstractServiceModule::Disabled);
-    qDebug() << "Plug-in loaded! (dsktpctlapi)";
+    Windows::SettingsDialog::addPane(new Windows::DesktopControlSettingsPane);
 }
 
 void Plugin::deinitialize()
@@ -57,6 +68,17 @@ QPixmap Plugin::pixmap() const
     return QIcon::fromTheme ("help").pixmap (64, 64);
 }
 
+void Plugin::doMenuToggle (bool& p_checked)
+{
+    p_checked ? DesktopControl::Service::instance()->start() : DesktopControl::Service::instance()->stop();
+}
+
+void Plugin::doMenuOptions()
+{
+    Windows::SettingsDialog::displayPane("dskctl");
+}
+
+
 Plugin::~Plugin()
 {
 
@@ -64,6 +86,6 @@ Plugin::~Plugin()
 
 #include "plugin.moc"
 
-Q_EXPORT_PLUGIN2 (spchcntrl-dsktpctlapi, SpeechControl::DesktopControl::Plugin)
+Q_EXPORT_PLUGIN2 (spchcntrl-dskctlapi, SpeechControl::DesktopControl::Plugin)
 
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

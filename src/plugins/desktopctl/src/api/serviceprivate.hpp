@@ -28,7 +28,7 @@
 #include "global.hpp"
 
 class QDeclarativeView;
-DSKTPCTLAPI_BEGIN_NAMESPACE
+namespace SpeechControl { namespace DesktopControl {
 
 class Service;
 class Sphinx;
@@ -43,6 +43,6 @@ struct ServicePrivate : public AbstractServiceModulePrivate {
     QDeclarativeView* m_view;
 };
 
-DSKTPCTLAPI_END_NAMESPACE
+}}
 // kate: indent-mode cstyle; replace-tabs on;
 

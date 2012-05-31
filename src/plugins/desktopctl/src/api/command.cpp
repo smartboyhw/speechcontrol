@@ -32,8 +32,8 @@
 #include "command.hpp"
 
 using namespace std;
-SPCHCNTRL_USE_NAMESPACE
-DSKTPCTLAPI_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::DesktopControl;
 
 struct GlobalCategory : public AbstractCategory {
     static GlobalCategory* s_inst;

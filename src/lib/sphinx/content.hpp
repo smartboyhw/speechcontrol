@@ -38,7 +38,7 @@
 class QFile;
 class QDomDocument;
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 
 class Content;
 class AbstractContentSource;
@@ -354,7 +354,7 @@ public:
     bool setUrl (const QUrl& p_url);
 };
 
-SPCHCNTRL_END_NAMESPACE
+}
 
 #endif
 // kate: indent-mode cstyle; replace-tabs on; 

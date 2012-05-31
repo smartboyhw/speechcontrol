@@ -23,9 +23,8 @@
 #include "commands.hpp"
 #include "mpris.hpp"
 
-USING_NAMESPACE_MPRIS
-
-MprisCategory* MprisCategory::s_inst = 0;
+using namespace SpeechControl::DesktopControl::MPRIS;
+SPCHCNTRL_DEFINE_SINGLETON(MprisCategory);
 
 MprisCategory::MprisCategory () : AbstractCategory (global())
 {
@@ -140,4 +139,4 @@ bool LibraryCommand::invoke (const QString& p_statement) const
 
 #include "commands.moc"
 
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

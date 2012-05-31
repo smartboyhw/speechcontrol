@@ -36,7 +36,7 @@
 #include "factoryprivate.hpp"
 #include "pluginprivate.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
+using namespace SpeechControl;
 SPCHCNTRL_DEFINE_SINGLETON(Factory)
 
 FactoryPrivate::FactoryPrivate() : loadedPlugins() {

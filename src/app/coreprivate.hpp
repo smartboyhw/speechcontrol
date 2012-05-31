@@ -30,7 +30,7 @@ class QTranslator;
 
 #include <app/global.hpp>
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 
 class Core;
 struct CorePrivate {
@@ -45,5 +45,5 @@ struct CorePrivate {
     Core* q_ptr;
 };
 
-SPCHCNTRL_END_NAMESPACE
+}
 // kate: indent-mode cstyle; replace-tabs on;

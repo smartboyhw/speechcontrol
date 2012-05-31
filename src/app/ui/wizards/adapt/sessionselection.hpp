@@ -32,7 +32,7 @@
 #include <sessions/session.hpp>
 
 SPCHCNTRL_DEFINE_UIC(SessionSelection)
-SPCHCNTRL_UI_WIZARD_PAGES_BEGIN_NAMESPACE
+namespace SpeechControl { namespace Windows { namespace Pages {
 
 class SessionSelection : public QWizardPage
 {
@@ -56,6 +56,6 @@ private:
     SessionList m_listSession;
 };
 
-SPCHCNTRL_UI_WIZARD_PAGES_END_NAMESPACE
+} } }
 #endif // ADAPT_SESSIONSELECTION_HPP
 // kate: indent-mode cstyle; replace-tabs on;

@@ -29,9 +29,12 @@
 
 #include <ui/wizards/base.hpp>
 
-SPCHCNTRL_FORWARD_DECLARE_CLASS(Content)
-SPCHCNTRL_FORWARD_DECLARE_CLASS(AbstractContentSource)
-SPCHCNTRL_UI_BEGIN_NAMESPACE
+namespace SpeechControl
+{
+class Content;
+class AbstractContentSource;
+namespace Windows
+{
 
 class ContentWizard : public AbstractWizard
 {
@@ -56,6 +59,7 @@ private:
     mutable AbstractContentSource* m_src;
 };
 
-SPCHCNTRL_UI_END_NAMESPACE
+}
+}
 #endif // WIZARD_HPP
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

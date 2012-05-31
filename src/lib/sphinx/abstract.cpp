@@ -67,7 +67,16 @@ void AbstractSphinx::buildPipeline (QString p_description)
 {
     Q_D (AbstractSphinx);
     d->m_pipeline = QGst::Pipeline::create();
-    QGst::BinPtr bin = QGst::Bin::fromDescription (p_description);
+    QGst::BinPtr bin;
+
+    try {
+        bin = QGst::Bin::fromDescription (p_description);
+    }
+    catch (std::exception& e) {
+        qDebug() << "Can't make pipeline!" << e.what();
+        return;
+    }
+
     d->m_pipeline->add (bin);
     qDebug() << "[AbstractSphinx::buildPipeline()] Built pipeline for AbstractSphinx (" << p_description << ").";
     prepare();
@@ -164,12 +173,16 @@ const QGst::ElementPtr AbstractSphinx::volumeElement() const
 
 void AbstractSphinx::setVaderProperty (const QString& p_property, const QVariant& p_value)
 {
-    vaderElement()->setProperty (p_property.toStdString().c_str(), QGlib::Value (p_value.toString()));
+    if (!vaderElement().isNull()){
+        vaderElement()->setProperty (p_property.toStdString().c_str(), QGlib::Value (p_value.toString()));
+    }
 }
 
 void AbstractSphinx::setPsProperty (const QString& p_property, const QVariant& p_value)
 {
-    pocketSphinxElement()->setProperty (p_property.toStdString().c_str(), QGlib::Value (p_value.toString()));
+    if (!pocketSphinxElement().isNull()){
+        pocketSphinxElement()->setProperty (p_property.toStdString().c_str(), QGlib::Value (p_value.toString()));
+    }
 }
 
 void AbstractSphinx::setLanguageModel (const QString& p_path)
@@ -307,4 +320,4 @@ AbstractSphinx::~AbstractSphinx()
 }
 
 #include "sphinx/abstract.moc"
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

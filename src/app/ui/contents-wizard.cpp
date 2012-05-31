@@ -36,8 +36,8 @@
 #include <QDebug>
 #include <QVariant>
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows;
 
 ContentWizard::ContentWizard (QWidget* parent) :
     AbstractWizard (parent), m_src (0)

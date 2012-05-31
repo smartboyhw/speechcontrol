@@ -30,7 +30,7 @@
 #include "voxforge-wizard.hpp"
 
 using namespace SpeechControl;
-using namespace SpeechControl::Windows::Wizards;
+using namespace SpeechControl::Windows;
 
 VoxforgeWizard::VoxforgeWizard (QWidget* parent) :
     AbstractWizard (parent)

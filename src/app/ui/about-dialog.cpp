@@ -31,7 +31,7 @@
 #include "about-dialog.hpp"
 #include "ui_about-dialog.h"
 
-SPCHCNTRL_UI_USE_NAMESPACE
+using namespace SpeechControl::Windows;
 
 AboutDialog::AboutDialog (QWidget* parent) : QDialog (parent), ui (new Ui::AboutDialog)
 {

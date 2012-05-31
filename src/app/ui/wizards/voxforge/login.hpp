@@ -31,8 +31,7 @@ namespace SpeechControl
 {
 namespace Windows
 {
-namespace Wizards
-{
+
 namespace Pages
 {
 class LoginPortal : public QWizardPage
@@ -46,9 +45,9 @@ public:
 
 private slots:
     void on_btnLogin_clicked();
-    void on_checkBoxRemeberCreds_toggled(const bool& p_checked);
-    void on_lineEditUsername_textChanged(const QString& p_text);
-    void on_lineEditPassword_textChanged(const QString& p_text);
+    void on_checkBoxRemeberCreds_toggled (const bool& p_checked);
+    void on_lineEditUsername_textChanged (const QString& p_text);
+    void on_lineEditPassword_textChanged (const QString& p_text);
 
 private:
     Ui::LoginPortal* ui;
@@ -57,7 +56,6 @@ private:
 }
 }
 }
-}
 
 #endif //SPCHCNTRL_VOXFORGE_LOGIN_HPP
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

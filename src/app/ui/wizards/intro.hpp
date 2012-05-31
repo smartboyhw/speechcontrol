@@ -31,7 +31,7 @@
 #include <ui/wizards/base.hpp>
 
 SPCHCNTRL_DEFINE_UIC(Introduction)
-SPCHCNTRL_UI_WIZARD_PAGES_BEGIN_NAMESPACE
+namespace SpeechControl { namespace Windows { namespace Pages {
 
 class IntroductionPage : public QWizardPage
 {
@@ -45,6 +45,6 @@ private:
     Ui::Introduction* ui;
 };
 
-SPCHCNTRL_UI_WIZARD_PAGES_END_NAMESPACE
+} } }
 #endif // INTRO_HPP
 // kate: indent-mode cstyle; replace-tabs on;

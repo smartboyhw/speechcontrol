@@ -21,7 +21,7 @@
 #include "upload.hpp"
 #include "ui_voxforgewizard-upload.h"
 
-using namespace SpeechControl::Windows::Wizards::Pages;
+using namespace SpeechControl::Windows::Pages;
 
 UploadEnaction::UploadEnaction (QWidget* parent) : QWizardPage (parent), ui (new Ui::UploadEnaction)
 {

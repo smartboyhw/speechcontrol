@@ -31,7 +31,7 @@
 #include <ui/settings-dialog.hpp>
 
 SPCHCNTRL_DEFINE_UIC(MicrophoneSettingsPane)
-SPCHCNTRL_UI_BEGIN_NAMESPACE
+namespace SpeechControl { namespace Windows {
 
 class MicrophoneSettingsPane : public AbstractSettingsPane
 {
@@ -59,7 +59,7 @@ public slots:
     void on_horizontialSliderVolume_valueChanged (const int p_value);
 };
 
-SPCHCNTRL_UI_END_NAMESPACE
+} }
 
 #endif // MICROPHONE_HPP
 // kate: indent-mode cstyle; replace-tabs on;

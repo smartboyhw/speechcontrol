@@ -40,11 +40,11 @@
 #include "app/coreprivate.hpp"
 #include "app/core.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_DEFINE_SINGLETON(Core)
+using namespace SpeechControl;
+SPCHCNTRL_DEFINE_SINGLETON (Core)
 
-CorePrivate::CorePrivate(Core* p_qPtr) : m_app (0),
-    m_settings (0), m_trnsltr (0), q_ptr(p_qPtr)
+CorePrivate::CorePrivate (Core* p_qPtr) : m_app (0),
+    m_settings (0), m_trnsltr (0), q_ptr (p_qPtr)
 {
     Q_Q (Core);
     m_trnsltr = new QTranslator (q);
@@ -77,7 +77,7 @@ Core::Core() : QObject()
 }
 
 Core::Core (int p_argc, char** p_argv, QApplication* app) : QObject (app),
-    d_ptr (new CorePrivate(this))
+    d_ptr (new CorePrivate (this))
 {
     Q_D (Core);
     d->m_app = app;
@@ -114,8 +114,8 @@ void Core::start()
         if (QMessageBox::question (0, tr ("First Run"),
                                    tr ("This seems to be the first time you've run SpeechControl on this system. "
                                        "A wizard allowing you to start SpeechControl will appear."), QMessageBox::Yes, QMessageBox::No) == QMessageBox::Yes) {
-            //QuickStart* win = new QuickStart (0);
-            //win->exec();
+            Windows::QuickStart wiz;
+            wiz.exec();
         }
     }
 
@@ -199,4 +199,4 @@ Core::~Core ()
 }
 
 #include "core.moc"
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

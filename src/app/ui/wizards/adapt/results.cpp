@@ -21,8 +21,8 @@
 #include "results.hpp"
 #include "ui_adaptwizard-results.h"
 
-SPCHCNTRL_USE_NAMESPACE
-SPCHCNTRL_UI_WIZARD_PAGES_USE_NAMESPACE
+using namespace SpeechControl;
+using namespace SpeechControl::Windows::Pages;
 
 Results::Results (QWidget* parent) :
     QWizardPage (parent),

@@ -32,7 +32,7 @@
 #include <QPixmap>
 #include <app/global.hpp>
 
-SPCHCNTRL_BEGIN_NAMESPACE
+namespace SpeechControl {
 
 class AbstractServiceModule;
 class AbstractServiceModulePrivate;
@@ -158,7 +158,7 @@ protected:
     virtual ~AbstractServiceModule();
 };
 
-SPCHCNTRL_END_NAMESPACE
+}
 
 #endif // SPEECHCONTROL_SERVICES_MODULE_HPP
 // kate: indent-mode cstyle; replace-tabs on;

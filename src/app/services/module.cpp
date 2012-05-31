@@ -28,7 +28,7 @@
 #include "moduleprivate.hpp"
 #include "module.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
+using namespace SpeechControl;
 
 AbstractServiceModulePrivate::AbstractServiceModulePrivate (AbstractServiceModule* p_qPtr) :
     q_ptr (p_qPtr), m_state (AbstractServiceModule::Undefined)

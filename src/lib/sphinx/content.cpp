@@ -36,7 +36,7 @@
 #include "content.hpp"
 #include "contentprivate.hpp"
 
-SPCHCNTRL_USE_NAMESPACE
+using namespace SpeechControl;
 ContentMap ContentPrivate::s_lst;
 
 ContentPrivate::ContentPrivate(Content* p_Qptr) : q_ptr(p_Qptr) {
@@ -158,7 +158,8 @@ Content* Content::obtain (const QString& p_id)
     if (!ContentPrivate::s_lst.contains (p_id)) {
         Content* content = new Content (p_id);
         qDebug() << "[Content::obtain()] Is content valid? " << content->isValid();
-        SC_ASSERT (content->isValid() , "Invalid Corpus was obtained.");
+        if (!content->isValid())
+            return 0;
 
         ContentPrivate::s_lst.insert (p_id, (content));
         qDebug() << "[Content::obtain()] Content" << p_id << "rendered.";
@@ -179,7 +180,7 @@ Content* Content::obtainFromFile (const QUrl& p_url)
     if (file->open (QIODevice::ReadOnly | QIODevice::Text)) {
         content->load (file);
         qDebug() << "[Content::obtainFromFile()] Is content valid? " << content->isValid();
-        SC_ASSERT (content->isValid() , "Invalid Corpus was obtained.");
+        Q_ASSERT (content->isValid());
         qDebug() << "[Content::obtainFromFile()] Content" << p_url << "rendered.";
         return content;
     }
@@ -432,7 +433,7 @@ Content* Content::create (const QString& p_author, const QString& p_title, const
 
     qDebug() << "[Content::create()] Content XML:" << dom.toString();
     Content* nabbedContent = Content::obtain (id);
-    SC_ASSERT (nabbedContent != 0, "The generated Content doesn't exist!");
+    Q_ASSERT (nabbedContent != 0);
 
     return nabbedContent;
 }
@@ -509,7 +510,7 @@ void AbstractContentSource::setTitle (const QString& p_title)
 Content* AbstractContentSource::generate()
 {
     Content* content = Content::create (author(), title(), text());
-    SC_ASSERT (content != 0, "Failed to generate Content from AbstractContentSource.");
+    Q_ASSERT (content != 0);
 
     return content;
 }
@@ -600,4 +601,4 @@ bool TextContentSource::setUrl (const QUrl& p_url)
 }
 
 #include "sessions/content.moc"
-// kate: indent-mode cstyle; replace-tabs on; 
+// kate: indent-mode cstyle; replace-tabs on;

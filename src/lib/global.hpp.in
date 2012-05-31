@@ -27,38 +27,33 @@
 #ifndef SPCHCNTRL_LIB_GLOBAL_HPP
 #define SPCHCNTRL_LIB_GLOBAL_HPP
 
-// Holds the build-time value of the location of PocketSphinx's pre-built modules.
+/**
+ * @def POCKETSPHINX_MODELDIR
+ * @ingroup SpeechControlMacros
+ * @brief Holds the build-time value of the location of PocketSphinx's pre-built modules.
+ */
 #define POCKETSPHINX_MODELDIR "@POCKETSPHINX_MODELDIR@"
 
-// Holds the version information of PocketSphinx.
+/**
+ * @def POCKETSPHINX_VERSION
+ * @ingroup SpeechControlMacros
+ * @brief Holds the version information of PocketSphinx.
+ */
 #define POCKETSPHINX_VERSION "@POCKETSPHINX_VERSION@"
 
-// Holds the build version of SpeechControl's library.
+/**
+ * @def SPCHCNTRL_BUILD_VERSION
+ * @ingroup SpeechControlMacros
+ * @brief Holds the build version of SpeechControl's library.
+ */
 #define SPCHCNTRL_BUILD_VERSION "@SPCHCNTRL_LIB_VERSION@"
 
-// Holds the date that of which SpeechControl's library was built.
+/**
+ * @def SPCHCNTRL_BUILD_DATE
+ * @ingroup SpeechControlMacros
+ * @brief Holds the date that of which SpeechControl's library was built.
+ */
 #define SPCHCNTRL_BUILD_DATE __TIMESTAMP__
 
-// Handy macros for SpeechControl
-#define SPCHCNTRL_NAMESPACE SpeechControl /// What for?
-#define SPCHCNTRL_PREPEND_NAMESPACE(name) ::SPCHCNTRL_NAMESPACE::name
-#define SPCHCNTRL_PREPEND_NAMESPACE2(name) SPCHCNTRL_NAMESPACE::name
-#define SPCHCNTRL_USE_NAMESPACE using namespace ::SPCHCNTRL_NAMESPACE;
-#define SPCHCNTRL_BEGIN_NAMESPACE namespace SPCHCNTRL_NAMESPACE {
-#define SPCHCNTRL_END_NAMESPACE }
-#define SPCHCNTRL_FORWARD_DECLARE_CLASS(name) \
-SPCHCNTRL_BEGIN_NAMESPACE class name; SPCHCNTRL_END_NAMESPACE;\
-\
-using SPCHCNTRL_PREPEND_NAMESPACE2(name);
-
-#define SPCHCNTRL_FORWARD_DECLARE_STRUCT(name) \
-SPCHCNTRL_BEGIN_NAMESPACE struct name; SPCHCNTRL_END_NAMESPACE;\
-\
-using SPCHCNTRL_PREPEND_NAMESPACE2(name);
-
-#ifdef SPCHCNTRL_NAMESPACE
-namespace SPCHCNTRL_NAMESPACE { }
-#endif
-
 #endif /* SPCHCNTRL_LIB_GLOBAL_HPP */
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

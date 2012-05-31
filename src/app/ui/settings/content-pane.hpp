@@ -30,7 +30,7 @@
 #include <ui/settings-dialog.hpp>
 
 SPCHCNTRL_DEFINE_UIC(ContentSettingsPane)
-SPCHCNTRL_UI_BEGIN_NAMESPACE
+namespace SpeechControl { namespace Windows {
 class ContentSettingsPane : public AbstractSettingsPane
 {
     Q_OBJECT
@@ -57,7 +57,7 @@ private:
     Ui::ContentSettingsPane* ui;
 };
 
-SPCHCNTRL_UI_END_NAMESPACE
+} }
 
 #endif // CONTENTSETTINGSPANE_HPP
 // kate: indent-mode cstyle; replace-tabs on;

@@ -1,0 +1,14 @@
+#!/usr/bin/python
+
+#TODO: Move everything to Python 3!
+import sys
+from PyQt4.QtGui import QApplication, QWidget
+
+app = QApplication(sys.argv)
+
+w = QWidget()
+w.resize(500, 500)
+w.setWindowTitle("SpeechControl")
+w.show()
+
+sys.exit(app.exec_())

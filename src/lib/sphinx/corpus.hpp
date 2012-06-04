@@ -33,7 +33,7 @@
 #include <QDateTime>
 #include <QStringList>
 
-#include <sessions/phrase.hpp>
+#include <sphinx/phrase.hpp>
 
 class QDomDocument;
 

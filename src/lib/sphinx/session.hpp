@@ -166,7 +166,7 @@ public:
      *
      * @note It's important to invoke this method at least ONCE when using Sessions.
      **/
-    static void init();
+    static void setup();
 
     /**
      * @brief Saves information about the Session's cache to disk.

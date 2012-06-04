@@ -23,8 +23,9 @@
  *
  */
 
+#include <stdlib.h>
+
 #include "system.hpp"
-#include "audiosource/device.hpp"
 #include "audio/filerecorder.hpp"
 #include "audio/devicemanager.hpp"
 
@@ -46,8 +47,6 @@ System::System (int* argc, char** argv[])
 
     QDir configDir;
 
-    DeviceAudioSource::allDevices();
-
     configDir.mkpath (QDir::homePath() + "/.config/speechcontrol/corpus");
     configDir.mkpath (QDir::homePath() + "/.config/speechcontrol/dictionaries");
 
@@ -66,6 +65,15 @@ void System::start (int* argc, char** argv[])
 {
     if (!s_inst)
         s_inst = new System (argc, argv);
+}
+
+QString System::configurationPath()
+{
+    QString confPath;
+    char* confPrefix = getenv("HOME");
+    if (confPrefix)
+        confPath = QString(confPrefix) + "/.config/speechcontrol";
+    return confPath;
 }
 
 System* System::self()

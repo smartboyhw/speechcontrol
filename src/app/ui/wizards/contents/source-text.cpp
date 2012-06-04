@@ -26,7 +26,7 @@
 
 #include "source-text.hpp"
 #include "ui/contents-wizard.hpp"
-#include "sessions/content.hpp"
+#include <lib/sphinx/content.hpp>
 #include "ui_contentwizard-source-text.h"
 
 #include <QDebug>

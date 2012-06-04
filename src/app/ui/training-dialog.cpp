@@ -118,7 +118,7 @@ void TrainingDialog::onMicStoppedListening()
 void TrainingDialog::startTraining (Session* session, DeviceAudioSource* device)
 {
     if (!device) {
-        device = Windows::MicrophoneSelectionDialog::select();
+        device = Windows::MicrophoneSelectionDialog::();
 
         if (!device) {
             QMessageBox::critical (0, tr ("Microphone Error"), tr ("<h2>Microphone Error</h2>SpeechControl is unable to get a proper handle on your microphone. Please check that all required peripherals are connected."));

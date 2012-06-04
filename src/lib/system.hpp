@@ -41,6 +41,8 @@ public:
     static System* self();
     static void start (int*, char** []);
 
+    static QString configurationPath();
+
 public slots:
     static void start();
     static void stop();

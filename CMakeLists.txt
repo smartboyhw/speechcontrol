@@ -9,6 +9,7 @@ option(WITH_PYTHON_BINDINGS    "Generate Python support for SpeechControl?" OFF)
 option(WITH_PLUGINS            "Build the included plug-ins?"               OFF)
 option(WITH_DOCS               "Generate Doxygen-made documentation?"       OFF)
 option(WITH_TESTS              "Generate the test build system?"            OFF)
+option(WITH_FRONTEND           "Compile/Prepare main GUI component"         OFF)
 
 ## Required packages
 find_package(PkgConfig 0.2 REQUIRED)

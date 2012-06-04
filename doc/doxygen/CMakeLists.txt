@@ -23,7 +23,11 @@ if (DOXYGEN_FOUND)
         COMMENT "Built documentation.")
 
     add_dependencies(docs docs-lib docs-app)
-    add_dependencies(speechcontrol-app docs-app)
+
+    if(WITH_FRONTEND)
+        add_dependencies(speechcontrol-app docs-app)
+    endif()
+
     add_dependencies(speechcontrol docs-lib)
 
     ## Installs

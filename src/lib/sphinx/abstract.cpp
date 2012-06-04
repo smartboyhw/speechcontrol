@@ -22,12 +22,11 @@
 #include <QGst/enums.h>
 #include <QGst/ElementFactory>
 
-#include "lib/acousticmodel.hpp"
-#include "lib/dictionary.hpp"
-#include "lib/languagemodel.hpp"
-#include "lib/sphinx/abstractprivate.hpp"
-#include "lib/sphinx/abstract.hpp"
-#include "lib/audiosource/abstract.hpp"
+#include "acousticmodel.hpp"
+#include "dictionary.hpp"
+#include "languagemodel.hpp"
+#include "abstractprivate.hpp"
+#include "abstract.hpp"
 
 using namespace SpeechControl;
 

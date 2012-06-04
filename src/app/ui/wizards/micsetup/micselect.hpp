@@ -35,7 +35,7 @@ SPCHCNTRL_DEFINE_UIC (MicrophoneSelection)
 
 namespace SpeechControl
 {
-class DeviceAudioSource;
+//class DeviceAudioSource;
 namespace Windows
 {
 namespace Pages
@@ -48,8 +48,8 @@ class MicrophoneSelection : public QWizardPage
 public:
     explicit MicrophoneSelection (QWidget* p_parent = 0);
     ~MicrophoneSelection();
-    DeviceAudioSource* device();
-    void setDevice (DeviceAudioSource* p_device);
+//    DeviceAudioSource* device();
+//    void setDevice (DeviceAudioSource* p_device);
     virtual void initializePage();
     virtual void cleanupPage();
     virtual bool validatePage();
@@ -61,7 +61,7 @@ private slots:
 
 private:
     Ui::MicrophoneSelection* ui;
-    DeviceAudioSource* m_mic;
+//    DeviceAudioSource* m_mic;
 };
 
 }

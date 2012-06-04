@@ -32,6 +32,21 @@ list(REMOVE_ITEM SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS ${SPCHCNTRL_LIB_INCLUDE_DIR})
 configure_file("${PROJECT_SOURCE_DIR}/global.hpp.in"
                "${PROJECT_SOURCE_DIR}/global.hpp" @ONLY)
 
+## Directories
+file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/ui")
+file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/ui/wizards")
+file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/ui/wizards/adapt")
+file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/ui/wizards/contents")
+file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/ui/wizards/micsetup")
+file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/ui/wizards/quickstart")
+file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/ui/wizards/voxforge")
+file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/ui/settings")
+file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/services")
+file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/services/dictation")
+file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/services/desktopcontrol")
+file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/services/voxforge")
+file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/sessions")
+
 ## Some Qt-specific stuff.
 QT4_AUTOMOC(${SPCHCNTRL_LIB_SRCS})
 

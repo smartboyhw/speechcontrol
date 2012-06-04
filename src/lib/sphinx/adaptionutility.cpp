@@ -29,13 +29,13 @@
 #include <QProcess>
 #include <QTemporaryFile>
 
-#include <lib/acousticmodel.hpp>
-#include <lib/dictionary.hpp>
+#include <lib/sphinx/acousticmodel.hpp>
+#include <lib/sphinx/dictionary.hpp>
 
-#include "sessions/session.hpp"
-#include "sessions/session.hpp"
-#include "sessions/corpus.hpp"
-#include "sessions/adaptionutility.hpp"
+#include <lib/sphinx/session.hpp>
+#include <lib/sphinx/session.hpp>
+#include <lib/sphinx/corpus.hpp>
+#include <lib/sphinx/adaptionutility.hpp>
 
 using namespace SpeechControl;
 

@@ -26,7 +26,7 @@
 
 #include "selection.hpp"
 #include "source-text.hpp"
-#include "sessions/content.hpp"
+#include <lib/sphinx/content.hpp>
 #include "ui/contents-wizard.hpp"
 #include "ui_contentwizard-sourceselect.h"
 

@@ -27,8 +27,8 @@
 #include <QFile>
 #include <QDebug>
 
-#include "sessions/session.hpp"
-#include "sessions/corpus.hpp"
+#include <sphinx/session.hpp>
+#include <sphinx/corpus.hpp>
 #include "accuracymeter.hpp"
 
 using namespace SpeechControl;

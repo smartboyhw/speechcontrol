@@ -42,7 +42,6 @@ class MicrophoneSelectionDialog : public QDialog
 public:
     explicit MicrophoneSelectionDialog (QWidget* parent = 0);
     ~MicrophoneSelectionDialog();
-    static DeviceAudioSource* select();
 
 public slots:
     virtual void accept();

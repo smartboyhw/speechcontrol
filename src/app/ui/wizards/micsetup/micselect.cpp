@@ -25,7 +25,6 @@
  */
 
 #include <QDebug>
-#include <lib/audiosource/device.hpp>
 #include "micselect.hpp"
 #include "ui/micsetup-wizard.hpp"
 #include "ui_micwizard-select.h"

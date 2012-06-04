@@ -20,8 +20,6 @@
 
 #include <QIcon>
 
-#include <lib/audiosource/device.hpp>
-
 #include "core.hpp"
 #include "ui_select-microphone-dialog.h"
 #include "select-microphone-dialog.hpp"
@@ -39,13 +37,12 @@ MicrophoneSelectionDialog::MicrophoneSelectionDialog (QWidget* parent) :
 
 void MicrophoneSelectionDialog::updateUi()
 {
-    AudioSourceList devices = DeviceAudioSource::allDevices();
     ui->comboBoxDevices->clear();
 
-    Q_FOREACH (AbstractAudioSource * abstractDevice, devices) {
-        DeviceAudioSource* device = (DeviceAudioSource*) abstractDevice;
-        ui->comboBoxDevices->addItem (QIcon::fromTheme ("audio-input-microphone"), device->humanName(), device->deviceName());
-    }
+//    Q_FOREACH (AbstractAudioSource * abstractDevice, devices) {
+//        DeviceAudioSource* device = (DeviceAudioSource*) abstractDevice;
+//        ui->comboBoxDevices->addItem (QIcon::fromTheme ("audio-input-microphone"), device->humanName(), device->deviceName());
+//    }
 
     const QString defaultDevice = Core::configuration ("Microphone/Default").toString();
 
@@ -53,7 +50,7 @@ void MicrophoneSelectionDialog::updateUi()
         ui->comboBoxDevices->setCurrentIndex (ui->comboBoxDevices->findData (defaultDevice));
     }
 
-    m_mic = DeviceAudioSource::obtain (defaultDevice);
+//    m_mic = DeviceAudioSource::obtain (defaultDevice);
 }
 
 void MicrophoneSelectionDialog::on_comboBoxDevices_currentIndexChanged (const int index)
@@ -63,7 +60,7 @@ void MicrophoneSelectionDialog::on_comboBoxDevices_currentIndexChanged (const in
 
     if (!defaultDevice.isEmpty() && !defaultDevice.isNull()) {
         ui->checkBoxUseDefault->setChecked (itemDevice == defaultDevice);
-        m_mic = DeviceAudioSource::obtain (defaultDevice);
+//        m_mic = DeviceAudioSource::obtain (defaultDevice);
     }
 
     qDebug() << "[MicrophoneSelectionDialog::on_comboBoxDevices_currentIndexChanged()]" << itemDevice << defaultDevice;
@@ -77,20 +74,6 @@ void MicrophoneSelectionDialog::on_checkBoxUseDefault_toggled (const bool checke
         Core::setConfiguration ("Microphone/Default", itemDevice);
     else
         Core::setConfiguration ("Microphone/Default", QVariant());
-}
-
-DeviceAudioSource* MicrophoneSelectionDialog::select()
-{
-    if (Core::configuration ("Microphone/UseDefault").toBool())
-        return DeviceAudioSource::obtain (Core::configuration ("Microphone/Default").toString());
-    else {
-        MicrophoneSelectionDialog dialog;
-
-        if (dialog.exec() == QDialog::Accepted)
-            return dialog.m_mic;
-    }
-
-    return 0;
 }
 
 void MicrophoneSelectionDialog::accept()

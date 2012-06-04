@@ -25,7 +25,7 @@
  */
 
 #include "core.hpp"
-#include "sessions/content.hpp"
+#include <lib/sphinx/content.hpp>
 #include "content-information-dialog.hpp"
 #include "ui_content-information-dialog.h"
 

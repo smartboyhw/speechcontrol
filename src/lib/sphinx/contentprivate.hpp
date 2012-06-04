@@ -25,7 +25,7 @@
  */
 
 #include <app/global.hpp>
-#include <app/sessions/content.hpp>
+#include "content.hpp"
 
 namespace SpeechControl {
 

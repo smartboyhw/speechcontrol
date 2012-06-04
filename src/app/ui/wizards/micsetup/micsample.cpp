@@ -24,9 +24,6 @@
  * @date 05/20/12 14:00:47 PM
  */
 
-#include <lib/sphinx/audiosource.hpp>
-#include <lib/audiosource/device.hpp>
-
 #include "ui/micsetup-wizard.hpp"
 #include "micselect.hpp"
 #include "ui_micwizard-sample.h"
@@ -61,7 +58,7 @@ MicrophoneSample::~MicrophoneSample()
 /// @todo Have this use the Microphone defined in the previous step.
 void MicrophoneSample::on_btnBeginPrompt_clicked()
 {
-    m_sphnx->start();
+//    m_sphnx->start();
     m_index = 0;
     ui->btnBeginPrompt->setEnabled (false);
     updateUi();
@@ -70,10 +67,10 @@ void MicrophoneSample::on_btnBeginPrompt_clicked()
 /// @todo Fill the combo box with all of the mics.
 void MicrophoneSample::initializePage()
 {
-    DeviceAudioSource* device = DeviceAudioSource::obtain (wizard()->field ("mic-id").toString());
-    qDebug() << "[MicrophoneSample::initializePage()]" << device->humanName() << device->deviceName();
-    m_sphnx = new AudioSourceSphinx ( (AbstractAudioSource*) device);
-    connect (m_sphnx, SIGNAL (finished (QString)), this, SLOT (handleReceivedPrompt (QString)));
+//    DeviceAudioSource* device = DeviceAudioSource::obtain (wizard()->field ("mic-id").toString());
+//    qDebug() << "[MicrophoneSample::initializePage()]" << device->humanName() << device->deviceName();
+//    m_sphnx = new AudioSourceSphinx ( (AbstractAudioSource*) device);
+//    connect (m_sphnx, SIGNAL (finished (QString)), this, SLOT (handleReceivedPrompt (QString)));
     ui->lblPrompt->setText (QString::null);
 }
 

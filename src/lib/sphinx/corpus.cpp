@@ -32,12 +32,12 @@
 #include <QDateTime>
 #include <QDomDocument>
 
-#include <lib/dictionary.hpp>
+#include "dictionary.hpp"
 
 #include "app/core.hpp"
 #include "app/global.hpp"
-#include "app/sessions/corpus.hpp"
-#include "app/sessions/phrase.hpp"
+#include "corpus.hpp"
+#include "phrase.hpp"
 
 using namespace SpeechControl;
 

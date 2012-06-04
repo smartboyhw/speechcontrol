@@ -29,11 +29,12 @@
 #include <QFile>
 #include <QDebug>
 
-#include "core.hpp"
-#include "sessions/phrase.hpp"
-#include "sessions/corpus.hpp"
-#include "sessions/content.hpp"
-#include "sessions/session.hpp"
+#include <sphinx/phrase.hpp>
+#include <sphinx/corpus.hpp>
+#include <sphinx/content.hpp>
+#include <sphinx/session.hpp>
+
+#include <system.hpp>
 
 using namespace SpeechControl;
 
@@ -96,10 +97,10 @@ double Session::assessProgress() const
     }
 }
 
-void Session::init()
+void Session::setup()
 {
-    qDebug() << "[Session::init()] Loading sessions...";
-    QFile* configFile = new QFile (Core::configurationPath().absolutePath() + "/sessions.xml");
+    qDebug() << "[Session::setup()] Loading sessions...";
+    QFile* configFile = new QFile (System::configurationPath() + "/sessions.xml");
     s_elems.clear();
 
     if (s_dom) {
@@ -117,7 +118,7 @@ void Session::init()
         if (documentElem.isNull()) {
             qDebug() << "[Session:init()] Core Session XML is null; resetting...";
             configFile->remove();
-            init();
+            setup();
             qDebug() << "[Session:init()] Core Session XML has been reset.";
         }
         else {
@@ -217,7 +218,7 @@ SessionList Session::incompleteSessions()
 
 void Session::save()
 {
-    QFile* configFile = new QFile (Core::configurationPath().absolutePath() + "/sessions.xml");
+    QFile* configFile = new QFile (System::configurationPath() + "/sessions.xml");
 
     if (!configFile->open (QIODevice::WriteOnly | QIODevice::Truncate)) {
         qDebug() << "[Session::save()] Unable to open session data for saving." << configFile->errorString();
@@ -275,7 +276,7 @@ Session* Session::create (const Content* p_content)
     }
 
     save();
-    init();
+    setup();
     return Session::obtain (id);
 }
 
@@ -355,7 +356,7 @@ void Session::erase() const
         s_dom->documentElement().removeChild (*m_elem);
 
         save();
-        init();
+        setup();
 
         qDebug() << "[Session::erase()] Session" << id << "removed.";
     }

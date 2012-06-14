@@ -52,10 +52,10 @@ class SettingsDialog : public QDialog
 
 public:
     explicit SettingsDialog (QWidget* m_prnt);
-    static void addPane (AbstractSettingsPane* p_pane);
+    static void addPane (AbstractSettingsPane* p_pane, const QString& p_parentPaneID = QString::null);
     static void removePane (const QString& p_paneID);
     static void displayPane (const QString& p_paneID = "gnrl");
-    static AbstractSettingsPane* findPane(const QString& p_paneID);
+    //static AbstractSettingsPane* findPane(const QString& id);
     virtual ~SettingsDialog();
 
 private slots:
@@ -64,9 +64,9 @@ private slots:
 
 private:
     void buildWindow();
+    AbstractSettingsPane* findPane(const QString& id);
     QTreeWidgetItem* findPaneForItem (const QString& p_panelID);
     AbstractSettingsPane* currentPane();
-    AbstractSettingsPane* findPane (QString id);
     Ui::SettingsDialog* m_ui;
     QMap<QString, AbstractSettingsPane*> m_panes;
 };

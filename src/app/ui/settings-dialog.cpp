@@ -75,12 +75,15 @@ SettingsDialog::SettingsDialog (const SettingsDialog& p_other) : QDialog (p_othe
 }
 
 /// @todo Add it to the list of options.
-void SettingsDialog::addPane (AbstractSettingsPane* p_pane)
+void SettingsDialog::addPane (AbstractSettingsPane* p_pane, const QString& p_parentPaneID)
 {
     if (instance()->m_panes.contains (p_pane->id()))
         return;
 
     QString parentPaneId = p_pane->property ("parent-widget").toString();
+    if (!p_parentPaneID.isNull())
+        parentPaneId = p_parentPaneID;
+
     const bool hasParentPane = (!parentPaneId.isNull() && !parentPaneId.isEmpty());
     QTreeWidgetItem* parentItem = (hasParentPane) ? instance()->findPaneForItem (parentPaneId) : 0;
     QTreeWidgetItem* itm = 0;
@@ -213,7 +216,7 @@ AbstractSettingsPane::AbstractSettingsPane (QWidget* parent) : QFrame (parent)
 {
 }
 
-AbstractSettingsPane* SettingsDialog::findPane (QString id)
+AbstractSettingsPane* SettingsDialog::findPane (const QString& id)
 {
     return m_panes.value (id);
 }
@@ -240,11 +243,6 @@ void AbstractSettingsPane::removePane (AbstractSettingsPane* p_subPane)
 void AbstractSettingsPane::removePane (const QString& p_subPaneID)
 {
     removePane (m_panes.value (p_subPaneID));
-}
-
-AbstractSettingsPane* AbstractSettingsPane::obtainPane (const QString& p_subPaneID)
-{
-    return m_panes.value(p_subPaneID);
 }
 
 AbstractSettingsPane::~AbstractSettingsPane()

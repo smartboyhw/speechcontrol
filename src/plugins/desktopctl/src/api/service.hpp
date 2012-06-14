@@ -25,8 +25,11 @@
 #include "command.hpp"
 #include "global.hpp"
 
-SPCHCNTRL_FORWARD_DECLARE_CLASS(AcousticModel)
-namespace SpeechControl { namespace DesktopControl {
+namespace SpeechControl
+{
+class AcousticModel;
+namespace DesktopControl
+{
 
 class ServicePrivate;
 
@@ -63,7 +66,8 @@ private:
 };
 
 
-}}
+}
+}
 
 #endif // SPEECHCONTROL_DESKTOPCONTROL_SERVICE_HPP
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

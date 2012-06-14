@@ -39,7 +39,7 @@
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
-SPCHCNTRL_DEFINE_SINGLETON(SettingsDialog)
+SPCHCNTRL_DEFINE_SINGLETON (SettingsDialog)
 
 SettingsDialog::SettingsDialog() : QDialog()
 {
@@ -242,10 +242,15 @@ void AbstractSettingsPane::removePane (const QString& p_subPaneID)
     removePane (m_panes.value (p_subPaneID));
 }
 
+AbstractSettingsPane* AbstractSettingsPane::obtainPane (const QString& p_subPaneID)
+{
+    return m_panes.value(p_subPaneID);
+}
+
 AbstractSettingsPane::~AbstractSettingsPane()
 {
 
 }
 
 #include "ui/settings-dialog.moc"
-// kate: indent-mode cstyle; replace-tabs on;
+// kate: indent-mode cstyle; indent-width 4; replace-tabs on;

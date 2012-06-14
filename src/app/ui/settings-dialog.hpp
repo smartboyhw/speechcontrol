@@ -55,6 +55,7 @@ public:
     static void addPane (AbstractSettingsPane* p_pane);
     static void removePane (const QString& p_paneID);
     static void displayPane (const QString& p_paneID = "gnrl");
+    static AbstractSettingsPane* findPane(const QString& p_paneID);
     virtual ~SettingsDialog();
 
 private slots:

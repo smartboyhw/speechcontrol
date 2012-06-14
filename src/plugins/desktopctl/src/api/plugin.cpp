@@ -55,7 +55,7 @@ void Plugin::initialize()
 {
     const bool dsktpCntrlState = Core::configuration ("DesktopControl/AutoStart", false).toBool();
     DesktopControl::Service::instance()->setState ( (dsktpCntrlState) ? AbstractServiceModule::Enabled  : AbstractServiceModule::Disabled);
-    Windows::SettingsDialog::addPane(new Windows::DesktopControlSettingsPane);
+    Windows::SettingsDialog::addPane(new Windows::DesktopControlSettingsPane,"plgn");
 }
 
 void Plugin::deinitialize()

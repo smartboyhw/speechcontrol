@@ -346,7 +346,7 @@ void AdaptationUtility::generateFeatures()
 
     // Build argument values.
     QDir dirInput (m_session->corpus()->audioPath());
-    QDir dirOutput (QDir::tempPath() + "/" + m_session->id() + "-" + QString::number (qrand()));
+    QDir dirOutput (QDir::tempPath() + "/speechcontrol-" + m_session->id());
     dirOutput.mkpath (dirOutput.path());
     QString suffixInput = "wav";
     QString suffiXOutput = "mfc";
@@ -376,7 +376,21 @@ void AdaptationUtility::generateMixtureWeights()
     changePhase (GenerateMixtureWeights);
 
     QStringList args;
-    args << "/usr/lib/sphinxtrain/python/cmusphinx/sendump.py"
+
+    // Locate sendump.py
+    /// @todo Do that more elegantly
+    QFile loc1("/usr/lib/sphinxtrain/python/cmusphinx/sendump.py");
+    QFile loc2("/usr/lib/python2.7/dist-packages/cmusphinx/sendump.py");
+    QFile loc3("/usr/local/lib/python2.7/dist-packages/cmusphinx/sendump.py");
+    QString sendumpLoc;
+    if (loc1.exists())
+        sendumpLoc = loc1.fileName();
+    else if (loc2.exists())
+        sendumpLoc = loc2.fileName();
+    else
+        sendumpLoc = loc3.fileName();
+
+    args << sendumpLoc
          << m_modelBase->senDump()->fileName()
          << m_modelResult->mixtureWeights()->fileName()
          ;
@@ -445,14 +459,15 @@ void AdaptationUtility::collectAcousticStatistics()
     QStringList args;
     args << "-hmmdir"    << m_modelResult->path()
          << "-moddeffn"  << (m_modelResult->modelDefinitions()->fileName() + ".txt")
-         << "-t2cbfn"    << ".semi."
-         << "-feat"      << "ls_c_d_dd"
-         << "-svspec"    << "0-12/13-25/26-38"
+         << "-ts2cbfn"    << ".semi."
+         << "-feat"      << "s2_4x" /// @todo Automatically detect correct -feat argument.
+//         << "-svspec"    << "0-12/13-25/26-38"
          << "-cmn"       << "current"
          << "-agc"       << "none"
          << "-dictfn"    << m_session->corpus()->dictionary()->path()
          << "-ctlfn"     << m_session->corpus()->fileIds()->fileName()
          << "-lsnfn"     << m_session->corpus()->transcription ("<s>", "</s>")->fileName()
+         << "-cepdir"    << m_dirAccum.absolutePath()
          << "-accumdir"  << m_dirAccum.absolutePath();
     ;
 

@@ -1,5 +1,0 @@
-<RCC>
-    <qresource prefix="/qml">
-        <file alias="dsktpctlui">qml/ui.qml</file>
-    </qresource>
-</RCC>

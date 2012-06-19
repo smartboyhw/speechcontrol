@@ -1,3 +1,0 @@
-- Add a dialog that recognizes a list of installed Python plug-ins files for SpeechControl.
-- Implement a wrapper class for the plug-ins (PythonPlugin) that would be used to load
-    Python plug-ins.

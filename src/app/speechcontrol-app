@@ -5,7 +5,7 @@
 import sys
 from PyQt4.QtGui import QApplication, QWidget
 
-from gui.indicator import Indicator
+from speechcontrol.gui.indicator import Indicator
 
 app = QApplication(sys.argv)
 w = QWidget()

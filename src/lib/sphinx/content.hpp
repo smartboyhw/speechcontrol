@@ -33,7 +33,6 @@
 #include <QObject>
 #include <QVariant>
 #include <QStringList>
-#include <app/global.hpp>
 
 class QFile;
 class QDomDocument;

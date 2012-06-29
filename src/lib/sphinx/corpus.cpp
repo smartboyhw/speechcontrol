@@ -34,8 +34,6 @@
 
 #include "dictionary.hpp"
 
-#include "app/core.hpp"
-#include "app/global.hpp"
 #include "corpus.hpp"
 #include "phrase.hpp"
 
@@ -108,7 +106,7 @@ Corpus* Corpus::create (const QStringList& p_text)
     QDomElement phrasesElem = dom.createElement ("Phrases");
 
     rootElem.setAttribute ("ID", id);
-    rootElem.setAttribute ("Version", SPCHCNTRL_BUILD_VERSION);
+    rootElem.setAttribute ("Version", SC_BUILD_VERSION);
     dateElem.setAttribute ("Created", QDateTime::currentDateTimeUtc().toString());
 
     rootElem.appendChild (dateElem);

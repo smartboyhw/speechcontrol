@@ -24,8 +24,8 @@
  * @date 05/16/12 20:16:26 PM
  */
 
-#ifndef SPCHCNTRL_LIB_GLOBAL_HPP
-#define SPCHCNTRL_LIB_GLOBAL_HPP
+#ifndef SC_LIB_GLOBAL_HPP
+#define SC_LIB_GLOBAL_HPP
 
 /**
  * @def POCKETSPHINX_MODELDIR
@@ -42,18 +42,59 @@
 #define POCKETSPHINX_VERSION "@POCKETSPHINX_VERSION@"
 
 /**
- * @def SPCHCNTRL_BUILD_VERSION
+ * @def SC_BUILD_VERSION
  * @ingroup SpeechControlMacros
  * @brief Holds the build version of SpeechControl's library.
  */
-#define SPCHCNTRL_BUILD_VERSION "@SPCHCNTRL_LIB_VERSION@"
+#define SC_BUILD_VERSION "@SC_LIB_VERSION@"
 
 /**
- * @def SPCHCNTRL_BUILD_DATE
+ * @def SC_BUILD_DATE
  * @ingroup SpeechControlMacros
  * @brief Holds the date that of which SpeechControl's library was built.
  */
-#define SPCHCNTRL_BUILD_DATE __TIMESTAMP__
+#define SC_BUILD_DATE __TIMESTAMP__
 
-#endif /* SPCHCNTRL_LIB_GLOBAL_HPP */
+/**
+ * @def CORPUS_WORD_BLOCK
+ * @ingroup SpeechControlMacros
+ * @brief Defines the default size of a phrase when rendering in a corpus.
+ */
+#define CORPUS_WORD_BLOCK 8
+
+/**
+ * @def CONTENT_CHUNK_SIZE
+ * @ingroup SpeechControlMacros
+ * @brief Defines the default count of alphanumerical characters to be considered one page in a Content.
+ */
+#define CONTENT_CHUNK_SIZE 250
+
+/**
+ * @def SC_SINGLETON
+ * @ingroup SpeechControlMacros
+ * @brief Defines a class as a singleton.
+ */
+#define SC_SINGLETON(Type) \
+private:\
+    static Type* s_inst;\
+    Type();\
+public:\
+    static Type* instance ( )\
+    {\
+        if (s_inst == 0)\
+        {\
+            s_inst = new Type;\
+            qDebug() << "[SC_SINGLETON()] Created singleton instance of " #Type << ".";\
+        }\
+    return s_inst;\
+    }
+
+/**
+ * @def SC_INIT_SINGLETON
+ * @ingroup SpeechControlMacros
+ * @brief Initializes the singleton.
+ */
+#define SC_INIT_SINGLETON(Type) Type* Type::s_inst = 0;
+
+#endif /* SC_LIB_GLOBAL_HPP */
 // kate: indent-mode cstyle; indent-width 4; replace-tabs on;

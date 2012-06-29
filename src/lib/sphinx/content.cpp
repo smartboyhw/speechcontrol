@@ -31,8 +31,9 @@
 #include <QTextStream>
 #include <QDomDocument>
 
-#include "app/core.hpp"
-#include "app/global.hpp"
+#include <global.hpp>
+#include <configuration.hpp>
+
 #include "content.hpp"
 #include "contentprivate.hpp"
 
@@ -48,7 +49,7 @@ ContentPrivate::~ContentPrivate() {
 }
 
 QString ContentPrivate::getPath (const QString& p_id) {
-    return Core::configurationPath().path() + "/contents/" + p_id + ".xml";
+    return Configuration::instance()->confPath() + "/contents/" + p_id + ".xml";
 }
 
 ContentList ContentPrivate::findAllContents (QString p_path)
@@ -324,7 +325,7 @@ QString Content::title() const
         return bilboElem.attribute ("title");
     }
     else {
-        qWarning() << "[Content::title()] Core DOM element is null.";
+        qWarning() << "[Content::title()] Configuration DOM element is null.";
         return QString::null;
     }
 }
@@ -338,7 +339,7 @@ QString Content::author() const
         return bilboElem.attribute ("author");
     }
     else {
-        qWarning() << "[Content::title()] Core DOM element is null.";
+        qWarning() << "[Content::title()] Configuration DOM element is null.";
         return QString::null;
     }
 
@@ -357,8 +358,7 @@ QString Content::id() const
 ContentList Content::allContents()
 {
     ContentList lst;
-    lst.append (ContentPrivate::findAllContents (Core::configurationPath().path() + "/contents/"));
-    lst.append (ContentPrivate::findAllContents (SPCHCNTRL_SYSTEM_CONTENT_DIR));
+    lst.append (ContentPrivate::findAllContents (Configuration::instance()->confPath() + "/contents/"));
 
     return lst;
 }

@@ -24,7 +24,7 @@
  * @date 05/16/12 22:43:21 PM
  */
 
-#include <app/global.hpp>
+#include <global.hpp>
 #include "content.hpp"
 
 namespace SpeechControl {

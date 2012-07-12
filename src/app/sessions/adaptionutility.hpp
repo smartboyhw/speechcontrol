@@ -72,7 +72,7 @@ public:
         GenerateMixtureWeights,              ///< Represents the phase that of which the generation or cloning (if existing) of mixture weights occurs.
         ConvertModelDefinitions,             ///< Represents the act of converting the binary format of the model definition file (mdef) into its text format (mdef.txt).
         CollectAcousticStatistics,           ///< Represents the phase where the obtaining of statistical information from the base acoustic model occurs.
-        PerformAdaptation,                   ///< Represents the act of adaption upon the new templated model from the speech corpus (@c Session) and its parent corpus.
+        ProperAdaptation,                   ///< Represents the act of adaption upon the new templated model from the speech corpus (@c Session) and its parent corpus.
         GenerateSendmap,                     ///< Represents the space-conversing phase of generating sendmap information data.
         GenerateAccuracyReportHypothesis,    ///< Represents the act of generating accuracy information of the newly adapted acoustic model.
         CompleteAdaption,                    ///< Represents the phase that handles the final tier of adaption, tweaking SpeechControl's internal listing and what-not to recognize the model.
@@ -170,24 +170,24 @@ signals:
     /**
      * @brief Emitted when the AdaptionUtility has begun.
      **/
-    void startedAdapting();
+    void startedAdaptation();
 
     /**
      * @brief Emitted when the AdaptionUtility has ended.
      **/
-    void endedAdapting();
+    void completedAdaptation();
 
 private slots:
     void on_process_finished (const int& p_exitCode, QProcess::ExitStatus p_exitStatus);
 
 private:
     // Phase-related.
-    void changePhase (const Phase& p_phase);
-    void startPhase (Phase p_phase);
+    void setPhase (const Phase& phase);
+    void startPhase (Phase phase);
     void reportErrorInPhase (const QString& p_message);
     void cleanupPhase (const Phase& phase);
-    void endPhase ();
-    void advanceNextPhase();
+    void endCurrentPhase ();
+    void next_phase();
     void halt();
 
     // Procedural steps.
@@ -209,7 +209,7 @@ private:
     AcousticModel* m_modelResult;
     QProcess* m_prcss;
     QTemporaryFile* m_fileTmpHyp;
-    Phase m_phase;
+    Phase current_phase;
     QDir m_dirAccum;
 };
 

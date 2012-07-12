@@ -28,6 +28,9 @@
 #include <QDebug>
 #include <QProcess>
 #include <QTemporaryFile>
+#include <QMessageBox>
+#include <QIcon>
+#include <QString>
 
 #include <lib/acousticmodel.hpp>
 #include <lib/dictionary.hpp>
@@ -40,12 +43,12 @@
 using namespace SpeechControl;
 
 
-AdaptationUtility::AdaptationUtility() : QObject(), m_session (0), m_modelBase (0), m_modelResult (0), m_prcss (0), m_fileTmpHyp (new QTemporaryFile), m_phase (Undefined)
+AdaptationUtility::AdaptationUtility() : QObject(), m_session (0), m_modelBase (0), m_modelResult (0), m_prcss (0), m_fileTmpHyp (new QTemporaryFile), current_phase (Undefined)
 {
     qWarning() << "[AdaptationUtility] Initialized with null objects.";
 }
 
-AdaptationUtility::AdaptationUtility (Session* p_session, AcousticModel* p_model) : QObject(), m_session (p_session), m_modelBase (p_model), m_modelResult (0), m_prcss (0), m_fileTmpHyp (new QTemporaryFile), m_phase (Undefined)
+AdaptationUtility::AdaptationUtility (Session* p_session, AcousticModel* p_model) : QObject(), m_session (p_session), m_modelBase (p_model), m_modelResult (0), m_prcss (0), m_fileTmpHyp (new QTemporaryFile), current_phase (Undefined)
 {
 
 }
@@ -94,61 +97,69 @@ AcousticModel* AdaptationUtility::adapt()
     connect (m_prcss, SIGNAL (finished (int, QProcess::ExitStatus)), this, SLOT (on_process_finished (int, QProcess::ExitStatus)));
 
     // invoke the cycle.
-    changePhase (Initialized);
-    advanceNextPhase();
+    setPhase (Initialized);
+    next_phase();
 
     return m_modelResult;
 }
 
-void AdaptationUtility::advanceNextPhase()
+void AdaptationUtility::next_phase()
 {
-    switch (m_phase) {
+    switch (current_phase) {
     case Initialized:
+        setPhase (CopyAcousticModels);
         copyAcousticModel();
         break;
 
     case CopyAcousticModels:
+        setPhase (GenerateFeatures);
         generateFeatures();
         break;
 
     case GenerateFeatures:
+        setPhase (GenerateMixtureWeights);
         generateMixtureWeights();
         break;
 
     case GenerateMixtureWeights:
+        setPhase (ConvertModelDefinitions);
         convertModelDefinitions();
         break;
 
     case ConvertModelDefinitions:
+        setPhase (CollectAcousticStatistics);
         collectAcousticStatistics();
         break;
 
     case CollectAcousticStatistics:
+        setPhase (ProperAdaptation);
         performAdaptation();
         break;
 
-    case PerformAdaptation:
+    case ProperAdaptation:
+        setPhase (GenerateSendmap);
         generateSendmap();
         break;
 
     case GenerateSendmap:
+        setPhase (GenerateAccuracyReportHypothesis);
         generateAccuracyReportHypothesis();
         break;
 
     case GenerateAccuracyReportHypothesis:
+        setPhase (CompleteAdaption);
         completeAdaptation();
         break;
 
     case CompleteAdaption:
-        changePhase (Deinitialized);
+        setPhase (Deinitialized);
         break;
 
     case Deinitialized:
-        changePhase (Undefined);
+//        setPhase (Undefined);
         break;
 
-    default:
-    case Undefined:
+    default: // Undefined
         break;
     }
 }
@@ -162,7 +173,7 @@ void AdaptationUtility::cleanupPhase (const Phase& phase = Undefined)
         cleanupPhase (GenerateFeatures);
         cleanupPhase (GenerateSendmap);
         cleanupPhase (GenerateAccuracyReportHypothesis);
-        cleanupPhase (PerformAdaptation);
+        cleanupPhase (ProperAdaptation);
     }
     else {
         switch (phase) {
@@ -187,7 +198,7 @@ void AdaptationUtility::cleanupPhase (const Phase& phase = Undefined)
         case GenerateSendmap:
             break;
 
-        case PerformAdaptation:
+        case ProperAdaptation:
             break;
 
         case CompleteAdaption:
@@ -202,42 +213,42 @@ void AdaptationUtility::cleanupPhase (const Phase& phase = Undefined)
 
 void AdaptationUtility::halt()
 {
-    changePhase (Deinitialized);
-    advanceNextPhase();
+    setPhase (Deinitialized);
+    next_phase();
 }
 
 AdaptationUtility::Phase AdaptationUtility::currentPhase()
 {
-    return m_phase;
+    return current_phase;
 }
 
-void AdaptationUtility::endPhase ()
+void AdaptationUtility::endCurrentPhase ()
 {
-    emit phaseEnded (m_phase);
-    m_phase = Undefined;
+    emit phaseEnded (current_phase);
+    current_phase = Undefined;
 }
 
-void AdaptationUtility::startPhase (AdaptationUtility::Phase p_phase)
+void AdaptationUtility::startPhase (AdaptationUtility::Phase phase)
 {
-    m_phase = p_phase;
-    qDebug() << "[AdaptationUtility::setPhase()] Set to phase" << obtainPhaseText (m_phase);
-    emit phaseStarted (m_phase);
+    current_phase = phase;
+    qDebug() << "[AdaptationUtility::setPhase()] Set to phase" << obtainPhaseText (current_phase);
+    emit phaseStarted (current_phase);
 
-    if (m_phase == CopyAcousticModels)
-        emit startedAdapting();
-    else if (m_phase == CompleteAdaption)
-        emit endedAdapting();
+    if (current_phase == CopyAcousticModels)
+        emit startedAdaptation();
+    else if (current_phase == CompleteAdaption)
+        emit completedAdaptation();
 }
 
-void AdaptationUtility::changePhase (const Phase& p_phase)
+void AdaptationUtility::setPhase (const Phase& phase)
 {
-    endPhase ();
-    startPhase (p_phase);
+    endCurrentPhase();
+    startPhase (phase);
 }
 
 void AdaptationUtility::reportErrorInPhase (const QString& p_message)
 {
-    const Phase erredPhase = m_phase;
+    const Phase erredPhase = current_phase;
     emit phaseError (erredPhase, p_message);
 
 }
@@ -296,7 +307,7 @@ QString AdaptationUtility::obtainPhaseText (const Phase& p_phase) const
         return "Generate sendmap";
         break;
 
-    case PerformAdaptation:
+    case ProperAdaptation:
         return "Perform Adaption";
         break;
 
@@ -310,9 +321,8 @@ QString AdaptationUtility::obtainPhaseText (const Phase& p_phase) const
 
 void AdaptationUtility::copyAcousticModel()
 {
-    changePhase (CopyAcousticModels);
-    m_modelResult = m_modelBase->clone();
-    advanceNextPhase();
+    m_modelResult = m_modelBase->new_model();
+    next_phase();
 }
 
 /*
@@ -342,14 +352,12 @@ void AdaptationUtility::copyAcousticModel()
 ///@todo Add a means of validating the files generated by Sphinx here.
 void AdaptationUtility::generateFeatures()
 {
-    changePhase (GenerateFeatures);
-
     // Build argument values.
     QDir dirInput (m_session->corpus()->audioPath());
     QDir dirOutput (QDir::tempPath() + "/speechcontrol-" + m_session->id());
     dirOutput.mkpath (dirOutput.path());
     QString suffixInput = "wav";
-    QString suffiXOutput = "mfc";
+    QString suffixOutput = "mfc";
     QFile* controlFile = m_session->corpus()->fileIds();
 
     QStringList args;
@@ -359,7 +367,8 @@ void AdaptationUtility::generateFeatures()
          << "-di"       << dirInput.absolutePath()
          << "-do"       << dirOutput.absolutePath()
          << "-ei"       << suffixInput
-         << "-eo"       << suffiXOutput
+         << "-eo"       << suffixOutput
+         << "-mswav"    << "yes"
          ;
 
     executeProcess ("sphinx_fe", args);
@@ -373,8 +382,6 @@ void AdaptationUtility::generateFeatures()
 /// @todo Determine the path to 'sendump.py' from SphinxTrain.
 void AdaptationUtility::generateMixtureWeights()
 {
-    changePhase (GenerateMixtureWeights);
-
     QStringList args;
 
     // Locate sendump.py
@@ -395,7 +402,9 @@ void AdaptationUtility::generateMixtureWeights()
          << m_modelResult->mixtureWeights()->fileName()
          ;
 
-    executeProcess ("python", args);
+    QFile mixture_weights(m_modelBase->mixtureWeights());
+    if (!mixture_weights.exists())
+        executeProcess ("python", args);
 }
 
 /*
@@ -404,8 +413,6 @@ void AdaptationUtility::generateMixtureWeights()
  */
 void AdaptationUtility::convertModelDefinitions()
 {
-    changePhase (ConvertModelDefinitions);
-
     QFile* fileMdef = m_modelResult->modelDefinitions();
 
     QStringList args;
@@ -451,20 +458,17 @@ void AdaptationUtility::convertModelDefinitions()
 /// @todo Use silence deliminators from noise dictionary for transcription.
 void AdaptationUtility::collectAcousticStatistics()
 {
-    changePhase (CollectAcousticStatistics);
-
     m_dirAccum.setPath (QDir::tempPath() + QString ("/speechcontrol-") + m_session->id());
-    m_dirAccum.mkpath (m_dirAccum.path());
 
     QStringList args;
     args << "-hmmdir"    << m_modelResult->path()
          << "-moddeffn"  << (m_modelResult->modelDefinitions()->fileName() + ".txt")
-         << "-ts2cbfn"    << ".semi."
-         << "-feat"      << "s2_4x" /// @todo Automatically detect correct -feat argument.
-//         << "-svspec"    << "0-12/13-25/26-38"
+         << "-ts2cbfn"   << ".semi."
+         << "-feat"      << "1s_c_d_dd" /// @todo Automatically detect correct -feat argument
+         << "-svspec"    << "0-12/13-25/26-38"
          << "-cmn"       << "current"
          << "-agc"       << "none"
-         << "-dictfn"    << m_session->corpus()->dictionary()->path()
+         << "-dictfn"    << "/usr/share/pocketsphinx/model/lm/wsj/wlist5o.dic"
          << "-ctlfn"     << m_session->corpus()->fileIds()->fileName()
          << "-lsnfn"     << m_session->corpus()->transcription ("<s>", "</s>")->fileName()
          << "-cepdir"    << m_dirAccum.absolutePath()
@@ -524,14 +528,14 @@ void AdaptationUtility::collectAcousticStatistics()
  */
 void AdaptationUtility::performAdaptation ()
 {
-    changePhase (PerformAdaptation);
+    QDir dataDir (QDir::tempPath() + "/speechcontrol-" + m_session->id());
 
     QStringList args;
     args << "-meanfn"    << m_modelBase->means()->fileName()
          << "-varfn"     << m_modelBase->variances()->fileName()
          << "-mixwfn"    << m_modelBase->mixtureWeights()->fileName()
          << "-tmatfn"    << m_modelBase->transitionMatrices()->fileName()
-         << "-accumdir"  << "."
+         << "-accumdir"  << dataDir.path()
          << "-mapmeanfn" << m_modelResult->means()->fileName()
          << "-mapvarfn"  << m_modelResult->variances()->fileName()
          << "-mapmixwfn" << m_modelResult->mixtureWeights()->fileName()
@@ -562,8 +566,6 @@ void AdaptationUtility::performAdaptation ()
  */
 void AdaptationUtility::generateSendmap()
 {
-    changePhase (GenerateSendmap);
-
     QStringList args;
     args << "-pocketsphinx" << "yes"
          << "-modddefn"     << (m_modelResult->modelDefinitions()->fileName() + "txt")
@@ -571,7 +573,9 @@ void AdaptationUtility::generateSendmap()
          << "-sendumpfn"    << (m_modelResult->senDump()->fileName())
          ;
 
-    executeProcess ("mk_s2sendump", args);
+    /// @bug Broken...
+//    executeProcess ("mk_s2sendump", args);
+    next_phase();
 }
 
 /*
@@ -583,7 +587,9 @@ void AdaptationUtility::generateSendmap()
  */
 void AdaptationUtility::generateAccuracyReportHypothesis()
 {
-    changePhase (GenerateAccuracyReportHypothesis);
+    /// @bug Broken...
+    next_phase();
+
 
     // Render the temporary file.
     hypothesis()->setAutoRemove (false);
@@ -606,10 +612,13 @@ void AdaptationUtility::generateAccuracyReportHypothesis()
     executeProcess ("pocketsphinx_batch", args);
 }
 
+/// What for?
 void AdaptationUtility::completeAdaptation()
 {
-    changePhase (CompleteAdaption);
-    advanceNextPhase();
+    QString title("Congratulations");
+    QString text("You have just successfully adapted an acoustic model!");
+    QMessageBox(QMessageBox::Information, title, text);
+    next_phase();
 }
 
 void AdaptationUtility::on_process_finished (const int& p_exitCode, QProcess::ExitStatus p_exitStatus)
@@ -627,7 +636,7 @@ void AdaptationUtility::on_process_finished (const int& p_exitCode, QProcess::Ex
     switch (p_exitStatus) {
     case QProcess::NormalExit:
         qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Normal exit experienced.";
-        advanceNextPhase();
+        next_phase();
         break;
 
     case QProcess::CrashExit:

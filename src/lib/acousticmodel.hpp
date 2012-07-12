@@ -173,7 +173,7 @@ public:
     /**
      * @brief Duplicates the data of this AcousticModel.
      **/
-    AcousticModel* clone();
+    AcousticModel* new_model();
 
     /**
      * @brief Obtains a listing of all AcousticModels.

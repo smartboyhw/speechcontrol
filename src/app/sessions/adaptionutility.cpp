@@ -468,7 +468,7 @@ void AdaptationUtility::collectAcousticStatistics()
          << "-svspec"    << "0-12/13-25/26-38"
          << "-cmn"       << "current"
          << "-agc"       << "none"
-         << "-dictfn"    << "/usr/share/pocketsphinx/model/lm/wsj/wlist5o.dic"
+         << "-dictfn"    << "/usr/share/pocketsphinx/model/lm/hub4/cmu07a.dic"
          << "-ctlfn"     << m_session->corpus()->fileIds()->fileName()
          << "-lsnfn"     << m_session->corpus()->transcription ("<s>", "</s>")->fileName()
          << "-cepdir"    << m_dirAccum.absolutePath()
@@ -589,6 +589,7 @@ void AdaptationUtility::generateAccuracyReportHypothesis()
 {
     /// @bug Broken...
     next_phase();
+    return;
 
 
     // Render the temporary file.
@@ -601,8 +602,8 @@ void AdaptationUtility::generateAccuracyReportHypothesis()
          << "-cepdir"    << m_session->corpus()->audioPath()
          << "-cepext"    << ".wav"
          << "-ctl"       << m_session->corpus()->fileIds()->fileName()
-         << "-lm"        << "/usr/share/pocketsphinx/model/lm/wsj/wlist5o.3e-7.vp.tg.lm.DMP" /// @todo Define a language model to be used here.
-         << "-dict"      << "/usr/share/pocketsphinx/model/lm/wsj/wlist5o.dic"
+         << "-lm"        << "/usr/share/pocketsphinx/model/lm/hub4/hub4.5000.DMP"
+         << "-dict"      << "/usr/share/pocketsphinx/model/lm/hub4/cmu07a.dic"
          //m_session->corpus()->dictionary()->path()
          /// @bug Pocketsphinx crashes, which is probably associated with dictionaries.
          << "-hmm"       << m_modelResult->path()

@@ -131,10 +131,10 @@ void AdaptationUtility::next_phase()
         break;
 
     case ProperAdaptation:
-        setPhase (GenerateSendmap);
+        setPhase (GenerateSendump);
         break;
 
-    case GenerateSendmap:
+    case GenerateSendump:
         setPhase (GenerateAccuracyReportHypothesis);
         break;
 
@@ -162,7 +162,7 @@ void AdaptationUtility::cleanupPhase (const Phase& phase = Undefined)
         cleanupPhase (CollectAcousticStatistics);
         cleanupPhase (GenerateMixtureWeights);
         cleanupPhase (GenerateFeatures);
-        cleanupPhase (GenerateSendmap);
+        cleanupPhase (GenerateSendump);
         cleanupPhase (GenerateAccuracyReportHypothesis);
         cleanupPhase (ProperAdaptation);
     }
@@ -186,7 +186,7 @@ void AdaptationUtility::cleanupPhase (const Phase& phase = Undefined)
         case GenerateMixtureWeights:
             break;
 
-        case GenerateSendmap:
+        case GenerateSendump:
             break;
 
         case ProperAdaptation:
@@ -258,8 +258,8 @@ void AdaptationUtility::startPhase (AdaptationUtility::Phase phase)
         performAdaptation();
         break;
 
-    case GenerateSendmap:
-        generateSendmap();
+    case GenerateSendump:
+        generateSendump();
         break;
 
     case GenerateAccuracyReportHypothesis:
@@ -338,8 +338,8 @@ QString AdaptationUtility::obtainPhaseText (const Phase& p_phase) const
         return "Initialized";
         break;
 
-    case GenerateSendmap:
-        return "Generate sendmap";
+    case GenerateSendump:
+        return "Generate sendump";
         break;
 
     case ProperAdaptation:
@@ -599,7 +599,7 @@ void AdaptationUtility::performAdaptation ()
  * files wsj1adapt/mixture_weights and wsj1adapt/mdef.txt to save space if you
  * like, because they are not used by the decoder.
  */
-void AdaptationUtility::generateSendmap()
+void AdaptationUtility::generateSendump()
 {
     QStringList args;
     args << "-pocketsphinx" << "yes"

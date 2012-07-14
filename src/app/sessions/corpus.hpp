@@ -32,6 +32,7 @@
 #include <QObject>
 #include <QDateTime>
 #include <QStringList>
+#include <QRegExp>
 
 #include <sessions/phrase.hpp>
 
@@ -41,6 +42,11 @@ namespace SpeechControl
 {
 class Corpus;
 class Dictionary;
+
+/**
+ * @brief This is a QRegExp matching all punctuation characters.
+ */
+const QRegExp _punctuation("[,.!?]");
 
 /**
  * @brief Represents a list of Corpus elements.
@@ -263,7 +269,8 @@ private:
 
     static CorpusMap s_lst;     ///< Used to centralize the obtaining of @c Corpus objects.
 };
-}
+
+} // SpeechControl
 
 #endif // CORPUS_HPP
 // kate: indent-mode cstyle; replace-tabs on;

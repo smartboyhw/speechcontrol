@@ -108,47 +108,38 @@ void AdaptationUtility::next_phase()
     switch (current_phase) {
     case Initialized:
         setPhase (CopyAcousticModels);
-        copyAcousticModel();
         break;
 
     case CopyAcousticModels:
         setPhase (GenerateFeatures);
-        generateFeatures();
         break;
 
     case GenerateFeatures:
         setPhase (GenerateMixtureWeights);
-        generateMixtureWeights();
         break;
 
     case GenerateMixtureWeights:
         setPhase (ConvertModelDefinitions);
-        convertModelDefinitions();
         break;
 
     case ConvertModelDefinitions:
         setPhase (CollectAcousticStatistics);
-        collectAcousticStatistics();
         break;
 
     case CollectAcousticStatistics:
         setPhase (ProperAdaptation);
-        performAdaptation();
         break;
 
     case ProperAdaptation:
         setPhase (GenerateSendmap);
-        generateSendmap();
         break;
 
     case GenerateSendmap:
         setPhase (GenerateAccuracyReportHypothesis);
-        generateAccuracyReportHypothesis();
         break;
 
     case GenerateAccuracyReportHypothesis:
         setPhase (CompleteAdaption);
-        completeAdaptation();
         break;
 
     case CompleteAdaption:
@@ -238,6 +229,50 @@ void AdaptationUtility::startPhase (AdaptationUtility::Phase phase)
         emit startedAdaptation();
     else if (current_phase == CompleteAdaption)
         emit completedAdaptation();
+
+    switch (current_phase) {
+    case Initialized:
+        break;
+
+    case CopyAcousticModels:
+        copyAcousticModel();
+        break;
+
+    case GenerateFeatures:
+        generateFeatures();
+        break;
+
+    case GenerateMixtureWeights:
+        generateMixtureWeights();
+        break;
+
+    case ConvertModelDefinitions:
+        convertModelDefinitions();
+        break;
+
+    case CollectAcousticStatistics:
+        collectAcousticStatistics();
+        break;
+
+    case ProperAdaptation:
+        performAdaptation();
+        break;
+
+    case GenerateSendmap:
+        generateSendmap();
+        break;
+
+    case GenerateAccuracyReportHypothesis:
+        generateAccuracyReportHypothesis();
+        break;
+
+    case CompleteAdaption:
+        completeAdaptation();
+        break;
+
+    default:
+        break;
+    }
 }
 
 void AdaptationUtility::setPhase (const Phase& phase)

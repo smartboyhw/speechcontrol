@@ -30,7 +30,7 @@ list(REMOVE_ITEM SPCHCNTRL_LIB_BUILD_INCLUDE_DIRS ${SPCHCNTRL_LIB_INCLUDE_DIR})
 
 ## configures
 configure_file("${PROJECT_SOURCE_DIR}/global.hpp.in"
-               "${PROJECT_SOURCE_DIR}/global.hpp" @ONLY)
+    "${PROJECT_BINARY_DIR}/global.hpp" @ONLY)
 
 ## Directories -- What?
 file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/ui")

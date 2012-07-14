@@ -7,7 +7,7 @@ Configuration::Configuration(QObject *parent) :
 {
 }
 
-Configuration::confPath() const
+QString Configuration::confPath() const
 {
     QDir cp(QDir::homePath().append("/.config/speechcontrol"));
     return cp.path();

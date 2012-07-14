@@ -4,6 +4,7 @@
 #include "global.hpp"
 
 #include <QObject>
+#include <QDebug>
 
 class Configuration : public QObject
 {

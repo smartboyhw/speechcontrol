@@ -73,7 +73,7 @@ public:
         ConvertModelDefinitions,             ///< Represents the act of converting the binary format of the model definition file (mdef) into its text format (mdef.txt).
         CollectAcousticStatistics,           ///< Represents the phase where the obtaining of statistical information from the base acoustic model occurs.
         ProperAdaptation,                   ///< Represents the act of adaption upon the new templated model from the speech corpus (@c Session) and its parent corpus.
-        GenerateSendmap,                     ///< Represents the space-conversing phase of generating sendmap information data.
+        GenerateSendump,                     ///< Represents the space-conversing phase of generating sendmap information data.
         GenerateAccuracyReportHypothesis,    ///< Represents the act of generating accuracy information of the newly adapted acoustic model.
         CompleteAdaption,                    ///< Represents the phase that handles the final tier of adaption, tweaking SpeechControl's internal listing and what-not to recognize the model.
         Deinitialized                        ///< Represents the de-initialized phase of the AdaptationUtility.
@@ -196,7 +196,7 @@ private:
     void convertModelDefinitions();
     void collectAcousticStatistics();
     void performAdaptation();
-    void generateSendmap();
+    void generateSendump();
     void generateAccuracyReportHypothesis();
     void copyAcousticModel();
     void completeAdaptation();

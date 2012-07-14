@@ -23,13 +23,12 @@ find_package(Qt4 4.7 COMPONENTS
 find_package(QtGStreamer REQUIRED)
 find_package(SphinxBase 0.7 REQUIRED)
 find_package(PocketSphinx 0.7 REQUIRED)
-find_package(Phonon REQUIRED)
 
 include(SpeechControlDefaults)
 include(SpeechControlMacros)
 
 ## variables
-set(PROJECT_VERSION "0.1")
+set(PROJECT_VERSION "0.02")
 set(SPCHCNTRL_BUILDING ON)
 set(SPCHCNTRL_CMAKE_SDIR "${PROJECT_SOURCE_DIR}/cmake")
 set(SPCHCNTRL_INCLUDE_DIRS ${QT_INCLUDE_DIR}

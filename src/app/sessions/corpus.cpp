@@ -424,7 +424,8 @@ QFile* Corpus::transcription (QString const& p_silencePrefix,
             Q_FOREACH (const Phrase * phrase, phrases()) {
                 QFileInfo currentFile (phrase->audioFile()->fileName());
                 const QString fileid = currentFile.baseName();
-                const QString phraseText = phrase->text().toUpper();
+                QString phraseText = phrase->text().toLower(); /// For cmu07a dictionary and any lower-cased one.
+                phraseText.remove(_punctuation);
                 strm << p_silencePrefix << " "
                      << phraseText << " "
                      << p_silenceSuffix << " "

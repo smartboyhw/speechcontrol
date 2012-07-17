@@ -13,6 +13,7 @@ class Configuration : public QObject
 
 public:
     explicit Configuration(QObject *parent = 0);
+    Configuration(int *argc, char **argv[], QObject *parent = 0);
 
     /**
      * @brief Get basic configuration path.
@@ -20,10 +21,11 @@ public:
      */
     QString confPath() const;
 
-signals:
-    
-public slots:
-    
+    /**
+     * @brief Setup configuration.
+     */
+    static void setup();
+
 };
 
 #endif // CONFIGURATION_HPP

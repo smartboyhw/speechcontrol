@@ -29,7 +29,8 @@
 #endif
 
 // This define fixes a nasty compile bug. Don't believe me? Comment it out and see what happens.
-#define QTGSTREAMERUTILS_EXPORT Q_DECL_IMPORT
+// - I don't believe you very much because it works on my side.
+// #define QTGSTREAMERUTILS_EXPORT Q_DECL_IMPORT
 
 #undef Q_D
 #undef Q_Q

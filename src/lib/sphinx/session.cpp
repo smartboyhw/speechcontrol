@@ -29,12 +29,11 @@
 #include <QFile>
 #include <QDebug>
 
+#include <core.hpp>
 #include <sphinx/phrase.hpp>
 #include <sphinx/corpus.hpp>
 #include <sphinx/content.hpp>
 #include <sphinx/session.hpp>
-
-#include <system.hpp>
 
 using namespace SpeechControl;
 
@@ -100,7 +99,7 @@ double Session::assessProgress() const
 void Session::setup()
 {
     qDebug() << "[Session::setup()] Loading sessions...";
-    QFile* configFile = new QFile (System::configurationPath() + "/sessions.xml");
+    QFile* configFile = new QFile (Core::instance()->confPath() + "/sessions.xml");
     s_elems.clear();
 
     if (s_dom) {
@@ -218,7 +217,7 @@ SessionList Session::incompleteSessions()
 
 void Session::save()
 {
-    QFile* configFile = new QFile (System::configurationPath() + "/sessions.xml");
+    QFile* configFile = new QFile (Core::instance()->confPath() + "/sessions.xml");
 
     if (!configFile->open (QIODevice::WriteOnly | QIODevice::Truncate)) {
         qDebug() << "[Session::save()] Unable to open session data for saving." << configFile->errorString();

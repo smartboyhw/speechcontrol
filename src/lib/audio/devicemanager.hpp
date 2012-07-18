@@ -37,7 +37,7 @@
 namespace SpeechControl
 {
 
-class System;
+class Core;
 
 namespace Audio
 {
@@ -45,7 +45,7 @@ namespace Audio
 class DeviceManager : public QObject
 {
     Q_OBJECT
-    friend class SpeechControl::System;
+    friend class SpeechControl::Core;
 
 public:
     explicit DeviceManager(QObject* parent = 0);

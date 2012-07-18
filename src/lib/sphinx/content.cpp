@@ -32,7 +32,7 @@
 #include <QDomDocument>
 
 #include <global.hpp>
-#include <configuration.hpp>
+#include <core.hpp>
 
 #include "content.hpp"
 #include "contentprivate.hpp"
@@ -49,7 +49,7 @@ ContentPrivate::~ContentPrivate() {
 }
 
 QString ContentPrivate::getPath (const QString& p_id) {
-    return Configuration::instance()->confPath() + "/contents/" + p_id + ".xml";
+    return Core::instance()->confPath() + "/contents/" + p_id + ".xml";
 }
 
 ContentList ContentPrivate::findAllContents (QString p_path)
@@ -358,7 +358,7 @@ QString Content::id() const
 ContentList Content::allContents()
 {
     ContentList lst;
-    lst.append (ContentPrivate::findAllContents (Configuration::instance()->confPath() + "/contents/"));
+    lst.append (ContentPrivate::findAllContents (Core::instance()->confPath() + "/contents/"));
 
     return lst;
 }

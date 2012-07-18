@@ -1,19 +1,21 @@
-#ifndef CONFIGURATION_HPP
-#define CONFIGURATION_HPP
+#ifndef CORE_HPP
+#define CORE_HPP
 
 #include "global.hpp"
 
 #include <QObject>
 #include <QDebug>
 
-class Configuration : public QObject
+namespace SpeechControl {
+
+class Core : public QObject
 {
     Q_OBJECT
-    SC_SINGLETON(Configuration)
+    SC_SINGLETON(Core)
 
 public:
-    explicit Configuration(QObject *parent = 0);
-    Configuration(int *argc, char **argv[], QObject *parent = 0);
+    explicit Core(QObject *parent = 0);
+    Core(int *argc, char **argv[], QObject *parent = 0);
 
     /**
      * @brief Get basic configuration path.
@@ -28,4 +30,6 @@ public:
 
 };
 
-#endif // CONFIGURATION_HPP
+} // SpeechControl
+
+#endif // CORE_HPP

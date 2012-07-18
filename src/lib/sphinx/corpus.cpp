@@ -32,7 +32,7 @@
 #include <QDateTime>
 #include <QDomDocument>
 
-#include <configuration.hpp>
+#include <core.hpp>
 
 #include "dictionary.hpp"
 #include "corpus.hpp"
@@ -181,7 +181,7 @@ bool Corpus::exists (const QString& p_id)
 
 QString Corpus::getPath (const QString& p_id)
 {
-    const QString l_baseComp = Configuration::instance()->confPath() + "/sphinxdata/corpora/";
+    const QString l_baseComp = Core::instance()->confPath() + "/sphinxdata/corpora/";
     return l_baseComp + p_id;
 }
 
@@ -307,7 +307,7 @@ void Corpus::save()
 CorpusList Corpus::allCorpuses()
 {
     CorpusList lst;
-    QDir dir (Configuration::instance()->confPath() + "/sphinxdata/corpora");
+    QDir dir (Core::instance()->confPath() + "/sphinxdata/corpora");
     dir.setFilter (QDir::Dirs);
     QStringList results = dir.entryList (QStringList() << "*");
     Q_FOREACH (const QString & id, results) {

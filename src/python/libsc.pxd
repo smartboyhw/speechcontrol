@@ -7,35 +7,35 @@ cdef extern from "<string>":
 
 # Qt
 cdef extern from "<QObject>":
-    cdef cppclass cQObject "QObject":
-        cQObject()
-        cQObject(cQObject *)
+    cdef cppclass c_QObject "QObject":
+        c_QObject()
+        c_QObject(c_QObject *)
 
 cdef extern from "<QString>":
-    cdef cppclass cQString "QString":
-        cQString()
-        cQString(char *)
+    cdef cppclass c_QString "QString":
+        c_QString()
+        c_QString(char *)
 
         string toStdString()
 
 # Core
 cdef extern from "../lib/core.hpp" namespace "SpeechControl":
-    cdef cppclass cCore "SpeechControl::Core":
-        cCore(cQObject *)
-        cCore(int *, char ***, cQObject *)
+    cdef cppclass c_Core "SpeechControl::Core":
+        c_Core(c_QObject *)
+        c_Core(int *, char ***, c_QObject *)
 
-        cQString confPath()
+        c_QString confPath()
 
 cdef extern from "../lib/core.hpp" namespace "SpeechControl::Core":
-        cCore *s_inst
-        cCore* instance()
+        c_Core *s_inst
+        c_Core* instance()
         void setup()
 
 # Audio classes
 cdef extern from "../lib/audio/devicemanager.hpp" namespace "SpeechControl::Audio":
-    cdef cppclass cDeviceManager "SpeechControl::Audio::DeviceManager"
+    cdef cppclass c_DeviceManager "SpeechControl::Audio::DeviceManager"
 
 cdef extern from "../lib/audio/filerecorder.hpp" namespace "SpeechControl::Audio":
-    cdef cppclass cFileRecorder "SpeechControl::Audio::FileRecorder"
+    cdef cppclass c_FileRecorder "SpeechControl::Audio::FileRecorder"
 
 # Sphinx classes

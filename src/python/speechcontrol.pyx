@@ -2,7 +2,7 @@ cimport cpython
 
 from libsc cimport *
 
-cdef unicode qstr(cQString qstring):
+cdef unicode from_QString(c_QString qstring):
     cdef string s
     s = qstring.toStdString()
     cs = s.c_str()
@@ -10,9 +10,9 @@ cdef unicode qstr(cQString qstring):
 
 ## Yeah, this is QObject wrapper but... anyway, don't use QObject very much in the C++ code.
 cdef class QObject:
-    cdef cQObject *obj
+    cdef c_QObject *obj
     def __cinit__(self):
-        self.obj = new cQObject()
+        self.obj = new c_QObject()
     def __dealloc__(self):
         del self.obj
     def __init__(self, QObject qobj):
@@ -20,15 +20,15 @@ cdef class QObject:
         self.obj = qobj.obj
 
 cdef class Core:
-    cdef cCore *core
+    cdef c_Core *core
     def __cinit__(self):
-        self.core = new cCore(NULL)
-    def __init__(self, argc, argv, QObject parent):
-        del self.core
-        self.core = new cCore(NULL, NULL, NULL)
+        self.core = new c_Core(NULL)
     def __dealloc__(self):
         del self.core
+    def __init__(self, argc, argv, QObject parent):
+        del self.core
+        self.core = new c_Core(NULL, NULL, NULL)
 
     def confPath(self):
-        return qstr(self.core.confPath())
+        return from_QString(self.core.confPath())
 

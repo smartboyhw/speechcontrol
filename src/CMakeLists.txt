@@ -13,3 +13,7 @@ endif()
 if(WITH_PLUGINS)
     add_subdirectory(plugins)
 endif()
+
+if(WITH_PYTHON_BINDINGS)
+    add_subdirectory(python)
+endif()

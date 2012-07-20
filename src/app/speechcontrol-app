@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-#TODO: Move everything to Python 3!
-
 import sys
 from PyQt4.QtGui import QApplication, QWidget
 

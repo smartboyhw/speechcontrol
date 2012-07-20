@@ -1,4 +1,9 @@
-from libcpp cimport string
+# Standard library
+cdef extern from "<string>":
+    cdef cppclass string:
+        string()
+        string(char *)
+        char* c_str()
 
 # Qt
 cdef extern from "<QObject>":
@@ -11,7 +16,7 @@ cdef extern from "<QString>":
         cQString()
         cQString(char *)
 
-        std::string toStdString()
+        string toStdString()
 
 # Core
 cdef extern from "../lib/core.hpp" namespace "SpeechControl":
@@ -19,17 +24,12 @@ cdef extern from "../lib/core.hpp" namespace "SpeechControl":
         cCore(cQObject *)
         cCore(int *, char ***, cQObject *)
 
-        QString confPath()
-        void setup() #@staticmethod
+        cQString confPath()
 
+cdef extern from "../lib/core.hpp" namespace "SpeechControl::Core":
         cCore *s_inst
-        cCore* instance() #@staticmethod
-
-#cdef class QString:
-#    cdef cQString *s
-
-cdef class Core:
-    cdef cCore *core
+        cCore* instance()
+        void setup()
 
 # Audio classes
 cdef extern from "../lib/audio/devicemanager.hpp" namespace "SpeechControl::Audio":

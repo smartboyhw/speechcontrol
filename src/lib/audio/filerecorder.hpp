@@ -73,6 +73,12 @@ public:
     FileRecorder(QFile& _outFile, QObject* parent = 0);
 
     /**
+     * @brief Get output file path
+     * @return String with path to the file being recorded.
+     */
+    QString getFile() const;
+
+    /**
      * @brief Set output file using its path.
      *
      * @param path Path to the output file

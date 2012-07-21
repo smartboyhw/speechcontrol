@@ -158,6 +158,11 @@ FileRecorder::~FileRecorder()
 
 }
 
+QString FileRecorder::getFile() const
+{
+    return outFile;
+}
+
 void FileRecorder::setFile ( QString path )
 {
     outFile = path;

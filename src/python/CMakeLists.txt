@@ -1,8 +1,13 @@
-INCLUDE_DIRECTORIES(
+include_directories(
     ${PYTHON_INCLUDE_PATH}
-    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/..
     ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}/../lib
+    ${SPCHCNTRL_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/../lib
 )
+
+find_program(CYTHON_EXECUTABLE cython)
 
 # Use this as a guide:
 # https://github.com/OpenKinect/libfreenect/blob/master/wrappers/python/CMakeLists.txt
@@ -15,15 +20,15 @@ add_custom_command(OUTPUT speechcontrol.cpp
 list(APPEND ADDITIONAL_MAKE_CLEAN_FILES "speechcontrol.cpp")
 
 # speechcontrol Python bindings
-ADD_LIBRARY(speechcontrol_cython SHARED
+add_library(speechcontrol_cython SHARED
     speechcontrol.cpp
 )
 
-TARGET_LINK_LIBRARIES(speechcontrol_cython
+target_link_libraries(speechcontrol_cython
     speechcontrol
 )
 
-SET_TARGET_PROPERTIES(speechcontrol_cython PROPERTIES
+set_target_properties(speechcontrol_cython PROPERTIES
     PREFIX ""
     OUTPUT_NAME speechcontrol)
 

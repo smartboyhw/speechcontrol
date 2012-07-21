@@ -8,6 +8,12 @@ cdef unicode from_QString(c_QString qstring):
     cs = s.c_str()
     return cs.decode('UTF-8')
 
+cdef c_QString to_QString(unicode pystring):
+    cdef char *cs
+    py_bytestring = pystring.encode('UTF-8')
+    cs = py_bytestring
+    return c_QString(cs)
+
 ## Yeah, this is QObject wrapper but... anyway, don't use QObject very much in the C++ code.
 cdef class QObject:
     cdef c_QObject *obj
@@ -32,3 +38,15 @@ cdef class Core:
     def confPath(self):
         return from_QString(self.core.confPath())
 
+## SpeechControl::Audio
+cdef class FileRecorder:
+    cdef c_FileRecorder *fr
+    def __cinit__(self, unicode fileName):
+        self.fr = new c_FileRecorder(to_QString(fileName), NULL)
+    def __dealloc__(self):
+        del self.fr
+
+    def setFile(self, unicode fileName):
+        self.fr.setFile(to_QString(fileName))
+
+## SpeechControl::Sphinx

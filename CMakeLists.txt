@@ -23,6 +23,7 @@ find_package(Qt4 4.7 COMPONENTS
 find_package(QtGStreamer REQUIRED)
 find_package(SphinxBase 0.7 REQUIRED)
 find_package(PocketSphinx 0.7 REQUIRED)
+find_package(PythonLibs)
 
 include(SpeechControlDefaults)
 include(SpeechControlMacros)

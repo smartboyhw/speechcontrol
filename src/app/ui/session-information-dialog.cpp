@@ -18,10 +18,6 @@
  *  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-#include <phonon/MediaObject>
-#include <phonon/AudioOutput>
-#include <phonon/AudioOutput>
-
 #include "core.hpp"
 #include "sessions/session.hpp"
 #include "sessions/corpus.hpp"
@@ -107,11 +103,12 @@ void SessionInformationDialog::updateProgress (const double p_progress)
 
 void SessionInformationDialog::on_btnPhrasePlay_clicked()
 {
-    Phrase* phrase = m_session->corpus()->phraseAt (m_ui->horizontalSliderPhrase->value());
-    Phonon::MediaObject* media = new Phonon::MediaObject (this);
-    Phonon::createPath (media, (new Phonon::AudioOutput (Phonon::NoCategory, this)));
-    media->setCurrentSource (QUrl (phrase->audioFile()->fileName()));
-    media->play();
+    //Phrase* phrase = m_session->corpus()->phraseAt (m_ui->horizontalSliderPhrase->value());
+    //Phonon::MediaObject* media = new Phonon::MediaObject (this);
+    //Phonon::createPath (media, (new Phonon::AudioOutput (Phonon::NoCategory, this)));
+    //media->setCurrentSource (QUrl (phrase->audioFile()->fileName()));
+    //media->play();
+    qWarning() << "[FIXME] Feature not implemented!";
 }
 
 void SessionInformationDialog::on_horizontalSliderPhrase_valueChanged (const int p_value)

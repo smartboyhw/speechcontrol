@@ -11,11 +11,13 @@ namespace SpeechControl {
 class Core : public QObject
 {
     Q_OBJECT
-    SC_SINGLETON(Core)
+    static Core *_instance;
 
 public:
-    explicit Core(QObject *parent = 0);
-    Core(int *argc, char **argv[], QObject *parent = 0);
+    explicit Core(int *argc, char **argv[], QObject *parent = 0);
+    virtual ~Core();
+
+    static Core* instance();
 
     /**
      * @brief Get basic configuration path.
@@ -27,6 +29,8 @@ public:
      * @brief Setup configuration.
      */
     static void setup();
+
+    void test();
 
 };
 

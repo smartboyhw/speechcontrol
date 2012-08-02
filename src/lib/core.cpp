@@ -2,17 +2,15 @@
 #include "audio/devicemanager.hpp"
 
 #include <QDir>
+#include <QDebug>
 
 #include <QGst/Init>
 
 using namespace SpeechControl;
 
-Core::Core(QObject *parent) :
-    QObject(parent)
-{
-}
+Core* Core::_instance = NULL;
 
-Core::Core(int *argc, char **argv[], QObject *parent)
+Core::Core(int *argc, char **argv[], QObject *parent) : QObject(parent)
 {
     // Init Qt-GStreamer
     if (argc && argv)
@@ -38,6 +36,15 @@ Core::Core(int *argc, char **argv[], QObject *parent)
     Audio::DeviceManager::setup();
 }
 
+Core::~Core()
+{
+}
+
+Core* Core::instance()
+{
+    return _instance;
+}
+
 QString Core::confPath() const
 {
     QDir cp(QDir::homePath().append("/.config/speechcontrol"));
@@ -46,5 +53,10 @@ QString Core::confPath() const
 
 void Core::setup()
 {
-    s_inst = new Core(NULL, NULL);
+    _instance = new Core(NULL, NULL);
+}
+
+void Core::test()
+{
+    qDebug() << "############# TEST SUCCESSFUL #############";
 }

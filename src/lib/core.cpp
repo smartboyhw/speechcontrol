@@ -60,3 +60,5 @@ void Core::test()
 {
     qDebug() << "############# TEST SUCCESSFUL #############";
 }
+
+#include "core.moc"

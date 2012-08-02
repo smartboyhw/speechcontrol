@@ -4,9 +4,12 @@ from libsc cimport *
 
 cdef unicode from_QString(c_QString qstring):
     cdef string s
+    cdef char* cs
+    cdef bytes bs
     s = qstring.toStdString()
     cs = s.c_str()
-    return cs.decode('UTF-8')
+    bs = cs
+    return bs.decode('UTF-8')
 
 cdef c_QString to_QString(unicode pystring):
     cdef char *cs
@@ -21,14 +24,11 @@ cdef class QObject:
         self.obj = new c_QObject()
     def __dealloc__(self):
         del self.obj
-    def __init__(self, QObject qobj):
-        del self.obj
-        self.obj = qobj.obj
 
 cdef class Core:
     cdef c_Core *core
     def __cinit__(self):
-        self.core = new c_Core(NULL)
+        self.core = new c_Core(NULL, NULL, NULL)
     def __dealloc__(self):
         del self.core
     def __init__(self, argc, argv, QObject parent):
@@ -37,6 +37,9 @@ cdef class Core:
 
     def confPath(self):
         return from_QString(self.core.confPath())
+
+    def test(self):
+        self.core.test()
 
 ## SpeechControl::Audio
 cdef class FileRecorder:

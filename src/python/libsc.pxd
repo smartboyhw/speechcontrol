@@ -1,6 +1,6 @@
 # Standard library
-cdef extern from "<string>":
-    cdef cppclass string:
+cdef extern from "<string>" namespace "std":
+    cdef cppclass string "std::string":
         string()
         string(char *)
         char* c_str()
@@ -21,13 +21,13 @@ cdef extern from "<QString>":
 # Core
 cdef extern from "../lib/core.hpp" namespace "SpeechControl":
     cdef cppclass c_Core "SpeechControl::Core":
-        c_Core(c_QObject *)
         c_Core(int *, char ***, c_QObject *)
 
         c_QString confPath()
+        void test()
 
 cdef extern from "../lib/core.hpp" namespace "SpeechControl::Core":
-        c_Core *s_inst
+        c_Core *_instance
         c_Core* instance()
         void setup()
 
@@ -63,6 +63,3 @@ cdef extern from "../lib/sphinx/acousticmodel.hpp" namespace "SpeechControl::Sph
     cdef cppclass c_AcousticModel "SpeechControl::Sphinx::AcousticModel":
         pass
 
-cdef extern from "../lib/sphinx/audiosource.hpp" namespace "SpeechControl::Sphinx":
-    cdef cppclass c_SphinxASR "SpeechControl::Sphinx::AudioSourceSphinx":
-        pass

@@ -1,10 +1,10 @@
 include_directories(
     ${PYTHON_INCLUDE_PATH}
     ${CMAKE_CURRENT_SOURCE_DIR}/..
+    ${CMAKE_CURRENT_SOURCE_DIR}/../lib
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}/../lib
     ${SPCHCNTRL_INCLUDE_DIRS}
-    ${CMAKE_CURRENT_SOURCE_DIR}/../lib
 )
 
 find_program(CYTHON_EXECUTABLE cython)
@@ -29,6 +29,7 @@ target_link_libraries(speechcontrol_cython
 )
 
 set_target_properties(speechcontrol_cython PROPERTIES
+    COMPILE_FLAGS -fpermissive
     PREFIX ""
     OUTPUT_NAME speechcontrol)
 

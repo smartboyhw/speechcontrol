@@ -10,7 +10,7 @@ Installing SpeechControl
 
 You can run SpeechControl by invoking (while still in the build directory)
 
-    # src/app/speechcontrol-frontend
+    # src/app/speechcontrol
 
 1. Required Packages
 
@@ -40,7 +40,7 @@ SpeechControl's core requires that you have the following packages installed:
       # apt-get install kdelibs5-dev
 
     * [Optional] Python Scripting Support via PythonQt
-      # apt-get install libpythonqt-dev
+      # apt-get install libpythonqt-dev libpythonqt2.0
 
 2. Configuration
 
@@ -82,7 +82,7 @@ build directory.
     $ make docs                     # Generates API documentation (if
                                     # WITH_API_DOCS = ON)
 
-    $ make tests                    # Builds the tests (see 4. Testing)
+    $ make tests                    # Builds the tests (see 5. Testing)
 
 It's possible to produce more concise dumps of information regarding your
 build experience. See the "Testing" section for more information.

@@ -45,7 +45,7 @@
 
 using namespace SpeechControl;
 using namespace SpeechControl::Windows;
-SPCHCNTRL_DEFINE_SINGLETON(Indicator);
+SPCHCNTRL_DEFINE_SINGLETON(Indicator)
 
 Indicator::Message::Message (const QString& p_keyName) : m_key (p_keyName)
 {

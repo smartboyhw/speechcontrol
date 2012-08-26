@@ -21,14 +21,13 @@
 #include <QtTest/QtTest>
 
 #include "content_test.h"
-#include "app/sessions/wikicontentsource.hpp"
 
 using namespace SpeechControl;
 
 void TestContent::buildWikiContent()
 {
-    WikiContentSource wiki ("test");
-    Content* test = wiki.generate();
+    //WikiContentSource wiki ("test");
+    //Content* test = wiki.generate();
 }
 
 #include "content_test.moc"

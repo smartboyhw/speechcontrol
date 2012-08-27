@@ -23,7 +23,16 @@ you to:
 
 ## Installation
 
-SpeechControl was meant to be installed.
+For more detailed instructions look into the INSTALL file.
+Usual build procedure is as follows:
+
+    $ mkdir build
+    $ cd build
+    $ cmake ..
+    $ make
+    # make install
+
+Note that it *won't* build any plug-ins, documentation and tests.
 
 ## Bug Reporting
 

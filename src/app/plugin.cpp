@@ -80,6 +80,8 @@ AbstractPluginPrivate::~AbstractPluginPrivate() {
 AbstractPlugin::AbstractPlugin (QObject* p_prnt) :
     QObject (p_prnt), d_ptr(new AbstractPluginPrivate(this))
 {
+    /// @todo Implement the system such that types are respected
+    ptype = Service;
 }
 
 AbstractPlugin::AbstractPlugin (const QString& p_id, QObject* p_parent) : QObject (p_parent),
@@ -87,6 +89,9 @@ AbstractPlugin::AbstractPlugin (const QString& p_id, QObject* p_parent) : QObjec
 {
     Q_D(AbstractPlugin);
     d->id  = p_id;
+
+    /// @todo Implement the system such that types are respected
+    ptype = Service;
 }
 
 /// @todo Add implementation for copy constructor.
@@ -182,6 +187,11 @@ const PluginList AbstractPlugin::plugins() const
     }
 
     return PluginList();
+}
+
+AbstractPlugin::PluginType AbstractPlugin::type() const
+{
+    return ptype;
 }
 
 bool AbstractPlugin::loadComponents()

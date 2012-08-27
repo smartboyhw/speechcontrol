@@ -41,7 +41,7 @@ namespace DesktopControl
 class Plugin : public SpeechControl::AbstractPlugin
 {
     Q_OBJECT
-    QAction* m_actionToggle;
+    QAction* toggleService;
     QAction* m_actionOptions;
     QMenu* m_menuDesktopControl;
 

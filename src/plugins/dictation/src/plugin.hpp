@@ -27,6 +27,8 @@
 #ifndef SPCHCNTRL_DSKCTL_API_PLUGIN_HPP
 #define SPCHCNTRL_DSKCTL_API_PLUGIN_HPP
 
+#include <QAction>
+
 #include <app/plugin.hpp>
 #include "global.hpp"
 
@@ -45,6 +47,8 @@ public:
     virtual ~Plugin();
 
 protected:
+    QAction *dictationSwitch;
+
     virtual void initialize();
     virtual void deinitialize();
 };

@@ -42,13 +42,15 @@ Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent)
 {
     const QString actionText("Toggle Dictation");
     dictationSwitch = new QAction(actionText, parent);
+    dictationSwitch->setCheckable(true);
+    dictationSwitch->setChecked(Service::instance()->isEnabled());
 }
 
 void Plugin::initialize()
 {
     const bool dctnState = Core::configuration ("Dictation/AutoStart", false).toBool();
-    Dictation::Service::instance()->setState ( (dctnState) ? AbstractServiceModule::Enabled  : AbstractServiceModule::Disabled);
-    connect(dictationSwitch, SIGNAL(triggered()), Dictation::Service::instance(), SLOT(toggle()));
+    Service::instance()->setState ( (dctnState) ? AbstractServiceModule::Enabled  : AbstractServiceModule::Disabled);
+    connect(dictationSwitch, SIGNAL(triggered()), Service::instance(), SLOT(toggle()));
     Indicator::addActionForPlugins(dictationSwitch);
     qDebug() << "Plug-in loaded! (dictationapi)";
 }

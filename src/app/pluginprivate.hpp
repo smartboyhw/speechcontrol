@@ -34,6 +34,7 @@
 namespace SpeechControl {
 
 class AbstractPlugin;
+enum AbstractPlugin::PluginType;
 
 struct AbstractPluginPrivate {
     Q_DECLARE_PUBLIC(AbstractPlugin)
@@ -58,6 +59,7 @@ struct AbstractPluginPrivate {
     QList<QAction*> acts;   ///< The QActions used to add the 'Plugins' menu.
     QList<QMenu*> menus;
     AbstractPlugin* q_ptr;
+    AbstractPlugin::PluginType ptype;
 };
 
 }

@@ -200,8 +200,6 @@ public slots:
     bool load();
 
 protected:
-    PluginType ptype;
-
     /**
      * @brief This method is invoked when the plug-in has been successfully loaded.
      * @internal

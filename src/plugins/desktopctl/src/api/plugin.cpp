@@ -57,7 +57,7 @@ void Plugin::initialize()
     const bool dsktpCntrlState = Core::configuration ("DesktopControl/AutoStart", false).toBool();
     DesktopControl::Service::instance()->setState ( (dsktpCntrlState) ? AbstractServiceModule::Enabled  : AbstractServiceModule::Disabled);
     Indicator::addMenuForPlugins(m_menuDesktopControl);
-    Windows::SettingsDialog::addPane(new Windows::DesktopControlSettingsPane,"plgn");
+    Windows::SettingsDialog::addPane(new Windows::DesktopControlSettingsPane, "plgn");
 }
 
 void Plugin::deinitialize()
@@ -75,9 +75,10 @@ void Plugin::doMenuToggle (bool& p_checked)
     p_checked ? DesktopControl::Service::instance()->start() : DesktopControl::Service::instance()->stop();
 }
 
+/// @obsolete
 void Plugin::doMenuOptions()
 {
-    Windows::SettingsDialog::displayPane("dskctl");
+    Windows::SettingsDialog::displayPane("dsktpctl");
 }
 
 

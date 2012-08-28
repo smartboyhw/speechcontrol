@@ -127,13 +127,13 @@ void ModelSettingsPane::updateLanguageTab()
     const bool showUser = index == 1;
     const bool showSystem = index == 2;
 
-    Q_FOREACH (const LanguageModel * model, models) {
-        if (model->isSystem() && ! (showSystem || showAll))
+    Q_FOREACH (const LanguageModel *model, models) {
+        if (model->isSystem() && !(showSystem || showAll))
             continue;
-        else if (model->isUser() && ! (showUser || showAll))
+        else if (model->isUser() && !(showUser || showAll))
             continue;
 
-        QListWidgetItem* item = new QListWidgetItem (widget);
+        QListWidgetItem *item = new QListWidgetItem (widget);
         item->setText (model->name());
         item->setData (Qt::UserRole, model->path());
         widget->addItem (item);
@@ -206,31 +206,31 @@ void ModelSettingsPane::on_checkBoxDefaultAcousticModel_clicked (const bool p_ch
 {
     if (p_checked) {
         QString currentModel = m_ui->listWidgetAcoustic->currentItem()->data (Qt::UserRole).toString();
-        Core::setConfiguration ("Model/Acoustic", currentModel);
+        Core::setConfiguration ("ModelSettings/AcousticDefault", currentModel);
     }
     else {
-        Core::setConfiguration ("Model/Acoustic", QString());
+        Core::setConfiguration ("ModelSettings/AcousticDefault", QString());
     }
 
-    qDebug() << "[ModelSettingsPane::on_checkBoxDefaultAcousticModel_clicked()]" << Core::configuration ("Model/Acoustic") << p_checked;
+    qDebug() << "[ModelSettingsPane::on_checkBoxDefaultAcousticModel_clicked()]" << Core::configuration ("ModelSettings/AcousticDefault") << p_checked;
 }
 
 void ModelSettingsPane::on_checkBoxDefaultLanguageModel_clicked (const bool p_checked)
 {
     if (p_checked) {
         QString currentModel = m_ui->listWidgetLanguage->currentItem()->data (Qt::UserRole).toString();
-        Core::setConfiguration ("Model/Language", currentModel);
+        Core::setConfiguration ("ModelSettings/LanguageDefault", currentModel);
     }
     else {
-        Core::setConfiguration ("Model/Language", QString());
+        Core::setConfiguration ("ModelSettings/LanguageDefault", QString());
     }
 
-    qDebug() << "[ModelSettingsPane::on_checkBoxDefaultLanguageModel_clicked()]" << Core::configuration ("Model/Language") << p_checked;
+    qDebug() << "[ModelSettingsPane::on_checkBoxDefaultLanguageModel_clicked()]" << Core::configuration ("ModelSettings/LanguageDefault") << p_checked;
 }
 
 void ModelSettingsPane::on_listWidgetAcoustic_currentRowChanged (const int p_index)
 {
-    QString defaultModel = Core::configuration ("Model/Acoustic").toString();
+    QString defaultModel = Core::configuration ("ModelSettings/AcousticDefault").toString();
     QString currentModel = m_ui->listWidgetAcoustic->item (p_index)->data (Qt::UserRole).toString();
     m_ui->checkBoxDefaultAcousticModel->setChecked (defaultModel == currentModel);
     qDebug() << "[ModelSettingsPane::on_listWidgetAcoustic_currentRowChanged()]" << defaultModel << currentModel;
@@ -238,7 +238,7 @@ void ModelSettingsPane::on_listWidgetAcoustic_currentRowChanged (const int p_ind
 
 void ModelSettingsPane::on_listWidgetLanguage_currentRowChanged (const int p_index)
 {
-    QString defaultModel = Core::configuration ("Model/Language").toString();
+    QString defaultModel = Core::configuration ("ModelSettings/LanguageDefault").toString();
     QString currentModel = m_ui->listWidgetLanguage->item (p_index)->data (Qt::UserRole).toString();
     m_ui->checkBoxDefaultLanguageModel->setChecked (defaultModel == currentModel);
     qDebug() << "[ModelSettingsPane::on_listWidgetLanguage_currentRowChanged()]" << defaultModel << currentModel;

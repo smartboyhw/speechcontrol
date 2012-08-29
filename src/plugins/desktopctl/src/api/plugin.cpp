@@ -45,8 +45,6 @@ Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent), toggleSer
     m_actionOptions (0), m_menuDesktopControl (0)
 {
     m_menuDesktopControl = new QMenu ("Desktop Control", 0);
-    m_actionOptions = m_menuDesktopControl->addAction (QIcon::fromTheme ("configure"), "Configure..",
-                      this, SLOT (doMenuConfigure()));
     toggleService = m_menuDesktopControl->addAction ("Toggle", this, SLOT (doMenuToggle (bool)));
     toggleService->setCheckable (true);
     toggleService->setChecked (DesktopControl::Service::instance()->isEnabled());

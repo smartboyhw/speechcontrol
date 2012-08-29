@@ -40,8 +40,8 @@ using namespace SpeechControl::Dictation;
 
 Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent)
 {
-    const QString actionText("Toggle Dictation");
-    dictationSwitch = new QAction(actionText, parent);
+    dictationMenu = new QMenu ("Dictation", 0);
+    dictationSwitch = dictationMenu->addAction("Toggle", Service::instance(), SLOT(toggle()));
     dictationSwitch->setCheckable(true);
     dictationSwitch->setChecked(Service::instance()->isEnabled());
 }
@@ -50,8 +50,8 @@ void Plugin::initialize()
 {
     const bool dctnState = Core::configuration ("Dictation/AutoStart", false).toBool();
     Service::instance()->setState ( (dctnState) ? AbstractServiceModule::Enabled  : AbstractServiceModule::Disabled);
-    connect(dictationSwitch, SIGNAL(triggered()), Service::instance(), SLOT(toggle()));
-    Indicator::addActionForPlugins(dictationSwitch);
+//    connect(dictationSwitch, SIGNAL(triggered()), Service::instance(), SLOT(toggle()));
+    Indicator::addMenuForPlugins(dictationMenu);
     qDebug() << "Plug-in loaded! (dictationapi)";
 }
 

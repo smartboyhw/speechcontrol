@@ -41,19 +41,18 @@
 using namespace SpeechControl;
 using namespace SpeechControl::DesktopControl;
 
-Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent), toggleService (0),
-    m_actionOptions (0), m_menuDesktopControl (0)
+Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent)
 {
     m_menuDesktopControl = new QMenu ("Desktop Control", 0);
-    toggleService = m_menuDesktopControl->addAction ("Toggle", this, SLOT (doMenuToggle (bool)));
+    toggleService = m_menuDesktopControl->addAction ("Toggle", Service::instance(), SLOT(toggle()));
     toggleService->setCheckable (true);
-    toggleService->setChecked (DesktopControl::Service::instance()->isEnabled());
+    toggleService->setChecked (DesktopControl::Service::instance()->isActive());
 }
 
 void Plugin::initialize()
 {
     const bool dsktpCntrlState = Core::configuration ("DesktopControl/AutoStart", false).toBool();
-    DesktopControl::Service::instance()->setState ( (dsktpCntrlState) ? AbstractServiceModule::Enabled  : AbstractServiceModule::Disabled);
+    Service::instance()->setState (dsktpCntrlState ? AbstractServiceModule::Enabled  : AbstractServiceModule::Disabled);
     Indicator::addMenuForPlugins(m_menuDesktopControl);
     Windows::SettingsDialog::addPane(new Windows::DesktopControlSettingsPane, "plgn");
 }
@@ -67,18 +66,6 @@ QPixmap Plugin::pixmap() const
 {
     return QIcon::fromTheme ("help").pixmap (64, 64);
 }
-
-void Plugin::doMenuToggle (bool& p_checked)
-{
-    p_checked ? DesktopControl::Service::instance()->start() : DesktopControl::Service::instance()->stop();
-}
-
-/// @obsolete
-void Plugin::doMenuOptions()
-{
-    Windows::SettingsDialog::displayPane("dsktpctl");
-}
-
 
 Plugin::~Plugin()
 {

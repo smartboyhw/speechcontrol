@@ -42,12 +42,7 @@ class Plugin : public SpeechControl::AbstractPlugin
 {
     Q_OBJECT
     QAction* toggleService;
-    QAction* m_actionOptions;
     QMenu* m_menuDesktopControl;
-
-private slots:
-    void doMenuOptions();
-    void doMenuToggle (bool& p_checked);
 
 public:
     explicit Plugin (QObject* parent = 0);

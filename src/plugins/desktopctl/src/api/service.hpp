@@ -59,6 +59,7 @@ public:
     virtual ~Service();
 
 public slots:
+    void toggle();
     void invokeCommand (const QString& p_text);
 
 private:

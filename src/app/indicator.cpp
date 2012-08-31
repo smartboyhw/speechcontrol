@@ -234,8 +234,6 @@ void IndicatorPrivate::buildMenu()
     menuTraining->addAction ("&Adapt Models", Indicator::instance(), SLOT (on_actionAdaptModels_triggered()));
 
     menuPlugins = menuBase->addMenu (QIcon::fromTheme ("configure"), "Plug-ins");
-//    menuPlugins->addSeparator();
-//    menuPlugins->addAction (actionPluginOptions);
     menuBase->addSeparator();
 
     menuBase->addAction (QIcon::fromTheme ("configure"), "&Options", Indicator::instance() , SLOT (on_actionOptions_triggered()));
@@ -248,6 +246,8 @@ void IndicatorPrivate::buildMenu()
     menuBase->addAction (QIcon::fromTheme ("application-exit"), "Quit", Core::instance(), SLOT (quit()));
 
     icon->setContextMenu (menuBase);
+
+    menuPlugins->hide();
 }
 
 IndicatorPrivate::~IndicatorPrivate()

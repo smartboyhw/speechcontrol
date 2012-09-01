@@ -27,28 +27,36 @@
 #include <QDebug>
 #include <QtPlugin>
 #include <QIcon>
+#include <QAction>
+#include <QString>
 
 #include <app/core.hpp>
 #include "service.hpp"
 #include "plugin.hpp"
+#include "indicator.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Dictation;
 
 Plugin::Plugin (QObject* parent) : AbstractPlugin (PLUGIN_ID, parent)
 {
+    dictationMenu = new QMenu ("Dictation", 0);
+    dictationSwitch = dictationMenu->addAction("Toggle", Service::instance(), SLOT(toggle()));
+    dictationSwitch->setCheckable(true);
+    dictationSwitch->setChecked(Service::instance()->isActive());
 }
 
 void Plugin::initialize()
 {
     const bool dctnState = Core::configuration ("Dictation/AutoStart", false).toBool();
-    Dictation::Service::instance()->setState ( (dctnState) ? AbstractServiceModule::Enabled  : AbstractServiceModule::Disabled);
-    qDebug() << "Plug-in loaded! (dsktpctlapi)";
+    Service::instance()->setState ( (dctnState) ? AbstractServiceModule::Enabled  : AbstractServiceModule::Disabled);
+    Indicator::addMenuForPlugins(dictationMenu);
+    qDebug() << "Plug-in loaded! (dictationapi)";
 }
 
 void Plugin::deinitialize()
 {
-    qDebug() << "Plug-in unloaded! (dsktpctlapi)";
+    qDebug() << "Plug-in unloaded! (dictationapi)";
 }
 
 QPixmap Plugin::pixmap() const

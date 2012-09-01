@@ -155,6 +155,16 @@ void Service::setDefaultAcousticModel (const AcousticModel& p_acModel)
     setAcousticModel (p_acModel);
 }
 
+void Service::toggle()
+{
+    Q_D(Service);
+
+    if (d->m_state == AbstractServiceModule::Disabled)
+        d->changeState(AbstractServiceModule::Enabled);
+    else
+        d->changeState(AbstractServiceModule::Disabled);
+}
+
 void Service::invokeCommand (const QString& cmd)
 {
     qDebug() << "[DesktopControl::Service::invokeCommand()] Heard " << cmd << "from the user.";

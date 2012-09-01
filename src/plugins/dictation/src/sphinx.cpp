@@ -53,8 +53,8 @@ void Sphinx::init()
         lModelPath = models.value ("Language").toString();
     }
     else {
-        aModelPath = Core::configuration ("Models/Acoustic").toString();
-        lModelPath = Core::configuration ("Models/Language").toString();
+        aModelPath = Core::configuration ("ModelSettings/AcousticDefault").toString();
+        lModelPath = Core::configuration ("ModelSettings/LanguageDefault").toString();
     }
 
     setAcousticModel (aModelPath);

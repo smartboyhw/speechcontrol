@@ -46,15 +46,15 @@ void Sphinx::init()
     QString aModelPath;
     QString lModelPath;
 
-    QVariantMap models = Core::configuration ("Dictation/Models").toMap();
+    QVariantMap models = Core::configuration ("Dictation/Model").toMap();
 
     if (!models.empty()) {
         aModelPath = models.value ("Acoustic").toString();
         lModelPath = models.value ("Language").toString();
     }
     else {
-        aModelPath = Core::configuration ("ModelSettings/AcousticDefault").toString();
-        lModelPath = Core::configuration ("ModelSettings/LanguageDefault").toString();
+        aModelPath = Core::configuration ("Model/Acoustic").toString();
+        lModelPath = Core::configuration ("Model/Language").toString();
     }
 
     setAcousticModel (aModelPath);

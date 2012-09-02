@@ -128,27 +128,28 @@ void DesktopControlSettingsPane::updateUi()
     m_ui->comboBoxAcousticModel->setCurrentIndex (m_ui->comboBoxAcousticModel->findData (Core::configuration ("DesktopControl/AcousticModel")));
 }
 
-void DesktopControlSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
+void DesktopControlSettingsPane::on_checkBoxEnable_toggled (bool checked)
 {
-    Core::setConfiguration ("DesktopControl/Enabled", p_checked);
+    Core::setConfiguration ("DesktopControl/Enabled", checked);
 
-    if (!p_checked && Service::instance()->isActive())
+    if (!checked && Service::instance()->isActive())
         Service::instance()->stop();
 
     updateUi();
 }
 
-void DesktopControlSettingsPane::on_checkBoxEnableStartup_toggled (bool p_checked)
+void DesktopControlSettingsPane::on_checkBoxEnableStart_toggled (bool checked)
 {
-    Core::setConfiguration ("DesktopControl/AutoStart", p_checked);
+    Core::setConfiguration ("DesktopControl/AutoStart", checked);
 }
 
-void DesktopControlSettingsPane::on_deftAcousticModel_textEdited (const QString& text)
+void DesktopControlSettingsPane::on_comboBoxAcousticModel_currentIndexChanged(int idx)
 {
-    if (QDir (text).exists()) {
-        AcousticModel newModel (text);
-        Service::instance()->setDefaultAcousticModel (newModel);
-        Service::instance()->setAcousticModel (newModel);
+    QString path = m_ui->comboBoxAcousticModel->itemData(idx).toString();
+    if (QDir(path).exists()) {
+        AcousticModel newModel(path);
+        Service::instance()->setDefaultAcousticModel(newModel);
+        Service::instance()->setAcousticModel(newModel);
     }
 }
 

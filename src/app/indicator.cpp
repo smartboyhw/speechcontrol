@@ -144,11 +144,15 @@ void Indicator::presentMessage (const QString& p_title, const QString& p_message
 
 void Indicator::addActionForPlugins (QAction* p_action)
 {
+    if (!instance()->d_func()->menuPlugins->isVisible())
+        instance()->d_func()->menuPlugins->setVisible(true);
     instance()->d_func()->menuPlugins->insertAction (0, p_action);
 }
 
 void Indicator::addMenuForPlugins (QMenu* p_menu)
 {
+    if (!instance()->d_func()->menuPlugins->isVisible())
+        instance()->d_func()->menuPlugins->setVisible(true);
     instance()->d_func()->menuPlugins->addMenu(p_menu);
 }
 
@@ -225,27 +229,25 @@ void IndicatorPrivate::buildMenu()
 {
     menuBase = new QMenu;
 
-    menuPlugins        = menuBase->addMenu (QIcon::fromTheme ("configure"), "Plug-ins");
-    menuPlugins->addSeparator();
-    menuPlugins->addAction (actionPluginOptions);
-
-    menuHelp           = menuBase->addMenu (QIcon::fromTheme ("help"), "Help");
-    menuTraining        = menuBase->addMenu ("&Training");
+    menuTraining = menuBase->addMenu ("&Training");
     menuTraining->addAction ("&Start Training...", Indicator::instance(), SLOT (on_actionStartTraining_triggered()));
     menuTraining->addAction ("&Adapt Models", Indicator::instance(), SLOT (on_actionAdaptModels_triggered()));
 
+    menuPlugins = menuBase->addMenu (QIcon::fromTheme ("configure"), "Plug-ins");
+    menuBase->addSeparator();
 
+    menuBase->addAction (QIcon::fromTheme ("configure"), "&Options", Indicator::instance() , SLOT (on_actionOptions_triggered()));
+
+    menuHelp = menuBase->addMenu (QIcon::fromTheme ("help"), "Help");
     actionAboutQt = menuHelp->addAction (QIcon::fromTheme ("qt"), "About &Qt", QApplication::instance(), SLOT (aboutQt()));
     actionAboutSpeechControl = menuHelp->addAction (QApplication::windowIcon(), "&About SpeechControl", Indicator::instance(), SLOT (on_actionAboutSpeechControl_triggered()));
 
-    menuBase->addMenu (menuPlugins);
-    menuBase->addSeparator();
-    menuBase->addAction (QIcon::fromTheme ("configure"), "&Options", Indicator::instance() , SLOT (on_actionOptions_triggered()));
-    menuBase->addMenu (menuHelp);
     menuBase->addSeparator();
     menuBase->addAction (QIcon::fromTheme ("application-exit"), "Quit", Core::instance(), SLOT (quit()));
 
     icon->setContextMenu (menuBase);
+
+    menuPlugins->hide();
 }
 
 IndicatorPrivate::~IndicatorPrivate()

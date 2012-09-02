@@ -89,6 +89,11 @@ signals:
     void stopped();
 
 public:
+    enum PluginType {
+        Service = 0,
+        Other
+    };
+
     /**
      * @brief Default constructor.
      * @param p_parent The parent of this QObject.
@@ -178,6 +183,14 @@ public:
      **/
     bool isLoaded() const;
 
+    /**
+     * @brief Get plug-in type.
+     * Gets plug-in's type which currently is either Service or
+     * Other.
+     * @return Plug-in type.
+     */
+    PluginType type() const;
+
 public slots:
 
     /**
@@ -187,7 +200,6 @@ public slots:
     bool load();
 
 protected:
-
     /**
      * @brief This method is invoked when the plug-in has been successfully loaded.
      * @internal

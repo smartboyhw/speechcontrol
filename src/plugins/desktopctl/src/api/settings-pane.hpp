@@ -60,9 +60,9 @@ protected:
     virtual void updateUi();
 
 private slots:
-    void on_checkBoxEnable_toggled (bool p_checked);
-    void on_checkBoxEnableStartup_toggled (bool p_checked);
-    void on_deftAcousticModel_textEdited (const QString& text);
+    void on_checkBoxEnable_toggled (bool checked);
+    void on_checkBoxEnableStart_toggled (bool checked);
+    void on_comboBoxAcousticModel_currentIndexChanged(int idx);
 
 private:
     Ui::DesktopControlSettingsPane* m_ui;

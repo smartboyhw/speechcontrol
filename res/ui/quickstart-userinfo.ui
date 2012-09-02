@@ -112,7 +112,77 @@
         </property>
         <item>
          <property name="text">
+          <string>Mandarin</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
           <string>English</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Hindustani</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Spanish</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Russian</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Arabic</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Bengali</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Portugese</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Malay-Indonesian</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>French</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>German</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Italian</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Japanese</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Korean</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Cantonese</string>
          </property>
         </item>
        </widget>

@@ -60,28 +60,33 @@ bool LanguageModel::isUser() const
     return path().contains (QDir::homePath());
 }
 
-/// @note This assumes that the LM file is the same name as the directory.
-QStringList findAllLanguageModels (const QDir p_dir)
+QStringList findLanguageModels (const QDir p_dir)
 {
     QDirIterator itr (p_dir.absolutePath(), QDir::NoDotAndDotDot | QDir::AllDirs, QDirIterator::Subdirectories);
-    QStringList aList;
+    QStringList modelsList;
 
     while (itr.hasNext()) {
-        const QString listing = itr.next();
+        QString listing = itr.next();
         QDir listingDir (listing);
-        qDebug() << "[findAllLanguageModels()] Found language model directory: " << listing;
-        QFileInfo featParams (listing + "/" + listingDir.dirName() + ".lm");
 
-        if (featParams.exists()) {
-            aList << listing;
+        qDebug() << "[LanguageModel] Found language model directory: " << listing;
+        qDebug() << "   Searching for .DMP files.";
+
+        QStringList modelFilters;
+        modelFilters << "*.DMP" << "*.dmp" << "*.lm";
+        QStringList models = listingDir.entryList(modelFilters);
+
+        qDebug() << "   Found" << models.size() << "models.";
+
+        for (QStringList::const_iterator mName = models.constBegin();
+             mName != models.constEnd(); ++mName)
+        {
+            modelsList.append(listing + '/' + (*mName));
         }
-        else continue;
     }
 
-    qDebug() << "[findAllLanguageModels()] Removed" << aList.removeDuplicates() << "duplicates.";
-    aList.removeAll (".");
-
-    return aList;
+    qDebug() << "   Removed" << modelsList.removeDuplicates() << "duplicates.";
+    return modelsList;
 }
 
 LanguageModelList LanguageModel::allModels()
@@ -91,7 +96,7 @@ LanguageModelList LanguageModel::allModels()
 
     QDir baseModelDir (POCKETSPHINX_MODELDIR);
     baseModelDir.cd ("lm");
-    QStringList dirs = findAllLanguageModels (baseModelDir);
+    QStringList dirs = findLanguageModels (baseModelDir);
 
     // Alright, we got the folders. Now, just build LanguageModel objects with it.
     LanguageModelList list;

@@ -69,6 +69,7 @@ public:
 public slots:
     void handleText (const QString& p_text);
     void setSafetyMode (const SafetyMode& p_mode);
+    void toggle();
 };
 
 }

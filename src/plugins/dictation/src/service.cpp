@@ -69,6 +69,7 @@ AbstractServiceModule::ActivityState ServicePrivate::handleStateChange (const Ab
             qDebug() << "[Dictation::ServicePrivate::onStateChanged()] Disabled.";
         }
 
+        return AbstractServiceModule::Disabled;
         break;
 
     case AbstractServiceModule::Undefined:
@@ -206,6 +207,16 @@ void Service::handleText (const QString& p_text)
 Service::~Service()
 {
 
+}
+
+void Service::toggle()
+{
+    Q_D(Service);
+
+    if (d->m_state == AbstractServiceModule::Disabled)
+        d->changeState(AbstractServiceModule::Enabled);
+    else
+        d->changeState(AbstractServiceModule::Disabled);
 }
 
 #include "service.moc"

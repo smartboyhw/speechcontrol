@@ -62,7 +62,7 @@ protected:
 
 private slots:
     void on_checkBoxEnable_toggled (bool p_checked);
-    void on_checkBoxEnableStartup_toggled (bool p_checked);
+    void on_checkBoxEnableStart_toggled (bool p_checked);
     void on_lineEditStart_textChanged (QString p_text);
     void on_lineEditEnd_textChanged (QString p_text);
 

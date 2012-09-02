@@ -34,6 +34,8 @@
 #include "service.hpp"
 #include "plugin.hpp"
 #include "indicator.hpp"
+#include <ui/settings-dialog.hpp>
+#include "settings-pane.hpp"
 
 using namespace SpeechControl;
 using namespace SpeechControl::Dictation;
@@ -51,6 +53,7 @@ void Plugin::initialize()
     const bool dctnState = Core::configuration ("Dictation/AutoStart", false).toBool();
     Service::instance()->setState ( (dctnState) ? AbstractServiceModule::Enabled  : AbstractServiceModule::Disabled);
     Indicator::addMenuForPlugins(dictationMenu);
+    Windows::SettingsDialog::addPane(new Windows::DictationSettingsPane, "plgn");
     qDebug() << "Plug-in loaded! (dictationapi)";
 }
 

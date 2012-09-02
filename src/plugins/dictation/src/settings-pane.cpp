@@ -104,7 +104,7 @@ void DictationSettingsPane::on_checkBoxEnable_toggled (bool p_checked)
     updateUi();
 }
 
-void DictationSettingsPane::on_checkBoxEnableStartup_toggled (bool p_checked)
+void DictationSettingsPane::on_checkBoxEnableStart_toggled (bool p_checked)
 {
     Core::setConfiguration ("Dictation/AutoStart", p_checked);
 }

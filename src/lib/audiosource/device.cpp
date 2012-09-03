@@ -144,10 +144,8 @@ AudioSourceList DeviceAudioSource::allDevices()
                         ;
                     }
 
-                    if (!DeviceAudioSourcePrivate::s_map.contains (device.toString()))
-                        DeviceAudioSourcePrivate::s_map.insert (device.toString(), new DeviceAudioSource (device.toString()));
-
-                    list << DeviceAudioSource::obtain (device.toString());
+                    DeviceAudioSourcePrivate::s_map.insert(device.toString(), new DeviceAudioSource(device.toString()));
+                    list << DeviceAudioSource::obtain(device.toString());
                 }
             }
         }
@@ -178,7 +176,7 @@ QString DeviceAudioSource::humanName() const
     if (d->devicePtr.isNull())
         return deviceName();
     else {
-        QString name = d->devicePtr->property ("device-name").toString();
+        QString name = d->devicePtr->property("device-name").toString();
 
         if (name.isEmpty() || name.isNull())
             return deviceName();

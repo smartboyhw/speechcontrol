@@ -4,7 +4,7 @@ Speech recognition software for human beings.
 
 ***
 
-Website: http://wiki.thesii.org/SpeechControl
+Website: http://thesii.org/wiki/SpeechControl
 GitHub:  https://github.com/thesii/speechcontrol
 
 ## Introduction
@@ -26,8 +26,7 @@ you to:
 For more detailed instructions look into the INSTALL file.
 Usual build procedure is as follows:
 
-    $ mkdir build
-    $ cd build
+    $ mkdir build && cd build
     $ cmake ..
     $ make
     # make install

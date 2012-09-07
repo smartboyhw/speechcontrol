@@ -117,7 +117,7 @@ public:
     /**
      * @brief Returns the AcousticModel that'll be used for the base of adaption.
      **/
-    AcousticModel* baseModel();
+    AcousticModel* getBaseModel();
 
     /**
      * @brief Returns the AcousticModel that was generated from the act of adaption.
@@ -205,8 +205,8 @@ private:
     void executeProcess (const QString& p_program, const QStringList p_arguments);
 
     Session* m_session;
-    AcousticModel* m_modelBase;
-    AcousticModel* m_modelResult;
+    AcousticModel* baseModel;
+    AcousticModel* resultModel;
     QProcess* m_prcss;
     QTemporaryFile* m_fileTmpHyp;
     Phase current_phase;

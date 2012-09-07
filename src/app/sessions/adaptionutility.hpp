@@ -152,7 +152,7 @@ signals:
      * @brief Emitted when a phase has begun.
      * @param p_phase The phase that begun.
      **/
-    void phaseStarted (const Phase& p_phase);
+    void phaseStarted (AdaptationUtility::Phase p_phase);
 
     /**
      * @brief Emitted when a phase has ended.

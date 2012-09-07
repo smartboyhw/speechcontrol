@@ -57,9 +57,9 @@ void Enaction::initalizePage()
 
 void Enaction::cleanupPage()
 {
-    ui->progressBarStatus->setFormat (QString::null);
+//    ui->progressBarStatus->setFormat (QString::null);
     ui->progressBarOverall->setFormat (QString::null);
-    ui->progressBarStatus->setValue (0);
+//    ui->progressBarStatus->setValue (0);
     ui->progressBarOverall->setValue (0);
     ui->lblStatus->setText (QString::null);
     ui->btnAdapt->setEnabled (true);
@@ -86,7 +86,8 @@ void Enaction::on_btnAdapt_clicked()
 void Enaction::invokeAdaption (Session* p_session)
 {
     m_utility = new AdaptationUtility (p_session, m_model);
-    connect (m_utility, SIGNAL (phaseStarted (Phases)), this, SLOT (on_mUtility_phaseStarted (Phases)));
+    connect (m_utility, SIGNAL (phaseStarted (AdaptationUtility::Phase)),
+             this, SLOT (updateProgress (AdaptationUtility::Phase)));
     connect (m_utility, SIGNAL (phaseEnded (Phases)), this, SLOT (on_mUtility_phaseEnded (Phases)));
     connect (m_utility, SIGNAL (endedAdapting()), this, SLOT (on_mUtility_endedAdapting()));
     connect (m_utility, SIGNAL (startedAdapting()), this, SLOT (on_mUtility_startedAdapting()));
@@ -154,15 +155,16 @@ void Enaction::on_mUtility_startedAdapting()
 
 void Enaction::on_mUtility_phaseEnded (const Phases& p_phase)
 {
-    ui->progressBarStatus->setFormat ("Ended phase " + m_utility->obtainPhaseText (p_phase) + "...");
+//    ui->progressBarStatus->setFormat ("Ended phase " + m_utility->obtainPhaseText (p_phase) + "...");
     emit completeChanged();
 }
 
-void Enaction::on_mUtility_phaseStarted (const Phases& p_phase)
+void Enaction::updateProgress (AdaptationUtility::Phase phase)
 {
-    ui->progressBarStatus->setFormat ("Started phase " + m_utility->obtainPhaseText (p_phase) + "...");
+//    ui->progressBarStatus->setFormat ("Started phase " + m_utility->obtainPhaseText (phase) + "...");
+    ui->statusInfo->setText("State: " + m_utility->obtainPhaseText (phase));
     ui->progressBarOverall->setFormat ("%p%: Adapting using session '" + m_utility->session()->name() + "'");
-    ui->progressBarStatus->setValue ( (int) p_phase);
+    ui->progressBarOverall->setValue (ui->progressBarOverall->value() + 1);
 }
 
 bool Enaction::isComplete() const

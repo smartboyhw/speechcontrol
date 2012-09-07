@@ -48,7 +48,7 @@ ContentPrivate::~ContentPrivate() {
 }
 
 QString ContentPrivate::getPath (const QString& p_id) {
-    return Core::configurationPath().path() + "/contents/" + p_id + ".xml";
+    return Core::configurationPath().path() + "/contents/" + p_id + ".spch";
 }
 
 ContentList ContentPrivate::findAllContents (QString p_path)

@@ -187,7 +187,7 @@ private:
     void reportErrorInPhase (const QString& p_message);
     void cleanupPhase (const Phase& phase);
     void endCurrentPhase ();
-    void next_phase();
+    void nextPhase();
     void halt();
 
     // Procedural steps.

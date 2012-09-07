@@ -98,12 +98,12 @@ AcousticModel* AdaptationUtility::adapt()
 
     // invoke the cycle.
     setPhase (Initialized);
-    next_phase();
+    nextPhase();
 
     return m_modelResult;
 }
 
-void AdaptationUtility::next_phase()
+void AdaptationUtility::nextPhase()
 {
     switch (current_phase) {
     case Initialized:
@@ -205,7 +205,7 @@ void AdaptationUtility::cleanupPhase (const Phase& phase = Undefined)
 void AdaptationUtility::halt()
 {
     setPhase (Deinitialized);
-    next_phase();
+    nextPhase();
 }
 
 AdaptationUtility::Phase AdaptationUtility::currentPhase()
@@ -213,7 +213,7 @@ AdaptationUtility::Phase AdaptationUtility::currentPhase()
     return current_phase;
 }
 
-void AdaptationUtility::endCurrentPhase ()
+void AdaptationUtility::endCurrentPhase()
 {
     emit phaseEnded (current_phase);
     current_phase = Undefined;
@@ -278,7 +278,7 @@ void AdaptationUtility::startPhase (AdaptationUtility::Phase phase)
 void AdaptationUtility::setPhase (const Phase& phase)
 {
     endCurrentPhase();
-    startPhase (phase);
+    startPhase(phase);
 }
 
 void AdaptationUtility::reportErrorInPhase (const QString& p_message)
@@ -356,8 +356,8 @@ QString AdaptationUtility::obtainPhaseText (const Phase& p_phase) const
 
 void AdaptationUtility::copyAcousticModel()
 {
-    m_modelResult = m_modelBase->new_model();
-    next_phase();
+    m_modelResult = m_modelBase->newModel();
+    nextPhase();
 }
 
 /*
@@ -610,7 +610,7 @@ void AdaptationUtility::generateSendump()
 
     /// @bug Broken...
 //    executeProcess ("mk_s2sendump", args);
-    next_phase();
+    nextPhase();
 }
 
 /*
@@ -623,7 +623,7 @@ void AdaptationUtility::generateSendump()
 void AdaptationUtility::generateAccuracyReportHypothesis()
 {
     /// @bug Broken...
-    next_phase();
+    nextPhase();
     return;
 
 
@@ -654,7 +654,7 @@ void AdaptationUtility::completeAdaptation()
     QString title("Congratulations");
     QString text("You have just successfully adapted an acoustic model!");
     QMessageBox(QMessageBox::Information, title, text);
-    next_phase();
+    nextPhase();
 }
 
 void AdaptationUtility::on_process_finished (const int& p_exitCode, QProcess::ExitStatus p_exitStatus)
@@ -672,7 +672,7 @@ void AdaptationUtility::on_process_finished (const int& p_exitCode, QProcess::Ex
     switch (p_exitStatus) {
     case QProcess::NormalExit:
         qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Normal exit experienced.";
-        next_phase();
+        nextPhase();
         break;
 
     case QProcess::CrashExit:

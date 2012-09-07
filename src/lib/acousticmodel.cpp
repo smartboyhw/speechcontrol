@@ -229,7 +229,7 @@ NoiseDictionary* AcousticModel::noiseDictionary() const
     return d_func()->m_noisedict;
 }
 
-AcousticModel* AcousticModel::new_model()
+AcousticModel* AcousticModel::newModel()
 {
     // obtain directory info.
     QDir model (path());

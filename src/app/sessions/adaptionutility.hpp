@@ -117,7 +117,7 @@ public:
     /**
      * @brief Returns the AcousticModel that'll be used for the base of adaption.
      **/
-    AcousticModel* baseModel();
+    AcousticModel* getBaseModel();
 
     /**
      * @brief Returns the AcousticModel that was generated from the act of adaption.
@@ -152,7 +152,7 @@ signals:
      * @brief Emitted when a phase has begun.
      * @param p_phase The phase that begun.
      **/
-    void phaseStarted (const Phase& p_phase);
+    void phaseStarted (AdaptationUtility::Phase p_phase);
 
     /**
      * @brief Emitted when a phase has ended.
@@ -187,7 +187,7 @@ private:
     void reportErrorInPhase (const QString& p_message);
     void cleanupPhase (const Phase& phase);
     void endCurrentPhase ();
-    void next_phase();
+    void nextPhase();
     void halt();
 
     // Procedural steps.
@@ -205,8 +205,8 @@ private:
     void executeProcess (const QString& p_program, const QStringList p_arguments);
 
     Session* m_session;
-    AcousticModel* m_modelBase;
-    AcousticModel* m_modelResult;
+    AcousticModel* baseModel;
+    AcousticModel* resultModel;
     QProcess* m_prcss;
     QTemporaryFile* m_fileTmpHyp;
     Phase current_phase;

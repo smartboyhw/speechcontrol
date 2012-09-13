@@ -43,12 +43,12 @@
 using namespace SpeechControl;
 
 
-AdaptationUtility::AdaptationUtility() : QObject(), m_session (0), m_modelBase (0), m_modelResult (0), m_prcss (0), m_fileTmpHyp (new QTemporaryFile), current_phase (Undefined)
+AdaptationUtility::AdaptationUtility() : QObject(), m_session (0), baseModel (0), resultModel (0), m_prcss (0), m_fileTmpHyp (new QTemporaryFile), current_phase (Undefined)
 {
     qWarning() << "[AdaptationUtility] Initialized with null objects.";
 }
 
-AdaptationUtility::AdaptationUtility (Session* p_session, AcousticModel* p_model) : QObject(), m_session (p_session), m_modelBase (p_model), m_modelResult (0), m_prcss (0), m_fileTmpHyp (new QTemporaryFile), current_phase (Undefined)
+AdaptationUtility::AdaptationUtility (Session* p_session, AcousticModel* p_model) : QObject(), m_session (p_session), baseModel (p_model), resultModel (0), m_prcss (0), m_fileTmpHyp (new QTemporaryFile), current_phase (Undefined)
 {
 
 }
@@ -63,14 +63,14 @@ QTemporaryFile* AdaptationUtility::hypothesis()
     return m_fileTmpHyp;
 }
 
-AcousticModel* AdaptationUtility::baseModel()
+AcousticModel* AdaptationUtility::getBaseModel()
 {
-    return m_modelBase;
+    return baseModel;
 }
 
 AcousticModel* AdaptationUtility::resultingModel()
 {
-    return m_modelResult;
+    return resultModel;
 }
 
 void AdaptationUtility::setSession (Session* p_session)
@@ -80,12 +80,12 @@ void AdaptationUtility::setSession (Session* p_session)
 
 void AdaptationUtility::setAcousticModel (AcousticModel* p_model)
 {
-    m_modelBase = p_model;
+    baseModel = p_model;
 }
 
 AcousticModel* AdaptationUtility::adapt()
 {
-    if (!m_session || !m_modelBase)
+    if (!m_session || !baseModel)
         return 0;
 
     if (m_prcss)
@@ -98,12 +98,12 @@ AcousticModel* AdaptationUtility::adapt()
 
     // invoke the cycle.
     setPhase (Initialized);
-    next_phase();
+    nextPhase();
 
-    return m_modelResult;
+    return resultModel;
 }
 
-void AdaptationUtility::next_phase()
+void AdaptationUtility::nextPhase()
 {
     switch (current_phase) {
     case Initialized:
@@ -205,7 +205,7 @@ void AdaptationUtility::cleanupPhase (const Phase& phase = Undefined)
 void AdaptationUtility::halt()
 {
     setPhase (Deinitialized);
-    next_phase();
+    nextPhase();
 }
 
 AdaptationUtility::Phase AdaptationUtility::currentPhase()
@@ -213,7 +213,7 @@ AdaptationUtility::Phase AdaptationUtility::currentPhase()
     return current_phase;
 }
 
-void AdaptationUtility::endCurrentPhase ()
+void AdaptationUtility::endCurrentPhase()
 {
     emit phaseEnded (current_phase);
     current_phase = Undefined;
@@ -278,7 +278,7 @@ void AdaptationUtility::startPhase (AdaptationUtility::Phase phase)
 void AdaptationUtility::setPhase (const Phase& phase)
 {
     endCurrentPhase();
-    startPhase (phase);
+    startPhase(phase);
 }
 
 void AdaptationUtility::reportErrorInPhase (const QString& p_message)
@@ -356,8 +356,8 @@ QString AdaptationUtility::obtainPhaseText (const Phase& p_phase) const
 
 void AdaptationUtility::copyAcousticModel()
 {
-    m_modelResult = m_modelBase->new_model();
-    next_phase();
+    resultModel = baseModel->newModel();
+    nextPhase();
 }
 
 /*
@@ -396,7 +396,7 @@ void AdaptationUtility::generateFeatures()
     QFile* controlFile = m_session->corpus()->fileIds();
 
     QStringList args;
-    args << "-argfile"  << m_modelResult->parameterPath()
+    args << "-argfile"  << resultModel->parameterPath()
          << "-samprate" << QString::number (16000)
          << "-c"        << controlFile->fileName()
          << "-di"       << dirInput.absolutePath()
@@ -433,11 +433,11 @@ void AdaptationUtility::generateMixtureWeights()
         sendumpLoc = loc3.fileName();
 
     args << sendumpLoc
-         << m_modelBase->senDump()->fileName()
-         << m_modelResult->mixtureWeights()->fileName()
+         << baseModel->senDump()->fileName()
+         << resultModel->mixtureWeights()->fileName()
          ;
 
-    QFile mixture_weights(m_modelBase->mixtureWeights());
+    QFile mixture_weights(baseModel->mixtureWeights());
     if (!mixture_weights.exists())
         executeProcess ("python", args);
 }
@@ -448,7 +448,7 @@ void AdaptationUtility::generateMixtureWeights()
  */
 void AdaptationUtility::convertModelDefinitions()
 {
-    QFile* fileMdef = m_modelResult->modelDefinitions();
+    QFile* fileMdef = resultModel->modelDefinitions();
 
     QStringList args;
     args << "-text"     << fileMdef->fileName()
@@ -496,14 +496,15 @@ void AdaptationUtility::collectAcousticStatistics()
     m_dirAccum.setPath (QDir::tempPath() + QString ("/speechcontrol-") + m_session->id());
 
     QStringList args;
-    args << "-hmmdir"    << m_modelResult->path()
-         << "-moddeffn"  << (m_modelResult->modelDefinitions()->fileName() + ".txt")
+    args << "-hmmdir"    << resultModel->path()
+         << "-moddeffn"  << (resultModel->modelDefinitions()->fileName() + ".txt")
          << "-ts2cbfn"   << ".semi."
-         << "-feat"      << "1s_c_d_dd" /// @todo Automatically detect correct -feat argument
-         << "-svspec"    << "0-12/13-25/26-38"
+         << "-feat"      << "s2_4x" /// @todo Automatically detect correct -feat argument
+//         << "-svspec"    << "0-12/13-25/26-38"
          << "-cmn"       << "current"
          << "-agc"       << "none"
-         << "-dictfn"    << "/usr/share/pocketsphinx/model/lm/hub4/cmu07a.dic"
+//         << "-dictfn"    << "/usr/share/pocketsphinx/model/lm/hub4/cmu07a.dic"
+         << "-dictfn"    << "/usr/share/pocketsphinx/model/lm/wsj/wlist5o.dic"
          << "-ctlfn"     << m_session->corpus()->fileIds()->fileName()
          << "-lsnfn"     << m_session->corpus()->transcription ("<s>", "</s>")->fileName()
          << "-cepdir"    << m_dirAccum.absolutePath()
@@ -566,15 +567,15 @@ void AdaptationUtility::performAdaptation ()
     QDir dataDir (QDir::tempPath() + "/speechcontrol-" + m_session->id());
 
     QStringList args;
-    args << "-meanfn"    << m_modelBase->means()->fileName()
-         << "-varfn"     << m_modelBase->variances()->fileName()
-         << "-mixwfn"    << m_modelBase->mixtureWeights()->fileName()
-         << "-tmatfn"    << m_modelBase->transitionMatrices()->fileName()
+    args << "-meanfn"    << baseModel->means()->fileName()
+         << "-varfn"     << baseModel->variances()->fileName()
+         << "-mixwfn"    << baseModel->mixtureWeights()->fileName()
+         << "-tmatfn"    << baseModel->transitionMatrices()->fileName()
          << "-accumdir"  << dataDir.path()
-         << "-mapmeanfn" << m_modelResult->means()->fileName()
-         << "-mapvarfn"  << m_modelResult->variances()->fileName()
-         << "-mapmixwfn" << m_modelResult->mixtureWeights()->fileName()
-         << "-maptmatfn" << m_modelResult->transitionMatrices()->fileName()
+         << "-mapmeanfn" << resultModel->means()->fileName()
+         << "-mapvarfn"  << resultModel->variances()->fileName()
+         << "-mapmixwfn" << resultModel->mixtureWeights()->fileName()
+         << "-maptmatfn" << resultModel->transitionMatrices()->fileName()
          ;
 
     executeProcess ("map_adapt", args);
@@ -603,14 +604,13 @@ void AdaptationUtility::generateSendump()
 {
     QStringList args;
     args << "-pocketsphinx" << "yes"
-         << "-modddefn"     << (m_modelResult->modelDefinitions()->fileName() + "txt")
-         << "-mixwfn"       << (m_modelResult->mixtureWeights()->fileName())
-         << "-sendumpfn"    << (m_modelResult->senDump()->fileName())
+         << "-moddeffn"     << (resultModel->modelDefinitions()->fileName() + ".txt")
+         << "-mixwfn"       << (resultModel->mixtureWeights()->fileName())
+         << "-sendumpfn"    << (resultModel->senDump()->fileName())
          ;
 
-    /// @bug Broken...
-//    executeProcess ("mk_s2sendump", args);
-    next_phase();
+    executeProcess ("mk_s2sendump", args);
+    nextPhase();
 }
 
 /*
@@ -623,7 +623,7 @@ void AdaptationUtility::generateSendump()
 void AdaptationUtility::generateAccuracyReportHypothesis()
 {
     /// @bug Broken...
-    next_phase();
+    nextPhase();
     return;
 
 
@@ -641,7 +641,7 @@ void AdaptationUtility::generateAccuracyReportHypothesis()
          << "-dict"      << "/usr/share/pocketsphinx/model/lm/hub4/cmu07a.dic"
          //m_session->corpus()->dictionary()->path()
          /// @bug Pocketsphinx crashes, which is probably associated with dictionaries.
-         << "-hmm"       << m_modelResult->path()
+         << "-hmm"       << resultModel->path()
          << "-hyp"       << hypothesis()->fileName()
          ;
 
@@ -654,7 +654,7 @@ void AdaptationUtility::completeAdaptation()
     QString title("Congratulations");
     QString text("You have just successfully adapted an acoustic model!");
     QMessageBox(QMessageBox::Information, title, text);
-    next_phase();
+    nextPhase();
 }
 
 void AdaptationUtility::on_process_finished (const int& p_exitCode, QProcess::ExitStatus p_exitStatus)
@@ -672,7 +672,7 @@ void AdaptationUtility::on_process_finished (const int& p_exitCode, QProcess::Ex
     switch (p_exitStatus) {
     case QProcess::NormalExit:
         qDebug() << "[AdaptationUtility::on_mPrcss_finished()] Normal exit experienced.";
-        next_phase();
+        nextPhase();
         break;
 
     case QProcess::CrashExit:

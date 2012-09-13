@@ -26,6 +26,7 @@
 
 #include <QIcon>
 #include <QVariantMap>
+#include <QLocale>
 
 #include "core.hpp"
 #include "wizards/intro.hpp"
@@ -61,13 +62,14 @@ QuickStart::QuickStart (QWidget* parent) :
              (new Windows::Pages::ConclusionPage (tr ("You've successfully set up SpeechControl to settings of your preference."))));
 }
 
-/// @todo The user's country could be automatically detected by QLocale.
 void QuickStart::accept()
 {
     Core* core = Core::instance();
     QVariantMap language;
     QString gender;
+    QLocale sysLocale = QLocale::system();
 
+    /// @note Needed?
     language["Spoken"] = field ("language-spoken");
     language["Native"] = field ("language-native");
 
@@ -79,9 +81,9 @@ void QuickStart::accept()
     }
 
     core->setConfiguration ("User/Gender", gender);
-    core->setConfiguration ("User/Language", language);
+    core->setConfiguration ("User/Language", QLocale::languageToString(sysLocale.language()));
     core->setConfiguration ("User/Age", property ("age"));
-    core->setConfiguration ("User/Country", property ("country"));
+    core->setConfiguration ("User/Country", QLocale::countryToString(sysLocale.country()));
     core->setConfiguration ("Microphone/Default", property ("mic-id"));
 
     this->QDialog::accept();

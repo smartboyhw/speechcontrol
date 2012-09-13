@@ -54,10 +54,14 @@ void MicrophoneSelection::initializePage()
     AudioSourceList allMics = DeviceAudioSource::allDevices();
 
     if (!allMics.empty()) {
-        Q_FOREACH (AbstractAudioSource * src, allMics) {
-            DeviceAudioSource* deviceSrc = (DeviceAudioSource*) src;
-            ui->comboBoxMicrophones->addItem (QIcon::fromTheme ("audio-input-microphone"), deviceSrc->humanName(), deviceSrc->deviceName());
+        Q_FOREACH (AbstractAudioSource *src, allMics) {
+            DeviceAudioSource *deviceSrc = (DeviceAudioSource*) src;
+
+            /// @note It might be not possible to get device human-readable name out-of-the-box.
+            ui->comboBoxMicrophones->addItem (QIcon::fromTheme ("audio-input-microphone"), deviceSrc->deviceName(), deviceSrc->deviceName());
         }
+    } else {
+        qWarning() << "[MicrophoneSelection] No microphones found!";
     }
 
     on_comboBoxMicrophones_activated (ui->comboBoxMicrophones->currentIndex());

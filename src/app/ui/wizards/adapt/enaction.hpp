@@ -55,7 +55,7 @@ public:
     virtual bool isComplete() const;
 
 public slots:
-    void on_mUtility_phaseStarted (const Phases& p_phase);
+    void updateProgress (AdaptationUtility::Phase p_phase);
     void on_mUtility_phaseEnded (const Phases& p_phase);
     void on_mUtility_endedAdapting();
     void on_mUtility_startedAdapting();

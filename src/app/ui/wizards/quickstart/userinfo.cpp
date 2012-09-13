@@ -72,7 +72,6 @@ void SpeechControl::Windows::Pages::UserInitialization::initializePage()
     updateLanguages();
 }
 
-/// @todo Find a way to obtain languages from the system.
 void SpeechControl::Windows::Pages::UserInitialization::updateLanguages()
 {
     QLocale l_locale;
